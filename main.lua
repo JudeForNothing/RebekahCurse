@@ -1405,9 +1405,9 @@ function yandereWaifu:resetReserve(player) --used to reset the stocks back into 
 	end
 end
 
-function yandereWaifu:heartReserveLogic()
-	for p = 0, game:GetNumPlayers() - 1 do
-	local player = Isaac.GetPlayer(p)
+function yandereWaifu:heartReserveLogic(player)
+	--for p = 0, game:GetNumPlayers() - 1 do
+	--local player = Isaac.GetPlayer(p)
 	local playerdata = GetEntityData(player);
 	--print("donkey")
 	--print(playerdata.heartReserveFill,"  ",playerdata.heartReserveMaxFill)
@@ -1422,7 +1422,7 @@ function yandereWaifu:heartReserveLogic()
 			yandereWaifu:addReserveStocks(player, number)
 			yandereWaifu:addReserveFill(player, -playerdata.heartReserveMaxFill) --decrease reserve to fit in more reserve
 		end
-	end
+	--end
 	end
 end
 
@@ -1687,7 +1687,6 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		end
 		
 		if canFire == true then
-			print("readdddy")
 			data.redcountdownFrames = data.redcountdownFrames + 1
 		
 			data.barrageInit = true
@@ -1712,10 +1711,15 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 				ludoTear = SchoolbagAPI.GetPlayerLudo(player)
 				if IsValidRedBarrage() then
 					if ludoTear then
+						if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player) else
+							if not data.KnifeHelper:Exists() then
+								data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player)
+							end
+						end
 						for i = 0, 360, 360/3 do
 							--knife sucks
 							if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-								SchoolbagAPI.SpawnKnife(player, (i + data.addedbarrageangle + data.specialAttackVector:GetAngleDegrees()), false, 0, 0, SchoolbagKnifeMode.FIRE_ONCE, 300, ludoTear)
+								SchoolbagAPI.SpawnKnife(player, (i + data.addedbarrageangle + data.specialAttackVector:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 300, data.KnifeHelper)
 							elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 								--local brim = player:FireBrimstone( Vector.FromAngle( i + data.specialAttackVector:GetAngleDegrees() - 45 ):Resized( BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								local brim = EntityLaser.ShootAngle(1, ludoTear.Position, i + data.specialAttackVector:GetAngleDegrees() - 45, 5, Vector(0,-5), player):ToLaser()
@@ -2498,7 +2502,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 	player.Velocity = player.Velocity * 1.1
 	eff.Velocity = player.Velocity;
-	eff.Position = room:GetClampedPosition(eff.Position, roomClampSize);
+	eff.Position = player.Position --room:GetClampedPosition(eff.Position, roomClampSize);
 	
 		--eff.Velocity = player.Velocity;
 	--else
@@ -2900,7 +2904,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 	elseif spr:IsPlaying("Shoot") then
 		if spr:GetFrame() == 2 then
 			if fam.SubType == 1 then
-				print(SchoolbagKnifeMode.FIRE_ONCE)
 				SchoolbagAPI.SpawnKnife(player, ((data.target.Position - fam.Position):GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 150, fam, true)
 			elseif fam.SubType == 4 then
 				beam = EntityLaser.ShootAngle(1, fam.Position, (data.target.Position - fam.Position):GetAngleDegrees(), 5, Vector(0,-5), player):ToLaser()
@@ -5232,7 +5235,8 @@ end
 
 --pickup shizz, because i dont want you to ghost around and pick up random things
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 			local entityData = GetEntityData(player);
 			if ( entityData.invincibleTime or 0 ) > 0 then
@@ -5793,7 +5797,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 			if GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
 				yandereWaifu:TrySpawnMirror();
 			end
-			yandereWaifu:heartReserveLogic();
+			yandereWaifu:heartReserveLogic(player);
 			yandereWaifu:customMovesInput();
 			yandereWaifu:ExtraStompCooldown();
 			yandereWaifu:MirrorMechanic();
@@ -6422,67 +6426,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			data.DASH_DOUBLE_TAP_READY = true
 		end
 		
-		
-		--attack skill
-		if not data.ATTACK_DOUBLE_TAP_READY then
-			data.ATTACK_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
-				for i,player in ipairs(SAPI.players) do
-					if playerTapping == player then
-						local playerdata = GetEntityData(player);
-						local psprite = player:GetSprite()
-						local controller = player.ControllerIndex;
-						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) then
-							if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
-								if  yandereWaifu:getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive then --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
-									if GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --if red 
-										playerdata.specialActiveAtkCooldown = 120;
-										playerdata.invincibleTime = 10;
-										playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue 
-										playerdata.specialActiveAtkCooldown = 60;
-										playerdata.soulcountdownFrames = 0;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow 
-										playerdata.specialActiveAtkCooldown = 30;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black 
-										playerdata.specialActiveAtkCooldown = 75;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if black 
-										playerdata.specialActiveAtkCooldown = 120;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if black 
-										playerdata.specialActiveAtkCooldown = 20;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if bred 
-										playerdata.specialActiveAtkCooldown = 80;
-										playerdata.invincibleTime = 10;
-										playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
-									end
-									playerdata.specialAttackVector = Vector( vector.X, vector.Y );
-									playerdata.IsAttackActive = true;
-									-- should probably play some sort of sound indicating damage
-									--player:AddHearts(-1);
-									
-									--yandereWaifu:purchaseReserveStocks(player, 1)
-									--[[
-									consider as an alternative to simply removing a half heart
-									player:TakeDamage( 1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
-									player:ResetDamageCooldown()
-									]]
-									playerdata.ATTACK_DOUBLE_TAP.cooldown = playerdata.specialActiveAtkCooldown;
-									playerdata.isReadyForSpecialAttack = false;
-									playerdata.AttackVector = vector;
-									
-									playerdata.specialMaxActiveAtkCooldown = playerdata.specialActiveAtkCooldown;
-								else
-									yandereWaifu:purchaseReserveStocks(player, 1)
-									
-									speaker:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
-									playerdata.ATTACK_DOUBLE_TAP.cooldown = OPTIONS.FAILED_SPECIAL_ATTACK_COOLDOWN;
-								end
-							end 
-						end
-					end
-				end
-			end)
-			data.ATTACK_DOUBLE_TAP_READY = true
-		end
+
 
 		--attack skill
 		if player:HasCollectible(COLLECTIBLE_LOVECANNON) then
@@ -6533,8 +6477,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						SchoolbagAPI.ToggleShowActive(player, false, true)
 						SchoolbagAPI.ConsumeActiveCharge(player, true)
 					else
-						--yandereWaifu:purchaseReserveStocks(player, 1)
-						SchoolbagAPI.ToggleShowActive(player, false, true)
+						yandereWaifu:purchaseReserveStocks(player, 1, true)
+						--SchoolbagAPI.ToggleShowActive(player, false, true)
 						speaker:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
 						--playerdata.ATTACK_DOUBLE_TAP.cooldown = OPTIONS.FAILED_SPECIAL_ATTACK_COOLDOWN;
 					end
