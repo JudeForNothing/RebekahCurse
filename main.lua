@@ -635,7 +635,7 @@ end)
 
 local function Init(force)
 	if force == true then
-		for i,player in ipairs(SAPI.players) do
+		--for i,player in ipairs(SAPI.players) do
 			Isaac.DebugString("1")
 			hasInit = true;
 			
@@ -648,7 +648,7 @@ local function Init(force)
 			Isaac.DebugString("5")
 			didKillSatan = false
 			
-		end
+		--end
 	end
 end
 
@@ -657,11 +657,12 @@ end
 local function RecapRebekahData()
 	local saveData = {}
 	saveData.currentMode = {};
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
-			saveData.currentMode[i] = GetEntityData(player).currentMode
+			saveData.currentMode[p] = GetEntityData(player).currentMode
 		else
-			saveData.currentMode[i] = nil
+			saveData.currentMode[p] = nil
 		end
 	end
 	saveData.bossRoomsCleared = bossRoomsCleared;
@@ -682,7 +683,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 	local data = JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
 		if data.currentMode ~= nil then 
-			for i,player in ipairs(SAPI.players) do
+			for p = 0, SAPI.game:GetNumPlayers() - 1 do
+				local player = Isaac.GetPlayer(p)
 				if player:GetPlayerType() == Reb then
 					GetEntityData(player).currentMode = data.currentMode[i]
 				end
@@ -715,7 +717,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_END, function(_, boo)
 end)
 
 function yandereWaifu:RebeccaGameInit(hasstarted) --Init
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
 		--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_20_20, false)
@@ -781,7 +784,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	local currentStage = game:GetLevel():GetStage()
 	local roomType = room:GetType()
 	
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb and CurrentRebeccaUnlocks then
 			
 			if game:IsGreedMode() then
@@ -940,7 +944,8 @@ end)
 
 --stuff to check how much boss room you cleared
 function yandereWaifu:TrySpawnMirror()
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb  then
 			local room = game:GetRoom()
 			local level = game:GetLevel()
@@ -991,7 +996,8 @@ end
 ------
 	-- ensures that rebecca maintains the collectible effects she should have
 	function yandereWaifu:ApplyCollectibleEffects()
-		for i,player in ipairs(SAPI.players) do
+		for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == Reb then
 				local effect = RebeccaModeEffects[GetEntityData(player).currentMode];
 				if effect ~= nil and player:GetEffects():HasCollectibleEffect( effect ) == false then
@@ -1220,7 +1226,8 @@ end
 
 	-- re-add the appropriate costume when the player rerolls (with d4 or d100)
 	function yandereWaifu:useReroll(collItem, rng)
-		for i,player in ipairs(SAPI.players) do
+		for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == Reb then
 				ApplyCostumes( GetEntityData(player).currentMode, player );
 				--player:AddNullCostume(NerdyGlasses)
@@ -1232,7 +1239,8 @@ end
 
 	--romcom code
 	function yandereWaifu:useRomComBook(collItem, rng)
-		for i,player in ipairs(SAPI.players) do
+		for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
 			SchoolbagAPI.ToggleShowActive(player, true)
 		end
 	end
@@ -1240,7 +1248,8 @@ end
 
 	--dice of fate code
 	function yandereWaifu:useDiceOfFate(collItem, rng)
-		for i,player in ipairs(SAPI.players) do
+		for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
 			local hearts = player:GetMaxHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts()
 			--remove all hearts first
 			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER then
@@ -1337,14 +1346,16 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useDiceOfFate, 
 
 --unrequited love code
 function yandereWaifu:useUnLove(collItem, rng, player)
-	--for i,player in ipairs(SAPI.players) do
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	--	local player = Isaac.GetPlayer(p)
 	SchoolbagAPI.ToggleShowActive(player, true)
 	--end
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, COLLECTIBLE_UNREQUITEDLOVE );
 
 function yandereWaifu:usePocketCannon(collItem, rng, player)
-	--for i,player in ipairs(SAPI.players) do
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	--local player = Isaac.GetPlayer(p)
 	SchoolbagAPI.ConsumeActiveCharge(player, true) --just in case
 	SchoolbagAPI.ToggleShowActive(player, false, true)
 	--end
@@ -1406,29 +1417,29 @@ function yandereWaifu:resetReserve(player) --used to reset the stocks back into 
 end
 
 function yandereWaifu:heartReserveLogic()
-	for p = 0, game:GetNumPlayers() - 1 do
-	local player = Isaac.GetPlayer(p)
-	local playerdata = GetEntityData(player);
-	--print("donkey")
-	--print(playerdata.heartReserveFill,"  ",playerdata.heartReserveMaxFill)
-	if playerdata.heartReserveFill >= playerdata.heartReserveMaxFill then
-		local number = 0
-		local remainder = math.floor(playerdata.heartReserveFill/playerdata.heartReserveMaxFill)
-		for j = 0, remainder, 1 do
-			number = j
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local playerdata = GetEntityData(player);
+		--print("donkey")
+		--print(playerdata.heartReserveFill,"  ",playerdata.heartReserveMaxFill)
+		if playerdata.heartReserveFill >= playerdata.heartReserveMaxFill then
+			local number = 0
+			local remainder = math.floor(playerdata.heartReserveFill/playerdata.heartReserveMaxFill)
+			for j = 0, remainder, 1 do
+				number = j
+			end
+			--print(remainder)
+			if number > 0 then
+				yandereWaifu:addReserveStocks(player, number)
+				yandereWaifu:addReserveFill(player, -playerdata.heartReserveMaxFill) --decrease reserve to fit in more reserve
+			end
 		end
-		--print(remainder)
-		if number > 0 then
-			yandereWaifu:addReserveStocks(player, number)
-			yandereWaifu:addReserveFill(player, -playerdata.heartReserveMaxFill) --decrease reserve to fit in more reserve
-		end
-	end
 	end
 end
 
 --custom actions code
 function yandereWaifu:customMovesInput()
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 			local playerdata = GetEntityData(player);
@@ -1482,7 +1493,7 @@ function yandereWaifu:customMovesInput()
 end
 
 function yandereWaifu:ExtraStompCooldown()
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = GetEntityData(player);
 		local controller = player.ControllerIndex;
@@ -2272,9 +2283,9 @@ end
 
 --broken glasses effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(SAPI.players) do
 		local sprite = eff:GetSprite();
-		local playerdata = GetEntityData(player)
+	--	local playerdata = GetEntityData(player)
 		
 		if not sprite:IsPlaying("Flying") then
 			if eff.FrameCount == 1 then
@@ -2285,7 +2296,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		eff.Velocity = eff.Velocity * 0.9
 		SchoolbagAPI.FlipXByVec(eff, true)
-	end
+	--end
 end, ENTITY_BROKEN_GLASSES);
 
 
@@ -2294,7 +2305,8 @@ do
 
 --heart bomb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex;
 		local sprite = bb:GetSprite();
 		
@@ -2397,7 +2409,8 @@ end, ENTITY_ORBITALTARGET);
 
 --kim jun- i mean, rebeccas rockets
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
 		local data = GetEntityData(eff)
@@ -2441,7 +2454,8 @@ end, ENTITY_ORBITALNUKE)
 
 --slash effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
 		local data = GetEntityData(eff)
@@ -5232,7 +5246,8 @@ end
 
 --pickup shizz, because i dont want you to ghost around and pick up random things
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 			local entityData = GetEntityData(player);
 			if ( entityData.invincibleTime or 0 ) > 0 then
@@ -5411,7 +5426,7 @@ function yandereWaifu:MirrorMechanic(player)
 	local totalTypesofHearts = 0; --counts the total amount of hearts available
 	local totalCurTypesofHearts = {};
 	
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = GetEntityData(player);
 		
@@ -5452,7 +5467,7 @@ function yandereWaifu:MirrorMechanic(player)
 		end
 	end
 	
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = GetEntityData(player);
 		
@@ -5642,7 +5657,7 @@ end
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerType = player:GetPlayerType()
 		local room = game:GetRoom()
@@ -5656,7 +5671,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 				end
 			end
 			local maxHealth = ent.MaxHitPoints
-			yandereWaifu:addReserveFill(player, maxHealth/10)
+			yandereWaifu:addReserveFill(player, maxHealth/5)
+			print("sluuuuuuuuuuuuuuuuuuuut", maxHealth/5)
 		end
 	end
 end)
@@ -5664,7 +5680,8 @@ end)
 
 --meter
 function yandereWaifu:meterLogic(player)
-	--for i,player in ipairs(SAPI.players) do
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--local player = Isaac.GetPlayer(p)
 		local data = GetEntityData(player)
 		local room = game:GetRoom()
 		local gameFrame = game:GetFrameCount();
@@ -5751,7 +5768,8 @@ function yandereWaifu:meterLogic(player)
 end
 
 function yandereWaifu:heartReserveRenderLogic(player)
-	--for i,player in ipairs(SAPI.players) do
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--local player = Isaac.GetPlayer(p)
 		local position = Vector(15,50)
 		--print(player.Position.X)
 		--if SchoolbagAPI.IsInMirroredFloor(player) then
@@ -5781,7 +5799,7 @@ end
 -- composite of all callbacks to ensure proper callback order
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 			-- for debugging, remove when release
@@ -5834,7 +5852,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 end);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
-	--for i,player in ipairs(SAPI.players) do
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 			yandereWaifu:meterLogic(player);
 			yandereWaifu:heartReserveRenderLogic(player);
@@ -6121,7 +6140,6 @@ end, ENTITY_LOVEHOOK);
 
 --cursed maw effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	local player = Isaac.GetPlayer(0);
 	local controller = player.ControllerIndex;
 	local sprite = eff:GetSprite();
 	local room =  Game():GetRoom();
@@ -6222,6 +6240,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 
 end, ENTITY_CURSEDMAW);
 
+
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
@@ -6247,7 +6267,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			GetEntityData(player).DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
 				-- old random velocity code
 				-- RandomHeartParticleVelocity()
-				for p = 0, game:GetNumPlayers() - 1 do
+				for p = 0, SAPI.game:GetNumPlayers() - 1 do
 					local player = Isaac.GetPlayer(p)
 					print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
 					if GetPtrHash( playerTapping ) == GetPtrHash( player) then
@@ -6421,68 +6441,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			end)
 			data.DASH_DOUBLE_TAP_READY = true
 		end
-		
-		
-		--attack skill
-		if not data.ATTACK_DOUBLE_TAP_READY then
-			data.ATTACK_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
-				for i,player in ipairs(SAPI.players) do
-					if playerTapping == player then
-						local playerdata = GetEntityData(player);
-						local psprite = player:GetSprite()
-						local controller = player.ControllerIndex;
-						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) then
-							if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
-								if  yandereWaifu:getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive then --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
-									if GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --if red 
-										playerdata.specialActiveAtkCooldown = 120;
-										playerdata.invincibleTime = 10;
-										playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue 
-										playerdata.specialActiveAtkCooldown = 60;
-										playerdata.soulcountdownFrames = 0;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow 
-										playerdata.specialActiveAtkCooldown = 30;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black 
-										playerdata.specialActiveAtkCooldown = 75;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if black 
-										playerdata.specialActiveAtkCooldown = 120;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if black 
-										playerdata.specialActiveAtkCooldown = 20;
-									elseif GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if bred 
-										playerdata.specialActiveAtkCooldown = 80;
-										playerdata.invincibleTime = 10;
-										playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
-									end
-									playerdata.specialAttackVector = Vector( vector.X, vector.Y );
-									playerdata.IsAttackActive = true;
-									-- should probably play some sort of sound indicating damage
-									--player:AddHearts(-1);
-									
-									--yandereWaifu:purchaseReserveStocks(player, 1)
-									--[[
-									consider as an alternative to simply removing a half heart
-									player:TakeDamage( 1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
-									player:ResetDamageCooldown()
-									]]
-									playerdata.ATTACK_DOUBLE_TAP.cooldown = playerdata.specialActiveAtkCooldown;
-									playerdata.isReadyForSpecialAttack = false;
-									playerdata.AttackVector = vector;
-									
-									playerdata.specialMaxActiveAtkCooldown = playerdata.specialActiveAtkCooldown;
-								else
-									yandereWaifu:purchaseReserveStocks(player, 1)
-									
-									speaker:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
-									playerdata.ATTACK_DOUBLE_TAP.cooldown = OPTIONS.FAILED_SPECIAL_ATTACK_COOLDOWN;
-								end
-							end 
-						end
-					end
-				end
-			end)
-			data.ATTACK_DOUBLE_TAP_READY = true
-		end
 
 		--attack skill
 		if player:HasCollectible(COLLECTIBLE_LOVECANNON) then
@@ -6533,7 +6491,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						SchoolbagAPI.ToggleShowActive(player, false, true)
 						SchoolbagAPI.ConsumeActiveCharge(player, true)
 					else
-						--yandereWaifu:purchaseReserveStocks(player, 1)
+						yandereWaifu:purchaseReserveStocks(player, 1)
 						SchoolbagAPI.ToggleShowActive(player, false, true)
 						speaker:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
 						--playerdata.ATTACK_DOUBLE_TAP.cooldown = OPTIONS.FAILED_SPECIAL_ATTACK_COOLDOWN;
@@ -7535,9 +7493,8 @@ end, EntityType.ENTITY_PLAYER)
 
 -- Reset the information when moving rooms so that we don't have false positive double taps across rooms
 function yandereWaifu:NewRoom()
-	for p = 0, game:GetNumPlayers() - 1 do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-	--for i,player in ipairs(SAPI.players) do
 		local data = GetEntityData(player)
 		local room = game:GetRoom()
 		print(room:GetType())
