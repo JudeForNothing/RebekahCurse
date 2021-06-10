@@ -1,0 +1,23 @@
+﻿<costumes anm2root="gfx/characters/">
+	<costume anm2path="innocenthair.anm2" type="none" priority="200" />
+	<costume anm2path="nerdyglasses.anm2" type="none" priority="180" />
+	<costume anm2path="wizoobhair.anm2" type="none" priority="200" />
+	<costume anm2path="swaghair.anm2" type="none" priority="200" />
+	<costume anm2path="hadfunhair.anm2" type="none" priority="200" />
+	<costume anm2path="angelofdeathhair.anm2" type="none" priority="200" />
+	<costume anm2path="deadhair.anm2" type="none" priority="200" skinColor="0" overwriteColor="true"/>
+	<costume anm2path="rebeccasfate.anm2" type="none" isFlying="true" hasSkinAlt="true"/>
+	
+	<costume anm2path="bridalhair.anm2" type="none" priority="200" />
+	<costume anm2path="fulfilled.anm2" type="none" priority="180" isFlying="true" hasSkinAlt="false"/>
+	<costume anm2path="weddedstockings.anm2" type="none" priority="170" isFlying="true" hasSkinAlt="false"/>
+	
+	<costume anm2path="love_power.anm2" type="none"/>
+	<costume anm2path="lunchbox.anm2" priority="22" type="none"/>
+	<costume anm2path="cursedmaw.anm2" priority="27" type="none"/>
+	<costume anm2path="lovesick.anm2" priority="22" type="none" hasSkinAlt="true"/>
+	<costume anm2path="unsnapped.anm2" priority="22" type="none" hasSkinAlt="true"/>
+	<costume anm2path="snap.anm2" priority="24" type="none" hasSkinAlt="true"/>
+	
+	<costume anm2path="hornface.anm2" type="none"/>
+</costumes>

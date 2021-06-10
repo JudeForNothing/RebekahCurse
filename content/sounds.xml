@@ -1,0 +1,61 @@
+<sounds root="sfx/">
+	<sound name="RebekahHurt">
+		<sample weight="1" path="reb_hurt.wav" />
+		<sample weight="1" path="reb_hurt2.wav" />
+		<sample weight="1" path="reb_hurt3.wav" />
+		<sample weight="1" path="reb_hurt4.wav" />
+	</sound>	
+	<sound name="RebekahDie">
+		<sample weight="1" path="reb_death.wav" />
+	</sound>
+	
+	<sound name="Christian Chant">
+		<sample weight="1" path="ned/christian/chant.wav" />
+	</sound>	
+	<sound name="Christian Overtake">
+		<sample weight="1" path="ned/christian/overtake.wav" />
+		<sample weight="1" path="ned/christian/overtake2.wav" />
+		<sample weight="1" path="ned/christian/overtake3.wav" />
+		<sample weight="1" path="ned/christian/overtake4.wav" />
+		<sample weight="1" path="ned/christian/overtake5.wav" />
+	</sound>	
+	<sound name="Christian Read">
+		<sample weight="1" path="ned/christian/verse.wav" />
+	</sound>	
+	
+	<sound name="Barbarian Laugh">
+		<sample weight="1" path="ned/barbarian/laugh.wav" />
+	</sound>	
+	<sound name="Barbarian Grunt">
+		<sample weight="1" path="ned/barbarian/grunt1.wav" />
+		<sample weight="1" path="ned/barbarian/grunt2.wav" />
+		<sample weight="1" path="ned/barbarian/grunt3.wav" />
+	</sound>	
+	
+	<sound name="Screaming Scream">
+		<sample weight="1" path="ned/screaming/yell1.wav" />
+	</sound>	
+	
+	<sound name="Armor Rattle">
+		<sample weight="1" path="ned/rattle.wav" />
+	</sound>	
+	<sound name="Metal Strike">
+		<sample weight="1" path="ned/strike.wav" />
+	</sound>	
+	<sound name="Deep Electricity">
+		<sample weight="1" path="deepelectricity.wav" />
+	</sound>	
+	<sound name="Electricity">
+		<sample weight="1" path="electriccurrent.wav" />
+	</sound>
+	<sound name="Spark Effect">
+		<sample weight="1" path="espark.wav" />
+	</sound>
+	<sound name="Laser Explosion">
+		<sample weight="1" path="laserexplode.wav" />
+	</sound>
+	
+	<sound name="Punch Effect">
+		<sample weight="1" path="punch.wav" />
+	</sound>
+</sounds>

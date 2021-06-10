@@ -1,0 +1,14 @@
+<players root="gfx/characters/costumes/" 
+         bigportraitroot="gfx/ui/stage/" nameimageroot="gfx/ui/boss/" portraitroot="gfx/ui/stage/">
+	<player name="Rebekah" birthright="Better love" skin="character_rebekah.png" hp="4" keys="0"
+          nameimage="name_rebekah.png" 
+          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7"/>
+	<player name="Rebekah_Soul" birthright="Better love" skin="character_rebekah.png" hp="4" keys="0"
+          nameimage="name_rebekah.png" 
+          portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true"/>
+	
+	
+	<player name="RebekahB"  bSkinParent="Rebekah" birthright="???" skin="character_rebekah.png" hp="2" keys="3"
+          nameimage="name_rebekah.png"
+          portrait="playerportrait_rebekah.png"  skinColor="-1" />
+</players>

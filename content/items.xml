@@ -1,0 +1,18 @@
+ <items gfxroot="gfx/items/" version="1">
+	<active name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1"/>
+ 
+	<passive name="A Lunchbox" description="Meal for a special someone" gfx="collectibles_lunchbox.png" />
+	<active name="Typical Rom-Com" description="Imitate other love story experiences!" gfx="collectibles_book_romcom.png" maxcharges="2"/>
+	<familiar name="Miraculous Womb" description="A promise is a promise" gfx="collectibles_miraculous_womb.png" />
+	<familiar name="Eternal Bond" description="A little reminder for your love's presence" gfx="collectibles_eternal_bond.png" />
+	<passive name="Love = Power" description="Passion empowers you" gfx="collectibles_love_power.png" cache="speed damage" />
+	<passive name="Cursed Spoon" description="Let me have all the curses" gfx="collectibles_cursed_spoon.png" cache="speed damage" />
+	<active name="Dice of Fate" description="Change your life" gfx="collectibles_dice_of_fate.png" maxcharges="6"/>
+	<trinket name="Isaac's Locks" description="Lost locks" gfx="collectibles_isaacs_locks.png"/>
+	<passive name="Lovesick" description="Blind love hurts" gfx="collectibles_lovesick.png" />
+	<passive name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" />
+	
+	<active name="Unrequited Love" description="Express your one-sided affection" gfx="collectibles_unrequited_love.png" maxcharges="1"/>
+	
+	<passive name="Twin Vision" description="Seeing the special things twice" gfx="collectibles_twin_vision.png" />
+</items>
