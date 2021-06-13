@@ -657,15 +657,32 @@ end
 local function RecapRebekahData()
 	local saveData = {}
 	saveData.currentMode = {};
+	saveData.NedHealth = {} -- first ned
 	for i,player in ipairs(SAPI.players) do
 		if player:GetPlayerType() == Reb then
 			saveData.currentMode[i] = GetEntityData(player).currentMode
 		else
 			saveData.currentMode[i] = nil
 		end
+		for c, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
+		--check for knights health
+			if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
+				local tbl = {}
+				if not saveData.NedHealth[i] then saveData.NedHealth[i] = {} end
+				
+				local name = tonumber(ned.Variant..ned.SubType)
+				print(name)
+				--if not tbl[name] then tbl[name] = {} end
+				
+				if GetPtrHash(player) == GetPtrHash(ned:ToFamiliar().Player) then
+				--	table.insert(saveData.NedHealth[i][name], GetEntityData(ned).Health)
+				end
+			end
+		end
 	end
 	saveData.bossRoomsCleared = bossRoomsCleared;
 	saveData.unlocks = CurrentRebeccaUnlocks;
+	
 	return saveData
 end
 
@@ -691,6 +708,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 		--this is being called a lot if theres a lot of players, I feel like i should change this
 		if data.bossRoomsCleared ~= nil then bossRoomsCleared = data.bossRoomsCleared end
 		if data.unlocks ~= nil then CurrentRebeccaUnlocks = data.unlocks end
+		
+		if data.NedHealth then
+			--for i,player in ipairs(SAPI.players) do
+			--	for c, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
+			--	local name = tonumber(ned.Variant..ned.SubType)
+			--	print(name)
+				--check for knights health
+			--		if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
+			--			if GetPtrHash(player) == GetPtrHash(ned:ToFamiliar().Player) then
+			--				GetEntityData(ned).Health = data.NedHealth[i][name][c]
+			--			end
+			--		end
+			--	end
+			--end
+		end
 	end
 end)
 
@@ -940,7 +972,8 @@ end)
 
 --stuff to check how much boss room you cleared
 function yandereWaifu:TrySpawnMirror()
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb  then
 			local room = game:GetRoom()
 			local level = game:GetLevel()
@@ -991,7 +1024,8 @@ end
 ------
 	-- ensures that rebecca maintains the collectible effects she should have
 	function yandereWaifu:ApplyCollectibleEffects()
-		for i,player in ipairs(SAPI.players) do
+		for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == Reb then
 				local effect = RebeccaModeEffects[GetEntityData(player).currentMode];
 				if effect ~= nil and player:GetEffects():HasCollectibleEffect( effect ) == false then
@@ -1220,7 +1254,8 @@ end
 
 	-- re-add the appropriate costume when the player rerolls (with d4 or d100)
 	function yandereWaifu:useReroll(collItem, rng)
-		for i,player in ipairs(SAPI.players) do
+		for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == Reb then
 				ApplyCostumes( GetEntityData(player).currentMode, player );
 				--player:AddNullCostume(NerdyGlasses)
@@ -1231,16 +1266,13 @@ end
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useReroll, CollectibleType.COLLECTIBLE_D100)
 
 	--romcom code
-	function yandereWaifu:useRomComBook(collItem, rng)
-		for i,player in ipairs(SAPI.players) do
-			SchoolbagAPI.ToggleShowActive(player, true)
-		end
+	function yandereWaifu:useRomComBook(collItem, rng, player)
+		SchoolbagAPI.ToggleShowActive(player, true)
 	end
 	yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRomComBook, COLLECTIBLE_ROMCOM );
 
 	--dice of fate code
-	function yandereWaifu:useDiceOfFate(collItem, rng)
-		for i,player in ipairs(SAPI.players) do
+	function yandereWaifu:useDiceOfFate(collItem, rng, player)
 			local hearts = player:GetMaxHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts()
 			--remove all hearts first
 			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER then
@@ -1329,7 +1361,6 @@ end
 						player:AddBoneHearts(1)
 					end
 				end
-			end
 		end
 	return true
 end
@@ -1373,6 +1404,9 @@ function yandereWaifu:purchaseReserveStocks(player, number, restore)
 	else
 		--player:AddHearts( -1 )
 		if restore then
+			if player:GetHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetBoneHearts() + player:GetEternalHearts() + player:GetRottenHearts() <= 1 then
+				player:AddBrokenHearts(1)
+			end
 			yandereWaifu:addReserveStocks(player, 1)
 			player:TakeDamage( 1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
 			player:ResetDamageCooldown()
@@ -1712,7 +1746,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 				if IsValidRedBarrage() then
 					if ludoTear then
 						if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player) else
-							if not data.KnifeHelper:Exists() then
+							if not data.KnifeHelper.incubus:Exists() then
 								data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player)
 							end
 						end
@@ -1782,10 +1816,10 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 					if IsValidRedBarrage() then
 						local brim = player:FireBrimstone( Vector.FromAngle( data.specialAttackVector:GetAngleDegrees() - 45 ):Resized( BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 						brim:SetActiveRotation( 0, 135, 10, false );
-						SchoolbagAPI.UpdateLaserSize(brim, tearSize)
+						--SchoolbagAPI.UpdateLaserSize(brim, tearSize)
 						local brim2 = player:FireBrimstone( Vector.FromAngle( data.specialAttackVector:GetAngleDegrees() + 45 ):Resized( BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 						brim2:SetActiveRotation( 0, -135, -10, false );
-						SchoolbagAPI.UpdateLaserSize(brim2, tearSize)
+						--SchoolbagAPI.UpdateLaserSize(brim2, tearSize)
 					elseif data.redcountdownFrames >= 40 then
 						EndBarrageIfValid()
 					end
@@ -2009,8 +2043,9 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 			local subtype = 0
 			local rng = math.random(0,10)
 			if rng < 6 and player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
-				print("brains")
 				subtype = 1
+			elseif rng < 5 and player:HasCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE) then
+				subtype = 4
 			end
 			local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_NED_NORMAL, subtype, player.Position, Vector( 0, 0 ), player):ToFamiliar();
 			ned.Player = player
@@ -2276,7 +2311,7 @@ end
 
 --broken glasses effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(SAPI.players) do
 		local sprite = eff:GetSprite();
 		local playerdata = GetEntityData(player)
 		
@@ -2289,7 +2324,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		eff.Velocity = eff.Velocity * 0.9
 		SchoolbagAPI.FlipXByVec(eff, true)
-	end
+	--end
 end, ENTITY_BROKEN_GLASSES);
 
 
@@ -2298,7 +2333,8 @@ do
 
 --heart bomb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex;
 		local sprite = bb:GetSprite();
 		
@@ -2401,7 +2437,8 @@ end, ENTITY_ORBITALTARGET);
 
 --kim jun- i mean, rebeccas rockets
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(SAPI.players) do
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
 		local data = GetEntityData(eff)
@@ -2416,7 +2453,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			megumin:SetExplosionCountdown(1)
 			megumin.Visible = false
 			megumin.RadiusMultiplier = 2.2 --my favorite part
-			megumin.ExplosionDamage = player.Damage*2
+			megumin.ExplosionDamage = player.Damage*20
 			for i, ent in pairs(Isaac.GetRoomEntities()) do
 				if ent:IsEnemy() and not ent:IsVulnerableEnemy() then
 					ent:AddPoison(EntityRef(eff), 5, player.Damage*17)
@@ -2904,9 +2941,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 	elseif spr:IsPlaying("Shoot") then
 		if spr:GetFrame() == 2 then
 			if fam.SubType == 1 then
-				SchoolbagAPI.SpawnKnife(player, ((data.target.Position - fam.Position):GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 150, fam, true)
+				SchoolbagAPI.SpawnKnife(player, ((data.target.Position - fam.Position):GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 150, SchoolbagAPI:SpawnKnifeHelper(fam, player, true), true)
 			elseif fam.SubType == 4 then
-				beam = EntityLaser.ShootAngle(1, fam.Position, (data.target.Position - fam.Position):GetAngleDegrees(), 5, Vector(0,-5), player):ToLaser()
+				beam = EntityLaser.ShootAngle(1, fam.Position, (data.target.Position - fam.Position):GetAngleDegrees(), 5, Vector(0,-5), fam):ToLaser()
+				beam.CollisionDamage = player.Damage / 1.4
+				beam.DisableFollowParent = true
+				SchoolbagAPI.UpdateLaserSize(beam, 0.5)
 			else
 				FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(10)), TearVariant.BLOOD, fam)
 			end
@@ -2947,12 +2987,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarN
 function yandereWaifu:WindSlashRender(tr, _)
 	if tr.Variant == ENTITY_WIND_SLASH then
 		tr:GetSprite():Play("RegularTear", false);
-		--tr:GetSprite():LoadGraphics();
-		
-		local angleNum = (tr.Velocity):GetAngleDegrees();
-		tr:GetSprite().Rotation = angleNum + 90;
-		tr:GetData().Rotation = tr:GetSprite().Rotation;
-		
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.WindSlashRender)
@@ -2969,6 +3003,9 @@ function yandereWaifu:WindSlashUpdate(tr, _)
 				end
 			end
 		end
+		local angleNum = (tr.Velocity):GetAngleDegrees();
+		tr:GetSprite().Rotation = angleNum + 90;
+		tr:GetData().Rotation = tr:GetSprite().Rotation;
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.WindSlashUpdate)
@@ -2978,7 +3015,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 	local rng = math.random(1, 100)
 	local player = fam.Player
 	local data = GetEntityData(fam)
-	--hurt stuff
+	
+	if not data.Health then
+		data.Health = 5
+	end
+	
+	--hurt stuff	
 	for i, e in pairs(Isaac.GetRoomEntities()) do
 		if e.Type ~= EntityType.ENTITY_PLAYER then
 			if e.Type == EntityType.ENTITY_PROJECTILE then
@@ -3090,6 +3132,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 	if data.target then
 		if data.target:IsDead() then
 			data.target = nil
+		end
+	end
+end, ENTITY_SQUIRENED);
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam) --render stuff
+	if GetEntityData(fam).Health then
+		local Sprite = Sprite()
+		Sprite:Load("gfx/effects/gold/ui/ui_hearts.anm2", true)
+		
+		for i = 1, 5 do
+			local state = "Full"
+			pos = Isaac.WorldToScreen(fam.Position) + Vector(-18+ i*6, 5) --heart position
+			
+			if GetEntityData(fam).Health < i then
+				state = "Empty"
+			end
+			
+			Sprite:Play(state, true)
+			Sprite:Render(pos, Vector.Zero, Vector.Zero)
 		end
 	end
 end, ENTITY_SQUIRENED);
@@ -3874,9 +3935,9 @@ end, ENTITY_DARKBEAMINTHESKY);
 
 --evilorb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	local player = eff.Parent
 	local sprite = eff:GetSprite()
 	local data = GetEntityData(eff)
+	local player = data.Parent
 	
 	if eff.SubType == 0 then
 		if eff.FrameCount == 1 then
@@ -6368,6 +6429,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 								player.Velocity = player.Velocity + vector:Resized( BALANCE.EVIL_HEARTS_DASH_SPEED );
 								--if player:GetMaxHearts() > 0 then
 								local orb = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_EVILORB, 0, player.Position, Vector(0,0), player ); --heart effect
+								GetEntityData(orb).Parent = player
 								playerdata.specialCooldown = BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
 								--else
 								--	local orb = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_EVILORB, 1, player.Position, Vector(0,0), player ); --heart effect
