@@ -667,7 +667,6 @@ local function RecapRebekahData()
 		for c, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 		--check for knights health
 			if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
-				local tbl = {}
 				if not saveData.NedHealth[i] then saveData.NedHealth[i] = {} end
 				
 				local name = tonumber(ned.Variant..ned.SubType)
@@ -675,7 +674,7 @@ local function RecapRebekahData()
 				--if not tbl[name] then tbl[name] = {} end
 				
 				if GetPtrHash(player) == GetPtrHash(ned:ToFamiliar().Player) then
-				--	table.insert(saveData.NedHealth[i][name], GetEntityData(ned).Health)
+					table.insert(saveData.NedHealth[i], {name, GetEntityData(ned).Health})
 				end
 			end
 		end
@@ -710,18 +709,26 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 		if data.unlocks ~= nil then CurrentRebeccaUnlocks = data.unlocks end
 		
 		if data.NedHealth then
-			--for i,player in ipairs(SAPI.players) do
-			--	for c, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
-			--	local name = tonumber(ned.Variant..ned.SubType)
-			--	print(name)
-				--check for knights health
-			--		if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
-			--			if GetPtrHash(player) == GetPtrHash(ned:ToFamiliar().Player) then
-			--				GetEntityData(ned).Health = data.NedHealth[i][name][c]
-			--			end
-			--		end
-			--	end
-			--end
+			for i,player in ipairs(SAPI.players) do
+				for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
+					if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
+						local name = tonumber(ned.Variant..ned.SubType)
+						for k, health in ipairs(data.NedHealth[i]) do
+							print(data.NedHealth[i][k][1], "steve")
+							print(data.NedHealth[i][k][2], "steve")
+							if data.NedHealth[i][k][1] == name then
+								GetEntityData(ned).Health = data.NedHealth[i][k][2]
+								table.remove(data.NedHealth[i], k)
+							end
+				--	print(name)
+					--check for knights health
+				--		if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
+				--			if GetPtrHash(player) == GetPtrHash(ned:ToFamiliar().Player) then
+				--				GetEntityData(ned).Health = data.NedHealth[i][name][c]
+						end
+					end
+				end
+			end
 		end
 	end
 end)
@@ -2842,7 +2849,7 @@ do
 --lvl one ned
 function yandereWaifu:onFamiliarNedInit(fam)
 	fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-	fam.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
+	--fam.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
     local sprite = fam:GetSprite()
     sprite:Play("Init", true)
 	
@@ -2859,6 +2866,23 @@ function yandereWaifu:onFamiliarNedInit(fam)
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarNedInit, ENTITY_NED_NORMAL);
 
+function yandereWaifu.nedCollision(_, fam, collider, low)
+	local data = GetEntityData(fam)
+	if collider.Type == EntityType.ENTITY_PROJECTILE then -- stop enemy bullets
+		collider:Die()
+		if data.Health > 1 then
+			data.Health = data.Health - 1
+		else
+			fam:Die()
+			if math.random(1,3) == 3 then
+				game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+			end
+		end
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, yandereWaifu.nedCollision, ENTITY_NED_NORMAL)
+
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --nerdy keeper function
     local spr = fam:GetSprite()
 	local rng = math.random(1, 100)
@@ -2869,30 +2893,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 		data.Health = 3
 	end
 	
-	for i, e in pairs(Isaac.GetRoomEntities()) do
-		if e.Type ~= EntityType.ENTITY_PLAYER then
-			if e.Type == EntityType.ENTITY_PROJECTILE then
-				if (e.Position - fam.Position):Length() < 10 then
-					if data.Health > 1 then
-						data.Health = data.Health - 1
-					else
-						fam:Die()
-					end
-					e:Die()
-					if math.random(1,3) == 3 then
-						if rng < 10 then
-							game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
-						end
-					end
-				end
-				if (e.Position - fam.Position):Length() < 75 then
+	for i, e in pairs(SAPI.roomProjectiles) do
+	--	if e.Type ~= EntityType.ENTITY_PLAYER then
+	--		if e.Type == EntityType.ENTITY_PROJECTILE then
+	--			if (e.Position - fam.Position):Length() < 10 then
+	--				if data.Health > 1 then
+	--					data.Health = data.Health - 1
+	--				else
+	--					fam:Die()
+	--				end
+	--				e:Die()
+	--				if math.random(1,3) == 3 then
+	--					if rng < 10 then
+	--						game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+	--					end
+	--				end
+	--			end
+				if (e.Position - fam.Position):LengthSquared() <= 25 ^ 2 then
 					if not spr:IsPlaying("Move") then
 						spr:Play("Move", true)
 						fam.Velocity = fam.Velocity + (fam.Position - e.Position)/3
 					end
 				end
-			end
-		end
+	--		end
+	--	end
 	end
 	
 	--if ned is too far from player
