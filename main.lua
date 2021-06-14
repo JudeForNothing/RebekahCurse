@@ -610,7 +610,11 @@ local function RebeccaInit(player)
 		player:AddCard(Card.CARD_LOVERS)
 	end
 	
-	player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
+	--for other characters who comes in but not on game_start
+	if Game():GetFrameCount() >= 1 then
+		player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
+	end
+	print("howdy")
 end
 
 
@@ -648,6 +652,9 @@ local function Init(force)
 			Isaac.DebugString("5")
 			didKillSatan = false
 			
+			
+			--set for player 1
+			player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
 		end
 	end
 end
@@ -764,7 +771,13 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 			end
 
 		print("ffff", GetEntityData(player).currentMode)
-		ApplyCostumes( GetEntityData(player).currentMode, player, false )
+		if not player:IsCoopGhost() then
+			ApplyCostumes( GetEntityData(player).currentMode, player, false )
+		else
+			player:GetSprite():ReplaceSpritesheet(0, "gfx/characters/ghost_rebekah.png")
+			player:GetSprite():ReplaceSpritesheet(1, "gfx/characters/ghost_rebekah.png")
+			player:GetSprite():LoadGraphics()
+		end
 		player:AddCacheFlags(CacheFlag.CACHE_ALL);
 		player:EvaluateItems()
 		--fix again later
@@ -1060,7 +1073,7 @@ end
 		if player:GetPlayerType() == Reb then -- Especially here!
 			if data.currentMode == REBECCA_MODE.RedHearts then
 				if cacheF == CacheFlag.CACHE_DAMAGE then
-					player.Damage = player.Damage - 1.73
+					player.Damage = player.Damage -- 0.73 --1.73
 				end
 				if cacheF == CacheFlag.CACHE_LUCK then
 					player.Luck = player.Luck - 0.13
@@ -1068,7 +1081,7 @@ end
 			elseif data.currentMode == REBECCA_MODE.SoulHearts then
 				if cacheF == CacheFlag.CACHE_DAMAGE then
 					if GetEntityData(player).SoulBuff then
-						player.Damage = player.Damage * 1.5
+						player.Damage = player.Damage * 1.2
 					else
 						player.Damage = player.Damage + 0.5
 					end
@@ -1099,7 +1112,7 @@ end
 					player.MoveSpeed = player.MoveSpeed - 0.25
 				end
 				if cacheF == CacheFlag.CACHE_FIREDELAY then
-					player.MaxFireDelay = player.MaxFireDelay + 3
+					player.MaxFireDelay = player.MaxFireDelay + 4
 				end
 				if cacheF == CacheFlag.CACHE_LUCK then
 					player.Luck = player.Luck + 3
@@ -1491,6 +1504,20 @@ function yandereWaifu:customMovesInput()
 
 			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) <= 0 and player:HasCollectible(COLLECTIBLE_LOVECANNON) then --could need attendance later, this can be optimized
 				SchoolbagAPI.RefundActiveCharge(player, 0, true)
+			end
+			if playerdata.specialCooldown == 1 then --1 is already close to 0 without being 0 so eh
+				local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
+				charge.SpriteOffset = Vector(0,-40)
+				charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/move_effect_filled.png");
+				charge:GetSprite():LoadGraphics();
+				speaker:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.3, 0, false, 1.2 );
+			end
+			if playerdata.specialActiveAtkCooldown == 1 then
+				local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
+				charge.SpriteOffset = Vector(0,-40)
+				charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/attack_effect_filled.png");
+				charge:GetSprite():LoadGraphics();
+				speaker:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.2, 0, false, 0.4 );
 			end
 			--switch skill (used in bone hearts?)
 			--useless now?
@@ -2320,7 +2347,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--for i,player in ipairs(SAPI.players) do
 		local sprite = eff:GetSprite();
-		local playerdata = GetEntityData(player)
+		--local playerdata = GetEntityData(player)
 		
 		if not sprite:IsPlaying("Flying") then
 			if eff.FrameCount == 1 then
@@ -2596,6 +2623,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     	
     	data.IsUninteractible = false;
     	speaker:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+		
     else
 		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
     	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_WALLS;
@@ -5639,7 +5667,7 @@ function yandereWaifu:MirrorMechanic(player)
 										and player:GetBrokenHearts() > 0 then
 										newMode = REBECCA_MODE.BrokenHearts;
 									end
-									if newMode ~= GetEntityData(player).currentMode and not sprite:IsPlaying("Initiate") then
+									if newMode ~= GetEntityData(player).currentMode and not sprite:IsPlaying("Initiate") and player:GetPlayerType() == Reb then
 										--mirdata.notAlive = true;
 										player:AnimateSad();
 										sprite:Play("Initiate", true);
@@ -5692,21 +5720,23 @@ function yandereWaifu:MirrorMechanic(player)
 								if not sprite:IsPlaying("ShowBRed") then  sprite:Play("ShowBRed", true) end
 								
 								local newMode = GetEntityData(player).currentMode;
-								if mir.Position:Distance( player.Position ) < mir.Size + player.Size and heartBrideTable.Show and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") then --if interacted
-									if sprite:IsPlaying("ShowBRed") and GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
-										newMode = REBECCA_MODE.BrideRedHearts;
-									end
-									if newMode ~= GetEntityData(player).currentMode then
-										mirdata.notAlive = true;
-										player:AnimateSad();
-										sprite:Play("Initiate", true);
-										ChangeMode( player, newMode );
-										--don't move
-										player:RemoveCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART)
-										player.Velocity = Vector(0,0)
-										mirdata.Circle:GetSprite():Play("FadeOut",true)
-										game:Darken(5,1200)
-										SchoolbagAPI.AnimateGiantbook(nil, nil, "Marry", "gfx/ui/giantbook/giantbook_marriage.anm2", true, true)
+								if player:GetPlayerType() == Reb then
+									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and heartBrideTable.Show and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") then --if interacted
+										if sprite:IsPlaying("ShowBRed") and GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
+											newMode = REBECCA_MODE.BrideRedHearts;
+										end
+										if newMode ~= GetEntityData(player).currentMode then
+											mirdata.notAlive = true;
+											player:AnimateSad();
+											sprite:Play("Initiate", true);
+											ChangeMode( player, newMode );
+											--don't move
+											player:RemoveCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART)
+											player.Velocity = Vector(0,0)
+											mirdata.Circle:GetSprite():Play("FadeOut",true)
+											game:Darken(5,1200)
+											SchoolbagAPI.AnimateGiantbook(nil, nil, "Marry", "gfx/ui/giantbook/giantbook_marriage.anm2", true, true)
+										end
 									end
 								end
 							else
@@ -6160,15 +6190,31 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, ENTITY_SNAP_EFFECT);
 
 --love hook effect
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff) --eternal star
+	--set chains
+	local data = SchoolbagAPI.GetSAPIData(eff)
+	if not data.Init then                                             
+		data.spr = Sprite()                                                 
+		data.spr:Load("gfx/effects/eternal/eternalmorningstar.anm2", true) 
+		data.spr:SetFrame("Chain", 1)
+		data.Init = true                                              
+	end          
+	SchoolbagAPI.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(data.Player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
+	data.sprOverlay = eff:GetSprite()
+	data.sprOverlay:Render(Isaac.WorldToScreen(eff.Position))
+end, ENTITY_LOVEHOOK);
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = GetEntityData(eff)
 	local player = data.Player
 	--set chains
-	SchoolbagAPI.AttachChain(data.Player, eff)
+	--SchoolbagAPI.AttachChain(data.Player, eff)
 	
 	if data.Attached and not data.Attached:IsDead() then
-		eff.Visible = false
+		--eff.Visible = false
+		eff:SetColor(Color(0,0,0,0,0,0,0),9999999,99,false,false);
 		eff.Velocity = data.Attached.Velocity
 		eff.Position = data.Attached.Position
 		local dist = data.Attached.Position:Distance((player.Position ))
@@ -6326,6 +6372,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			player:AddCacheFlags(CacheFlag.CACHE_ALL);
 			player:EvaluateItems()
 		end
+		--revive code stuff
+		if (player:IsCoopGhost()) and not data.CoopDead then
+			data.CoopDead = true
+			player:GetSprite():ReplaceSpritesheet(0, "gfx/characters/ghost_rebekah.png")
+			player:GetSprite():ReplaceSpritesheet(1, "gfx/characters/ghost_rebekah.png")
+			player:GetSprite():LoadGraphics()
+		end
+		if not player:IsCoopGhost() and data.CoopDead then
+			data.CoopDead = false
+			ApplyCostumes( GetEntityData(player).currentMode, player , true)
+		end
+		
 		
 		if player:GetSprite():GetFrame() == 12 and player:GetSprite():IsPlaying("Death") == true then
 			local glasses = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_BROKEN_GLASSES, 0, player.Position, Vector(-2,0) * 2, player)
@@ -7063,6 +7121,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.Player.ControlsEnabled = true;
 			data.Player.GridCollisionClass = GetEntityData(data.Player).LastGridCollisionClass;
 			data.Player.EntityCollisionClass = GetEntityData(data.Player).LastEntityCollisionClass;
+			
+			--reset
+			GetEntityData(data.Player).LastEntityCollisionClass = nil
+			GetEntityData(data.Player).LastGridCollisionClass = nil
 		end
 	
 	end
