@@ -26,7 +26,7 @@ b]Lunchbox[/b] - On pickup, you drop three random hearts of any type.
 
 
 Red Heart -dashes ,shoots a barrage [X]
--synergies - laser, knife ludo
+-synergies - laser [X], knife ludo [X], dr. fetus
 -sprites - X
 Soul Heart - teleports [X]
 -synergies -epic fetus, mars dash, dr. fetus, tech x
@@ -35,14 +35,14 @@ Gold Heart -stomp, spawn minions [X]
 -synergies -spawns weapon based keepers, tear, knife, tech, brimstone
 -sprites -all the keeper sprites, hair
 Evil Heart -spawn rupture?, spawn summon circle
--synergies -stomp weapon types, eye laser synergies
--sprites -feet, eye, rupture
-Eternal Heart -dash feather, laser [X], fire flamethrower
+-synergies -orb for dr. fetus, knife, epic fetus
+-sprites 
+Eternal Heart -dash feather, laser [X], fire flamethrower [X]
 -synergies -heal fire, feather synergy?
--sprites -hair
+-sprites -hair [X]
 Bone Heart -hop, spawn sekmeth (lol) punching thing
--synergies -hop remake, punching synergies
--sprites -hair, stand sprite
+-synergies -hop remake [X], punching synergies
+-sprites -hair [X], stand sprite
 Rotten Heart -
 -synergies
 -sprites

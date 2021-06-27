@@ -8,6 +8,8 @@
 	<costume anm2path="deadhair.anm2" type="none" priority="200" skinColor="0" overwriteColor="true"/>
 	<costume anm2path="rebeccasfate.anm2" type="none" isFlying="true" hasSkinAlt="true"/>
 	
+	<costume anm2path="costumes/rebekah_hair/rottenmode_headremove.anm2" type="none" priority="999" />
+	
 	<costume anm2path="bridalhair.anm2" type="none" priority="200" />
 	<costume anm2path="fulfilled.anm2" type="none" priority="180" isFlying="true" hasSkinAlt="false"/>
 	<costume anm2path="weddedstockings.anm2" type="none" priority="170" isFlying="true" hasSkinAlt="false"/>

@@ -16,6 +16,8 @@ local RebeccasFate = Isaac.GetCostumeIdByPath("gfx/characters/rebeccasfate.anm2"
 local DeadHair = Isaac.GetCostumeIdByPath("gfx/characters/deadhair.anm2");
 local boneStackForAnim = 0 --asks how much number is there for the anim
 
+local HeadlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_headremove.anm2");
+
 local BridalHair = Isaac.GetCostumeIdByPath("gfx/characters/bridalhair.anm2");
 --local BridalStockings = Isaac.GetCostumeIdByPath("gfx/characters/weddedstockings.anm2");
 local FulfilledFace = Isaac.GetCostumeIdByPath("gfx/characters/fulfilled.anm2");
@@ -80,6 +82,8 @@ local ENTITY_HAUNTEDKNIFE = Isaac.GetEntityVariantByName("Haunted Knife");
 local ENTITY_ECTOPLASMA = Isaac.GetEntityVariantByName("Ectoplasma Tear");
 local ENTITY_WIZOOB_MISSILE = Isaac.GetEntityVariantByName("Wizoob Missile");
 local ENTITY_SBOMBBUNDLE = Isaac.GetEntityVariantByName("S. Bomb Bundle");
+local ENTITY_GHOSTTARGET = Isaac.GetEntityVariantByName("Soul Nuke Target");
+local ENTITY_GHOSTMISSILE = Isaac.GetEntityVariantByName("Ghost Missile");
 --gold heart mode
 --local ENTITY_NED = Isaac.GetEntityTypeByName("Ned");
 local ENTITY_NED_NORMAL = Isaac.GetEntityVariantByName("Ned");
@@ -110,6 +114,7 @@ local ENTITY_FEATHERBREAK = Isaac.GetEntityVariantByName("Feather Break");
 local ENTITY_MORNINGSTAR = Isaac.GetEntityVariantByName("Morning Star");
 --bone heart mode
 local ENTITY_BONESTAND = Isaac.GetEntityVariantByName("Bone Stand");
+local ENTITY_BONEJOCKEY = Isaac.GetEntityVariantByName("Bone Jockey");
 local ENTITY_EXTRACHARANIMHELPER = Isaac.GetEntityVariantByName("Extra Character Anim Helper");
 local ENTITY_BONEVAULT = Isaac.GetEntityVariantByName("Bone Vault");
 local ENTITY_SLAMDUST = Isaac.GetEntityVariantByName("Slamdust Effect");
@@ -118,12 +123,20 @@ local ENTITY_RIBTEAR = Isaac.GetEntityVariantByName("Rib Tear");
 local ENTITY_SKULLTEAR = Isaac.GetEntityVariantByName("Skull Tear");
 local ENTITY_HEARTTEAR = Isaac.GetEntityVariantByName("Heart Tear");
 local ENTITY_RAPIDPUNCHTEAR = Isaac.GetEntityVariantByName("Rapid Punch Tear");
+--rotten heart mode
+local ENTITY_ROTTENHEAD = Isaac.GetEntityVariantByName("Rotten Crazyhead");
+local ENTITY_ROTTENSMALLMAGGOT = Isaac.GetEntityVariantByName("Rotten Small Maggot");
+local ENTITY_MAGGOTTEAR = Isaac.GetEntityVariantByName("Maggot Tear");
+local ENTITY_FLYTEAR = Isaac.GetEntityVariantByName("Fly Tear");
+local ENTITY_ROTTENFLY = Isaac.GetEntityVariantByName("Rotten Fly");
+local ENTITY_ROTTENFLYBALL = Isaac.GetEntityVariantByName("Rotten Fly Ball");
 --bride red heart mode
 local ENTITY_LABAN = Isaac.GetEntityVariantByName("Best Man");
 --misc
 local ENTITY_HEARTPOOF = Isaac.GetEntityVariantByName("Heart Poof");
 local ENTITY_HEARTPARTICLE = Isaac.GetEntityVariantByName("Heart Particle");
 local ENTITY_REBMIRROR = Isaac.GetEntityVariantByName("Rebecca's Mirror");
+local ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect");
 
 local SOUND_REBHURT = Isaac.GetSoundIdByName("RebekahHurt")
 local SOUND_REBDIE = Isaac.GetSoundIdByName("RebekahDie")
@@ -171,6 +184,13 @@ local BALANCE = {
 	BONE_HEARTS_MODIFIED_DASH_INVINCIBILITY_FRAMES = 160,
 	BONE_HEARTS_VAULT_VELOCITY = 6,
 	BONE_HEARTS_DASH_TARGET_SPEED = 3,
+	BONE_HEARTS_BONE_JOCKEY_DASH_SPEED = 32,
+	BONE_HEARTS_BONE_JOCKEY_CONTINUOUS_DASH_SPEED = 20,
+	BONE_HEARTS_BONE_JOCKEY_DASH_COOLDOWN_FRAME = 10,
+	ROTTEN_HEARTS_DASH_COOLDOWN = 80,
+	ROTTEN_HEARTS_DASH_SPEED = 20,
+	ROTTEN_HEARTS_FLYBALL_SPEED = 1.5, 
+	BROKEN_HEARTS_DASH_COOLDOWN = 55,
 	BRIDE_RED_HEARTS_DASH_SPEED = 25
 }
 
@@ -449,6 +469,8 @@ local function ApplyCostumes(mode, player, reloadanm2)
 	player:GetSprite():LoadGraphics() 						--loading graphics is required
 	player:ReplaceCostumeSprite(config,hairpath,0)	--replacing eve hair costume sprite for fire anims
 	--GetEntityData(player).hairpath = hairpath
+	
+	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 end
 
 
@@ -523,8 +545,8 @@ local function ChangeMode( player, mode, free, fanfare )
 			player:AddBoneHearts(-1);
 		elseif mode == REBECCA_MODE.RottenHearts then
 			player:AddRottenHearts(-1);
-		elseif mode == REBECCA_MODE.BrokenHearts then
-			player:AddBrokenHearts(-1);
+		--elseif mode == REBECCA_MODE.BrokenHearts then --lets make life hard
+		--	player:AddBrokenHearts(-1);
 		end
 	end
 	yandereWaifu:resetReserve(player)
@@ -554,9 +576,10 @@ local function ChangeMode( player, mode, free, fanfare )
 	--playerEffects:RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_FATE);
 
 	--stat evaluation =3=
-	yandereWaifu:ApplyCollectibleEffects();
+	--yandereWaifu:ApplyCollectibleEffects(player);
 	ApplyCostumes( mode, player );
-
+	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+	
 	--make changes to Rebecca
 	player:AddCacheFlags(CacheFlag.CACHE_ALL);
 	player:EvaluateItems();
@@ -611,15 +634,23 @@ local function RebeccaInit(player)
 	end
 	
 	--for other characters who comes in but not on game_start
-	if Game():GetFrameCount() >= 1 then
+	Isaac.DebugString(Game():GetRoom():GetFrameCount())
+	Isaac.DebugString("psst")
+	if Game():GetRoom():GetFrameCount() > -1 and not player:HasCollectible(COLLECTIBLE_LOVECANNON) then
+		Isaac.DebugString("howdy")
 		player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
 	end
-	print("howdy")
+	
+	player.Visible = true
+	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 end
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(self, player)
 	if player:GetPlayerType() == Reb then
+		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
+			player.Visible = false
+		end
 		local data = GetEntityData(player)
 		
 		--personalized doubletap classes
@@ -632,7 +663,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(self, player
 		
 		RebeccaInit(player)
 		--ApplyCostumes( data.currentMode, player );
-		
+
 		if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
 	end
 end)
@@ -654,7 +685,11 @@ local function Init(force)
 			
 			
 			--set for player 1
-			player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
+			if not player:HasCollectible(COLLECTIBLE_LOVECANNON) then
+				Isaac.DebugString("jk", "   ", player:HasCollectible(COLLECTIBLE_LOVECANNON))
+				player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+			end
 		end
 	end
 end
@@ -1043,10 +1078,11 @@ end
 
 ------
 	-- ensures that rebecca maintains the collectible effects she should have
-	function yandereWaifu:ApplyCollectibleEffects()
-		for p = 0, SAPI.game:GetNumPlayers() - 1 do
-			local player = Isaac.GetPlayer(p)
-			if player:GetPlayerType() == Reb then
+	--[[function yandereWaifu:ApplyCollectibleEffects(pl)
+	if pl then
+		local player = pl
+		if player:GetPlayerType() == Reb then
+			if GetEntityData(player).currentMode then
 				local effect = RebeccaModeEffects[GetEntityData(player).currentMode];
 				if effect ~= nil and player:GetEffects():HasCollectibleEffect( effect ) == false then
 					Isaac.DebugString(tostring(effect))
@@ -1055,20 +1091,37 @@ end
 				end
 			end
 		end
-	end
-	yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.ApplyCollectibleEffects)
-	yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ApplyCollectibleEffects)
-	yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.ApplyCollectibleEffects)
+	else
+			for p = 0, SAPI.game:GetNumPlayers() - 1 do
+				local player = Isaac.GetPlayer(p)
+				if player:GetPlayerType() == Reb then
+					if GetEntityData(player).currentMode then
+						local effect = RebeccaModeEffects[GetEntityData(player).currentMode];
+						if effect ~= nil and player:GetEffects():HasCollectibleEffect( effect ) == false then
+							Isaac.DebugString(tostring(effect))
+							--KIL FIX YOUR GAME
+							--player:GetEffects():AddCollectibleEffect(effect, false, 1);
+						end
+					end
+				end
+			end
+		end
+	end]]
+	--yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.ApplyCollectibleEffects)
+	--yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ApplyCollectibleEffects)
+	--yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.ApplyCollectibleEffects)
 	
 	--stat cache for each mode
 	function yandereWaifu:cacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 		local data = GetEntityData(player)
-		local num
+		local num, num2, num3
 		if data.currentMode == REBECCA_MODE.BrideRedHearts and  player:GetPlayerType() == Reb then num1 = 1 else num1 = 0 end
 		if data.currentMode == REBECCA_MODE.EternalHearts and  player:GetPlayerType() == Reb then num2 = 1 else num2 = 0 end
+		--if data.currentMode == REBECCA_MODE.BoneHearts and  player:GetPlayerType() == Reb then num3 = 1 else num3 = 0 end
 		if cacheF == CacheFlag.CACHE_FAMILIARS then
 			player:CheckFamiliar(ENTITY_LABAN, num1, RNG())
 			player:CheckFamiliar(ENTITY_MORNINGSTAR, num2, RNG())
+		--	player:CheckFamiliar(ENTITY_BONEJOCKEY, num3, RNG())
 		end
 		if player:GetPlayerType() == Reb then -- Especially here!
 			if data.currentMode == REBECCA_MODE.RedHearts then
@@ -1169,7 +1222,7 @@ end
 					player.MaxFireDelay = player.MaxFireDelay
 				end
 				if cacheF == CacheFlag.CACHE_SPEED then
-					player.MoveSpeed = player.MoveSpeed - 0.10
+					player.MoveSpeed = player.MoveSpeed + 0.30
 				end
 			elseif data.currentMode == REBECCA_MODE.BrideRedHearts then
 				if cacheF == CacheFlag.CACHE_DAMAGE then
@@ -1181,8 +1234,32 @@ end
 				if cacheF == CacheFlag.CACHE_FLYING then
 					player.CanFly = true
 				end
+			elseif data.currentMode == REBECCA_MODE.RottenHearts then
+				if cacheF == CacheFlag.CACHE_FIREDELAY then
+					player.MaxFireDelay = player.MaxFireDelay + 3
+				end
+				if cacheF == CacheFlag.CACHE_SPEED then
+					player.MoveSpeed = player.MoveSpeed - 0.10
+				end
+			elseif data.currentMode == REBECCA_MODE.BrokenHearts then
+				if cacheF == CacheFlag.CACHE_SPEED then
+					player.MoveSpeed = player.MoveSpeed - 0.60
+				end
+				if cacheF == CacheFlag.CACHE_DAMAGE then
+					if GetEntityData(player).BrokenBuff then
+						player.Damage = player.Damage + 40.00
+					else
+						player.Damage = player.Damage
+					end
+				end
+				if cacheF == CacheFlag.CACHE_LUCK then
+					if GetEntityData(player).BrokenLuck then
+						player.Luck = player.Luck + 50.00
+					else
+						player.Luck = player.Luck
+					end
+				end
 			end
-			
 			--special interactions
 			--isaac's tears, the d6, fate, maggy's bow, transcedence, divorce papers, polaroid and negative, isaac's head
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_ISAACS_TEARS) then
@@ -1424,12 +1501,16 @@ function yandereWaifu:purchaseReserveStocks(player, number, restore)
 	else
 		--player:AddHearts( -1 )
 		if restore then
-			if player:GetHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetBoneHearts() + player:GetEternalHearts() + player:GetRottenHearts() <= 1 then
-				player:AddBrokenHearts(1)
+			if player:GetBrokenHearts() > 11 then
+				player:Die()
+			else
+				if player:GetHearts() --[[+ player:GetSoulHearts() + player:GetGoldenHearts() + player:GetBoneHearts() + player:GetEternalHearts() + player:GetRottenHearts()]] <= 1 then
+					player:AddBrokenHearts(1)
+				end
+				yandereWaifu:addReserveStocks(player, 1)
+				player:TakeDamage( 1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
+				player:ResetDamageCooldown()
 			end
-			yandereWaifu:addReserveStocks(player, 1)
-			player:TakeDamage( 1, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
-			player:ResetDamageCooldown()
 		end
 	end
 end
@@ -1439,14 +1520,14 @@ function yandereWaifu:getReserveFill(player)
 end
 
 function yandereWaifu:addReserveFill(player, number)
-	if GetEntityData(player).heartReserveFill > 0 then
+	--if GetEntityData(player).heartReserveFill > 0 then
 		GetEntityData(player).heartReserveFill = GetEntityData(player).heartReserveFill + number
-	else
+	--else
 		--calculate broken down stocks into pure reserve
-		local newReserve = yandereWaifu:getReserveStocks(player) * GetEntityData(player).heartReserveMaxFill
-		GetEntityData(player).heartReserveFill = GetEntityData(player).heartReserveFill + newReserve
-		GetEntityData(player).heartReserveFill = GetEntityData(player).heartReserveFill + number
-	end
+	--	local newReserve = yandereWaifu:getReserveStocks(player) * GetEntityData(player).heartReserveMaxFill
+	--	GetEntityData(player).heartReserveFill = GetEntityData(player).heartReserveFill + newReserve
+	--	GetEntityData(player).heartReserveFill = GetEntityData(player).heartReserveFill + number
+	--end
 end
 
 function yandereWaifu:resetReserve(player) --used to reset the stocks back into reserve so that the game can recalculate it for other modes
@@ -1477,6 +1558,14 @@ function yandereWaifu:heartReserveLogic(player)
 			yandereWaifu:addReserveFill(player, -playerdata.heartReserveMaxFill) --decrease reserve to fit in more reserve
 		end
 	--end
+	--[[elseif playerdata.heartReserveFill == 0 then
+		local number = yandereWaifu:getReserveStocks(player) - 1
+		print(number)
+		if number == 0 then
+			print("works")
+			yandereWaifu:addReserveFill(player, playerdata.heartReserveMaxFill)
+			yandereWaifu:addReserveStocks(player, -number)
+		end]]
 	end
 end
 
@@ -1592,7 +1681,9 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		data.IsAttackActive = false
 		data.chargeDelay = 0
 		data.barrageInit = false
-		yandereWaifu:purchaseReserveStocks(player, 1)
+		if not data.noHead and GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+			yandereWaifu:purchaseReserveStocks(player, 1)
+		end
 		--SchoolbagAPI.RefundActiveCharge(player, 1, true)
 		
 		--soul heart
@@ -1621,13 +1712,17 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 				--yandereWaifu:purchaseReserveStocks(player, 1)
 				print("b")
 			end
-			yandereWaifu:purchaseReserveStocks(player, 1)
+			if not data.noHead and GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+				yandereWaifu:purchaseReserveStocks(player, 1)
+			end
 		else
 			print("c")
 			data.IsAttackActive = false
 			data.chargeDelay = 0
 			data.barrageInit = false
-			yandereWaifu:purchaseReserveStocks(player, 1)
+			if not data.noHead and GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+				yandereWaifu:purchaseReserveStocks(player, 1)
+			end
 			--SchoolbagAPI.RefundActiveCharge(player, 1, true)
 		end
 		
@@ -1835,12 +1930,13 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 			elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) or player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then --if bombs
 				if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 					if data.redcountdownFrames == 1 then
-						local bomb = player:FireBomb(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees())*(3))
+						local bomb = player:FireBomb(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees())*(8))
 						--local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, player.Position,  Vector.FromAngle(data.specialAttackVector:GetAngleDegrees()):Resized( 9 ), player);
 						GetEntityData(bomb).IsByAFanGirl = true; --makes sure that it's Rebecca's bombs
 						--bomb:ToBomb();
-						bomb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_rebeccawantsisaacalittlebittoomuch.png");
+						--bomb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_rebeccawantsisaacalittlebittoomuch.png");
 						--bomb:GetSprite():LoadGraphics();
+						bomb:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 					elseif data.redcountdownFrames >= 40 then
 						EndBarrageIfValid()
 					end
@@ -1959,7 +2055,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 	elseif modes == REBECCA_MODE.SoulHearts then
 		local extraTearDmg = 1--keeps how much extra damage might be needed, instead of adding more tears. It might be laggy.
 		local chosenNumofBarrage =  9; --chosenNumofBarrage or math.random( 8, 15 );
-		local modulusnum = math.ceil((player.MaxFireDelay/5));
+		local modulusnum = math.ceil((player.MaxFireDelay/4));
 		if not data.soulcountdownFrames then data.soulcountdownFrames = 0 end
 		
 		data.soulcountdownFrames = data.soulcountdownFrames + 1
@@ -1979,8 +2075,95 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		end
 		--epic fetus synergy
 		if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then --rocket synergy
-			Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_WIZOOB_MISSILE, 0, player.Position,  Vector.FromAngle(data.specialAttackVector:GetAngleDegrees())*(9), player)
-			EndBarrage()
+			local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_GHOSTTARGET, 0, player.Position,  Vector.FromAngle(data.specialAttackVector:GetAngleDegrees())*(9), nil)
+			GetEntityData(target).Parent = player
+			EndBarrageIfValid()
+		---if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then --rocket synergy
+		---	Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_WIZOOB_MISSILE, 0, player.Position,  Vector.FromAngle(data.specialAttackVector:GetAngleDegrees())*(9), player)
+		--	EndBarrage()
+		--ludo synergy
+		local ludoTear
+		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
+			ludoTear = SchoolbagAPI.GetPlayerLudo(player)
+			if ludoTear then
+				if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player) else
+					if not data.KnifeHelper.incubus:Exists() then
+						data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player)
+					else
+						data.KnifeHelper.incubus.Position = ludoTear.Position
+					end
+				end
+				local division = 360/8
+				if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) or player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
+					division = 360/4
+				end
+				for i = 0, 360, division do
+					--knife sucks
+					if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
+						if data.soulcountdownFrames == 1 then
+							--player.ControlsEnabled = false;
+						elseif data.soulcountdownFrames >= 1 and data.soulcountdownFrames < 36 and data.soulcountdownFrames % modulusnum == (0) then
+							SchoolbagAPI.SpawnKnife(player, (i + data.soulcountdownFrames*2), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 20, data.KnifeHelper)
+						elseif data.soulcountdownFrames == 36 then
+							EndBarrage()
+							--player.ControlsEnabled = true;
+							data.soulcountdownFrames = 0;
+						end
+					elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+						for j = 1, math.floor(chosenNumofBarrage/2) do
+							if j == 1 then
+								local brim = EntityLaser.ShootAngle(1, ludoTear.Position, i + data.specialAttackVector:GetAngleDegrees() - 45, 5, Vector(0,-5), player):ToLaser()
+								brim:SetActiveRotation( 0, 135, 10, false );
+								brim:AddTearFlags(player.TearFlags)
+								brim:SetColor(ludoTear:GetColor(), 999, 999)
+								brim.DisableFollowParent = true
+								brim:GetData().IsEctoplasm = true;
+								brim.CollisionDamage = player.Damage * 2
+								brim:SetHomingType(1)
+							else
+								local brim2 = EntityLaser.ShootAngle(1, ludoTear.Position, i + data.specialAttackVector:GetAngleDegrees()  - math.random(-10,10) + 45, 5, Vector(0,-5), player):ToLaser()
+								brim2:SetActiveRotation( 0, -135, -10, false );
+								brim2:AddTearFlags(player.TearFlags)
+								brim2:SetColor(ludoTear:GetColor(), 999, 999)
+								brim2.DisableFollowParent = true
+								brim2:GetData().IsEctoplasm = true;
+								brim2.Timeout = 1;
+								brim2:SetHomingType(1)
+							end
+							if j == math.floor(chosenNumofBarrage/2) then
+								speaker:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+								EndBarrage()
+							end
+						end
+					elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
+						local randomAngleperLaser = math.random(-15,15) --used to be 45, but now the synergy feels so boring
+						local techlaser = player:FireTechLaser(player.Position, 0, Vector.FromAngle(i + data.specialAttackVector:GetAngleDegrees() + randomAngleperLaser), false, true)
+						techlaser.OneHit = true;
+						techlaser.Timeout = 1;
+						techlaser.CollisionDamage = player.Damage * 2;
+						techlaser:SetHomingType(1)
+						SchoolbagAPI.UpdateLaserSize(techlaser, 6 * tearSize)
+					else
+						for j = 1, math.floor(chosenNumofBarrage/2) do
+							player.Velocity = player.Velocity * 0.8; --slow him down
+								local tear = player:FireTear( ludoTear.Position, Vector.FromAngle(i + data.specialAttackVector:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(4,6)), false, false, false):ToTear()
+								--local tear = game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+								tear.Scale = math.random() * 0.7 + 0.7;
+								tear.FallingSpeed = -9 + math.random() * 2;
+								tear.FallingAcceleration = 0.5;
+								tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_PIERCING;
+								tear.CollisionDamage = player.Damage * 1.3 * extraTearDmg;
+								--if not tear:GetData().IsEctoplasm then  tear:GetData().IsEctoplasm = true end
+								--print(tear:GetData().IsEctoplasm)
+								--tear.BaseDamage = player.Damage * 2
+							if j == math.floor(chosenNumofBarrage/2) then
+								speaker:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+								EndBarrage()
+							end
+						end
+					end
+				end
+			end
 		--knife synergy
 		elseif player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if data.soulcountdownFrames == 1 then
@@ -2004,6 +2187,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 				if i == 1 then
 					local brim = player:FireBrimstone( Vector.FromAngle( data.specialAttackVector:GetAngleDegrees()):Resized( BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
 					brim:GetData().IsEctoplasm = true;
+					brim.CollisionDamage = player.Damage * 2
 					brim:SetHomingType(1)
 				else
 					player.Velocity = player.Velocity * 0.8; --slow him down
@@ -2141,30 +2325,100 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		if not beam:GetData().IsLvlOneBeam then beam:GetData().IsLvlOneBeam = true end
 		EndBarrage()
 	elseif modes == REBECCA_MODE.BoneHearts then
+		local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+		
+		if not data.hasLeech then
+			local leech = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_BONEJOCKEY, 0, player.Position, Vector(0,0), player)
+			data.hasLeech = leech
+			GetEntityData(leech).IsPossessed = true
+			for i = 0, 12 do
+				local var = TearVariant.BLOOD
+				local rng = math.random(1,5)
+				if rng == 3 then
+					var = TearVariant.BONE
+				elseif rng == 4 then
+					var = ENTITY_RIBTEAR
+				elseif rng == 5 then
+					var = ENTITY_SKULLTEAR
+				end
+				local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, player.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
+				SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+			end
+		else
+			if not data.IsLeftover then
+				local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+				GetEntityData(customBody).Player = player
+				GetEntityData(customBody).DontFollowPlayer = true
+				GetEntityData(customBody).IsLeftover = true
+				customBody.RenderZOffset = -10
+				data.IsLeftover = true --sets the corpse to come and eat you
+			end
+		end
 		data.LastGridCollisionClass = player.GridCollisionClass;
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
-		--Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_BONETARGET, 0, player.Position, Vector(0,0), player)
 		--player:AnimateLightTravel()
-		local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
-		GetEntityData(customBody).Player = player
-		GetEntityData(customBody).DontFollowPlayer = true
-		GetEntityData(customBody).IsLeftover = true
-		customBody.RenderZOffset = -10
-		
-		local stand = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_BONESTAND, 0, player.Position, Vector( 0, 0 ), player):ToFamiliar();
-		GetEntityData(stand).Body = customBody
-		GetEntityData(stand).Angle = SchoolbagAPI.AnimShootFrame(stand, true, data.specialAttackVector, "MoveSideward", "MoveForward", "MoveBackward")
+		--local stand = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_BONESTAND, 0, player.Position, Vector( 0, 0 ), player):ToFamiliar();
+		--GetEntityData(stand).Body = customBody
+		--GetEntityData(stand).Angle = SchoolbagAPI.AnimShootFrame(stand, true, data.specialAttackVector, "MoveSideward", "MoveForward", "MoveBackward")
 		
 		local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_SLAMDUST, 0, player.Position, Vector(0,0), player)
 		--player.Invincible = true --player.Position = Vector(0,0) --player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS 
 		player.Velocity = Vector(0,0)
+		player.Visible = false
 		player.ControlsEnabled = false
+		data.LastGridCollisionClass = player.GridCollisionClass
+		data.LastEntityCollisionClass = player.EntityCollisionClass
 		player.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
 		player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 		--EndBarrage()
 		data.NoBoneSlamActive = false
 		
-		print(data.specialAttackVector:GetAngleDegrees(),"quantum")
+	elseif modes == REBECCA_MODE.RottenHearts then
+		if not data.noHead then
+			local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_ROTTENHEAD, 0, player.Position, data.specialAttackVector:Resized(10), player):ToFamiliar();
+			data.noHead = true
+			data.RebHead = head
+			
+			for i, v in pairs (data.RottenFlyTable) do
+				--if not v:IsDead() and v:Exists() then
+					GetEntityData(v).Parent = head
+				--end
+			end
+			
+			player:AddNullCostume(HeadlessHead)
+		else
+			local ball = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_ROTTENFLYBALL, 0, data.RebHead.Position, data.specialAttackVector, player):ToFamiliar();
+		end
+		EndBarrage()
+	elseif modes == REBECCA_MODE.BrokenHearts then
+		if data.mainGlitch then
+			if not data.mainGlitch:Exists() then
+				data.mainGlitch = nil 
+			end
+		end
+		if not data.mainGlitch then
+			local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+			GetEntityData(customBody).Player = player
+			GetEntityData(customBody).DontFollowPlayer = true
+			GetEntityData(customBody).DashBrokenGlitch = true
+			data.mainGlitch = customBody
+		else
+			data.mainGlitch:Remove()
+			if player:GetBrokenHearts() > 11 then
+				player:Die()
+			else
+				if player:GetHearts() <= 1 then
+					player:AddBrokenHearts(1)
+				end
+				
+				print("try this")
+				data.tankAmount = nil
+				data.mainGlitch = nil
+				player:TakeDamage( 2, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
+				player:ResetDamageCooldown()
+			end
+		end
+		EndBarrage()
 	elseif modes == REBECCA_MODE.BrideRedHearts then
 
 		if not data.redcountdownFrames then data.redcountdownFrames = 0 end
@@ -2223,7 +2477,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 					local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, player.Position,  Vector.FromAngle(data.specialAttackVector:GetAngleDegrees()):Resized( 9 ), player);
 					GetEntityData(bomb).IsByAFanGirl = true; --makes sure that it's Rebecca's bombs
 					bomb:ToBomb();
-					bomb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_rebeccawantsisaacalittlebittoomuch.png");
+					--bomb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_rebeccawantsisaacalittlebittoomuch.png");
 					bomb:GetSprite():LoadGraphics();
 				elseif data.redcountdownFrames >= 40 then
 				end
@@ -2361,19 +2615,85 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--end
 end, ENTITY_BROKEN_GLASSES);
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+		local sprite = eff:GetSprite();
+		
+		if eff.FrameCount == 1 then
+			sprite:Play("Poof", true) --normal attack
+			eff.RenderZOffset = 100;
+			eff.Position = eff.Position + Vector(0,5)
+		end
+		if sprite:IsFinished("Poof") then
+			eff:Remove()
+		end
+end, ENTITY_PERSONALITYPOOF);
 
 --RED HEART MODE--
 do
 
 --heart bomb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
-		local player = Isaac.GetPlayer(p)
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	if GetEntityData(bb).IsByAFanGirl then
+		local player = bb.SpawnerEntity:ToPlayer()
 		local controller = player.ControllerIndex;
 		local sprite = bb:GetSprite();
 		
-		if GetEntityData(bb).IsByAFanGirl then
+		if bb.FrameCount == 1 then
+			print("callie")
+			bb:GetSprite():ReplaceSpritesheet(0, "gfx/items/pick ups/bombs/red_barrage_bomb.png")
+			bb:GetSprite():LoadGraphics();
+		end
+		
+		local function DoTinyBarrages(player, vec, ent)
+			local data = GetEntityData(ent)
+			--SchoolbagAPI.SetFrameLoop(40,function()
+				if not data.BarFrames then data.BarFrames = 0 end
+				if not data.BarAngle then data.BarAngle = 0 end --incase if nil
+
+				data.BarFrames = data.BarFrames + 1
+				
+				local angle = ent.Velocity:GetAngleDegrees()
+					
+				----barrage angle modifications are here :3
+				if data.BarFrames % 2 then
+					if data.BarFrames == 0 then
+						data.BarAngle = 0
+					elseif data.BarFrames > 1 and data.BarFrames < 10 then
+						data.BarAngle = data.BarAngle - 1
+					elseif data.BarFrames > 10 and data.BarFrames < 20 then
+						data.BarAngle = data.BarAngle + 2
+					elseif data.BarFrames > 20 and data.BarFrames < 30 then
+						data.BarAngle = data.BarAngle - 2
+					elseif data.BarFrames > 30 and data.BarFrames < 40 then
+						data.BarAngle = data.BarAngle + 4
+					else
+						data.BarAngle = 0
+					end
+				end
+				
+				local modulusnum = 3
+				if data.BarFrames == 1 then
+					--data.specialAttackVector:GetAngleDegrees() = angle
+				elseif --[[data.BarFrames >= 1 and data.BarFrames < 40 and]] data.BarFrames % modulusnum == (0) then
+					--ent.Velocity = ent.Velocity * 0.8 --slow him down
+					for i= 1, 4, 1 do
+						local tear = player:FireTear( bb.Position, Vector.FromAngle((data.BarAngle + vec:GetAngleDegrees())+(i*90)-45)*(20), false, false, false):ToTear()
+					end
+					--local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, ent.Position, Vector.FromAngle(data.BarAngle + vec:GetAngleDegrees())*(20), ent):ToTear()
+					speaker:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
+				elseif data.BarFrames == 40 then
+					data.BarFrames = nil
+					data.BarAngle = nil
+				end
+			--end)
+		end
+		
+		
 			SpawnHeartParticles( 1, 1, bb.Position, RandomHeartParticleVelocity(), player, HeartParticleType.Red );
+			--for i= 1, 4, 1 do
+			DoTinyBarrages(player, (bb.Position + Vector(30,0)), bb)
+			--end
 			bb.ExplosionDamage = player.Damage * 17.7013;
 			bb.RadiusMultiplier = 1.2;
 			--[[bb.Flags = player.TearFlags
@@ -2391,10 +2711,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 				bb:GetSprite():LoadGraphics()
 			elseif bb:GetSprite():IsFinished("Explode") then
 				bb:Remove()
-			--bb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_rebeccawantsisaacalittlebittoomuch.png")
+			bb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_rebeccawantsisaacalittlebittoomuch.png")
 			end
 			bb:GetSprite():LoadGraphics()]]
-		end
 	end
 end)
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames)
@@ -2797,7 +3116,87 @@ end, ENTITY_SOULTARGET)
 			eff:Remove()
 		end
 	end, ENTITY_WIZOOB_MISSILE)
+	
+	
+--ghost missile
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+		local player = GetEntityData(eff).Parent
+		local sprite = eff:GetSprite()
+		local data = GetEntityData(eff)
+		
+		local movementDirection = player:GetShootingInput();
+		local roomClampSize = math.max( player.Size, 20 )
+		if movementDirection:Length() < 0.05 then
+			eff.Velocity = Vector.Zero
+		else
+			eff.Position = SAPI.room:GetClampedPosition(eff.Position, roomClampSize);
+			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+		end
+		
+		local room =  Game():GetRoom()
+		--function code
+		if eff.FrameCount == 1 then
+			sprite:Play("Idle", true)
+			RebekahCanShoot(player, false)
+		elseif sprite:IsFinished("Idle") then
+			sprite:Play("Blink",true)
+		elseif eff.FrameCount == 55 then
+			Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_GHOSTMISSILE, 0, eff.Position, Vector.Zero, player) --heart effect
+			eff:Remove()
+			RebekahCanShoot(player, true)
+		end
+		if eff.FrameCount < 35 then
+			--player.Velocity = Vector(0,0)
+		end
+end, ENTITY_GHOSTTARGET)
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local controller = player.ControllerIndex
+		local sprite = eff:GetSprite()
+		local data = GetEntityData(eff)
+		eff.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS 
+		
+		local room =  Game():GetRoom()
+		--function code
+		if eff.FrameCount == 1 then
+			sprite:Play("Falling", true)
+		elseif sprite:IsEventTriggered("Blow") then
+			local megumin = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, eff.Position, Vector(0,0), eff):ToBomb() --this is a workaround to make explosions larger
+			megumin:SetExplosionCountdown(1)
+			megumin.Visible = false
+			megumin.RadiusMultiplier = 2.2 --my favorite part
+			megumin.ExplosionDamage = player.Damage*20
+			for i, ent in pairs(Isaac.GetRoomEntities()) do
+				if ent:IsEnemy() and not ent:IsVulnerableEnemy() then
+					ent:AddPoison(EntityRef(eff), 5, player.Damage*17)
+				end
+			end
+			if player:HasWeaponType(WeaponType.WEAPON_LASER) then
+				for i = 0, 360, 360/8 do
+					local techlaser = player:FireTechLaser(eff.Position, 0, Vector.FromAngle(i), false, true)
+					techlaser.CollisionDamage = player.Damage * 5
+					--techlaser.Damage = player.Damage * 5 doesn't exist lol
+				end
+			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+				for i = 0, 360, 360/8 do
+					local brim = player:FireBrimstone(eff.Position, 0, Vector.FromAngle(i), false, true)
+					brim.CollisionDamage = player.Damage * 5
+				end
+			end
+			for i = 1, 8 do
+				local minions = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, eff.Position, Vector(0,0), player)
+			end
+		elseif sprite:IsFinished("Falling") then
+			eff:Remove()
+		end
+		if eff.FrameCount < 35 then
+			player.Velocity = Vector(0,0)
+		end
+	end
+end, ENTITY_GHOSTMISSILE)
+	
 	function yandereWaifu:EctoplasmLaser(lz)
 		 if lz:GetData().IsEctoplasm then
 			if lz.FrameCount == 1 then
@@ -2826,15 +3225,17 @@ end, ENTITY_SOULTARGET)
 	--after bomb bundle coll functionality 
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
 		if tr.Variant == ENTITY_SBOMBBUNDLE then
-			Isaac.Explode(tr.Position, tr, 0)
+			Isaac.Explode(tr.Position, tr, tr:ToTear().BaseDamage * 17.7)
 			for i = 1, 5 do
-			local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, tr.Position + Vector(math.random(1,10),math.random(1,10)),  Vector(0,0), tr):ToBomb();
-			bomb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_soulheart.png");
-			bomb:GetSprite():LoadGraphics();
-			--bomb.Size = 0.5;
-			--bomb.SpriteScale = Vector(0.5, 0.5);
-			--bomb.RadiusMultiplier = 0.8;
-			bomb.ExplosionDamage = tr:ToTear().BaseDamage * 1.77013;
+                SchoolbagAPI.SetTimer( i, function()
+                    local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, tr.Position + Vector(math.random(1,10),math.random(1,10)),  Vector(0,5):Rotated(math.random(1,360)):Resized(5), tr):ToBomb();
+					bomb:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bomb_soulheart.png");
+					bomb:GetSprite():LoadGraphics();
+					bomb.Size = 0.5;
+					bomb.SpriteScale = Vector(0.5, 0.5);
+					bomb.RadiusMultiplier = 0.8;
+					bomb.ExplosionDamage = tr:ToTear().BaseDamage * 2.7013;
+                end);
 			end
 		end
 	end, EntityType.ENTITY_TEAR)
@@ -2865,6 +3266,13 @@ end, ENTITY_SOULTARGET)
 				--become depressed again
 				ApplyCostumes( GetEntityData(player).currentMode, player , false)
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+			end
+		end
+		if player:GetPlayerType() == Reb and GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+			if GetEntityData(player).BrokenBuff then
+				GetEntityData(player).BrokenBuff = false
+				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+				player:EvaluateItems()
 			end
 		end
 	end)
@@ -4094,6 +4502,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 			data.HitPoints = 0 --kill it
 			data.beam = beam
+			
+			if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+				local bomb = player:FireBomb(eff.Position, Vector(0,0)):ToBomb() --this is a workaround to make explosions larger
+				bomb:SetExplosionCountdown(1)
+				bomb.Visible = false
+				bomb.ExplosionDamage = player.Damage*1.77013
+			end
+			if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
+				if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(eff, player) else
+					if not data.KnifeHelper.incubus:Exists() then
+						data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(eff, player)
+					end
+				end
+				for i = 0, 360, 360/8 do
+					local knife = SchoolbagAPI.SpawnKnife(player, (i), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 60, data.KnifeHelper)
+				end
+			end
 		end
 	elseif eff.SubType == 1 then
 		if eff.FrameCount == 1 then
@@ -4774,7 +5199,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		fam.Velocity = Vector.Zero
 	end
 			
-	print(data.TriggerFrame, player:GetShootingInput(), Vector.FromAngle(data.Angle):Normalized(), data.Angle)
+	--print(data.TriggerFrame, player:GetShootingInput(), Vector.FromAngle(data.Angle):Normalized(), data.Angle)
 	
 	if data.TriggerFrame <= 0 then
 		GetEntityData(player).IsAttackActive = false
@@ -4792,10 +5217,363 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 	
 end, ENTITY_BONESTAND);
 
+SchoolbagAPI:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
+	local data = GetEntityData(fam)
+	if fam.SubType == 0 then
+		--if SAPI.game:GetFrameCount() % 10 == 0 then
+			--SchoolbagAPI.CreateGenericPathfinder(fam)
+			--if data.target then
+			--	SchoolbagAPI.GenerateAStarPath(fam, data.target, true)
+			--end
+		--end
+		--local path = SchoolbagAPI.GenerateAStarPath(fam, fam.Player, true)
+	end
+end, ENTITY_BONEJOCKEY)
+
+function yandereWaifu:onFamiliarBoneJockeyInit(fam)
+    fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
+	local data = GetEntityData(fam)
+	local player = fam.Player:ToPlayer()
+	--local player = fam.Player
+	--player.Visible = false
+    local sprite = fam:GetSprite()
+	if fam.SubType == 0 then
+		sprite:Play("Appear", true)
+		data.Butt = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_BONEJOCKEY, 1, fam.Position, Vector(0,0), player) 
+		GetEntityData(data.Butt).Head = fam
+		
+		data.ATTACK_DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+		
+		
+		GetEntityData(player).hasLeech = fam --set this so it wont duplicate
+	else
+		fam.DepthOffset  = -10
+		sprite:Play("BodyAppear", true)
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarBoneJockeyInit, ENTITY_BONEJOCKEY);
+
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bone jockey
+	local spr = fam:GetSprite()
+	local rng = math.random(1, 100)
+	local player = fam.Player:ToPlayer()
+	local data = GetEntityData(fam)
+	local body = data.Body
+	local butt = data.Butt
+	local controller = player.ControllerIndex
+	
+	local function FollowParent()
+		local path = SchoolbagAPI.GenerateAStarPath(fam, player)
+		
+		if (fam.Position - player.Position):Length() > 300 then
+			SchoolbagAPI.FollowPath(fam, player, path, 2, 0.9)
+		else
+			fam:FollowParent()
+		end
+	end
+	
+	if fam.SubType == 0 then
+		
+		if not data.Butt then
+			data.Butt = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_BONEJOCKEY, 1, fam.Position, Vector(0,0), player) 
+			GetEntityData(data.Butt).Head = fam
+		end
+		
+		if spr:IsFinished("Appear") then
+			data.Angle = SchoolbagAPI.AnimShootFrame(fam, true, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+		end
+		if not SchoolbagAPI.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then 
+			if data.IsPossessed then
+				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, player:GetMovementInput(), "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+			else
+				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+			end
+		end
+		
+		--chomp code
+		if spr:IsEventTriggered("Chomp") then
+			for i, entities in pairs(Isaac.GetRoomEntities()) do
+				if entities:IsVulnerableEnemy() then
+					if entities.Position:Distance(fam.Position) < entities.Size + fam.Size + 10 then
+						entities:TakeDamage(player.Damage * 2, 0, EntityRef(fam), 1)
+					end
+				end
+			end
+		end
+		
+		--butt code
+		if spr:IsPlaying("WalkRight") or spr:IsPlaying("ChargeRight") then
+			data.Butt.Position = fam.Position + Vector(-25,0)
+		elseif spr:IsPlaying("WalkLeft") or spr:IsPlaying("ChargeLeft") then
+			data.Butt.Position = fam.Position + Vector(25,0)
+		elseif spr:IsPlaying("WalkUp") or spr:IsPlaying("ChargeUp") then
+			data.Butt.Position = fam.Position + Vector(0,25)
+		elseif spr:IsPlaying("WalkDown") or spr:IsPlaying("ChargeDown") then
+			data.Butt.Position = fam.Position + Vector(0,-25)
+		end
+		data.Butt.Velocity = fam.Velocity
+		
+		if not data.IsPossessed then
+			if data.IsPossessed == nil then
+				fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/none.png")
+				fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/none.png")
+				fam:GetSprite():ReplaceSpritesheet(4, "gfx/effects/bone/corpseeater/none.png")
+				fam:GetSprite():LoadGraphics()
+				data.IsPossessed = false
+			end
+			--target code
+			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 300)--, true, 3, 0, false, false)
+			
+			if not data.DeathFrame then data.DeathFrame = 1800 end
+			
+			local function Die()
+				fam:Kill()
+				data.Butt:Kill()
+				GetEntityData(player).hasLeech = nil
+			end
+			
+			if not GetEntityData(player).IsLeftover then
+				data.DeathFrame = data.DeathFrame - 1 --i only want this to count down if you are not calling it
+				
+				if target then
+					if target:IsVulnerableEnemy() then
+						data.target = target
+					end
+						
+					if data.target then
+						local path = SchoolbagAPI.GenerateAStarPath(fam, data.target)
+						
+						if not path then
+							FollowParent()
+							data.target = nil
+						else
+							SchoolbagAPI.FollowPath(fam, data.target, path, 2, 0.9)
+						end
+					else
+						FollowParent()
+						data.target = nil
+					end
+				else
+					FollowParent()
+					data.target = nil
+				end
+			else
+				if SAPI.game:GetFrameCount() % 3 == 0 then
+					data.toPlayerpath = SchoolbagAPI.GenerateAStarPath(fam, player)
+				end
+				SchoolbagAPI.FollowPath(fam, player, data.toPlayerpath, 4, 0.9)
+				
+				if spr:IsEventTriggered("Chomp") then
+					for i, entities in pairs(Isaac.GetRoomEntities()) do
+						if entities.Variant == ENTITY_EXTRACHARANIMHELPER then
+							if GetEntityData(entities).IsLeftover and GetPtrHash(GetEntityData(entities).Player) == GetPtrHash(player) then
+								if entities.Position:Distance(fam.Position) < entities.Size + fam.Size + 20 then
+									entities:Remove()
+									data.IsPossessed = true
+									for i = 0, 12 do
+										local var = TearVariant.BLOOD
+										local rng = math.random(1,5)
+										if rng == 3 then
+											var = TearVariant.BONE
+										elseif rng == 4 then
+											var = ENTITY_RIBTEAR
+										elseif rng == 5 then
+											var = ENTITY_SKULLTEAR
+										end
+										local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, player.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
+										SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+									end
+									
+									fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/corpse_eater_rider.png")
+									fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/corpse_eater_rider.png")
+									fam:GetSprite():ReplaceSpritesheet(4, "gfx/effects/bone/corpseeater/corpse_hair.png")
+									fam:GetSprite():LoadGraphics()
+								end
+							end
+						end
+					end
+				end
+			end
+			--death code
+			if data.DeathFrame == 0 then
+				Die()
+			end
+		else
+			local function End()
+				player.Visible = true
+				GetEntityData(player).IsAttackActive = false
+				data.IsPossessed = false
+				data.IsDashActive = false
+						
+				data.Dashing = false
+				player.ControlsEnabled = true
+				player.GridCollisionClass = GetEntityData(player).LastGridCollisionClass
+				player.EntityCollisionClass = GetEntityData(player).LastEntityCollisionClass
+				GetEntityData(player).LastGridCollisionClass = nil
+				GetEntityData(player).LastEntityCollisionClass = nil
+				
+				GetEntityData(player).IsLeftover = false
+				GetEntityData(player).NoBoneSlamActive = true
+				
+				data.DeathFrame = 1800 
+				
+				fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/none.png")
+				fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/none.png")
+				fam:GetSprite():ReplaceSpritesheet(4, "gfx/effects/bone/corpseeater/none.png")
+				fam:GetSprite():LoadGraphics()
+			end
+			
+			--color player code
+			player:SetColor(Color(0,0,0,0,0,0,0),3,1,false,false)
+			player.Visible = true
+			
+			local movementDirection = player:GetMovementInput()
+			local shootingInput = player:GetShootingInput()
+			
+			--movement
+			if not data.Dashing then
+				fam.Velocity = (fam.Velocity * 0.9) + movementDirection:Resized( player.MoveSpeed + .5 )
+			end
+			player.Velocity = fam.Velocity
+			player.Position = fam.Position
+			
+			if movementDirection then
+				data.ATTACK_DASH_DOUBLE_TAP:Update( movementDirection , player );
+			end
+			
+			--doubletap code
+			if not data.ATTACK_DASH_DOUBLE_TAP_READY then
+				data.ATTACK_DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
+					-- old random velocity code
+					-- RandomHeartParticleVelocity()
+				if not data.IsDashActive then
+				--	if GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
+								
+						fam.Velocity = fam.Velocity + vector:Resized( BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_SPEED );
+									
+						SpawnDashPoofParticle( player.Position, Vector(0,0), player, PoofParticleType.Red );
+
+				--		playerdata.specialCooldown = BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
+				--		playerdata.invincibleTime = BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
+						speaker:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
+						data.IsDashActive = true
+						
+						data.Dashing = true --this sets you off to a direction, chomping fast while you cant control yourself
+						data.DashVector = vector
+				--	end
+					end
+				end)
+				data.ATTACK_DASH_DOUBLE_TAP_READY = true
+			end
+			
+			if data.Dashing then
+				fam.Velocity = data.DashVector:Resized( BALANCE.BONE_HEARTS_BONE_JOCKEY_CONTINUOUS_DASH_SPEED);
+				if not SchoolbagAPI.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then
+					data.Angle = SchoolbagAPI.AnimShootFrame(fam, true, fam.Velocity, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft")
+				end
+				
+				for i, entities in pairs(Isaac.GetRoomEntities()) do
+					if entities:IsVulnerableEnemy() then
+						if entities.Position:Distance(fam.Position) < entities.Size + fam.Size + 30 then
+							entities:TakeDamage(player.Damage / 5, 0, EntityRef(fam), 1)
+						end
+					end
+				end
+			end
+			--dashactive code
+			if data.IsDashActive then
+				if fam:CollidesWithGrid() then
+				--if not data.DashActiveFrame then data.DashActiveFrame = BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_COOLDOWN_FRAME end
+				--print(data.DashActiveFrame)
+				--if data.DashActiveFrame > 0 then
+				--	data.DashActiveFrame = data.DashActiveFrame - 1
+				--elseif data.DashActiveFrame == 0 then
+					data.IsDashActive = false
+					data.Dashing = false
+					data.DashActiveFrame = nil --to reset
+				end
+			end
+			
+			--firing
+			if (shootingInput.X ~= 0 or shootingInput.Y ~= 0) then
+				if fam.FrameCount % (math.ceil(player.MaxFireDelay/2)) == 0 then
+					local tears = player:FireTear(fam.Position, shootingInput:Resized(15), false, false, false):ToTear()
+					tears:ChangeVariant(TearVariant.BONE)
+				end
+			end
+			
+			--reserve usage
+			if fam.FrameCount % 5 == 0 then
+				if yandereWaifu:getReserveFill(player) <= 0 then
+					--yandereWaifu:addReserveStocks(player, -1)
+					if yandereWaifu:getReserveStocks(player) > 0 then
+						yandereWaifu:addReserveFill(player, GetEntityData(player).heartReserveMaxFill)
+						yandereWaifu:purchaseReserveStocks(player, 1)
+					end
+					yandereWaifu:addReserveFill(player, -1)
+				else
+					yandereWaifu:addReserveFill(player, -1)
+				end
+				
+				if Input.IsActionPressed(ButtonAction.ACTION_PILLCARD, player.ControllerIndex) then
+					End()
+				end
+				if yandereWaifu:getReserveStocks(player) <= 0 and yandereWaifu:getReserveFill(player) <= 0 then --automatic end
+					End()
+				end
+			end
+			
+			--entering room code
+			local doorPosCheck
+			if spr:IsPlaying("WalkRight") or spr:IsPlaying("ChargeRight") then
+				doorPosCheck = fam.Position - Vector(-25,0)
+			elseif spr:IsPlaying("WalkLeft") or spr:IsPlaying("ChargeLeft") then
+				doorPosCheck = fam.Position - Vector(25,0)
+			elseif spr:IsPlaying("WalkUp") or spr:IsPlaying("ChargeUp") then
+				doorPosCheck = fam.Position - Vector(0,25)
+			elseif spr:IsPlaying("WalkDown") or spr:IsPlaying("ChargeDown") then
+				doorPosCheck = fam.Position - Vector(0,-25)
+			end
+			if fam:CollidesWithGrid() then
+				--for i = 0, (SAPI.room:GetGridSize()) do
+					local gent = SAPI.room:GetGridEntity(SAPI.room:GetGridIndex(doorPosCheck))
+					if gent then
+						if gent.Desc.Type == GridEntityType.GRID_DOOR then
+							Isaac.DebugString(gent.Desc.Type)
+							local Door = gent:ToDoor()
+							if (fam.Position - Door.Position):Length() <= 35 then
+								Isaac.DebugString(1)
+								if SAPI.room:IsClear() then
+									Door:TryUnlock(player)
+								end
+								Isaac.DebugString(2)
+								if Door and Door:IsOpen() then
+									player.Position = Door.Position
+								elseif Door and not Door:IsOpen() then
+
+								end
+							end
+						end 
+					end
+				--end
+			end
+		end
+	elseif fam.SubType == 1 then
+		if GetEntityData(fam).Head == nil then fam:Remove() end
+		if not GetEntityData(GetEntityData(fam).Head).IsPossessed then
+			SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
+		else
+			SchoolbagAPI.AnimShootFrame(fam, false, player:GetMovementInput(), "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
+		end
+	end
+	
+end, ENTITY_BONEJOCKEY);
+
+
 --firing random stuff
 function yandereWaifu:BoneHeartTearsRender(tr, _)
 	if tr.Variant == ENTITY_RIBTEAR or tr.Variant == ENTITY_SKULLTEAR or tr.Variant == ENTITY_HEARTTEAR then
-		local player, data, flags, scale = tr.Parent, GetEntityData(tr), tr.TearFlags, tr.Scale 
+		local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), GetEntityData(tr), tr.TearFlags, tr.Scale 
 		local size = SchoolbagAPI.GetTearSizeTypeII(scale, flags)
 		SchoolbagAPI.UpdateDynamicTearAnimation(player, tr, data, flags, "Stone", {"Move", "Idle"}, size)
 	end
@@ -4834,7 +5612,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 		for i = 1, chosenNumofBarrage do
 			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.BONE, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
-			tear.Scale = (tr.Scale) - math.random(1,5)/10;
+			tear.Scale = (tr.Scale) - math.random(4,8)/10;
 			SchoolbagAPI.MakeTearLob(tear, 1.5, 9 );
 		end
 	elseif tr.Variant == ENTITY_SKULLTEAR then
@@ -4844,7 +5622,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
 			tear.Scale = (tr.Scale/2) - math.random(1,5)/10;
 			SchoolbagAPI.MakeTearLob(tear, 1.5, 9 );
-			tear.CollisionDamage = player:ToPlayer().Damage * 1.5
+			--tear.CollisionDamage = player:ToPlayer().Damage * 1.5
 		end
 	elseif tr.Variant == ENTITY_HEARTTEAR then
 		local chosenNumofBarrage =  math.random( 3, 6 );
@@ -4969,6 +5747,334 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 end, ENTITY_SLAMDUST)
 
+end
+
+--ROTTEN HEART--
+do
+
+function yandereWaifu:onFamiliarOllieHeadInit(fam)
+    fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
+	fam.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYEROBJECTS
+	local data = GetEntityData(fam)
+    local sprite = fam:GetSprite()
+	GetEntityData(fam.Player).noHead = true
+	GetEntityData(fam.Player).RebHead = fam
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarOllieHeadInit, ENTITY_ROTTENHEAD);
+
+function yandereWaifu.rottenheadColl(_, fam, collider, low)
+	local data = GetEntityData(fam)
+	if fam.FrameCount > 5 then
+		if collider.Type == EntityType.ENTITY_PLAYER or collider.Type == EntityType.ENTITY_TEAR then -- someEngineer's code, thanks!
+			local vec = fam.Position-collider.Position
+			fam.Velocity = vec:Resized(10)
+		end
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, yandereWaifu.rottenheadColl, ENTITY_ROTTENHEAD)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bone stand
+	local spr = fam:GetSprite()
+	local rng = math.random(1, 100)
+	local player = fam.Player:ToPlayer()
+	local data = GetEntityData(fam)
+	local body = data.Body
+	local butt = data.Butt
+	local controller = player.ControllerIndex
+	
+	if fam.Velocity:Length() > 2 then
+		if not data.headFrame then data.headFrame = 0 end
+		if data.headFrame < 11 then
+			print(math.ceil(player.MaxFireDelay/4))
+			if fam.FrameCount % (math.ceil(player.MaxFireDelay/4)) == 0 then
+				local tears = player:FireTear(fam.Position, Vector.FromAngle(30*(data.headFrame+3)):Resized(10), false, false, false):ToTear()
+				
+				data.headFrame = data.headFrame + 1
+			end
+			spr:Play("Shake"..tostring(data.headFrame))
+		else
+			data.headFrame = 0
+		end
+	else
+		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) then
+			if player:GetFireDirection() == 3 then --down
+				spr:Play("Shake0")
+				data.headFrame = 0
+			elseif player:GetFireDirection() == 1 then --up
+				spr:Play("Shake6")
+				data.headFrame = 6
+			elseif player:GetFireDirection() == 0 then --left
+				spr:Play("Shake3")
+				data.headFrame = 3
+			elseif player:GetFireDirection() == 2 then --right
+				spr:Play("Shake9")
+				data.headFrame = 9
+			end
+			
+			if fam.FrameCount % (math.ceil(player.MaxFireDelay)) == 0 then
+				local tears = player:FireTear(fam.Position, Vector.FromAngle(30*(data.headFrame+3)):Resized(8), false, false, false):ToTear()
+				tears:ChangeVariant(ENTITY_MAGGOTTEAR)
+			end
+		end
+	end
+	fam.Velocity = fam.Velocity * 0.95 --friction
+	
+	
+	--death code
+	if fam.FrameCount == 2300 then
+		fam:Kill()
+		GetEntityData(fam.Player).noHead = false
+		fam.Player:TryRemoveNullCostume(HeadlessHead)
+		
+		for i, v in pairs (GetEntityData(player).RottenFlyTable) do
+			--if v:IsDead() or not v:Exists() then
+				GetEntityData(v).Parent = player
+			--end
+		end
+		
+		GetEntityData(fam.Player).RebHead = nil
+	end
+end, ENTITY_ROTTENHEAD);
+
+function yandereWaifu:RottenHeartTearsRender(tr, _)
+	if tr.Variant == ENTITY_MAGGOTTEAR then
+		local player, data, flags, scale = tr.Parent, GetEntityData(tr), tr.TearFlags, tr.Scale 
+		if not data.Init then
+			data.Init = true
+			tr:GetSprite():Play("Bullet", true)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.RottenHeartTearsRender)
+
+function yandereWaifu:MaggotTearUpdate(tr)
+	local data = GetEntityData(tr)
+	local player = tr.SpawnerEntity
+	if tr.Variant == ENTITY_MAGGOTTEAR then
+		if tr:IsDead() then
+			--local maggot = Isaac.Spawn(EntityType.ENTITY_SMALL_MAGGOT, ENTITY_ROTTENSMALLMAGGOT, 0, tr.Position, Vector(0,0), player)
+			--maggot:AddEntityFlags(EntityFlag.FLAG_FRIENDLY)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.MaggotTearUpdate)
+
+--fire to spawn familiar fly
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
+	local data = GetEntityData(player)
+	
+	if player:GetPlayerType() == Reb and GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+		if not data.RottenFlyTable then 
+			data.RottenFlyTable = {} 
+			
+			print("damn")
+			--reassign when quitting out of game
+			for i, v in ipairs(SAPI.roomEntities) do
+				print("al")
+				if v.Type == 3 and v.Variant == ENTITY_ROTTENFLY then
+					print("huh")
+					if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
+						print("fry")
+						table.insert(data.RottenFlyTable, v)
+					end
+				end
+			end
+			if TableLength(data.RottenFlyTable) > 0 then
+					print(TableLength(data.RottenFlyTable))
+					local divNum, loopNum = 360/#data.RottenFlyTable, 0
+					for j, v in ipairs(data.RottenFlyTable) do
+						if not GetEntityData(v).StartingPos then
+							GetEntityData(v).StartingPos = loopNum
+							loopNum = loopNum + divNum
+						end
+					end
+			end
+		end
+		
+		
+		--print(player.FireDelay)
+		if player.FireDelay <= 1 and not data.HasJustShot then
+			if math.random(1,10) - player.Luck <= 1 then -- a chance to spawn flies
+				local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_ROTTENFLY, 0, player.Position, Vector(0,0), player)
+				table.insert(data.RottenFlyTable, fly)
+				if TableLength(data.RottenFlyTable) > 0 then
+					local divNum, loopNum = 360/#data.RottenFlyTable, 0
+					for j, v in ipairs(data.RottenFlyTable) do
+						if not GetEntityData(v).StartingPos then
+							GetEntityData(v).StartingPos = loopNum
+							--print(GetEntityData(v).StartingPos, "    ",j)
+							loopNum = loopNum + divNum
+						end
+					end
+				end
+			end
+			data.HasJustShot  = true
+		end
+		if player.FireDelay > 1 then
+			data.HasJustShot  = false
+		end
+	end
+	--print(TableLength(data.RottenFlyTable))
+	--print(#data.RottenFlyTable)
+end)
+function yandereWaifu:onFamiliarRottenFlyInit(fam)
+	local player = fam.Player:ToPlayer()
+    fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.5
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarRottenFlyInit, ENTITY_ROTTENFLY);
+function yandereWaifu.rottenFlyColl(_, fam, collider, low)
+	local data = GetEntityData(fam.Player:ToPlayer())
+	local function Die()
+		for i, v in pairs (data.RottenFlyTable) do
+			if not v:Exists() then
+				table.remove(data.RottenFlyTable, i)
+			end
+		end
+		fam:Die()
+	end
+	local data = GetEntityData(fam)
+	if collider.Type == EntityType.ENTITY_PROJECTILE then -- stop enemy bullets
+		collider:Die()
+		Die()
+	elseif collider:IsVulnerableEnemy() and not collider:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+		--if fam.FrameCount % 3 == 0 then
+			Die()
+		--end
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, yandereWaifu.rottenFlyColl, ENTITY_ROTTENFLY)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --rotten fly orbital
+	local spr = fam:GetSprite()
+	local rng = math.random(1, 100)
+	local player = fam.Player:ToPlayer()
+	local data = GetEntityData(fam)
+	local controller = player.ControllerIndex
+	
+	
+	if not data.Parent then data.Parent = player end
+	if not data.Health then
+		data.Health = 3
+	end
+	--if not data.StartingPos then data.StartingPos = 0 end
+	if data.SpecialDash then
+		if not data.StopFrames then
+			data.StopFrames = fam.FrameCount + 14
+		else
+			if data.StopFrames == fam.FrameCount then
+				data.SpecialDash = nil
+				data.StopFrames = nil
+			end
+		end
+		fam.Velocity = fam.Velocity * 0.9
+	else
+		SchoolbagAPI.MoveOrbitAroundTargetType1(fam, data.Parent, 3, 0.9, 5, data.StartingPos)
+	end
+	
+end, ENTITY_ROTTENFLY);
+
+
+function yandereWaifu:onFamiliarRottenFlyHeadInit(fam)
+	local player = fam.Player:ToPlayer()
+    fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.2
+	fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarRottenFlyHeadInit, ENTITY_ROTTENFLYBALL);
+function yandereWaifu.rottenFlyHeadColl(_, fam, collider, low)
+	local data = GetEntityData(fam)
+	local function Die()
+		if data.Health < 1 then
+			fam:Die()
+			for i = 0, math.random(9,15) do
+				local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_FLYTEAR, 0, fam.Position, Vector(0,0), player)
+			end
+		else
+			data.Health = data.Health - 1
+		end
+	end
+	
+	if collider.Type == EntityType.ENTITY_PROJECTILE then -- stop enemy bullets
+		collider:Die()
+		Die()
+	elseif collider:IsVulnerableEnemy() and not collider:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+		if fam.FrameCount % 3 == 0 then
+			Die()
+		end
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, yandereWaifu.rottenFlyHeadColl, ENTITY_ROTTENFLYBALL)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --rotten fly orbital
+	local spr = fam:GetSprite()
+	local rng = math.random(1, 100)
+	local player = fam.Player:ToPlayer()
+	local data = GetEntityData(fam)
+	local controller = player.ControllerIndex
+	
+	if not data.Health then
+		data.Health = 60
+	end
+	
+	local movementDirection = player:GetMovementInput();
+	if movementDirection:Length() < 0.05 then
+		fam.Velocity = fam.Velocity * 0.3;
+	else
+		fam.Velocity = (fam.Velocity * 0.7) + movementDirection:Resized( BALANCE.ROTTEN_HEARTS_FLYBALL_SPEED + player.MoveSpeed );
+	end
+end, ENTITY_ROTTENFLYBALL);
+
+
+
+function yandereWaifu:onFamiliarRottenFlyTearInit(fam)
+	local player = fam.Player:ToPlayer()
+    fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.5
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarRottenFlyTearInit, ENTITY_FLYTEAR);
+
+function yandereWaifu.rottenFlyTearColl(_, fam, collider, low)
+	local data = GetEntityData(fam.Player:ToPlayer())
+	local function Die()
+		fam:Die()
+	end
+	local data = GetEntityData(fam)
+	if collider:IsVulnerableEnemy() and not not collider:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+		--if fam.FrameCount % 3 == 0 then
+			Die()
+		--end
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, yandereWaifu.rottenFlyTearColl, ENTITY_FLYTEAR)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --rotten fly orbital
+	local spr = fam:GetSprite()
+	local rng = math.random(1, 100)
+	local player = fam.Player:ToPlayer()
+	local data = GetEntityData(fam)
+	local controller = player.ControllerIndex
+	
+	
+	if not data.Parent then data.Parent = player end
+	local target
+	local nearestOrb = 177013 -- labels the highest enemy hp
+	for i, ent in pairs (Isaac.GetRoomEntities()) do
+		if ent:IsVulnerableEnemy() and not ent:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+			if nearestOrb >= ent.Position:Distance(player.Position) then
+				nearestOrb = ent.Position:Distance(player.Position)
+				target = ent
+			end
+		end
+	end
+	if target then
+		SchoolbagAPI.MoveDirectlyTowardsTarget(fam, target, 7, 0.9)
+	else
+		SchoolbagAPI.MoveOrbitAroundTargetType1(fam, data.Parent, 2, 0.9, 8, 0)
+	end
+	
+end, ENTITY_FLYTEAR);
 end
 
 --BRIDE RED HEART--
@@ -5277,6 +6383,23 @@ function yandereWaifu:barrageAndSP(player)
 		end
 	end
 	
+	if data.currentMode == REBECCA_MODE.BrokenHearts then --decrement of tankAmount
+		if data.tankAmount then
+			if data.tankAmount >= 1 then 
+				if player.FrameCount % 100 == 0 then
+					data.tankAmount = data.tankAmount - 1
+					print("faol")
+				end
+			end
+		end
+		if player.FrameCount % 300 == 0 and GetEntityData(player).BrokenLuck then
+			print("fol")
+			GetEntityData(player).BrokenLuck = false
+			player:AddCacheFlags(CacheFlag.CACHE_LUCK);
+			player:EvaluateItems()
+		end
+	end
+	
 	if data.IsAttackActive and data.NoBoneSlamActive then	--attack code
 		yandereWaifu:DoRebeccaBarrage(player, data.currentMode)
 	end
@@ -5557,7 +6680,6 @@ function yandereWaifu:MirrorMechanic(player)
 			if player:GetRottenHearts() > 0 then heartTable.ShowRotten = true end
 			if player:GetBrokenHearts() > 0 then heartTable.ShowBroken = true end
 			
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART) then heartBrideTable.Show = true end
 		end
 
 		--current heart collecting
@@ -5576,6 +6698,8 @@ function yandereWaifu:MirrorMechanic(player)
 		local heartBrideTable = {
 			Show = false
 		}
+		
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART) then heartBrideTable.Show = true end
 		
 		--mirror code
 		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , ENTITY_REBMIRROR, -1, false, false)) do
@@ -5671,10 +6795,12 @@ function yandereWaifu:MirrorMechanic(player)
 										--mirdata.notAlive = true;
 										player:AnimateSad();
 										sprite:Play("Initiate", true);
-										ChangeMode( player, newMode );
+										ChangeMode( player, newMode, _, false);
 										--don't move
 										player.Velocity = Vector(0,0)
 										mirdata.currentHeart = 1; --reset
+										
+										--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 									end
 								end
 							else
@@ -5775,11 +6901,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 				end
 			end
 			local maxHealth = ent.MaxHitPoints
-			yandereWaifu:addReserveFill(player, maxHealth/10)
+			yandereWaifu:addReserveFill(player, maxHealth/7)
 		end
 	end
 end)
 
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
+	if damage:IsEnemy() then
+		if damageSource.Type == 3 and damageSource.Variant == ENTITY_BONEJOCKEY then
+			GetEntityData(damage).BurstGuts = true
+		end
+	end
+end)
 
 --meter
 function yandereWaifu:meterLogic(player)
@@ -5871,7 +7004,7 @@ end
 
 function yandereWaifu:heartReserveRenderLogic(player)
 	--for i,player in ipairs(SAPI.players) do
-		local position = Vector(15,50)
+		local position = Vector(58,46)
 		--print(player.Position.X)
 		--if SchoolbagAPI.IsInMirroredFloor(player) then
 			--position.X = position.X * -1
@@ -5883,7 +7016,7 @@ function yandereWaifu:heartReserveRenderLogic(player)
 		local gameFrame = game:GetFrameCount();
 		if player:GetPlayerType() == Reb then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
-				heartReserve:SetOverlayRenderPriority(true)
+				--heartReserve:SetOverlayRenderPriority(true)
 				if data.heartReserveFill and data.heartReserveMaxFill then
 					--local FramePercentResult = math.floor((data.heartReserveFill/data.heartReserveMaxFill)*100)
 					--print(data.heartReserveFill, "hello")
@@ -5952,13 +7085,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	end
 end);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
-	--for i,player in ipairs(SAPI.players) do
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
+	for p = 0, game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == Reb then
 			yandereWaifu:meterLogic(player);
 			yandereWaifu:heartReserveRenderLogic(player);
 		end
-	--end
+	end
 end);
 
 function yandereWaifu:DoExtraBarrages(player, mode)
@@ -6419,7 +7553,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 								playerdata.IsDashActive = true
 								
 							elseif GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue
-							
+								local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+								
 								local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 								GetEntityData(customBody).Player = player
 								GetEntityData(customBody).WizoobIn = true
@@ -6534,10 +7669,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 								speaker:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
 								speaker:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
 							elseif GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
-								if not playerdata.IsDashActive and not playerdata.IsAttackActive and playerdata.NoBoneSlamActive then -- and playerdata.specialBoneHeartStompCooldown <= 0 then
+								--if not playerdata.IsDashActive and not playerdata.IsAttackActive and playerdata.NoBoneSlamActive then -- and playerdata.specialBoneHeartStompCooldown <= 0 then
 									--local vault = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_BONEVAULT, 0, player.Position, Vector(0,0), player) --vault effect
 									--GetEntityData(vault).bonerOwner = player;
 									--vault.DepthOffset = 5;
+									local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+									
 									local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 									GetEntityData(customBody).Player = player
 									GetEntityData(customBody).IsHopping = true
@@ -6548,7 +7685,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 									playerdata.invincibleTime = BALANCE.BONE_HEARTS_DASH_INVINCIBILITY_FRAMES;
 									playerdata.IsDashActive = true;
 									playerdata.NoBoneSlamActive = false;
+								--end
+							elseif GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+								for i, v in pairs(data.RottenFlyTable) do
+									--if not v:IsDead() or v:Exists() then
+										v.Velocity = v.Velocity + vector:Resized( BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+										GetEntityData(v).SpecialDash = true
+									--end
 								end
+								
+								playerdata.specialCooldown = BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 							elseif GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if red 
 								player.Velocity = player.Velocity + vector:Resized( BALANCE.RED_HEARTS_DASH_SPEED );
 								SpawnDashPoofParticle( player.Position, Vector(0,0), player, PoofParticleType.Red );
@@ -6559,6 +7705,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 								
 								playerdata.DashVector = vector;
 								playerdata.IsDashActive = true;
+							elseif GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+								
+								local tilde = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+								GetEntityData(tilde).Player = player
+								GetEntityData(tilde).DontFollowPlayer = true
+								GetEntityData(tilde).TildeConsole = true
+								GetEntityData(player).Parry = tilde
+								tilde.RenderZOffset = 100;
+								playerdata.specialCooldown = BALANCE.BROKEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 							end
 							playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown
 							-- update the dash double tap cooldown based on Rebecca's mode specific cooldown
@@ -6581,7 +7736,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			local controller = player.ControllerIndex;
 			if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) then
 				--if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
-					if  yandereWaifu:getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive then --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
+					if (yandereWaifu:getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive) or (not data.noHead and GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or (GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
 						if GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --if red 
 							playerdata.specialActiveAtkCooldown = 120;
 							playerdata.invincibleTime = 10;
@@ -6593,10 +7748,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 							playerdata.specialActiveAtkCooldown = 30;
 						elseif GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black 
 							playerdata.specialActiveAtkCooldown = 75;
-						elseif GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if black 
+						elseif GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternal 
 							playerdata.specialActiveAtkCooldown = 120;
-						elseif GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if black 
+						elseif GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bone 
 							playerdata.specialActiveAtkCooldown = 20;
+						elseif GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then --if rotten 
+							playerdata.specialActiveAtkCooldown = 80;
+						elseif GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then --if broken 
+							playerdata.specialActiveAtkCooldown = 80;
 						elseif GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if bred 
 							playerdata.specialActiveAtkCooldown = 80;
 							playerdata.invincibleTime = 10;
@@ -6767,7 +7926,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
     local bonerOwnerData = GetEntityData(data.Player);
 	if data.IsHopping then
-	
+		data.Player:SetShootingCooldown(2)
+		print("hello")
 		local function End()
 			print("how")
 			--data.Player.GridCollisionClass = GetEntityData(data.Player).LastGridCollisionClass;
@@ -6779,8 +7939,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			GetEntityData(data.Player).IsVaulting = false
 			GetEntityData(data.Player).IsUninteractible = false
 			eff:Remove()
+			--data.Player.ControlsEnabled = true
 		end
 		if eff.FrameCount == 1 then --beginning
+			sprite.PlaybackSpeed = 1.5
 			sprite:Load("gfx/effects/bone/bonedash.anm2",true)
 			sprite:Play("StartSlam", true) --normal attack
 			data.Player.Visible = false
@@ -6788,10 +7950,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--GetEntityData(data.Player).LastGridCollisionClass = data.Player.GridCollisionClass;
 			--GetEntityData(data.Player).LastEntityCollisionClass = data.Player.EntityCollisionClass;
 			data.BounceCount = 1 --this checks how much times you have been bouncing
+			--data.Player.ControlsEnabled = false
+		elseif eff.FrameCount == 2 then
+			data.Player.Velocity = data.Player.Velocity*5
 		elseif sprite:IsFinished("StartSlam") then
 			sprite:Play("Falling", true)
 		elseif sprite:IsFinished("Falling") and data.BounceCount then
-			if data.BounceCount < 3 then
+			if data.BounceCount < 1 then
 				sprite:Play("Falling", true)
 				data.BounceCount = data.BounceCount + 1
 			else
@@ -6806,9 +7971,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				GetEntityData(customBody).IsVaulting = true
 				GetEntityData(GetEntityData(customBody).Player).vaultVelocity = data.Player:ToPlayer():GetMovementInput():Resized( BALANCE.BONE_HEARTS_VAULT_VELOCITY );
 				eff:Remove()
+				data.Player.ControlsEnabled = true
 			end
 		end
 	elseif data.IsVaulting then
+		data.Player:SetShootingCooldown(2)
 		if eff.FrameCount == 1 then --beginning
 			sprite:Load("gfx/effects/bone/bonedash.anm2",true)
 			sprite:Play("StartSlam", true) --normal attack
@@ -6827,7 +7994,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--print(tostring(gravityData.ZOffsetFloat))
 		if GetEntityData(data.Player).InAir then
 			if not gravityData.Init then
-				gravityData.InAirSpan = 30 --this tells how long does it take for Rebecca to be in air
+				gravityData.InAirSpan = 25 --this tells how long does it take for Rebecca to be in air
 				gravityData.ZOffsetVector = Vector(0,0) --tells how high the sprite is supposed to be
 				gravityData.ZOffsetFloat = 0 --tells how high sprite is with a number, not a vector
 				gravityData.IsSlamming = false --tells if Rebecca is going to slam down/ seems to be unused lol
@@ -6937,8 +8104,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				data.WillBounceAgain = false
 				data.Player.Velocity = ((data.Player.Velocity * 0.9) + Vector.FromAngle(1*math.random(1,360))*(math.random(10,14))) * (2 + ((GetEntityData(data.Player).BoneStacks*5)/10))
 				--difficulty added to each bounce made is done below:
-				gravityData.AccelAddFloat = gravityData.AccelAddFloat + 2
-				gravityData.AirSpanMultiply = gravityData.AirSpanMultiply + 0.3
+				--gravityData.AccelAddFloat = gravityData.AccelAddFloat + 2
+				--gravityData.AirSpanMultiply = gravityData.AirSpanMultiply + 0.3
 				--add stacks
 				GetEntityData(data.Player).BoneStacks = GetEntityData(data.Player).BoneStacks + 1
 				--effect
@@ -7115,6 +8282,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				--tear.BaseDamage = player.Damage * 2
 			end
 		elseif sprite:IsFinished("Appear") then
+			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, data.Player.Position, Vector.Zero, data.Player)
 			GetEntityData(data.Player).IsDashActive = false
 			eff:Remove()
 			data.Player.Visible = true;
@@ -7126,7 +8294,150 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			GetEntityData(data.Player).LastEntityCollisionClass = nil
 			GetEntityData(data.Player).LastGridCollisionClass = nil
 		end
-	
+	elseif data.DashBrokenGlitch then
+		if eff.FrameCount == 1 then --beginning
+			eff.Visible = true
+			sprite:Load("gfx/effects/broken/dash_remnant.anm2",true)
+		end
+		sprite:Play("Remnant_0",false)
+	elseif data.DashBrokenFragment then
+		if eff.FrameCount == 1 then --beginning
+			eff.Visible = true
+			sprite:Load("gfx/effects/broken/dash_remnant_fragments.anm2",true)
+		end
+		sprite:Play("Remnant_0",false)
+	elseif data.TildeConsole then
+		eff.Position = data.Player.Position
+		eff.Velocity = data.Player.Velocity
+			
+		if eff.FrameCount == 1 then --beginning
+			sprite:Load("gfx/effects/broken/tilde_parry.anm2",true)
+			
+			sprite:Play("Parry",true)
+		end
+		
+		if sprite:IsOverlayFinished("Overlay_0") then
+			sprite:Play("Success",true)
+			sprite:RemoveOverlay()
+		end
+		if sprite:IsPlaying("SuccessLoop") and not data.Debug then
+			
+			if not data.DebugOption then 
+				eff.RenderZOffset = 1000
+				--sprite:SetFrame("Success",0)
+				data.DebugOption = 1 
+				sprite:PlayOverlay("Overlay_"..tostring(data.DebugOption),true)
+			end
+			
+			if sprite:IsOverlayFinished("Overlay_"..tostring(data.DebugOption)) then
+				if data.DebugOption < 13 then
+					data.DebugOption = data.DebugOption + 1
+					sprite:PlayOverlay("Overlay_"..tostring(data.DebugOption),true)
+				else
+					data.DebugOption = nil
+					sprite:PlayOverlay("Overlay_0", true)
+					data.Debug = true
+					sprite:Play("Success",true)
+				end
+			end
+			
+			if (data.Player:GetShootingInput().X ~= 0 or data.Player:GetShootingInput().Y ~= 0) then
+				
+				--debug 1
+				if sprite:IsOverlayPlaying("Overlay_1") then
+					for i, entenmies in pairs(Isaac.GetRoomEntities()) do --affect others
+						if entenmies:IsEnemy() and entenmies:IsVulnerableEnemy() then
+							local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, entenmies.Position, Vector(0,0), nil):ToTear()
+							tear.Height = -150
+						end
+					end
+				end
+				--debug 2
+				if sprite:IsOverlayPlaying("Overlay_2") then
+				
+				end
+				--debug 3
+				if sprite:IsOverlayPlaying("Overlay_3") then
+					data.Player:AddHearts(data.Player:GetMaxHearts())
+				end
+				--debug 4
+				if sprite:IsOverlayPlaying("Overlay_4") then
+					--set opened damage buff
+					GetEntityData(data.Player).BrokenBuff = true
+					data.Player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+					data.Player:EvaluateItems()
+				end
+				--debug 5
+				if sprite:IsOverlayPlaying("Overlay_5") then
+					data.Player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, true, false, false, false, -1)
+					--data.Player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, 0, -1)
+				end
+				--debug 6
+				if sprite:IsOverlayPlaying("Overlay_6") then
+					--data.Player:UseActiveItem(CollectibleType.COLLECTIBLE_MEGA_MUSH, true, false, false, false, -1)
+					for i = 1, 16 do
+						data.Player:AddWisp(-1, data.Player.Position, false, false)
+					end
+				end
+				--debug 7
+				if sprite:IsOverlayPlaying("Overlay_7") then
+					Isaac.ExecuteCommand("debug 7")
+					data.debug7 = true
+					for i = 1, 2 do
+						data.Player:UseCard(Card.CARD_TOWER, 0)
+					end
+				end
+				--debug 8
+				if sprite:IsOverlayPlaying("Overlay_8") then
+					--data.Player:UseActiveItem(CollectibleType.COLLECTIBLE_MEGA_MUSH, true, false, false, false, -1)
+					for i = 1, 2 do
+						if i == 1 and data.Player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) ~= 0 then
+							SchoolbagAPI.RefundActiveCharge(data.Player, 0, false)
+						elseif data.Player:GetActiveItem(ActiveSlot.SLOT_POCKET) ~= 0 then
+							SchoolbagAPI.RefundActiveCharge(data.Player, 0, true)
+						end
+					end
+				end
+				--debug 9
+				if sprite:IsOverlayPlaying("Overlay_9") then
+					GetEntityData(data.Player).BrokenLuck = true
+					data.Player:AddCacheFlags(CacheFlag.CACHE_LUCK);
+					data.Player:EvaluateItems()
+				end
+				--debug 10
+				if sprite:IsOverlayPlaying("Overlay_10") then
+					for i, entenmies in pairs(Isaac.GetRoomEntities()) do --affect others
+						if entenmies:IsEnemy() and entenmies:IsVulnerableEnemy() then
+							entenmies.HitPoints = entenmies.HitPoints - entenmies.MaxHitPoints/10
+							entenmies:TakeDamage(data.Player.Damage/10, 0, EntityRef(eff), 4)
+						end
+					end
+				end
+				--debug 11
+				if sprite:IsOverlayPlaying("Overlay_11") then
+					data.Player:UseActiveItem(CollectibleType.COLLECTIBLE_PAUSE, true, false, false, false, -1)
+				end
+				--debug 12
+				if sprite:IsOverlayPlaying("Overlay_12") then
+					local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, room:FindFreePickupSpawnPosition(eff.Position, 1), Vector(0,0), nil) --body effect
+				end
+				--debug 13
+				if sprite:IsOverlayPlaying("Overlay_13") then
+					GetEntityData(data.Player).IsParryInvul = false
+					data.Player:TakeDamage( 5, 0, EntityRef(data.Player), 0);
+				end
+				sprite:Play("Success",true)
+			end
+		end
+		if sprite:IsFinished("Fail") or sprite:IsFinished("Parry") or sprite:IsFinished("Success") then
+			eff:Remove()
+			GetEntityData(data.Player).IsParryInvul = false
+			
+			local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, data.Player.Position, Vector(0,0), nil) --body effect
+			GetEntityData(customBody).Player = data.Player
+			GetEntityData(customBody).DontFollowPlayer = true
+			GetEntityData(customBody).DashBrokenFragment = true
+		end
 	end
 end, ENTITY_EXTRACHARANIMHELPER)
 
@@ -7151,6 +8462,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_, eff)
 		if GetEntityData(player).countdownFrames >= 7 then
 			eff:Remove()
 		end
+	elseif data.DashBrokenGlitch then
+		local text = GetEntityData(player).tankAmount
+		Isaac.RenderText(tostring(text),Isaac.WorldToScreen(eff.Position).X, Isaac.WorldToScreen(eff.Position).Y-15, 1 ,1 ,1 ,1 )
 	end
 end, ENTITY_EXTRACHARANIMHELPER)
 
@@ -7161,7 +8475,7 @@ local customColor = Color(1, 1, 2.25, 1, 0, 0, 0)
 do
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = Isaac.GetPlayer(0)
-	local data = ent:GetData()
+	local data = GetEntityData(ent)
 	
 	--blessed effect
 	if data.IsBlessed then
@@ -7177,6 +8491,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				end
 			end
 		end
+	end
+	if data.BurstGuts then
+		if ent:HasMortalDamage() then
+			local amount = math.ceil(ent.Size / 3)
+			for i = 0, amount do
+				local var = TearVariant.BLOOD
+				if math.random(1,3) == 3 then
+					var = TearVariant.BONE
+				end
+				local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, ent.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
+				SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+			end
+		end
+		data.BurstGuts = false
 	end
 	
 	--lovesick effect
@@ -7613,6 +8941,33 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		else
 			queueDamageSound = true;
 		end
+		
+		if data.mainGlitch then
+			if not data.tankAmount then data.tankAmount = 0 end
+			if data.tankAmount >= 50 then 
+				SAPI.game:ShakeScreen(5);
+				speaker:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+				damage:Kill()
+			else
+				data.tankAmount = data.tankAmount + 1
+				return false
+			end
+		end
+		
+		if data.Parry then --tilde parry effect
+			if data.Parry:GetSprite():IsPlaying("Parry") and data.Parry:GetSprite():WasEventTriggered("Parry") and not data.Parry:GetSprite():WasEventTriggered("ParryStop") then
+				data.Parry:GetSprite():Play("SuccessLoop")
+				data.IsParryInvul = true
+				speaker:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
+				return false
+			end
+		end
+		
+		if data.IsParryInvul then
+			SAPI.game:ShakeScreen(5);
+			speaker:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
+			return false
+		end
 	end
 	
 	if player:HasCollectible(COLLECTIBLE_CURSEDSPOON) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 then
@@ -7623,6 +8978,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		player:AnimatePitfallIn()
 		data.IsUninteractible = true
 	end
+	
 end, EntityType.ENTITY_PLAYER)
 
 -- Reset the information when moving rooms so that we don't have false positive double taps across rooms
@@ -7650,6 +9006,26 @@ function yandereWaifu:NewRoom()
 			--workaround for when you go bald in the knife dimension, because theres no way to check what dimension you are in for some reason.......
 			--ApplyCostumes( GetEntityData(player).currentMode, player )
 			--print("im no bald")
+			
+			if data.mainGlitch then
+				if not data.mainGlitch:Exists() then
+					data.mainGlitch = nil 
+					
+					if player:GetBrokenHearts() > 11 then
+						player:Die()
+					else
+						if player:GetHearts() <= 1 then
+							player:AddBrokenHearts(1)
+						end
+						player:TakeDamage( 2, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);
+						player:ResetDamageCooldown()
+					end
+				end
+			end
+			if data.debug7 then
+				Isaac.ExecuteCommand("debug 7")
+				data.debug7 = false
+			end
 		end
 		if player:HasCollectible(COLLECTIBLE_ETERNALBOND) then
 			for i, iss in pairs (Isaac.FindByType(ENTITY_TINYISAAC, 663123, -1, false, false)) do
