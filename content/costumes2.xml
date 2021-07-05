@@ -7,11 +7,17 @@
 	<costume anm2path="angelofdeathhair.anm2" type="none" priority="200" />
 	<costume anm2path="deadhair.anm2" type="none" priority="200" skinColor="0" overwriteColor="true"/>
 	<costume anm2path="rebeccasfate.anm2" type="none" isFlying="true" hasSkinAlt="true"/>
-	
+	<costume anm2path="glitch_costume.anm2" type="none" priority="90" />
+
 	<costume anm2path="costumes/rebekah_hair/rottenmode_headremove.anm2" type="none" priority="999" />
+	<costume anm2path="costumes/rebekah_hair/rottenmode_skinremove.anm2" type="none" priority="999" />
 	
 	<costume anm2path="bridalhair.anm2" type="none" priority="200" />
 	<costume anm2path="fulfilled.anm2" type="none" priority="180" isFlying="true" hasSkinAlt="false"/>
+	
+	<costume anm2path="isaac_overdose.anm2" type="none" priority="800" />
+	<costume anm2path="maternallove_aura.anm2" type="none" priority="810" />
+	
 	<costume anm2path="weddedstockings.anm2" type="none" priority="170" isFlying="true" hasSkinAlt="false"/>
 	
 	<costume anm2path="love_power.anm2" type="none"/>
