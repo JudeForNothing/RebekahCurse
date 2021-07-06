@@ -7,6 +7,11 @@ local speaker = SFXManager();
 local Reb = Isaac.GetPlayerTypeByName("Rebekah") --Sets an ID for this -- no, this is a Christian channel now
 local SadRebekah = Isaac.GetPlayerTypeByName("RebekahB", true)
 
+local wasFromTaintedLocked = false
+
+local IsaacPresent = false
+local JacobPresent = false
+
 local InnocentHair = Isaac.GetCostumeIdByPath("gfx/characters/innocenthair.anm2");
 local NerdyGlasses = Isaac.GetCostumeIdByPath("gfx/characters/nerdyglasses.anm2");
 local WizoobHair = Isaac.GetCostumeIdByPath("gfx/characters/wizoobhair.anm2");
@@ -665,6 +670,38 @@ end
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(self, player)
+	if player:GetPlayerType() == SadRebekah then 
+		if SAPI.game:GetFrameCount() > 1 then
+			print("fellow")
+			SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+			--print("fellow")
+			player:ChangePlayerType(Reb)
+			local data = GetEntityData(player)
+				
+			--if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
+			--	player.Visible = false
+			--end
+			ChangeMode( player, REBECCA_MODE.RedHearts, true );
+				
+			--personalized doubletap classes
+			data.DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+			data.ATTACK_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+			-- start the meters invisible
+			data.moveMeterFadeStartFrame = -20;
+			data.attackMeterFadeStartFrame = -20;
+			data.bonestackMeterFadeStartFrame = 0;
+				
+			RebeccaInit(player)
+			--ApplyCostumes( data.currentMode, player );
+
+			if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
+		else
+			print("sol")
+			print(tostring(Reb))
+			Isaac.ExecuteCommand("restart "..Reb)
+			print("did it work?")
+		end
+	end
 	if player:GetPlayerType() == Reb then
 		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
 			player.Visible = false
@@ -821,6 +858,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_END, function(_, boo)
 end)
 
 function yandereWaifu:RebeccaGameInit(hasstarted) --Init
+	IsaacPresent = false
+	JacobPresent = false
+	if wasFromTaintedLocked then 
+		wasFromTaintedLocked = false
+		print("fel")
+		SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+	end
 	for i,player in ipairs(SAPI.players) do
 		if player:GetPlayerType() == Reb then
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
@@ -1229,7 +1273,7 @@ end
 					player.Luck = player.Luck + 3
 				end
 			elseif data.currentMode == REBECCA_MODE.EvilHearts then
-				if player:GetHearts() < 1 then
+				--[[if player:GetHearts() < 1 then
 					if cacheF == CacheFlag.CACHE_DAMAGE then
 						player.Damage = player.Damage / 2
 					end
@@ -1242,7 +1286,7 @@ end
 					if cacheF == CacheFlag.CACHE_LUCK then
 						player.Luck = player.Luck
 					end
-				else
+				else]]
 					if cacheF == CacheFlag.CACHE_DAMAGE then
 						player.Damage = player.Damage * 1.20
 					end
@@ -1255,7 +1299,7 @@ end
 					if cacheF == CacheFlag.CACHE_LUCK then
 						player.Luck = player.Luck - 1
 					end
-				end
+				--end
 			elseif data.currentMode == REBECCA_MODE.EternalHearts then
 				if cacheF == CacheFlag.CACHE_FIREDELAY then
 					player.MaxFireDelay = player.MaxFireDelay + 2
@@ -7261,7 +7305,7 @@ function yandereWaifu:barrageAndSP(player)
 	end
 	
 	if data.currentMode == REBECCA_MODE.EvilHearts and game:GetFrameCount() >= 1 then	 --weird bug happens
-		if player:GetHearts() <= 0 then
+		--[[if player:GetHearts() <= 0 then
 			if player:GetMovementInput():Length() < 1 and not data.OpenedMaw then
 				local maw = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_DARKMAW, 0, player.Position, player.Velocity, player) --feather attack
 				data.OpenedMaw = maw
@@ -7290,7 +7334,7 @@ function yandereWaifu:barrageAndSP(player)
 			if data.EvilType == 1 then
 				SchoolbagAPI.AnimateGiantbook(nil, nil, "Shake", "gfx/ui/giantbook/giantbook_void_black_heart.anm2", true)
 			end
-		end
+		end]]
 	end
 
 	if data.currentMode == REBECCA_MODE.BrokenHearts then --decrement of tankAmount
@@ -7705,7 +7749,7 @@ function yandereWaifu:MirrorMechanic(player)
 					mirdata.currentSavedHearts = totalCurTypesofHearts;
 					mirdata.currentSavedHeartsNum = #totalCurTypesofHearts;
 				end --this saves how much totalCurTypesofHearts you have when the mirror is in the process in presenting a bunch of hearts, so that it won't glitch
-				
+				if not mirdata.currentHeart then mirdata.currentHeart = 1 end
 				if mir.FrameCount == 1 then
 					if not mirdata.FirstPos then mirdata.FirstPos = mir.Position end --code to check if it's "broken", it's very wack, I hate it, but I can't do anything else, so deal with it
 					if mir.SubType == 1 then
@@ -7721,21 +7765,22 @@ function yandereWaifu:MirrorMechanic(player)
 					end 
 				end
 				if mir.SubType == 0 then
-					if not mirdata.Init and not sprite:IsPlaying("Idle") then
+					if not mirdata.Init --[[and not sprite:IsPlaying("Idle")]] then
+						print("oh ye gods")
+						if not sprite:IsPlaying("Appear") then
+							sprite:Play("Appear")
+						end
 						if sprite:IsFinished("Appear") then
-							sprite:Play("StartUp");
+							--sprite:Play("StartUp");
 							sprite:PlayOverlay(tostring(mirdata.Use).."_Use", true)
 							mirdata.notAlive = false
 							--sprite:Play("StartUp", true);
 							mirdata.currentHeart = 1
 							sprite:Play(mirdata.currentSavedHearts[mirdata.currentHeart], true)
 							mirdata.Init = true
-							break
+							--break
 						end
-						if not sprite:IsPlaying("Appear") then
-							sprite:Play("Appear")
-						end
-					else
+					elseif not sprite:IsPlaying("Appear") and mirdata.Init then
 						if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then --heart only drop mechanic
 							sprite:Play("Death", true);
 							for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
@@ -7748,9 +7793,13 @@ function yandereWaifu:MirrorMechanic(player)
 								mirdata.DeadFinished = true;
 							end 
 						else
+							if not mirdata.ForceOverlay then
+								sprite:PlayOverlay(tostring(mirdata.Use).."_Use", true)
+								mirdata.ForceOverlay = true
+							end
 							if mir.FrameCount == 2 then
 								if not sprite:IsPlaying("Appear") then
-									sprite:Play("StartUp", true);
+									--sprite:Play("StartUp", true);
 									sprite:PlayOverlay(tostring(mirdata.Use).."_Use", true)
 								end
 								mirdata.currentHeart = 1 --keeps track of how much you went through to the totalCurTypesofHearts
@@ -7772,8 +7821,10 @@ function yandereWaifu:MirrorMechanic(player)
 									if mirdata.currentSavedHeartsNum and mirdata.currentHeart then
 										--print("film")
 										if mirdata.currentHeart <= mirdata.currentSavedHeartsNum then
+											
 											if mirdata.IsDisplaying == nil or mirdata.IsDisplaying == false then --IsDisplaying tells if the mirror is playing something
 											--	print(mirdata.IsDisplaying)
+												
 												mirdata.IsDisplaying = true;
 												sprite:Play(mirdata.currentSavedHearts[mirdata.currentHeart], true);
 											--	print("goes here"..tostring(mirdata.currentHeart)..tostring(totalCurTypesofHearts[mirdata.currentHeart]))
@@ -7785,6 +7836,10 @@ function yandereWaifu:MirrorMechanic(player)
 											mirdata.currentHeart = 1; --reset
 											mirdata.currentSavedHearts = nil;
 										end
+									elseif not mirdata.currentSavedHearts then
+										mirdata.currentSavedHearts = totalCurTypesofHearts;
+										mirdata.currentSavedHeartsNum = #totalCurTypesofHearts;
+	
 									end
 									
 									--if sprite:IsFinished("Initiate") then
@@ -8102,8 +8157,6 @@ function yandereWaifu:heartBoneReserveRenderLogic(player)
 	--end
 end
 
-local IsaacPresent = false
-local JacobPresent = false
 -- composite of all callbacks to ensure proper callback order
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	
@@ -8188,10 +8241,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, _)
 end);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
+	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
 	for p = 0, game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
+		if player:GetPlayerType() == PlayerType.PLAYER_ESAU or player.Parent then
+			excludeBetaFiends = excludeBetaFiends + 1
+		end
 		if player:GetPlayerType() == Reb then
-			yandereWaifu:heartReserveRenderLogic(player, p);
+			yandereWaifu:heartReserveRenderLogic(player, p - excludeBetaFiends);
 			if GetEntityData(player).IsLeftover then
 				yandereWaifu:heartBoneReserveRenderLogic(player)
 			end
@@ -8625,6 +8682,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--print(SadRebekah)
 	if player:GetPlayerType() == SadRebekah then 
 		if SAPI.game:GetFrameCount() > 1 then
+			--SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+			--[[if SAPI.game:GetFrameCount() >= 1 then
+				print("fel")
+			end]]
+			
 			player:ChangePlayerType(Reb)
 			local data = GetEntityData(player)
 				
@@ -8632,7 +8694,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			--	player.Visible = false
 			--end
 			ChangeMode( player, REBECCA_MODE.RedHearts, true );
-				
+			
 			--personalized doubletap classes
 			data.DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
 			data.ATTACK_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
@@ -8646,6 +8708,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 
 			if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
 		else
+			wasFromTaintedLocked = true
+			
 			print("sol")
 			print(tostring(Reb))
 			Isaac.ExecuteCommand("restart "..Reb)
@@ -8705,7 +8769,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						if player:HasTrinket(TRINKET_ISAACSLOCKS) then
 							trinketBonus = 5
 						end
-						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) and not playerdata.IsAttackActive then
+						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) and not playerdata.IsAttackActive and data.specialCooldown <= 0 then
 							if GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
 							
 								player.Velocity = player.Velocity + vector:Resized( BALANCE.RED_HEARTS_DASH_SPEED );
