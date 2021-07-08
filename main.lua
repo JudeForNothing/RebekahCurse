@@ -1117,7 +1117,7 @@ function yandereWaifu:TrySpawnMirror()
 				if not add then
 					table.insert(bossRoomsCleared, {level:GetCurrentRoomDesc().GridIndex, level:GetStage()} );
 					local spawnPosition = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 1);
-					local subtype
+					local subtype = 0
 					--bride --if ( GetEntityData(player).currentMode==REBECCA_MODE.RedHearts and level:GetStage() == 10 ) then subtype = 1 else subtype = 0 end
 					local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, ENTITY_REBMIRROR, subtype, spawnPosition, Vector(0,0), player);
 					GetEntityData(mir).Init = false
