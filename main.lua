@@ -1118,7 +1118,7 @@ function yandereWaifu:TrySpawnMirror()
 					table.insert(bossRoomsCleared, {level:GetCurrentRoomDesc().GridIndex, level:GetStage()} );
 					local spawnPosition = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 1);
 					local subtype
-					if ( GetEntityData(player).currentMode==REBECCA_MODE.RedHearts and level:GetStage() == 10 ) then subtype = 1 else subtype = 0 end
+					--bride --if ( GetEntityData(player).currentMode==REBECCA_MODE.RedHearts and level:GetStage() == 10 ) then subtype = 1 else subtype = 0 end
 					local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, ENTITY_REBMIRROR, subtype, spawnPosition, Vector(0,0), player);
 					GetEntityData(mir).Init = false
 					mir:GetSprite():Play("Appear")
@@ -1241,8 +1241,10 @@ end
 						player.Damage = player.Damage + 0.5
 					end
 				end
-				if cacheF == CacheFlag.CACHE_FIREDELAY then
-					player.MaxFireDelay = player.MaxFireDelay - 1
+				if cacheF == CacheFlag.CACHE_FIREDELAY then	
+					if player.MaxFireDelay >= 4 then
+						player.MaxFireDelay = player.MaxFireDelay - 1
+					end
 				end
 				if cacheF == CacheFlag.CACHE_RANGE then
 					player.TearHeight = player.TearHeight - 5.25
@@ -1345,7 +1347,7 @@ end
 				end
 			elseif data.currentMode == REBECCA_MODE.BrokenHearts then
 				if cacheF == CacheFlag.CACHE_SPEED then
-					player.MoveSpeed = player.MoveSpeed - 0.60
+					player.MoveSpeed = player.MoveSpeed - 0.40
 				end
 				if cacheF == CacheFlag.CACHE_DAMAGE then
 					if GetEntityData(player).BrokenBuff then
@@ -1654,7 +1656,8 @@ function yandereWaifu:heartReserveLogic(player)
 	--for p = 0, game:GetNumPlayers() - 1 do
 	--local player = Isaac.GetPlayer(p)
 	local playerdata = GetEntityData(player);
-	--print("donkey")
+	--print(playerdata.heartStocksMax)
+	--print(yandereWaifu:getReserveStocks(player))
 	--print(playerdata.heartReserveFill,"  ",playerdata.heartReserveMaxFill)
 	if playerdata.heartReserveFill >= playerdata.heartReserveMaxFill and yandereWaifu:getReserveStocks(player) < playerdata.heartStocksMax then
 		local number = 0
@@ -1666,6 +1669,12 @@ function yandereWaifu:heartReserveLogic(player)
 		if number > 0 then
 			yandereWaifu:addReserveStocks(player, number)
 			yandereWaifu:addReserveFill(player, -playerdata.heartReserveMaxFill) --decrease reserve to fit in more reserve
+		end
+	elseif playerdata.heartStocksMax then
+		if yandereWaifu:getReserveStocks(player) >= playerdata.heartStocksMax then -- force max stocks
+			GetEntityData(player).heartStocks = playerdata.heartStocksMax
+			GetEntityData(player).heartReserveFill = 0
+			GetEntityData(player).heartReserveFill = playerdata.heartReserveMaxFill - 1
 		end
 	--end
 	--[[elseif playerdata.heartReserveFill == 0 then
@@ -1700,6 +1709,7 @@ function yandereWaifu:customMovesInput()
 			if not playerdata.isReadyForSpecialAttack then playerdata.isReadyForSpecialAttack = false end
 			
 			--setting max heartStocks
+			if not playerdata.heartStocksMax then playerdata.heartStocksMax = 3 end
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
 				playerdata.heartStocksMax = 6
 			else
@@ -2126,6 +2136,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 							local tears = player:FireTear(player.Position, Vector.FromAngle((j - 90)*fix + (data.addedbarrageangle + data.specialAttackVector:GetAngleDegrees()))*(20), false, false, false):ToTear()
 							tears.Position = player.Position
 							tears.Scale = tears.Scale + tearSize
+							tears.CollisionDamage = tears.CollisionDamage * 1.2
 						end
 					end
 					speaker:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
@@ -2139,6 +2150,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 							local tears = player:FireTear(player.Position, Vector.FromAngle((data.addedbarrageangle2) + data.specialAttackVector:GetAngleDegrees())*(20), false, false, false)
 							tears.Position = player.Position
 							tears.Scale = tears.Scale + tearSize
+							tears.CollisionDamage = tears.CollisionDamage * 1.2
 						end
 					end
 					if player.MaxFireDelay == 1 then
@@ -2151,6 +2163,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 							local tears = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees())*(20), false, false, false)
 							tears.Position = player.Position
 							tears.Scale = tears.Scale + tearSize
+							tears.CollisionDamage = tears.CollisionDamage * 1.2
 						end
 					end
 					
@@ -2305,7 +2318,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 								tear.FallingSpeed = -9 + math.random() * 2;
 								tear.FallingAcceleration = 0.5;
 								tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_PIERCING;
-								tear.CollisionDamage = player.Damage * 1.3 * extraTearDmg;
+								tear.CollisionDamage = player.Damage * 1.6 * extraTearDmg;
 								--if not tear:GetData().IsEctoplasm then  tear:GetData().IsEctoplasm = true end
 								--print(tear:GetData().IsEctoplasm)
 								--tear.BaseDamage = player.Damage * 2
@@ -2414,7 +2427,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		end
 	elseif modes == REBECCA_MODE.GoldHearts then
 		local coins = player:GetNumCoins(); --check amount of coins for Ned
-		local nedClones = 2;
+		local nedClones = 1;--was 2
 		--[[if coins >= 25 and coins < 50 then nedClones = 3
 		elseif coins >= 50 and coins < 75 then nedClones = 4
 		elseif coins >= 75 then nedClones = 5
@@ -2450,15 +2463,20 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 					subtype = 4
 				end
 				local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_NED_NORMAL, subtype, player.Position, Vector( 0, 0 ), player):ToFamiliar();
-				if i == 5 then yandereWaifu:purchaseReserveStocks(player, 1) --[[player:AddHearts( -1 )]] end
+				--if i == 5 then yandereWaifu:purchaseReserveStocks(player, 1) --[[player:AddHearts( -1 )]] end
 			end
 		else
-			for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, ENTITY_NED_NORMAL, -1, false, false) ) do
+			for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 				if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 					if ned.Variant == ENTITY_NED_NORMAL then
 						GetEntityData(ned).Health = 3
-					elseif ned.Variant == ENTITY_SQUIRENED then
+						local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ned.Position, Vector(0,0), ned) 
+						crack.CollisionDamage = 0
+					end
+					if ned.Variant == ENTITY_SQUIRENED then
 						GetEntityData(ned).Health = 5
+						local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ned.Position, Vector(0,0), ned) 
+						crack.CollisionDamage = 0
 					end
 				end
 			end
@@ -3101,7 +3119,12 @@ function AddRebekahDashEffect(player)
 	GetEntityData(customBody).DontFollowPlayer = true
 end
 
-
+function yandereWaifu:getPillEffect(pillEffect, player, useFlag)
+    if pillEffect == PillEffect.PILLEFFECT_PARALYSIS then
+		GetEntityData(player).IsParalysed = true
+    end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, yandereWaifu.getPillEffect) 
 
 --SOUL HEART --
 do
@@ -3720,7 +3743,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				SchoolbagAPI.UpdateLaserSize(beam, 0.5)
 			else
 				local tear = FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(16)), TearVariant.BLOOD, fam)
-				tear:toTear().Damage = 2.5
+				tear:ToTear().CollisionDamage = 1.5
 			end
 			speaker:Play(SoundEffect.SOUND_WORM_SPIT, 1, 0, false, 1)
 			data.target = nil
@@ -3801,7 +3824,7 @@ function yandereWaifu:WindSlashUpdate(tr, _)
 				if enemy.Position:Distance( tr.Position ) < enemy.Size + tr.Size + 30 then
 					local targetAngle = (enemy.Position - tr.Position):GetAngleDegrees()
 					if targetAngle >= (angleNum - 90) and targetAngle <= (angleNum + 90) then
-						enemy:TakeDamage(tr.Damage, 0, EntityRef(tr), 4)
+						enemy:TakeDamage(tr.CollisionDamage, 0, EntityRef(tr), 4)
 					end
 				end
 			end
@@ -4047,6 +4070,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	if spr:IsFinished("Spawn") then
 		spr:Play("Idle", true)
 	end
+	local damageNerf = 0
+	if GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+		damageNerf = 1
+		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
+	end
 	
 	if fam.SubType == 4 then
 		if game:GetRoom():GetFrameCount() == 1 and game:GetRoom():GetType() == RoomType.ROOM_BOSS then
@@ -4131,7 +4159,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 						data.HasCommander = e
 					end
 					if data.HasCommander and GetPtrHash(e) == GetPtrHash(data.HasCommander) and (fam.Position - e.Position):Length() < 250 then
-						data.IncreasedBuff = 2
+						data.IncreasedBuff = 0.8
 					else
 						data.IncreasedBuff = 0
 					end
@@ -4200,7 +4228,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 				if enemy:IsVulnerableEnemy() then
 					if enemy.Position:Distance( fam.Position ) < enemy.Size + fam.Size + 30 then
-						enemy:TakeDamage(3.5 + data.IncreasedBuff + fam.Player:GetNumCoins()/8 + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam), 4)
+						enemy:TakeDamage(2.5 + data.IncreasedBuff - damageNerf --[[+ fam.Player:GetNumCoins()/8]] + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam), 4)
 					end
 				end
 			end
@@ -4218,10 +4246,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			spr:Play("Idle", true)
 		end
 	elseif spr:IsPlaying("Charged") then
-		if spr:GetFrame() <= 35 then
+		if spr:GetFrame() <= 64 then
 			fam.Velocity = Vector( 0 , 0 );
 		else
-			if spr:GetFrame() == 36 then
+			if spr:GetFrame() == 65 then
 				fam.Velocity = data.savedVelocity:Resized(50)
 			end
 		end
@@ -4273,6 +4301,11 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 			data.Height = -25
 		end
 	end
+	local damageNerf = 0
+	if GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+		damageNerf = 1
+		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
+	end
 	if not fam:GetData().Stuck then
 		if fam.FrameCount % 2 == 0 and data.Height then
 			data.Height = data.Height + 1
@@ -4281,7 +4314,7 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 		for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 			if enemy:IsVulnerableEnemy() then
 				if enemy.Position:Distance( fam.Position ) < enemy.Size + fam.Size + 30 then
-					enemy:TakeDamage(4.5 + fam.Player:GetNumCoins()/6 + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam), 4)
+					enemy:TakeDamage(4.5 -damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam), 4)
 				end
 			end
 		end
@@ -4429,7 +4462,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 		if spear then
 			if spear:GetData().Stuck then --if stuck
-				fam.Velocity = fam.Velocity * 0.8 + ( spear.Position - fam.Position):Resized(2);
+				fam.Velocity = fam.Velocity * 0.8 + ( spear.Position - fam.Position):Resized(1.5);
 			end
 		else
 			spr:Play("Idle")
@@ -4503,6 +4536,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		speaker:Play( SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
 	end
 	
+	local damageNerf = 0
+	if GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+		damageNerf = 1
+		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
+	end
+	
 	--flip sprite mechanic
 	if spr:IsPlaying("Idle")  then
 		SchoolbagAPI.FlipXByVec(fam, false)
@@ -4559,7 +4598,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						data.HasCommander = e
 					end
 					if data.HasCommander and GetPtrHash(e) == GetPtrHash(data.HasCommander) and (fam.Position - e.Position):Length() < 250 then
-						data.IncreasedBuff = 2
+						data.IncreasedBuff = 0.8
 					else
 						data.IncreasedBuff = 0
 					end
@@ -4587,7 +4626,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						if e:IsActiveEnemy() then
 							if e:IsVulnerableEnemy() then
 								if (fam.Position - e.Position):LengthSquared() <= 45^2 then
-									e:TakeDamage(1.5 * fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),4)
+									e:TakeDamage(1 * fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),4)
 								end
 							end
 						end
@@ -4628,7 +4667,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				if e:IsActiveEnemy() then
 					if e:IsVulnerableEnemy() then
 						if (fam.Position - e.Position):Length() < 45 then
-							e:TakeDamage(2.5 + data.IncreasedBuff + fam.Player:GetNumCoins()/8 + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
+							e:TakeDamage(2.5 + data.IncreasedBuff - damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
 						end
 						if (fam.Position - e.Position):Length() < 500 then
 							if (fam.Position - e.Position):Length() <= data.closestDist then
@@ -4665,7 +4704,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					if e:IsActiveEnemy() then
 						if e:IsVulnerableEnemy() then
 							if (fam.Position - e.Position):Length() < 45 then
-								e:TakeDamage(2.5 + data.IncreasedBuff + fam.Player:GetNumCoins()/8 + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
+								e:TakeDamage(2.5 + data.IncreasedBuff - damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
 							end
 							if (fam.Position - e.Position):Length() < 500 then
 								if (fam.Position - e.Position):Length() <= data.closestDist then
@@ -4704,7 +4743,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 							axeOffset = Vector(-15,0)
 						end
 						if ((fam.Position + axeOffset) - e.Position):Length() < 75 then
-							e:TakeDamage(2.5 + data.IncreasedBuff + fam.Player:GetNumCoins()/8 + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
+							e:TakeDamage(2.5 + data.IncreasedBuff -damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
 						end
 					end
 				end
@@ -4796,6 +4835,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if spr:IsFinished("Spawn") then
 		spr:Play("Side", true)
+	end
+	
+	local damageNerf = 0
+	if GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+		damageNerf = 1
+		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
 	end
 	
 	local currentSide = nil
@@ -4945,7 +4990,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				if e:IsVulnerableEnemy() then
 					if (fam.Position - e.Position):Length() <= 100 then
 						e:AddConfusion(EntityRef(fam), math.random(10,30), false)
-						e:TakeDamage(5.5/((fam.Position - e.Position):Length() + fam.Player:GetNumCoins()/10), 0, EntityRef(fam),10)
+						e:TakeDamage(2.5 - damageNerf/((fam.Position - e.Position):Length() + fam.Player:GetNumCoins()/10), 0, EntityRef(fam),10)
 					end
 				end
 			end
@@ -4962,88 +5007,96 @@ end, ENTITY_DEFENDINGNED);
 
 function yandereWaifu:LevelUpNeds()
 	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		local canUpgrade = false
 		local player = Isaac.GetPlayer(p)
-		
-		local potentialKnights = {
-			[1] = false, --ENTITY_CHRISTIANNED
-			[2] = false, --ENTITY_SCREAMINGNED
-			[3] = false, --ENTITY_BARBARICNED
-			[4] = false, --ENTITY_DEFENDINGNED
-			[5] = false --squire
-		}
-		local AvailableKnights = {
-			[0] = {},
-			[1] = {},
-			[4] = {} 
-		}
-		--print("fff"..tostring(AvailableKnights[0][1]))
-		--print(AvailableKnights[1][1])
-		for c, ned in pairs( Isaac.GetRoomEntities() ) do
-			if ned.Type == 3 then
-				--check for knights system
-				if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
-					--print(ned.SubType)
-					for i = 0, 9 do
-						if ned.SubType == i then
-							--print(ned.SubType.."  "..i)
-							if ned.Variant == ENTITY_CHRISTIANNED then AvailableKnights[i][1] = true end
-							if ned.Variant == ENTITY_SCREAMINGNED then AvailableKnights[i][2] = true end
-							if ned.Variant == ENTITY_BARBARICNED then AvailableKnights[i][3] = true end
-							if ned.Variant == ENTITY_DEFENDINGNED then AvailableKnights[i][4]  = true end
-						end
-					end
-					--print("hel"..tostring(AvailableKnights[0][1]))
-					--print(AvailableKnights[1][1])
-					--print(AvailableKnights[4][1])
-				end
-			end
-			--rank up system
+		if player:GetPlayerType() == Reb and GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
+			canUpgrade = true
+	--		break
 		end
-		for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
-			if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
-				if ned.Variant == ENTITY_NED_NORMAL then
-					local squire = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_SQUIRENED, ned.SubType, ned.Position, Vector(0,0), ned);
-					--local squire = game:Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
-					ned:Remove()
-				elseif ned.Variant == ENTITY_SQUIRENED then
-					for s = 0, 9 do
-						if ned.SubType == s then
-						
-							--print("amogus"..ned.SubType)
-							--print(AvailableKnights[1][4])
-							--print(AvailableKnights[4][4])
-							local rng = math.random(1, 10)
-							if --[[rng >= 0 and rng <= 2]] not AvailableKnights[ned.SubType][4] then
-								local defender =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_DEFENDINGNED, ned.SubType, ned.Position, Vector(0,0), ned);
-								AvailableKnights[ned.SubType][4] = true
-								ned:Remove()
-								break
-								--print("1")
-							elseif --[[rng >= 3 and rng <= 4]] not AvailableKnights[ned.SubType][3] then
-								local jugger =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_BARBARICNED, ned.SubType, ned.Position, Vector(0,0), ned);
-								AvailableKnights[ned.SubType][3] = true
-								ned:Remove()
-								break
-							elseif --[[rng >= 5 and rng <= 6]] not AvailableKnights[ned.SubType][2] then
-								local command =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_SCREAMINGNED, ned.SubType, ned.Position, Vector(0,0), ned);
-								AvailableKnights[ned.SubType][2] = true
-								ned:Remove()
-								--print("3")
-								break
-							elseif --[[rng >= 7 and rng <= 10]] not AvailableKnights[ned.SubType][1] then
-								local christian =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_CHRISTIANNED, ned.SubType, ned.Position, Vector(0,0), ned);
-								--local christian = game:Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_CHRISTIANNED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
-								AvailableKnights[ned.SubType][1] = true
-								ned:Remove()
-								--print("4")
-								break
+		
+	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	--	local player = Isaac.GetPlayer(p)
+		if canUpgrade then
+			local potentialKnights = {
+				[1] = false, --ENTITY_CHRISTIANNED
+				[2] = false, --ENTITY_SCREAMINGNED
+				[3] = false, --ENTITY_BARBARICNED
+				[4] = false, --ENTITY_DEFENDINGNED
+				[5] = false --squire
+			}
+			local AvailableKnights = {
+				[0] = {},
+				[1] = {},
+				[4] = {} 
+			}
+			--print("fff"..tostring(AvailableKnights[0][1]))
+			--print(AvailableKnights[1][1])
+			for c, ned in pairs( Isaac.GetRoomEntities() ) do
+				if ned.Type == 3 then
+					--check for knights system
+					if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
+						--print(ned.SubType)
+						for i = 0, 9 do
+							if ned.SubType == i then
+								--print(ned.SubType.."  "..i)
+								if ned.Variant == ENTITY_CHRISTIANNED then AvailableKnights[i][1] = true end
+								if ned.Variant == ENTITY_SCREAMINGNED then AvailableKnights[i][2] = true end
+								if ned.Variant == ENTITY_BARBARICNED then AvailableKnights[i][3] = true end
+								if ned.Variant == ENTITY_DEFENDINGNED then AvailableKnights[i][4]  = true end
+							end
+						end
+						--print("hel"..tostring(AvailableKnights[0][1]))
+						--print(AvailableKnights[1][1])
+						--print(AvailableKnights[4][1])
+					end
+				end
+				--rank up system
+			end
+			for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
+				if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
+					if ned.Variant == ENTITY_NED_NORMAL then
+						local squire = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_SQUIRENED, ned.SubType, ned.Position, Vector(0,0), ned);
+						--local squire = game:Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
+						ned:Remove()
+					elseif ned.Variant == ENTITY_SQUIRENED then
+						for s = 0, 9 do
+							if ned.SubType == s then
+							
+								--print("amogus"..ned.SubType)
+								--print(AvailableKnights[1][4])
+								--print(AvailableKnights[4][4])
+								local rng = math.random(1, 10)
+								if --[[rng >= 0 and rng <= 2]] not AvailableKnights[ned.SubType][4] then
+									local defender =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_DEFENDINGNED, ned.SubType, ned.Position, Vector(0,0), ned);
+									AvailableKnights[ned.SubType][4] = true
+									ned:Remove()
+									break
+									--print("1")
+								elseif --[[rng >= 3 and rng <= 4]] not AvailableKnights[ned.SubType][3] then
+									local jugger =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_BARBARICNED, ned.SubType, ned.Position, Vector(0,0), ned);
+									AvailableKnights[ned.SubType][3] = true
+									ned:Remove()
+									break
+								elseif --[[rng >= 5 and rng <= 6]] not AvailableKnights[ned.SubType][2] then
+									local command =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_SCREAMINGNED, ned.SubType, ned.Position, Vector(0,0), ned);
+									AvailableKnights[ned.SubType][2] = true
+									ned:Remove()
+									--print("3")
+									break
+								elseif --[[rng >= 7 and rng <= 10]] not AvailableKnights[ned.SubType][1] then
+									local christian =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_CHRISTIANNED, ned.SubType, ned.Position, Vector(0,0), ned);
+									--local christian = game:Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_CHRISTIANNED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
+									AvailableKnights[ned.SubType][1] = true
+									ned:Remove()
+									--print("4")
+									break
+								end
 							end
 						end
 					end
 				end
 			end
 		end
-		
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.LevelUpNeds)
@@ -6852,6 +6905,7 @@ function yandereWaifu.rottenFlyHeadColl(_, fam, collider, low)
 			fam:Die()
 			for i = 0, math.random(9,15) do
 				local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_FLYTEAR, 0, fam.Position, Vector(0,0), player)
+				GetEntityData(fly).RandomOrbit = math.random(0,360)
 			end
 		else
 			data.Health = data.Health - 1
@@ -6880,7 +6934,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 	if not data.Hidden then
 		fam.Visible = true
 		if not data.Health then
-			data.Health = 60
+			data.Health = 40
 		end
 		if data.SpecialDash then
 			if not data.StopFrames then
@@ -6907,10 +6961,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 				end
 				if fam.FrameCount % 30 == 0 and math.random(1,10) == 10 then
 					local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_FLYTEAR, fam.SubType, fam.Position, Vector(0,0), player)
+					GetEntityData(fly).RandomOrbit = math.random(0,360)
 				end
 			--else
 			--	fam.Velocity = (fam.Velocity * 0.7) + movementDirection:Resized( BALANCE.ROTTEN_HEARTS_FLYBALL_SPEED + player.MoveSpeed );
 			--end
+		end
+		
+		if GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts then
+			fam:Die()
+			for i = 0, math.random(9,15) do
+				local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_FLYTEAR, 0, fam.Position, Vector(0,0), player)
+				GetEntityData(fly).RandomOrbit = math.random(0,360)
+			end
 		end
 	else
 		fam.Position = Vector(0,0)
@@ -6961,7 +7024,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 	local controller = player.ControllerIndex
 	
 	if not data.Health then
-		data.Health = 20
+		data.Health = 10
 	end
 	
 	if not data.Parent then data.Parent = player end
@@ -6980,7 +7043,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 	if target then
 		SchoolbagAPI.MoveDirectlyTowardsTarget(fam, target, 7, 0.9)
 	else
-		SchoolbagAPI.MoveOrbitAroundTargetType1(fam, data.Parent, 2, 0.9, 8, 0)
+		if not data.RandomOrbit then data.RandomOrbit = math.random(0,360) end
+		SchoolbagAPI.MoveOrbitAroundTargetType1(fam, data.Parent, 2, 0.9, 8, 0 + data.RandomOrbit)
 	end
 	
 end, ENTITY_FLYTEAR);
@@ -7262,7 +7326,7 @@ function yandereWaifu:barrageAndSP(player)
 		if not data.StackedFeathers then data.StackedFeathers = 0 end --stacked feathers is how much feathers you stacked while you aren't shooting.
 		if not data.StackedFeathersTransition then data.StackedFeathersTransition = 0 end --this thing keeps track or counts on how long before a feather becomes added in the stack
 		data.StackedFeathersTransition = data.StackedFeathersTransition + 1
-		if data.StackedFeathersTransition >= 1*(player.MaxFireDelay/2) then
+		if data.StackedFeathersTransition >= 1*(player.MaxFireDelay) then
 			if data.StackedFeathers < math.floor(100/(player.MaxFireDelay/5)) * extraTears then
 				data.StackedFeathers = data.StackedFeathers + (1*extraTears)
 			end
@@ -7688,6 +7752,7 @@ end, ENTITY_ARCANE_CIRCLE)
 function yandereWaifu:MirrorMechanic(player) 
 	local totalTypesofHearts = 0; --counts the total amount of hearts available
 	local totalCurTypesofHearts = {};
+	local getRebekahsPresent = 0
 	
 	for p = 0, game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
@@ -7704,7 +7769,6 @@ function yandereWaifu:MirrorMechanic(player)
 			ShowBroken = false
 		}
 		
-		
 		--health code
 
 		--heart code checking
@@ -7718,6 +7782,8 @@ function yandereWaifu:MirrorMechanic(player)
 			if player:GetRottenHearts() > 0 then heartTable.ShowRotten = true end
 			if player:GetBrokenHearts() > 0 then heartTable.ShowBroken = true end
 			
+			
+			getRebekahsPresent = getRebekahsPresent + 1
 		end
 
 		--current heart collecting
@@ -7756,7 +7822,7 @@ function yandereWaifu:MirrorMechanic(player)
 						local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_ARCANE_CIRCLE, 0, player.Position, Vector(0,0), player );
 						mirdata.Circle = arcane
 					end
-					if not mirdata.Use then mirdata.Use = game:GetNumPlayers() end
+					if not mirdata.Use then mirdata.Use = getRebekahsPresent end --game:GetNumPlayers() end
 					if not mirdata.Init then mirdata.Init = true end
 				end
 				if mir.GridCollisionClass ~= 0 --[[mir.Position:Distance(mirdata.FirstPos) > 30]] then
@@ -7984,12 +8050,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 			if ent.Type == EntityType.ENTITY_ISAAC or (ent.Type == EntityType.ENTITY_SATAN and not didKillSatan ) then -- isaac heart spawn
 				if game:GetLevel():GetStage() == 10 then
 					didKillSatan = true
-					local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(97), 1);
-					local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, CollectibleType.COLLECTIBLE_ISAACS_HEART, spawnPosition, Vector(0,0), player)
+					--local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(97), 1);
+					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, CollectibleType.COLLECTIBLE_ISAACS_HEART, spawnPosition, Vector(0,0), player)
 				end
 			end
 			local maxHealth = ent.MaxHitPoints
-			yandereWaifu:addReserveFill(player, maxHealth/7)
+			yandereWaifu:addReserveFill(player, maxHealth/5)
 			if GetEntityData(player).IsLeftover then
 				GetEntityData(player).BoneJockeyTimeLeft = etEntityData(player).BoneJockeyTimeLeft + maxHealth/7
 			end
@@ -8769,7 +8835,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						if player:HasTrinket(TRINKET_ISAACSLOCKS) then
 							trinketBonus = 5
 						end
-						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) and not playerdata.IsAttackActive and data.specialCooldown <= 0 then
+						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or
+						psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") 
+						or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible)
+						and not playerdata.IsAttackActive and data.specialCooldown <= 0 and not data.IsParalysed then
 							if GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
 							
 								player.Velocity = player.Velocity + vector:Resized( BALANCE.RED_HEARTS_DASH_SPEED );
@@ -8970,8 +9039,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			data.DASH_DOUBLE_TAP_READY = true
 		end
 		
-
-
+		if data.IsParalysed then 
+			if not data.ParalysedCooldown then data.ParalysedCooldown = 200 end
+			if data.ParalysedCooldown <= 0 then
+				data.IsParalysed = nil 
+				data.ParalysedCooldown = nil
+			else
+				data.ParalysedCooldown = data.ParalysedCooldown - 1
+			end
+		end
+		
 		--attack skill
 		if player:HasCollectible(COLLECTIBLE_LOVECANNON) then
 			if SchoolbagAPI.ConfirmUseActive( player, COLLECTIBLE_LOVECANNON ) then

@@ -1,8 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<name>rebekah_curse</name>
-	<directory>rebekah_curse</directory>
-	<description/>
-	<version>1.0</version>
-	<visibility/>
-</metadata>
+    <name>rebekah_curse</name>
+    <directory>rebekah_curse</directory>
+    <id>2540075442</id>
+    <description>[h1]Rebekah, Isaac's fated wife has stormed the basement![/h1]
 
+[img]https://i.imgur.com/xDpL6ty.png[/img]
+
+[b]Play as Rebekah, the quiet, roleplaying bookworm who used to stalk Isaac and write imaginative adventures and stories about him. [/b]
+
+She is a pot filled with genuine love and a pinch of craze, nothing stops Rebekah in reaching Isaac to marry him.
+However, she doesn't know what is Isaac's ideal girl!
+
+[img]https://i.imgur.com/ziXgz5b.gif[/img]
+
+Luckily for us, she had developed abilities with the power of love! Change her playstyle by picking her personalities based on the base game's Hearts!
+
+Double tap to perform a special dash based on her personality!
+
+Use her gun to perform a special barrage!
+
+[img]https://i.imgur.com/T9rETLQ.png[/img]
+
+[img]https://i.imgur.com/MeiRzQT.gif[/img]
+
+[h1][u]Changing personalities as Rebekah is easy.[/u][/h1]
+After defeating the boss of any given floor, a mirror will spawn in the middle of the room, displaying all the heart types you currently hold. 
+
+When you find the personality you want to change into, simply touch the mirror change Rebecca to that mode!
+
+If you are far away from the mirror, it quickly shifts from one heart to the other.
+You can also get close to the mirror, making the heart transitions slower. Just a useful tip just in case you are impatient!
+
+[h1][u]If you want to get picky, blow up the mirror to get all kinds of hearts in the game! [/u][/h1]
+This way, you can also have new ways to get new modes with this method!
+However, you lose your ability to change a mode in that floor, so be wise!
+
+On a new run, Rebekah can also randomly start with any heart type along with a red heart and an empty heart container.
+
+This gives you an advantage in having randomized experiences with each personality, each time!
+
+[img]https://i.imgur.com/qfhc5Ra.png[/img]
+
+[/h1][b]Rebekah has no idea what kind of girl Isaac likes. Luckily for her, she knows all romantic archetypes based from books she read.[/b][/h1]
+Her personalities allows her to change her look, abilities and playstyles! 
+
+[img]https://i.imgur.com/xJTlgF0.gif[/img]
+
+[b]Become the shy and introverted bookworm Red Heart, bright and aloof Soul Heart, sophisticated Gold Heart, mischieveous Evil Heart, 
+mature and level-headed Eternal Heart, the dumb-wild Bone Heart, and even the Repentance exclusive modes like the hyper-active Rotten Heart or 
+even the know-it-all Broken Heart.[/b]
+
+[i]But remember, these are not all for show, these all change your gameplay, so pick your favorites![/i]
+
+[img]https://i.imgur.com/rkaI8Tr.png[/img]
+
+[img]https://i.imgur.com/8HFUD3n.gif[/img]
+
+[h1][b] Her new pocket item, Hugs and Roses, allows you to shoot a powerful special action that will benefit you and your playstyle.[/b] [/h1]
+
+You use special charges from your new special heart reserve bar right under your health hud. 
+
+If empty, simply use your pocket item to refill your bar with a cost of half a heart or kill enough enemies to refill it.
+If you have no red hearts, further attempts of refilling will break your health bar, giving broken hearts.
+
+[img]https://i.imgur.com/pIzhTLO.gif[/img]
+
+When you have up to 12 broken hearts, you immediately die. Don't break Rebekah's heart!
+
+
+[img]https://i.imgur.com/H5u04JR.png[/img]
+[list]
+[h1]Why does Rebekah look like Maggy?[/h1]
+  [*]The mod must be bugged. Make sure you have SchoolbagAPI subscribed or unsubscribe to this mod and resubscribe for reinstallation.
+
+[h1]What happened to the unlocks?[/h1]
+  [*]The mod was too big to port and polish into Repentance so the items will come in a later date as a separate update.
+
+[h1]Where is the Tainted Rebekah?/I tried to play Tainted Rebekah but I just turn back into regular Rebekah[/h1]
+  [*]She doesn't exist. Yet. She will come in a later update.
+
+[h1]What happened to Red Heart's 20/20?[/h1]
+  [*]Repentance broke that feature, we have to wait until they fix that. Sorry for the inconvenience!
+
+[h1]I found a bug![/h1]
+  [*]Bugs go here: [url=https://steamcommunity.com/workshop/filedetails/discussion/2540075442/3044979493853537391/]  link  [/url]
+
+[img]https://i.imgur.com/EZcylt3.png![/img]
+[img]https://i.imgur.com/4VJsI8O.png[/img]
+
+[list]
+  [*]KakaoDCat - the majority of the mod code, sprites and voices for the gold knights.
+  [*]JudeInutil - porting this mod and polsihed the sprites into Repentance
+  [*]lambchop - helped with the development of AB+ Rebekah
+  [*]yatboim - cleaned up the AB+ code, reworked the awesome double tap system
+  [*]ItsnotArthor - artist for the thumbnail
+  [*]meg - did the crazy cute voice for Rebekah. 
+[/list]
+
+[img]https://i.imgur.com/Z9QmXxo.png[/img]
+
+[list]
+  [*]AgentCucco/_Kilburn -the GetPlayerBlackHearts system Kilburn made for Cucco's Soul Heart Rebalance mod. 
+  [*]tem -the Strawman system and the custom Eden hair system which Rebekah now uses
+  [*]Sentinel - helped with many issues in the past
+  [*]Sanio - helped with the mega mush costume system
+  [*]Dumpy - helped with the CanShoot system
+[/list]
+
+[img]https://i.imgur.com/aCaq76J.png[/img]
+
+[list]
+  [*]Cube-erry Cherry
+  [*]TheMemeingOfIsaac/Ysak
+  [*]Abyss Knight/Baraka
+  [*]Apostle
+  [*]Zanariff/Zana
+[/list]
+
+
+[h1]-Special Thanks-[/h1]
+Sites like SoundBible, FreeSound, zapsplat and soundsnap - some sounds I couldn't get by myself. This isn't commercialized!
+[h1][b]And the community - for your support and love for this mod! Thank you for waiting so long for this Repentance port! I hope you stay tuned for the Tainted and Items update![/b][/h1]</description>
+    <version>1.3</version>
+    <visibility>Private</visibility>
+    <tag id="Lua"/>
+    <tag id="Player Characters"/>
+    <tag id="Familiars"/>
+    <tag id="Tweaks"/>
+    <tag id="Graphics"/>
+</metadata>
