@@ -1673,8 +1673,8 @@ function yandereWaifu:heartReserveLogic(player)
 	elseif playerdata.heartStocksMax then
 		if yandereWaifu:getReserveStocks(player) >= playerdata.heartStocksMax then -- force max stocks
 			GetEntityData(player).heartStocks = playerdata.heartStocksMax
-			GetEntityData(player).heartReserveFill = 0
-			GetEntityData(player).heartReserveFill = playerdata.heartReserveMaxFill - 1
+			GetEntityData(player).heartReserveFill = playerdata.heartReserveMaxFill
+			--GetEntityData(player).heartReserveFill = playerdata.heartReserveMaxFill - 1
 		end
 	--end
 	--[[elseif playerdata.heartReserveFill == 0 then
