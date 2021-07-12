@@ -454,7 +454,8 @@ local function FireBarrageTear(Position, Velocity, TearVariant, Parent, Color)
 end
 
 --im_tem made this happen, thx
-local function ApplyCostumes(mode, player, reloadanm2)
+local function ApplyCostumes(mode, player, reloadanm2, poof)
+	poof = poof or true
 	reloadanm2=reloadanm2 or true
 	if reloadanm2 then
 		player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
@@ -490,7 +491,9 @@ local function ApplyCostumes(mode, player, reloadanm2)
 	player:ReplaceCostumeSprite(config,hairpath,0)	--replacing eve hair costume sprite for fire anims
 	--GetEntityData(player).hairpath = hairpath
 	
-	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+	if poof then
+		local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+	end
 end
 
 
@@ -1226,6 +1229,7 @@ end
 		--	player:CheckFamiliar(ENTITY_BONEJOCKEY, num3, RNG())
 		end
 		if player:GetPlayerType() == Reb then -- Especially here!
+			ApplyCostumes( GetEntityData(player).currentMode, player , _, false)
 			if data.currentMode == REBECCA_MODE.RedHearts then
 				if cacheF == CacheFlag.CACHE_DAMAGE then
 					player.Damage = player.Damage -- 0.73 --1.73
@@ -1454,17 +1458,33 @@ end
 	yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.cacheregister)
 
 	-- re-add the appropriate costume when the player rerolls (with d4 or d100)
-	function yandereWaifu:useReroll(collItem, rng)
-		for p = 0, SAPI.game:GetNumPlayers() - 1 do
-			local player = Isaac.GetPlayer(p)
+	function yandereWaifu:useReroll(collItem, rng, player)
+		--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--	local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == Reb then
 				ApplyCostumes( GetEntityData(player).currentMode, player );
 				--player:AddNullCostume(NerdyGlasses)
 			end
-		end
+		--end
 	end
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useReroll, CollectibleType.COLLECTIBLE_D4)
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useReroll, CollectibleType.COLLECTIBLE_D100)
+
+	function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck btw
+		--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--	local player = Isaac.GetPlayer(p)
+			local data = GetEntityData(player)
+			if player:GetPlayerType() == Reb then
+				data.currentMode = data.lastMode
+				data.heartReserveFill = data.lastHeartReserve
+				data.heartStocks = data.lastStockReserve
+				ApplyCostumes( GetEntityData(player).currentMode, player );
+				--player:AddNullCostume(NerdyGlasses)
+				print("haefheaufeaf")
+			end
+		--end
+	end
+	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useGlowHourglass, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS)
 
 	--romcom code
 	function yandereWaifu:useRomComBook(collItem, rng, player)
@@ -10422,6 +10442,11 @@ function yandereWaifu:NewRoom()
 			if data.LastEntityCollisionClass then player.EntityCollisionClass = data.LastEntityCollisionClass end
 
 			data.isReadyForSpecialAttack = false
+			
+			data.lastMode = data.currentMode
+			data.lastHeartReserve = yandereWaifu:getReserveFill(player)
+			data.lastStockReserve = yandereWaifu:getReserveStocks(player)
+			
 			
 			--workaround for when you go bald in the knife dimension, because theres no way to check what dimension you are in for some reason.......
 			--ApplyCostumes( GetEntityData(player).currentMode, player )
