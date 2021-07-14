@@ -863,13 +863,14 @@ end)
 function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 	IsaacPresent = false
 	JacobPresent = false
-	if wasFromTaintedLocked then 
-		wasFromTaintedLocked = false
-		print("fel")
-		SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
-	end
+	
 	for i,player in ipairs(SAPI.players) do
 		if player:GetPlayerType() == Reb then
+			if wasFromTaintedLocked then 
+				wasFromTaintedLocked = false
+				print("fel")
+				SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+			end
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
 		--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_20_20, false)
 			-- if it's a new run
@@ -1229,7 +1230,11 @@ end
 		--	player:CheckFamiliar(ENTITY_BONEJOCKEY, num3, RNG())
 		end
 		if player:GetPlayerType() == Reb then -- Especially here!
-			ApplyCostumes( GetEntityData(player).currentMode, player , _, false)
+			--if data.UpdateHair then
+			--	print("tuck")
+				ApplyCostumes( GetEntityData(player).currentMode, player , _, false)
+			--	data.UpdateHair = false
+			--end
 			if data.currentMode == REBECCA_MODE.RedHearts then
 				if cacheF == CacheFlag.CACHE_DAMAGE then
 					player.Damage = player.Damage -- 0.73 --1.73
@@ -1478,7 +1483,22 @@ end
 				data.currentMode = data.lastMode
 				data.heartReserveFill = data.lastHeartReserve
 				data.heartStocks = data.lastStockReserve
+				data.UpdateHair = true
+				--player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 				ApplyCostumes( GetEntityData(player).currentMode, player );
+				player:EvaluateItems()
+				--player.Visible = false
+				--[[ApplyCostumes( GetEntityData(player).currentMode, player );
+				 SchoolbagAPI.SetTimer( 1, function()
+					print("fellow")
+					player.Visible = false
+                end);
+				 SchoolbagAPI.SetTimer( 35, function()
+					print("fellow")
+					player.Visible = true
+					ApplyCostumes( GetEntityData(player).currentMode, player );
+                end);]]
+			
 				--player:AddNullCostume(NerdyGlasses)
 				print("haefheaufeaf")
 			end
