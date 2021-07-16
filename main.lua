@@ -455,7 +455,7 @@ end
 
 --im_tem made this happen, thx
 local function ApplyCostumes(mode, player, reloadanm2, poof)
-	poof = poof or true
+	if poof == nil then poof = true end
 	reloadanm2=reloadanm2 or true
 	if reloadanm2 then
 		player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
@@ -1232,7 +1232,9 @@ end
 		if player:GetPlayerType() == Reb then -- Especially here!
 			--if data.UpdateHair then
 			--	print("tuck")
-				ApplyCostumes( GetEntityData(player).currentMode, player , _, false)
+			if SAPI.room:GetFrameCount() < 1 then
+				ApplyCostumes( GetEntityData(player).currentMode, player , false, false)
+			end
 			--	data.UpdateHair = false
 			--end
 			if data.currentMode == REBECCA_MODE.RedHearts then
@@ -3909,9 +3911,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 	end
 	
 	--hurt stuff	
-	for i, e in pairs(Isaac.GetRoomEntities()) do
-		if e.Type ~= EntityType.ENTITY_PLAYER then
-			if e.Type == EntityType.ENTITY_PROJECTILE then
+	--for i, e in pairs(Isaac.GetRoomEntities()) do
+	--	if e.Type ~= EntityType.ENTITY_PLAYER then
+	--		if e.Type == EntityType.ENTITY_PROJECTILE then
 				--if (e.Position - fam.Position):Length() < 10 then
 				--	e:Die()
 				--	fam:Die()
@@ -3932,9 +3934,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						end
 					end
 				end
-			end
-		end
-	end
+	---		end
+	--	end
+	--end
 	
 	if (player.Position - fam.Position):Length() > 200 then
 		if game:GetFrameCount() % 7 == 0 then
