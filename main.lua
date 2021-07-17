@@ -3923,17 +3923,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 				--		end
 				--	end
 				--end
-				if (e.Position - fam.Position):Length() < 75 then
-					if game:GetFrameCount() % 6 == 0 then
+				--if (e.Position - fam.Position):Length() < 75 then
+					if game:GetFrameCount() % 30 == 0 then
 						local Mrng = math.random(1,3)
 						spr:Play("Move", true)
 						if Mrng == 1 then
-							fam.Velocity = fam.Velocity + (fam.Position - e.Position)/3
+						--	fam.Velocity = fam.Velocity + (fam.Position - e.Position)/3
 						elseif Mrng == 2 then
 							fam.Velocity = fam.Velocity + Vector( math.random(-15, 15), math.random(-15, 15) )
 						end
 					end
-				end
+				--end
 	---		end
 	--	end
 	--end
@@ -5919,7 +5919,9 @@ function yandereWaifu:FeatherUpdate(tr)
 		data.EnemyHasDefined = nil --force it to nil
 		data.closestEnt = 0
 		--laggy
-		SchoolbagAPI.SpawnTrail(tr)
+		if tr.FrameCount == 1 then
+			SchoolbagAPI.SpawnTrail(tr)
+		end
 		--so this thing floats forever
 		if tr.FrameCount >= 1 and tr.FrameCount <= 10 then
 			data.firstHeight = tr.Height
