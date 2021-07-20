@@ -2580,12 +2580,13 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		if not beam:GetData().IsLvlOneBeam then beam:GetData().IsLvlOneBeam = true end
 		EndBarrage()
 	elseif modes == REBECCA_MODE.BoneHearts then
-		local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+		--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 		
 		if not data.hasLeech then
 			local leech = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, ENTITY_BONEJOCKEY, 0, player.Position, Vector(0,0), player)
 			data.hasLeech = leech
 			GetEntityData(leech).IsPossessed = true
+			yandereWaifu:purchaseReserveStocks(player, 1)
 			for i = 0, 12 do
 				local var = TearVariant.BLOOD
 				local rng = math.random(1,5)
@@ -2600,6 +2601,7 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 				SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
 			end
 			data.IsLeftover = true
+			
 		else
 			if not data.IsLeftover then
 				local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
@@ -2624,7 +2626,6 @@ function yandereWaifu:DoRebeccaBarrage(player, mode)
 		--player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 		--EndBarrage()
 		data.NoBoneSlamActive = false
-		
 	elseif modes == REBECCA_MODE.RottenHearts then
 		if not data.noHead then
 			local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, ENTITY_ROTTENHEAD, 0, player.Position, data.specialAttackVector:Resized(10), player):ToFamiliar();
@@ -6200,8 +6201,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				
 				--yandereWaifu:addReserveStocks(player, -1)
 				--yandereWaifu:addReserveFill(player, GetEntityData(player).heartReserveMaxFill-1)
-				yandereWaifu:purchaseReserveStocks(player, 1)
-				yandereWaifu:addReserveFill(player, GetEntityData(player).heartReserveMaxFill-1)
+				
+				--yandereWaifu:addReserveFill(player, GetEntityData(player).heartReserveMaxFill-1)
 		end
 		
 		if not data.Butt then
@@ -6214,7 +6215,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		end
 		if not SchoolbagAPI.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then 
 			if data.IsPossessed then
-				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, player:GetMovementInput(), "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+				local lastDir
+				if player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0 then
+					lastDir = player:GetMovementInput()
+				else
+					lastDir = data.lastDir
+				end
+				data.lastDir = lastDir
+				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, lastDir, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 			else
 				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 			end
@@ -6320,6 +6328,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 										local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, player.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
 										SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
 									end
+									yandereWaifu:purchaseReserveStocks(player, 1)
 									
 									fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/corpse_eater_rider.png")
 									fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/corpse_eater_rider.png")
@@ -6482,7 +6491,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		if not GetEntityData(GetEntityData(fam).Head).IsPossessed then
 			SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
 		else
-			SchoolbagAPI.AnimShootFrame(fam, false, player:GetMovementInput(), "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
+			local lastDir
+			if player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0 then
+				lastDir = player:GetMovementInput()
+			else
+				lastDir = data.lastDir
+			end
+			data.lastDir = lastDir
+			SchoolbagAPI.AnimShootFrame(fam, false, lastDir, "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
 		end
 	end
 	
@@ -7470,6 +7486,11 @@ function yandereWaifu:barrageAndSP(player)
 		end
 	end
 	
+	if data.IsLeftover then --dont move
+		player.Velocity = Vector.Zero
+		--player.Position = Vector.Zero
+	end
+	
 	if data.IsAttackActive and data.NoBoneSlamActive then	--attack code
 		yandereWaifu:DoRebeccaBarrage(player, data.currentMode)
 	end
@@ -8101,7 +8122,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 			local maxHealth = ent.MaxHitPoints
 			yandereWaifu:addReserveFill(player, maxHealth/5)
 			if GetEntityData(player).IsLeftover then
-				GetEntityData(player).BoneJockeyTimeLeft = etEntityData(player).BoneJockeyTimeLeft + maxHealth/7
+				GetEntityData(player).BoneJockeyTimeLeft = GetEntityData(player).BoneJockeyTimeLeft + maxHealth/7
 			end
 		end
 	end
@@ -9015,7 +9036,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 									--local vault = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_BONEVAULT, 0, player.Position, Vector(0,0), player) --vault effect
 									--GetEntityData(vault).bonerOwner = player;
 									--vault.DepthOffset = 5;
-									local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+									--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 									
 									--local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 									--GetEntityData(customBody).Player = player
@@ -10454,6 +10475,12 @@ function yandereWaifu:NewRoom()
 		local room = game:GetRoom()
 		print(room:GetType())
 		if player:GetPlayerType() == Reb then
+		
+			--in case it is taken away, because of some softlocks
+			if not player:HasCollectible(COLLECTIBLE_LOVECANNON) then
+				Isaac.DebugString("howdy")
+				player:SetPocketActiveItem(COLLECTIBLE_LOVECANNON)
+			end
 			data.DASH_DOUBLE_TAP:Reset();
 			data.ATTACK_DOUBLE_TAP:Reset();
 			--neded for soul heart and bone heart movement lol
