@@ -1,8 +1,8 @@
 <AnimatedActor>
-	<Info CreatedBy="robot" CreatedOn="6/30/2021 11:57:18 AM" Version="107" Fps="30"/>
+	<Info CreatedBy="robot" CreatedOn="9/1/2021 6:27:54 PM" Version="108" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="bullets\rotten_fly2_bomb.png" Id="0"/>
+			<Spritesheet Path="solitary\rotten_fly2_bomb.png" Id="0"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="body" Id="0" SpritesheetId="0"/>

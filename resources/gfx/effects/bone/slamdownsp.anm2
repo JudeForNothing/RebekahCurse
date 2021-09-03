@@ -1,9 +1,9 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="1/19/2020 12:14:42 PM" Version="19" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="9/2/2021 2:41:25 PM" Version="21" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="costumes\customAnim_boneBounce.png" Id="0"/>
-			<Spritesheet Path="..\effects\bonewhack.png" Id="1"/>
+			<Spritesheet Path="customAnim_boneBounce.png" Id="0"/>
+			<Spritesheet Path="melee\bonewhack.png" Id="1"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="girl" Id="0" SpritesheetId="0"/>
@@ -716,9 +716,9 @@
 				<LayerAnimation LayerId="2" Visible="true"/>
 				<LayerAnimation LayerId="3" Visible="true"/>
 				<LayerAnimation LayerId="0" Visible="true">
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="1" YCrop="1" Width="47" Height="54" XScale="130" YScale="80" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="-125" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="125" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="255" GreenOffset="255" BlueOffset="255" Rotation="0" Interpolated="true"/>
+					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="1" YCrop="1" Width="47" Height="54" XScale="130" YScale="80" Delay="2" Visible="true" RedTint="0" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
+					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="255" GreenOffset="255" BlueOffset="255" Rotation="0" Interpolated="true"/>
+					<Frame XPosition="-3" YPosition="-13" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="350" Delay="2" Visible="true" RedTint="0" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
 					<Frame XPosition="0" YPosition="-250" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="150" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
 					<Frame XPosition="0" YPosition="-375" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="175" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="191" GreenOffset="191" BlueOffset="191" Rotation="0" Interpolated="true"/>
 					<Frame XPosition="0" YPosition="-500" XPivot="23" YPivot="50" XCrop="51" YCrop="3" Width="47" Height="54" XScale="100" YScale="200" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="255" GreenOffset="255" BlueOffset="255" Rotation="0" Interpolated="true"/>

@@ -1,8 +1,8 @@
 <AnimatedActor>
-	<Info CreatedBy="trtv" CreatedOn="6/23/2021 8:38:13 PM" Version="60" Fps="30"/>
+	<Info CreatedBy="trtv" CreatedOn="9/1/2021 6:28:27 PM" Version="61" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="bullets\rotten_ball_of_flies.png" Id="0"/>
+			<Spritesheet Path="cluster\rotten_ball_of_flies.png" Id="0"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="main" Id="0" SpritesheetId="0"/>

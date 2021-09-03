@@ -68,6 +68,12 @@
     </entity>
 	
 	<!--Gold heart-->
+	<entity anm2path="effects/gold/tear_pseudoknife.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Psuedo Knife" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62675">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/gold/tear_pseudorocket.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Psuedo Rocket" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62676">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	<entity anm2path="effects/gold/ned_normal.anm2" baseHP="36" boss="0" champion="0" collisionDamage="0" collisionInterval="7" numGridCollisionPoints="12" collisionMass="22" collisionRadius="7" friction="1" id="3" name="Ned" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177115" gridCollision="walls" shutdoors="false">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
@@ -80,6 +86,9 @@
 	<entity anm2path="effects/gold/christian_ned.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Christian Ned" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663117" gridCollision="walls">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
+	<entity anm2path="effects/gold/christian_ned.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="1000" name="Christian Ned Extra" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663117" gridCollision="walls">
+        <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
+    </entity>
 	<entity anm2path="effects/gold/screaming_ned.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Screaming Ned" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663118" gridCollision="walls">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
@@ -90,6 +99,9 @@
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
 	<entity anm2path="effects/gold/spear_ned.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="17" friction="1" id="3" name="Spear Ned" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="663121" gridCollision="walls">
+        <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
+    </entity>
+	<entity anm2path="effects/gold/laser/stormtrooper_ned.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Stormtrooper Ned" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663119" gridCollision="walls">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
 	
@@ -121,10 +133,10 @@
 	<entity anm2path="darkmaw.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="7" collisionRadius="22" friction="1" id="1000" name="Dark Maw" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835287">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="tear_darkknife.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Dark Knife Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62683">
+	<entity anm2path="effects/evil/tear_darkknife.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Dark Knife Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62683">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="tear_darkknifefade.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="1000" name="Dark Knife Tear Fade" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62683">
+	<entity anm2path="effects/evil/tear_darkknifefade.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="1000" name="Dark Knife Tear Fade" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62683">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="dark_plasma.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Dark Plasma" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835287">
@@ -144,15 +156,35 @@
 	<entity anm2path="tear_feathers.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Eternal Feather" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62674">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/eternal/eternalmorningstar.anm2" baseHP="0" boss="0" champion="0" collisionDamage="7" collisionMass="5" collisionRadius="23" friction="1" id="3" name="Morning Star" numGridCollisionPoints="12" shadowSize="23" stageHP="0" variant="663127">
+	<entity anm2path="effects/eternal/eternalmorningstar.anm2" baseHP="0" boss="0" champion="0" collisionDamage="4.5" collisionMass="5" collisionRadius="23" friction="1" id="3" name="Morning Star" numGridCollisionPoints="12" shadowSize="23" stageHP="0" variant="663127">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
-	
+	<entity anm2path="items/pick ups/bombs/holy_grenade.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="6" collisionRadius="16" friction="1" id="4" name="Holy Grenade" numGridCollisionPoints="12" shadowSize="18" stageHP="0" variant="3780">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/eternal/tiny_ringangel.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Tiny Ophanim" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663122">
+        <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
+    </entity>
+	<entity anm2path="effects/eternal/eternal_ludoophanim.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Big Ophanim" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663123" gridCollision="walls">
+        <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
+    </entity>
+	<entity anm2path="effects/eternal/eternal_slash.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Eternal Slash" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="946999" portrait="160" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	<entity anm2path="effects/eternal/epic_fire.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Eternal Epic Fire" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="947000" portrait="160" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	<entity anm2path="effects/eternal/epic_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Epic Fire Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="947001" portrait="160" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	<entity anm2path="effects/eternal/tear_pseudobomb.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Holy Bomb Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62684">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	<!--Bone heart-->
 	<entity anm2path="effects/bone/bonestand.anm2" baseHP="36" boss="50" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="13" friction="1" id="3" name="Bone Stand" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177122" gridCollision="walls">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
-	<entity anm2path="effects/bone/corpseeater/bone_jockey.anm2" baseHP="36" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="13" friction="1" id="3" name="Bone Jockey" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177123" gridCollision="walls">
+	<entity anm2path="effects/bone/corpseeater/bone_jockey.anm2" baseHP="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="13" friction="1" id="3" name="Bone Jockey" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177123" gridCollision="walls">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
 	<entity anm2path="danger_bonetarget.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Bone Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="7345291">
@@ -176,9 +208,20 @@
 	<entity anm2path="effects/bone/fists/tear_rapidpunch.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Rapid Punch Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62683">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	
+	<entity anm2path="effects/bone/melee/punch_normal.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="1000" name="Dash Punch" numGridCollisionPoints="8" shadowSize="0" stageHP="0" variant="62690">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/bone/melee/special_spear.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="1000" name="Bone Spear" numGridCollisionPoints="8" shadowSize="0" stageHP="0" variant="62691">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/bone/boneludo.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="1000" name="Ludo Bone" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="62692" gridCollision="walls">
+        <gibs amount="3" blood="0" bone="3" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/bone/corpseeater/bone_epic.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="1000" name="Epic Bone Jockey" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="62693" gridCollision="walls">
+        <gibs amount="3" blood="0" bone="3" eye="0" gut="0" large="0" />
+    </entity>
 	<!--Rotten heart-->
-	<entity anm2path="effects/rotten/rottenollie.anm2" baseHP="36" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="13" friction="1" id="3" name="Rotten Crazyhead" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177124">
+	<entity anm2path="effects/rotten/rottenollie.anm2" baseHP="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="13" friction="1" id="3" name="Rotten Crazyhead" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177124">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
 	
@@ -191,7 +234,7 @@
 	<entity anm2path="effects/rotten/fly_seeker.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="3" name="Fly Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62685">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/rotten/fly_tear.anm2" baseHP="0" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="15" friction="1" id="3" name="Rotten Fly Ball" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62686">
+	<entity anm2path="effects/rotten/fly_ball.anm2" baseHP="0" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="15" friction="1" id="3" name="Rotten Fly Ball" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62686">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="effects/rotten/fly_orbital.anm2" baseHP="0" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="5" friction="1" id="3" name="Rotten Fly" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62684">
