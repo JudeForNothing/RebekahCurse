@@ -744,6 +744,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if damageSource.Type == 3 and damageSource.Variant == ENTITY_BONEJOCKEY then
 			yandereWaifu.GetEntityData(damage).BurstGuts = true
 		end
+		if REBEKAHMODE_EXPERIMENTAL.lovelove and dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN then
+			print(damageSource.Entity.SpawnerEntity.Type)
+			--print(damageSource.Type)
+			if (damageSource.Type == 1 or damageSource.Entity.SpawnerType == 1) then
+				local player = damageSource.Entity.SpawnerEntity:ToPlayer()
+				local playerType = player:GetPlayerType()
+				local room = SAPI.game:GetRoom()
+				
+				if playerType == RebekahCurse.REB and not yandereWaifu.GetEntityData(player).IsAttackActive then
+					local maxHealth = damage.MaxHitPoints
+					print("works?")
+					if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax then
+						yandereWaifu.addReserveFill(player, math.floor(amount))
+					end
+				end
+			end
+		end
 	end
 end)
 
