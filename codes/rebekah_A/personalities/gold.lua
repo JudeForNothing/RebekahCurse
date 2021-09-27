@@ -5,11 +5,11 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
-	local room = SAPI.room
+	local room = ILIB.room
 	for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 		if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
 			if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
-				SchoolbagAPI.DoKnockbackTypeI(player, enemy, 0.65)
+				InutilLib.DoKnockbackTypeI(player, enemy, 0.65)
 			end
 		end
 	end
@@ -18,7 +18,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	for i = 1, chosenNumofBarrage do
 		player.Velocity = player.Velocity * 0.8; --slow him down
 		--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-		local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.ROCK, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+		local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.ROCK, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 		tear.Scale = math.random(2,12)/10;
 		tear.FallingSpeed = -9 + math.random() * 2 ;
 		tear.FallingAcceleration = 0.5;
@@ -35,7 +35,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 			projdata.Subtype = oldProj.Subtype
 			projdata.Scale = oldProj.Scale
 			projdata.CollisionDamage = oldProj.CollsionDamage
-			--local newProj = SAPI.game:Spawn( EntityType.ENTITY_PROJECTILE, projdata.Variant, oldProj.Position, Vector(0,0), player, 0, 0):ToProjectile();
+			--local newProj = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, projdata.Variant, oldProj.Position, Vector(0,0), player, 0, 0):ToProjectile();
 			local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, oldProj.Position, Vector(0,0), player) 
 			--newProj:AddFallingSpeed(-9 + math.random() * 2) ;
 			--newProj:AddFallingAccel(0.5);
@@ -71,7 +71,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Gold );
 	playerdata.specialCooldown = REBEKAH_BALANCE.GOLD_HEARTS_DASH_COOLDOWN - trinketBonus;
 	playerdata.invincibleTime = REBEKAH_BALANCE.GOLD_HEARTS_DASH_INVINCIBILITY_FRAMES;
-	SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+	InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 end
 
 function yandereWaifu.RebekahGoldBarrage(player, direction)
@@ -206,9 +206,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarN
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff)
-	local room = SAPI.game:GetRoom()
+	local room = ILIB.game:GetRoom()
 	if eff.FrameCount == 1 then
-		local wall = SchoolbagAPI.ClosestHorizontalWall(eff)
+		local wall = InutilLib.ClosestHorizontalWall(eff)
 		if wall == Direction.RIGHT then
 			data.savedVelocity = Vector(-10,0) --needed for the velocity it goes + detection what grid is in front
 		elseif wall == Direction.LEFT then
@@ -237,7 +237,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--local setAngle = (eff.Velocity):GetAngleDegrees()
 		elseif eff:GetSprite():IsFinished("ChargingFadeOut") then
 			eff:Remove()
-			SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
 		end
 	end
 end, RebekahCurse.ENTITY_CHRISTIANNEDEXTRA );
@@ -252,7 +252,7 @@ function yandereWaifu.nedCollision(_, fam, collider, low)
 		else
 			fam:Die()
 			if math.random(1,3) == 3 then
-				SAPI.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+				ILIB.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
 			end
 		end
 	end
@@ -270,7 +270,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 		data.Health = 3
 	end
 	
-	for i, e in pairs(SAPI.roomProjectiles) do
+	for i, e in pairs(ILIB.roomProjectiles) do
 		if (e.Position - fam.Position):LengthSquared() <= 25 ^ 2 then
 			if not spr:IsPlaying("Move") then
 				spr:Play("Move", true)
@@ -281,7 +281,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 	
 	--if ned is too far from player
 	if (player.Position - fam.Position):Length() > 100 then
-		if SAPI.game:GetFrameCount() % 7 == 0 then
+		if ILIB.game:GetFrameCount() % 7 == 0 then
 			spr:Play("Move", true)
 			fam.Velocity = fam.Velocity + Vector.FromAngle(((player.Position - fam.Position)):GetAngleDegrees()+math.random(-10,10)):Resized(10)
 		end
@@ -297,7 +297,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 			fam.Velocity = fam.Velocity + Vector( math.random(-15, 15), math.random(-15, 15) )
 		end
 		if rng < 71 then
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 250, RebekahCurse.ENTITY_TINYFELLOW)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 250, RebekahCurse.ENTITY_TINYFELLOW)
 			--[[for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e.Type ~= EntityType.ENTITY_PLAYER and e.Type ~= RebekahCurse.ENTITY_TINYFELLOW then
 					if e:IsActiveEnemy() == true then
@@ -319,16 +319,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 		if spr:GetFrame() == 2 then
 			if fam.SubType == 1 then
 				local kn = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle((data.target.Position - fam.Position):GetAngleDegrees()):Resized(16), 1)
-				--local kn =SchoolbagAPI.SpawnKnife(player, ((data.target.Position - fam.Position):GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 150, SchoolbagAPI:SpawnKnifeHelper(fam, player, true), true)
+				--local kn =InutilLib.SpawnKnife(player, ((data.target.Position - fam.Position):GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 150, InutilLib:SpawnKnifeHelper(fam, player, true), true)
 				kn.Size = 0.8
 				kn.SpriteScale = Vector(0.8, 0.8)
 				kn.CollisionDamage = 0.9
-				SchoolbagAPI.AddHomingIfBabyBender(player, kn)
+				InutilLib.AddHomingIfBabyBender(player, kn)
 				--kn:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
 			elseif fam.SubType == 2 then
 				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_SMALL, 0, fam.Position, (data.target.Position - fam.Position):Resized( 9 ), fam.Player):ToBomb()
 				bomb.ExplosionDamage = 5
-				SchoolbagAPI.AddHomingIfBabyBender(player, bomb)
+				InutilLib.AddHomingIfBabyBender(player, bomb)
 			elseif fam.SubType == 3 then
 				--local techlaser = player:FireTechLaser(fam.Position, 0,(data.target.Position - fam.Position), false, true)
 				local techlaser = EntityLaser.ShootAngle(2, fam.Position, (data.target.Position - fam.Position):GetAngleDegrees(), 5, Vector(0,-5), fam):ToLaser()
@@ -338,47 +338,47 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				techlaser.CollisionDamage = 2.5;
 				techlaser:SetHomingType(1)
 				techlaser:SetMaxDistance(130)
-				SchoolbagAPI.AddHomingIfBabyBender(player, techlaser)
+				InutilLib.AddHomingIfBabyBender(player, techlaser)
 			elseif fam.SubType == 4 then
 				beam = EntityLaser.ShootAngle(1, fam.Position, (data.target.Position - fam.Position):GetAngleDegrees(), 5, Vector(0,-5), fam):ToLaser()
 				beam.CollisionDamage = player.Damage / 1.4
 				beam.DisableFollowParent = true
 				beam:SetMaxDistance(100)
-				SchoolbagAPI.UpdateLaserSize(beam, 0.5)
-				SchoolbagAPI.AddHomingIfBabyBender(player, beam)
+				InutilLib.UpdateLaserSize(beam, 0.5)
+				InutilLib.AddHomingIfBabyBender(player, beam)
 			elseif fam.SubType == 5 then
-				local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
+				local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
 				tear.CollisionDamage = 0.5
 				tear.Scale = 0.5
 				tear:AddTearFlags(TearFlags.FLAG_PIERCING)
-				SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+				InutilLib.AddHomingIfBabyBender(player, tear)
 			elseif fam.SubType == 10 then
 				for i = 0, 270, 360/4 do
 					local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(16)):Rotated(i), TearVariant.BLOOD, fam):ToTear()
 					tear.CollisionDamage = 1.5
-					SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+					InutilLib.AddHomingIfBabyBender(player, tear)
 				end
 			elseif fam.SubType == 11 then
 				local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(16)), TearVariant.BLOOD, fam):ToTear()
 				tear.CollisionDamage = 1.5
-				SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+				InutilLib.AddHomingIfBabyBender(player, tear)
 				local tear2 = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 - (data.target.Position - fam.Position):Resized(16)), TearVariant.BLOOD, fam):ToTear()
 				tear2.CollisionDamage = 5.5
 				tear2.Size = 1.7
-				SchoolbagAPI.AddHomingIfBabyBender(player, tear2)
+				InutilLib.AddHomingIfBabyBender(player, tear2)
 			elseif fam.SubType == 12 then
 				for i = 1, math.random(5,7) do
 					local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + Vector.FromAngle((data.target.Position - fam.Position):GetAngleDegrees()+math.random(-30,30)):Resized(16)), TearVariant.BLOOD, fam):ToTear()
 					tear.CollisionDamage = 1
 					tear.Size = 0.2
-					SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+					InutilLib.AddHomingIfBabyBender(player, tear)
 				end
 			else
 				local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(16)), TearVariant.BLOOD, fam):ToTear()
 				tear.CollisionDamage = 1.5
-				SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+				InutilLib.AddHomingIfBabyBender(player, tear)
 			end
-			SchoolbagAPI.SFX:Play(SoundEffect.SOUND_WORM_SPIT, 1, 0, false, 1)
+			InutilLib.SFX:Play(SoundEffect.SOUND_WORM_SPIT, 1, 0, false, 1)
 			data.target = nil
 		end
 	end
@@ -416,7 +416,7 @@ function yandereWaifu.ned2Collision(_, fam, collider, low)
 		else
 			fam:Die()
 			if math.random(1,3) == 3 then
-				SAPI.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+				ILIB.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
 			end
 		end
 	end
@@ -606,12 +606,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 				--	fam:Die()
 				--	if math.random(1,3) == 3 then
 				--		if rng < 11 then
-				--			SAPI.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+				--			ILIB.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
 				--		end
 				--	end
 				--end
 				--if (e.Position - fam.Position):Length() < 75 then
-					if SAPI.game:GetFrameCount() % 30 == 0 then
+					if ILIB.game:GetFrameCount() % 30 == 0 then
 						local Mrng = math.random(1,3)
 						spr:Play("Move", true)
 						if Mrng == 1 then
@@ -626,7 +626,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 	--end
 	
 	if (player.Position - fam.Position):Length() > 200 then
-		if SAPI.game:GetFrameCount() % 7 == 0 then
+		if ILIB.game:GetFrameCount() % 7 == 0 then
 			fam.Velocity = fam.Velocity + (player.Position - fam.Position)*0.125*0.6
 		end
 	end
@@ -647,7 +647,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 			end
 			local chosenNumofBarrage =  math.random( 3, 6 );
 			for i = 1, chosenNumofBarrage do
-				local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, 20, fam.Position, Vector.FromAngle( math.random() * 360 ):Resized(BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), fam.Player, 0, 0):ToTear()
+				local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 20, fam.Position, Vector.FromAngle( math.random() * 360 ):Resized(BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), fam.Player, 0, 0):ToTear()
 				tear.Scale = math.random() * 0.7 + 0.7;
 				tear.FallingSpeed = -9 + math.random() * 2 ;
 				tear.FallingAcceleration = 0.5;
@@ -667,7 +667,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 				end
 			end
 		end
-		if SAPI.game:GetFrameCount() % 30 == 0 then
+		if ILIB.game:GetFrameCount() % 30 == 0 then
 			if data.target then -- every one second
 				--doesnt make you stay too close
 				if (fam.Position - data.target.Position):Length() > 50 then
@@ -692,37 +692,37 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						slashAngle = 0
 					end
 					if fam.SubType == 0 then
-						local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
 						tear.CollisionDamage = 0.5
-						SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+						InutilLib.AddHomingIfBabyBender(player, tear)
 					elseif fam.SubType == 1 then
 						
-						--if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(fam, player, true) else
+						--if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(fam, player, true) else
 						--	if not data.KnifeHelper.incubus:Exists() then
 						--		data.KnifeHelper.incubus:Remove()
 						--		data.KnifeHelper = nil
-						--		data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(fam, player, true)
+						--		data.KnifeHelper = InutilLib:SpawnKnifeHelper(fam, player, true)
 						--	else
 						--		data.KnifeHelper.incubus.Position = fam.Position
 						--	end
 						--end
-						--local helper = SchoolbagAPI:SpawnKnifeHelper(fam, player, true)
+						--local helper = InutilLib:SpawnKnifeHelper(fam, player, true)
 						local kn = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle(slashAngle+ 15):Resized(20), 1)
-						--local kn =SchoolbagAPI.SpawnKnife(player, slashAngle+ 15, false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 250, data.KnifeHelper, true)
+						--local kn =InutilLib.SpawnKnife(player, slashAngle+ 15, false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 250, data.KnifeHelper, true)
 						kn.Size = 1
 						kn.SpriteScale = Vector(1, 1)
 						kn.CollisionDamage = 0.9
-						SchoolbagAPI.AddHomingIfBabyBender(player, kn)
+						InutilLib.AddHomingIfBabyBender(player, kn)
 						local kn2 = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle(slashAngle- 15):Resized(20), 1)
-						--local kn2 =SchoolbagAPI.SpawnKnife(player, slashAngle- 15, false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 250, data.KnifeHelper, true)
+						--local kn2 =InutilLib.SpawnKnife(player, slashAngle- 15, false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 250, data.KnifeHelper, true)
 						kn2.Size = 1
 						kn2.SpriteScale = Vector(1, 1)
 						kn2.CollisionDamage = 0.9
-						SchoolbagAPI.AddHomingIfBabyBender(player, kn2)
+						InutilLib.AddHomingIfBabyBender(player, kn2)
 					elseif fam.SubType == 2 then
 						local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, fam.Position, (data.target.Position - fam.Position):Resized( 9 ), fam.Player):ToBomb()
 						bomb.ExplosionDamage = 7
-						SchoolbagAPI.AddHomingIfBabyBender(player, bomb)
+						InutilLib.AddHomingIfBabyBender(player, bomb)
 					elseif fam.SubType == 3 then
 						local techx = EntityLaser.ShootAngle(2, fam.Position, slashAngle, 5, Vector(0,-5), fam):ToLaser()
 						--local techx = player:FireTechXLaser(fam.Position,  Vector.FromAngle( slashAngle ):Resized(12), 20, fam.Player, 1)
@@ -733,7 +733,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						techx.CollisionDamage = 2.5;
 						techx:SetHomingType(1)
 						techx:SetMaxDistance(240)
-						SchoolbagAPI.AddHomingIfBabyBender(player, techx)
+						InutilLib.AddHomingIfBabyBender(player, techx)
 					elseif fam.SubType == 4 then
 						local beam = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BRIMSTONE_BALL, 0, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player)
 						yandereWaifu.GetEntityData(beam).BySquire = true
@@ -742,14 +742,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						--beam.Radius = 15
 						--beam:Update()
 					elseif fam.SubType == 5 then
-						local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
 						tear.CollisionDamage = 2
 						tear.Scale = 1.5
 						tear:AddTearFlags(TearFlags.FLAG_PIERCING)
-						SchoolbagAPI.AddHomingIfBabyBender(player, tear)
-						local tear2 = SAPI.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
+						InutilLib.AddHomingIfBabyBender(player, tear)
+						local tear2 = ILIB.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
 						tear2.CollisionDamage = 5
-						SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+						InutilLib.AddHomingIfBabyBender(player, tear)
 					end
 				end
 			else
@@ -838,30 +838,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	end
 	
 	if fam.SubType == 4 then
-		if SAPI.game:GetRoom():GetFrameCount() == 1 and SAPI.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
+		if ILIB.game:GetRoom():GetFrameCount() == 1 and ILIB.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
 			spr:Play("DeusVult",true)
-			SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 		end
 	elseif fam.SubType == 0 or fam.SubType == 1 then
 		--reading Bible mechanic
-		if SAPI.game:GetRoom():GetFrameCount() == 1 and SAPI.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
+		if ILIB.game:GetRoom():GetFrameCount() == 1 and ILIB.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 					spr:Play("DeusVult",true)
-					SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 				elseif e.Type == EntityType.ENTITY_SATAN then
 					spr:Play("ForJerusalem",true)
-					SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 				end
 			end
 		end
 	end
 	--flip sprite mechanic
 	if spr:IsPlaying("Idle") then
-		SchoolbagAPI.FlipXByVec(fam, false)
+		InutilLib.FlipXByVec(fam, false)
 	end
 	if spr:IsEventTriggered("Hit") then
-		SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
 	end
 	fam.Velocity = fam.Velocity - fam.Velocity*0.25
 	if spr:IsPlaying("Idle") then
@@ -873,7 +873,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				data.MoveDir = Isaac.GetRandomPosition()
 			end
 			if data.MoveDir then
-				SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
+				InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
 			end
 		else
 			fam:FollowParent();
@@ -882,12 +882,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				data.MoveDir = Isaac.GetRandomPosition()
 			end
 			if data.MoveDir then
-				SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
+				InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
 			end
 		end
 		
 		if fam.SubType == 2 then --if tf2 solder
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 350)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 350)
 			
 			if math.random(1,20) == 20 and fam.FrameCount % 600 == 0 then --rare heal
 				spr:Play("DeusVult", true)
@@ -899,15 +899,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 						data.ChargeTo = 0
 						spr:Play("Fire", true)
 						data.target = target
-						SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 					elseif ((angle >= 0 and angle <= 10) or (angle <= 0 and angle >= -10)) then 
 						spr.FlipX = false 
 						data.ChargeTo = 1
 						spr:Play("Fire", true)
 						data.target = target
-						SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 					else
 						if math.random(1,5) == 5 and fam.FrameCount % 9 == 0 then
 							spr:Play("RocketJump", true)
@@ -916,7 +916,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				end
 			end
 		elseif fam.SubType == 3 then --if robocop
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 350, nil, true, 0, 0, false, false)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 350, nil, true, 0, 0, false, false)
 			
 			if target then
 				local angle = (target.Position - fam.Position):GetAngleDegrees();
@@ -929,7 +929,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				end
 			end
 		elseif fam.SubType == 5 then --if big crusader
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 350)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 350)
 			if target and math.random(1,3) == 3 and fam.FrameCount % 60 == 0 then
 				local angle = (target.Position - fam.Position):GetAngleDegrees();
 				if math.random(1,3) == 3 then --send barrage
@@ -954,7 +954,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				end
 			end
 		else
-		--if SAPI.game:GetFrameCount() % 120 == 0 then -- every one second
+		--if ILIB.game:GetFrameCount() % 120 == 0 then -- every one second
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e.Type ~= EntityType.ENTITY_PLAYER then
 					if e:IsActiveEnemy() then
@@ -971,15 +971,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 										data.ChargeTo = 0
 										spr:Play("Charge", true)
 										data.target = e
-										SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
-										SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+										InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 									elseif ((angle >= 0 and angle <= 10) or (angle <= 0 and angle >= -10)) then 
 										spr.FlipX = false 
 										data.ChargeTo = 1
 										spr:Play("Charge", true)
 										data.target = e
-										SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
-										SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+										InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 									end
 								end
 							end
@@ -998,7 +998,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		end	
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 		if fam.SubType == 1 then
@@ -1006,7 +1006,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		elseif fam.SubType == 3 then
 			spr:Play("Idle", true)
 			local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.TECH_SWORD_BEAM, 0, fam.Position, (data.target.Position - fam.Position):Resized(60), fam.Player)
-			SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+			InutilLib.AddHomingIfBabyBender(player, tear)
 			--tear:ChangeVariant(TearVariant.TECH_SWORD_BEAM)
 		elseif fam.SubType == 5 then
 			for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -1040,30 +1040,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	elseif spr:IsPlaying("Charging") then
 		
 		if fam.SubType == 1 then
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 250)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 250)
 			if target then
-				SchoolbagAPI.MoveDirectlyTowardsTarget(fam, target, 1, 0.7)
+				InutilLib.MoveDirectlyTowardsTarget(fam, target, 1, 0.7)
 			
-				--if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(fam, player, true) else
+				--if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(fam, player, true) else
 				--	if not data.KnifeHelper.incubus:Exists() then
 						--data.KnifeHelper.incubus:Remove()
 						--data.KnifeHelper = nil
-				--		data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(fam, player, true)
+				--		data.KnifeHelper = InutilLib:SpawnKnifeHelper(fam, player, true)
 				--	else
 				--		data.KnifeHelper.incubus.Position = fam.Position
 				--	end
 				--end
-				--local helper = SchoolbagAPI:SpawnKnifeHelper(fam, player, true)
+				--local helper = InutilLib:SpawnKnifeHelper(fam, player, true)
 				if fam.FrameCount % 15 == 0 then
-					--local kn = SchoolbagAPI.SpawnKnife(player, fam.Velocity:GetAngleDegrees(), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 25, data.KnifeHelper, true)
+					--local kn = InutilLib.SpawnKnife(player, fam.Velocity:GetAngleDegrees(), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 25, data.KnifeHelper, true)
 					--kn.Size = 1
 					--kn.SpriteScale = Vector(1, 1)
 					--kn.CollisionDamage = 0.9
-					--local kn = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, fam.Position, Vector.FromAngle(fam.Velocity:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+					--local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, fam.Position, Vector.FromAngle(fam.Velocity:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 					local kn = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle(fam.Velocity:GetAngleDegrees()):Resized(20), 1)
 					kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 					kn.CollisionDamage = 0.9
-					SchoolbagAPI.AddHomingIfBabyBender(player, kn)
+					InutilLib.AddHomingIfBabyBender(player, kn)
 					--kn:ChangeVariant(RebekahCurse.ENTITY_PSEUDO_KNIFE);
 					print("does this work, pls")
 				end
@@ -1085,14 +1085,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					end
 				end
 			end
-			local room = SAPI.game:GetRoom()
+			local room = ILIB.game:GetRoom()
 			--local setAngle = (fam.Velocity):GetAngleDegrees()
 			if data.savedVelocity then
 				fam.Velocity = fam.Velocity * 0.75 + data.savedVelocity
 				local checkingVector = (room:GetGridEntity(room:GetGridIndex(fam.Position + data.savedVelocity)))
 				if checkingVector and (checkingVector:GetType() == GridEntityType.GRID_WALL or checkingVector:GetType() == GridEntityType.GRID_DOOR) then 
 					spr:Play("Charged", true)
-					SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
 				end
 			end
 		end
@@ -1123,28 +1123,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 						charge.SpriteOffset = Vector(0,-40)
 					end
 				end
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_VAMP_GULP, 1, 0, false, 1 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_VAMP_GULP, 1, 0, false, 1 );
 			else
 				for i, e in pairs(Isaac.GetRoomEntities()) do
 					if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 						e.HitPoints = e.MaxHitPoints/2
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
 						--e:Kill()
 					end
 				end
 			end
 		elseif fam.SubType == 5 then -- stuff
 			if spr:GetFrame() >= 20 and fam.FrameCount % 3 == 0 then
-				local room = SAPI.game:GetRoom()
+				local room = ILIB.game:GetRoom()
 				local x, y
-				local lowestY, highestY = Round(math.abs(SAPI.room:GetTopLeftPos().Y),0), Round(math.abs(SAPI.room:GetBottomRightPos().Y),0)
-				if SchoolbagAPI.ClosestHorizontalWall(fam) == Direction.LEFT then
-					x = Round(math.abs(SAPI.room:GetTopLeftPos().X), 0) - 50
+				local lowestY, highestY = Round(math.abs(ILIB.room:GetTopLeftPos().Y),0), Round(math.abs(ILIB.room:GetBottomRightPos().Y),0)
+				if InutilLib.ClosestHorizontalWall(fam) == Direction.LEFT then
+					x = Round(math.abs(ILIB.room:GetTopLeftPos().X), 0) - 50
 				else
-					x = Round(math.abs(SAPI.room:GetBottomRightPos().X), 0) + 50
+					x = Round(math.abs(ILIB.room:GetBottomRightPos().X), 0) + 50
 				end
-				print(Round(math.abs(SAPI.room:GetBottomRightPos().Y),0))
-				print(Round(math.abs(SAPI.room:GetTopLeftPos().Y),0))
+				print(Round(math.abs(ILIB.room:GetBottomRightPos().Y),0))
+				print(Round(math.abs(ILIB.room:GetTopLeftPos().Y),0))
 				local y1, y2 = Round(math.abs(fam.Position.Y - 50),0), Round(math.abs(fam.Position.Y + 50),0)--the ys that the randomizer will pick from
 				if y1 <= lowestY then y1 = lowestY end
 				if y2 <= highestY then y2 = highestY end
@@ -1152,7 +1152,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				local position = Vector(x,y)
 				local neds = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CHRISTIANNEDEXTRA, 0, position, Vector.Zero, player)
 				yandereWaifu.GetEntityData(neds).Damage = 2.5 + data.IncreasedBuff - damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS)
-				if SchoolbagAPI.ClosestHorizontalWall(fam) == Direction.RIGHT then
+				if InutilLib.ClosestHorizontalWall(fam) == Direction.RIGHT then
 					neds.FlipX = true
 				end
 			end
@@ -1190,7 +1190,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				--if e.Type ~= EntityType.ENTITY_PLAYER then
 				if e:IsActiveEnemy() and e:IsVulnerableEnemy() then
 					if entCount < 3 then
-						SchoolbagAPI.SetTimer( i*10, function()
+						InutilLib.SetTimer( i*10, function()
 							local nuke = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALNUKE, 1, e.Position + (Vector(5,0)):Rotated(math.random(0,360)), Vector.Zero, player) --maggots
 							yandereWaifu.GetEntityData(nuke).CustomDamage = 10
 							yandereWaifu.GetEntityData(nuke).CustomRadius = 1
@@ -1299,14 +1299,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 	
 	--flip sprite mechanic
 	if spr:IsPlaying("Idle") then
-		SchoolbagAPI.FlipXByVec(fam, false)
+		InutilLib.FlipXByVec(fam, false)
 	end
 	if spr:IsEventTriggered("Hit") then
-		SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
 	end
 	fam.Velocity = fam.Velocity - fam.Velocity*0.25
 	if spr:IsPlaying("Idle") then
-		local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 350)
+		local target = InutilLib.GetClosestGenericEnemy(fam, 350)
 		if target then
 			local angle = (target.Position - fam.Position):GetAngleDegrees();
 			spr:Play("Charge", true)
@@ -1325,7 +1325,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 				data.MoveDir = Isaac.GetRandomPosition()
 			end
 			if data.MoveDir then
-				SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
+				InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
 			end
 		else
 			fam:FollowParent();
@@ -1334,13 +1334,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 				data.MoveDir = Isaac.GetRandomPosition()
 			end
 			if data.MoveDir then
-				SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
+				InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
 			end
 		end
 	
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 		spr:Play("Idle", true)
@@ -1358,7 +1358,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 				for i, e in pairs(Isaac.GetRoomEntities()) do
 					if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 						e.HitPoints = e.MaxHitPoints/2
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
 						--e:Kill()
 					end
 				end
@@ -1419,9 +1419,9 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 			end
 		end
 		--flip sprite
-		SchoolbagAPI.FlipXByVec(fam, false)
+		InutilLib.FlipXByVec(fam, false)
 		--stuck code
-		local room = SAPI.game:GetRoom()
+		local room = ILIB.game:GetRoom()
 		local checkingVector = (room:GetGridEntity(room:GetGridIndex(fam.Position + data.savedVelocity)))
 		if checkingVector and (checkingVector:GetType() == GridEntityType.GRID_WALL or checkingVector:GetType() == GridEntityType.GRID_DOOR) then 
 			spr:Play("Flyingn't", true)
@@ -1429,7 +1429,7 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 			fam.Velocity = Vector( 0,0 );
 			spr.FlipX = data.willFlipX
 			
-			SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
 		end
 		if not spr:IsPlaying("Flyingn't") then
 			if fam.FrameCount > 30 then
@@ -1455,13 +1455,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	end
 	
 	--refresh spear
-	if SAPI.game:GetRoom():GetFrameCount() == 1 then
+	if ILIB.game:GetRoom():GetFrameCount() == 1 then
 		spr:Play("Idle", true) --force have spear
 	end
 	
 	--flip sprite mechanic
 	if spr:IsPlaying("Idle") or spr:IsPlaying("March") then
-		SchoolbagAPI.FlipXByVec(fam, false)
+		InutilLib.FlipXByVec(fam, false)
 	end
 	
 	fam.Velocity = fam.Velocity - fam.Velocity*0.25
@@ -1476,7 +1476,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						data.MoveDir = Isaac.GetRandomPosition()
 					end
 					if data.MoveDir then
-						SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 6, 0.9, 0, 0, 0)
+						InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 6, 0.9, 0, 0, 0)
 					end
 				else
 					fam.Velocity = fam.Velocity * 0.8 + ( e.Position - fam.Position):Resized(2);
@@ -1573,7 +1573,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_BOBBY, 0, fam.Position, savedVelocity, fam.Player):ToBomb()
 				--bomb:AddTearFlags(TearFlags.TEAR_HOMING)
 				bomb:AddTearFlags(TearFlags.TEAR_SPECTRAL)
-				SchoolbagAPI.AddHomingIfBabyBender(player, bomb)
+				InutilLib.AddHomingIfBabyBender(player, bomb)
 			elseif fam.SubType == 3 then
 				local subtype = 0
 				if math.random(1,100) == 100 then subtype = 1 end
@@ -1601,7 +1601,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	elseif spr:IsPlaying("March") then
 		if fam.FrameCount % 3 == 0 then
-			SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_RATTLEARMOR, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_RATTLEARMOR, 1, 0, false, 1 );
 		end
 		local spear
 		for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -1622,7 +1622,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	elseif spr:IsPlaying("Scream") then
 		if spr:GetFrame() == 11 then
-			SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_SCREAMING_SCREAM, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SCREAMING_SCREAM, 1, 0, false, 1 );
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e:IsEnemy() then
 					e.Target = fam
@@ -1642,7 +1642,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 				if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
 					if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
-						SchoolbagAPI.DoKnockbackTypeI(player, enemy, 0.65)
+						InutilLib.DoKnockbackTypeI(player, enemy, 0.65)
 					end
 				end
 			end
@@ -1695,7 +1695,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				end
 			end
 		end
-		--SchoolbagAPI.SetTimer( spr:GetFrame()*2, function()
+		--InutilLib.SetTimer( spr:GetFrame()*2, function()
 			local pos = fam.Position
 			local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, pos, Vector(0,0), player) 
 			crack.CollisionDamage = 40
@@ -1747,7 +1747,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if spr:IsFinished("Spawn") then
 		spr:Play("Idle", true)
-		SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
 	end
 	
 	local damageNerf = 0
@@ -1758,7 +1758,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	--flip sprite mechanic
 	if spr:IsPlaying("Idle")  then
-		SchoolbagAPI.FlipXByVec(fam, false)
+		InutilLib.FlipXByVec(fam, false)
 	end
 	--get commander
 	for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -1781,7 +1781,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				data.MoveDir = Isaac.GetRandomPosition()
 			end
 			if data.MoveDir then
-				SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
+				InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 2, 0.9, 0, 0, 0)
 			end
 		else
 			if (fam.Player.Position - fam.Position):Length() <= 150 then
@@ -1791,7 +1791,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					data.MoveDir = Isaac.GetRandomPosition()
 				end
 				if data.MoveDir then
-					SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 6, 0.9, 0, 0, 0)
+					InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 6, 0.9, 0, 0, 0)
 				end
 			else
 				fam.Velocity = fam.Velocity * 0.8 + ( fam.Player.Position - fam.Position):Resized(3.4);
@@ -1799,12 +1799,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					data.MoveDir = Isaac.GetRandomPosition()
 				end
 				if data.MoveDir then
-					SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 6, 0.9, 0, 0, 0)
+					InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 6, 0.9, 0, 0, 0)
 				end
 			end
 		end
 		if fam.SubType == 2 then
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 250, RebekahCurse.ENTITY_TINYFELLOW)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 250, RebekahCurse.ENTITY_TINYFELLOW)
 			if target and math.random(1,5) == 5 and fam.FrameCount % 60 == 0 then
 				local angle = (target.Position - fam.Position):GetAngleDegrees();
 				spr:Play("StartSpin", true)
@@ -1812,7 +1812,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				data.target = target
 			end
 		elseif fam.SubType == 3 then
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 250, RebekahCurse.ENTITY_TINYFELLOW)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 250, RebekahCurse.ENTITY_TINYFELLOW)
 			if target and math.random(1,3) == 3 and fam.FrameCount % 60 == 0 then
 				local angle = (target.Position - fam.Position):GetAngleDegrees();
 				if (angle >= 30 and angle <= 90) then
@@ -1832,7 +1832,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				data.target = target
 			end
 		elseif fam.SubType == 5 then
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 250)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 250)
 			if target and fam.FrameCount % 60 == 0 --[[and fam.FrameCount % 300 == 0 and math.random(1,3) == 3 ]]then
 				spr:Play("StartSlice", true)
 				data.SliceCount = 3
@@ -1845,10 +1845,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 							if (fam.Position - e.Position):Length() < 250 then
 								if math.random(1,5) == 5 then
 									spr:Play("Boo")
-									SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
+									InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
 								else
 									spr:Play("StartSpin", true)
-									SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_GRUNT, 1, 0, false, 1 );
+									InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_GRUNT, 1, 0, false, 1 );
 								end
 							end
 						end
@@ -1870,7 +1870,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					tear:AddTearFlags(TearFlags.TEAR_WIGGLE)
 					tear.CollisionDamage = 1
 					tear.Scale = 0.45
-					SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+					InutilLib.AddHomingIfBabyBender(player, tear)
 				end
 			end
 		elseif not fam.Subtype == 2 then -- make sure is not trolleg
@@ -1894,7 +1894,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif fam.SubType == 2 then
 			spr:Play("Appear1", true)
 			fam.Position = Isaac.GetRandomPosition()
-			SAPI.game:ShakeScreen(10)
+			ILIB.game:ShakeScreen(10)
 		else
 			spr:Play("Spin", true)
 		end
@@ -1909,7 +1909,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					tear:AddTearFlags(TearFlags.TEAR_WIGGLE)
 					tear.CollisionDamage = 1
 					tear.Scale = 0.45
-					SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+					InutilLib.AddHomingIfBabyBender(player, tear)
 				end			
 			end
 			if spr:GetFrame() == 9 or spr:GetFrame() == 19 or spr:GetFrame() == 29 or spr:GetFrame() == 39 or spr:GetFrame() == 49 or spr:GetFrame() == 59 or spr:GetFrame() == 69 then
@@ -1917,7 +1917,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			end	
 		end
 		if fam.FrameCount % 5 == 0 then
-			SchoolbagAPI.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 0.6 );
+			InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 0.6 );
 		end
 		data.closestDist = 177013 --saved Dist to check who is the closest enemy
 		data.target = nil
@@ -2014,7 +2014,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	elseif spr:IsFinished("Spin") then
 		data.rot = nil
 		spr:Play("EndSpin", true)
-		SchoolbagAPI.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 0.5 );
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 0.5 );
 	--[[elseif spr:IsPlaying("EndSpin") then
 		if spr:GetFrame() >= 6 and spr:GetFrame() <= 215 then
 			fam:AddConfusion(EntityRef(fam), 2, false)
@@ -2056,13 +2056,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				spr:Play("Appear1", true)
 			end
 			fam.Position = Isaac.GetRandomPosition()
-			SAPI.game:ShakeScreen(10)
-			SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+			ILIB.game:ShakeScreen(10)
+			InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 		end
 	elseif spr:IsPlaying("Detonate") then
-		local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 250)
+		local target = InutilLib.GetClosestGenericEnemy(fam, 250)
 		if target then
-			SchoolbagAPI.MoveDirectlyTowardsTarget(fam, target, 1, 0.9)
+			InutilLib.MoveDirectlyTowardsTarget(fam, target, 1, 0.9)
 		end
 	elseif spr:IsFinished("Detonate") then
 		if not data.HeWatchesYouIdle then
@@ -2070,7 +2070,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			 for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e:IsEnemy() then
 					if (fam.Position - e.Position):Length() < 170 then
-						SchoolbagAPI.SetTimer( i*15, function()
+						InutilLib.SetTimer( i*15, function()
 							Isaac.Explode(e.Position, fam, 300)
 						end)
 					end
@@ -2102,7 +2102,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			--incase theres nothing
 			spr:Play("FinishSlice", true)
 		end
-	elseif SchoolbagAPI.IsFinishedMultiple(spr, "Slice1", "Slice2", "Slice3") then
+	elseif InutilLib.IsFinishedMultiple(spr, "Slice1", "Slice2", "Slice3") then
 		if math.random(1,3) == 3 and data.SliceCount > 0 then
 			data.SliceCount = data.SliceCount - 1
 			local function playRandomSlice()
@@ -2151,7 +2151,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		if spr:GetFrame() == 20 then
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if yandereWaifu.GetEntityData(e).IsTargetedByLaban then
-					SchoolbagAPI.SFX:Play( SoundEffect.SOUND_KNIFE_PULL, 0.7, 0, false, 1 );
+					InutilLib.SFX:Play( SoundEffect.SOUND_KNIFE_PULL, 0.7, 0, false, 1 );
 					yandereWaifu.GetEntityData(e).IsTargetedByLaban = false
 					yandereWaifu.SpawnPoofParticle( e.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Evil );
 					e:TakeDamage(7.5 + data.IncreasedBuff -damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
@@ -2168,7 +2168,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	elseif spr:IsFinished("FinishSlice") then
 		spr:Play("Idle", true)
-	elseif SchoolbagAPI.IsPlayingMultiple(spr, "Charge0", "Charge1", "Charge2", "Charge3", "Charge4", "Charge5") then
+	elseif InutilLib.IsPlayingMultiple(spr, "Charge0", "Charge1", "Charge2", "Charge3", "Charge4", "Charge5") then
 		if spr:IsEventTriggered("Burst") then
 			local savedAngle = (data.target.Position - fam.Position):GetAngleDegrees() --I need it to be static
 			for i = 1, 12 do
@@ -2193,19 +2193,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					--Purple
 					color = Color(1,1,1,1.0,155,0,155)
 				end
-                SchoolbagAPI.SetTimer( i*7, function()
+                InutilLib.SetTimer( i*7, function()
 					tech = EntityLaser.ShootAngle(2, fam.Position, savedAngle + math.random(-10,10), 5, Vector(0,-5), fam):ToLaser()
 					tech.CollisionDamage = 1
 					tech.DisableFollowParent = true
 					tech:SetColor(color,9999999,9999999,false,false)
 					tech.Timeout = 1
-					SchoolbagAPI.AddHomingIfBabyBender(player, tech)
+					InutilLib.AddHomingIfBabyBender(player, tech)
 					--tech:SetMaxDistance(100)
-					--SchoolbagAPI.UpdateLaserSize(tech, 0.5)
+					--InutilLib.UpdateLaserSize(tech, 0.5)
 				end)
 			end
 		end
-	elseif SchoolbagAPI.IsFinishedMultiple(spr, "Charge0", "Charge1", "Charge2", "Charge3", "Charge4", "Charge5") then
+	elseif InutilLib.IsFinishedMultiple(spr, "Charge0", "Charge1", "Charge2", "Charge3", "Charge4", "Charge5") then
 		spr:Play("Idle", true)
 	end
 	if fam.FrameCount % 90 == 0 then
@@ -2233,7 +2233,7 @@ function yandereWaifu.nedDefedCollision(_, fam, collider, low)
 				beam.Position = fam.Position
 				beam.Timeout = 5
 				beam.CollisionDamage = 1	
-				SchoolbagAPI.AddHomingIfBabyBender(player, beam)
+				InutilLib.AddHomingIfBabyBender(player, beam)
 			end
 		--end
 	end
@@ -2293,20 +2293,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	end
 	if fam.SubType == 2 then
-		SchoolbagAPI.MoveOrbitAroundTargetType1(fam, player, 7, 0.9, 3, 0)	
+		InutilLib.MoveOrbitAroundTargetType1(fam, player, 7, 0.9, 3, 0)	
 	end
 	if fam.SubType == 5 then
-		SchoolbagAPI.MoveDiagonalTypeI(fam, 15, false, true)
+		InutilLib.MoveDiagonalTypeI(fam, 15, false, true)
 	end
 	if fam.SubType == 1 then
-		SchoolbagAPI.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, 5, 0)	
+		InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, 5, 0)	
 	end
 	if not spr:IsPlaying("ThrowBomb") then
 		--fam.Velocity = fam.Velocity * 2
 		if fam.SubType == 1 or fam.SubType == 5 then
-			local e = SchoolbagAPI.GetClosestGenericEnemy(fam, 70)
+			local e = InutilLib.GetClosestGenericEnemy(fam, 70)
 			if e then
-				if not SchoolbagAPI.IsPlayingMultiple(spr, "SideAttack", "FrontAttack", "BackAttack") then
+				if not InutilLib.IsPlayingMultiple(spr, "SideAttack", "FrontAttack", "BackAttack") then
 					local angle = (e.Position - fam.Position):GetAngleDegrees();
 					if princessProtectorAngle >= 45 and princessProtectorAngle <= 135 and currentSide ~= "down" then
 						currentSide = "down"
@@ -2328,16 +2328,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				end
 			end
 		elseif fam.SubType == 2 then
-			local e = SchoolbagAPI.GetClosestGenericEnemy(fam, 300)
+			local e = InutilLib.GetClosestGenericEnemy(fam, 300)
 			if e then
 				if math.random(1,10) == 10 and fam.FrameCount % 30 == 0 then
 					spr:Play("ThrowBomb", true)
 					data.target = e
 				else
-					SchoolbagAPI.AnimWalkFrame(fam, true, "Side", "Front", "Back")
+					InutilLib.AnimWalkFrame(fam, true, "Side", "Front", "Back")
 				end
 			else
-				SchoolbagAPI.AnimWalkFrame(fam, true, "Side", "Front", "Back")
+				InutilLib.AnimWalkFrame(fam, true, "Side", "Front", "Back")
 			end
 		elseif fam.SubType == 3 then
 			local closestproj
@@ -2413,10 +2413,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			--fam.OrbitDistance = Vector(70,70)
 			--fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.02
 			--fam.Velocity = fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position	
-			if SchoolbagAPI.IsPlayingMultiple(spr, "SideAttack", "FrontAttack", "BackAttack") then
+			if InutilLib.IsPlayingMultiple(spr, "SideAttack", "FrontAttack", "BackAttack") then
 				if spr:GetFrame() >= 6 and spr:GetFrame() <= 12 then
 					local offsetPos = fam.Position - Vector(15,0):Rotated(princessProtectorAngle)
-					local e = SchoolbagAPI.GetClosestGenericEnemy(fam, 70)
+					local e = InutilLib.GetClosestGenericEnemy(fam, 70)
 					if e then
 						e:TakeDamage(5.5/((fam.Position - e.Position):Length() + fam.Player:GetNumCoins()/10), 0, EntityRef(fam),10)
 					end
@@ -2429,10 +2429,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 							end
 						end
 					end
-					SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MEAT_IMPACTS, 0.7, 0, false, 1 );
+					InutilLib.SFX:Play( SoundEffect.SOUND_MEAT_IMPACTS, 0.7, 0, false, 1 );
 				end
 			end
-			if SchoolbagAPI.IsFinishedMultiple(spr, "SideAttack", "FrontAttack", "BackAttack") then
+			if InutilLib.IsFinishedMultiple(spr, "SideAttack", "FrontAttack", "BackAttack") then
 				if fam.SubType == 5 and math.random(1,5) == 5 then
 					spr:Play("SpinAttack", true)
 				else
@@ -2451,7 +2451,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			elseif spr:IsFinished("SpinAttack") then
 				for i = 0, 360, 360/8 do
 					local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, 0, fam.Position, Vector.FromAngle(i):Resized(10), player):ToTear() --feather attack
-					SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+					InutilLib.AddHomingIfBabyBender(player, tear)
 				end
 				spr:Play("Front", true)
 			end
@@ -2460,18 +2460,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			--fam.OrbitDistance = Vector(70,70)
 			--fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.02
 			--fam.Velocity = fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position	
-			SchoolbagAPI.MoveOrbitAroundTargetType1(fam, player, 15, 0.9, 7, 0)	
-			if SchoolbagAPI.IsPlayingMultiple(spr, "SideShoot", "FrontShoot", "BackShoot") then
+			InutilLib.MoveOrbitAroundTargetType1(fam, player, 15, 0.9, 7, 0)	
+			if InutilLib.IsPlayingMultiple(spr, "SideShoot", "FrontShoot", "BackShoot") then
 				if spr:GetFrame() == 3 then
 					local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.PUPULA, 0, fam.Position, (data.closestproj.Position - fam.Position):Resized(8), player):ToTear() --feather attack
 					tear.TearFlags = TearFlags.TEAR_PERSISTENT | TearFlags.TEAR_SHIELDED
 					tear.CollisionDamage = 15
 					tear.Scale = 2
-					SchoolbagAPI.AddHomingIfBabyBender(player, tear)
+					InutilLib.AddHomingIfBabyBender(player, tear)
 				end
 
 			end
-			if SchoolbagAPI.IsFinishedMultiple(spr, "SideShoot", "FrontShoot", "BackShoot") then
+			if InutilLib.IsFinishedMultiple(spr, "SideShoot", "FrontShoot", "BackShoot") then
 				spr:Play("Front", true)
 			end
 		elseif fam.SubType ~= 2 then
@@ -2480,7 +2480,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		--blocking code
 		--print(tostring(data.TimesBlocked))
 		--if data.TimesBlocked and data.TimesBlocked >= 10 then --slam code
-		--if not SAPI.game:GetRoom():IsClear() then
+		--if not ILIB.game:GetRoom():IsClear() then
 		--	if fam.FrameCount % 270 == 0 then
 		--		spr:Play("CMASlamAWTTJam")
 		--		data.TimesBlocked = 0
@@ -2495,14 +2495,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			if rng == 1 then
 				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_SAD, 0, fam.Position, Vector.FromAngle(vel:GetAngleDegrees()):Resized( 9 ), fam.Player):ToBomb()
 				bomb:AddTearFlags(TearFlags.TEAR_SAD_BOMB)
-				SchoolbagAPI.AddHomingIfBabyBender(player, bomb)
+				InutilLib.AddHomingIfBabyBender(player, bomb)
 			elseif rng == 2 then
 				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_HOT, 0, fam.Position, Vector.FromAngle(vel:GetAngleDegrees()):Resized( 9 ), fam.Player):ToBomb()
 				bomb:AddTearFlags(TearFlags.TEAR_BURN)
-				SchoolbagAPI.AddHomingIfBabyBender(player, bomb)
+				InutilLib.AddHomingIfBabyBender(player, bomb)
 			else
 				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_TROLL, 0, fam.Position, Vector.FromAngle(vel:GetAngleDegrees()):Resized( 9 ), fam.Player):ToBomb()
-				SchoolbagAPI.AddHomingIfBabyBender(player, bomb)
+				InutilLib.AddHomingIfBabyBender(player, bomb)
 			end
 		end
 	elseif spr:IsFinished("ThrowBomb") then
@@ -2540,8 +2540,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					end
 				end
 			end
-			SAPI.game:ShakeScreen(5);
-			SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+			ILIB.game:ShakeScreen(5);
+			InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 			yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Gold );
 		end
 		fam.Velocity = fam.Velocity * 0.9
@@ -2552,7 +2552,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 end, RebekahCurse.ENTITY_DEFENDINGNED);
 
 function yandereWaifu:LevelUpNeds()
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local canUpgrade = false
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == RebekahCurse.REB and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
@@ -2560,7 +2560,7 @@ function yandereWaifu:LevelUpNeds()
 	--		break
 		end
 		
-	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 	--	local player = Isaac.GetPlayer(p)
 		if canUpgrade then
 			local potentialKnights = {
@@ -2605,7 +2605,7 @@ function yandereWaifu:LevelUpNeds()
 				if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 					if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL then
 						local squire = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.SubType, ned.Position, Vector(0,0), ned);
-						--local squire = SAPI.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
+						--local squire = ILIB.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
 						ned:Remove()
 					elseif ned.Variant == RebekahCurse.ENTITY_SQUIRENED then
 						for s = 0, 9 do
@@ -2637,7 +2637,7 @@ function yandereWaifu:LevelUpNeds()
 									break
 								elseif --[[rng >= 7 and rng <= 10]] not AvailableKnights[ned.SubType][1] then
 									local christian =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_CHRISTIANNED, ned.SubType, ned.Position, Vector(0,0), ned.Player):ToFamiliar();
-									--local christian = SAPI.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_CHRISTIANNED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
+									--local christian = ILIB.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_CHRISTIANNED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
 									AvailableKnights[ned.SubType][1] = true
 									christian:AddToFollowers()
 									ned:Remove()

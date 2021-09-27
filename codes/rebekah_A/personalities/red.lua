@@ -16,14 +16,14 @@ function yandereWaifu.RedHeartDash(player, vector)
 
 	playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
 	playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
-	SchoolbagAPI.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
+	InutilLib.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
 	playerdata.IsDashActive = true
 
 end
 
 --heart bomb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
-	--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 	if yandereWaifu.GetEntityData(bb).IsByAFanGirl then
 		local player = bb.SpawnerEntity:ToPlayer()
 		local controller = player.ControllerIndex;
@@ -53,7 +53,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 		end
 		local function DoTinyBarrages(player, vec, ent)
 			local data = yandereWaifu.GetEntityData(ent)
-			--SchoolbagAPI.SetFrameLoop(40,function()
+			--InutilLib.SetFrameLoop(40,function()
 				if not data.BarFrames then data.BarFrames = 0 end
 				if not data.BarAngle then data.BarAngle = 0 end --incase if nil
 
@@ -88,7 +88,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 						tear.Position = bb.Position + Vector.FromAngle((data.BarAngle + vec:GetAngleDegrees())+(i*90)-45)*(20)
 					end
 					--local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, ent.Position, Vector.FromAngle(data.BarAngle + vec:GetAngleDegrees())*(20), ent):ToTear()
-					SchoolbagAPI.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
+					InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 				elseif data.BarFrames == 40 then
 					data.BarFrames = nil
 					data.BarAngle = nil
@@ -144,7 +144,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if movementDirection:Length() < 0.05 then
 			eff.Velocity = Vector.Zero
 		else
-			eff.Position = SAPI.room:GetClampedPosition(eff.Position, roomClampSize);
+			eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize);
 			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 		end
 		
@@ -175,8 +175,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:Remove()
 			if yandereWaifu.GetEntityData(player).barrageNumofShots > 1 then
 				for i = 1, yandereWaifu.GetEntityData(player).barrageNumofShots do
-					SchoolbagAPI.SetTimer( i*30, function()
-						Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALNUKE, 1, eff.Position,( Vector(0,1):Resized(math.random(8,12))):Rotated(math.random(0,360)), player) --SAPI.room:FindFreeTilePosition( SAPI.room:GetClampedPosition((Vector.FromAngle(1*math.random(1,360))+ eff.Position*(math.random(20,50))), roomClampSize ), 0)
+					InutilLib.SetTimer( i*30, function()
+						Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALNUKE, 1, eff.Position,( Vector(0,1):Resized(math.random(8,12))):Rotated(math.random(0,360)), player) --ILIB.room:FindFreeTilePosition( ILIB.room:GetClampedPosition((Vector.FromAngle(1*math.random(1,360))+ eff.Position*(math.random(20,50))), roomClampSize ), 0)
 					end)
 				end
 			end
@@ -199,13 +199,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff) -
 		data.Init = true                                              
 	end      
 		
-	SchoolbagAPI.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
+	InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
 end, RebekahCurse.ENTITY_ORBITALTARGET);
 
 
 --kim jun- i mean, rebeccas rockets
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
@@ -340,7 +340,7 @@ local LightSaberTable = {
 
 --slash effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(SAPI.players) do
+	for i,player in ipairs(ILIB.players) do
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)

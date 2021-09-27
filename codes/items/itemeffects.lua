@@ -1,40 +1,4 @@
 
-		--pheromones fart ring
-		yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
-			local sprite = eff:GetSprite()
-			sprite:Play("Appear", true)
-			eff.RenderZOffset = 10000;
-			eff.SpriteOffset = Vector(0,-10)
-		end, ENTITY_PHEROMONES_RING);
-		yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-			local sprite = eff:GetSprite();
-			local data = GetEntityData(eff)
-			local player = data.Player
-			
-			if sprite:IsFinished("Appear") then
-				sprite:Play("Loop", true)
-			end
-			
-			if eff.FrameCount == 20 then
-				sprite:Play("Dissappear", true)
-			end
-			
-			if sprite:IsFinished("Dissappear") then
-				eff:Remove()
-			end
-			
-			eff.Velocity = player.Velocity;
-			eff.Position = player.Position;
-			
-			for k, ent in pairs(Isaac.GetRoomEntities()) do
-				if ent:IsEnemy() and ent:IsVulnerableEnemy() then
-				local num = 45
-					if ent.Position:Distance( eff.Position ) < ent.Size + eff.Size + num then
-						ent:AddCharmed(EntityRef(player), math.random(30,300))
-					end
-				end
-			end
-		end, ENTITY_PHEROMONES_RING);
 
 		--snap fart
 		yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
@@ -60,7 +24,7 @@
 		for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 			if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
 				if enemy.Position:Distance( eff.Position ) < enemy.Size + eff.Size + 35 then
-					SchoolbagAPI.DoKnockbackTypeI(eff, enemy, 0.2)
+					InutilLib.DoKnockbackTypeI(eff, enemy, 0.2)
 				end
 			end
 		end
@@ -92,14 +56,14 @@ end, ENTITY_SNAP_EFFECT);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff) --eternal star
 	--set chains
-	local data = SchoolbagAPI.GetSAPIData(eff)
+	local data = InutilLib.GetILIBData(eff)
 	if not data.Init then                                             
 		data.spr = Sprite()                                                 
 		data.spr:Load("gfx/effects/eternal/eternalmorningstar.anm2", true) 
 		data.spr:SetFrame("Chain", 1)
 		data.Init = true                                              
 	end          
-	SchoolbagAPI.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(data.Player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
+	InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(data.Player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
 	data.sprOverlay = eff:GetSprite()
 	data.sprOverlay:Render(Isaac.WorldToScreen(eff.Position))
 end, ENTITY_LOVEHOOK);
@@ -109,7 +73,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = GetEntityData(eff)
 	local player = data.Player
 	--set chains
-	--SchoolbagAPI.AttachChain(data.Player, eff)
+	--InutilLib.AttachChain(data.Player, eff)
 	
 	if data.Attached and not data.Attached:IsDead() then
 		--eff.Visible = false
@@ -122,11 +86,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.Attached:TakeDamage(1.5, 0, EntityRef(eff), 1)
 		end
 		if data.Attached.EntityCollisionClass == EntityCollisionClass.ENTCOLL_NONE then --remove cases
-			SchoolbagAPI.RefundActiveCharge(player, 120)
+			InutilLib.RefundActiveCharge(player, 120)
 			eff:Remove()
 		end
 	elseif data.Attached and data.Attached:IsDead() then
-		SchoolbagAPI.RefundActiveCharge(player, 120)
+		InutilLib.RefundActiveCharge(player, 120)
 		eff:Remove()
 	else
 		--rotation gimmick
@@ -147,7 +111,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 		end
 		if eff.FrameCount > 10 then --expiration
-			SchoolbagAPI.RefundActiveCharge(player, 300)
+			InutilLib.RefundActiveCharge(player, 300)
 			eff:Remove()
 		end
 	end

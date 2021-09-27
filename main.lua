@@ -29,11 +29,28 @@ yandereWaifuCodes = {
 		basiceffects = require('codes.entities.basiceffects'),
 		customplayeranim = require('codes.entities.customplayeranim')
 	},
+	--[[items = {
+		candyweddingring = require('codes.items.candyweddingring'),
+		lovedeluxe = require('codes.items.lovedeluxe'),
+		greatpheonix = require('codes.items.greatpheonix'),
+		lovemelovemenot = require('codes.items.lovemelovemenot'),
+		
+		lunchbox = require('codes.items.lunchbox'),
+		miraculouswomb = require('codes.items.miraculouswomb'),
+		diceoffate = require('codes.items.diceoffate'),
+		eternalbond = require('codes.items.eternalbond'),
+		lovesick = require('codes.items.lovesick'),
+		lovepower = require('codes.items.lovepower'),
+		typicalromcom = require('codes.items.typicalromcom'),
+		
+		isaacslocks = require('codes.items.isaacslocks')
+	},]]
 	slots = {
 		mirror = require('codes.slots.mirror')
 	},
 	unlocks = {
 	},
+	descriptions = require('codes.descriptions'),
 	commands = require('codes.commands')
 }
 -- Reset the information when moving rooms so that we don't have false positive double taps across rooms

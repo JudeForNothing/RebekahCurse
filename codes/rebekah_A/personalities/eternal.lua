@@ -56,14 +56,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --et
 	end
 	--delayed saved velocity
 	data.delayedVel = data.delayedVel or nil
-	SchoolbagAPI.SetTimer( 1, function()
+	InutilLib.SetTimer( 1, function()
 		data.delayedVel = fam.Velocity * 0.8 --1.2
 	end)
 	if data.delayedVel then
 		fam.Velocity = fam.Velocity*0.95 + ((neededPosition - fam.Position)*0.02) ; 
 	end
-	if not SchoolbagAPI.IsPlayingMultiple(spr, "Idle6", "Idle4", "Idle0", "Idle2", "Idle1", "Idle7", "Idle3", "Idle5") then --sets playing sprite
-		SchoolbagAPI.AnimWalkFrame(fam, true, "Idle6", "Idle4", "Idle0", "Idle2", "Idle1", "Idle7", "Idle3", "Idle5")
+	if not InutilLib.IsPlayingMultiple(spr, "Idle6", "Idle4", "Idle0", "Idle2", "Idle1", "Idle7", "Idle3", "Idle5") then --sets playing sprite
+		InutilLib.AnimWalkFrame(fam, true, "Idle6", "Idle4", "Idle0", "Idle2", "Idle1", "Idle7", "Idle3", "Idle5")
 	end
 	-- print(brideProtectorAngle)
 	fam:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
@@ -73,17 +73,17 @@ end, RebekahCurse.ENTITY_MORNINGSTAR);
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam) --eternal star
 	--set chains
 	
-	--SchoolbagAPI.AttachChain(fam.Player, fam)
-	--SchoolbagAPI.AttachChain3(fam.Player, fam, "gfx/effects/eternal/eternalmorningstar.anm2", "Chain", 48)
+	--InutilLib.AttachChain(fam.Player, fam)
+	--InutilLib.AttachChain3(fam.Player, fam, "gfx/effects/eternal/eternalmorningstar.anm2", "Chain", 48)
 	
-	local data = SchoolbagAPI.GetSAPIData(fam)
+	local data = InutilLib.GetILIBData(fam)
 	if not data.Init then                                             
 		data.spr = Sprite()                                                 
 		data.spr:Load("gfx/effects/eternal/eternalmorningstar.anm2", true) 
 		data.spr:SetFrame("Chain", 1)
 		data.Init = true                                              
 	end          
-	SchoolbagAPI.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(fam.Player.Position), Isaac.WorldToScreen(fam.Position), 16, nil, 8, true)
+	InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(fam.Player.Position), Isaac.WorldToScreen(fam.Position), 16, nil, 8, true)
 	--i hate you api
 	data.sprOverlay = fam:GetSprite()
 	data.sprOverlay:Render(Isaac.WorldToScreen(fam.Position))
@@ -93,8 +93,8 @@ end, RebekahCurse.ENTITY_MORNINGSTAR);
 function yandereWaifu:FeatherRender(tr, _)
 	if tr.Variant == RebekahCurse.ENTITY_ETERNALFEATHER then
 		local player, data, flags, scale = tr.Parent, yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
-		local size = SchoolbagAPI.GetTearSizeTypeII(scale, flags)
-		SchoolbagAPI.UpdateRegularTearAnimation(player, tr, data, flags, size);
+		local size = InutilLib.GetTearSizeTypeII(scale, flags)
+		InutilLib.UpdateRegularTearAnimation(player, tr, data, flags, size);
 
 		tr:GetSprite():Play("RegularTear4", false);
 		tr:GetSprite():LoadGraphics();
@@ -110,7 +110,7 @@ function yandereWaifu:FeatherUpdate(tr)
 		data.closestEnt = 0
 		--laggy
 		if tr.FrameCount == 1 then
-			SchoolbagAPI.SpawnTrail(tr)
+			InutilLib.SpawnTrail(tr)
 		end
 		--so this thing floats forever
 		if tr.FrameCount >= 1 and tr.FrameCount <= 10 then
@@ -121,8 +121,8 @@ function yandereWaifu:FeatherUpdate(tr)
 					if --[[tr.FrameCount % 10 == 0]] not data.HasFoundTarget then
 						data.HasFoundTarget = true
 						local e 
-						if SchoolbagAPI.GetStrongestEnemy(tr,10000) then
-							e = SchoolbagAPI.GetStrongestEnemy(tr,10000)
+						if InutilLib.GetStrongestEnemy(tr,10000) then
+							e = InutilLib.GetStrongestEnemy(tr,10000)
 						end
 						if e then
 							tr.Velocity = tr.Velocity * 0.9 + ((e.Position-tr.Position):Resized(16))
@@ -233,7 +233,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 			for i = 1, numLimit do
 				for j = 0, 360-360/6, 360/6 do
 					local randomRotate = math.random(-40,40)
-					SchoolbagAPI.SetTimer( i*7, function()
+					InutilLib.SetTimer( i*7, function()
 						local tear = player:FireTear(bb.Position, Vector.FromAngle(j + randomRotate)*(13), false, false, false):ToTear()
 						tear.Position = bb.Position
 						tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
@@ -244,7 +244,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 						--tear.BaseDamage = player.Damage * 2
 
 						if i == data.StackedFeathers then
-							SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 						end
 					
 					end);
@@ -265,7 +265,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if not data.OrbitPlace then data.OrbitPlace = 7 end
 	
-	--SchoolbagAPI.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
+	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
 	fam.SpriteScale = Vector(0.6, 0.6)
 	fam.OrbitDistance = Vector(110,90)
 	if spr:IsPlaying("Idle") then
@@ -285,7 +285,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
 				local numLimit = data.StackedFeathers
 				for i = 1, numLimit do
-					SchoolbagAPI.SetTimer( i, function()
+					InutilLib.SetTimer( i, function()
 						local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-10,10)), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
@@ -297,7 +297,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 				local numLimit = data.StackedFeathers
 				for i = 1, numLimit do
-					SchoolbagAPI.SetTimer( i, function()
+					InutilLib.SetTimer( i, function()
 						local circle = player:FireTechXLaser(fam.Position, Vector.FromAngle(data.FireDir+math.random(-30,30))*(20), 40+math.random(-3,3))
 						circle.Position = fam.Position
 						--local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-10,10)), false, true)
@@ -329,7 +329,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if not data.OrbitPlace then data.OrbitPlace = 7 end
 	
-	--SchoolbagAPI.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
+	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
 	fam.Velocity = player:GetShootingInput() + fam.Velocity * 0.9 
 	
 	if spr:IsPlaying("Shoot") then
@@ -343,7 +343,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
 				local numLimit = data.StackedFeathers
 				for i = 1, numLimit do
-					SchoolbagAPI.SetTimer( i, function()
+					InutilLib.SetTimer( i, function()
 						local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-10,10)), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
@@ -357,7 +357,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			for i = 1, numLimit do
 				for j = 0, 360-360/6, 360/6 do
 					local randomRotate = math.random(-40,40)
-					SchoolbagAPI.SetTimer( i*7, function()
+					InutilLib.SetTimer( i*7, function()
 						local tear = player:FireTear(fam.Position, Vector.FromAngle(j + randomRotate)*(4), false, false, false):ToTear()
 						tear.Position = fam.Position
 						tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
@@ -368,7 +368,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						--tear.BaseDamage = player.Damage * 2
 
 						if i == data.StackedFeathers then
-							SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 						end
 					
 					end);
@@ -419,12 +419,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		yandereWaifu.GetEntityData(pillar).StackedFeathers = data.StackedFeathers * 3
     	eff:Remove();
     	
-    	SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+    	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
     end
 end, RebekahCurse.ENTITY_EPICFIRETARGET)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -479,7 +479,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.RED_CANDLE_FLAME, 0, eff.Position, Vector.FromAngle(math.random(0,360)):Resized(9), player):ToEffect()
 				fire.Timeout = 120
 			end
-			SchoolbagAPI.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 2);
+			InutilLib.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 2);
 		end
 		--eff.Velocity = player.Velocity*2
 	--end
@@ -500,7 +500,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.EternalFamiliarCheck)
 	
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -547,7 +547,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 				--player.Velocity = Vector(0,0)
 			--end
-			SchoolbagAPI.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 2);
+			InutilLib.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 2);
 			local grid = room:GetGridEntity(room:GetGridIndex((eff.Position)+ (Vector(50,0):Rotated(data.PermanentAngle)))) --grids around that Rebecca stepped on
 			if grid ~= nil then 
 				--print( grid:GetType())
@@ -654,7 +654,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				yandereWaifu.GetEntityData(cut).StackedFeathers = data.StackedFeathers
 				--yandereWaifu.GetEntityData(cut).TearDelay = modulusnum
 			elseif player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
-				for k, v in pairs(SAPI.roomFamiliars) do
+				for k, v in pairs(ILIB.roomFamiliars) do
 					if v.Variant == RebekahCurse.ENTITY_BIG_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
@@ -685,7 +685,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				yandereWaifu.GetEntityData(bomb).StackedFeathers = data.StackedFeathers*2
 				data.IsAttackActive = false
 			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then --brimstone
-				for k, v in pairs(SAPI.roomFamiliars) do
+				for k, v in pairs(ILIB.roomFamiliars) do
 					if v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
@@ -696,7 +696,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				data.IsAttackActive = false
 			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then --tech x
 				local dividingNum = data.TinyOrphanims
-				for k, v in pairs(SAPI.roomFamiliars) do
+				for k, v in pairs(ILIB.roomFamiliars) do
 					if v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
@@ -707,7 +707,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				end
 			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then --technology
 				local dividingNum = data.TinyOrphanims
-				for k, v in pairs(SAPI.roomFamiliars) do
+				for k, v in pairs(ILIB.roomFamiliars) do
 					if v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
@@ -717,16 +717,16 @@ function yandereWaifu.FlamethrowerLogic(player)
 					end
 				end
 				for i = 1, numLimit do
-					SchoolbagAPI.SetTimer( i*4, function()
+					InutilLib.SetTimer( i*4, function()
 						local techlaser = player:FireTechLaser(player.Position, 0, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10)), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
 						techlaser.CollisionDamage = player.Damage * 0.5;
 						--techlaser.Size = 7
 						techlaser:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
-						SchoolbagAPI.UpdateLaserSize(techlaser, 7, false)
+						InutilLib.UpdateLaserSize(techlaser, 7, false)
 						if i == data.StackedFeathers then
-							SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 							data.IsAttackActive = false
 						end
 						
@@ -735,22 +735,22 @@ function yandereWaifu.FlamethrowerLogic(player)
 					end);
 				end
 			else
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FIRE_RUSH, 1, 0, false, 1 )
+				InutilLib.SFX:Play( SoundEffect.SOUND_FIRE_RUSH, 1, 0, false, 1 )
 				local extraPenalty = 0 --this increases if you have special items, for balance
 	
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
 					extraPenalty = extraPenalty + 5
 				end
 				for i = 1, numLimit do
-					SchoolbagAPI.SetTimer( i*extraPenalty, function()
+					InutilLib.SetTimer( i*extraPenalty, function()
 						if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-							local knife = SchoolbagAPI.SpawnKnife(player, (data.AssignedHeadDir - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
+							local knife = InutilLib.SpawnKnife(player, (data.AssignedHeadDir - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 						else
 							local tear = player:FireTear(player.Position, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
 							tear.Position = player.Position
 							if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) or player:HasCollectible(CollectibleType.COLLECTIBLE_HAEMOLACRIA) then
 								tear:ChangeVariant(RebekahCurse.ENTITY_HOLYBOMBTEAR)
-								SchoolbagAPI.MakeTearLob(tear, 1.5, 7)
+								InutilLib.MakeTearLob(tear, 1.5, 7)
 								yandereWaifu.GetEntityData(tear).StackedFeathers = data.StackedFeathers
 							else
 								tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
@@ -762,7 +762,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 							--tear.BaseDamage = player.Damage * 2
 						end
 						if i == data.StackedFeathers then
-							SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 							data.IsAttackActive = false
 						end
 						
@@ -796,7 +796,7 @@ function yandereWaifu:FlamethrowerTearsUpdate(tr)
 				for i = 1, numLimit do
 					for j = 0, 360-360/6, 360/6 do
 						local randomRotate = math.random(-40,40)
-						SchoolbagAPI.SetTimer( i*7, function()
+						InutilLib.SetTimer( i*7, function()
 							local tear = player:FireTear(tr.Position, Vector.FromAngle(j + randomRotate)*(13), false, false, false):ToTear()
 							tear.Position = tr.Position
 							tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
@@ -808,7 +808,7 @@ function yandereWaifu:FlamethrowerTearsUpdate(tr)
 							--tear.BaseDamage = player.Damage * 2
 
 							if i == data.StackedFeathers then
-								SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+								InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 							end
 						
 						end);

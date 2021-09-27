@@ -8,13 +8,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.MirrorR
 --stuff to check how much boss room you cleared
 function yandereWaifu.TrySpawnMirror()
 	--print(game:GetLevel():GetCurrentRoomDesc().GridIndex)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == RebekahCurse.REB  then
-			local room = SAPI.game:GetRoom()
-			local level = SAPI.game:GetLevel()
+			local room = ILIB.game:GetRoom()
+			local level = ILIB.game:GetLevel()
 			-- if we're in a boss room and the room is clear
-			local isGreed = SAPI.game.Difficulty == Difficulty.DIFFICULTY_GREED or SAPI.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
+			local isGreed = ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREED or ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
 			if (room:GetType() == RoomType.ROOM_BOSS or (isGreed and level:GetCurrentRoomDesc().GridIndex--[[GetCurrentRoomIndex()]] == 110 --[[room:GetType() == RoomType.ROOM_SHOP]])) and room:IsClear() then
 				local add = false
 				-- iterate through the saved boss rooms
@@ -43,8 +43,8 @@ function yandereWaifu.HandleMirrorData()
 	if not mirrorRoomData then mirrorRoomData = {} end
 	if mirrorRoomData then
 		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-			local room = SAPI.game:GetRoom()
-			local level = SAPI.game:GetLevel()
+			local room = ILIB.game:GetRoom()
+			local level = ILIB.game:GetLevel()
 			if not mirrorRoomData[i] then mirrorRoomData[i] = {} end
 			mirrorRoomData[i][1] = level:GetCurrentRoomDesc().GridIndex
 			mirrorRoomData[i][2] = room:GetGridIndex(mir.Position)
@@ -57,9 +57,9 @@ end
 function yandereWaifu.InsertMirrorData()
 	for i, something in pairs(mirrorRoomData) do 
 		--if it has, then insert
-		if mirrorRoomData[i][1] == SAPI.level:GetCurrentRoomDesc().GridIndex then
+		if mirrorRoomData[i][1] == ILIB.level:GetCurrentRoomDesc().GridIndex then
 			for m, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-				if SAPI.room:GetGridIndex(mir.Position) == mirrorRoomData[i][2] then
+				if ILIB.room:GetGridIndex(mir.Position) == mirrorRoomData[i][2] then
 					print("scar")
 					yandereWaifu.GetEntityData(mir).Use = mirrorRoomData[i][3]
 					print(mirrorRoomData[i][3])
@@ -78,7 +78,7 @@ function yandereWaifu.MirrorMechanic(player)
 	local totalCurTypesofHearts = {};
 	local getRebekahsPresent = 0
 	
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		
@@ -119,7 +119,7 @@ function yandereWaifu.MirrorMechanic(player)
 		end
 	end
 	
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		
@@ -131,7 +131,7 @@ function yandereWaifu.MirrorMechanic(player)
 		
 		--mirror code
 		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-			if not SchoolbagAPI.IsShowingItem(player) then
+			if not InutilLib.IsShowingItem(player) then
 				local mirdata = yandereWaifu.GetEntityData(mir);
 				local sprite = mir:GetSprite();
 				
@@ -146,7 +146,7 @@ function yandereWaifu.MirrorMechanic(player)
 						local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_ARCANE_CIRCLE, 0, player.Position, Vector(0,0), player );
 						mirdata.Circle = arcane
 					end
-					if not mirdata.Use then mirdata.Use = getRebekahsPresent end --SAPI.game:GetNumPlayers() end
+					if not mirdata.Use then mirdata.Use = getRebekahsPresent end --ILIB.game:GetNumPlayers() end
 					if not mirdata.Init then mirdata.Init = true end
 				end
 				if mir.GridCollisionClass ~= 0 --[[mir.Position:Distance(mirdata.FirstPos) > 30]] then
@@ -175,7 +175,7 @@ function yandereWaifu.MirrorMechanic(player)
 							sprite:Play("Death", true);
 							for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 								if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-									local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, MirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+									local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
 									pickup:Remove()
 								end
 							end
@@ -239,7 +239,8 @@ function yandereWaifu.MirrorMechanic(player)
 									--end
 									
 									local newMode = yandereWaifu.GetEntityData(player).currentMode;
-									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and #totalCurTypesofHearts > 0 and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") and not sprite:IsPlaying("Initiate") and yandereWaifu.GetEntityData(player).IsAttackActive == false then --if interacted
+									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and #totalCurTypesofHearts > 0 and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") and not sprite:IsPlaying("Initiate") and not yandereWaifu.GetEntityData(player).IsAttackActive then --if interacted
+										print("trigger")
 										if sprite:IsPlaying("ShowRed") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RedHearts 
 											and player:GetHearts() > 1 then
 											newMode = REBECCA_MODE.RedHearts;
@@ -273,9 +274,32 @@ function yandereWaifu.MirrorMechanic(player)
 											--don't move
 											player.Velocity = Vector(0,0)
 											mirdata.currentHeart = 1; --reset
-											
+											print("happy")
 											--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 										end
+									end
+									
+									--EID displaying
+									if sprite:GetFrame() == 0 and EID then
+										local Description
+										if sprite:IsPlaying("ShowRed") then
+											Description = EIDRebekahsMirror.Red
+										elseif sprite:IsPlaying("ShowBlue") then
+											Description = EIDRebekahsMirror.Soul
+										elseif sprite:IsPlaying("ShowGold") then
+											Description = EIDRebekahsMirror.Gold
+										elseif sprite:IsPlaying("ShowEvil") then
+											Description = EIDRebekahsMirror.Evil
+										elseif sprite:IsPlaying("ShowEternal") then
+											Description = EIDRebekahsMirror.Eternal
+										elseif sprite:IsPlaying("ShowBone") then
+											Description = EIDRebekahsMirror.Bone
+										elseif sprite:IsPlaying("ShowRotten") then
+											Description = EIDRebekahsMirror.Rotten
+										elseif sprite:IsPlaying("ShowBroken") then
+											Description = EIDRebekahsMirror.Broken
+										end
+										mir:GetData()["EID_Description"] = Description
 									end
 								else
 									if mirdata.Use <= 0 then
@@ -295,7 +319,7 @@ function yandereWaifu.MirrorMechanic(player)
 								if mir.Position:Distance(player.Position) > mir.Size + player.Size + 45 then --if close or far, speed up or not?
 									mir:GetSprite().PlaybackSpeed = 3;
 								else
-									mir:GetSprite().PlaybackSpeed = 1;
+									mir:GetSprite().PlaybackSpeed = 0.002;
 								end
 							end
 						end
@@ -306,7 +330,7 @@ function yandereWaifu.MirrorMechanic(player)
 						mirdata.Circle:GetSprite():Play("FadeOut",true)
 						for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 							if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-								local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, MirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+								local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
 								pickup:Remove()
 							end
 						end
@@ -338,8 +362,8 @@ function yandereWaifu.MirrorMechanic(player)
 											player:RemoveCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART)
 											player.Velocity = Vector(0,0)
 											mirdata.Circle:GetSprite():Play("FadeOut",true)
-											SAPI.game:Darken(5,1200)
-											SchoolbagAPI.AnimateGiantbook(nil, nil, "Marry", "gfx/ui/giantbook/giantbook_marriage.anm2", true, true)
+											ILIB.game:Darken(5,1200)
+											InutilLib.AnimateGiantbook(nil, nil, "Marry", "gfx/ui/giantbook/giantbook_marriage.anm2", true, true)
 										end
 									end
 								end

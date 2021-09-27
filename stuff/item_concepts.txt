@@ -50,22 +50,52 @@ Broken Heart - hair [x]
 -synergies
 -sprites
 
-()Boss Rush - Lunchbox - get 1 hearts of any type, spawns 1-3 more health each floor (C-)
+Character unlockables:
+(X)Boss Rush - Lunchbox - get 1 hearts of any type, spawns 1-3 more health each floor (C-)
 (X)It Lives! - Miraculous Womb - Spawns two familiars that look like J&E. They orbit around you and shoot your tears.
 ()Satan - Cursed Spoon - get hurt and a maw spawns and swallows you up
 (X)Isaac - Dice of Fate - rerolls current health bt amount and type 
 (X)The Lamb - Isaac's Locks - trinket, decreases cooldown for Rebecca's heart barrages and dash, increases speed and damage and heart spawn rate increases over other hearts/ spawns reroll machine in special rooms
 (X)??? - Eternal Bond - if Rebecca, spawns mini Isaac. else, spawns mini Rebecca. 
 (X)Ultra Greed - Love = Power - The more red hearts you have, the more dmg, the more empty heart containers, the more speed (C-X)
-()Ultra Greedier - Lovesick - the less time you pick up a heart or heal, the more stronger you get. healing resets it
-(X)Hush - Typical Rom-Com - increases lowest stat on use/on use, activates random barrage, 2 charge
-(X)Delirium - Snap - you gain a heart beat. Heart beat repels enemies. Your heart beat gets faster the less health you have from total health
+(X)Ultra Greedier - Lovesick - the less time you pick up a heart or heal, the more stronger you get. healing resets it
+()Hush - Rebekah's Camera - stuns and captures enemies, use again to spawn them charmed
+()Delirium - Snap - you gain a heart beat. Heart beat repels enemies. Your heart beat gets faster the less health you have from total health
 () Mother - Rebekah's Favorite - spawns a happy Jacob
 () Beast - Patriarchs Liar - judgement
 (X)Unrequited Love - 
-On new room, you can shoot a hook to an enemy. The farther you go from the attached enemy, they begin to suffocate and get hurt per x frames.
+"Heart Mode Sword thing" - passive - unlocked after defeating Isaac with all heart personalities
 
-Tweaks
--custom costume system
--fix the heart reserve to the ui
--more dust effects
+Unlocked items:
+toy refs:
+X Candy Wedding Ring - passive - it gives 1 heart container and 0.7 speed when picked up
+X "Love me, love me not" thing - Probably an active item - The point's just to add a benefit, nothing crazy, basic stat item somewhere in line with purity
+bag of bristle blocks - active - collect blocks from dead enemies and build turrets
+book refs:
+doorstopper - active - giant book to yeet to enemies
+encyclopedia - active - d infinity but for books
+"The Shining" - active - book that floods the room with blood
+X Typical Rom-Com - increases lowest stat on use/on use, activates random barrage, 2 charge
+Annabel Lee
+yandere refs:
+Im a die - active item where you have to constantly cut wires so the bomb doesnt explode, get rewards
+Finger Finger! - passive where killing enemies spawn a finger minion which attacks other enemies?
+Love Deluxe - Passive - After firing tears for 2.35 seconds, releasing the fire button unleashes a black hairy whip simular to the Snapper.
+Future Diary? - active item/trinket that predicts where enemies and proectiles will go, maybe even specific lasers will shoot
+X Great Fire Bird! - passive, after 15 shots, spawns a cluster of war locusts
+
+The Platform
+No Item
+Therefore I am?
+Helltaker -kick rocks
+Narcolepsy -sleepy time
+Psoraisis -armor thingy
+Bathtub Mermaid -swish movement
+
+
+Female Boss Unlocks:
+Maggy - Diabetes?? (suto help)
+Eve - 
+Lilith - Nightmare Box - upgrades current familiars to be stronger for a room
+Bethany - some sort of book of virtues 2 - instead of wisps, spawns bigger wisps like level two wisp size idk
+Eden?

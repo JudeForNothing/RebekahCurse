@@ -1,4 +1,12 @@
 
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
+	local data = yandereWaifu.GetEntityData(player)
+	if not data.PersistentPlayerData then data.PersistentPlayerData = {} end
+	print("2")
+end)
+
 --data that will be passed all around the mod
 RebekahLocalSavedata = {
 	bossRoomsCleared = {},
@@ -68,29 +76,29 @@ local roomWasCleared = false
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 
-	local room = SAPI.game:GetRoom()
+	local room = ILIB.game:GetRoom()
 	local roomIsClear = room:IsClear()
 	
-	local currentStage = SAPI.game:GetLevel():GetStage()
+	local currentStage = ILIB.game:GetLevel():GetStage()
 	local roomType = room:GetType()
 	
-	for i,player in ipairs(SAPI.players) do
+	for i,player in ipairs(ILIB.players) do
 		if player:GetPlayerType() == Reb and RebekahLocalSavedata.CurrentRebeccaUnlocks and readyToUnlock then
 			
-			if SAPI.game:IsGreedMode() then
+			if ILIB.game:IsGreedMode() then
 				if not ultraGreedWasDefeated then
 					if currentStage == LevelStage.STAGE7_GREED then
 						if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS and room:IsCurrentRoomLastBoss() then
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE then --greed
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_love_power.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_love_power.png", nil, true)
 							end
-							if SAPI.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then --ier
+							if ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then --ier
 								if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK then
 									RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK = true
 
-									SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lovesick.png", nil, true)
+									InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lovesick.png", nil, true)
 								end
 							end
 						end
@@ -103,34 +111,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 						if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX then
 							RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX = true
 
-							SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lunchbox.png", nil, true)
+							InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lunchbox.png", nil, true)
 						end
 					end
 				end
 				
 				--do other unlocks if the other methods didnt work
 				if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS then
-					local currentStageType = SAPI.game:GetLevel():GetStageType()
-					local curses =	SAPI.game:GetLevel():GetCurses()
+					local currentStageType = ILIB.game:GetLevel():GetStageType()
+					local curses =	ILIB.game:GetLevel():GetCurses()
 					
 					if currentStage == 8 or (currentStage == 7 and curses & LevelCurse.CURSE_OF_LABYRINTH ~= 0 and room:IsCurrentRoomLastBoss()) then --womb 2
 						if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then
 							RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB = true
 
-							SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_miraculous_womb.png", nil, true)
+							InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_miraculous_womb.png", nil, true)
 						end
 					elseif currentStage == 10 then
 						if currentStageType == 1 then --cathedral
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE then
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_dice_of_fate.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_dice_of_fate.png", nil, true)
 							end
 						elseif currentStageType == 0 then --sheol
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON then
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_cursed_spoon.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_cursed_spoon.png", nil, true)
 							end
 						end
 					elseif currentStage == 11 then
@@ -139,33 +147,33 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.HAS_LOVERS_CARD then
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.HAS_LOVERS_CARD = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_rebekahsfatesealed.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_rebekahsfatesealed.png", nil, true)
 							end
 						elseif currentStageType == 1 then --chest
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND then
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_eternal_bond.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_eternal_bond.png", nil, true)
 							end
 						elseif currentStageType == 0 then --dark room
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS then
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_isaacs_locks.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_isaacs_locks.png", nil, true)
 							end
 						end
 					elseif currentStage == 9 then --blue womb
 						if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM then
 							RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM = true
 
-							SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_typical_romcom.png", nil, true)
+							InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_typical_romcom.png", nil, true)
 						end
 					elseif currentStage == 12 then --the void
 						if deliriumWasInRoom then
 							if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_SNAP then
 								RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_SNAP = true
 
-								SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_snap.png", nil, true)
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_snap.png", nil, true)
 							end
 		
 						end
@@ -177,7 +185,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE and istrue then --EVERYONE
 					RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE = true
 
-					SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/achievement_unrequited_love.png", nil, true)
+					InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_unrequited_love.png", nil, true)
 				end
 			end
 		end
@@ -192,7 +200,7 @@ end)
 
 --item pool unlockables!
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	local itemPool = SAPI.game:GetItemPool()
+	local itemPool = ILIB.game:GetItemPool()
 	if RebekahLocalSavedata.CurrentRebeccaUnlocks then
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX then --boss rush
 			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX)
@@ -248,7 +256,7 @@ end)
 			end
 		end
 	else
-			for p = 0, SAPI.game:GetNumPlayers() - 1 do
+			for p = 0, ILIB.game:GetNumPlayers() - 1 do
 				local player = Isaac.GetPlayer(p)
 				if player:GetPlayerType() == Reb then
 					if yandereWaifu.GetEntityData(player).currentMode then
@@ -274,16 +282,23 @@ local function RecapRebekahData()
 	saveData.currentMode = {};
 	saveData.heartFillReserve = {};
 	saveData.heartStockReserve = {};
+	
+	saveData.PersistentPlayerData = {}
+	
 	saveData.NedHealth = {} -- first ned
-	for i,player in ipairs(SAPI.players) do
+	for i,player in ipairs(ILIB.players) do
 		if player:GetPlayerType() == RebekahCurse.REB then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
 			saveData.heartStockReserve[i] = yandereWaifu.getReserveStocks(player)
-			print("its just a burning memory")
 		else
 			saveData.currentMode[i] = nil
 		end
+		
+		--persistent save data
+		saveData.PersistentPlayerData[i] = {}
+		saveData.PersistentPlayerData[i] = yandereWaifu.GetEntityData(player).PersistentPlayerData
+		
 		for c, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 		--check for knights health
 			if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
@@ -298,12 +313,11 @@ local function RecapRebekahData()
 				end
 			end
 		end
-		print(saveData.heartFillReserve[i])
+		--print(saveData.heartFillReserve[i])
 	end
 	saveData.bossRoomsCleared = RebekahLocalSavedata.bossRoomsCleared;
 	saveData.unlocks = RebekahLocalSavedata.CurrentRebeccaUnlocks;
-	
-	print("eclectric chair")
+	--print("eclectric chair")
 	
 	
 	return saveData
@@ -321,14 +335,20 @@ JSON = require("json");
 
 -- Load Moddata
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
+	print("1")
 	local data = JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
 		if data.currentMode ~= nil then 
-			for i,player in ipairs(SAPI.players) do
+			for i,player in pairs(ILIB.players) do
 				if player:GetPlayerType() == RebekahCurse.REB then
 					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[i]
 					yandereWaifu.addReserveFill(player, data.heartFillReserve[i])
 					yandereWaifu.addReserveStocks(player, data.heartStockReserve[i])
+					--if data.PersistentPlayerData ~= nil then
+						yandereWaifu.GetEntityData(player).PersistentPlayerData = data.PersistentPlayerData[i]
+					--end
+					player:AddCacheFlags(CacheFlag.CACHE_ALL);
+					player:EvaluateItems()
 				end
 			end
 		end
@@ -337,13 +357,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 		if data.unlocks ~= nil then RebekahLocalSavedata.CurrentRebeccaUnlocks = data.unlocks end
 		
 		if data.NedHealth then
-			for i,player in ipairs(SAPI.players) do
+			for i,player in ipairs(ILIB.players) do
 				for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 					if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
 						local name = tonumber(ned.Variant..ned.SubType)
 						for k, health in ipairs(data.NedHealth[i]) do
-							print(data.NedHealth[i][k][1], "steve")
-							print(data.NedHealth[i][k][2], "steve")
 							if data.NedHealth[i][k][1] == name then
 								yandereWaifu.GetEntityData(ned).Health = data.NedHealth[i][k][2]
 								table.remove(data.NedHealth[i], k)

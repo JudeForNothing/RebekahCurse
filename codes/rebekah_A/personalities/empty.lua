@@ -45,11 +45,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		--dash movement
 		if playerdata.IsDashActive and data.Stat.SlashDelay <= 0 then
 			local slashAnim 
-			if not SchoolbagAPI.IsPlayingMultiple(spr, "SlashSide", "SlashFront", "SlashBack") then --init
-				slashAnim = SchoolbagAPI.AnimShootFrame(fam, false, playerdata.DashVector, "SlashSide", "SlashFront", "SlashBack")
+			if not InutilLib.IsPlayingMultiple(spr, "SlashSide", "SlashFront", "SlashBack") then --init
+				slashAnim = InutilLib.AnimShootFrame(fam, false, playerdata.DashVector, "SlashSide", "SlashFront", "SlashBack")
 				fam.Velocity = fam.Velocity + playerdata.DashVector:Resized( BALANCE.RED_HEARTS_DASH_SPEED * 2);
 			end
-			if SchoolbagAPI.IsPlayingMultiple(spr, "SlashSide", "SlashFront", "SlashBack") then --slash damage
+			if InutilLib.IsPlayingMultiple(spr, "SlashSide", "SlashFront", "SlashBack") then --slash damage
 				if spr:GetFrame() >= 8 and spr:GetFrame() <= 10 then
 					if spr:GetFrame() == 8 then
 						speaker:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 1 );
@@ -70,18 +70,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					end
 				end
 			end
-			if SchoolbagAPI.IsFinishedMultiple(spr, "SlashSide", "SlashFront", "SlashBack") then
+			if InutilLib.IsFinishedMultiple(spr, "SlashSide", "SlashFront", "SlashBack") then
 				playerdata.IsDashActive = false
 				data.Stat.SlashDelay = data.Stat.MaxChargeDelay
 			end
 		elseif playerdata.IsDashActive and data.Stat.SlashDelay > 0 then
 			playerdata.IsDashActive = false
 		elseif playerdata.IsAttackActive then
-			if not SchoolbagAPI.IsPlayingMultiple(spr, "Special", "Special", "Special") then --init
-				slashAnim = SchoolbagAPI.AnimShootFrame(fam, false, playerdata.AttackVector, "Special", "Special", "Special")
+			if not InutilLib.IsPlayingMultiple(spr, "Special", "Special", "Special") then --init
+				slashAnim = InutilLib.AnimShootFrame(fam, false, playerdata.AttackVector, "Special", "Special", "Special")
 				if not data.entTable then data.entTable = {} end
 			end
-			if SchoolbagAPI.IsPlayingMultiple(spr, "Special", "Special", "Special") then --slash damage
+			if InutilLib.IsPlayingMultiple(spr, "Special", "Special", "Special") then --slash damage
 				if not data.entTable then data.entTable = {} end
 				if spr:IsEventTriggered("Start") then
 					fam.Velocity = fam.Velocity + playerdata.AttackVector:Resized( BALANCE.BRIDE_RED_HEARTS_DASH_SPEED );
@@ -117,13 +117,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					data.entTable = {}
 				end
 			end
-			if SchoolbagAPI.IsFinishedMultiple(spr, "Special", "Special", "Special") then
+			if InutilLib.IsFinishedMultiple(spr, "Special", "Special", "Special") then
 				playerdata.IsAttackActive = false
 			end
 		else
 			--walk anims
-			if not SchoolbagAPI.IsPlayingMultiple(spr, "ShootSide", "ShootFront", "ShootBack") then
-				walkAnim = SchoolbagAPI.AnimWalkFrame(fam, false, "WalkSide", "WalkFront", "WalkBack")
+			if not InutilLib.IsPlayingMultiple(spr, "ShootSide", "ShootFront", "ShootBack") then
+				walkAnim = InutilLib.AnimWalkFrame(fam, false, "WalkSide", "WalkFront", "WalkBack")
 			end
 			
 			--if not spr:IsPlaying("ShootSide") or not spr:IsPlaying("ShootFront") or not spr:IsPlaying("ShootBack")  then
@@ -143,8 +143,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				if data.Stat.FireDelay <= 0 then
 					--print(wA)
 					if wA then wA = math.floor(wA) end
-					if not SchoolbagAPI.IsPlayingMultiple(spr, "ShootSide", "ShootFront", "ShootBack") then
-						SchoolbagAPI.AnimShootFrame(fam, true, Vector.FromAngle(data.walkAnim or wA), "ShootSide", "ShootFront", "ShootBack")
+					if not InutilLib.IsPlayingMultiple(spr, "ShootSide", "ShootFront", "ShootBack") then
+						InutilLib.AnimShootFrame(fam, true, Vector.FromAngle(data.walkAnim or wA), "ShootSide", "ShootFront", "ShootBack")
 					end
 					local tears = player:FireTear(fam.Position, Vector.FromAngle(wA):Resized(10), false, false, false):ToTear()
 					tears.Position = fam.Position
@@ -155,8 +155,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					addVel = fam.Velocity + ((Vector(-15,0):Rotated(wA)):Resized(10))
 					--print(wA)
 				else
-					if (not SchoolbagAPI.IsPlayingMultiple(spr, "ShootSide", "ShootFront", "ShootBack") or SchoolbagAPI.IsFinishedMultiple(spr, "ShootSide", "ShootFront", "ShootBack") ) and not SchoolbagAPI.IsPlayingMultiple(spr, "WalkSide", "WalkFront", "WalkBack") and data.walkAnim then
-						SchoolbagAPI.AnimShootFrame(fam, true, Vector.FromAngle(data.walkAnim), "WalkSide", "WalkFront", "WalkBack")
+					if (not InutilLib.IsPlayingMultiple(spr, "ShootSide", "ShootFront", "ShootBack") or InutilLib.IsFinishedMultiple(spr, "ShootSide", "ShootFront", "ShootBack") ) and not InutilLib.IsPlayingMultiple(spr, "WalkSide", "WalkFront", "WalkBack") and data.walkAnim then
+						InutilLib.AnimShootFrame(fam, true, Vector.FromAngle(data.walkAnim), "WalkSide", "WalkFront", "WalkBack")
 					end
 				end
 			else

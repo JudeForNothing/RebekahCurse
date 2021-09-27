@@ -187,7 +187,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			data.RottenFlyTable = {} 
 			
 			--reassign when quitting out of game
-			for i, v in ipairs(SAPI.roomEntities) do
+			for i, v in ipairs(ILIB.roomEntities) do
 				if v.Type == 3 and v.Variant == RebekahCurse.ENTITY_ROTTENFLY then
 					if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 						table.insert(data.RottenFlyTable, v)
@@ -353,7 +353,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 		end
 		fam.Velocity = fam.Velocity * 0.9
 	else
-		--SchoolbagAPI.MoveOrbitAroundTargetType1(fam, data.Parent, 3, 0.9, 5, data.StartingPos)
+		--InutilLib.MoveOrbitAroundTargetType1(fam, data.Parent, 3, 0.9, 5, data.StartingPos)
 		fam.Velocity = (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)*0.2
 	end
 	
@@ -549,7 +549,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 						if not pos then pos = Isaac.GetRandomPosition() end
 					end
 					if pos then
-						SchoolbagAPI.MoveRandomlyTypeI(fam, pos, 8, 0.9, 0, 0, 0)
+						InutilLib.MoveRandomlyTypeI(fam, pos, 8, 0.9, 0, 0, 0)
 					end
 				else
 					fam.Velocity = fam.Velocity * 0.9;
@@ -675,7 +675,7 @@ function yandereWaifu.rottenFlyTearColl(_, fam, collider, low)
 				tears:ChangeVariant(TearVariant.BLOOD)
 				tears:AddTearFlags(TearFlags.TEAR_EXPLOSIVE)
 				tears:SetColor(Color(0,1,0,1,0,0,0),9999999,99,false,false)
-				SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+				InutilLib.MakeTearLob(tears, 1.5, 9 )
 			end
 			if fam.SubType == 12 then --ink
 				for i = 0, 360-360/4, 360/4 do
@@ -725,10 +725,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 	end
 	if fam.SubType ~= 20 then --not dart fly
 		if target then
-			SchoolbagAPI.MoveDirectlyTowardsTarget(fam, target, 2, 0.9)
+			InutilLib.MoveDirectlyTowardsTarget(fam, target, 2, 0.9)
 		else
 			if not data.RandomOrbit then data.RandomOrbit = math.random(0,360) end
-			--SchoolbagAPI.MoveOrbitAroundTargetType1(fam, data.Parent, 2, 0.9, 8, 0 + data.RandomOrbit)
+			--InutilLib.MoveOrbitAroundTargetType1(fam, data.Parent, 2, 0.9, 8, 0 + data.RandomOrbit)
 			fam.Velocity = (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)*0.2
 		end
 	else

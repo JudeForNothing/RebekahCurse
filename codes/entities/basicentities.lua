@@ -31,7 +31,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					var = TearVariant.BONE
 				end
 				local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, ent.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
-				SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+				InutilLib.MakeTearLob(tears, 1.5, 9 )
 			end
 		end
 		data.BurstGuts = false

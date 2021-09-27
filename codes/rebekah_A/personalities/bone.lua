@@ -95,7 +95,7 @@ function yandereWaifu.RebekahBoneBarrage(player, direction)
 		--[[--ludostuff
 		local ludoTear
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
-			ludoTear = SchoolbagAPI.GetPlayerLudo(player)
+			ludoTear = InutilLib.GetPlayerLudo(player)
 			if ludoTear then
 				local ludoBone = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LUDOBONE, 0, ludoTear.Position, Vector(0,0), player)
 				ludoTear:Remove()
@@ -116,7 +116,7 @@ function yandereWaifu.RebekahBoneBarrage(player, direction)
 			--	var = RebekahCurse.ENTITY_SKULLTEAR
 			end
 			local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, player.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
-			SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+			InutilLib.MakeTearLob(tears, 1.5, 9 )
 		end
 		data.IsLeftover = true
 		
@@ -174,14 +174,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 	if data.FireDelay > 0 then data.FireDelay = data.FireDelay - 1 end
 	
 	if spr:IsFinished("Spawn") then
-		data.Angle = SchoolbagAPI.AnimShootFrame(fam, true, data.Angle, "MoveSideward", "MoveForward", "MoveBackward")
+		data.Angle = InutilLib.AnimShootFrame(fam, true, data.Angle, "MoveSideward", "MoveForward", "MoveBackward")
 	end
 	
 	--use heaart reserve
 	yandereWaifu:addReserveFill(player, -1)
 	
-	if SchoolbagAPI.IsFinishedMultiple(spr, "AttackSideward", "AttackForward", "AttackBackward") then --reset after done shooting
-		SchoolbagAPI.AnimShootFrame(fam, true, Vector.FromAngle(data.Angle), "MoveSideward", "MoveForward", "MoveBackward")
+	if InutilLib.IsFinishedMultiple(spr, "AttackSideward", "AttackForward", "AttackBackward") then --reset after done shooting
+		InutilLib.AnimShootFrame(fam, true, Vector.FromAngle(data.Angle), "MoveSideward", "MoveForward", "MoveBackward")
 	end
 	
 	if player:GetShootingInput():GetAngleDegrees() == data.Angle and (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0 ) then-- and player:GetShootingInput().Y == Vector.FromAngle(data.Angle).Y then
@@ -212,13 +212,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			data.FireDelay = math.floor(player.MaxFireDelay/3) --reset
 		end
 		
-		SchoolbagAPI.AnimShootFrame(fam, true,  Vector.FromAngle(data.Angle), "AttackSideward", "AttackForward", "AttackBackward")
+		InutilLib.AnimShootFrame(fam, true,  Vector.FromAngle(data.Angle), "AttackSideward", "AttackForward", "AttackBackward")
 	end
 	if player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0 then --move code
-		if SchoolbagAPI.IsPlayingMultiple(spr, "MoveSideward") then
+		if InutilLib.IsPlayingMultiple(spr, "MoveSideward") then
 			fam.Velocity = Vector(player:GetMovementInput().X, 0)*10
 		end
-		if SchoolbagAPI.IsPlayingMultiple(spr, "MoveForward", "MoveBackward") then
+		if InutilLib.IsPlayingMultiple(spr, "MoveForward", "MoveBackward") then
 			fam.Velocity = Vector(0, player:GetMovementInput().Y)*10
 		end
 	else
@@ -238,13 +238,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		
 		player.Position = body.Position
 		body:Remove()
-		--SchoolbagAPI.RefundActiveCharge(player, 1, true)
+		--InutilLib.RefundActiveCharge(player, 1, true)
 	end
 	
 end, RebekahCurse.ENTITY_BONESTAND);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -323,7 +323,7 @@ end, RebekahCurse.ENTITY_BONEPUNCH)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -424,7 +424,7 @@ end, RebekahCurse.ENTITY_BONESPEAR)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -443,7 +443,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--eff.Velocity = Vector.FromAngle(data.PermanentAngle):Resized(35)
 		end
 		
-		SchoolbagAPI.MoveDiagonalTypeI(eff, 10, false, true)
+		InutilLib.MoveDiagonalTypeI(eff, 10, false, true)
 		
 		if player then
 		
@@ -466,7 +466,7 @@ end, RebekahCurse.ENTITY_LUDOBONE)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -497,7 +497,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			end
 			Isaac.Explode(eff.Position, player, 10)
-			SAPI.game:ShakeScreen(5)
+			ILIB.game:ShakeScreen(5)
 			for i = 0, 360 - 360/8, 360/8 do
 				local tears = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BONE, 0, eff.Position, Vector(0,-8):Rotated(i), player):ToTear()
 			end
@@ -512,16 +512,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--end
 end, RebekahCurse.ENTITY_EPICBONE)
 
-SchoolbagAPI:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
+InutilLib:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
 	local data = yandereWaifu.GetEntityData(fam)
 	if fam.SubType == 0 then
-		--if SAPI.game:GetFrameCount() % 10 == 0 then
-			--SchoolbagAPI.CreateGenericPathfinder(fam)
+		--if ILIB.game:GetFrameCount() % 10 == 0 then
+			--InutilLib.CreateGenericPathfinder(fam)
 			--if data.target then
-			--	SchoolbagAPI.GenerateAStarPath(fam, data.target, true)
+			--	InutilLib.GenerateAStarPath(fam, data.target, true)
 			--end
 		--end
-		--local path = SchoolbagAPI.GenerateAStarPath(fam, fam.Player, true)
+		--local path = InutilLib.GenerateAStarPath(fam, fam.Player, true)
 	end
 end, RebekahCurse.ENTITY_BONEJOCKEY)
 
@@ -547,7 +547,7 @@ function yandereWaifu:onFamiliarBoneJockeyInit(fam)
 		data.Butt = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_BONEJOCKEY, 1, fam.Position, Vector(0,0), player) 
 		yandereWaifu.GetEntityData(data.Butt).Head = fam
 		
-		data.ATTACK_DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+		data.ATTACK_DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
 		
 		
 		yandereWaifu.GetEntityData(player).hasLeech = fam --set this so it wont duplicate
@@ -623,10 +623,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 	end
 	
 	local function FollowParent()
-		local path = SchoolbagAPI.GenerateAStarPath(fam, player)
+		local path = InutilLib.GenerateAStarPath(fam, player)
 		
 		if (fam.Position - player.Position):Length() > 300 then
-			SchoolbagAPI.FollowPath(fam, player, path, 2, 0.9)
+			InutilLib.FollowPath(fam, player, path, 2, 0.9)
 		else
 			fam:FollowParent()
 		end
@@ -674,9 +674,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		end
 		
 		if spr:IsFinished("Appear") then
-			data.Angle = SchoolbagAPI.AnimShootFrame(fam, true, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+			data.Angle = InutilLib.AnimShootFrame(fam, true, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 		end
-		if not SchoolbagAPI.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then 
+		if not InutilLib.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then 
 			if data.IsPossessed then
 				local lastDir 
 				
@@ -687,9 +687,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					lastDir = data.lastDir
 				end
 				data.lastDir = lastDir
-				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, lastDir or Vector(10,0), "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+				data.Angle = InutilLib.AnimShootFrame(fam, false, lastDir or Vector(10,0), "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 			else
-				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+				data.Angle = InutilLib.AnimShootFrame(fam, false, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 			end
 		end
 		
@@ -700,9 +700,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			if data.BloodyMouthCount > 0 then
 				data.BloodyMouthCount = data.BloodyMouthCount - 1
 				if fam.FrameCount % 5 == 0 then
-					local puddle = SAPI.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, fam.Position, Vector(0,0), player, 0, 0):ToEffect()
-					SchoolbagAPI.RevelSetCreepData(puddle)
-					SchoolbagAPI.RevelUpdateCreepSize(puddle, math.random(1,2), true)
+					local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, fam.Position, Vector(0,0), player, 0, 0):ToEffect()
+					InutilLib.RevelSetCreepData(puddle)
+					InutilLib.RevelUpdateCreepSize(puddle, math.random(1,2), true)
 				end
 			else
 				data.BloodyMouthCount = nil
@@ -734,7 +734,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					--	var = RebekahCurse.ENTITY_SKULLTEAR
 					end
 					local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, fam.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
-					SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+					InutilLib.MakeTearLob(tears, 1.5, 9 )
 				end
 			end
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY) then
@@ -781,7 +781,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				data.IsPossessed = false
 			end
 			--target code
-			local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 300, _, _, _, _, _, _, true)--, true, 3, 0, false, false)
+			local target = InutilLib.GetClosestGenericEnemy(fam, 300, _, _, _, _, _, _, true)--, true, 3, 0, false, false)
 			
 			if not data.DeathFrame then data.DeathFrame = 1800 end
 			
@@ -800,13 +800,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					end
 						
 					if data.target then
-						local path = SchoolbagAPI.GenerateAStarPath(fam, data.target)
+						local path = InutilLib.GenerateAStarPath(fam, data.target)
 						
 						if not path then
 							FollowParent()
 							data.target = nil
 						else
-							SchoolbagAPI.FollowPath(fam, data.target, path, 2, 0.9)
+							InutilLib.FollowPath(fam, data.target, path, 2, 0.9)
 						end
 					else
 						FollowParent()
@@ -817,11 +817,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					data.target = nil
 				end
 			else
-				if SAPI.game:GetFrameCount() % 3 == 0 then
-					data.toPlayerpath = SchoolbagAPI.GenerateAStarPath(fam, player)
+				if ILIB.game:GetFrameCount() % 3 == 0 then
+					data.toPlayerpath = InutilLib.GenerateAStarPath(fam, player)
 				end
 				if data.toPlayerpath then
-					SchoolbagAPI.FollowPath(fam, player, data.toPlayerpath, 4, 0.9)
+					InutilLib.FollowPath(fam, player, data.toPlayerpath, 4, 0.9)
 				end
 				
 				--avoiding possible softlock, here!
@@ -847,7 +847,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 										--	var = RebekahCurse.ENTITY_SKULLTEAR
 										end
 										local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, var, 0, player.Position, Vector(0,-8):Rotated(math.random(0,360)), player):ToTear()
-										SchoolbagAPI.MakeTearLob(tears, 1.5, 9 )
+										InutilLib.MakeTearLob(tears, 1.5, 9 )
 									end
 									
 									if player:HasCollectible(CollectibleType.COLLECTIBLE_DR_FETUS) then
@@ -927,7 +927,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 
 				--		playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
 				--		playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MONSTER_ROAR_0, 1, 0, false, 1 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_ROAR_0, 1, 0, false, 1 );
 						data.IsDashActive = true
 						
 						data.Dashing = true --this sets you off to a direction, chomping fast while you cant control yourself
@@ -966,8 +966,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					end
 				end
 				fam.Velocity = data.DashVector:Resized( REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_CONTINUOUS_DASH_SPEED);
-				if not SchoolbagAPI.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then
-					data.Angle = SchoolbagAPI.AnimShootFrame(fam, true, fam.Velocity, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft")
+				if not InutilLib.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then
+					data.Angle = InutilLib.AnimShootFrame(fam, true, fam.Velocity, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft")
 				end
 				
 				for i, entities in pairs(Isaac.GetRoomEntities()) do
@@ -1088,15 +1088,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				doorPosCheck = fam.Position - Vector(0,-25)
 			end
 			if fam:CollidesWithGrid() then
-				--for i = 0, (SAPI.room:GetGridSize()) do
-					local gent = SAPI.room:GetGridEntity(SAPI.room:GetGridIndex(doorPosCheck))
+				--for i = 0, (ILIB.room:GetGridSize()) do
+					local gent = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex(doorPosCheck))
 					if gent then
 						if gent.Desc.Type == GridEntityType.GRID_DOOR then
 							Isaac.DebugString(gent.Desc.Type)
 							local Door = gent:ToDoor()
 							if (fam.Position - Door.Position):Length() <= 35 then
 								Isaac.DebugString(1)
-								if SAPI.room:IsClear() then
+								if ILIB.room:IsClear() then
 									Door:TryUnlock(player)
 								end
 								Isaac.DebugString(2)
@@ -1114,7 +1114,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 	elseif fam.SubType == 1 then
 		if yandereWaifu.GetEntityData(fam).Head == nil then fam:Remove() end
 		if not yandereWaifu.GetEntityData(yandereWaifu.GetEntityData(fam).Head).IsPossessed then
-			SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
+			InutilLib.AnimShootFrame(fam, false, fam.Velocity, "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
 		else
 			local lastDir 
 				
@@ -1125,36 +1125,36 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				lastDir = data.lastDir
 			end
 			data.lastDir = lastDir
-			SchoolbagAPI.AnimShootFrame(fam, false, lastDir or Vector(1,0), "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
+			InutilLib.AnimShootFrame(fam, false, lastDir or Vector(1,0), "BodyWalkRight", "BodyWalkDown", "BodyWalkUp", "BodyWalkLeft")
 		end
 	elseif fam.SubType == 10 then
 		leechSize = 0.5
 		if not data.ParentLeech then data.ParentLeech= yandereWaifu.GetEntityData(player).hasLeech end
 		local function FollowParentAsBaby()
-			local path = SchoolbagAPI.GenerateAStarPath(fam, data.ParentLeech)
+			local path = InutilLib.GenerateAStarPath(fam, data.ParentLeech)
 			
 			if (fam.Position - data.ParentLeech.Position):Length() > 25 then
-				SchoolbagAPI.FollowPath(fam, data.ParentLeech, path, 2 + data.VarySpeed, 0.9)
+				InutilLib.FollowPath(fam, data.ParentLeech, path, 2 + data.VarySpeed, 0.9)
 			else
 				if fam.FrameCount % 35 == 0 then
 					data.MoveDir = Isaac.GetRandomPosition()
 				end
 				if data.MoveDir then
-					SchoolbagAPI.MoveRandomlyTypeI(fam, data.MoveDir, 1.2 + data.VarySpeed, 0.9, 0, 0, 0)
+					InutilLib.MoveRandomlyTypeI(fam, data.MoveDir, 1.2 + data.VarySpeed, 0.9, 0, 0, 0)
 				end
 			end
 		end
 		--render code
 		if fam.Velocity then
 			if spr:IsFinished("Appear") then
-				data.Angle = SchoolbagAPI.AnimShootFrame(fam, true, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+				data.Angle = InutilLib.AnimShootFrame(fam, true, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 			end
-			if not SchoolbagAPI.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then 
-				data.Angle = SchoolbagAPI.AnimShootFrame(fam, false, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
+			if not InutilLib.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then 
+				data.Angle = InutilLib.AnimShootFrame(fam, false, fam.Velocity, "WalkRight", "WalkDown", "WalkUp", "WalkLeft")
 			end
 		end
 		--target code
-		local target = SchoolbagAPI.GetClosestGenericEnemy(fam, 300, _, _, _, _, _, _, true)--, true, 3, 0, false, false)
+		local target = InutilLib.GetClosestGenericEnemy(fam, 300, _, _, _, _, _, _, true)--, true, 3, 0, false, false)
 		
 		if target then
 			if target:IsVulnerableEnemy() then
@@ -1162,13 +1162,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			end
 						
 			if data.target then
-				local path = SchoolbagAPI.GenerateAStarPath(fam, data.target)
+				local path = InutilLib.GenerateAStarPath(fam, data.target)
 				
 				if not path then
 					FollowParentAsBaby()
 					data.target = nil
 				else
-					SchoolbagAPI.FollowPath(fam, data.target, path, 2 + data.VarySpeed, 0.9)
+					InutilLib.FollowPath(fam, data.target, path, 2 + data.VarySpeed, 0.9)
 				end
 			else
 				FollowParentAsBaby()
@@ -1204,8 +1204,8 @@ end, RebekahCurse.ENTITY_BONEJOCKEY);
 function yandereWaifu:BoneHeartTearsRender(tr, _)
 	if tr.Variant == RebekahCurse.ENTITY_RIBTEAR or tr.Variant == RebekahCurse.ENTITY_SKULLTEAR or tr.Variant == RebekahCurse.ENTITY_HEARTTEAR then
 		local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
-		local size = SchoolbagAPI.GetTearSizeTypeII(scale, flags)
-		SchoolbagAPI.UpdateDynamicTearAnimation(player, tr, data, flags, "Stone", {"Move", "Idle"}, size)
+		local size = InutilLib.GetTearSizeTypeII(scale, flags)
+		InutilLib.UpdateDynamicTearAnimation(player, tr, data, flags, "Stone", {"Move", "Idle"}, size)
 	end
 	--punch tear render
 	if tr.Variant == RebekahCurse.ENTITY_RAPIDPUNCHTEAR and not yandereWaifu.GetEntityData(tr).Init then
@@ -1243,7 +1243,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.BONE, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
 			tear.Scale = (tr.Scale) - math.random(4,8)/10;
-			SchoolbagAPI.MakeTearLob(tear, 1.5, 9 );
+			InutilLib.MakeTearLob(tear, 1.5, 9 );
 		end
 	elseif tr.Variant == RebekahCurse.ENTITY_SKULLTEAR then
 		local chosenNumofBarrage =  math.random( 1, 3 );
@@ -1251,7 +1251,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.TOOTH, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
 			tear.Scale = (tr.Scale/2) - math.random(1,5)/10;
-			SchoolbagAPI.MakeTearLob(tear, 1.5, 9 );
+			InutilLib.MakeTearLob(tear, 1.5, 9 );
 			--tear.CollisionDamage = player:ToPlayer().Damage * 1.5
 		end
 	elseif tr.Variant == RebekahCurse.ENTITY_HEARTTEAR then
@@ -1260,7 +1260,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.BLOOD, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(3), tr, 0, 0):ToTear()
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
 			tear.Scale = (tr.Scale) - math.random(1,5)/10;
-			SchoolbagAPI.MakeTearLob(tear, 1.5, 9 );
+			InutilLib.MakeTearLob(tear, 1.5, 9 );
 			local puddle = game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, tr.Position, Vector(0,0), tr, 0, 0):ToEffect()
 			puddle.Scale = math.random(12,14)/10
 			puddle:PostRender()
@@ -1286,14 +1286,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
 				tear.CollisionDamage = player.Damage * 2;
 			elseif rng == 8 then
 				tear:ChangeVariant(ENTITY_SKULLTEAR)
-				SchoolbagAPI.MakeTearLob(tear, 1.5, lobHeight );
+				InutilLib.MakeTearLob(tear, 1.5, lobHeight );
 				tear.CollisionDamage = player.Damage * 2.5
 			elseif rng == 9 then
 				tear:ChangeVariant(ENTITY_RIBTEAR)
-				SchoolbagAPI.MakeTearLob(tear, 1.5, lobHeight );
+				InutilLib.MakeTearLob(tear, 1.5, lobHeight );
 			else
 				tear:ChangeVariant(ENTITY_HEARTTEAR)
-				SchoolbagAPI.MakeTearLob(tear, 1.5, lobHeight );
+				InutilLib.MakeTearLob(tear, 1.5, lobHeight );
 			end
 		end
     end
@@ -1321,11 +1321,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)*0.5;
 	if data.SummonEpic then
-		local target = SchoolbagAPI.GetClosestGenericEnemy(eff, 300)--, true, 3, 0, false, false)
+		local target = InutilLib.GetClosestGenericEnemy(eff, 300)--, true, 3, 0, false, false)
 		
 		if target then
 			if target:IsVulnerableEnemy() then
-				SchoolbagAPI.MoveDirectlyTowardsTarget(eff, target, 0.8, 0.9)
+				InutilLib.MoveDirectlyTowardsTarget(eff, target, 0.8, 0.9)
 			end
 		end
 	end

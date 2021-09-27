@@ -1,8 +1,9 @@
 
 function yandereWaifu.DoExtraBarrages(player, mode)
 	local data = yandereWaifu.GetEntityData(player)
+	local game = ILIB.game
 	if mode == 1 then
-		SchoolbagAPI.SetFrameLoop(40,function()
+		InutilLib.SetFrameLoop(40,function()
 			if not data.BarFrames then data.BarFrames = 0 end
 			if not data.BarAngle then data.BarAngle = 0 end --incase if nil
 
@@ -33,14 +34,14 @@ function yandereWaifu.DoExtraBarrages(player, mode)
 				player.Velocity = player.Velocity * 0.8 --slow him down
 				local tears = player:FireTear(player.Position, Vector.FromAngle(data.BarAngle + data.specialAttackVector:GetAngleDegrees())*(20), false, false, false)
 				tears.Position = player.Position
-				speaker:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
+				InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 			elseif data.BarFrames == 40 then
 				data.BarFrames = nil
 				data.BarAngle = nil
 			end
 		end)
 	elseif mode == 2 then
-		SchoolbagAPI.SetFrameLoop(0,function()
+		InutilLib.SetFrameLoop(0,function()
 			for p = 10, 30, 10 do
 				for i = 0, 360, 360/8 do
 					local tears = player:FireTear(player.Position, Vector.FromAngle(i)*(p), false, false, false)
@@ -50,23 +51,30 @@ function yandereWaifu.DoExtraBarrages(player, mode)
 		end)
 	elseif mode == 3 then
 		local frame = true
-		SchoolbagAPI.SetFrameLoop(5,function()
+		InutilLib.SetFrameLoop(30,function()
+			--if not data.BarFrames then data.BarFrames = 0 end
+			
+			--data.BarFrames = data.BarFrames + 1
+			
+			local modulusnum = math.ceil((player.MaxFireDelay/5))
 			local ang = math.random(10,30)
-			if frame == true then
-				for i = 0, 360, 360/12 do
-					local tears = player:FireTear(player.Position, Vector.FromAngle(i + ang)*(8), false, false, false)
-					tears.Position = player.Position
+			if player.FrameCount % modulusnum == (0) then
+				if frame == true then
+					for i = 0, 360, 360/12 do
+						local tears = player:FireTear(player.Position, Vector.FromAngle(i + ang)*(8), false, false, false)
+						tears.Position = player.Position
+					end
+					frame = false
+				else
+					frame = true
 				end
-				frame = false
-			else
-				frame = true
 			end
 		end)
 	elseif mode == 4 then
 		for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 			if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
 				if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + 100 then
-					SchoolbagAPI.DoKnockbackTypeI(player, enemy, 0.5)
+					InutilLib.DoKnockbackTypeI(player, enemy, 0.5)
 				end
 			end
 		end
@@ -74,7 +82,7 @@ function yandereWaifu.DoExtraBarrages(player, mode)
 		for i = 1, chosenNumofBarrage do
 			player.Velocity = player.Velocity * 0.8; --slow him down
 			--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-			local tear = game:Spawn( EntityType.ENTITY_TEAR, 20, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+			local tear = game:Spawn( EntityType.ENTITY_TEAR, 20, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 			tear.Scale = math.random() * 0.7 + 0.7;
 			tear.FallingSpeed = -9 + math.random() * 2 ;
 			tear.FallingAcceleration = 0.5;
@@ -93,7 +101,7 @@ function yandereWaifu.DoExtraBarrages(player, mode)
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL;
 			tear.CollisionDamage = player.Damage * 1.3;
 			if i == chosenNumofBarrage then
-				speaker:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 			end
 		end
 	end
@@ -102,7 +110,7 @@ end
 
 function yandereWaifu.DoTinyBarrages(player, vec)
 	local data = yandereWaifu.GetEntityData(player)
-	SchoolbagAPI.SetFrameLoop(40,function()
+	InutilLib.SetFrameLoop(40,function()
 		if not data.BarFrames then data.BarFrames = 0 end
 		if not data.BarAngle then data.BarAngle = 0 end --incase if nil
 
@@ -134,7 +142,7 @@ function yandereWaifu.DoTinyBarrages(player, vec)
 			player.Velocity = player.Velocity * 0.8 --slow him down
 			local tears = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, player.Position, Vector.FromAngle(data.BarAngle + vec:GetAngleDegrees())*(20), player):ToTear()
 			tears.Scale = 0.5
-			speaker:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
+			InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 		elseif data.BarFrames == 40 then
 			data.BarFrames = nil
 			data.BarAngle = nil
@@ -216,7 +224,7 @@ function yandereWaifu.GetPlayerBlackHearts(player) -- Kilburn's code thingy that
 end
 --barragetears, so I don't use FireTear, it can get broken
 function yandereWaifu.FireKeeperTear(Position, Velocity, TearVariant, Parent, Color)
-    SAPI.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
+    ILIB.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
     for i, entity in pairs(Isaac.GetRoomEntities()) do
         if entity.Type == EntityType.ENTITY_TEAR then
             entity = entity:ToTear()
@@ -226,7 +234,7 @@ function yandereWaifu.FireKeeperTear(Position, Velocity, TearVariant, Parent, Co
 end
 
 function yandereWaifu.FireBarrageTear(Position, Velocity, TearVariant, Parent, Color)
-    local tear = SAPI.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
+    local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
 	
 	return tear
 end
@@ -322,8 +330,8 @@ function yandereWaifu.SpawnEctoplasm( position, velocity, size, parent )
 	local puddle = Isaac.Spawn( EntityType.ENTITY_EFFECT, 46, 0, position, velocity, parent):ToEffect();
 	--puddle.Scale = size or 1
 	--puddle:PostRender()
-	SchoolbagAPI.RevelSetCreepData(puddle)
-	SchoolbagAPI.RevelUpdateCreepSize(puddle, size or 1, true)
+	InutilLib.RevelSetCreepData(puddle)
+	InutilLib.RevelUpdateCreepSize(puddle, size or 1, true)
 	puddle:GetData().IsEctoplasm = true;
 end
 
@@ -400,7 +408,7 @@ end
 function yandereWaifu.RebekahCanShoot(player, canShoot) --alternative so that she doesnt get a weird hair do
 	local data = yandereWaifu.GetEntityData(player)
 	--data.currentMode = mode;
-	SchoolbagAPI.DumpySetCanShoot(player, canShoot)
+	InutilLib.DumpySetCanShoot(player, canShoot)
 	yandereWaifu.ApplyCostumes( data.currentMode, player , false , false)
 end
 

@@ -6,7 +6,14 @@ RebekahCurse = {
 -- don't potentially overwrite information in global tables, keep this local
 	--items
 	COLLECTIBLE_LOVECANNON = Isaac.GetItemIdByName("Hugs N' Roses"),
-
+	
+	COLLECTIBLE_CANDYWEDDINGRING = Isaac.GetItemIdByName("Candy Wedding Ring!"),
+	COLLECTIBLE_LOVEDELUXE = Isaac.GetItemIdByName("Love Deluxe"),
+	COLLECTIBLE_GREATPHEONIX = Isaac.GetItemIdByName("Great Pheonix"),
+	COLLECTIBLE_LOVEMELOVEMENOT = Isaac.GetItemIdByName("Love me, love me not"),
+	COLLECTIBLE_LOVEMELOVEMENOT2 = Isaac.GetItemIdByName(" Love me, love me not "),
+	COLLECTIBLE_LOVEMELOVEMENOT3 = Isaac.GetItemIdByName("  Love me, love me not  "),
+	
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
 	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
@@ -23,7 +30,7 @@ RebekahCurse = {
 
 	ENTITY_ORBITALESAU = Isaac.GetEntityVariantByName("Orbital Esau"),
 	ENTITY_ORBITALJACOB = Isaac.GetEntityVariantByName("Orbital Jacob"),
-	ENTITY_TINYFELLOW = Isaac.GetEntityTypeByName("Tiny Becca"),
+	--ENTITY_TINYFELLOW = Isaac.GetEntityTypeByName("Tiny Becca"),
 	ENTITY_TINYBECCA = Isaac.GetEntityVariantByName("Tiny Becca"),
 	ENTITY_TINYISAAC = Isaac.GetEntityVariantByName("Tiny Isaac"),
 	ENTITY_PHEROMONES_RING = Isaac.GetEntityVariantByName("Pheromone Ring"),
@@ -31,6 +38,8 @@ RebekahCurse = {
 	ENTITY_SNAP_EFFECT = Isaac.GetEntityVariantByName("Snap Effect"),
 	ENTITY_LOVEHOOK = Isaac.GetEntityVariantByName("Love Hook"),
 	ENTITY_CURSEDMAW = Isaac.GetEntityVariantByName("Cursed Maw"),
+	
+	ENTITY_HAIRWHIP = Isaac.GetEntityVariantByName("Hairwhip Effect"),
 	
 	--others
 	ENTITY_ARCANE_CIRCLE = Isaac.GetEntityVariantByName("Arcane Circle"),
@@ -174,7 +183,9 @@ RebekahCurseCostumes = {
 	CursedMawCos = Isaac.GetCostumeIdByPath("gfx/characters/cursedmaw.anm2"),
 	LoveSickCos = Isaac.GetCostumeIdByPath("gfx/characters/lovesick.anm2"),
 	UnsnappedCos = Isaac.GetCostumeIdByPath("gfx/characters/unsnapped.anm2"),
-	SnappedCos = Isaac.GetCostumeIdByPath("gfx/characters/snap.anm2")
+	SnappedCos = Isaac.GetCostumeIdByPath("gfx/characters/snap.anm2"),
+	
+	GreatPheonix = Isaac.GetCostumeIdByPath("gfx/characters/great_pheonix.anm2")
 }
 
 
@@ -349,4 +360,14 @@ RebekahMirrorHeartDrop = {
 	[6] = 11 --bone
 }
 
-local REBECCA_INFO = SchoolbagAPI.Players:New({}, RebekahCurse.REB, --[[RebekahCurse.SOUND_REBHURT, RebekahCurse.SOUND_REBDIE,]] nil, nil, {SchoolbagAPI.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB, --[[RebekahCurse.SOUND_REBHURT, RebekahCurse.SOUND_REBDIE,]] nil, nil, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+
+if StageAPI then
+    StageAPI.AddPlayerGraphicsInfo("Rebekah", {Portrait =  "gfx/ui/stage/playerportrait_rebekah.png",
+                Name = "gfx/ui/boss/name_rebekah.png",
+                PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+                NoShake = nil,
+				Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+                ControlsFrame = 2,
+                ControlsOffset = nil,}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+end

@@ -27,7 +27,7 @@ end
 
 --broken glasses effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite();
 		--local playerdata = yandereWaifu.GetEntityData(player)
 		
@@ -39,7 +39,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 		end
 		eff.Velocity = eff.Velocity * 0.9
-		SchoolbagAPI.FlipXByVec(eff, true)
+		InutilLib.FlipXByVec(eff, true)
 	--end
 end, RebekahCurse.ENTITY_BROKEN_GLASSES);
 

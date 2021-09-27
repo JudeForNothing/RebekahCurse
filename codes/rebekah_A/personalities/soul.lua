@@ -19,7 +19,7 @@ function yandereWaifu.SoulHeartTeleport(player, vector)
 	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Blue );
 	playerdata.specialCooldown = REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN - trinketBonus;
 	playerdata.invincibleTime = REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
-	SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 	playerdata.IsUninteractible = true
 	playerdata.IsDashActive = true
 	
@@ -56,7 +56,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--end
 	
 	--trail
-	local trail = SchoolbagAPI.SpawnTrail(eff, Color(0,0.5,1,0.5))
+	local trail = InutilLib.SpawnTrail(eff, Color(0,0.5,1,0.5))
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
@@ -97,7 +97,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     	eff:Remove();
     	
     	data.IsUninteractible = false;
-    	SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+    	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
     else
 		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
     	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_WALLS;
@@ -160,18 +160,18 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 			tr:GetData().Rotation = tr:GetSprite().Rotation;
 			--make it float for a while
 			if tr.FrameCount == 1 then
-				SchoolbagAPI.SpawnTrail(tr, Color(0,0,0,0.7,170,170,210))
+				InutilLib.SpawnTrail(tr, Color(0,0,0,0.7,170,170,210))
 				data.firstHeight = tr.Height
 			elseif tr.FrameCount < 300 then
 				tr.Height = data.firstHeight
 			end
 			--dash ability
-			local target = SchoolbagAPI.GetClosestGenericEnemy(tr, 10000)
+			local target = InutilLib.GetClosestGenericEnemy(tr, 10000)
 			if math.random(1,8) == 1 and tr.FrameCount % 3 == 0 then
 				if target then
 					--print("woahdjfdf")
 					--tr.Velocity = tr.Velocity * 5000
-					SchoolbagAPI.MoveDirectlyTowardsTarget(tr, target, 20, 0.9)
+					InutilLib.MoveDirectlyTowardsTarget(tr, target, 20, 0.9)
 				end
 			else
 				tr.Velocity = tr.Velocity * 0.95
@@ -328,7 +328,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if movementDirection:Length() < 0.05 then
 			eff.Velocity = Vector.Zero
 		else
-			eff.Position = SAPI.room:GetClampedPosition(eff.Position, roomClampSize);
+			eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize);
 			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 		end
 		
@@ -363,11 +363,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff) -
 		data.Init = true                                              
 	end      
 		
-	SchoolbagAPI.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
+	InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(player.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
 end, RebekahCurse.ENTITY_GHOSTTARGET);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
@@ -416,7 +416,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_GHOSTMISSILE)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
@@ -487,7 +487,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 			print(tr.CollisionDamage)
 			Isaac.Explode(tr.Position, tr, tr.CollisionDamage * 17.7)
 			for i = 1, math.random(7,10) + 3 * yandereWaifu.GetEntityData(tr).ExtraTears do
-                SchoolbagAPI.SetTimer( i*8, function()
+                InutilLib.SetTimer( i*8, function()
 					local bomb = player:FireBomb( tr.Position + Vector(math.random(1,10),math.random(1,10)),  Vector(0,5):Rotated(math.random(1,360)):Resized(4))
                     --local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, tr.Position + Vector(math.random(1,10),math.random(1,10)),  Vector(0,5):Rotated(math.random(1,360)):Resized(15), tr):ToBomb();
 					local rng = math.random(1,3)
@@ -498,7 +498,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 					end
 					yandereWaifu.GetEntityData(bomb).IsGhostBombs = true
 					bomb.ExplosionDamage = player.Damage*2.7
-					SchoolbagAPI.MakeBombLob(bomb, 1, 15 )
+					InutilLib.MakeBombLob(bomb, 1, 15 )
                 end);
 			end
 		end
@@ -550,9 +550,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if player then
 			local damage = player.Damage*1.5 or 3.5
 			if sprite:IsEventTriggered("Hurt") then
-				SchoolbagAPI.SFX:Play(SoundEffect.SOUND_SWORD_SPIN, 0.5, 0, false, 1)
-				SchoolbagAPI.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.5, 0, false, 1)
-				SAPI.game:ShakeScreen(5)
+				InutilLib.SFX:Play(SoundEffect.SOUND_SWORD_SPIN, 0.5, 0, false, 1)
+				InutilLib.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.5, 0, false, 1)
+				ILIB.game:ShakeScreen(5)
 				for i, e in pairs(Isaac.GetRoomEntities()) do
 					if e:IsActiveEnemy() and e:IsVulnerableEnemy() then
 						if (eff.Position - e.Position):Length() < 80 then

@@ -78,8 +78,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_,player, 
 		--giant:SetOverlayRenderPriority(true)
 		--giant:Play("HeadDown", true)
 		--local playerLocation = Isaac.WorldToScreen(player.Position)
-		--print(SchoolbagAPI.IsInMirroredFloor(player))
-		if not SchoolbagAPI.IsInMirroredFloor(player) then
+		--print(InutilLib.IsInMirroredFloor(player))
+		if not InutilLib.IsInMirroredFloor(player) then
 		--	giant:Render(playerLocation, Vector(0,0), Vector(0,0))
 		end
 	end
@@ -93,9 +93,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--print(player:GetPlayerType())
 	--print(RebekahCurse.SADREBEKAH)
 	if player:GetPlayerType() == RebekahCurse.SADREBEKAH then 
-		if SAPI.game:GetFrameCount() > 1 then
-			--SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
-			--[[if SAPI.game:GetFrameCount() >= 1 then
+		if ILIB.game:GetFrameCount() > 1 then
+			--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+			--[[if ILIB.game:GetFrameCount() >= 1 then
 				print("fel")
 			end]]
 			
@@ -108,8 +108,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			yandereWaifu.ChangeMode( player, REBECCA_MODE.RedHearts, true );
 			
 			--personalized doubletap classes
-			data.DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
-			data.ATTACK_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+			data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
+			data.ATTACK_DOUBLE_TAP = InutilLib.DoubleTap:New();
 			-- start the meters invisible
 			data.moveMeterFadeStartFrame = -20;
 			data.attackMeterFadeStartFrame = -20;
@@ -136,7 +136,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		--yandereWaifu.RenderExtraHair(player, data.hairpath) 
 		--update the costumes when a new tem gets picked up
 		
-		if SchoolbagAPI.HasCollectiblesUpdated(player) == true then
+		if InutilLib.HasCollectiblesUpdated(player) == true then
 			player:AddCacheFlags(CacheFlag.CACHE_ALL);
 			player:EvaluateItems()
 		end
@@ -169,7 +169,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			yandereWaifu.GetEntityData(player).DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
 				-- old random velocity code
 				-- yandereWaifu.RandomHeartParticleVelocity()
-				for p = 0, SAPI.game:GetNumPlayers() - 1 do
+				for p = 0, ILIB.game:GetNumPlayers() - 1 do
 					local player = Isaac.GetPlayer(p)
 					--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
 					if GetPtrHash( playerTapping ) == GetPtrHash( player) then
@@ -201,8 +201,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 								playerdata.specialCooldown = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
 								playerdata.invincibleTime = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 								playerdata.IsDashActive = true;
-								SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
-								SchoolbagAPI.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
+								InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
+								InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
 							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
 								yandereWaifu.BoneHeartPunch(player, vector)
 							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
@@ -259,7 +259,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 								yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Red );
 								playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
 								playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
-								SchoolbagAPI.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
+								InutilLib.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
 								
 								playerdata.DashVector = vector;
 								playerdata.IsDashActive = true;
@@ -295,8 +295,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		
 		--attack skill
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then
-			if SchoolbagAPI.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_LOVECANNON ) then
-			local vector = SchoolbagAPI.DirToVec(player:GetFireDirection())
+			if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_LOVECANNON ) then
+			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			local playerdata = yandereWaifu.GetEntityData(player);
 			local psprite = player:GetSprite()
 			local controller = player.ControllerIndex;
@@ -344,16 +344,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						playerdata.AttackVector = vector;
 									
 						playerdata.specialMaxActiveAtkCooldown = playerdata.specialActiveAtkCooldown;
-						SchoolbagAPI.ToggleShowActive(player, false, true)
-						SchoolbagAPI.ConsumeActiveCharge(player, true)
+						InutilLib.ToggleShowActive(player, false, true)
+						InutilLib.ConsumeActiveCharge(player, true)
 					else
 						yandereWaifu.purchaseReserveStocks(player, 1, true)
 						
-						--SchoolbagAPI.ToggleShowActive(player, false, true)
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
+						--InutilLib.ToggleShowActive(player, false, true)
+						InutilLib.SFX:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
 						--playerdata.ATTACK_DOUBLE_TAP.cooldown = OPTIONS.FAILED_SPECIAL_ATTACK_COOLDOWN;
 					end
-					--SchoolbagAPI.ConsumeActiveCharge(player, true)
+					--InutilLib.ConsumeActiveCharge(player, true)
 					--yandereWaifu.purchaseReserveStocks(player, 1, true)
 				end 
 			--end
@@ -379,15 +379,15 @@ function yandereWaifu.barrageAndSP(player)
 					local beam = EntityLaser.ShootAngle(12, player.Position, data.shiftyBeam.Angle + math.random(-10,10) + i, 10, Vector(0,10), player):ToLaser();
 					beam.MaxDistance = math.random(50,200)
 					beam.Timeout = 2
-					SchoolbagAPI.UpdateLaserSize(beam, math.random(1,2))
+					InutilLib.UpdateLaserSize(beam, math.random(1,2))
 				end
 			end
 			if player.FrameCount % 3 == 0 then
 				for i = 1, math.random(2,4) do
 					if math.random(1,3) == 3 then
-						local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, 1, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
+						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 1, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
 					else
-						local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
+						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
 						tear:GetSprite():Load("gfx/009.005_corn projectile.anm2", true)
 						tear:GetSprite():Play("Small01", true)
 					end
@@ -433,7 +433,7 @@ function yandereWaifu.barrageAndSP(player)
 				--ludostuff
 				local ludoTear
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
-					ludoTear = SchoolbagAPI.GetPlayerLudo(player)
+					ludoTear = InutilLib.GetPlayerLudo(player)
 					if ludoTear then
 						local ludoBone = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LUDOBONE, 0, ludoTear.Position, Vector(0,0), player)
 						ludoTear:Remove()
@@ -481,7 +481,7 @@ function yandereWaifu.barrageAndSP(player)
 	end
 	
 	
-	if data.currentMode == REBECCA_MODE.EvilHearts and SAPI.game:GetFrameCount() >= 1 then	 --weird bug happens
+	if data.currentMode == REBECCA_MODE.EvilHearts and ILIB.game:GetFrameCount() >= 1 then	 --weird bug happens
 		--[[if player:GetHearts() <= 0 then
 			if player:GetMovementInput():Length() < 1 and not data.OpenedMaw then
 				local maw = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_DARKMAW, 0, player.Position, player.Velocity, player) --feather attack
@@ -509,7 +509,7 @@ function yandereWaifu.barrageAndSP(player)
 			player:EvaluateItems()
 			data.EvilType = currentType
 			if data.EvilType == 1 then
-				SchoolbagAPI.AnimateGiantbook(nil, nil, "Shake", "gfx/ui/giantbook/giantbook_void_black_heart.anm2", true)
+				InutilLib.AnimateGiantbook(nil, nil, "Shake", "gfx/ui/giantbook/giantbook_void_black_heart.anm2", true)
 			end
 		end]]
 	end
@@ -553,7 +553,7 @@ function yandereWaifu.barrageAndSP(player)
 		yandereWaifu.DoRebeccaBarrage(player, data.currentMode, data.specialAttackVector)
 	else
 		if data.LuckBuff then 
-			SchoolbagAPI.SetTimer( 30, function()
+			InutilLib.SetTimer( 30, function()
 				data.LuckBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_LUCK);
 				player:EvaluateItems()
@@ -575,9 +575,9 @@ function yandereWaifu.RenderUnderlay(player)
 		--s.RenderZOffset = 10000
 		
 		if psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown") then
-			SchoolbagAPI.UnderlayVisible(player, false)
+			InutilLib.UnderlayVisible(player, false)
 		else
-			SchoolbagAPI.UnderlayMatchOwner(player)
+			InutilLib.UnderlayMatchOwner(player)
 			
 			local plusOffset = 0
 
@@ -585,44 +585,44 @@ function yandereWaifu.RenderUnderlay(player)
 				plusOffset = 2
 			end
 			
-			SchoolbagAPI.AddUnderlay(player, "gfx/weddingveil.anm2")
+			InutilLib.AddUnderlay(player, "gfx/weddingveil.anm2")
 			if player.Velocity:Length() <= 1 then
 				if player:GetHeadDirection() == 3 or player:GetHeadDirection() == -1 then --down
-					SchoolbagAPI.PlayUnderlay(player, "Front", true)
-					SchoolbagAPI.UnderlaySetUnder(player)
+					InutilLib.PlayUnderlay(player, "Front", true)
+					InutilLib.UnderlaySetUnder(player)
 				elseif player:GetHeadDirection() == 1 then --up
-					SchoolbagAPI.PlayUnderlay(player, "Back", true)
-					SchoolbagAPI.UnderlaySetOver(player)
+					InutilLib.PlayUnderlay(player, "Back", true)
+					InutilLib.UnderlaySetOver(player)
 				elseif player:GetHeadDirection() == 0 then --left
-					SchoolbagAPI.PlayUnderlay(player, "Side", true)
-					SchoolbagAPI.UnderlaySetOver(player)
-					SchoolbagAPI.FlipXUnderlay(player, true)
+					InutilLib.PlayUnderlay(player, "Side", true)
+					InutilLib.UnderlaySetOver(player)
+					InutilLib.FlipXUnderlay(player, true)
 				elseif player:GetHeadDirection() == 2 then --right
-					SchoolbagAPI.PlayUnderlay(player, "Side", true)
-					SchoolbagAPI.UnderlaySetOver(player)
-					SchoolbagAPI.FlipXUnderlay(player, false)
+					InutilLib.PlayUnderlay(player, "Side", true)
+					InutilLib.UnderlaySetOver(player)
+					InutilLib.FlipXUnderlay(player, false)
 				end
 			else
 				if player:GetHeadDirection() == 3 or player:GetHeadDirection() == -1 then --down
-					SchoolbagAPI.PlayUnderlay(player, "FrontMove", false)
-					SchoolbagAPI.UnderlaySetUnder(player)
+					InutilLib.PlayUnderlay(player, "FrontMove", false)
+					InutilLib.UnderlaySetUnder(player)
 				elseif player:GetHeadDirection() == 1 then --up
-					SchoolbagAPI.PlayUnderlay(player, "BackMove", false)
-					SchoolbagAPI.UnderlaySetOver(player)
+					InutilLib.PlayUnderlay(player, "BackMove", false)
+					InutilLib.UnderlaySetOver(player)
 				elseif player:GetHeadDirection() == 0 then --left
-					SchoolbagAPI.PlayUnderlay(player, "SideMove", false)
-					SchoolbagAPI.UnderlaySetOver(player)
-					SchoolbagAPI.FlipXUnderlay(player, true)
+					InutilLib.PlayUnderlay(player, "SideMove", false)
+					InutilLib.UnderlaySetOver(player)
+					InutilLib.FlipXUnderlay(player, true)
 				elseif player:GetHeadDirection() == 2 then --right
-					SchoolbagAPI.PlayUnderlay(player, "SideMove", false)
-					SchoolbagAPI.UnderlaySetOver(player)
-					SchoolbagAPI.FlipXUnderlay(player, false)
+					InutilLib.PlayUnderlay(player, "SideMove", false)
+					InutilLib.UnderlaySetOver(player)
+					InutilLib.FlipXUnderlay(player, false)
 				end
 			end
-			SchoolbagAPI.UnderlayOffset(player, Vector(0,-1+plusOffset))
+			InutilLib.UnderlayOffset(player, Vector(0,-1+plusOffset))
 		end
 	else
-		SchoolbagAPI.RemoveUnderlay(player)
+		InutilLib.RemoveUnderlay(player)
 	end
 end
 --yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.RenderUnderlay) 
@@ -632,7 +632,7 @@ end
 
 function yandereWaifu:RenderMegaMushOverlay() 
 	--local player = Isaac.GetPlayer(0)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == RebekahCurse.REB then
 			local psprite = player:GetSprite()
@@ -649,17 +649,17 @@ function yandereWaifu:RenderMegaMushOverlay()
 				--s.RenderZOffset = 10000
 				
 				if psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown") then
-					SchoolbagAPI.OverlayVisible(player, false)
+					InutilLib.OverlayVisible(player, false)
 				else
 					--print("test")
 					--print(psprite:GetOverlayAnimation())
 					if psprite:IsPlaying("Transform") or psprite:IsPlaying("TransformBack") then
-						SchoolbagAPI.OverlaySetOver(player)
-						SchoolbagAPI.AddOverlay(player, "gfx/characters/big_rebekah.anm2")
-						SchoolbagAPI.SetOverlayFrame(player, psprite:GetAnimation(), psprite:GetFrame())
-						SchoolbagAPI.OverlayOffset(player, Vector(0,-2))
+						InutilLib.OverlaySetOver(player)
+						InutilLib.AddOverlay(player, "gfx/characters/big_rebekah.anm2")
+						InutilLib.SetOverlayFrame(player, psprite:GetAnimation(), psprite:GetFrame())
+						InutilLib.OverlayOffset(player, Vector(0,-2))
 					else
-						SchoolbagAPI.OverlayMatchOwner(player)
+						InutilLib.OverlayMatchOwner(player)
 						--print(psprite:GetFrame())
 						local plusOffset = 0
 
@@ -675,25 +675,25 @@ function yandereWaifu:RenderMegaMushOverlay()
 								plusOffset = plusOffset + 2
 							end
 						end
-						SchoolbagAPI.OverlaySetOver(player)
-						SchoolbagAPI.AddOverlay(player, "gfx/characters/big_rebekah.anm2")
-						SchoolbagAPI.SetOverlayFrame(player, psprite:GetOverlayAnimation(), psprite:GetOverlayFrame())
+						InutilLib.OverlaySetOver(player)
+						InutilLib.AddOverlay(player, "gfx/characters/big_rebekah.anm2")
+						InutilLib.SetOverlayFrame(player, psprite:GetOverlayAnimation(), psprite:GetOverlayFrame())
 						--if player.Velocity:Length() <= 1 then
 						--	if player:GetHeadDirection() == 3 or player:GetHeadDirection() == -1 then --down
-						--		SchoolbagAPI.PlayOverlay(player, "HeadDown", true)
+						--		InutilLib.PlayOverlay(player, "HeadDown", true)
 						--	elseif player:GetHeadDirection() == 1 then --up
-						--		SchoolbagAPI.PlayOverlay(player, "HeadUp", true)
+						--		InutilLib.PlayOverlay(player, "HeadUp", true)
 						--	elseif player:GetHeadDirection() == 0 then --left
-						--		SchoolbagAPI.PlayOverlay(player, "HeadLeft", true)
+						--		InutilLib.PlayOverlay(player, "HeadLeft", true)
 						--	elseif player:GetHeadDirection() == 2 then --right
-						--		SchoolbagAPI.PlayOverlay(player, "HeadRight", true)
+						--		InutilLib.PlayOverlay(player, "HeadRight", true)
 						--	end
 						--end
-						SchoolbagAPI.OverlayOffset(player, Vector(0,-37+plusOffset))
+						InutilLib.OverlayOffset(player, Vector(0,-37+plusOffset))
 					end
 				end
 			else
-				SchoolbagAPI.RemoveOverlay(player)
+				InutilLib.RemoveOverlay(player)
 			end
 		end
 	end
@@ -702,7 +702,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.RenderMegaMus
 
 --pickup shizz, because i dont want you to ghost around and pick up random things
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == RebekahCurse.REB then
 			local entityData = yandereWaifu.GetEntityData(player);
@@ -715,14 +715,14 @@ end)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerType = player:GetPlayerType()
-		local room = SAPI.game:GetRoom()
+		local room = ILIB.game:GetRoom()
 		
 		if playerType == RebekahCurse.REB then
 			if ent.Type == EntityType.ENTITY_ISAAC or (ent.Type == EntityType.ENTITY_SATAN and not didKillSatan ) then -- isaac heart spawn
-				if SAPI.game:GetLevel():GetStage() == 10 then
+				if ILIB.game:GetLevel():GetStage() == 10 then
 					didKillSatan = true
 					--local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(97), 1);
 					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, CollectibleType.COLLECTIBLE_ISAACS_HEART, spawnPosition, Vector(0,0), player)
@@ -747,10 +747,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if REBEKAHMODE_EXPERIMENTAL.lovelove and dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN then
 			print(damageSource.Entity.SpawnerEntity.Type)
 			--print(damageSource.Type)
-			if (damageSource.Type == 1 or damageSource.Entity.SpawnerType == 1) then
-				local player = damageSource.Entity.SpawnerEntity:ToPlayer()
+			if (damageSource.Type == 1 --[[or damageSource.Entity.SpawnerType == 1]]) then
+				local player = damageSource.Entity:ToPlayer()
 				local playerType = player:GetPlayerType()
-				local room = SAPI.game:GetRoom()
+				local room = ILIB.game:GetRoom()
 				
 				if playerType == RebekahCurse.REB and not yandereWaifu.GetEntityData(player).IsAttackActive then
 					local maxHealth = damage.MaxHitPoints
@@ -765,13 +765,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 end)
 
 function yandereWaifu:RebekahNewRoom()
-	print(SAPI.game:GetLevel():GetCurrentRoomIndex())
+	print(ILIB.game:GetLevel():GetCurrentRoomIndex())
 	yandereWaifu.InsertMirrorData()
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
-		local room = SAPI.game:GetRoom()
+		local room = ILIB.game:GetRoom()
 		print(room:GetType())
 		if player:GetPlayerType() == RebekahCurse.REB then
 		
@@ -860,7 +860,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNew
 		if player:GetPlayerType() == RebekahCurse.REB then -- Especially here!
 			--if data.UpdateHair then
 			--	print("tuck")
-			if SAPI.room:GetFrameCount() < 1 then
+			if ILIB.room:GetFrameCount() < 1 then
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 			end
 			--	data.UpdateHair = false
@@ -1096,9 +1096,9 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNew
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	if player:GetPlayerType() == RebekahCurse.SADREBEKAH then 
-		if SAPI.game:GetFrameCount() > 1 then
+		if ILIB.game:GetFrameCount() > 1 then
 			print("fellow")
-			SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+			InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			--print("fellow")
 			player:ChangePlayerType(RebekahCurse.REB)
 			local data = yandereWaifu.GetEntityData(player)
@@ -1109,8 +1109,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 			RebekahCurse.ChangeMode( player, REBECCA_MODE.RedHearts, true );
 				
 			--personalized doubletap classes
-			data.DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
-			data.ATTACK_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+			data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
+			data.ATTACK_DOUBLE_TAP = InutilLib.DoubleTap:New();
 			-- start the meters invisible
 			data.moveMeterFadeStartFrame = -20;
 			data.attackMeterFadeStartFrame = -20;
@@ -1134,8 +1134,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 		local data = yandereWaifu.GetEntityData(player)
 		
 		--personalized doubletap classes
-		data.DASH_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
-		data.ATTACK_DOUBLE_TAP = SchoolbagAPI.DoubleTap:New();
+		data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
+		data.ATTACK_DOUBLE_TAP = InutilLib.DoubleTap:New();
 		-- start the meters invisible
 		data.moveMeterFadeStartFrame = -20;
 		data.attackMeterFadeStartFrame = -20;
@@ -1150,7 +1150,7 @@ end)
 
 local function Init(force)
 	if force == true then
-		for i,player in ipairs(SAPI.players) do
+		for i,player in ipairs(ILIB.players) do
 			Isaac.DebugString("1")
 			hasInit = true;
 			
@@ -1178,12 +1178,12 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 	IsaacPresent = false
 	JacobPresent = false
 	
-	for i,player in ipairs(SAPI.players) do
+	for i,player in ipairs(ILIB.players) do
 		if player:GetPlayerType() == RebekahCurse.REB then
 			if wasFromTaintedLocked then 
 				wasFromTaintedLocked = false
 				print("fel")
-				SchoolbagAPI.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+				InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			end
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
 		--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_20_20, false)
@@ -1213,7 +1213,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.Rebecca
 -- composite of all callbacks to ensure proper callback order
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == 0 then
 			IsaacPresent = true
@@ -1255,15 +1255,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 			if OPTIONS.CUSTOM_DAMAGE_SOUND == true then
 				if queueDamageSound == true then
 					queueDamageSound = false;
-					SchoolbagAPI.SFX:Stop(SoundEffect.SOUND_ISAAC_HURT_GRUNT);
-					SchoolbagAPI.SFX:Play(OPTIONS.CUSTOM_DAMAGE_SOUND_ID, 1, 0, false, OPTIONS.CUSTOM_DAMAGE_SOUND_PITCH);
+					InutilLib.SFX:Stop(SoundEffect.SOUND_ISAAC_HURT_GRUNT);
+					InutilLib.SFX:Play(OPTIONS.CUSTOM_DAMAGE_SOUND_ID, 1, 0, false, OPTIONS.CUSTOM_DAMAGE_SOUND_PITCH);
 				end
 			end
 			if OPTIONS.CUSTOM_DEATH_SOUND == true then
 				local isPlayerDead = player:IsDead() and player:GetSprite():IsPlaying("Death") and player:GetSprite():GetFrame() > 7;
 				if isPlayerDead and not wasPlayerDead then
-					SchoolbagAPI.SFX:Stop(SoundEffect.SOUND_ISAACDIES);
-					SchoolbagAPI.SFX:Play(OPTIONS.CUSTOM_DEATH_SOUND_ID, 1, 0, false, OPTIONS.CUSTOM_DEATH_SOUND_PITCH);
+					InutilLib.SFX:Stop(SoundEffect.SOUND_ISAACDIES);
+					InutilLib.SFX:Play(OPTIONS.CUSTOM_DEATH_SOUND_ID, 1, 0, false, OPTIONS.CUSTOM_DEATH_SOUND_PITCH);
 				end
 				wasPlayerDead = isPlayerDead;
 			end]]
@@ -1273,20 +1273,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 			if player:GetShootingInput() then
 				yandereWaifu.GetEntityData(player).ATTACK_DOUBLE_TAP:Update( player:GetShootingInput() , player );
 			end
-			SchoolbagAPI.UpdateTimers();
+			InutilLib.UpdateTimers();
 			
 		end
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
+		--[[if player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
 			yandereWaifu.AddTinyCharacters(player)
 		else
 		--	yandereWaifu.RemoveTinyCharacters(player)
-		end
+		end]]
 	end
 end);
 
 	-- re-add the appropriate costume when the player rerolls (with d4 or d100)
 	function yandereWaifu.useReroll(collItem, rng, player)
-		--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		--	local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == RebekahCurse.REB then
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
@@ -1298,7 +1298,7 @@ end);
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useReroll, CollectibleType.COLLECTIBLE_D100)
 
 	function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck btw
-		--for p = 0, SAPI.game:GetNumPlayers() - 1 do
+		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		--	local player = Isaac.GetPlayer(p)
 			local data = yandereWaifu.GetEntityData(player)
 			if player:GetPlayerType() == RebekahCurse.REB then
@@ -1311,11 +1311,11 @@ end);
 				player:EvaluateItems()
 				--player.Visible = false
 				--[[yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
-				 SchoolbagAPI.SetTimer( 1, function()
+				 InutilLib.SetTimer( 1, function()
 					print("fellow")
 					player.Visible = false
                 end);
-				 SchoolbagAPI.SetTimer( 35, function()
+				 InutilLib.SetTimer( 35, function()
 					print("fellow")
 					player.Visible = true
 					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
@@ -1331,9 +1331,9 @@ end);
 
 function yandereWaifu:usePocketCannon(collItem, rng, player)
 	if not yandereWaifu.GetEntityData(player).IsAttackActive then
-		--for i,player in ipairs(SAPI.players) do
-		SchoolbagAPI.ConsumeActiveCharge(player, true) --just in case
-		SchoolbagAPI.ToggleShowActive(player, false, true)
+		--for i,player in ipairs(ILIB.players) do
+		InutilLib.ConsumeActiveCharge(player, true) --just in case
+		InutilLib.ToggleShowActive(player, false, true)
 		--end
 	end
 end
@@ -1342,7 +1342,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon
 
 --custom actions code
 function yandereWaifu:customMovesInput()
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == RebekahCurse.REB then
 			local playerdata = yandereWaifu.GetEntityData(player);
@@ -1371,21 +1371,21 @@ function yandereWaifu:customMovesInput()
 			--charge pocket item after ready
 
 			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) <= 0 and player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then --could need attendance later, this can be optimized
-				SchoolbagAPI.RefundActiveCharge(player, 0, true)
+				InutilLib.RefundActiveCharge(player, 0, true)
 			end
 			if playerdata.specialCooldown == 1 then --1 is already close to 0 without being 0 so eh
 				local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
 				charge.SpriteOffset = Vector(0,-40)
 				charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/move_effect_filled.png");
 				charge:GetSprite():LoadGraphics();
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.3, 0, false, 1.2 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.3, 0, false, 1.2 );
 			end
 			if playerdata.specialActiveAtkCooldown == 1 then
 				local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
 				charge.SpriteOffset = Vector(0,-40)
 				charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/attack_effect_filled.png");
 				charge:GetSprite():LoadGraphics();
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.2, 0, false, 0.4 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.2, 0, false, 0.4 );
 			end
 			--switch skill (used in bone hearts?)
 			--useless now?
@@ -1395,12 +1395,12 @@ function yandereWaifu:customMovesInput()
 						playerdata.isReadyForSpecialAttack = true;
 						local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
 						yandereWaifu.GetEntityData(arcane).parent = player
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
 					end
 				elseif not (Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)) then
 					if playerdata.isReadyForSpecialAttack then
 						playerdata.isReadyForSpecialAttack = false;
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.6 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.6 );
 						playerdata.specialSwitchCooldown = OPTIONS.SPECIAL_SWITCH_COOLDOWN;
 					end
 				end
@@ -1408,7 +1408,7 @@ function yandereWaifu:customMovesInput()
 					player.FireDelay = player.MaxFireDelay
 					player:SetShootingCooldown(2)
 					player:CanTurnHead(true)
-					print(playerdata.lastHeadDir, "  ", SchoolbagAPI.DirToVec(player:GetHeadDirection()))
+					print(playerdata.lastHeadDir, "  ", InutilLib.DirToVec(player:GetHeadDirection()))
 				else
 					playerdata.lastHeadDir = player:GetAimDirection()
 				end
@@ -1418,7 +1418,7 @@ function yandereWaifu:customMovesInput()
 end
 
 function yandereWaifu:ExtraStompCooldown()
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		local controller = player.ControllerIndex;
@@ -1465,7 +1465,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
 			yandereWaifu.purchaseReserveStocks(player, 1)
 		end
-		--SchoolbagAPI.RefundActiveCharge(player, 1, true)
+		--InutilLib.RefundActiveCharge(player, 1, true)
 		
 		--soul heart
 		if yandereWaifu.GetEntityData(player).SoulBuff then
@@ -1487,7 +1487,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				data.chargeDelay = 0
 				data.barrageInit = false
 				print("a")
-				--SchoolbagAPI.RefundActiveCharge(player, 1, true)
+				--InutilLib.RefundActiveCharge(player, 1, true)
 			else
 				--yandereWaifu.addReserveFill(player, -20)
 				--yandereWaifu.purchaseReserveStocks(player, 1)
@@ -1504,7 +1504,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
 				yandereWaifu.purchaseReserveStocks(player, 1)
 			end
-			--SchoolbagAPI.RefundActiveCharge(player, 1, true)
+			--InutilLib.RefundActiveCharge(player, 1, true)
 		end
 		
 	end
@@ -1662,7 +1662,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					for i = 1, numLimit do
 						player.Velocity = player.Velocity * 0.8 --slow him down
 
-						SchoolbagAPI.SetTimer( i+5, function()
+						InutilLib.SetTimer( i+5, function()
 							local trite = Isaac.Spawn(EntityType.ENTITY_HOPPER, 1, 0, player.Position,  Vector.FromAngle(direction:GetAngleDegrees())*(math.random(3,6)), player)
 							trite:AddEntityFlags(EntityFlag.FLAG_FRIENDLY)
 							trite:AddEntityFlags(EntityFlag.FLAG_CHARM)
@@ -1680,7 +1680,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					local numLimit = 9
 					for i = 1, numLimit do
 						
-						SchoolbagAPI.SetTimer( i * 15, function()
+						InutilLib.SetTimer( i * 15, function()
 							local chosenNumofBarrage = 4
 
 							for i = 1, chosenNumofBarrage do
@@ -1718,19 +1718,19 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					local angle = direction:GetAngleDegrees()
 					local beam = EntityLaser.ShootAngle(12, player.Position, angle + 180, 30, Vector(0,0), player):ToLaser()
 					beam.MaxDistance = 250
-					SchoolbagAPI.UpdateLaserSize(beam, 2)
+					InutilLib.UpdateLaserSize(beam, 2)
 					data.shiftyBeam = beam
 				end
 			end
 			
 			local ludoTear
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) and not player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
-				ludoTear = SchoolbagAPI.GetPlayerLudo(player)
+				ludoTear = InutilLib.GetPlayerLudo(player)
 				if IsValidRedBarrage() then
 					if ludoTear then
-						--if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player) else
+						--if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player) else
 						--	if not data.KnifeHelper.incubus:Exists() then
-						--		data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player)
+						--		data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player)
 						--	end
 						--end
 						mainLudoSpawned = false -- sets if the main tear pointer has spawned
@@ -1738,7 +1738,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							--knife sucks
 							if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 								ludoTear.Velocity = ludoTear.Velocity * 0.7
-								local kn = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+								local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 								kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 								kn.CollisionDamage = player.Damage * numofShots;
 								kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE);
@@ -1749,7 +1749,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								end
 								--this makes so much bugs
 								--data.KnifeHelper.incubus.Position = ludoTear.Position
-								--SchoolbagAPI.SpawnKnife(player, (i + data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 300, data.KnifeHelper)
+								--InutilLib.SpawnKnife(player, (i + data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 300, data.KnifeHelper)
 							elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 								--local brim = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								local brim = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() - 45, 5, Vector(0,-5), player):ToLaser()
@@ -1768,9 +1768,9 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								brim2.CollisionDamage = player.Damage * numofShots;
 								if not mainLudoSpawned then
 									mainLudoSpawned = true
-									SchoolbagAPI.UpdateLaserSize(brim, 6 * (tearSize + .2))
+									InutilLib.UpdateLaserSize(brim, 6 * (tearSize + .2))
 									brim.CollisionDamage = brim.CollisionDamage * 1.5
-									SchoolbagAPI.UpdateLaserSize(brim2, 6 * (tearSize + .2))
+									InutilLib.UpdateLaserSize(brim2, 6 * (tearSize + .2))
 									brim2.CollisionDamage = brim2.CollisionDamage * 1.5
 								end
 								--brim2.Position = ludoTear.Position
@@ -1783,10 +1783,10 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								techlaser.Timeout = 1;
 								techlaser.CollisionDamage = player.Damage * numofShots;
 								techlaser:SetHomingType(1)
-								SchoolbagAPI.UpdateLaserSize(techlaser, 6 * tearSize)
+								InutilLib.UpdateLaserSize(techlaser, 6 * tearSize)
 								if not mainLudoSpawned then
 									mainLudoSpawned = true
-									SchoolbagAPI.UpdateLaserSize(techlaser, 6 * (tearSize + .2))
+									InutilLib.UpdateLaserSize(techlaser, 6 * (tearSize + .2))
 									techlaser.CollisionDamage = techlaser.CollisionDamage * 1.5
 								end
 							else
@@ -1891,7 +1891,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								player.ControlsEnabled = false;
 							elseif data.redcountdownFrames >= 1 and data.redcountdownFrames < 120 and data.redcountdownFrames % modulusnum == (0) then
 								--player.Velocity = ( player.Velocity * 0.2 ) + Vector.FromAngle( direction:GetAngleDegrees() );
-								SchoolbagAPI.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 1.5 );
+								InutilLib.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 1.5 );
 							elseif data.redcountdownFrames == 120 then
 								data.IsAttackActive = false;
 								player.ControlsEnabled = true;
@@ -1934,19 +1934,19 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								if IsValidRedBarrage() then
 									local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 									brim:SetActiveRotation( 0, 135, 10, false );
-									--SchoolbagAPI.UpdateLaserSize(brim, tearSize)
+									--InutilLib.UpdateLaserSize(brim, tearSize)
 									local brim2 = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 									brim2:SetActiveRotation( 0, -135, -10, false );
-									--SchoolbagAPI.UpdateLaserSize(brim2, tearSize)
+									--InutilLib.UpdateLaserSize(brim2, tearSize)
 									
 									if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_SORE) and data.willEyeSoreBar then
 										for i, angle in pairs(data.eyeSoreBarAngles) do
 											local brim = player:FireBrimstone( Vector.FromAngle( angle - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 											brim:SetActiveRotation( 0, 135, 10, false );
-											--SchoolbagAPI.UpdateLaserSize(brim, tearSize)
+											--InutilLib.UpdateLaserSize(brim, tearSize)
 											local brim2 = player:FireBrimstone( Vector.FromAngle( angle + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 											brim2:SetActiveRotation( 0, -135, -10, false );
-											--SchoolbagAPI.UpdateLaserSize(brim2, tearSize)
+											--InutilLib.UpdateLaserSize(brim2, tearSize)
 										end
 									end
 								elseif data.redcountdownFrames >= 40 then
@@ -1963,7 +1963,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									techlaser.Timeout = 1;
 									techlaser.CollisionDamage = player.Damage * 2;
 									techlaser:SetHomingType(1)
-									SchoolbagAPI.UpdateLaserSize(techlaser, 6 * (1+ tearSize))
+									InutilLib.UpdateLaserSize(techlaser, 6 * (1+ tearSize))
 								end
 									--techlaser.Damage = player.Damage * 5 doesn't exist lol
 								--end
@@ -1975,7 +1975,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										techlaser.Timeout = 1;
 										techlaser.CollisionDamage = player.Damage * 2;
 										techlaser:SetHomingType(1)
-										SchoolbagAPI.UpdateLaserSize(techlaser, 6 * (1+ tearSize))
+										InutilLib.UpdateLaserSize(techlaser, 6 * (1+ tearSize))
 									end
 								end
 								--for i = 1, 3, 1 do
@@ -2010,7 +2010,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
 										end
 									end
-									--local knife = SchoolbagAPI.SpawnKnife(player, (data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
+									--local knife = InutilLib.SpawnKnife(player, (data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 									--yandereWaifu.GetEntityData(knife).IsRed = true
 								elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 									local circle = player:FireTechXLaser(player.Position, Vector.FromAngle(data.addedbarrageangle + direction:GetAngleDegrees())*(20), data.Xsize)
@@ -2054,14 +2054,14 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										end
 									end
 								end
-								SchoolbagAPI.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
+								InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 								if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then
 									if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-										local kn = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(addedbarrageangle2.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+										local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(addedbarrageangle2.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 										kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 										kn.CollisionDamage = player.Damage * 2;
 										kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
-										--local knife = SchoolbagAPI.SpawnKnife(player, (data.addedbarrageangle2 + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
+										--local knife = InutilLib.SpawnKnife(player, (data.addedbarrageangle2 + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 										--yandereWaifu.GetEntityData(knife).IsRed = true
 									elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 										local circle = player:FireTechXLaser(player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees())*(20), data.Xsize)
@@ -2074,11 +2074,11 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								end
 								if player.MaxFireDelay == 1 then
 									if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-										local kn = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+										local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 										kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 										kn.CollisionDamage = player.Damage * 2;
 										kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
-										--local knife = SchoolbagAPI.SpawnKnife(player, ( direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
+										--local knife = InutilLib.SpawnKnife(player, ( direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 										--yandereWaifu.GetEntityData(knife).IsRed = true
 									elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 										local circle = player:FireTechXLaser(player.Position, Vector.FromAngle((data.addedbarrageangle2) - direction:GetAngleDegrees())*(20), data.Xsize)
@@ -2175,7 +2175,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				--local numLimit = 9
 				--for i = 1, numLimit do
 						
-					--SchoolbagAPI.SetTimer( i * 15, function()
+					--InutilLib.SetTimer( i * 15, function()
 						local chosenNumofBarrage = math.random(8,15)
 						for i = 1, chosenNumofBarrage do
 							local tear = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(17,22)), false, false, false):ToTear()
@@ -2197,13 +2197,13 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		local function FireSoulKnife(pos, dir)
 			local knife = player:FireTear( pos, dir, false, false, false):ToTear()
 			knife.Position = pos
-			----local tear = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+			----local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 			knife.TearFlags = knife.TearFlags | TearFlags.TEAR_PIERCING;
 			--knife.CollisionDamage = player.Damage * 4;
 			knife:ChangeVariant(RebekahCurse.ENTITY_HAUNTEDKNIFE);
 			--player.Velocity = ( player.Velocity * 0.8 ) + Vector.FromAngle( (direction):GetAngleDegrees() +180 );
-			--SchoolbagAPI.SFX:Play( SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1.5 );
-			--local knife = SchoolbagAPI.SpawnKnife(player, (direction:GetAngleDegrees() - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 90)
+			--InutilLib.SFX:Play( SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1.5 );
+			--local knife = InutilLib.SpawnKnife(player, (direction:GetAngleDegrees() - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 90)
 			yandereWaifu.GetEntityData(knife).IsSoul = true
 		end
 		
@@ -2213,7 +2213,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				for i, e in pairs(Isaac.GetRoomEntities()) do
 					if e:IsActiveEnemy() and e:IsVulnerableEnemy() then
 						if (player.Position - e.Position):Length() < 750 then
-							SchoolbagAPI.SetTimer( i * math.random(5,20), function()
+							InutilLib.SetTimer( i * math.random(5,20), function()
 								local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDDROP, 0, e.Position + Vector(0,math.random(3,50)):Rotated(math.random(0,360)), Vector.Zero, nil)
 								yandereWaifu.GetEntityData(target).Parent = player
 							end)
@@ -2221,7 +2221,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					end
 				end
 				--if hasNoEnemies then
-					SchoolbagAPI.SetTimer( i * math.random(5,20), function()
+					InutilLib.SetTimer( i * math.random(5,20), function()
 						local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDDROP, 0, Isaac.GetRandomPosition() + Vector(0,math.random(3,50)):Rotated(math.random(0,360)), Vector.Zero, nil)
 						yandereWaifu.GetEntityData(target).Parent = player
 					end)
@@ -2240,11 +2240,11 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		--ludo synergy
 		local ludoTear
 		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) and not player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
-			ludoTear = SchoolbagAPI.GetPlayerLudo(player)
+			ludoTear = InutilLib.GetPlayerLudo(player)
 			if ludoTear then
-				if not data.KnifeHelper then data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player) else
+				if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player) else
 					if not data.KnifeHelper.incubus:Exists() then
-						data.KnifeHelper = SchoolbagAPI:SpawnKnifeHelper(ludoTear, player)
+						data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player)
 					else
 						data.KnifeHelper.incubus.Position = ludoTear.Position
 					end
@@ -2263,9 +2263,9 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								FireSoulKnife(ludoTear.Position, Vector.FromAngle(i + data.soulcountdownFrames*5 - j):Resized(13))
 							end
 							--print(modulusnum)
-							--local knife = SchoolbagAPI.SpawnKnife(player, (i + data.soulcountdownFrames*5), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 20, data.KnifeHelper)
+							--local knife = InutilLib.SpawnKnife(player, (i + data.soulcountdownFrames*5), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 20, data.KnifeHelper)
 							--yandereWaifu.GetEntityData(knife).IsSoul = true
-							--local knife2 = SchoolbagAPI.SpawnKnife(player, ((i + data.soulcountdownFrames*10)+90), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 20, data.KnifeHelper)
+							--local knife2 = InutilLib.SpawnKnife(player, ((i + data.soulcountdownFrames*10)+90), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 20, data.KnifeHelper)
 							--yandereWaifu.GetEntityData(knife2).IsSoul = true
 						elseif data.soulcountdownFrames == 36 then
 							EndBarrage()
@@ -2295,7 +2295,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								brim2:SetHomingType(1)
 							end
 							if j == math.floor(chosenNumofBarrage/2) then
-								SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+								InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 								EndBarrage()
 								SoulLeadPencilBarrage()
 							end
@@ -2311,7 +2311,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							techlaser.DisableFollowParent = true
 							techlaser.CollisionDamage = player.Damage * 2  * extraTearDmg;
 							techlaser:SetHomingType(1)
-							SchoolbagAPI.UpdateLaserSize(techlaser, 6 * tearSize)
+							InutilLib.UpdateLaserSize(techlaser, 6 * tearSize)
 						elseif data.soulcountdownFrames == 36 then
 							EndBarrage()
 							--player.ControlsEnabled = true;
@@ -2323,7 +2323,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							player.Velocity = player.Velocity * 0.8; --slow him down
 								local tear = player:FireTear( ludoTear.Position, Vector.FromAngle(i + direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(4,6)), false, false, false):ToTear()
 								tear.Position = ludoTear.Position
-								--local tear = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+								--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 								tear.Scale = math.random() * 0.7 + 0.7;
 								tear.FallingSpeed = -9 + math.random() * 2;
 								tear.FallingAcceleration = 0.5;
@@ -2333,7 +2333,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								--print(tear:GetData().IsEctoplasm)
 								--tear.BaseDamage = player.Damage * 2
 							if j == math.floor(chosenNumofBarrage/2) then
-								SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+								InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 								EndBarrage()
 								SoulLeadPencilBarrage()
 							end
@@ -2390,7 +2390,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								brim:SetHomingType(1)
 							end
 							if i == chosenNumofBarrage then
-								SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+								InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 								EndBarrage()
 								SoulLeadPencilBarrage()
 							end
@@ -2405,7 +2405,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							techlaser:SetMaxDistance(math.random(200,240))
 							techlaser:SetHomingType(1)
 						elseif data.soulcountdownFrames == 40 then
-							SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+							InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 							EndBarrage()
 							SoulLeadPencilBarrage()
 						end
@@ -2424,7 +2424,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						--tear:ChangeVariant(ENTITY_ECTOPLASMA);
 						--yandereWaifu.GetEntityData(tear).Parent = player;
 						player.Velocity = ( player.Velocity * 0.8 ) + Vector.FromAngle( (direction):GetAngleDegrees() +180 );
-						SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+						InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 						EndBarrage()
 						SoulLeadPencilBarrage()
 					elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
@@ -2442,7 +2442,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							player.Velocity = player.Velocity * 0.8; --slow him down
 								local tear = player:FireTear( player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(10,15)), false, false, false):ToTear()
 								tear.Position = player.Position
-								--local tear = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+								--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 								tear.Scale = math.random() * 0.7 + 0.7;
 								tear.FallingSpeed = -9 + math.random() * 2;
 								tear.FallingAcceleration = 0.5;
@@ -2452,7 +2452,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								--print(tear:GetData().IsEctoplasm)
 								--tear.BaseDamage = player.Damage * 2
 							if i == chosenNumofBarrage then
-								SchoolbagAPI.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
+								InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 								EndBarrage()
 								SoulLeadPencilBarrage()
 							end
@@ -2461,11 +2461,11 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					--epiphora synergy
 					if player:HasCollectible(CollectibleType.COLLECTIBLE_EPIPHORA) then
 						for i = 1, math.random(18,22) do
-							SchoolbagAPI.SetTimer( i*10, function()
+							InutilLib.SetTimer( i*10, function()
 								for j = 1, math.random(4,6) do
 									local tear = player:FireTear( player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(12,15)), false, false, false):ToTear()
 									tear.Position = player.Position
-									--local tear = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+									--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 									tear.Scale = math.random() * 0.7
 									tear.CollisionDamage = player.Damage * 0.5 * extraTearDmg;
 								end
@@ -2476,7 +2476,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_WIG) then
 						local numLimit = 5
 						for i = 1, numLimit do
-							SchoolbagAPI.SetTimer( i+5, function()
+							InutilLib.SetTimer( i+5, function()
 								player:ThrowBlueSpider(player.Position, player.Position + Vector.FromAngle(direction:GetAngleDegrees()):Resized(math.random(40,55)))
 							end);
 						end
@@ -2486,7 +2486,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						local angle = direction:GetAngleDegrees()
 						local beam = EntityLaser.ShootAngle(12, player.Position, angle + 180, 30, Vector(0,0), player):ToLaser()
 						beam.MaxDistance = 250
-						SchoolbagAPI.UpdateLaserSize(beam, 2)
+						InutilLib.UpdateLaserSize(beam, 2)
 						--data.shiftyBeam = beam
 						--stream of painful blood
 						for i = 1, math.random(20,30) do
@@ -2494,7 +2494,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							local tear = player:FireTear( player.Position, Vector.FromAngle(direction:GetAngleDegrees() + 180 - math.random(-45,45)):Resized(math.random(3,15)), false, false, false):ToTear()
 							tear.Position = player.Position
 							tear:ChangeVariant(TearVariant.BLOOD)
-							--local tear = SAPI.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+							--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 							tear.Scale = math.random() * 0.7 + 0.7;
 							tear.FallingSpeed = -9 + math.random() * 2;
 							tear.FallingAcceleration = 0.5;
@@ -2508,11 +2508,11 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								tear:GetSprite():Play("Small01", true)
 							end
 						end
-						SAPI.game:ShakeScreen(20);
+						ILIB.game:ShakeScreen(20);
 						--blood pain
-						local puddle = SAPI.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, player.Position, Vector(0,0), player, 0, 0):ToEffect()
-						SchoolbagAPI.RevelSetCreepData(puddle)
-						SchoolbagAPI.RevelUpdateCreepSize(puddle, math.random(12,17), true)
+						local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, player.Position, Vector(0,0), player, 0, 0):ToEffect()
+						InutilLib.RevelSetCreepData(puddle)
+						InutilLib.RevelUpdateCreepSize(puddle, math.random(12,17), true)
 						--puddle.Scale = math.random(5,7)
 						--puddle:Update()
 					end
@@ -2523,7 +2523,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						for i = 1, math.random(5,7) do
 							local beam = EntityLaser.ShootAngle(5, player.Position, angle + math.random(-15,15), 10, Vector(0,10), player):ToLaser();
 							beam.MaxDistance = math.random(250,500)
-							SchoolbagAPI.UpdateLaserSize(beam, 0.5)
+							InutilLib.UpdateLaserSize(beam, 0.5)
 						end
 					end
 					if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
@@ -2539,7 +2539,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 	elseif modes == REBECCA_MODE.GoldHearts then
 		yandereWaifu.RebekahGoldBarrage(player, direction)
 		EndBarrage()
-		SchoolbagAPI.SFX:Play( SoundEffect.SOUND_COIN_SLOT, 1, 0, false, 1 );
+		InutilLib.SFX:Play( SoundEffect.SOUND_COIN_SLOT, 1, 0, false, 1 );
 	elseif modes == REBECCA_MODE.EvilHearts then
 		--Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_EXPLOSION, 0, player.Position, Vector.FromAngle( direction:GetAngleDegrees() ):	Resized(15), player );
 		local target
@@ -2556,7 +2556,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		local beam
 		local angle = direction:GetAngleDegrees()
 		if target then --aims then to the furthest orb
-			angle = SchoolbagAPI.ObjToTargetAngle(player, target, true)
+			angle = InutilLib.ObjToTargetAngle(player, target, true)
 			beam = player:FireBrimstone( Vector.FromAngle(angle), player, 2):ToLaser();
 			beam.MaxDistance = nearestOrb
 			yandereWaifu.GetEntityData(target).Heretic = true
@@ -2570,7 +2570,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		beam.CollisionDamage = player.Damage * (3);
 		beam.DisableFollowParent = true
 		yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Black );
-		SchoolbagAPI.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
+		InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
 		EndBarrage()
 	elseif modes == REBECCA_MODE.EternalHearts then
 		yandereWaifu.RebekahEternalBarrage(player, direction)
@@ -2656,7 +2656,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				player.ControlsEnabled = false;
 			elseif data.redcountdownFrames >= 1 and data.redcountdownFrames < 40 and data.redcountdownFrames % modulusnum == (0) then
 				player.Velocity = ( player.Velocity * 0.8 ) + Vector.FromAngle( direction:GetAngleDegrees() );
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1.5 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1.5 );
 			elseif data.redcountdownFrames == 40 then
 				player.ControlsEnabled = true;
 			end
@@ -2708,7 +2708,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					local tears = player:FireTear(player.Position, Vector.FromAngle(data.addedbarrageangle + direction:GetAngleDegrees())*(20), false, false, false)
 					tears.Position = player.Position
 				end
-				SchoolbagAPI.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
+				InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 				if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then
 					if player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 						local circle = player:FireTechXLaser(player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees())*(20), data.Xsize)
@@ -2790,8 +2790,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if data.mainGlitch then
 			if not data.tankAmount then data.tankAmount = 0 end
 			if data.tankAmount >= 50 then 
-				SAPI.game:ShakeScreen(5);
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
+				ILIB.game:ShakeScreen(5);
+				InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 				damage:Kill()
 			else
 				data.tankAmount = data.tankAmount + 1
@@ -2803,11 +2803,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			if data.Parry:GetSprite():IsPlaying("Parry") and data.Parry:GetSprite():WasEventTriggered("Parry") and not data.Parry:GetSprite():WasEventTriggered("StopParry") then
 				data.Parry:GetSprite():Play("SuccessLoop")
 				data.IsParryInvul = true
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
 				return false
 			elseif data.Parry:GetSprite():IsPlaying("Parry") and data.Parry:GetSprite():WasEventTriggered("Parry") and data.Parry:GetSprite():WasEventTriggered("StopParry") then --missed parry
 				data.Parry:GetSprite():Play("Fail")
-				SchoolbagAPI.SFX:Play( SoundEffect.SOUND_THUMBSDOWN_AMPLIFIED, 0.7, 0, false, 0.5 );
+				InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSDOWN_AMPLIFIED, 0.7, 0, false, 0.5 );
 			end
 		end
 		
@@ -2816,8 +2816,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		end
 		
 		if data.IsParryInvul then
-			SAPI.game:ShakeScreen(5);
-			SchoolbagAPI.SFX:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
+			ILIB.game:ShakeScreen(5);
+			InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
 			return false
 		end
 	end

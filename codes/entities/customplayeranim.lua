@@ -137,7 +137,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 data.Player.Velocity = data.Player.Velocity * 0.2;
                 bonerOwnerData.vaultVelocity = bonerOwnerData.vaultVelocity * 0.2;
 			end
-			local homeEnt = SchoolbagAPI.GetClosestGenericEnemy(eff, 100)
+			local homeEnt = InutilLib.GetClosestGenericEnemy(eff, 100)
 			--friendly home effect
 			if homeEnt and homeEnt:IsActiveEnemy() and homeEnt:IsVulnerableEnemy() then
 				data.Player.Velocity = data.Player.Velocity + ((homeEnt.Position - data.Player.Position) * 0.05)
@@ -160,7 +160,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					end
 				end
 				speaker:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
-				SAPI.game:ShakeScreen(10);
+				ILIB.game:ShakeScreen(10);
 			else
 				gravityData.ZOffsetVector = gravityData.ZOffsetVector - Vector(0,-(gravityData.AccelAddFloat*2))
 				gravityData.ZOffsetFloat = gravityData.ZOffsetFloat - (gravityData.AccelAddFloat*2)
@@ -267,7 +267,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				sprite:Play("BoneDown"..tostring(yandereWaifu.GetEntityData(data.Player).BoneStacks),true)
 				--print("woahs")
 			end 
-		elseif SchoolbagAPI.IsPlayingMultiple(sprite, "BoneDown2", "BoneDown3", "BoneDown4", "BoneDown5") then
+		elseif InutilLib.IsPlayingMultiple(sprite, "BoneDown2", "BoneDown3", "BoneDown4", "BoneDown5") then
 			--sund
 			if sprite:GetFrame() > 0 then
 				speaker:Play( SOUND_PUNCH, 1, 0, false, 1 );
@@ -298,7 +298,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:Remove()
 			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_SLAMDUST, 0, data.Player.Position, Vector(0,0), data.Player);
 			speaker:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
-			SAPI.game:ShakeScreen(10);
+			ILIB.game:ShakeScreen(10);
 			yandereWaifu.GetEntityData(data.Player).invincibleTime = BALANCE.BONE_HEARTS_DASH_INVINCIBILITY_FRAMES;
 			--print(tostring(yandereWaifu.GetEntityData(data.Player).invincibleTime))
 			--pound!
@@ -369,8 +369,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			for i = 1, chosenNumofBarrage do
 				data.Player.Velocity = data.Player.Velocity * 0.8; --slow him down
 				--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-				local tear = SAPI.game:Spawn( EntityType.ENTITY_TEAR, 0, data.Player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
-				SchoolbagAPI.MakeTearLob(tear, -9, 9 )
+				local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 0, data.Player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+				InutilLib.MakeTearLob(tear, -9, 9 )
 				tear:GetSprite():ReplaceSpritesheet(0, "gfx/tears_ecto.png")
 				tear:GetSprite():LoadGraphics()
 				tear.Scale = math.random() * 0.7 + 0.7;
@@ -390,7 +390,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass = nil
 			yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
 			
-			SchoolbagAPI.SetTimer( 60*3, function()
+			InutilLib.SetTimer( 60*3, function()
 				print("i got no time")
 				if yandereWaifu.GetEntityData(data.Player).SoulBuff then --give lenience to the barrage
 					yandereWaifu.GetEntityData(data.Player).SoulBuff = false
@@ -476,10 +476,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				--debug 2
 				if sprite:IsOverlayPlaying("Overlay_2") then
 					print("2222222222222222")
-					for i, grid in pairs(SchoolbagAPI.GetRoomGrids()) do
+					for i, grid in pairs(InutilLib.GetRoomGrids()) do
 						if math.random(1,3) == 3 then
 							grid:Destroy()
-							local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, SAPI.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
+							local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
 						end
 					end
 				end
@@ -531,9 +531,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					if rng == 5 then
 						for i = 1, 2 do
 							if i == 1 and data.Player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) ~= 0 then
-								SchoolbagAPI.RefundActiveCharge(data.Player, 0, false)
+								InutilLib.RefundActiveCharge(data.Player, 0, false)
 							elseif data.Player:GetActiveItem(ActiveSlot.SLOT_POCKET) ~= 0 then
-								SchoolbagAPI.RefundActiveCharge(data.Player, 0, true)
+								InutilLib.RefundActiveCharge(data.Player, 0, true)
 							end
 						end
 					elseif rng == 10 then
@@ -543,11 +543,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					else
 						for i = 1, 2 do
 							if i == 1 and data.Player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) ~= 0 then
-								SchoolbagAPI.RefundActiveCharge(data.Player, 0, false)
-								data.Player:SetActiveCharge(math.floor(SchoolbagAPI.config:GetCollectible(data.Player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges/2), ActiveSlot.SLOT_PRIMARY)
+								InutilLib.RefundActiveCharge(data.Player, 0, false)
+								data.Player:SetActiveCharge(math.floor(InutilLib.config:GetCollectible(data.Player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges/2), ActiveSlot.SLOT_PRIMARY)
 							elseif data.Player:GetActiveItem(ActiveSlot.SLOT_POCKET) ~= 0 then
-								SchoolbagAPI.RefundActiveCharge(data.Player, 0, true)
-								data.Player:SetActiveCharge(math.floor(SchoolbagAPI.config:GetCollectible(data.Player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges/2), ActiveSlot.SLOT_POCKET)
+								InutilLib.RefundActiveCharge(data.Player, 0, true)
+								data.Player:SetActiveCharge(math.floor(InutilLib.config:GetCollectible(data.Player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges/2), ActiveSlot.SLOT_POCKET)
 							end
 						end
 					end
@@ -649,7 +649,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--print(TableLength(data.LabanTargets))
 		if not data.Init then 
 			data.Init = true
-			local trail = SchoolbagAPI.SpawnTrail(eff, Color(1,1,1,1))
+			local trail = InutilLib.SpawnTrail(eff, Color(1,1,1,1))
 		end
 		if not data.CurrentTarget then
 			for i, t in pairs(data.LabanTargets) do
@@ -669,7 +669,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			end
 			if not yandereWaifu.GetEntityData(data.CurrentTarget).LabanTouched then
-				SchoolbagAPI.MoveDirectlyTowardsTarget(eff, data.CurrentTarget, 50, 0.9)
+				InutilLib.MoveDirectlyTowardsTarget(eff, data.CurrentTarget, 50, 0.9)
 				if (data.CurrentTarget.Position - eff.Position):Length() <= 50 then
 					yandereWaifu.GetEntityData(e).IsTargetedByLaban = nil
 					entities:TakeDamage(data.Damage*2, 0, EntityRef(eff), 1)
@@ -719,7 +719,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(player).NoBoneSlamActive = true
 			player.Position = eff.Position
 			
-			SAPI.game:ShakeScreen(5)
+			ILIB.game:ShakeScreen(5)
 			--crackwaves
 			for i = 0, 360-360/4, 360/4 do
 				local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, player.Position, Vector.FromAngle(i), player):ToEffect()

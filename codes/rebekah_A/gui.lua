@@ -20,10 +20,10 @@ knifeSpearReserve:Load("gfx/ui/ui_spear_reserve.anm2", true);
 
 --meter
 function yandereWaifu.meterLogic(player)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
-		local room = SAPI.game:GetRoom()
-		local gameFrame = SAPI.game:GetFrameCount();
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
 		if player:GetPlayerType() == RebekahCurse.REB then
 			if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				moveMeter:SetOverlayRenderPriority(true)
@@ -95,8 +95,8 @@ function yandereWaifu.meterLogic(player)
 					end
 				end
 				local playerLocation = Isaac.WorldToScreen(player.Position)
-				--print(SchoolbagAPI.IsInMirroredFloor(player))
-				if not SchoolbagAPI.IsInMirroredFloor(player) then
+				--print(InutilLib.IsInMirroredFloor(player))
+				if not InutilLib.IsInMirroredFloor(player) then
 					moveMeter:Render(playerLocation + Vector(-20, -30), Vector(0,0), Vector(0,0));
 					attackMeter:Render(playerLocation + Vector(-20, -10), Vector(0,0), Vector(0,0));
 					bonestackMeter:Render(playerLocation + Vector(0, -45), Vector(0,0), Vector(0,0));
@@ -108,8 +108,8 @@ end
 
 function yandereWaifu.heartReserveRenderLogic(player, id)
 	local data = yandereWaifu.GetEntityData(player)
-	if SAPI.game:GetHUD():IsVisible() and not player.Parent then
-		local position = Vector(58,46)
+	if ILIB.game:GetHUD():IsVisible() and not player.Parent then
+		local position = Vector(54,44)
 		if id == 1 then
 			position = Vector(338,74)
 		elseif id == 2 then
@@ -118,14 +118,14 @@ function yandereWaifu.heartReserveRenderLogic(player, id)
 			position = Vector(338,210)
 		end
 		--print(player.Position.X)
-		--if SchoolbagAPI.IsInMirroredFloor(player) then
+		--if InutilLib.IsInMirroredFloor(player) then
 			--position.X = position.X * -1
 		--	 position = Isaac.WorldToScreen(Vector((player.Position.X * -1)-(player.Position.X * -1),player.Position.Y))
 		--end
 		--print(position.X)
 		
-		local room = SAPI.game:GetRoom()
-		local gameFrame = SAPI.game:GetFrameCount();
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
 		if player:GetPlayerType() == RebekahCurse.REB then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				--heartReserve:SetOverlayRenderPriority(true)
@@ -144,23 +144,25 @@ function yandereWaifu.heartReserveRenderLogic(player, id)
 				end
 				heartReserve:SetOverlayFrame("Number", yandereWaifu.getReserveStocks(player))
 				heartReserve:Render((position), Vector(0,0), Vector(0,0))
+				heartReserve.Color = Color(1,1,1,0.5,0,0,0)
+				--heartReserve:RenderLayer(1, (position), Vector(0,0), Vector(0,0))
 			end
 		end
 	end
 end
 
 function yandereWaifu.heartBoneReserveRenderLogic(player)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local position = player.Position - Vector(24,-18)
 		--print(player.Position.X)
-		--if SchoolbagAPI.IsInMirroredFloor(player) then
+		--if InutilLib.IsInMirroredFloor(player) then
 			--position.X = position.X * -1
 		--	 position = Isaac.WorldToScreen(Vector((player.Position.X * -1)-(player.Position.X * -1),player.Position.Y))
 		--end
 		--print(position.X)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = SAPI.game:GetRoom()
-		local gameFrame = SAPI.game:GetFrameCount();
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
 		if player:GetPlayerType() == RebekahCurse.REB then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				--heartBReserve:SetOverlayRenderPriority(true)
@@ -205,11 +207,11 @@ function yandereWaifu.heartBoneReserveRenderLogic(player)
 								knifeSpearReserve:SetFrame("Charged",gameFrame - data.spearBarFade)
 							end
 						end
-						if not SchoolbagAPI.IsInMirroredFloor(player) then
+						if not InutilLib.IsInMirroredFloor(player) then
 							knifeSpearReserve:Render(playerLocation + Vector(0, -50), Vector(0,0), Vector(0,0));
 						end
 					end
-					if not SchoolbagAPI.IsInMirroredFloor(player) then
+					if not InutilLib.IsInMirroredFloor(player) then
 						moveMeter:Render(playerLocation + Vector(-20, -30), Vector(0,0), Vector(0,0))
 					end
 				end
@@ -222,7 +224,7 @@ end
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, _)
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == RebekahCurse.REB then
 			yandereWaifu.meterLogic(player);
@@ -232,7 +234,7 @@ end);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
-	for p = 0, SAPI.game:GetNumPlayers() - 1 do
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == PlayerType.PLAYER_ESAU or player.Parent then
 			excludeBetaFiends = excludeBetaFiends + 1
@@ -249,10 +251,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 end);
 
 function yandereWaifu.eternalBarLogic(player)
-	--for i,player in ipairs(SAPI.players) do
+	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
-		local room = SAPI.game:GetRoom()
-		local gameFrame = SAPI.game:GetFrameCount();
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
 		if player:GetPlayerType() == RebekahCurse.REB then
 			local maxEternalFeather = data.maxEternalFeather
 			if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
@@ -285,8 +287,8 @@ function yandereWaifu.eternalBarLogic(player)
 				end
 		
 				local playerLocation = Isaac.WorldToScreen(player.Position)
-				--print(SchoolbagAPI.IsInMirroredFloor(player))
-				if not SchoolbagAPI.IsInMirroredFloor(player) then
+				--print(InutilLib.IsInMirroredFloor(player))
+				if not InutilLib.IsInMirroredFloor(player) then
 					eternalFeatherReserve:Render(playerLocation + Vector(0, -50), Vector(0,0), Vector(0,0));
 				end
 			end
