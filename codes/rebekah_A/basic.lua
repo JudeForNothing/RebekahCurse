@@ -2601,7 +2601,6 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					player:AddBrokenHearts(1)
 				end
 				
-				print("try this")
 				data.tankAmount = nil
 				data.mainGlitch = nil
 				player:TakeDamage( 2, DamageFlag.DAMAGE_NOKILL | DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 0);

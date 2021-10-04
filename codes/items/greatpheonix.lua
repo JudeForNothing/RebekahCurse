@@ -49,70 +49,78 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	end
 end);
 
-ILIBp20.AddCustomCallback(ILIBp20, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
-	local player = lz.SpawnerEntity:ToPlayer()
-	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) then
-		if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
-			local spr = lz:GetSprite()
-			if pldata.lastGPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
-					return
+InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
+	if lz.SpawnerEntity then
+		local player = lz.SpawnerEntity:ToPlayer()
+		if player then
+			local pldata = yandereWaifu.GetEntityData(player)
+			if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) then
+				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
+					local spr = lz:GetSprite()
+					if pldata.lastGPFrameCount then
+						if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+							return
+						end
+						
+						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+						
+						if not pldata.GPFireCount then
+							pldata.GPFireCount = 1
+						else
+							pldata.GPFireCount = pldata.GPFireCount + 1
+						end
+						
+						if pldata.GPFireCount > 30 then
+							pldata.GPFireCount = 0
+							
+							SpawnFlies(player)
+						end
+					else
+						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					end
 				end
-				
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
-				
-				if not pldata.GPFireCount then
-					pldata.GPFireCount = 1
-				else
-					pldata.GPFireCount = pldata.GPFireCount + 1
-				end
-				
-				if pldata.GPFireCount > 30 then
-					pldata.GPFireCount = 0
-					
-					SpawnFlies(player)
-				end
-			else
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
 			end
 		end
 	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
-	local player = lz.SpawnerEntity:ToPlayer()
-	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
-		local parent = lz.Parent
-		if parent and parent.Type == EntityType.ENTITY_PLAYER then
-			local spr = lz:GetSprite()
-			if pldata.lastGPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
-					return
+	if lz.SpawnerEntity then
+		local player = lz.SpawnerEntity:ToPlayer()
+		if player then
+			local pldata = yandereWaifu.GetEntityData(player)
+			if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+				local parent = lz.Parent
+				if parent and parent.Type == EntityType.ENTITY_PLAYER then
+					local spr = lz:GetSprite()
+					if pldata.lastGPFrameCount then
+						if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+							return
+						end
+						
+						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+						
+						if not pldata.GPFireCount then
+							pldata.GPFireCount = 1
+						else
+							pldata.GPFireCount = pldata.GPFireCount + 1
+						end
+						
+						if pldata.GPFireCount > 90 then
+							pldata.GPFireCount = 0
+							
+							SpawnFlies(player)
+						end
+					else
+						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					end
 				end
-				
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
-				
-				if not pldata.GPFireCount then
-					pldata.GPFireCount = 1
-				else
-					pldata.GPFireCount = pldata.GPFireCount + 1
-				end
-				
-				if pldata.GPFireCount > 90 then
-					pldata.GPFireCount = 0
-					
-					SpawnFlies(player)
-				end
-			else
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
 			end
 		end
 	end
 end);
 
-ILIBp20.AddCustomCallback(ILIBp20, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
+InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) then

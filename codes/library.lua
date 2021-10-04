@@ -247,6 +247,7 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 		player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 	end
 	local player = player or Isaac.GetPlayer(0);
+	local playerType = player:GetPlayerType()
 	local hair = RebeccaModeCostumes[mode] --reminder to iplement eternal heart wing sprite
 	player:TryRemoveNullCostume(RebekahCurseCostumes.RebeccasFate);
 	player:TryRemoveNullCostume(RebekahCurseCostumes.GlitchEffect);
@@ -255,19 +256,24 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	--	--player:AddNullCostume(costume);
 	--	hair = costume
 	--end
+	
 	local hairpath='gfx/characters/costumes/rebekah_hair/character_'..tostring(hair)..'.png'
-	if mode == REBECCA_MODE.SoulHearts then --special interacts
-		if yandereWaifu.GetEntityData(player).SoulBuff then
-			hairpath='gfx/characters/costumes/rebekah_hair/character_wizoobopenhair.png'
+	if playerType == RebekahCurse.REB then
+		if mode == REBECCA_MODE.SoulHearts then --special interacts
+			if yandereWaifu.GetEntityData(player).SoulBuff then
+				hairpath='gfx/characters/costumes/rebekah_hair/character_wizoobopenhair.png'
+			end
+		elseif mode == REBECCA_MODE.EternalHearts then
+			player:AddNullCostume(RebekahCurseCostumes.RebeccasFate);
+		elseif mode == REBECCA_MODE.RottenHearts then
+			if yandereWaifu.GetEntityData(player).extraHeadsPresent then 
+				hairpath='gfx/characters/costumes/rebekah_hair/character_crazyhair_skinless.png'
+			end
+		elseif mode == REBECCA_MODE.BrokenHearts then
+			player:AddNullCostume(RebekahCurseCostumes.GlitchEffect)
 		end
-	elseif mode == REBECCA_MODE.EternalHearts then
-		player:AddNullCostume(RebekahCurseCostumes.RebeccasFate);
-	elseif mode == REBECCA_MODE.RottenHearts then
-		if yandereWaifu.GetEntityData(player).extraHeadsPresent then 
-			hairpath='gfx/characters/costumes/rebekah_hair/character_crazyhair_skinless.png'
-		end
-	elseif mode == REBECCA_MODE.BrokenHearts then
-		player:AddNullCostume(RebekahCurseCostumes.GlitchEffect)
+	elseif playerType == RebekahCurse.WISHFUL_ISAAC then
+		hairpath='gfx/characters/costumes/character_wishfulhair.png'
 	end
 	local config=Isaac.GetItemConfig():GetNullItem(7)
 	player:GetSprite():ReplaceSpritesheet(15,hairpath)		--loading the hairstyle for layer 15

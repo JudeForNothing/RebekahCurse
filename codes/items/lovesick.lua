@@ -15,6 +15,40 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	end
 end)
 
+InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, function(_, tear)
+	local data = yandereWaifu.GetEntityData(tear)
+	local player = tear.SpawnerEntity:ToPlayer()
+	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+		if math.random(1,4) == 4 then
+			data.IsLovesick = true
+		end
+	end
+end)
+
+function yandereWaifu:LovesickTearUpdate(tr)
+	local data = yandereWaifu.GetEntityData(tr)
+	local player = tr.SpawnerEntity
+	if data.IsLovesick then
+		if Isaac.GetFrameCount() % 30 == 0 then
+			yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahHeartParticleType.Red );
+			local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PHEROMONES_RING, 0, tr.Position, Vector(0,0), player)
+			yandereWaifu.GetEntityData(fart).Player = tr
+		end
+	end
+	
+	if player then
+		player = player:ToPlayer()
+		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
+			if Isaac.GetFrameCount() % 30 == 0 and math.random(1,3) == 3 then
+				yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahHeartParticleType.Red );
+				local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PHEROMONES_RING, 0, tr.Position, Vector(0,0), player)
+				yandereWaifu.GetEntityData(fart).Player = tr
+			end
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.LovesickTearUpdate)
+
 --pheromones fart ring
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
 	local sprite = eff:GetSprite()

@@ -13,6 +13,9 @@ RebekahCurse = {
 	COLLECTIBLE_LOVEMELOVEMENOT = Isaac.GetItemIdByName("Love me, love me not"),
 	COLLECTIBLE_LOVEMELOVEMENOT2 = Isaac.GetItemIdByName(" Love me, love me not "),
 	COLLECTIBLE_LOVEMELOVEMENOT3 = Isaac.GetItemIdByName("  Love me, love me not  "),
+	COLLECTIBLE_DOORSTOPPER = Isaac.GetItemIdByName("Doorstopper"),
+	COLLECTIBLE_FINGERFINGER = Isaac.GetItemIdByName("Finger Finger"),
+	COLLECTIBLE_MORIAHDIARY = Isaac.GetItemIdByName("Moriah Diary"),
 	
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
@@ -27,7 +30,9 @@ RebekahCurse = {
 	COLLECTIBLE_SNAP = Isaac.GetItemIdByName("Snap!"),
 
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
-
+	
+	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
+	
 	ENTITY_ORBITALESAU = Isaac.GetEntityVariantByName("Orbital Esau"),
 	ENTITY_ORBITALJACOB = Isaac.GetEntityVariantByName("Orbital Jacob"),
 	--ENTITY_TINYFELLOW = Isaac.GetEntityTypeByName("Tiny Becca"),
@@ -40,6 +45,8 @@ RebekahCurse = {
 	ENTITY_CURSEDMAW = Isaac.GetEntityVariantByName("Cursed Maw"),
 	
 	ENTITY_HAIRWHIP = Isaac.GetEntityVariantByName("Hairwhip Effect"),
+	ENTITY_DOORSTOPPER = Isaac.GetEntityVariantByName("Doorstopper"),
+	ENTITY_FINGER_CLICKER = Isaac.GetEntityVariantByName("Finger Clicker"),
 	
 	--others
 	ENTITY_ARCANE_CIRCLE = Isaac.GetEntityVariantByName("Arcane Circle"),
@@ -130,7 +137,8 @@ RebekahCurse = {
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
 	
 	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
-	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahB", true)
+	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
+	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false)
 }
 
 RebekahCurseSounds = {
@@ -150,6 +158,13 @@ RebekahCurseSounds = {
 	SOUND_DEEPELECTRIC = Isaac.GetSoundIdByName("Deep Electricity"),
 	SOUND_ELECTRIC = Isaac.GetSoundIdByName("Electricity"),
 	SOUND_PUNCH = Isaac.GetSoundIdByName("Punch Effect")
+}
+
+RebekahCurseEnemies = {
+	ENTITY_REBEKAH_ENEMY = Isaac.GetEntityTypeByName("Rebekah Entities"),
+	ENTITY_MAGDALENE_HEART = Isaac.GetEntityVariantByName("Magdalene Hearts"),
+	
+	ENTITY_MAGDALENE_BOSS = Isaac.GetEntityVariantByName("Magdalene (Boss)"),
 }
 
 local wasFromTaintedLocked = false
@@ -362,12 +377,15 @@ RebekahMirrorHeartDrop = {
 
 local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB, --[[RebekahCurse.SOUND_REBHURT, RebekahCurse.SOUND_REBDIE,]] nil, nil, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
-if StageAPI then
-    StageAPI.AddPlayerGraphicsInfo("Rebekah", {Portrait =  "gfx/ui/stage/playerportrait_rebekah.png",
-                Name = "gfx/ui/boss/name_rebekah.png",
-                PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
-                NoShake = nil,
-				Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
-                ControlsFrame = 2,
-                ControlsOffset = nil,}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+if StageAPI and StageAPI.Loaded then
+    StageAPI.AddPlayerGraphicsInfo("Rebekah", 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
 end

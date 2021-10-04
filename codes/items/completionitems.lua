@@ -173,20 +173,7 @@ end
 yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ItemsNewRoom)
 
 
-yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
-	local player = damage:ToPlayer();
-	local data = GetEntityData(player)
 
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 then
-		data.LastEntityCollisionClass = player.EntityCollisionClass;
-		data.LastGridCollisionClass = player.GridCollisionClass;
-
-		local maw = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_CURSEDMAW, 0, player.Position, Vector(0,0), player)
-		player:AnimatePitfallIn()
-		data.IsUninteractible = true
-	end
-	
-end, EntityType.ENTITY_PLAYER)
 
 --stat cache for each mode
 	function yandereWaifu:itemcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?

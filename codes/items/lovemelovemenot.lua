@@ -145,18 +145,18 @@ local function SpawnRandomReward(player)
 			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 8 then
+		local rng2 = math.random(1,3)
 		for i = 1, 8 do
-			local rng2 = math.random(1,3)
 			if rng2 == 1 then
 				local mob = Isaac.Spawn( EntityType.ENTITY_SLOTH, 0, 0, player.Position, Vector(0,0), player );
-				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED|EntityFlag.FLAG_FRIENDLY)
+				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED | EntityFlag.FLAG_FRIENDLY)
 				break
 			elseif rng2 == 2 then
 				local mob = Isaac.Spawn( EntityType.ENTITY_MULLIGAN, 0, 0, player.Position, Vector(0,0), player );
-				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED|EntityFlag.FLAG_FRIENDLY)
+				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED | EntityFlag.FLAG_FRIENDLY)
 			elseif rng2 == 3 then
 				local mob = Isaac.Spawn( EntityType.ENTITY_LUST, 0, 0, player.Position, Vector(0,0), player );
-				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED|EntityFlag.FLAG_FRIENDLY)
+				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED | EntityFlag.FLAG_FRIENDLY)
 				break
 			end
 		end

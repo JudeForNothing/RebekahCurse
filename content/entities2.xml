@@ -288,11 +288,28 @@
 	<entity anm2path="lovehook.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Love Hook" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835285">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="cursedmaw.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Cursed Maw" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835286">
+	<entity anm2path="effects/items/rebekahs_curse_shadow.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Cursed Maw" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835286">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
 	<entity anm2path="effects/items/hairwhip.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Hairwhip Effect" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="835281">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/items/doorstopper.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Doorstopper" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="835282" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/items/finger_clicker.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Finger Clicker" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835283" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	
+	<!--Enemy related material-->
+	<entity anm2path="bosses/rivals/magdalene.anm2" baseHP="600" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="1" friction="1" id="600" name="Rebekah Entities" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="0" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="092.000_heart.anm2" baseHP="10" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Magdalene Hearts" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="2" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/magdalene.anm2" baseHP="600" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Magdalene (Boss)" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="10">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 </entities>
