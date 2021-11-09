@@ -8,6 +8,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_DOORSTOPPER, "On use, aim to throw a giant book which deals 7.5 damage on landing# Deals 2.5 damage while flying in air #Get close to book in the floor to pick it up")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER, "Killing an enemy drops a finger which can poke the first enemy you hit to death")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_MORIAHDIARY, "Enemies and projectiles show a visual line on where they might go # Using the item also unlocks hitboxes and warning")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_THESHINING, "On use, all doors in the room bleed with creep, blood tears and end with brimstone # Tears and brimstone follow your tearflags")
 	
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX, "On pickup, drops 3 random hearts")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB, "On pickup, adds an orbital of Jacob and Esau#Jacob Familiar has less damage but shoots slighly faster#Esau Familiar shoots less but has more damage")
@@ -17,6 +18,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE, "Each filled half red heart gives 0.50 damage# Each empty half red heart gives 0.10 speed")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_ROMCOM, "Activates a random Rebekah barrage which sometimes resembles barrages from {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}}")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON, "On hurt, spawns a Mom's Shadow-esque entity which only deals contact damage to both enemies and Isaac when she dashes")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE, "Shoot a spear to enemy # If enemy is attached, use arrow keys to swing around attached enemy # Enemies eventually detach naturally or if they collide in the walls")
 	
 	EID:addTrinket(RebekahCurse.TRINKET_ISAACSLOCKS, "When entering either a {{Shop}}, {{BossRoom}}, {{TreasureRoom}}, {{DevilRoom}} or {{AngelRoom}}, a reroll slot machine spawns# A reroll machine spawning in {{DevilRoom}} or {{AngelRoom}} is chance-based")
 	

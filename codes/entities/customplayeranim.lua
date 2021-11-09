@@ -477,9 +477,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				if sprite:IsOverlayPlaying("Overlay_2") then
 					print("2222222222222222")
 					for i, grid in pairs(InutilLib.GetRoomGrids()) do
-						if math.random(1,3) == 3 then
-							grid:Destroy()
-							local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
+						print(grid)
+						if math.random(1,3) == 3 and grid and not grid.State == 2 then
+							if grid:GetType() == 2 or grid:GetType() == 14 then
+								local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
+								grid:Destroy()
+							end
 						end
 					end
 				end
@@ -489,7 +492,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						data.Player:AddHearts(data.Player:GetMaxHearts())
 					else
 						for i = 1, math.random(3,6) do
-							local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, MirrorHeartDrop[1], room:FindFreePickupSpawnPosition(eff.Position, 1), Vector(0,0), nil) --body effect
+							local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[1], room:FindFreePickupSpawnPosition(eff.Position, 1), Vector(0,0), nil) --body effect
 						end
 					end
 				end

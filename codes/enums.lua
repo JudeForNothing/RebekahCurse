@@ -16,6 +16,7 @@ RebekahCurse = {
 	COLLECTIBLE_DOORSTOPPER = Isaac.GetItemIdByName("Doorstopper"),
 	COLLECTIBLE_FINGERFINGER = Isaac.GetItemIdByName("Finger Finger"),
 	COLLECTIBLE_MORIAHDIARY = Isaac.GetItemIdByName("Moriah Diary"),
+	COLLECTIBLE_THESHINING = Isaac.GetItemIdByName("The Shining"),
 	
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
@@ -135,6 +136,8 @@ RebekahCurse = {
 	ENTITY_HEARTPARTICLE = Isaac.GetEntityVariantByName("Heart Particle"),
 	ENTITY_REBMIRROR = Isaac.GetEntityVariantByName("Rebecca's Mirror"),
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
+	
+	ENTITY_UNGENERICTRACER = Isaac.GetEntityVariantByName("Ungeneric Tracer"),
 	
 	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),

@@ -133,7 +133,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 						spr:Play("Drop", true)
 					else
 						if (not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage")) then
-							if Isaac.GetFrameCount() % 1200 == 0 then
+							if (Isaac.GetFrameCount() % 1200 == 0 and player:GetEffectiveMaxHearts() > 2 and player:GetHearts() < 4) or (Isaac.GetFrameCount() % 2400 == 0 and math.random(1,2) and player:GetSoulHearts() < 4) then
 								spr:Play("Drop", true)
 							end
 							if (iss.Position - player.Position):Length() > 100 then

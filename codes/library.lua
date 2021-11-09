@@ -418,3 +418,11 @@ function yandereWaifu.RebekahCanShoot(player, canShoot) --alternative so that sh
 	yandereWaifu.ApplyCostumes( data.currentMode, player , false , false)
 end
 
+function yandereWaifu.AddGenericTracer(position, color, angle, timeout)     
+	local timeout = timeout or 30
+	local line = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_UNGENERICTRACER, 0, position, Vector(0,0), ent)
+	line:GetSprite().Rotation = angle
+	line.Color = color
+	yandereWaifu.GetEntityData(line).Timeout = timeout
+	return line
+end

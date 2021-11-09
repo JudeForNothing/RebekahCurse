@@ -33,7 +33,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cach
 				player.MoveSpeed = player.MoveSpeed + (0.02 * emptyH)
 			end
 			if cacheF == CacheFlag.CACHE_DAMAGE then
-				player.Damage = player.Damage + (0.50 * H)
+				player.Damage = player.Damage + (0.20 * H)
 			end
 		end
 	end

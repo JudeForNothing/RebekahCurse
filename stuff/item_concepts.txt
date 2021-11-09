@@ -1,54 +1,3 @@
-(X)Boss Rush - Lunchbox - increase health cap/ get 2-3 hearts of any type (C-)
-(X)It Lives! - Miraculous Womb - Spawns two familiars that look like J&E. They orbit around you and shoot your tears.
-(X)Satan - Cursed Spoon - gives you 2 curses per floor, but gives a high dmg up. You always get devil deals./ gain a dash, leaving a dark aura that hurts other enemies (C-X)
-(X)Isaac - Dice of Fate - rerolls current health bt amount and type 
-(X)The Lamb - Isaac's Locks - trinket, decreases cooldown for Rebecca's heart barrages and dash, increases speed and damage and heart spawn rate increases over other hearts/ spawns reroll machine in special rooms
-(X)??? - Eternal Bond - if Rebecca, spawns mini Isaac. else, spawns mini Rebecca. 
-(X)Ultra Greed - Love = Power - The more red hearts you have, the more dmg, the more empty heart containers, the more speed (C-X)
-(X)Ultra Greedier - Lovesick - enemies that get close to you get charmed; charmed enemies get hurt like poison (C-X)
-(X)Hush - Typical Rom-Com - increases lowest stat on use/on use, activates random barrage, 2 charge
-(X)Delirium - Snap - you gain a heart beat. Heart beat repels enemies. Your heart beat gets faster the less health you have from total health. (C-X)
-
-(X)Unrequited Love - Charmed tears + charmed enemies deal twice the damamge to other enemies
-On new room, you can shoot a hook to an enemy. The farther you go from the attached enemy, they begin to suffocate and get hurt per x frames.
-
-b]Lunchbox[/b] - On pickup, you drop three random hearts of any type.
-[b]Miraculous Womb[/b] - Spawns two orbitals that look like her precious twin sons, Jacob and Esau. They shoot similar to Incubus with their own damage and tear rate.
-[b]Cursed Spoon[/b] - On damage, a mouth from the ground up swallows you whole, spewing tears in every direction while it protects you in its teeth.
-[b]Date of Fate[/b] - Using this active item, it randomly changes your hearts to different heart types.
-[b]Isaac's Locks[/b] - Holding this trinket, in entering a special room the first time, there is a chance that the room will spawn a reroll machine.
-[b]Eternal Bond[/b] - Spawns a tiny companion to help you battle enemies and gives gifts to you! The companion can be Isaac if you are Rebekah, and Rebekah if you aren't Rebekah.
-[b]Love = Power[/b] - The more red hearts you have, the more damage you gain, but the more empty heart containers, the more speed you gain.
-[b]Lovesick[/b] - You occasionally emit a seductive aura that charms enemies. The charmed effect also works like poison now.
-[b]Typical Rom-Com[/b] - Using this active item allows you to attack with a random barrage.
-[b]Snap[/b] - Your heartbeat becomes stronger, repelling enemies. The more hurt you are, the more your heartbeat beats and if you are critically hurt, you "snap" and cry more often.
-[b]Unrequited Love[/b] - Using this active item allows you to throw a sharp chain towards enemies. Pull the rope to make them suffocate and bleed.
-
-
-Red Heart -dashes ,shoots a barrage [X]
--synergies - laser [X], knife ludo [X], dr. fetus
--sprites - X
-Soul Heart - teleports [X]
--synergies -epic fetus, mars dash, dr. fetus, tech x
--sprites -epic fetus, mars dash
-Gold Heart -stomp, spawn minions [X]
--synergies -spawns weapon based keepers, tear, knife, tech, brimstone
--sprites -all the keeper sprites, hair
-Evil Heart -spawn rupture?, spawn summon circle
--synergies -orb for dr. fetus, knife, epic fetus
--sprites 
-Eternal Heart -dash feather, laser [X], fire flamethrower [X]
--synergies -heal fire, feather synergy?
--sprites -hair [X]
-Bone Heart -hop, spawn sekmeth (lol) punching thing
--synergies -hop remake [X], punching synergies
--sprites -hair [X], stand sprite
-Rotten Heart -
--synergies
--sprites
-Broken Heart - hair [x]
--synergies
--sprites
 
 Character unlockables:
 (X)Boss Rush - Lunchbox - get 1 hearts of any type, spawns 1-3 more health each floor (C-)
@@ -84,14 +33,6 @@ Love Deluxe - Passive - After firing tears for 2.35 seconds, releasing the fire 
 Future Diary? - active item/trinket that predicts where enemies and proectiles will go, maybe even specific lasers will shoot
 X Great Fire Bird! - passive, after 15 shots, spawns a cluster of war locusts
 
-The Platform
-No Item
-Helltaker -kick rocks
-Narcolepsy -sleepy time
-Psoraisis -armor thingy
-Bathtub Mermaid -swish movement
-
-
 Female Boss Unlocks:
 Maggy - Diabetes?? (suto help)
 Eve - 
@@ -100,3 +41,11 @@ Bethany - some sort of book of virtues 2 - instead of wisps, spawns bigger wisps
 Eden?
 
 X Wishful Thinking
+
+Idk if this will be added:
+The Platform
+No Item
+Helltaker -kick rocks
+Narcolepsy -sleepy time
+Psoraisis -armor thingy
+Bathtub Mermaid -swish movement

@@ -41,6 +41,7 @@ yandereWaifuCodes = {
 		doorstopper = require('codes.items.doorstopper'),
 		fingerfinger = require('codes.items.fingerfinger'),
 		moriahdiary = require('codes.items.moriahdiary'),
+		theshining = require('codes.items.theshining'),
 		
 		lunchbox = require('codes.items.lunchbox'),
 		miraculouswomb = require('codes.items.miraculouswomb'),
@@ -50,6 +51,7 @@ yandereWaifuCodes = {
 		lovepower = require('codes.items.lovepower'),
 		typicalromcom = require('codes.items.typicalromcom'),
 		cursedspoon = require('codes.items.cursedspoon'),
+		unrequitedlove = require('codes.items.unrequitedlove'),
 		
 		isaacslocks = require('codes.items.isaacslocks'),
 		

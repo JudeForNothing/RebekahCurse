@@ -519,12 +519,11 @@ function yandereWaifu.barrageAndSP(player)
 			if data.tankAmount >= 1 then 
 				if player.FrameCount % 100 == 0 then
 					data.tankAmount = data.tankAmount - 1
-					print("faol")
 				end
 			end
 		end
 		if player.FrameCount % 300 == 0 and yandereWaifu.GetEntityData(player).BrokenLuck then
-			print("fol")
+
 			yandereWaifu.GetEntityData(player).BrokenLuck = false
 			player:AddCacheFlags(CacheFlag.CACHE_LUCK);
 			player:EvaluateItems()
@@ -791,6 +790,7 @@ function yandereWaifu:RebekahNewRoom()
 			if data.LastEntityCollisionClass then player.EntityCollisionClass = data.LastEntityCollisionClass end
 
 			data.isReadyForSpecialAttack = false
+			data.IsParryInvul = false
 			
 			data.lastMode = data.currentMode
 			data.lastHeartReserve = yandereWaifu.getReserveFill(player)
@@ -2024,6 +2024,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										end
 									end
 								else
+									local isBlood = false
 									local num = 1
 									for j = 0, 90, 90/numofShots do
 										--print(num)
@@ -2035,6 +2036,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											tears.Position = player.Position
 											tears.Scale = tears.Scale + tearSize
 											tears.CollisionDamage = tears.CollisionDamage * 1.2
+											if tears.Variant == 1 then isBlood = true end
 										end
 									end
 									--eye drop synergy
@@ -2043,6 +2045,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										tears.Position = player.Position
 										tears.Scale = tears.Scale + tearSize
 										tears.CollisionDamage = tears.CollisionDamage * 1.2
+										if tears.Variant == 1 then isBlood = true end
 									end
 									--eye sore synergy
 									if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_SORE) and data.willEyeSoreBar then
@@ -2051,8 +2054,15 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											tears.Position = player.Position
 											tears.Scale = tears.Scale + tearSize
 											tears.CollisionDamage = tears.CollisionDamage * 1.2
+											if tears.Variant == 1 then isBlood = true end
 										end
 									end
+									local poofVar = 13
+									if isBlood then poofVar = 11 end
+									local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, poofVar, 1, player.Position, Vector(0,0), nil)
+									splat.RenderZOffset = 10000
+									if math.random(1,2)== 2 then splat:GetSprite().FlipX = true end
+									if math.random(1,2)== 2 then splat:GetSprite().FlipY = true end
 								end
 								InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 								if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then
@@ -2117,8 +2127,6 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								end
 								
 							elseif data.redcountdownFrames >= 40 then
-								
-									
 								EndBarrageIfValid()
 								data.redcountdownFrames = 0 
 								yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
@@ -2771,11 +2779,10 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 	local player = damage:ToPlayer();
 	local data = yandereWaifu.GetEntityData(player)
-	print(damage.Type)
-	print(player)
+
 	if player:GetPlayerType() == RebekahCurse.REB then
 		if yandereWaifu.GetEntityData(player).invincibleTime > 0 then
-			print(damageFlag & DamageFlag.DAMAGE_RED_HEARTS)
+
 			-- non-red heart damage
 			if (damageFlag & DamageFlag.DAMAGE_RED_HEARTS) == 0
 			-- things that don't break through invincibility

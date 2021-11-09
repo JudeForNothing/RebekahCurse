@@ -275,3 +275,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	eff.RenderZOffset = -10000;
 end, RebekahCurse.ENTITY_ARCANE_CIRCLE)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	if not data.TimeoutFrame then 
+		data.TimeoutFrame = 0 
+	end
+	
+	if data.TimeoutFrame == data.Timeout then
+		eff:Remove()
+	else
+		data.TimeoutFrame = data.TimeoutFrame + 1
+	end
+end, RebekahCurse.ENTITY_UNGENERICTRACER)

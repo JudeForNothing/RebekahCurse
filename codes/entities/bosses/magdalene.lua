@@ -1,26 +1,14 @@
 --MAGGY BOSS!--
 
 local heartShapeVel = {
-	[0] = 7,
-	[1] = 6,
-	[2] = 6,
-	[3] = 7,
-	[4] = 8,
-	[5] = 8,
-	[6] = 7,
-	[7] = 6,
-	[8] = 4,
-	[9] = 3,
-	[10] = 3,
-	[11] = 4,
-	[12] = 6,
-	[13] = 7,
-	[14] = 8,
-	[15] = 8,
-	[16] = 7,
-	[17] = 6,
-	[18] = 6,
-	[19] = 7,
+	[0] = 4*4,
+	[1] = 3*4,
+	[2] = 4*4,
+	[3] = 3*4,
+	[4] = 1*4,
+	[5] = 3*4,
+	[6] = 4*4,
+	[7] = 3*4,
 }
 
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
@@ -42,6 +30,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				yandereWaifu.GetEntityData(heart).startingNum = start
 				yandereWaifu.GetEntityData(heart).IsMaggyHeart = true
 				heart:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+				heart:GetSprite():ReplaceSpritesheet(0, "gfx/bosses/rivals/maggy/orbitalheart.png")
+				heart:GetSprite():LoadGraphics()
 				start = start + 90
 			end
 			
@@ -49,6 +39,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		if data.State ~= 1 then
 			ent.Velocity = ent.Velocity * 0.7
+			local heart = Isaac.Spawn(1000, 198,0, ent.Position, Vector(0,0), ent)
+			--local heart = Isaac.Spawn(1000, 128,0, ent.Position, Vector(0,0), ent)
 		end
 		
 		if ent:CollidesWithGrid() then
@@ -101,10 +93,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				if spr:GetFrame() == 8 then
 					local num = 0
 					local randomRot = math.random(-20,10)
-					for i = 0, 360-360/20, 360/20 do
+					for i = 0, 360-360/8, 360/8 do
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						num = num + 1
+						proj.Size = 1.2
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 		end
@@ -123,6 +117,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 0, ent.Position, (Vector(0,40):Rotated(i)):Resized(8))
 						--num = num + 1
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 		end
@@ -141,6 +136,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						proj.Scale = 0.5
 						--num = num + 1
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 		end		
@@ -167,7 +163,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					elseif i == 3 then
 						adjustingAng = 30
 					end
-					local beam = EntityLaser.ShootAngle(1, ent.Position, angle + adjustingAng, 10, Vector(0,10), ent):ToLaser();
+					local beam = EntityLaser.ShootAngle(1, ent.Position, angle + adjustingAng, 10, Vector(0,0), ent):ToLaser();
 					--beam.Timeout = 7
 					if i == 1 or i == 3 then
 						beam.MaxDistance = 150
@@ -177,7 +173,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 		--ent.State = 69
-		print(data.State)
 		
 		if not data.isPhaseTwo then --phase 2 transition
 			if ent.HitPoints <= ent.MaxHitPoints/2 then
@@ -213,6 +208,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								end
 							end
 						end
+					end
+					if math.floor(spr:GetFrame()/2) <= 1 then
+						local suck = Isaac.Spawn(EntityType.ENTITY_EFFECT, 151, 0, ent.Position, Vector(0,0), nil)
+					end
+					if math.random(1,3) == 3 then
+						local suckEff = Isaac.Spawn(EntityType.ENTITY_EFFECT, 151, 1, ent.Position, Vector(0,0), nil)
 					end
 				end
 			end
@@ -258,27 +259,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			if InutilLib.IsFinishedMultiple(spr, "2Attack") then
 				data.State = 7
 			end
-			local extraAng = 0
-			if math.random(1,2) == 2 then --randomly make it angle like an X
-				extraAng = 45
+			if spr:GetFrame() == 1 then
+				data.extraAng = 0
+				if math.random(1,2) == 2 then --randomly make it angle like an X
+					data.extraAng = 45
+				end
+				--laser indicator
+				for j = 0, 360 - 360/4, 360/4 do
+					local angle = j + data.extraAng
+					yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle)
+				end
 			end
 			if spr:GetFrame() == 16 then			
 				for j = 0, 360 - 360/4, 360/4 do
-					local angle = j + extraAng
-					for i = 1, 3 do
+					local angle = j + data.extraAng
+					--[[for i = 1, 3 do
 						local adjustingAng = 0
 						if i == 1 then
 							adjustingAng = -12
 						elseif i == 3 then
 							adjustingAng = 12
-						end
-						local beam = EntityLaser.ShootAngle(5, ent.Position, angle + adjustingAng, 10, Vector(0,10), ent):ToLaser();
+						end]]
+						local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,0), ent):ToLaser();
 						--beam.Timeout = 7
-						if i == 1 or i == 3 then
+					--[[	if i == 1 or i == 3 then
 							beam.MaxDistance = 70
 							--InutilLib.UpdateLaserSize(beam, 16, false)
 						end
-					end
+					end]]
 				end
 				for i = 0, 360-360/15, 360/15 do
 					local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i)):Resized(10))
@@ -313,6 +321,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, ((ent.Position-player.Position):Rotated(i)):Resized(7))
 						proj.Scale = 2
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 		end
@@ -344,6 +353,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							end
 						end
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 		end	
@@ -370,25 +380,42 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				end
 			end
 			if spr:IsPlaying("2AttackChain2") then
-				if spr:GetFrame() == 8 then
+				--laser indicator
+				if spr:GetFrame() == 1 then
 					if data.ChainAttackTier == 0 then
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j 
-							local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,10), ent):ToLaser();
+							yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle, 7)
 						end
 					elseif data.ChainAttackTier == 1 then
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j  + 45
-							local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,10), ent):ToLaser();
+							yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle, 7)
 						end
 					elseif data.ChainAttackTier == 2 then
 						local ext = 0
-						if math.random(1,2) == 2 then
-							ext = 45
-						end
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j + ext
-							local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,10), ent):ToLaser();
+							yandereWaifu.AddGenericTracer(ent.Position,Color(1,2,1,1), angle, 7)
+						end
+					end
+				end
+				if spr:GetFrame() == 8 then
+					if data.ChainAttackTier == 0 then
+						for j = 0, 360 - 360/4, 360/4 do
+							local angle = j 
+							local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,0), ent):ToLaser();
+						end
+					elseif data.ChainAttackTier == 1 then
+						for j = 0, 360 - 360/4, 360/4 do
+							local angle = j  + 45
+							local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,0), ent):ToLaser();
+						end
+					elseif data.ChainAttackTier == 2 then
+						local ext = 0
+						for j = 0, 360 - 360/4, 360/4 do
+							local angle = j + ext
+							local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,0), ent):ToLaser();
 						end
 					end
 				end
@@ -398,14 +425,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					if data.ChainAttackTier <= 1 then
 						local num = 0
 						local randomRot = math.random(-20,10)
-						for i = 0, 360-360/20, 360/20 do
+						for i = 0, 360-360/8, 360/8 do
 							local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 							num = num + 1
+							proj.Scale = 1.2
 						end
 					elseif data.ChainAttackTier == 2 then
 						local num = 0
 						local randomRot = math.random(-20,10)
-						for i = 0, 360-360/20, 360/20 do
+						for i = 0, 360-360/8, 360/8 do
 							local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 							local proj2 = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,20):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 							proj2.Scale = 0.5
@@ -413,17 +441,24 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						end
 						for i = 0, 360-360/8, 360/8 do
 							local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i)):Resized(8))
-							proj.Scale = 0.5
+							proj.Scale = 0.9
 							--num = num + 1
 						end
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 			if spr:IsPlaying("2AttackFinish") then
+				if spr:GetFrame() == 20 then
+					for j = 0, 360 - 360/8, 360/8 do
+						local angle = j + 45
+						yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle, 12)
+					end
+				end
 				if spr:GetFrame() == 32 then
 					local num = 0
 					local randomRot = math.random(-20,10)
-					for i = 0, 360-360/20, 360/20 do
+					for i = 0, 360-360/8, 360/8 do
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						local proj2 = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,20):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						proj2.Scale = 0.5
@@ -431,18 +466,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end
 					for j = 0, 360 - 360/8, 360/8 do
 						local angle = j + 45
-						local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,10), ent):ToLaser();
+						local beam = EntityLaser.ShootAngle(5, ent.Position, angle, 10, Vector(0,0), ent):ToLaser();
 					end
 					for i = 0, 360-360/8, 360/8 do
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i)):Resized(8))
 						proj.Scale = 0.5
 						--num = num + 1
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 				if spr:GetFrame() == 54 then
 					local num = 0
 					local randomRot = math.random(-20,10)
-					for i = 0, 360-360/20, 360/20 do
+					for i = 0, 360-360/8, 360/8 do
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						local proj2 = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,20):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						proj2.Scale = 0.5
@@ -450,6 +486,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						proj3.Scale = 0.4
 						num = num + 1
 					end
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end
 			end
 			if spr:IsFinished("2AttackFinish") then
@@ -492,6 +529,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	if ent.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_HEART then
+		if ent.FrameCount == 1 then
+			ent:GetSprite():ReplaceSpritesheet(0, "gfx/bosses/rivals/maggy/beatingheart.png")
+			ent:GetSprite():LoadGraphics()
+		end
 		if ent:CollidesWithGrid() then
 			ent.Velocity = (ent.Velocity:Rotated(180)):Resized(10)
 		end
@@ -508,6 +549,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			spr:Play("Heart")
 		end
 		ent.Velocity = ent.Velocity *0.8
+		if math.random(1,5) == 5 and ent.FrameCount % 30 == 0 then
+			local heart = Isaac.Spawn(1000, 7, 1, ent.Position, Vector(0,4):Rotated(math.random(1,360)), ent)
+		end
 	end
 
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)

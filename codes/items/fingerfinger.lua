@@ -70,25 +70,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		end
 		
 		if dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN --[[and damageSource.Entity.SpawnerEntity]] then
-			local player = damageSource.Entity:ToPlayer()
+			local player 
 			if damageSource.Entity then
+				player = damageSource.Entity:ToPlayer()
 				if damageSource.Entity.SpawnerEntity then
 					if damageSource.Entity.SpawnerEntity.Type == 1 then
 						player = damageSource.Entity.SpawnerEntity:ToPlayer()
 					end
 				end
 			end
-			if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
-				SpawnFinger(player)
-				if not data.FingerTable then data.FingerTable = {} end
-				if #yandereWaifu.GetEntityData(player).FingerTable > 0 then
-					for i, v in pairs(yandereWaifu.GetEntityData(player).FingerTable) do
-						yandereWaifu.GetEntityData(v).Mode = 2
-						yandereWaifu.GetEntityData(v).Player = damage
-						table.insert(data.FingerTable, v)
-						table.remove(yandereWaifu.GetEntityData(player).FingerTable, i)
+			if player then
+				if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
+					SpawnFinger(player)
+					if not data.FingerTable then data.FingerTable = {} end
+					if #yandereWaifu.GetEntityData(player).FingerTable > 0 then
+						for i, v in pairs(yandereWaifu.GetEntityData(player).FingerTable) do
+							yandereWaifu.GetEntityData(v).Mode = 2
+							yandereWaifu.GetEntityData(v).Player = damage
+							table.insert(data.FingerTable, v)
+							table.remove(yandereWaifu.GetEntityData(player).FingerTable, i)
+						end
+						print("ring ring")
 					end
-					print("ring ring")
 				end
 			end
 			--[[if damageSource.Entity then
