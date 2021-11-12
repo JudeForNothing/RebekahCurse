@@ -17,6 +17,7 @@ RebekahCurse = {
 	COLLECTIBLE_FINGERFINGER = Isaac.GetItemIdByName("Finger Finger"),
 	COLLECTIBLE_MORIAHDIARY = Isaac.GetItemIdByName("Moriah Diary"),
 	COLLECTIBLE_THESHINING = Isaac.GetItemIdByName("The Shining"),
+	COLLECTIBLE_OHIMDIE = Isaac.GetItemIdByName("Oh, I'm Die"),
 	
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
@@ -138,6 +139,7 @@ RebekahCurse = {
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
 	
 	ENTITY_UNGENERICTRACER = Isaac.GetEntityVariantByName("Ungeneric Tracer"),
+	ENTITY_PINGEFFECT = Isaac.GetEntityVariantByName("Ping Effect"),
 	
 	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
@@ -378,7 +380,7 @@ RebekahMirrorHeartDrop = {
 	[6] = 11 --bone
 }
 
-local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB, --[[RebekahCurse.SOUND_REBHURT, RebekahCurse.SOUND_REBDIE,]] nil, nil, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
 if StageAPI and StageAPI.Loaded then
     StageAPI.AddPlayerGraphicsInfo("Rebekah", 

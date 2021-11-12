@@ -11,6 +11,8 @@ local heartShapeVel = {
 	[7] = 3*4,
 }
 
+local beamColor = Color(1,1,0,1)
+
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
@@ -267,7 +269,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				--laser indicator
 				for j = 0, 360 - 360/4, 360/4 do
 					local angle = j + data.extraAng
-					yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle)
+					yandereWaifu.AddGenericTracer(ent.Position, beamColor, angle)
 				end
 			end
 			if spr:GetFrame() == 16 then			
@@ -340,7 +342,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						end
 					end
 					if num < 7 then
-						for i = 1, 2 do
+						local ran = math.random(1,2)
+						for i = 1, ran do
 							local heart = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,20):Rotated(math.random(1,360)), ent)
 							heart:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						end
@@ -385,18 +388,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					if data.ChainAttackTier == 0 then
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j 
-							yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle, 7)
+							yandereWaifu.AddGenericTracer(ent.Position, beamColor, angle, 7)
 						end
 					elseif data.ChainAttackTier == 1 then
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j  + 45
-							yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle, 7)
+							yandereWaifu.AddGenericTracer(ent.Position, beamColor, angle, 7)
 						end
 					elseif data.ChainAttackTier == 2 then
 						local ext = 0
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j + ext
-							yandereWaifu.AddGenericTracer(ent.Position,Color(1,2,1,1), angle, 7)
+							yandereWaifu.AddGenericTracer(ent.Position,beamColor, angle, 7)
 						end
 					end
 				end
@@ -452,7 +455,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				if spr:GetFrame() == 20 then
 					for j = 0, 360 - 360/8, 360/8 do
 						local angle = j + 45
-						yandereWaifu.AddGenericTracer(ent.Position, Color(1,2,1,1), angle, 12)
+						yandereWaifu.AddGenericTracer(ent.Position, beamColor, angle, 12)
 					end
 				end
 				if spr:GetFrame() == 32 then

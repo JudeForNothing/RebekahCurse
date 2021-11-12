@@ -276,6 +276,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	eff.RenderZOffset = -10000;
 end, RebekahCurse.ENTITY_ARCANE_CIRCLE)
 
+--Ungeneric Tracer
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = yandereWaifu.GetEntityData(eff)
@@ -289,3 +291,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.TimeoutFrame = data.TimeoutFrame + 1
 	end
 end, RebekahCurse.ENTITY_UNGENERICTRACER)
+
+--Ping
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	
+	if eff.FrameCount == 1 then
+		if eff.SubType == 1 then
+			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/blue.png")
+		elseif eff.SubType == 2 then
+			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/green.png")
+		elseif eff.SubType == 3 then
+			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/yellow.png")
+		end
+		sprite:LoadGraphics()
+	end
+	
+	if sprite:IsFinished("Ping") then
+		eff:Remove()
+	end
+end, RebekahCurse.ENTITY_PINGEFFECT)

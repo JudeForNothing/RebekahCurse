@@ -10,6 +10,7 @@ yandereWaifuCodes = {
 	enums = require('codes.enums'),
 	library = require('codes.library'),
 	savedata = require('codes.savedata'),
+	minimenu = require('codes.minimenu'),
 	rebekahA = {
 		gui = require('codes.rebekah_A.gui'),
 		lovelove = require('codes.rebekah_A.lovelovereserve'),
@@ -42,6 +43,7 @@ yandereWaifuCodes = {
 		fingerfinger = require('codes.items.fingerfinger'),
 		moriahdiary = require('codes.items.moriahdiary'),
 		theshining = require('codes.items.theshining'),
+		ohimdie = require('codes.items.ohimdie'),
 		
 		lunchbox = require('codes.items.lunchbox'),
 		miraculouswomb = require('codes.items.miraculouswomb'),
