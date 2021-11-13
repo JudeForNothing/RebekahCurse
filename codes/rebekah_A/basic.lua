@@ -1233,12 +1233,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 			--yandereWaifu.RenderMegaMushOverlay(player)
 			
 			if IsaacPresent and not yandereWaifu.GetEntityData(player).IsaacPresent then
-				player:AddNullCostume(IsaacOverdose)
+				player:AddNullCostume(RebekahCurseCostumes.IsaacOverdose)
 				yandereWaifu.GetEntityData(player).IsaacPresent = true
 			end
 			
 			if JacobPresent and not yandereWaifu.GetEntityData(player).JacobPresent then
-				player:AddNullCostume(JacobEsauGlad)
+				player:AddNullCostume(RebekahCurseCostumes.JacobEsauGlad)
 				yandereWaifu.GetEntityData(player).JacobPresent = true
 			end
 			

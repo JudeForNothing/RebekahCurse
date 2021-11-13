@@ -518,10 +518,10 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
 		--if ILIB.game:GetFrameCount() % 10 == 0 then
 			--InutilLib.CreateGenericPathfinder(fam)
 			--if data.target then
-			--	InutilLib.GenerateAStarPath(fam, data.target, true)
+			--	InutilLib.GenerateAStarPath(fam.Position, data.target.Position, true)
 			--end
 		--end
-		--local path = InutilLib.GenerateAStarPath(fam, fam.Player, true)
+		--local path = InutilLib.GenerateAStarPath(fam.Position, fam.Player.Position, true)
 	end
 end, RebekahCurse.ENTITY_BONEJOCKEY)
 
@@ -623,7 +623,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 	end
 	
 	local function FollowParent()
-		local path = InutilLib.GenerateAStarPath(fam, player)
+		local path = InutilLib.GenerateAStarPath(fam.Position, player.Position)
 		
 		if (fam.Position - player.Position):Length() > 300 then
 			InutilLib.FollowPath(fam, player, path, 2, 0.9)
@@ -800,7 +800,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					end
 						
 					if data.target then
-						local path = InutilLib.GenerateAStarPath(fam, data.target)
+						local path = InutilLib.GenerateAStarPath(fam.Position, data.target.Position)
 						
 						if not path then
 							FollowParent()
@@ -818,7 +818,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				end
 			else
 				if ILIB.game:GetFrameCount() % 3 == 0 then
-					data.toPlayerpath = InutilLib.GenerateAStarPath(fam, player)
+					data.toPlayerpath = InutilLib.GenerateAStarPath(fam.Position, player.Position)
 				end
 				if data.toPlayerpath then
 					InutilLib.FollowPath(fam, player, data.toPlayerpath, 4, 0.9)
@@ -1131,7 +1131,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		leechSize = 0.5
 		if not data.ParentLeech then data.ParentLeech= yandereWaifu.GetEntityData(player).hasLeech end
 		local function FollowParentAsBaby()
-			local path = InutilLib.GenerateAStarPath(fam, data.ParentLeech)
+			local path = InutilLib.GenerateAStarPath(fam.Position, data.ParentLeech.Position)
 			
 			if (fam.Position - data.ParentLeech.Position):Length() > 25 then
 				InutilLib.FollowPath(fam, data.ParentLeech, path, 2 + data.VarySpeed, 0.9)
@@ -1162,7 +1162,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			end
 						
 			if data.target then
-				local path = InutilLib.GenerateAStarPath(fam, data.target)
+				local path = InutilLib.GenerateAStarPath(fam.Position, data.target.Position)
 				
 				if not path then
 					FollowParentAsBaby()

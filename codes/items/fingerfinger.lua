@@ -13,6 +13,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		
 	if data.Mode == 2 then
 		eff.Position = data.Player.Position
+		eff.Velocity = data.Player.Velocity
 		if not sprite:IsPlaying("Poke") then
 			sprite:Play("Poke", true)
 		end
@@ -90,7 +91,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 							table.insert(data.FingerTable, v)
 							table.remove(yandereWaifu.GetEntityData(player).FingerTable, i)
 						end
-						print("ring ring")
 					end
 				end
 			end

@@ -77,7 +77,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 		
 		--iss.Velocity = player.Velocity * 0.8
 		local enemy = InutilLib.GetClosestGenericEnemy(iss, 500, iss.Type)
-		local path = InutilLib.GenerateAStarPath(iss, enemy)
+		local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
 		if data.Stat.Mode == 0 then
 			if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
 				if not data.specialAttackVector then  data.specialAttackVector = (enemy.Position - iss.Position) end
@@ -103,7 +103,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 				data.specialAttackVector = nil
 			else
 				local nearPickup, pos = InutilLib.GetClosestPickup(iss, 400, 10, -1)
-				local PickUppath = InutilLib.GenerateAStarPath(iss, nearPickup)
+				local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
 				if nearPickup and (nearPickup.SubType == 1 or nearPickup.SubType == 2 or nearPickup.SubType == 5 or nearPickup.SubType == 9 or nearPickup.SubType == 10) then
 					if PickUppath then
 						if (nearPickup.Position - iss.Position):Length() > 15 then
@@ -137,7 +137,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 								spr:Play("Drop", true)
 							end
 							if (iss.Position - player.Position):Length() > 100 then
-								local path = InutilLib.GenerateAStarPath(iss, player)
+								local path = InutilLib.GenerateAStarPath(iss.Position, player.Position)
 								InutilLib.FollowPath(iss, player, path, 2, 0.9)
 								--InutilLib.XalumMoveTowardsTarget(iss, player, 8, 0.9, false)
 							end
@@ -204,7 +204,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, iss.Position, iss.Velocity, iss)
 		end
 		local enemy = InutilLib.GetClosestGenericEnemy(iss, 1000, iss.Type)
-		local path = InutilLib.GenerateAStarPath(iss, enemy)
+		local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
 		if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
 			if enemy.Position:Distance(iss.Position) > 100 and path then
 				--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
@@ -230,7 +230,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			end
 		else
 			local nearPickup, pos = InutilLib.GetClosestPickup(iss, 400, 20, -1)
-			local PickUppath = InutilLib.GenerateAStarPath(iss, nearPickup)
+			local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
 			if nearPickup and PickUppath then
 				if (nearPickup.Position - iss.Position):Length() > 15 then
 					InutilLib.FollowPath(iss, nearPickup, PickUppath, 5, 0.9)

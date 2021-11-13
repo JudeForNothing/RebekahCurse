@@ -25,6 +25,7 @@
 	<trinket name="Isaac's Locks" description="Lost locks" gfx="collectibles_isaacs_locks.png"/>
 	<passive name="Lovesick" description="Blind love hurts" gfx="collectibles_lovesick.png" />
 	<passive name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" />
+	<active name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4"/>
 	
 	<active name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1"/>
 	

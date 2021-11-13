@@ -51,7 +51,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		
 		if data.State == 1 then --phase one idle
 			--InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
-			local path = InutilLib.GenerateAStarPath(ent, player)
+			local path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
 		
 			--if (ent.Position - player.Position):Length() > 300 then
 			if path then
@@ -98,7 +98,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					for i = 0, 360-360/8, 360/8 do
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						num = num + 1
-						proj.Size = 1.2
+						proj.Scale = 1.2
 					end
 					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
 				end

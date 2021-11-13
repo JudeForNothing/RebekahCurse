@@ -38,8 +38,7 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 			rng = math.random(1,20)
 			if rng < 2 then --red add
 				player:AddHearts(2)
-			elseif rng < 6 then
-				player:AddMaxHearts(1)
+				player:AddMaxHearts(2)
 			elseif rng < 8 then
 				player:AddGoldenHearts(1)
 			elseif rng < 12 then
@@ -68,8 +67,8 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 			rng = math.random(1,20)
 			if rng < 2 then --red add
 				player:AddHearts(2)
-			elseif rng < 6 then
-				player:AddMaxHearts(1)
+
+				player:AddMaxHearts(2)
 			elseif rng < 8 then
 				addGolden = addGolden + 1
 			elseif rng < 12 then
@@ -90,13 +89,18 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 				player:AddBoneHearts(1)
 			end
 		end
-		--[[if addEternal then
+		if addEternal then
 			player:AddEternalHearts(1)
 		end
 		if addGolden > 0 then
 			player:AddGoldenHearts(addGolden)
-		end]]
+		end
 	end
+	
+	if hearts-player:GetHearts() <= 0 then
+		player:AddBoneHearts(1)
+	end
+	
 	return true
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useDiceOfFate, RebekahCurse.COLLECTIBLE_DICEOFFATE );

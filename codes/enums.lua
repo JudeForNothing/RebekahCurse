@@ -170,6 +170,9 @@ RebekahCurseEnemies = {
 	ENTITY_MAGDALENE_HEART = Isaac.GetEntityVariantByName("Magdalene Hearts"),
 	
 	ENTITY_MAGDALENE_BOSS = Isaac.GetEntityVariantByName("Magdalene (Boss)"),
+	
+	ENTITY_BLOOD_SLOTH = Isaac.GetEntityVariantByName("Blood Sloth"),
+	ENTITY_BLOOD_WRATH = Isaac.GetEntityVariantByName("Blood Wrath"),
 }
 
 local wasFromTaintedLocked = false

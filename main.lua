@@ -31,7 +31,8 @@ yandereWaifuCodes = {
 		basiceffects = require('codes.entities.basiceffects'),
 		customplayeranim = require('codes.entities.customplayeranim'),
 		bosses = {
-			maggy = require('codes.entities.bosses.magdalene')
+			maggy = require('codes.entities.bosses.magdalene'),
+			bloodsins = require('codes.entities.bosses.eve.bloodsins')
 		}
 	},
 	items = {

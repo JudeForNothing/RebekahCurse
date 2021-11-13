@@ -319,4 +319,14 @@
 	<entity anm2path="bosses/rivals/magdalene.anm2" baseHP="600" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Magdalene (Boss)" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="10">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+	
+	<entity anm2path="bosses/rivals/eve.anm2" baseHP="400" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Eve (Boss)" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="20">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/eve/bloodsins/sloth_blood.anm2" baseHP="100" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Blood Sloth" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="21">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/eve/bloodsins/wrath_blood.anm2" baseHP="100" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Blood Wrath" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="22">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 </entities>
