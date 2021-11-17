@@ -2275,7 +2275,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							--yandereWaifu.GetEntityData(knife).IsSoul = true
 							--local knife2 = InutilLib.SpawnKnife(player, ((i + data.soulcountdownFrames*10)+90), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 20, data.KnifeHelper)
 							--yandereWaifu.GetEntityData(knife2).IsSoul = true
-						elseif data.soulcountdownFrames == 36 then
+						elseif data.soulcountdownFrames >= 36 then
 							EndBarrage()
 							--player.ControlsEnabled = true;
 							data.soulcountdownFrames = 0;
@@ -2320,7 +2320,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							techlaser.CollisionDamage = player.Damage * 2  * extraTearDmg;
 							techlaser:SetHomingType(1)
 							InutilLib.UpdateLaserSize(techlaser, 6 * tearSize)
-						elseif data.soulcountdownFrames == 36 then
+						elseif data.soulcountdownFrames >= 36 then
 							EndBarrage()
 							--player.ControlsEnabled = true;
 							data.soulcountdownFrames = 0;
@@ -2376,7 +2376,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							for i = -30, 30, 15 do
 								FireSoulKnife(player.Position, Vector.FromAngle(direction:GetAngleDegrees() - i):Resized(8))
 							end
-						elseif data.soulcountdownFrames == 40 then
+						elseif data.soulcountdownFrames >= 40 then
 							EndBarrage()
 							player.ControlsEnabled = true;
 							data.soulcountdownFrames = 0;
@@ -2412,7 +2412,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							techlaser.CollisionDamage = (player.Damage * 3) * (extraTearDmg*2.5);
 							techlaser:SetMaxDistance(math.random(200,240))
 							techlaser:SetHomingType(1)
-						elseif data.soulcountdownFrames == 40 then
+						elseif data.soulcountdownFrames >= 40 then
 							InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 							EndBarrage()
 							SoulLeadPencilBarrage()
@@ -2786,7 +2786,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			-- non-red heart damage
 			if (damageFlag & DamageFlag.DAMAGE_RED_HEARTS) == 0
 			-- things that don't break through invincibility
-			or (damageFlag & DamageFlag.DAMAGE_INVINCIBLE) == 0 then
+			and (damageFlag & DamageFlag.DAMAGE_INVINCIBLE) == 0 and (damageFlag & DamageFlag.DAMAGE_IV_BAG) == 0 then
 				return false;
 			end
 		else

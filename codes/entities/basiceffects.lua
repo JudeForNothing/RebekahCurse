@@ -285,20 +285,27 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.TimeoutFrame = 0 
 	end
 	
+	if sprite:IsFinished("Appear") then
+		sprite:Play("Spot", false)
+	end
+	
 	if data.TimeoutFrame == data.Timeout then
-		eff:Remove()
+		sprite:Play("Disappear", false)
 	else
 		data.TimeoutFrame = data.TimeoutFrame + 1
+	end
+	if sprite:IsFinished("Disappear") then
+		eff:Remove()
 	end
 end, RebekahCurse.ENTITY_UNGENERICTRACER)
 
 --Ping
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = yandereWaifu.GetEntityData(eff)
 	
-	if eff.FrameCount == 1 then
+	--if eff.FrameCount == 1 then
 		if eff.SubType == 1 then
 			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/blue.png")
 		elseif eff.SubType == 2 then
@@ -307,7 +314,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/yellow.png")
 		end
 		sprite:LoadGraphics()
-	end
+	--end
+	
+end, RebekahCurse.ENTITY_PINGEFFECT)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
 	
 	if sprite:IsFinished("Ping") then
 		eff:Remove()

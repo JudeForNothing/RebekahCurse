@@ -291,6 +291,8 @@ local function RecapRebekahData()
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
 			saveData.heartStockReserve[i] = yandereWaifu.getReserveStocks(player)
+			
+			--saveData.RebekahCameraEnemies[i] = yandereWaifu.GetEntityData(player).savedCameraEnemies
 		else
 			saveData.currentMode[i] = nil
 		end
@@ -344,6 +346,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[i]
 					yandereWaifu.addReserveFill(player, data.heartFillReserve[i])
 					yandereWaifu.addReserveStocks(player, data.heartStockReserve[i])
+					
+					--yandereWaifu.GetEntityData(player).savedCameraEnemies[i] = data.RebekahCameraEnemies
+					
 					--if data.PersistentPlayerData ~= nil then
 						yandereWaifu.GetEntityData(player).PersistentPlayerData = data.PersistentPlayerData[i]
 					--end

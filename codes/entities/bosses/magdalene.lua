@@ -11,7 +11,7 @@ local heartShapeVel = {
 	[7] = 3*4,
 }
 
-local beamColor = Color(1,1,0,1)
+local beamColor = Color(1,1,0,0.5)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()

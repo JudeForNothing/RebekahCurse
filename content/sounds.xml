@@ -58,4 +58,8 @@
 	<sound name="Punch Effect">
 		<sample weight="1" path="punch.wav" />
 	</sound>
+	
+	<sound name="Im Die Beep">
+		<sample weight="1" path="items/imdiebeep.wav" />
+	</sound>
 </sounds>

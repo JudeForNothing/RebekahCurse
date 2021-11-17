@@ -17,7 +17,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			InutilLib.ToggleShowActive(player, false)
 			
 			local rng = math.random(1,5)
-			yandereWaifu.DoExtraBarrages(player, rng)
+			yandereWaifu.DoExtraBarrages(player, 1)
 		end
 	end
 end)

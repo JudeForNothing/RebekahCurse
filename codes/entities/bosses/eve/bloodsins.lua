@@ -71,7 +71,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			ent.Velocity = Vector.Zero
 			if spr:GetFrame() == 5 then
 				if data.State == 2 then
-					local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 15, 0, ent.Position,  (player.Position-ent.Position):Resized(10):Resized( 6 ), ent);
+					local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 15, 0, ent.Position,  (player.Position-ent.Position):Resized(40), ent);
 				end
 			end
 			if spr:IsFinished("Attack") then
@@ -79,4 +79,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
+end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+
+InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+	if damage.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then
+
+		if --[[((damageFlag & DamageFlag.DAMAGE_LASER)~= 0 or (damageFlag & DamageFlag.DAMAGE_EXPLOSION)~= 0  or (damageFlag & DamageFlag.DAMAGE_CLONES)~= 0 ) and]] damageSource.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then
+
+			return false
+		end
+	end
+	
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)

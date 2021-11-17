@@ -308,6 +308,12 @@
 	<entity anm2path="effects/items/imdie/ping.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ping Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835285" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+	<entity anm2path="effects/items/lovesick_slash.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Lovesick Slash" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835286" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="familiar/imdie_polty.anm2" baseHP="0" boss="0" champion="0" collisionDamage="7" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Oh, I'm Polty" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663126">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
 	
 	<!--Enemy related material-->
 	<entity anm2path="bosses/rivals/magdalene.anm2" baseHP="600" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="1" friction="1" id="600" name="Rebekah Entities" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="0" gridCollision="none">
@@ -320,7 +326,7 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
-	<entity anm2path="bosses/rivals/eve.anm2" baseHP="400" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Eve (Boss)" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="20">
+	<entity anm2path="bosses/rivals/eve.anm2" baseHP="400" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="24" friction="1" id="600" name="Eve (Boss)" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="20">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/rivals/eve/bloodsins/sloth_blood.anm2" baseHP="100" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Blood Sloth" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="21">

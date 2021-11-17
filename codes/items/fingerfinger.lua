@@ -82,15 +82,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			end
 			if player then
 				if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
-					SpawnFinger(player)
 					if not data.FingerTable then data.FingerTable = {} end
-					if #yandereWaifu.GetEntityData(player).FingerTable > 0 then
+					if #yandereWaifu.GetEntityData(player).FingerTable > 0 and damage:IsEnemy() and damage:IsVulnerableEnemy() then
 						for i, v in pairs(yandereWaifu.GetEntityData(player).FingerTable) do
 							yandereWaifu.GetEntityData(v).Mode = 2
 							yandereWaifu.GetEntityData(v).Player = damage
 							table.insert(data.FingerTable, v)
 							table.remove(yandereWaifu.GetEntityData(player).FingerTable, i)
 						end
+					end
+					if #yandereWaifu.GetEntityData(player).FingerTable < 15 then
+						SpawnFinger(player)
 					end
 				end
 			end

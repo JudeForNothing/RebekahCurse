@@ -10,6 +10,9 @@ LoveDeluxeHairColor = {
 
 local CharacterHair = {}
 
+local uiReserve = Sprite();
+uiReserve:Load("gfx/ui/ui_lovedeluxe_reserve.anm2", true);
+
 function yandereWaifu.RegisterCharacterHairColor(playerName, color)
 	CharacterHair[playerName] = color
 end
@@ -39,11 +42,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEDELUXE) then
 		if player:GetFireDirection() == -1 then --if not firing
 			if data.loveDeluxeTick and data.loveDeluxeDir then
-				if data.loveDeluxeTick > 30 then
+				if data.loveDeluxeTick >= 30 then
 					local subtype = 0
 					subtype = CharacterHair[player:GetName()]
-					print(player:GetName())
-					print(subtype)
+
 					local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HAIRWHIP, subtype, player.Position, Vector(0,0), player);
 					yandereWaifu.GetEntityData(cut).PermanentAngle = data.loveDeluxeDir
 					yandereWaifu.GetEntityData(cut).Player = player
@@ -129,3 +131,59 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end]]
 	eff:GetSprite().Rotation = data.PermanentAngle
 end, RebekahCurse.ENTITY_HAIRWHIP)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
+	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEDELUXE) then
+			yandereWaifu.loveDeluxeUI(player)
+
+		end
+	end
+end);
+
+function yandereWaifu.loveDeluxeUI(player)
+	--for i,player in ipairs(ILIB.players) do
+		local data = yandereWaifu.GetEntityData(player)
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
+		local tick = data.loveDeluxeTick
+		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
+			uiReserve:SetOverlayRenderPriority(true)
+		
+			if tick > 0 then
+				if tick < 30 then
+					local FramePercentResult = math.floor((tick/30)*100)
+					uiReserve:SetFrame("Charging", FramePercentResult)
+					data.loveDeluxeBarFade = gameFrame
+					data.FinishedLoveDeluxeUICharge = false
+				elseif tick >= 30 then
+					if not data.FinishedLoveDeluxeUICharge then
+						uiReserve:SetFrame("StartCharged",gameFrame - data.loveDeluxeBarFade)
+						if uiReserve:GetFrame() == 11 then
+							data.loveDeluxeBarFade = gameFrame
+							data.FinishedLoveDeluxeUICharge = true
+						end
+					elseif data.FinishedLoveDeluxeUICharge then
+						if uiReserve:GetFrame() == 5 then
+							data.loveDeluxeBarFade = gameFrame
+						end
+						uiReserve:SetFrame("Charged",gameFrame - data.loveDeluxeBarFade)
+					end
+				end
+			else
+				if not uiReserve:IsPlaying("Disappear") and data.loveDeluxeBarFade then
+					uiReserve:SetFrame("Disappear",gameFrame - data.loveDeluxeBarFade);
+				end
+			end
+	
+				local playerLocation = Isaac.WorldToScreen(player.Position)
+				--print(InutilLib.IsInMirroredFloor(player))
+				if not InutilLib.IsInMirroredFloor(player) then
+					uiReserve:Render(playerLocation + Vector(0, -70), Vector(0,0), Vector(0,0));
+				end
+			end
+	--end
+end

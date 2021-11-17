@@ -528,7 +528,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 				player:EvaluateItems()
 				--become depressed again
-				ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 			end
 		end

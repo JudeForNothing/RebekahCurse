@@ -1,0 +1,34 @@
+<AnimatedActor>
+	<Info CreatedBy="Unknown" CreatedOn="11/14/2021 11:07:51 PM" Version="1" Fps="30"/>
+	<Content>
+		<Spritesheets>
+			<Spritesheet Path="lvl1_bone.png" Id="0"/>
+		</Spritesheets>
+		<Layers>
+			<Layer Name="effect" Id="0" SpritesheetId="0"/>
+		</Layers>
+		<Nulls/>
+		<Events/>
+	</Content>
+	<Animations DefaultAnimation="Slash">
+		<Animation Name="Slash" FrameNum="8" Loop="false">
+			<RootAnimation>
+				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+			</RootAnimation>
+			<LayerAnimations>
+				<LayerAnimation LayerId="0" Visible="true">
+					<Frame XPosition="0" YPosition="0" XPivot="21" YPivot="6" XCrop="75" YCrop="0" Width="46" Height="27" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="21" YPivot="6" XCrop="75" YCrop="27" Width="46" Height="36" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="21" YPivot="6" XCrop="74" YCrop="62" Width="46" Height="32" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="24" YPivot="6" XCrop="72" YCrop="93" Width="48" Height="43" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="0" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="24" YPivot="9" XCrop="73" YCrop="138" Width="45" Height="45" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="1" YPosition="9" XPivot="24" YPivot="9" XCrop="9" YCrop="127" Width="45" Height="45" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="0" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="11" XPivot="24" YPivot="3" XCrop="8" YCrop="166" Width="48" Height="29" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="0" BlueTint="0" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+					<Frame XPosition="0" YPosition="0" XPivot="24" YPivot="3" XCrop="8" YCrop="166" Width="48" Height="29" XScale="100" YScale="100" Delay="1" Visible="false" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+				</LayerAnimation>
+			</LayerAnimations>
+			<NullAnimations/>
+			<Triggers/>
+		</Animation>
+	</Animations>
+</AnimatedActor>

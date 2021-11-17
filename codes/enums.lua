@@ -19,11 +19,30 @@ RebekahCurse = {
 	COLLECTIBLE_THESHINING = Isaac.GetItemIdByName("The Shining"),
 	COLLECTIBLE_OHIMDIE = Isaac.GetItemIdByName("Oh, I'm Die"),
 	
+	COLLECTIBLE_WIKEPIDIA = Isaac.GetItemIdByName("Wikepidia"),
+	COLLECTIBLE_WIKEPIDIA1 = Isaac.GetItemIdByName(" Wikepidia "),
+	COLLECTIBLE_WIKEPIDIA2 = Isaac.GetItemIdByName("  Wikepidia  "),
+	COLLECTIBLE_WIKEPIDIA3 = Isaac.GetItemIdByName("   Wikepidia   "),
+	COLLECTIBLE_WIKEPIDIA4 = Isaac.GetItemIdByName("    Wikepidia    "),
+	COLLECTIBLE_WIKEPIDIA5 = Isaac.GetItemIdByName("     Wikepidia     "),
+	COLLECTIBLE_WIKEPIDIA6 = Isaac.GetItemIdByName("      Wikepidia      "),
+	COLLECTIBLE_WIKEPIDIA7 = Isaac.GetItemIdByName("Wikepidia "),
+	COLLECTIBLE_WIKEPIDIA8 = Isaac.GetItemIdByName("Wikepidia  "),
+	COLLECTIBLE_WIKEPIDIA9 = Isaac.GetItemIdByName("Wikepidia   "),
+	COLLECTIBLE_WIKEPIDIA10 = Isaac.GetItemIdByName("Wikepidia    "),
+	COLLECTIBLE_WIKEPIDIA11 = Isaac.GetItemIdByName("Wikepidia     "),
+	COLLECTIBLE_WIKEPIDIA12 = Isaac.GetItemIdByName(" Wikepidia"),
+	COLLECTIBLE_WIKEPIDIA13 = Isaac.GetItemIdByName("  Wikepidia"),
+	COLLECTIBLE_WIKEPIDIA14 = Isaac.GetItemIdByName("   Wikepidia"),
+	
+	COLLECTIBLE_BAGOFBRISTLEBRICKS = Isaac.GetItemIdByName("Bag of Bristle Bricks"),
+	
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
 	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
 	COLLECTIBLE_MIRACULOUSWOMB = Isaac.GetItemIdByName("Miraculous Womb"),
 	COLLECTIBLE_ETERNALBOND = Isaac.GetItemIdByName("Eternal Bond"),
+	COLLECTIBLE_REBEKAHSCAMERA = Isaac.GetItemIdByName("Rebekah's Camera"),
 	COLLECTIBLE_POWERLOVE = Isaac.GetItemIdByName("Love = Power"),
 	COLLECTIBLE_CURSEDSPOON = Isaac.GetItemIdByName("Cursed Spoon"),
 	COLLECTIBLE_DICEOFFATE = Isaac.GetItemIdByName("Dice of Fate"),
@@ -49,6 +68,9 @@ RebekahCurse = {
 	ENTITY_HAIRWHIP = Isaac.GetEntityVariantByName("Hairwhip Effect"),
 	ENTITY_DOORSTOPPER = Isaac.GetEntityVariantByName("Doorstopper"),
 	ENTITY_FINGER_CLICKER = Isaac.GetEntityVariantByName("Finger Clicker"),
+	ENTITY_LOVESICK_SLASH = Isaac.GetEntityVariantByName("Lovesick Slash"),
+	
+	ENTITY_OHIMPOLTY = Isaac.GetEntityVariantByName("Oh, I'm Polty"),
 	
 	--others
 	ENTITY_ARCANE_CIRCLE = Isaac.GetEntityVariantByName("Arcane Circle"),
@@ -141,6 +163,7 @@ RebekahCurse = {
 	ENTITY_UNGENERICTRACER = Isaac.GetEntityVariantByName("Ungeneric Tracer"),
 	ENTITY_PINGEFFECT = Isaac.GetEntityVariantByName("Ping Effect"),
 	
+	
 	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false)
@@ -162,7 +185,9 @@ RebekahCurseSounds = {
 	SOUND_LASEREXPLOSION = Isaac.GetSoundIdByName("Laser Explosion"),
 	SOUND_DEEPELECTRIC = Isaac.GetSoundIdByName("Deep Electricity"),
 	SOUND_ELECTRIC = Isaac.GetSoundIdByName("Electricity"),
-	SOUND_PUNCH = Isaac.GetSoundIdByName("Punch Effect")
+	SOUND_PUNCH = Isaac.GetSoundIdByName("Punch Effect"),
+	
+	SOUND_IMDIEBEEP = Isaac.GetSoundIdByName("Im Die Beep")
 }
 
 RebekahCurseEnemies = {
@@ -171,6 +196,7 @@ RebekahCurseEnemies = {
 	
 	ENTITY_MAGDALENE_BOSS = Isaac.GetEntityVariantByName("Magdalene (Boss)"),
 	
+	ENTITY_EVE_BOSS = Isaac.GetEntityVariantByName("Eve (Boss)"),
 	ENTITY_BLOOD_SLOTH = Isaac.GetEntityVariantByName("Blood Sloth"),
 	ENTITY_BLOOD_WRATH = Isaac.GetEntityVariantByName("Blood Wrath"),
 }

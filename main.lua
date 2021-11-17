@@ -32,6 +32,7 @@ yandereWaifuCodes = {
 		customplayeranim = require('codes.entities.customplayeranim'),
 		bosses = {
 			maggy = require('codes.entities.bosses.magdalene'),
+			eve = require('codes.entities.bosses.eve'),
 			bloodsins = require('codes.entities.bosses.eve.bloodsins')
 		}
 	},
@@ -45,14 +46,18 @@ yandereWaifuCodes = {
 		moriahdiary = require('codes.items.moriahdiary'),
 		theshining = require('codes.items.theshining'),
 		ohimdie = require('codes.items.ohimdie'),
+		typicalromcom = require('codes.items.typicalromcom'),
+		wikepdia = require('codes.items.encyclopedia'),
+		bagofbristlebricks = require('codes.items.bagofbristlebricks'),
 		
 		lunchbox = require('codes.items.lunchbox'),
 		miraculouswomb = require('codes.items.miraculouswomb'),
 		diceoffate = require('codes.items.diceoffate'),
 		eternalbond = require('codes.items.eternalbond'),
+		rebekahscamera = require('codes.items.rebekahscamera'),
 		lovesick = require('codes.items.lovesick'),
 		lovepower = require('codes.items.lovepower'),
-		typicalromcom = require('codes.items.typicalromcom'),
+		snap = require('codes.items.snap'),
 		cursedspoon = require('codes.items.cursedspoon'),
 		unrequitedlove = require('codes.items.unrequitedlove'),
 		

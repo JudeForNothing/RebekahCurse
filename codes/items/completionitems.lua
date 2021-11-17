@@ -135,16 +135,6 @@ end)
 --ITEMS!--
 ----------
  
-
---unrequited love code
-function yandereWaifu:useUnLove(collItem, rng, player)
-	--for i,player in ipairs(ILIB.players) do
-	InutilLib.ToggleShowActive(player, true)
-	--end
-end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE );
-
-
 function yandereWaifu:ItemsNewRoom()
 	for p = 0, game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
