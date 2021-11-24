@@ -130,6 +130,121 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	end
 	
 	if player:GetPlayerType() == RebekahCurse.REB then
+	
+		--double tap local dash function
+		local function RebekahDoubleTapDash(vector, playerTapping)
+			for p = 0, ILIB.game:GetNumPlayers() - 1 do
+				local player = Isaac.GetPlayer(p)
+				--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
+				if GetPtrHash( playerTapping ) == GetPtrHash( player) then
+					local psprite = player:GetSprite()
+					local playerdata = yandereWaifu.GetEntityData(player);
+
+					--print(playerdata.IsDashActive , playerdata.IsAttackActive , playerdata.NoBoneSlamActive)
+					local trinketBonus = 0
+					if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+						trinketBonus = 5
+					end
+					if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or
+					psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") 
+					or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible)
+					and not playerdata.IsAttackActive and data.specialCooldown <= 0 and not data.IsParalysed then
+						if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
+							yandereWaifu.RedHeartDash(player, vector)
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue
+							yandereWaifu.SoulHeartTeleport(player, vector)
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow
+							yandereWaifu.GoldHeartSlam(player, vector)
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black
+							yandereWaifu.EvilHeartDash(player, vector)
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternalhearts
+							player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
+							yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Eternal );
+							yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Eternal );
+							--local lightboom = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LIGHTBOOM, 0, player.Position, Vector(0,0), player);
+							playerdata.specialCooldown = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
+							playerdata.invincibleTime = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+							playerdata.IsDashActive = true;
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
+							yandereWaifu.BoneHeartPunch(player, vector)
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+							if not data.noHead then
+								local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENHEAD, 0, player.Position, vector:Resized(15), player):ToFamiliar();
+								data.noHead = true
+								data.RebHead = head
+								
+								for i, v in pairs (data.RottenFlyTable) do
+									--if not v:IsDead() and v:Exists() then
+										yandereWaifu.GetEntityData(v).Parent = head
+									--end
+								end
+								
+								data.extraHeadsPresent = false
+								--code that checks if extra heads exist
+								for i, v in pairs (Isaac.GetRoomEntities()) do
+									if v.Type == EntityType.ENTITY_FAMILIAR then
+										if v.Variant == FamiliarVariant.SCISSORS or v.Variant == FamiliarVariant.DECAP_ATTACK then
+											data.extraHeadsPresent = true
+											print("Something wrong")
+										end
+									end
+								end
+								if data.extraHeadsPresent == false then
+									player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
+								else
+									player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
+									yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+								end
+							else
+								data.RebHead.Velocity = vector:Resized(15)
+								yandereWaifu.GetEntityData(data.RebHead).PickupFrames = 30
+							end
+							for i, v in pairs(data.RottenFlyTable) do
+								--if not v:IsDead() or v:Exists() then
+									v.Velocity = v.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+									yandereWaifu.GetEntityData(v).SpecialDash = true
+								--end
+							end
+							for i, entity in pairs(Isaac.GetRoomEntities()) do
+								if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
+									if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
+										entity.Velocity = entity.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+										yandereWaifu.GetEntityData(entity).SpecialDash = true
+									end
+								end
+							end
+							
+							playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if red 
+							player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.RED_HEARTS_DASH_SPEED );
+							yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
+							yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Red );
+							playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
+							playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
+							InutilLib.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
+							
+							playerdata.DashVector = vector;
+							playerdata.IsDashActive = true;
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+							
+							local tilde = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+							yandereWaifu.GetEntityData(tilde).Player = player
+							yandereWaifu.GetEntityData(tilde).DontFollowPlayer = true
+							yandereWaifu.GetEntityData(tilde).TildeConsole = true
+							yandereWaifu.GetEntityData(player).Parry = tilde
+							tilde.RenderZOffset = 100;
+							playerdata.specialCooldown = REBEKAH_BALANCE.BROKEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+						end
+						playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown
+						-- update the dash double tap cooldown based on Rebecca's mode specific cooldown
+					end
+					playerdata.DASH_DOUBLE_TAP.cooldown = playerdata.specialCooldown;
+				end
+			end
+		end
+		
 		yandereWaifu.barrageAndSP( player );
 		yandereWaifu.RenderUnderlay( player ) 
 		--yandereWaifu.RenderMegaMushOverlay( player )
@@ -165,122 +280,38 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		end
 		
 		--dash skill
-		if not data.DASH_DOUBLE_TAP_READY then
-			yandereWaifu.GetEntityData(player).DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
-				-- old random velocity code
-				-- yandereWaifu.RandomHeartParticleVelocity()
-				for p = 0, ILIB.game:GetNumPlayers() - 1 do
-					local player = Isaac.GetPlayer(p)
-					--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
-					if GetPtrHash( playerTapping ) == GetPtrHash( player) then
-						local psprite = player:GetSprite()
-						local playerdata = yandereWaifu.GetEntityData(player);
-
-						--print(playerdata.IsDashActive , playerdata.IsAttackActive , playerdata.NoBoneSlamActive)
-						local trinketBonus = 0
-						if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
-							trinketBonus = 5
-						end
-						if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or
-						psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") 
-						or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible)
-						and not playerdata.IsAttackActive and data.specialCooldown <= 0 and not data.IsParalysed then
-							if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
-								yandereWaifu.RedHeartDash(player, vector)
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue
-								yandereWaifu.SoulHeartTeleport(player, vector)
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow
-								yandereWaifu.GoldHeartSlam(player, vector)
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black
-								yandereWaifu.EvilHeartDash(player, vector)
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternalhearts
-								player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
-								yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Eternal );
-								yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Eternal );
-								--local lightboom = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LIGHTBOOM, 0, player.Position, Vector(0,0), player);
-								playerdata.specialCooldown = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
-								playerdata.invincibleTime = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
-								playerdata.IsDashActive = true;
-								InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
-								InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
-								yandereWaifu.BoneHeartPunch(player, vector)
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
-								if not data.noHead then
-									local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENHEAD, 0, player.Position, vector:Resized(15), player):ToFamiliar();
-									data.noHead = true
-									data.RebHead = head
-									
-									for i, v in pairs (data.RottenFlyTable) do
-										--if not v:IsDead() and v:Exists() then
-											yandereWaifu.GetEntityData(v).Parent = head
-										--end
-									end
-									
-									data.extraHeadsPresent = false
-									--code that checks if extra heads exist
-									for i, v in pairs (Isaac.GetRoomEntities()) do
-										if v.Type == EntityType.ENTITY_FAMILIAR then
-											if v.Variant == FamiliarVariant.SCISSORS or v.Variant == FamiliarVariant.DECAP_ATTACK then
-												data.extraHeadsPresent = true
-												print("Something wrong")
-											end
-										end
-									end
-									if data.extraHeadsPresent == false then
-										player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
-									else
-										player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
-										yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
-									end
-								else
-									data.RebHead.Velocity = vector:Resized(15)
-									yandereWaifu.GetEntityData(data.RebHead).PickupFrames = 30
-								end
-								for i, v in pairs(data.RottenFlyTable) do
-									--if not v:IsDead() or v:Exists() then
-										v.Velocity = v.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
-										yandereWaifu.GetEntityData(v).SpecialDash = true
-									--end
-								end
-								for i, entity in pairs(Isaac.GetRoomEntities()) do
-									if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
-										if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
-											entity.Velocity = entity.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
-											yandereWaifu.GetEntityData(entity).SpecialDash = true
-										end
-									end
-								end
-								
-								playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if red 
-								player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.RED_HEARTS_DASH_SPEED );
-								yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
-								yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Red );
-								playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
-								playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
-								InutilLib.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1.5 );
-								
-								playerdata.DashVector = vector;
-								playerdata.IsDashActive = true;
-							elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
-								
-								local tilde = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
-								yandereWaifu.GetEntityData(tilde).Player = player
-								yandereWaifu.GetEntityData(tilde).DontFollowPlayer = true
-								yandereWaifu.GetEntityData(tilde).TildeConsole = true
-								yandereWaifu.GetEntityData(player).Parry = tilde
-								tilde.RenderZOffset = 100;
-								playerdata.specialCooldown = REBEKAH_BALANCE.BROKEN_HEARTS_DASH_COOLDOWN - trinketBonus;
-							end
-							playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown
-							-- update the dash double tap cooldown based on Rebecca's mode specific cooldown
-						end
-						playerdata.DASH_DOUBLE_TAP.cooldown = playerdata.specialCooldown;
-					end
+		local keyboardKey=Keyboard.KEY_C
+		local controllerKey=0
+		local enableDashByKey = false
+		local controller = player.ControllerIndex;
+		if ModConfigMenu then
+			keyboardKey = ModConfigMenu.Config["Cursed and Brokenhearted"]["Rebekah Dash"]
+			controllerKey = ModConfigMenu.Config["Cursed and Brokenhearted"]["Rebekah Dash (Controller)"]
+			enableDashByKey = ModConfigMenu.Config["Cursed and Brokenhearted"]["Rebekah Dash Alternative Key Enable"]
+		end
+		
+		if enableDashByKey then
+			if (Input.IsButtonTriggered(keyboardKey,controller) or Input.IsButtonTriggered(controllerKey,controller)) then
+				RebekahDoubleTapDash(player:GetMovementInput(), player)
+			end
+			if data.DASH_DOUBLE_TAP_READY then
+				data.DASH_DOUBLE_TAP_READY = nil
+				data.DASH_DOUBLE_TAP = nil
+			end
+		else
+			if not data.DASH_DOUBLE_TAP_READY then
+				if not data.DASH_DOUBLE_TAP then
+					data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
 				end
-			end)
-			data.DASH_DOUBLE_TAP_READY = true
+				yandereWaifu.GetEntityData(player).DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
+					-- old random velocity code
+					-- yandereWaifu.RandomHeartParticleVelocity()
+					if not enableDashByKey then
+						RebekahDoubleTapDash(vector, playerTapping)
+					end
+				end)
+				data.DASH_DOUBLE_TAP_READY = true
+			end
 		end
 		
 		if data.IsParalysed then 

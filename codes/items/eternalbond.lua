@@ -77,91 +77,93 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 		
 		--iss.Velocity = player.Velocity * 0.8
 		local enemy = InutilLib.GetClosestGenericEnemy(iss, 500, iss.Type)
-		local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
-		if data.Stat.Mode == 0 then
-			if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
-				if not data.specialAttackVector then  data.specialAttackVector = (enemy.Position - iss.Position) end
-				if enemy.Position:Distance(iss.Position) > 100 and path then
-					InutilLib.FollowPath(iss, enemy, path, 2, 0.9)
-					--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
-				else
-					if iss.FrameCount % 60 == 0 and math.random(1,3)== 3 then
-						yandereWaifu.DoTinyBarrages(iss, (enemy.Position - iss.Position))
+		if enemy then
+			local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
+			if data.Stat.Mode == 0 then
+				if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
+					if not data.specialAttackVector then  data.specialAttackVector = (enemy.Position - iss.Position) end
+					if enemy.Position:Distance(iss.Position) > 100 and path then
+						InutilLib.FollowPath(iss, enemy, path, 2, 0.9)
+						--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
 					else
-						InutilLib.MoveAwayFromTarget(iss, enemy, 4, 0.9)
-						if data.Stat.FireDelay <= 0 then
-							local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position + Vector(0,-3):Rotated(data.specialAttackVector:GetAngleDegrees()), (enemy.Position - iss.Position):Resized(12), player):ToTear()
-							tears.Scale = 0.3
-							tears.CollisionDamage = data.Stat.Damage + extra/2
-							local tears2 =  Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position + Vector(0,3):Rotated(data.specialAttackVector:GetAngleDegrees()), (enemy.Position - iss.Position):Resized(12), player):ToTear()
-							tears2.Scale = 0.3
-							tears2.CollisionDamage = data.Stat.Damage + extra/2
-							data.Stat.FireDelay = data.Stat.MaxFireDelay
-						end
-					end
-				end
-				data.specialAttackVector = nil
-			else
-				local nearPickup, pos = InutilLib.GetClosestPickup(iss, 400, 10, -1)
-				local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
-				if nearPickup and (nearPickup.SubType == 1 or nearPickup.SubType == 2 or nearPickup.SubType == 5 or nearPickup.SubType == 9 or nearPickup.SubType == 10) then
-					if PickUppath then
-						if (nearPickup.Position - iss.Position):Length() > 15 then
-							InutilLib.FollowPath(iss, nearPickup, PickUppath, 5, 0.9)
-							--InutilLib.XalumMoveTowardsTarget(iss, nearPickup, 6, 0.9, false)
+						if iss.FrameCount % 60 == 0 and math.random(1,3)== 3 then
+							yandereWaifu.DoTinyBarrages(iss, (enemy.Position - iss.Position))
 						else
-							InutilLib.MoveDirectlyTowardsTarget(iss, nearPickup, 5, 0.9)
-						end
-					end
-					if (nearPickup.Position-iss.Position):Length() < 40 and not nearPickup.Touched then
-						local picked = InutilLib.PickupPickup(nearPickup)
-						--print(data.Stat.Wallet.."   "..picked.Subtype)
-						picked = picked:ToPickup()
-						local earned = 0
-						if picked.SubType == 1 or picked.SubType == 9 then
-							earned = 2
-						elseif picked.SubType == 9 then
-							earned = 4
-						elseif picked.SubType == 2 or picked.SubType == 10 then
-							earned = 1
-						end
-						data.Stat.Wallet = data.Stat.Wallet + earned
-					end
-				else
-					if data.Stat.Wallet > 9 and (not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage")) then
-						data.Stat.Wallet = data.Stat.Wallet - math.random(8,10)
-						spr:Play("Drop", true)
-					else
-						if (not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage")) then
-							if (Isaac.GetFrameCount() % 1200 == 0 and player:GetEffectiveMaxHearts() > 2 and player:GetHearts() < 4) or (Isaac.GetFrameCount() % 2400 == 0 and math.random(1,2) and player:GetSoulHearts() < 4) then
-								spr:Play("Drop", true)
+							InutilLib.MoveAwayFromTarget(iss, enemy, 4, 0.9)
+							if data.Stat.FireDelay <= 0 then
+								local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position + Vector(0,-3):Rotated(data.specialAttackVector:GetAngleDegrees()), (enemy.Position - iss.Position):Resized(12), player):ToTear()
+								tears.Scale = 0.3
+								tears.CollisionDamage = data.Stat.Damage + extra/2
+								local tears2 =  Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position + Vector(0,3):Rotated(data.specialAttackVector:GetAngleDegrees()), (enemy.Position - iss.Position):Resized(12), player):ToTear()
+								tears2.Scale = 0.3
+								tears2.CollisionDamage = data.Stat.Damage + extra/2
+								data.Stat.FireDelay = data.Stat.MaxFireDelay
 							end
-							if (iss.Position - player.Position):Length() > 100 then
-								local path = InutilLib.GenerateAStarPath(iss.Position, player.Position)
-								InutilLib.FollowPath(iss, player, path, 2, 0.9)
-								--InutilLib.XalumMoveTowardsTarget(iss, player, 8, 0.9, false)
+						end
+					end
+					data.specialAttackVector = nil
+				else
+					local nearPickup, pos = InutilLib.GetClosestPickup(iss, 400, 10, -1)
+					local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
+					if nearPickup and (nearPickup.SubType == 1 or nearPickup.SubType == 2 or nearPickup.SubType == 5 or nearPickup.SubType == 9 or nearPickup.SubType == 10) then
+						if PickUppath then
+							if (nearPickup.Position - iss.Position):Length() > 15 then
+								InutilLib.FollowPath(iss, nearPickup, PickUppath, 5, 0.9)
+								--InutilLib.XalumMoveTowardsTarget(iss, nearPickup, 6, 0.9, false)
+							else
+								InutilLib.MoveDirectlyTowardsTarget(iss, nearPickup, 5, 0.9)
+							end
+						end
+						if (nearPickup.Position-iss.Position):Length() < 40 and not nearPickup.Touched then
+							local picked = InutilLib.PickupPickup(nearPickup)
+							--print(data.Stat.Wallet.."   "..picked.Subtype)
+							picked = picked:ToPickup()
+							local earned = 0
+							if picked.SubType == 1 or picked.SubType == 9 then
+								earned = 2
+							elseif picked.SubType == 9 then
+								earned = 4
+							elseif picked.SubType == 2 or picked.SubType == 10 then
+								earned = 1
+							end
+							data.Stat.Wallet = data.Stat.Wallet + earned
+						end
+					else
+						if data.Stat.Wallet > 9 and (not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage")) then
+							data.Stat.Wallet = data.Stat.Wallet - math.random(8,10)
+							spr:Play("Drop", true)
+						else
+							if (not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage")) then
+								if (Isaac.GetFrameCount() % 1200 == 0 and player:GetEffectiveMaxHearts() > 2 and player:GetHearts() < 4) or (Isaac.GetFrameCount() % 2400 == 0 and math.random(1,2) and player:GetSoulHearts() < 4) then
+									spr:Play("Drop", true)
+								end
+								if (iss.Position - player.Position):Length() > 100 then
+									local path = InutilLib.GenerateAStarPath(iss.Position, player.Position)
+									InutilLib.FollowPath(iss, player, path, 2, 0.9)
+									--InutilLib.XalumMoveTowardsTarget(iss, player, 8, 0.9, false)
+								end
 							end
 						end
 					end
 				end
-			end
-		elseif data.Stat.Mode == 1 then
-			if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
-				data.specialAttackVector = (enemy.Position - iss.Position)
-				if enemy.Position:Distance(iss.Position) > 100 and path then
-					--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
-					InutilLib.FollowPath(iss, enemy, path, 2, 0.9)
-				else
-					if Isaac.GetFrameCount() % 800 == 0 then
-						yandereWaifu:DoTinyBarrages(iss, data.specialAttackVector)
+			elseif data.Stat.Mode == 1 then
+				if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
+					data.specialAttackVector = (enemy.Position - iss.Position)
+					if enemy.Position:Distance(iss.Position) > 100 and path then
+						--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
+						InutilLib.FollowPath(iss, enemy, path, 2, 0.9)
 					else
-						InutilLib.MoveAwayFromTarget(iss, enemy, 4, 0.9)
-						if data.Stat.FireDelay <= 0 then
-							local tears = player:FireTear(iss.Position, data.specialAttackVector:Resized(8), false, false, false):ToTear()
-							tears.Position = iss.Position
-							tears.Scale = 0.3
-							tears.CollisionDamage = data.Stat.Damage
-							data.Stat.FireDelay = data.Stat.MaxFireDelay
+						if Isaac.GetFrameCount() % 800 == 0 then
+							yandereWaifu:DoTinyBarrages(iss, data.specialAttackVector)
+						else
+							InutilLib.MoveAwayFromTarget(iss, enemy, 4, 0.9)
+							if data.Stat.FireDelay <= 0 then
+								local tears = player:FireTear(iss.Position, data.specialAttackVector:Resized(8), false, false, false):ToTear()
+								tears.Position = iss.Position
+								tears.Scale = 0.3
+								tears.CollisionDamage = data.Stat.Damage
+								data.Stat.FireDelay = data.Stat.MaxFireDelay
+							end
 						end
 					end
 				end

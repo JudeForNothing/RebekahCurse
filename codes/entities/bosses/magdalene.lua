@@ -246,7 +246,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				spr:Play("2FlyIdle", true)
 			end
 			
-			if math.random(1,2) == 2 and ent.FrameCount % 3 == 0 then
+			if math.random(1,5) == 5 and ent.FrameCount % 3 == 0 then
 				if InutilLib.CuccoLaserCollision(ent, 0, 700, player) or InutilLib.CuccoLaserCollision(ent, 90, 700, player) or InutilLib.CuccoLaserCollision(ent, 180, 700, player) or InutilLib.CuccoLaserCollision(ent, 270, 700, player) then
 					if math.random(1,2) == 2 then
 						data.State = 8
@@ -552,9 +552,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			spr:Play("Heart")
 		end
 		ent.Velocity = ent.Velocity *0.8
-		if math.random(1,5) == 5 and ent.FrameCount % 30 == 0 then
+		--[[if math.random(1,5) == 5 and ent.FrameCount % 30 == 0 then
 			local heart = Isaac.Spawn(1000, 7, 1, ent.Position, Vector(0,4):Rotated(math.random(1,360)), ent)
-		end
+		end]]
 	end
 
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)

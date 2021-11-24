@@ -111,16 +111,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if sprite:GetFrame() >= 4 and sprite:GetFrame() <= 6 then
 		for i, ent in pairs (Isaac.GetRoomEntities()) do
 			if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
-				if InutilLib.CuccoLaserCollision(eff, data.PermanentAngle, 240, ent) then
+				if InutilLib.CuccoLaserCollision(eff, data.PermanentAngle, 240, ent, 20) then
 				--if ent.Position:Distance((eff.Position)+ (Vector(50,0):Rotated(data.PermanentAngle))) <= 90 then
-					ent:TakeDamage(2.5, 0, EntityRef(eff), 1)
+					ent:TakeDamage(player.Damage/1.5, 0, EntityRef(eff), 1)
 				end
 			end
 		end
 	end
 			--player.Velocity = Vector(0,0)
 		--end
-		InutilLib.SFX:Play( SoundEffect.SOUND_SWORD_SPIN, 1, 0, false, 2);
+	if sprite:GetFrame() == 3 then
+		InutilLib.SFX:Play(SoundEffect.SOUND_WHIP_HIT, 1, 0, false, 0.8);
+	end
 	--[[	local grid = room:GetGridEntity(room:GetGridIndex((eff.Position)+ (Vector(50,0):Rotated(data.PermanentAngle)))) --grids around that Rebecca stepped on
 		if grid ~= nil then 
 			--print( grid:GetType())

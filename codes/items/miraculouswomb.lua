@@ -5,7 +5,7 @@ function yandereWaifu:EsauInit(fam)
     local sprite = fam:GetSprite()
     sprite:Play("FloatDown", true)
 	fam.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
-	fam:AddToOrbit(50)
+	fam:AddToOrbit(4)
 	
 	local data = yandereWaifu.GetEntityData(fam)
 	data.Stat = {
@@ -25,7 +25,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	fam.OrbitDistance = Vector(20, 20)
 	fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
-	fam.Velocity = fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position
+	fam.Velocity = (fam.Velocity + (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
 	
 	if data.Stat.FireDelay > 0 then data.Stat.FireDelay = data.Stat.FireDelay - 1 end
 	
@@ -54,7 +54,7 @@ function yandereWaifu:JacobInit(fam)
     local sprite = fam:GetSprite()
     sprite:Play("FloatDown", true)
 	fam.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
-	fam:AddToOrbit(50)
+	fam:AddToOrbit(4)
 	
 	local data = yandereWaifu.GetEntityData(fam)
 	data.Stat = {
@@ -74,7 +74,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	fam.OrbitDistance = Vector(20, 20)
 	fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
-	fam.Velocity = fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position
+	fam.Velocity = (fam.Velocity + (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
 	
 	if data.Stat.FireDelay > 0 then data.Stat.FireDelay = data.Stat.FireDelay - 1 end
 	

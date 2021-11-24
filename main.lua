@@ -11,6 +11,7 @@ yandereWaifuCodes = {
 	library = require('codes.library'),
 	savedata = require('codes.savedata'),
 	minimenu = require('codes.minimenu'),
+	config = require('codes.config'),
 	rebekahA = {
 		gui = require('codes.rebekah_A.gui'),
 		lovelove = require('codes.rebekah_A.lovelovereserve'),
@@ -59,7 +60,9 @@ yandereWaifuCodes = {
 		lovepower = require('codes.items.lovepower'),
 		snap = require('codes.items.snap'),
 		cursedspoon = require('codes.items.cursedspoon'),
+		patriarchsliar = require('codes.items.patriarchsliar'),
 		unrequitedlove = require('codes.items.unrequitedlove'),
+		rebekahsfavorite = require('codes.items.rebekahsfavorite'),
 		
 		isaacslocks = require('codes.items.isaacslocks'),
 		

@@ -17,7 +17,7 @@ RebekahCurse = {
 	COLLECTIBLE_FINGERFINGER = Isaac.GetItemIdByName("Finger Finger"),
 	COLLECTIBLE_MORIAHDIARY = Isaac.GetItemIdByName("Moriah Diary"),
 	COLLECTIBLE_THESHINING = Isaac.GetItemIdByName("The Shining"),
-	COLLECTIBLE_OHIMDIE = Isaac.GetItemIdByName("Oh, I'm Die"),
+	COLLECTIBLE_OHIMDIE = Isaac.GetItemIdByName("Defuse = Rewards"),
 	
 	COLLECTIBLE_WIKEPIDIA = Isaac.GetItemIdByName("Wikepidia"),
 	COLLECTIBLE_WIKEPIDIA1 = Isaac.GetItemIdByName(" Wikepidia "),
@@ -49,7 +49,9 @@ RebekahCurse = {
 	TRINKET_ISAACSLOCKS = Isaac.GetTrinketIdByName("Isaac's Locks"),
 	COLLECTIBLE_LOVESICK = Isaac.GetItemIdByName("Lovesick"),
 	COLLECTIBLE_SNAP = Isaac.GetItemIdByName("Snap!"),
-
+	COLLECTIBLE_PATRIARCHSLIAR = Isaac.GetItemIdByName("Patriarch's Liar"),
+	COLLECTIBLE_REBEKAHSFAVORITE = Isaac.GetItemIdByName("Rebekah's Favorite"),
+	
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
 	
 	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
@@ -163,6 +165,8 @@ RebekahCurse = {
 	ENTITY_UNGENERICTRACER = Isaac.GetEntityVariantByName("Ungeneric Tracer"),
 	ENTITY_PINGEFFECT = Isaac.GetEntityVariantByName("Ping Effect"),
 	
+	ENTITY_EVESUMMONCIRCLE = Isaac.GetEntityVariantByName("Eve Summon Circle"),
+	ENTITY_GOLEMFIST = Isaac.GetEntityVariantByName("Patriarch's Fist"),
 	
 	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
