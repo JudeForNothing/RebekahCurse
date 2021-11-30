@@ -1092,14 +1092,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					local gent = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex(doorPosCheck))
 					if gent then
 						if gent.Desc.Type == GridEntityType.GRID_DOOR then
-							Isaac.DebugString(gent.Desc.Type)
+							--Isaac.DebugString(gent.Desc.Type)
 							local Door = gent:ToDoor()
 							if (fam.Position - Door.Position):Length() <= 35 then
-								Isaac.DebugString(1)
+								--Isaac.DebugString(1)
 								if ILIB.room:IsClear() then
 									Door:TryUnlock(player)
 								end
-								Isaac.DebugString(2)
+								--Isaac.DebugString(2)
 								if Door and Door:IsOpen() then
 									player.Position = Door.Position
 								elseif Door and not Door:IsOpen() then

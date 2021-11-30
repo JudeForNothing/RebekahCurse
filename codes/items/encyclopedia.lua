@@ -118,7 +118,13 @@ function yandereWaifu:useWiki4(collItem, rng, player, _, slot)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_HOW_TO_JUMP, false, false, false, false, -1)
-	
+	if player:GetActiveCharge(slot) <= 1 then
+		InutilLib.SetTimer( 15*30, function()
+			if player:HasCollectible(RebekahCurse.COLLECTIBLE_WIKEPIDIA4) then
+				player:SetActiveCharge(1, slot)
+			end
+		end)
+	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki4, RebekahCurse.COLLECTIBLE_WIKEPIDIA4 )
@@ -157,7 +163,8 @@ function yandereWaifu:useWiki8(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	player:UseActiveItem(CollectibleType.COLLECTIBLE_BIBLE, false, false, false, false, -1)
+	player:UseActiveItem(CollectibleType.COLLECTIBLE_BIBLE, true, false, false, true, -1)
+	--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BIBLE, true, 1)
 	
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
@@ -209,7 +216,7 @@ function yandereWaifu:useWiki13(collItem, rng, player, _, slot)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES, false, false, false, false, -1)
-	data.Player:AddWisp(-1, player.Position, false, false)
+	player:AddWisp(-1, player.Position, false, false)
 	
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end

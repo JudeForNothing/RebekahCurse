@@ -56,6 +56,27 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 end, RebekahCurse.ENTITY_PERSONALITYPOOF);
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	
+	if eff.FrameCount == 1 then
+		sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
+		if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST then
+			sprite:Play("Side", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT then
+			sprite:Play("Front", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED then
+			sprite:Play("Angled", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK then
+			sprite:Play("AngledBack", true) 
+		end
+		eff.RenderZOffset = 100;
+	end
+	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") then
+		eff:Remove()
+	end
+end, RebekahCurse.ENTITY_REBEKAH_DUST);
+
 function AddRebekahDashEffect(player)
 	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 	yandereWaifu.GetEntityData(customBody).Player = player
@@ -285,15 +306,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.TimeoutFrame = 0 
 	end
 	
-	if sprite:IsFinished("Appear") then
-		sprite:Play("Spot", false)
-	end
-	
 	if data.TimeoutFrame == data.Timeout then
 		sprite:Play("Disappear", false)
 	else
 		data.TimeoutFrame = data.TimeoutFrame + 1
 	end
+	
+	if sprite:IsFinished("Appear") then
+		sprite:Play("Spot", false)
+	end
+
 	if sprite:IsFinished("Disappear") then
 		eff:Remove()
 	end

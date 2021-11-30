@@ -15,4 +15,8 @@
 	<player name="RebekahC"  bSkinParent="Rebekah" birthright="???" skin="character_rebekah.png" hp="2" keys="3"
           nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" />
+		  
+	<player name="Happy Jacob" birthright="???" costume="52" skin="character_002x_jacob.png" hp="6" keys="0"
+          nameimage="PlayerName_02x_Jacob_Esau.png" 
+          portrait="PlayerPortrait_Jacob.png" skinColor="-1" hidden="true"/>
 </players>

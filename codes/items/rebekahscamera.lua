@@ -32,7 +32,7 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
 	end
 	InutilLib.ShowActiveItem(player, slot)
 	InutilLib.AnimateGiantbook(nil, nil, "Shake", "gfx/ui/giantbook/giantbook_rebekahs_camera.anm2", true)
-	InutilLib.ShowActiveItem(player, slot)
+	InutilLib.HideActiveItem(player, slot)
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRebekahCamera, RebekahCurse.COLLECTIBLE_REBEKAHSCAMERA );
 --[[

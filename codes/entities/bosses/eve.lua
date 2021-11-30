@@ -33,23 +33,44 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = ent:GetPlayerTarget()
 	if ent.Variant == RebekahCurseEnemies.ENTITY_EVE_BOSS then
 		if ent.FrameCount == 1 then
+			print("wot")
 			data.State = 0
 			spr:Play("1Start", true)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
+			data.SummonTimes = 1
 		end
 		if spr:IsFinished("1Start") then
 			data.State = 1
+			data.SummonTimes = 1
+		end
+		
+		if spr:IsPlaying("1Transition") then
+			ent.Velocity = ent.Velocity * 0.7
 		end
 		
 		--[[if ent:CollidesWithGrid() then
 			ent.Velocity = (ent.Velocity:Rotated(180)):Resized(6)
 		end]]
+		
+		if not data.SummonOne and ent.HitPoints <= 500 then
+			data.SummonTimes = data.SummonTimes + 1
+			data.SummonOne = true
+		end
+		if not data.SummonTwo and ent.HitPoints <= 400 then
+			data.SummonTimes = data.SummonTimes + 1
+			data.SummonTwo = true
+		end
+		if not data.SummonThree and ent.HitPoints <= 300 then
+			data.SummonTimes = data.SummonTimes + 1
+			data.SummonThree = true
+		end
+		
 		if spr:IsFinished("1Transition") then
 			spr:Load("gfx/bosses/rivals/eve2.anm2", true)
 			data.State = 1
 		elseif not spr:IsPlaying("1Transition") then
-			if ent.HitPoints <= 100 and not data.SecondPhase then
+			if ent.HitPoints <= 200 and not data.SecondPhase then
 				data.State = 0
 				data.SecondPhase = true
 				spr:Play("1Transition", true)
@@ -66,7 +87,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				--end
 				--if (ent.Position - player.Position):Length() > 250 then
 					--InutilLib.MoveRandomlyTypeI(ent, player.Position, 2.2, 0.9, 75, 15, 30)
+				if data.SecondPhase then
+					InutilLib.StrafeAroundTarget(ent, player, 0.8, 0.9, data.strafeNum or 30)
+				else
 					InutilLib.StrafeAroundTarget(ent, player, 0.7, 0.9, data.strafeNum or 30)
+				end
 				--else
 				--	InutilLib.MoveAwayFromTarget(ent, player, 5.2, 0.9)
 				--	InutilLib.StrafeAroundTarget(ent, player, 0.7, 0.9, 30)
@@ -114,7 +139,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						spr:Play("1AttackBack", true)
 					end
 					
-					if math.random(1,5) == 5 and data.State == 1 then
+					if math.random(1,4) == 4 and data.State == 1 then
 						local creepCount = 0
 						for i, v in ipairs (Isaac.GetRoomEntities()) do
 							if v and not v:IsDead() then
@@ -123,7 +148,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								end
 							end
 						end
-						if creepCount > 4 and math.random(1,2) then
+						if creepCount > 4 and math.random(1,3) then
 							data.State = 5
 							spr:Play("1Attack2", true)
 						elseif ent.HitPoints <= 350 then
@@ -135,11 +160,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								end
 								cleared = true
 							end
-							if cleared and not data.SecondPhase then
+							if cleared and not data.SecondPhase and data.SummonTimes > 0 then
 								data.State = 4
 								spr:Play("1PrepareSpecial", true)
 							end
 						end
+					elseif math.random(1,2) == 2 and data.SecondPhase then
+						spr:Play("Rage", true)
+						data.State = 6
 					end
 				end
 			end
@@ -194,18 +222,26 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				ent.Velocity = ent.Velocity * 0.8
 			end
 			if data.State == 4 then
-				if spr:IsFinished("1PrepareSpecial") then
-					spr:Play("1Special", true)
-				end
-				if spr:IsPlaying("1Special") then
-					if spr:GetFrame() == 30 then
-						local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVESUMMONCIRCLE, math.random(0,3), ent.Position, Vector(0,0), nil)
+				--print((ent.Position - ILIB.room:GetCenterPos()):Length())
+				if math.floor((ent.Position - ILIB.room:GetCenterPos()):Length()) <= 4 then
+					if spr:IsPlaying("1Special") then
+						if spr:GetFrame() == 30 then
+							local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVESUMMONCIRCLE, math.random(0,3), ent.Position, Vector(0,0), nil)
+						end
 					end
-				end
-				ent.Velocity = ent.Velocity * 0.8
-				
-				if spr:IsFinished("1Special") then
-					data.State = 7
+					ent.Velocity = ent.Velocity * 0.3
+					
+					if spr:IsFinished("1Special") then
+						data.State = 7
+					end
+					
+					if not spr:IsPlaying("1Special") and not spr:IsFinished("1Special") then
+						spr:Play("1Special", false)
+					end
+				else
+					InutilLib.AnimShootFrame(ent, false, ent.Velocity, "1WalkRight", "1WalkFront", "1WalkBack", "1WalkLeft")
+					ent.Velocity = ent.Velocity + (ILIB.room:GetCenterPos()-ent.Position):Resized(2)
+					ent.Velocity = ent.Velocity * 0.8
 				end
 			end
 			if data.State == 5 then
@@ -243,6 +279,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								end
 							end
 						end
+					end
+				end
+				ent.Velocity = ent.Velocity * 0.8
+			end
+			if data.State == 6 then
+				if spr:IsFinished("Rage") and not data.DashRage then
+					data.DashRage = true
+					data.LastPosition = player.Position - ent.Position
+				end
+				if data.DashRage then
+					ent.Velocity = ent.Velocity + (data.LastPosition):Resized(4)
+					InutilLib.AnimShootFrame(ent, false, ent.Velocity, "1WalkRight", "1WalkFront", "1WalkBack", "1WalkLeft")
+					if ent:CollidesWithGrid() then
+						data.State = 1
+						data.DashRage = nil
+						data.LastPosition = nil
+						ILIB.game:ShakeScreen(8)
+						for i = 0, 360 - 360/16, 360/16 do
+							local proj2 = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(10,0)):Resized(10):Rotated(i)):ToProjectile()
+							proj2.Scale = 1.1
+						end
+						ent.Velocity = Vector.Zero
 					end
 				end
 				ent.Velocity = ent.Velocity * 0.8
@@ -316,6 +374,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,eff)
 				for i = 1, 3 do
 					local splat = Isaac.Spawn(EntityType.ENTITY_BEGOTTEN, 0, 0, ILIB.room:GetRandomPosition(2) , Vector(0,0), nil)
 					splat:AddEntityFlags(EntityFlag.FLAG_AMBUSH)
+					splat.HitPoints = 20
+					splat.MaxHitPoints = 20
 				end
 			elseif eff.SubType == 3 then
 				local splat = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BLOOD_SLOTH, 0, eff.Position, Vector(0,0), nil)

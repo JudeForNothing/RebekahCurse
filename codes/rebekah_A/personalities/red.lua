@@ -11,8 +11,25 @@ function yandereWaifu.RedHeartDash(player, vector)
 	end
 	
 	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.RED_HEARTS_DASH_SPEED );
-								
-	yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
+	
+	local velAng = math.floor(player.Velocity:Rotated(-90):GetAngleDegrees())
+	local subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST
+	if (velAng >= 180 - 15 and velAng <= 180 + 15) or (velAng >= -180 - 15 and  velAng <= -180 + 15) or (velAng >= 0 - 15 and  velAng <= 0 + 15) then
+		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT 
+	end
+	if (velAng >= 45 - 15 and  velAng <= 45 + 15) or (velAng >= -45 - 15 and  velAng <= -45 + 15) then
+		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED
+	end
+	if (velAng >= 135 - 15 and  velAng <= 135 + 15) or (velAng >= -135 - 15 and  velAng <= -135 + 15) then
+		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK
+	end
+	
+	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, subtype, player.Position, Vector.Zero, player)
+	print(velAng)
+	if (velAng >= 90 - 15 and velAng <= 90 + 15 and velAng >= 0) or (((velAng >= -135 - 15 and  velAng <= -135 + 15)  or (velAng >= -45 - 15 and  velAng <= -45 + 15)) and velAng <= 0) then
+		poof:GetSprite().FlipX = true
+	end
+	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
 
 	playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
 	playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;

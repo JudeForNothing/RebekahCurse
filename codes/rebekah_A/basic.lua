@@ -34,8 +34,8 @@ local function RebeccaInit(player)
 	IsaacPresent = false
 	JacobPresent = false
 	
-	Isaac.DebugString(tostring(player))
-	Isaac.DebugString("SUISEI")
+	--Isaac.DebugString(tostring(player))
+	--Isaac.DebugString("SUISEI")
 	local data = yandereWaifu.GetEntityData(player)
 	--player:AddNullCostume(NerdyGlasses)
 	player:AddHearts(-REBEKAH_BALANCE.INIT_REMOVE_HEARTS);
@@ -59,10 +59,10 @@ local function RebeccaInit(player)
 	end
 	
 	--for other characters who comes in but not on game_start
-	Isaac.DebugString(Game():GetRoom():GetFrameCount())
-	Isaac.DebugString("psst")
+	--Isaac.DebugString(Game():GetRoom():GetFrameCount())
+	--Isaac.DebugString("psst")
 	if Game():GetRoom():GetFrameCount() > -1 and not player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then
-		Isaac.DebugString("howdy")
+		--Isaac.DebugString("howdy")
 		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
 	end
 	
@@ -151,6 +151,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 					and not playerdata.IsAttackActive and data.specialCooldown <= 0 and not data.IsParalysed then
 						if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
 							yandereWaifu.RedHeartDash(player, vector)
+							
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue
 							yandereWaifu.SoulHeartTeleport(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow
@@ -1182,22 +1183,22 @@ end)
 local function Init(force)
 	if force == true then
 		for i,player in ipairs(ILIB.players) do
-			Isaac.DebugString("1")
+			--Isaac.DebugString("1")
 			hasInit = true;
 			
 			bossRoomsCleared = {};
 			--lastSaveTime = 0;
 			--RebeccaInit(player)
 
-			Isaac.DebugString("4")
+			--Isaac.DebugString("4")
 			
-			Isaac.DebugString("5")
+			--Isaac.DebugString("5")
 			didKillSatan = false
 			
 			
 			--set for player 1
 			if not player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then
-				Isaac.DebugString("jk", "   ", player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON))
+				--Isaac.DebugString("jk", "   ", player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON))
 				player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 			end
@@ -2090,7 +2091,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									end
 									local poofVar = 13
 									if isBlood then poofVar = 11 end
-									local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, poofVar, 1, player.Position, Vector(0,0), nil)
+									local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, poofVar, 1, player.Position, Vector(0,0), player)
 									splat.RenderZOffset = 10000
 									if math.random(1,2)== 2 then splat:GetSprite().FlipX = true end
 									if math.random(1,2)== 2 then splat:GetSprite().FlipY = true end

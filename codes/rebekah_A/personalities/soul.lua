@@ -66,7 +66,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		sprite:Play("Idle", true);
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
-		yandereWaifu.SpawnEctoplasm( player.Position, Vector ( 0, 0 ) , math.random(13,15)/10, player);
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true);
 	end

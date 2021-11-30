@@ -1,14 +1,14 @@
 --MAGGY BOSS!--
 
 local heartShapeVel = {
-	[0] = 4*4,
-	[1] = 3*4,
-	[2] = 4*4,
-	[3] = 3*4,
-	[4] = 1*4,
-	[5] = 3*4,
-	[6] = 4*4,
-	[7] = 3*4,
+	[0] = 4*2,
+	[1] = 3*2,
+	[2] = 4*2,
+	[3] = 3*2,
+	[4] = 1*2,
+	[5] = 3*2,
+	[6] = 4*2,
+	[7] = 3*2,
 }
 
 local beamColor = Color(1,1,0,0.5)
@@ -41,7 +41,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		if data.State ~= 1 then
 			ent.Velocity = ent.Velocity * 0.7
-			local heart = Isaac.Spawn(1000, 198,0, ent.Position, Vector(0,0), ent)
+			--local heart = Isaac.Spawn(1000, 198,0, ent.Position, Vector(0,0), ent)
 			--local heart = Isaac.Spawn(1000, 128,0, ent.Position, Vector(0,0), ent)
 		end
 		
@@ -61,14 +61,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			--end
 			data.State = 1
-			if math.random(1,4) == 4 and ent.FrameCount % 30 == 0 then
+			if math.random(1,4) == 4 and ent.FrameCount % 60 == 0 then
 				--ent.State = 2
 				data.State = math.random(2,4)
 			end
 			
 			InutilLib.AnimShootFrame(ent, false, ent.Velocity, "1WalkRight", "1WalkFront", "1WalkBack", "1WalkLeft")
 			
-			if math.random(1,2) == 2 and ent.FrameCount % 30 == 0 then
+			if math.random(1,2) == 2 and ent.FrameCount % 60 == 0 then
 				if InutilLib.CuccoLaserCollision(ent, 0, 700, player) then
 					data.State = 5
 					spr:Play("1ShootRight", true)
@@ -98,9 +98,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					for i = 0, 360-360/8, 360/8 do
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 						num = num + 1
-						proj.Scale = 1.2
+						proj.Scale = 1.7
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					--local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
 			end
 		end
@@ -119,7 +119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 0, ent.Position, (Vector(0,40):Rotated(i)):Resized(8))
 						--num = num + 1
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					--local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
 			end
 		end
@@ -138,7 +138,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						proj.Scale = 0.5
 						--num = num + 1
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					--local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
 			end
 		end		
@@ -146,7 +146,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			if InutilLib.IsFinishedMultiple(spr, "1ShootFront", "1ShootLeft", "1ShootBack", "1ShootRight") then
 				data.State = 1
 			end
-			if spr:GetFrame() == 24 then
+			if spr:IsEventTriggered("Fire") then
 				local angle = 0
 				if spr:IsPlaying("1ShootFront") then
 					angle = 90
@@ -176,9 +176,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		--ent.State = 69
 		
-		if not data.isPhaseTwo then --phase 2 transition
+		if not data.isPhase2 then --phase 2 transition
 			if ent.HitPoints <= ent.MaxHitPoints/2 then
-				data.isPhaseTwo = true
+				data.isPhase2 = true
+				--data.State = 7
 				data.State = 6
 				spr:Play("1Transition", true)
 			end
@@ -186,7 +187,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		
 		if data.State == 6 then--transition state
 			if spr:IsFinished("1Transition") then
-				data.State = 7
+				data.State = 17
 				for i = 1, 2 do
 					local heart = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,20):Rotated(math.random(1,360)), ent)
 					heart:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
@@ -205,40 +206,40 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							if yandereWaifu.GetEntityData(v).GetSucked then
 								InutilLib.MoveDirectlyTowardsTarget(v, ent, 14, 0.9)
 								if v.Position:Distance(ent.Position) <= 30 then
+									v.HitPoints = 1
 									v:Kill()
 									ent.HitPoints = ent.HitPoints + 100
 								end
 							end
 						end
 					end
-					if math.floor(spr:GetFrame()/2) <= 1 then
-						local suck = Isaac.Spawn(EntityType.ENTITY_EFFECT, 151, 0, ent.Position, Vector(0,0), nil)
-					end
 					if math.random(1,3) == 3 then
+						if math.random(1,3) == 3 then
+							local suck = Isaac.Spawn(EntityType.ENTITY_EFFECT, 151, 0, ent.Position, Vector(0,0), nil)
+						end
 						local suckEff = Isaac.Spawn(EntityType.ENTITY_EFFECT, 151, 1, ent.Position, Vector(0,0), nil)
 					end
 				end
 			end
 		end
 		
-		if data.State == 7 then --phase two idle
+		if data.State == 17 then --phase two idle
+			Isaac.DebugString("7")
 			--InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
 		
 			--if (ent.Position - player.Position):Length() > 300 then
 			--if path then
 			--	InutilLib.FollowPath(ent, player, path, 0.4, 0.9)
 			--else
-				InutilLib.MoveDirectlyTowardsTarget(ent, player, 1, 0.9)
+			InutilLib.MoveDirectlyTowardsTarget(ent, player, 1, 0.9)
 			--end
 			--end
-			data.State = 7
 			
-			if math.random(1,5) == 5 and ent.FrameCount % 30 == 0 and ent.HitPoints <= 300 then
+			if math.random(1,5) == 5 and ent.FrameCount % 60 == 0 and ent.HitPoints <= 300 then
 				data.State = 11
 			end
 			
-			if math.random(1,4) == 4 and ent.FrameCount % 30 == 0 then
-				--ent.State = 2
+			if math.random(1,4) == 4 and ent.FrameCount % 60 == 0 then
 				data.State = math.random(9,10)
 			end
 			
@@ -258,8 +259,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 		if data.State == 8 then --phase two laser thing
+			Isaac.DebugString("8")
 			if InutilLib.IsFinishedMultiple(spr, "2Attack") then
-				data.State = 7
+				data.State = 17
 			end
 			if spr:GetFrame() == 1 then
 				data.extraAng = 0
@@ -299,13 +301,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		
 		if data.State == 9 then --phase two tear burst
+			Isaac.DebugString("9")
 			if spr:IsFinished("2Attack2") then
-				data.State = 7
+				data.State = 17
 			end
 			if not spr:IsPlaying("2Attack2") then
 				spr:Play("2Attack2", true)
 			elseif spr:IsPlaying("2Attack2") then
 				if spr:GetFrame() == 17 then
+					print("once alone")
 					local num = 0
 					--circle
 					for i = 0, 360-360/15, 360/15 do
@@ -323,13 +327,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, ((ent.Position-player.Position):Rotated(i)):Resized(7))
 						proj.Scale = 2
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
 			end
 		end
 		if data.State == 10 then --phase two summon
+			Isaac.DebugString("10")
 			if spr:IsFinished("2Attack3") then
-				data.State = 7
+				data.State = 17
 			end
 			if not spr:IsPlaying("2Attack3") then
 				spr:Play("2Attack3", true)
@@ -344,7 +349,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					if num < 7 then
 						local ran = math.random(1,2)
 						for i = 1, ran do
-							local heart = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,20):Rotated(math.random(1,360)), ent)
+							local heart = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,15):Rotated(math.random(1,360)), ent)
 							heart:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						end
 					else
@@ -356,21 +361,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							end
 						end
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
 			end
 		end	
 		if data.State == 11 then
+			Isaac.DebugString("11")
 			if spr:IsFinished("2AttackPrepare") then
 				if math.random(1,2) == 1 then
 					spr:Play("2AttackChain", true)
 				else
 					spr:Play("2AttackChain2", true)
 				end
-			end
-			
-			
-			if spr:IsFinished("2AttackChain") or spr:IsFinished("2AttackChain2") then
+			elseif spr:IsFinished("2AttackChain") or spr:IsFinished("2AttackChain2") then
 				if data.ChainAttackTier > 2 then
 					spr:Play("2AttackFinish", true)
 				else
@@ -381,8 +384,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end
 					data.ChainAttackTier = data.ChainAttackTier + 1
 				end
-			end
-			if spr:IsPlaying("2AttackChain2") then
+			elseif spr:IsPlaying("2AttackChain2") then
 				--laser indicator
 				if spr:GetFrame() == 1 then
 					if data.ChainAttackTier == 0 then
@@ -403,7 +405,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						end
 					end
 				end
-				if spr:GetFrame() == 8 then
+				if spr:IsEventTriggered("Fire") then
 					if data.ChainAttackTier == 0 then
 						for j = 0, 360 - 360/4, 360/4 do
 							local angle = j 
@@ -422,16 +424,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						end
 					end
 				end
-			end
-			if spr:IsPlaying("2AttackChain") then
-				if spr:GetFrame() == 8 then
+			elseif spr:IsPlaying("2AttackChain") then
+				if spr:IsEventTriggered("Fire") then
 					if data.ChainAttackTier <= 1 then
 						local num = 0
 						local randomRot = math.random(-20,10)
 						for i = 0, 360-360/8, 360/8 do
 							local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(0,40):Rotated(i+randomRot)):Resized(heartShapeVel[num]))
 							num = num + 1
-							proj.Scale = 1.2
+							proj.Scale = 1.7
 						end
 					elseif data.ChainAttackTier == 2 then
 						local num = 0
@@ -448,10 +449,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							--num = num + 1
 						end
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
-			end
-			if spr:IsPlaying("2AttackFinish") then
+			elseif spr:IsPlaying("2AttackFinish") then
 				if spr:GetFrame() == 20 then
 					for j = 0, 360 - 360/8, 360/8 do
 						local angle = j + 45
@@ -476,7 +476,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						proj.Scale = 0.5
 						--num = num + 1
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
 				if spr:GetFrame() == 54 then
 					local num = 0
@@ -489,21 +489,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						proj3.Scale = 0.4
 						num = num + 1
 					end
-					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), nil)
+					local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, 2, 6, ent.Position, Vector(0,0), ent)
 				end
-			end
-			if spr:IsFinished("2AttackFinish") then
-				data.State = 7
+			elseif spr:IsFinished("2AttackFinish") then
+				data.State = 17
 				data.ChainAttackTier = 0
-			end
-			if not InutilLib.IsPlayingMultiple(spr, "2AttackPrepare", "2AttackChain", "2AttackChain2", "2AttackFinish") then
+			elseif not InutilLib.IsPlayingMultiple(spr, "2AttackPrepare", "2AttackChain", "2AttackChain2", "2AttackFinish") then
 				spr:Play("2AttackPrepare", true)
 				data.ChainAttackTier = 0
 			end
 		end
 		for i, v in ipairs (Isaac.GetRoomEntities()) do
 			if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_HEART then
-				if math.floor(ent.FrameCount % math.floor(ent.HitPoints/3)) == 0 and not v:GetSprite():IsPlaying("HeartAttack") then
+				if math.floor(ent.FrameCount % math.floor(ent.HitPoints/5)) == 0 and not v:GetSprite():IsPlaying("HeartAttack") then
 					v:GetSprite():Play("HeartAttack", true)
 				end
 			end
@@ -515,7 +513,7 @@ end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	if data.IsMaggyHeart then
-		InutilLib.MoveOrbitAroundTargetType1(ent, data.Parent, 6, 0.9, 5, data.startingNum)
+		InutilLib.MoveOrbitAroundTargetType1(ent, data.Parent, 6, 0.9, 3, data.startingNum)
 		ent.HitPoints = 3000
 		
 		if data.Parent:IsDead() then
@@ -552,9 +550,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			spr:Play("Heart")
 		end
 		ent.Velocity = ent.Velocity *0.8
-		--[[if math.random(1,5) == 5 and ent.FrameCount % 30 == 0 then
+		if math.random(1,5) == 5 and ent.FrameCount % 30 == 0 then
 			local heart = Isaac.Spawn(1000, 7, 1, ent.Position, Vector(0,4):Rotated(math.random(1,360)), ent)
-		end]]
+		end
 	end
 
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)

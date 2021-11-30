@@ -62,4 +62,11 @@
 	<sound name="Im Die Beep">
 		<sample weight="1" path="items/imdiebeep.wav" />
 	</sound>
+	
+	<sound name="Laugh Track">
+		<sample weight="1" path="items/laugh_track.wav" />
+	</sound>
+	<sound name="Laugh Unsettling">
+		<sample weight="1" path="items/laugh_unsettling.wav" />
+	</sound>
 </sounds>

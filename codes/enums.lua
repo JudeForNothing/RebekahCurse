@@ -74,6 +74,8 @@ RebekahCurse = {
 	
 	ENTITY_OHIMPOLTY = Isaac.GetEntityVariantByName("Oh, I'm Polty"),
 	
+	ENTITY_SINGINGTEAR = Isaac.GetEntityVariantByName("Singing Tear"),
+	
 	--others
 	ENTITY_ARCANE_CIRCLE = Isaac.GetEntityVariantByName("Arcane Circle"),
 	ENTITY_SPECIALBEAM = Isaac.GetEntityVariantByName("Special Beam"),
@@ -161,6 +163,7 @@ RebekahCurse = {
 	ENTITY_HEARTPARTICLE = Isaac.GetEntityVariantByName("Heart Particle"),
 	ENTITY_REBMIRROR = Isaac.GetEntityVariantByName("Rebecca's Mirror"),
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
+	ENTITY_REBEKAH_DUST = Isaac.GetEntityVariantByName("Rebekah Dust Effect"),
 	
 	ENTITY_UNGENERICTRACER = Isaac.GetEntityVariantByName("Ungeneric Tracer"),
 	ENTITY_PINGEFFECT = Isaac.GetEntityVariantByName("Ping Effect"),
@@ -170,7 +173,8 @@ RebekahCurse = {
 	
 	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
-	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false)
+	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
+	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false)
 }
 
 RebekahCurseSounds = {
@@ -191,7 +195,9 @@ RebekahCurseSounds = {
 	SOUND_ELECTRIC = Isaac.GetSoundIdByName("Electricity"),
 	SOUND_PUNCH = Isaac.GetSoundIdByName("Punch Effect"),
 	
-	SOUND_IMDIEBEEP = Isaac.GetSoundIdByName("Im Die Beep")
+	SOUND_IMDIEBEEP = Isaac.GetSoundIdByName("Im Die Beep"),
+	SOUND_LAUGHTRACK = Isaac.GetSoundIdByName("Laugh Track"),
+	SOUND_LAUGHUNSETTLING = Isaac.GetSoundIdByName("Laugh Unsettling")
 }
 
 RebekahCurseEnemies = {
@@ -203,6 +209,15 @@ RebekahCurseEnemies = {
 	ENTITY_EVE_BOSS = Isaac.GetEntityVariantByName("Eve (Boss)"),
 	ENTITY_BLOOD_SLOTH = Isaac.GetEntityVariantByName("Blood Sloth"),
 	ENTITY_BLOOD_WRATH = Isaac.GetEntityVariantByName("Blood Wrath"),
+	
+	ENTITY_LILITH_BOSS = Isaac.GetEntityVariantByName("Lilith (Boss)"),
+}
+
+RebekahCurseDustEffects = {
+	ENTITY_REBEKAH_GENERIC_DUST = 0,
+	ENTITY_REBEKAH_GENERIC_DUST_FRONT = 1,
+	ENTITY_REBEKAH_GENERIC_DUST_ANGLED = 2,
+	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK = 3,
 }
 
 local wasFromTaintedLocked = false
@@ -234,7 +249,9 @@ RebekahCurseCostumes = {
 	LovePower = Isaac.GetCostumeIdByPath("gfx/characters/love_power.anm2"),
 	LunchboxCos = Isaac.GetCostumeIdByPath("gfx/characters/lunchbox.anm2"),
 	CursedMawCos = Isaac.GetCostumeIdByPath("gfx/characters/cursedmaw.anm2"),
-	LoveSickCos = Isaac.GetCostumeIdByPath("gfx/characters/lovesick.anm2"),
+	LoveSickCrazyCos = Isaac.GetCostumeIdByPath("gfx/characters/lovesick.anm2"),
+	LoveSickBansheeCos = Isaac.GetCostumeIdByPath("gfx/characters/lovesick_banshee.anm2"),
+	LoveSickBansheeShriekCos = Isaac.GetCostumeIdByPath("gfx/characters/lovesick_banshee_shriek.anm2"),
 	UnsnappedCos = Isaac.GetCostumeIdByPath("gfx/characters/unsnapped.anm2"),
 	SnappedCos = Isaac.GetCostumeIdByPath("gfx/characters/snap.anm2"),
 	

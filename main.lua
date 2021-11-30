@@ -34,7 +34,8 @@ yandereWaifuCodes = {
 		bosses = {
 			maggy = require('codes.entities.bosses.magdalene'),
 			eve = require('codes.entities.bosses.eve'),
-			bloodsins = require('codes.entities.bosses.eve.bloodsins')
+			bloodsins = require('codes.entities.bosses.eve.bloodsins'),
+			lilith = require('codes.entities.bosses.lilith')
 		}
 	},
 	items = {

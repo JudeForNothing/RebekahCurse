@@ -1,5 +1,7 @@
  <items gfxroot="gfx/items/" version="1">
 	<active name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
+	<active name="Love Cannon" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
+	<active name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobtongue.png" maxcharges="1" tags="quest"/>
 	
 	<passive name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" tags="food" />
 	<passive name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" />
@@ -33,7 +35,7 @@
 	<active name="Bag of Bristle Bricks" description="Be creative!" gfx="collectibles_bag_of_bristle_bricks.png" maxcharges="0"/>
 	
 	<passive name="A Lunchbox" description="Meal for a special someone" gfx="collectibles_lunchbox.png" tags="food" />
-	<active name="Typical Rom-Com" description="Imitate other love story experiences!" gfx="collectibles_book_romcom.png" maxcharges="2" tags="book"/>
+	<active name="Typical Rom-Com" description="Forced laughing" gfx="collectibles_book_romcom.png" maxcharges="4" tags="book"/>
 	<familiar name="Miraculous Womb" description="A promise is a promise" gfx="collectibles_miraculous_womb.png" />
 	<familiar name="Eternal Bond" description="A little reminder for your love's presence" gfx="collectibles_eternal_bond.png" />
 	<passive name="Love = Power" description="Passion empowers you" gfx="collectibles_love_power.png" cache="speed damage" />

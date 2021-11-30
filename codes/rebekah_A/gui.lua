@@ -224,10 +224,12 @@ end
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, _)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
-		local player = Isaac.GetPlayer(p)
-		if player:GetPlayerType() == RebekahCurse.REB then
-			yandereWaifu.meterLogic(player);
+	if Options.ChargeBars then
+		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
+			if player:GetPlayerType() == RebekahCurse.REB then
+				yandereWaifu.meterLogic(player);
+			end
 		end
 	end
 end);
@@ -243,7 +245,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 			if yandereWaifu.GetEntityData(player).IsLeftover then
 				yandereWaifu.heartBoneReserveRenderLogic(player)
 			end
-			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then
+			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts and Options.ChargeBars then
 				yandereWaifu.eternalBarLogic(player)
 			end
 		end

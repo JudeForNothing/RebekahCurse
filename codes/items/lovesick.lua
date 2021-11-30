@@ -3,10 +3,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--lovesick
+	if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LOVESICK) then
+		player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
+	end
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
-		if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LOVESICK) then
-			player:AddNullCostume(RebekahCurseCostumes.LoveSickCos)
-		end
 		if data.hasTurnedToLovesickBanshee then
 			if not data.BansheeLovesickCountdown then data.BansheeLovesickCountdown = 3000 end
 			data.BansheeLovesickCountdown = data.BansheeLovesickCountdown - 1
@@ -28,6 +28,71 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 						end
 					end
 				end]]
+			end
+		end
+		if player:GetFireDirection() == -1 then --if not firing
+			if data.lovesickTick and data.lovesickDir then
+				if data.lovesickTick >= 30 then
+
+					local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SIREN_RING, 0, player.Position, Vector(0,0), player);
+					for i = 0, 360 - 360/16, 360/16 do
+						--local tear = player:FireTear(player.Position, Vector.FromAngle(i)*(13), false, false, false):ToTear()
+						local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, player.Position, Vector.FromAngle(i)*(13), player):ToTear()
+						tear:ChangeVariant(TearVariant.BLOOD)
+					end
+					data.SirenDidShriek = true
+					
+					player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
+					player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
+					
+					data.lovesickframecount = 0
+					--tear projectiles defence
+					for i, e in pairs(Isaac.GetRoomEntities()) do
+						if e.Type == EntityType.ENTITY_PROJECTILE then
+							if (e.Position - player.Position):Length() < 80 then
+								e.Velocity = (e.Position - player.Position):Resized(8)
+							end
+						elseif e:IsEnemy() then
+							if (e.Position - player.Position):Length() < 80 then
+								e.Velocity = e.Velocity + (e.Position - player.Position):Resized(8)
+							end
+						end
+					end
+				end
+			end
+			data.lovesickTick = 0
+		else
+			if data.SirenDidShriek then
+				--if player:GetSprite():GetOverlayFrame() == 19 then
+					data.SirenDidShriek = false
+					player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
+					player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
+				--end
+			end
+			if not data.SirenDidShriek then data.SirenDidShriek = false end
+			if not data.lovesickTick then data.lovesickTick = 0 end
+			
+			data.lovesickTick = data.lovesickTick + 1
+			
+			local dir
+			if player:GetFireDirection() == 3 then --down
+				dir = 90
+			elseif player:GetFireDirection() == 1 then --up
+				dir = -90
+			elseif player:GetFireDirection() == 0 then --left
+				dir = 180
+			elseif player:GetFireDirection() == 2 then --right
+				dir = 0
+			end
+			data.lovesickDir = dir
+		end
+		if data.SirenDidShriek then
+			if data.lovesickframecount == 19 then
+				data.SirenDidShriek = false
+				player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
+				player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
+			else
+				data.lovesickframecount = data.lovesickframecount + 1
 			end
 		end
 	end
@@ -160,8 +225,6 @@ end, RebekahCurse.ENTITY_LOVESICK_SLASH);
 	
 end)]]
 
-
-
 --stat cache for each mode
 function yandereWaifu:lovesickbansheecacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
@@ -180,3 +243,31 @@ function yandereWaifu:lovesickbansheecacheregister(player, cacheF) --The thing t
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.lovesickbansheecacheregister)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
+    local parent, spr, data = tear.Parent, tear:GetSprite(), yandereWaifu.GetEntityData(tear)
+    local player = parent:ToPlayer()
+	local lobHeight = math.floor((player:ToPlayer().TearHeight/2)*-1)
+    if parent.Type == EntityType.ENTITY_FAMILIAR and parent.Variant == FamiliarVariant.INCUBUS then
+		player = parent:ToFamiliar().Player
+    end
+    if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+		tear:ChangeVariant(RebekahCurse.ENTITY_SINGINGTEAR)
+		tear:AddTearFlags(TearFlags.TEAR_WIGGLE)
+		tear:AddTearFlags(TearFlags.TEAR_SPECTRAL)
+		if math.random(1,3) == 3 then
+			tear:AddTearFlags(TearFlags.TEAR_CHARM)
+		end
+    end
+end)
+
+--firing random stuff
+function yandereWaifu:LovesickTearRender(tr, _)
+	if tr.Variant == RebekahCurse.ENTITY_SINGINGTEAR then
+		local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
+		local size = InutilLib.GetTearSizeTypeII(scale, flags)
+		InutilLib.UpdateRegularTearAnimation(player, tr, data, flags, size, "Rotate");
+		--InutilLib.UpdateDynamicTearAnimation(player, tr, data, flags, "Rotate", "", size)
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.LovesickTearRender)

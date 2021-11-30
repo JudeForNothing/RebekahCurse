@@ -13,10 +13,10 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX, "On pickup, drops 3 random hearts")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB, "On pickup, adds an orbital of Jacob and Esau#Jacob Familiar has less damage but shoots slighly faster#Esau Familiar shoots less but has more damage")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_DICEOFFATE, "Use to reroll your hearts# Each half heart is rerolled into another heart # Broken Hearts do not get rerolled")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND, "Spawns a Tiny Isaac if you are Rebekah else spawns a Tiny Rebekah# Both types of familiars shoot tears at enemies# Tiny Rebekah can burst tears similar to Red Personality's {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}} # Tiny Rebekah can pick up heart pickups and drop: Coins if Keeper, Evil Hearts if Azazel or Lilith {{Blank}} Bone Hearts if you are Forgotten, Soul Hearts if anyone else # Tiny Isaac can pick up coins and drop: Key, Bomb, A random Heart, A collectible (rarely)")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND, "Spawns a Tiny Isaac if you are Rebekah else spawns a Tiny Rebekah# Both types of familiars shoot tears at enemies# Tiny Rebekah can burst tears similar to Red Personality's {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}} # Tiny Rebekah can pick up heart pickups and drop certain hearts # Tiny Isaac can pick up coins and drop various rewards")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVESICK, "Chance to spawn a pheromones aura which shortly charmes enemies on range# Aura also has a chance to spawn on tears")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE, "Each filled half red heart gives 0.50 damage# Each empty half red heart gives 0.10 speed")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_ROMCOM, "Activates a random Rebekah barrage which sometimes resembles barrages from {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}}")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_ROMCOM, "Gives every vulnerable enemy the Laughing effect # Laughing effect disables the ability to shoot projectiles")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON, "On hurt, spawns a Mom's Shadow-esque entity which only deals contact damage to both enemies and Isaac when she dashes")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE, "Shoot a spear to enemy # If enemy is attached, use arrow keys to swing around attached enemy # Enemies eventually detach naturally or if they collide in the walls")
 	

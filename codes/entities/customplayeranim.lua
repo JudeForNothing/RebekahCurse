@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff);
 	local room =  Game():GetRoom();
 	if not data.Player then
-		Isaac.DebugString("fool")
+	--	Isaac.DebugString("fool")
 	end
     local roomClampSize = math.max( data.Player.Size, 20 );
 	local controller = data.Player.ControllerIndex
@@ -344,11 +344,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff.Visible = true
 			sprite:Load("gfx/characters/wizoobteleport.anm2",true)
 			sprite:Play("Vanish",true)
-		elseif sprite:IsFinished("Vanish") then
-			eff:Remove()
+		elseif sprite:GetFrame() == 2 then
 			local target = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SOULTARGET, 0, data.Player.Position, Vector(0,0), data.Player );
 			yandereWaifu.GetEntityData(target).Parent = data.Player
 			data.Player.ControlsEnabled = true
+			data.DontFollowPlayer = true
+		elseif sprite:IsFinished("Vanish") then
+			yandereWaifu.SpawnEctoplasm( eff.Position, Vector ( 0, 0 ) , math.random(13,15)/10, data.Player);
+			eff:Remove()
 		end
 		
 	elseif data.WizoobOut then
