@@ -211,6 +211,10 @@ RebekahCurseEnemies = {
 	ENTITY_BLOOD_WRATH = Isaac.GetEntityVariantByName("Blood Wrath"),
 	
 	ENTITY_LILITH_BOSS = Isaac.GetEntityVariantByName("Lilith (Boss)"),
+	ENTITY_BOBSBRAIN_ENEMY = Isaac.GetEntityVariantByName("Bob's Brain (Enemy)"),
+	ENTITY_DEMONBABY_ENEMY = Isaac.GetEntityVariantByName("Demon Baby (Enemy)"),
+	ENTITY_MULTIDIMENSIONALBABY_ENEMY = Isaac.GetEntityVariantByName("Multidimensional Baby (Enemy)"),
+	ENTITY_ROBOBABY_ENEMY = Isaac.GetEntityVariantByName("Robo Baby (Enemy)"),
 }
 
 RebekahCurseDustEffects = {

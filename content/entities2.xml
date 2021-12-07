@@ -350,7 +350,19 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
-	<entity anm2path="bosses/rivals/lilith.anm2" baseHP="500" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Lilith (Boss)" numGridCollisionPoints="3" shadowSize="22" stageHP="0" variant="30">
+	<entity anm2path="bosses/rivals/lilith.anm2" baseHP="700" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Lilith (Boss)" numGridCollisionPoints="3" shadowSize="22" stageHP="0" variant="30">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/lilith/bobsbrain.anm2" baseHP="30" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Bob's Brain (Enemy)" numGridCollisionPoints="3" shadowSize="22" stageHP="5" variant="31">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/lilith/demonbaby.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Demon Baby (Enemy)" numGridCollisionPoints="3" shadowSize="22" stageHP="5" variant="32">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/lilith/multibaby.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Multidimensional Baby (Enemy)" numGridCollisionPoints="3" shadowSize="22" stageHP="5" variant="33">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/rivals/lilith/robobaby.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Robo Baby (Enemy)" numGridCollisionPoints="3" shadowSize="22" stageHP="5" variant="34">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 </entities>
