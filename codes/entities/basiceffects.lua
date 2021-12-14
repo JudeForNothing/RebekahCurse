@@ -77,6 +77,44 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 end, RebekahCurse.ENTITY_REBEKAH_DUST);
 
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite()
+	local data = yandereWaifu.GetEntityData(eff)
+	
+	--sprite:LoadGraphics()
+	if eff.FrameCount == 1 then
+		sprite:Play("Fly",1);
+		if math.random(1,2) == 1 then
+			sprite.FlipX = true
+		end
+		local trail = InutilLib.SpawnTrail(eff, Color(1,0,0,0.5))
+	end
+	if data.Parent then
+		eff.Velocity = (eff.Velocity + (data.Parent.Position - eff.Position):Resized(3))*0.9
+		if (data.Parent.Position - eff.Position):Length() <= 30 then
+			yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
+			eff:Remove()
+		end
+	end
+end, RebekahCurse.ENTITY_LOVELOVEPARTICLE)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite()
+	local data = yandereWaifu.GetEntityData(eff)
+	
+	--sprite:LoadGraphics()
+	if eff.FrameCount == 1 then
+		sprite:Play("Gulp",1);
+	end
+	if data.Parent then
+		eff.Position = data.Parent.Position
+	end
+	if sprite:IsFinished("Gulp") then
+		eff:Remove()
+	end
+end, RebekahCurse.ENTITY_HEARTGULP)
+
 function AddRebekahDashEffect(player)
 	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 	yandereWaifu.GetEntityData(customBody).Player = player

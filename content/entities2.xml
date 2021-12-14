@@ -255,6 +255,19 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
+	<entity anm2path="effects/loveloveparticles.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Love Love Particle" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251511">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/heartgulp.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Heart Gulp" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251512">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/red/hugsandroses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Hugs N Roses (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251513">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/soul/wizoobtongue.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Wizoob Tongue (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251513" subtype="1">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	
 	<entity anm2path="characters/customcharacter.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Extra Character Anim Helper" numGridCollisionPoints="0" shadowSize="16" stageHP="0" variant="42914" portrait="160" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>

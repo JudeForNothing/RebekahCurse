@@ -426,3 +426,20 @@ function yandereWaifu.AddGenericTracer(position, color, angle, timeout)
 	yandereWaifu.GetEntityData(line).Timeout = timeout
 	return line
 end
+function yandereWaifu.HasCollectibleMultiple(player, ...)
+	for _, coll in ipairs({...}) do
+		if player:HasCollectible(coll) then
+			return true
+		end
+	end
+	return false
+end
+		
+function yandereWaifu.HasCollectibleConfirmedUseMultiple(player, ...)
+	for _, coll in ipairs({...}) do
+		if InutilLib.ConfirmUseActive( player, coll )  then
+			return true
+		end
+	end
+	return false
+end

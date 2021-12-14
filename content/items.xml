@@ -1,7 +1,6 @@
  <items gfxroot="gfx/items/" version="1">
 	<active name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active name="Love Cannon" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobtongue.png" maxcharges="1" tags="quest"/>
+	<active name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" maxcharges="1" tags="quest"/>
 	
 	<passive name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" tags="food" />
 	<passive name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" />

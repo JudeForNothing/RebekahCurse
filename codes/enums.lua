@@ -6,6 +6,7 @@ RebekahCurse = {
 -- don't potentially overwrite information in global tables, keep this local
 	--items
 	COLLECTIBLE_LOVECANNON = Isaac.GetItemIdByName("Hugs N' Roses"),
+	COLLECTIBLE_WIZOOBTONGUE = Isaac.GetItemIdByName("Wizoob Tongue"),
 	
 	COLLECTIBLE_CANDYWEDDINGRING = Isaac.GetItemIdByName("Candy Wedding Ring!"),
 	COLLECTIBLE_LOVEDELUXE = Isaac.GetItemIdByName("Love Deluxe"),
@@ -162,6 +163,9 @@ RebekahCurse = {
 	ENTITY_HEARTPOOF = Isaac.GetEntityVariantByName("Heart Poof"),
 	ENTITY_HEARTPARTICLE = Isaac.GetEntityVariantByName("Heart Particle"),
 	ENTITY_REBMIRROR = Isaac.GetEntityVariantByName("Rebecca's Mirror"),
+	ENTITY_LOVELOVEPARTICLE = Isaac.GetEntityVariantByName("Love Love Particle"),
+	ENTITY_HEARTGULP = Isaac.GetEntityVariantByName("Heart Gulp"),
+	ENTITY_REBEKAHENTITYWEAPON = Isaac.GetEntityVariantByName("Hugs N Roses (Weapon)"),
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
 	ENTITY_REBEKAH_DUST = Isaac.GetEntityVariantByName("Rebekah Dust Effect"),
 	

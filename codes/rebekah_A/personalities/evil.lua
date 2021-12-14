@@ -70,13 +70,26 @@ function yandereWaifu.EvilHeartDash(player, vector)
 		yandereWaifu.GetEntityData(orb).HasGodhead = true
 	end
 	
+	--local jet = Isaac.Spawn( EntityType.ENTITY_EFFECT, 147, 1, player.Position, Vector(0,0), player ):ToEffect(); 
+	--jet.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
+	--jet.GridCollisionClass = GridCollisionClass.COLLISION_NONE
+	
 	playerdata.specialCooldown = REBEKAH_BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
 	--else
 	--	local orb = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILORB, 1, player.Position, Vector(0,0), player ); --heart effect
 	--	playerdata.specialCooldown = REBEKAH_BALANCE.EMPTY_EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
 	--end
-	yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Black );
-	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Black );
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Black );
+	--yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Black );
+	for i = 0, math.random(20,25) do
+		InutilLib.SetTimer( i, function()
+			local hole = Isaac.Spawn(EntityType.ENTITY_EFFECT, 111, 0, player.Position, Vector(0,0), player);
+			hole:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/eviltrail.png")
+			hole:GetSprite():LoadGraphics()
+			hole.SpriteOffset = Vector( 0, -20 );
+			hole.RenderZOffset = -10;
+		end)
+	end
 	playerdata.invincibleTime = REBEKAH_BALANCE.EVIL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	InutilLib.SFX:Play( SoundEffect.SOUND_MAW_OF_VOID , 1, 0, false, 1 );
 	
@@ -280,6 +293,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 	--if eff.SubType == 0 then
 	if eff.FrameCount == 1 then
+		if not sprite:IsPlaying("Spawn") then sprite:Play("Spawn", true) end
 		if not data.setDespawn then data.setDespawn = 900 end
 		if not data.HitPoints then data.HitPoints = 10 end;
 		
@@ -288,6 +302,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if eff.SubType == 5 then --tough love synergy
 			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
 			eff:SetColor(Color(0.8,0.5,0,1,0,0,0),9999999,99,false,false)
 		end
 		if eff.SubType == 8 then --scythe synergy
@@ -323,13 +338,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if data.HasGodhead then
 			eff:GetSprite():ReplaceSpritesheet(4, "gfx/effects/evil/orb/godhead_effect.png") 
 			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
 		end
 		if data.HasPoison then
 			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
 			eff:SetColor(Color(0,1,0.3,1,0,0,0),9999999,99,false,false)
 		end
 		if data.HasDarkMatter then
 			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
 			eff:SetColor(Color(0,0,0,1,0,0,0),9999999,99,false,false)
 		end
 		if data.HasLostContacts then
@@ -343,10 +361,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if data.HasBelialTears then
 			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
 			eff:SetColor(Color(1,0,0,1,0,0,0),9999999,99,false,false)
 		end
 		eff:GetSprite():LoadGraphics()
 	end
+	
+	if sprite:IsFinished("Spawn") then sprite:Play("Idle") end
+	
 	--belial code
 	if data.IsActiveBelial then
 		if eff.FrameCount % 5 == (0) and math.random(0,10) == 10 then
@@ -360,7 +382,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	for i, entenmies in pairs(Isaac.GetRoomEntities()) do
 		--local ents = Isaac.GetRoomEntities() --shorten this damn thing lol
 		if entenmies:IsEnemy() and entenmies:IsVulnerableEnemy() --[[and not entenmies:IsEffect() and not entenmies:IsInvulnurable()]] then
-			print(eff.FrameCount % (5 + player.MaxFireDelay/5))
+			--print(eff.FrameCount % (5 + player.MaxFireDelay/5))
 			if math.random(1,5) == 5 and entenmies.Position:Distance(eff.Position) < 200 and eff.FrameCount % math.ceil(5 + player.MaxFireDelay/5) == (0) and data.Tier > 1 then
 				if ILIB.room:CheckLine(entenmies.Position, eff.Position, 3, 0) then
 					--turret code
@@ -421,6 +443,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						tear:AddTearFlags(TearFlags.TEAR_HORN)
 					end
 					data.HitPoints = data.HitPoints - 1
+					print(data.HitPoints)
 					
 					if data.HitPoints <= 2 and data.Tier > 1 then --shrink if its dying
 						data.Tier = data.Tier - 1
@@ -437,7 +460,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					if data.HasHungryTears then
 						if not data.TearsEaten then data.TearsEaten = 0 end
 						data.TearsEaten = data.TearsEaten + 0.5
-						print(data.TearsEaten)
+						--print(data.TearsEaten)
 						eff.SpriteScale = Vector(1 + data.TearsEaten + data.Tier, 1 + data.TearsEaten + data.Tier)
 						eff.Size = eff.Size * 1 + data.TearsEaten
 						if data.TearsEaten > 2 then
@@ -448,7 +471,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 		end
 	end
-	if eff.FrameCount == data.setDespawn or data.HitPoints <= 0 then 
+	
+	if eff.FrameCount == data.setDespawn or (data.HitPoints <= 0 and sprite:IsFinished("Die")) then 
 		--subtype and its effects?
 		if eff.SubType == 2 then --tough love
 			for i = 0, math.random(4,6) do
@@ -558,6 +582,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		
 		local function onDeath()
+			if sprite:IsFinished("Die") then
 			--if data.HitPoints <= 0 then --only do aoe if killed
 				for i, entenmies in pairs(Isaac.GetRoomEntities()) do
 					if entenmies:IsEnemy() then
@@ -570,6 +595,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					Isaac.Explode(eff.Position, player, player.Damage)
 				end
 			--end
+			end
+			if not sprite:IsPlaying("Die") then sprite:Play("Die", true) end
+			print(data.HitPoints)
+			print("yeeehoa")
 		end
 		
 		if data.Tier > 1 then
@@ -600,6 +629,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		dust:SetColor(Color(0,0,0,1,1,0,1),9999999,99,false,false)
 		ILIB.game:ShakeScreen(1)
 	end
+	
+	if (data.HitPoints <= 0 and not sprite:IsPlaying("Die")) then
+		sprite:Play("Die", true)
+	end
+	
 	if data.ChainExplode then --deprecated?
 		for i, orb in pairs(Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILORB, -1, false, false)) do
 			if orb.Position:Distance(eff.Position) < orb.Size + eff.Size + 120 then

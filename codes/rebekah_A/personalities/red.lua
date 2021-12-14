@@ -2,6 +2,17 @@
 --RED HEART MODE--
 do
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	if eff.SubType == 0 then
+		local player = yandereWaifu.GetEntityData(eff).parent
+		local sprite = eff:GetSprite();
+		local playerdata = yandereWaifu.GetEntityData(player)
+
+		eff.Velocity = player.Velocity;
+		eff.Position = player.Position;
+	end
+end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
+
 function yandereWaifu.RedHeartDash(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0

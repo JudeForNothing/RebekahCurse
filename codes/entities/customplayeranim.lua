@@ -380,6 +380,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				tear.CollisionDamage = data.Player.Damage * 1.3;
 				--tear.BaseDamage = player.Damage * 2
 			end
+			
+			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, 132, 0, data.Player.Position, Vector.Zero, data.Player):ToEffect()
+			poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/splash_big_ectoplasm.png")
+			poof:GetSprite():LoadGraphics()
 		elseif sprite:IsFinished("Appear") then
 			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, data.Player.Position, Vector.Zero, data.Player)
 			yandereWaifu.GetEntityData(data.Player).IsDashActive = false
@@ -411,7 +415,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Load("gfx/effects/red/swords/grievousintro.anm2",true)
 			sprite:Play("Intro",false)
 		elseif sprite:IsFinished("Intro") then
-			local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_SLASH, 1, data.Player.Position--[[+Vector.FromAngle(direction:GetAngleDegrees()):Resized(40)]], Vector(0,0), data.Player);
+			local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SLASH, 1, data.Player.Position--[[+Vector.FromAngle(direction:GetAngleDegrees()):Resized(40)]], Vector(0,0), data.Player);
 			yandereWaifu.GetEntityData(cut).PermanentAngle = data.PermanentAngle
 			yandereWaifu.GetEntityData(cut).MultiTears = data.MultiTears
 			yandereWaifu.GetEntityData(cut).TearDelay = data.TearDelay

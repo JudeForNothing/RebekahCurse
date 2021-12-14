@@ -324,16 +324,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				data.ParalysedCooldown = data.ParalysedCooldown - 1
 			end
 		end
-		
+	
 		--attack skill
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then
-			if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_LOVECANNON ) then
-			local vector = InutilLib.DirToVec(player:GetFireDirection())
-			local playerdata = yandereWaifu.GetEntityData(player);
-			local psprite = player:GetSprite()
-			local controller = player.ControllerIndex;
-			if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) then
-				--if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
+		if yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE) then
+			if yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE) then
+				local vector = InutilLib.DirToVec(player:GetFireDirection())
+				local playerdata = yandereWaifu.GetEntityData(player);
+				local psprite = player:GetSprite()
+				local controller = player.ControllerIndex;
+				if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) then
+					--if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
 					if (yandereWaifu.getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive and (yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrokenHearts--[[and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts]]))
 						or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts --[[or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and ((not data.noHead) or (data.noHead and yandereWaifu.getReserveStocks(player) >= 1)))]]) then --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
 						if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --if red 
@@ -376,14 +376,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						playerdata.AttackVector = vector;
 									
 						playerdata.specialMaxActiveAtkCooldown = playerdata.specialActiveAtkCooldown;
-						InutilLib.ToggleShowActive(player, false, true)
-						InutilLib.ConsumeActiveCharge(player, true)
+						InutilLib.ToggleShowActive(player, false, InutilLib.GetShowingActiveSlot(player))
+						InutilLib.ConsumeActiveCharge(player, InutilLib.GetShowingActiveSlot(player))
 					else
 						yandereWaifu.purchaseReserveStocks(player, 1, true)
-						
+						--InutilLib.ToggleShowActive(player, false, InutilLib.GetShowingActiveSlot(player))
+
 						--InutilLib.ToggleShowActive(player, false, true)
 						InutilLib.SFX:Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 1 );
 						--playerdata.ATTACK_DOUBLE_TAP.cooldown = OPTIONS.FAILED_SPECIAL_ATTACK_COOLDOWN;
+						
+						--local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
+						--charge.SpriteOffset = Vector(0,-40)
+						local gulp = Isaac.Spawn( EntityType.ENTITY_EFFECT,  RebekahCurse.ENTITY_HEARTGULP, 0, player.Position, Vector(0,0), player );
+						yandereWaifu.GetEntityData(gulp).Parent = parent
+						gulp.SpriteOffset = Vector(0,-20)
+						gulp.RenderZOffset = 10000
 					end
 					--InutilLib.ConsumeActiveCharge(player, true)
 					--yandereWaifu.purchaseReserveStocks(player, 1, true)
@@ -456,8 +464,9 @@ function yandereWaifu.barrageAndSP(player)
 			end
 			--if Isaac.GetFrameCount() % 3 == 0 then
 			AddRebekahDashEffect(player)
-			yandereWaifu.SpawnHeartParticles( 1, 3, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, heartType );
-			--end
+			if not data.currentMode == REBECCA_MODE.EvilHearts then
+				yandereWaifu.SpawnHeartParticles( 1, 3, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, heartType );
+			end
 			
 		end
 		if data.currentMode == REBECCA_MODE.BoneHearts then
@@ -761,7 +770,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 			end
 			local maxHealth = ent.MaxHitPoints
 			if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax then
-				yandereWaifu.addReserveFill(player, maxHealth/5)
+				for i = 1, math.ceil(maxHealth/30) do
+					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 0, ent.Position, Vector.FromAngle((player.Position - ent.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
+					yandereWaifu.GetEntityData(heart).Parent = player
+					yandereWaifu.GetEntityData(heart).maxHealth = math.ceil(maxHealth/3)
+					print(math.ceil(maxHealth/3))
+				end
 			end
 			if yandereWaifu.GetEntityData(player).IsLeftover then
 				yandereWaifu.GetEntityData(player).BoneJockeyTimeLeft = yandereWaifu.GetEntityData(player).BoneJockeyTimeLeft + maxHealth/7
@@ -785,7 +799,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				
 				if playerType == RebekahCurse.REB and not yandereWaifu.GetEntityData(player).IsAttackActive then
 					local maxHealth = damage.MaxHitPoints
-					print("works?")
+
 					if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax then
 						yandereWaifu.addReserveFill(player, math.floor(amount))
 					end
@@ -871,6 +885,15 @@ function yandereWaifu:RebekahNewRoom()
 						end
 					end
 				end
+			end
+			
+			if data.SoulBuff then
+				data.SoulBuff = false
+				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+				player:EvaluateItems()
+				--become depressed again
+				yandereWaifu.ApplyCostumes( data.currentMode, player , false)
+				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 			end
 		end
 	end
@@ -1361,16 +1384,31 @@ end);
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useGlowHourglass, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS)
 
 
-function yandereWaifu:usePocketCannon(collItem, rng, player)
+function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
+	local ispocket = false
+	if slot == ActiveSlot.SLOT_POCKET then
+		ispocket = true
+	end
 	if not yandereWaifu.GetEntityData(player).IsAttackActive then
-		--for i,player in ipairs(ILIB.players) do
-		InutilLib.ConsumeActiveCharge(player, true) --just in case
-		InutilLib.ToggleShowActive(player, false, true)
-		--end
+		InutilLib.ConsumeActiveCharge(player, ispocket) --just in case
+		InutilLib.ToggleShowActive(player, false, ispocket)
 	end
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_LOVECANNON );
 
+function yandereWaifu:usePocketTongue(collItem, rng, player, flags, slot)
+	local ispocket = false
+	if slot == ActiveSlot.SLOT_POCKET then
+		ispocket = true
+	end
+	if not yandereWaifu.GetEntityData(player).IsAttackActive then
+		--for i,player in ipairs(ILIB.players) do
+		InutilLib.ConsumeActiveCharge(player, ispocket) --just in case
+		InutilLib.ToggleShowActive(player, false, ispocket)
+		--end
+	end
+end
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketTongue, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE );
 
 --custom actions code
 function yandereWaifu:customMovesInput()
@@ -1418,6 +1456,19 @@ function yandereWaifu:customMovesInput()
 				charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/attack_effect_filled.png");
 				charge:GetSprite():LoadGraphics();
 				InutilLib.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.2, 0, false, 0.4 );
+			end
+			
+			--special beam thing
+			--print(InutilLib.GetShowingActive(player))
+			if playerdata.isReadyForSpecialAttack == false and InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_LOVECANNON and yandereWaifu.getReserveStocks(player) >= 1 then
+				playerdata.isReadyForSpecialAttack = true;
+				local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
+				yandereWaifu.GetEntityData(arcane).parent = player
+				InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
+			else
+				if playerdata.isReadyForSpecialAttack and InutilLib.GetShowingActive(player) ~= RebekahCurse.COLLECTIBLE_LOVECANNON then
+					playerdata.isReadyForSpecialAttack = false
+				end
 			end
 			--switch skill (used in bone hearts?)
 			--useless now?
@@ -2183,6 +2234,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			end
 		end
 	elseif modes == REBECCA_MODE.SoulHearts then
+
 		local extraTearDmg = 1--keeps how much extra damage might be needed, instead of adding more tears. It might be laggy.
 		local chosenNumofBarrage =  9; --chosenNumofBarrage or math.random( 8, 15 );
 		local modulusnum
@@ -2194,6 +2246,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		if not data.soulcountdownFrames then data.soulcountdownFrames = 0 end
 		
 		data.soulcountdownFrames = data.soulcountdownFrames + 1
+		
 		
 		--tear-damage configuration thingy
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_20_20) then
@@ -2395,6 +2448,12 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			for lhorns = 0, 270, 360/4 do
 				direction = Vector.FromAngle(direction:GetAngleDegrees() + lhorns) --lokis horns offset
 				local oldDir = direction
+				
+				--spit effect
+				local spit = Isaac.Spawn( EntityType.ENTITY_EFFECT, 2, 5, player.Position, Vector(0,0), player );
+				spit:GetSprite():ReplaceSpritesheet(4,"gfx/effects/soul/ectoplasm_spit.png")
+				spit:GetSprite():LoadGraphics()
+				spit.RenderZOffset = 1000
 				
 				--wiz synergy
 				for wizAng = -45, 90, 135 do
@@ -2806,7 +2865,9 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 	end
 end
 
+function yandereWaifu.DoSoulBarrage(player, mode, direction)
 
+end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 	local player = damage:ToPlayer();
