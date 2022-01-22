@@ -443,3 +443,20 @@ function yandereWaifu.HasCollectibleConfirmedUseMultiple(player, ...)
 	end
 	return false
 end
+
+function yandereWaifu.SpawnRedGun(player, direction)
+	local data = yandereWaifu.GetEntityData(player)
+	if not data.HugsRed then
+		data.HugsRed = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 0, player.Position,  Vector.Zero, player):ToEffect()
+		yandereWaifu.GetEntityData(data.HugsRed).parent = player
+		yandereWaifu.GetEntityData(data.HugsRed).direction = direction
+	end
+end
+
+function yandereWaifu.RemoveRedGun(player)
+	local data = yandereWaifu.GetEntityData(player)
+	if data.HugsRed then
+		data.HugsRed:Remove()
+		data.HugsRed = nil
+	end
+end

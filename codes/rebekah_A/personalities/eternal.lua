@@ -736,13 +736,13 @@ function yandereWaifu.FlamethrowerLogic(player)
 				end
 			else
 				InutilLib.SFX:Play( SoundEffect.SOUND_FIRE_RUSH, 1, 0, false, 1 )
-				local extraPenalty = 0 --this increases if you have special items, for balance
+				local extraPenalty = 1 --this increases if you have special items, for balance
 	
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
 					extraPenalty = extraPenalty + 5
 				end
 				for i = 1, numLimit do
-					InutilLib.SetTimer( i*extraPenalty, function()
+					InutilLib.SetTimer( (i*extraPenalty), function()
 						if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 							local knife = InutilLib.SpawnKnife(player, (data.AssignedHeadDir - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 						else

@@ -362,6 +362,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff.Visible = true
 			sprite:Load("gfx/characters/wizoobteleport.anm2",true)
 			sprite:Play("Appear",true)
+			--poof smoke thing
+			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, data.Player.Position, Vector(0,0), data.Player)
 		elseif eff.FrameCount == 5 then
 			yandereWaifu.SpawnPoofParticle( data.Player.Position, Vector( 0, 0 ), data.Player, RebekahPoofParticleType.Blue );
 			yandereWaifu.SpawnHeartParticles( 3, 5, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Blue );
@@ -385,7 +387,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/splash_big_ectoplasm.png")
 			poof:GetSprite():LoadGraphics()
 		elseif sprite:IsFinished("Appear") then
-			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, data.Player.Position, Vector.Zero, data.Player)
+			--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, data.Player.Position, Vector.Zero, data.Player)
+		
 			yandereWaifu.GetEntityData(data.Player).IsDashActive = false
 			eff:Remove()
 			data.Player.Visible = true;
@@ -398,13 +401,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
 			
 			InutilLib.SetTimer( 60*3, function()
-				print("i got no time")
 				if yandereWaifu.GetEntityData(data.Player).SoulBuff then --give lenience to the barrage
 					yandereWaifu.GetEntityData(data.Player).SoulBuff = false
 					data.Player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 					data.Player:EvaluateItems()
 					--become depressed again
-					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(data.Player).currentMode, data.Player , false)
+					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(data.Player).currentMode, data.Player , false, false)
 					data.Player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 				end
 			end)

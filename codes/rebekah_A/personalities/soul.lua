@@ -8,14 +8,14 @@ function yandereWaifu.SoulHeartTeleport(player, vector)
 	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
-	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	
 	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 	yandereWaifu.GetEntityData(customBody).Player = player
 	yandereWaifu.GetEntityData(customBody).WizoobIn = true
 	player.Velocity = Vector( 0, 0 );
 	player.ControlsEnabled = false;
-	yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Blue );
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Blue );
 	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Blue );
 	playerdata.specialCooldown = REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN - trinketBonus;
 	playerdata.invincibleTime = REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
@@ -28,7 +28,7 @@ function yandereWaifu.SoulHeartTeleport(player, vector)
 	player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 	player:EvaluateItems()
 	--happy costume code
-	yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+	yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 	player:AddCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 end
 

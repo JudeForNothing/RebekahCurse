@@ -196,7 +196,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 									player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
 								else
 									player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
-									yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+									yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 								end
 							else
 								data.RebHead.Velocity = vector:Resized(15)
@@ -769,7 +769,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 				end
 			end
 			local maxHealth = ent.MaxHitPoints
-			if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax then
+			if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax and not ent:IsInvincible() --[[(ent.Variant == EntityType.ENTITY_STONEY)]] then
 				for i = 1, math.ceil(maxHealth/30) do
 					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 0, ent.Position, Vector.FromAngle((player.Position - ent.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
 					yandereWaifu.GetEntityData(heart).Parent = player
@@ -1465,6 +1465,16 @@ function yandereWaifu:customMovesInput()
 				local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
 				yandereWaifu.GetEntityData(arcane).parent = player
 				InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
+				if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+					arcane:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/special_beam.png")
+					arcane:GetSprite():ReplaceSpritesheet(1, "gfx/effects/soul/special_beam.png")
+					arcane:GetSprite():ReplaceSpritesheet(2, "gfx/effects/soul/special_beam.png")
+					arcane:GetSprite():ReplaceSpritesheet(3, "gfx/effects/soul/special_beam.png")
+					arcane:GetSprite():ReplaceSpritesheet(4, "gfx/effects/soul/special_beam.png")
+					arcane:GetSprite():ReplaceSpritesheet(5, "gfx/effects/soul/special_beam.png")
+					arcane:GetSprite():ReplaceSpritesheet(6, "gfx/effects/soul/special_beam.png")
+				end
+				arcane:GetSprite():LoadGraphics()
 			else
 				if playerdata.isReadyForSpecialAttack and InutilLib.GetShowingActive(player) ~= RebekahCurse.COLLECTIBLE_LOVECANNON then
 					playerdata.isReadyForSpecialAttack = false
@@ -1559,6 +1569,8 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 			player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 		end
+		
+		yandereWaifu.RemoveRedGun(player)
 	end
 	
 	local function EndBarrageIfValid() --used if autocollectible is true and needed	
@@ -1569,27 +1581,31 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				data.IsAttackActive = false
 				data.chargeDelay = 0
 				data.barrageInit = false
-				print("a")
+				
+				yandereWaifu.RemoveRedGun(player)
+				
+				--print("a")
 				--InutilLib.RefundActiveCharge(player, 1, true)
 			else
 				--yandereWaifu.addReserveFill(player, -20)
 				--yandereWaifu.purchaseReserveStocks(player, 1)
-				print("b")
+				--print("b")
 			end
 			if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
 				yandereWaifu.purchaseReserveStocks(player, 1)
 			end
 		else
-			print("c")
+			--print("c")
 			data.IsAttackActive = false
 			data.chargeDelay = 0
 			data.barrageInit = false
 			if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
 				yandereWaifu.purchaseReserveStocks(player, 1)
 			end
+			
+			yandereWaifu.RemoveRedGun(player)
 			--InutilLib.RefundActiveCharge(player, 1, true)
 		end
-		
 	end
 	
 	--charging code
@@ -1617,10 +1633,12 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 	end
 
 	if modes == REBECCA_MODE.RedHearts then
-
+		
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
 			direction = player:GetAimDirection()
 		end
+		
+		yandereWaifu.SpawnRedGun(player, direction)
 		
 		local modulusnum
 		
@@ -2107,6 +2125,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										end
 									end
 								else
+									--tear particle effect thing
 									local isBlood = false
 									local num = 1
 									for j = 0, 90, 90/numofShots do
@@ -2142,10 +2161,13 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									end
 									local poofVar = 13
 									if isBlood then poofVar = 11 end
-									local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, poofVar, 1, player.Position, Vector(0,0), player)
-									splat.RenderZOffset = 10000
-									if math.random(1,2)== 2 then splat:GetSprite().FlipX = true end
-									if math.random(1,2)== 2 then splat:GetSprite().FlipY = true end
+									local gun = data.HugsRed
+									if gun then
+										local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, poofVar, 1, gun.Position + Vector.FromAngle((Vector(0,100)):GetAngleDegrees() + 90), Vector(0,0), player)
+										--splat.RenderZOffset = 10000
+										if math.random(1,2)== 2 then splat:GetSprite().FlipX = true end
+										if math.random(1,2)== 2 then splat:GetSprite().FlipY = true end
+									end
 								end
 								InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 								if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then

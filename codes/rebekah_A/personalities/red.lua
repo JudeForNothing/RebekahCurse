@@ -7,9 +7,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local player = yandereWaifu.GetEntityData(eff).parent
 		local sprite = eff:GetSprite();
 		local playerdata = yandereWaifu.GetEntityData(player)
-
+		local data = yandereWaifu.GetEntityData(eff)
+		
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
+			direction = player:GetAimDirection()
+		end
+		
 		eff.Velocity = player.Velocity;
-		eff.Position = player.Position;
+		eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		
+		print(eff:GetSprite().Rotation)
+		eff.RenderZOffset = 10
+		
+		sprite.Rotation = (data.direction):GetAngleDegrees()
+		
+			if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootBeginRight") then
+				sprite:Play("ShootBeginRight", true)
+				--sprite.FlipY = true
+			elseif sprite.Rotation >= 0 and sprite.Rotation <= 45 and not sprite:IsPlaying("ShootBeginLeft") then
+				sprite:Play("ShootBeginLeft", true)
+			elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootBeginDown") then
+				sprite:Play("ShootBeginDown", true)
+			elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootBeginUp") then
+				sprite:Play("ShootBeginUp", true)
+			end
 	end
 end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
 
