@@ -443,7 +443,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						tear:AddTearFlags(TearFlags.TEAR_HORN)
 					end
 					data.HitPoints = data.HitPoints - 1
-					print(data.HitPoints)
+					--print(data.HitPoints)
 					
 					if data.HitPoints <= 2 and data.Tier > 1 then --shrink if its dying
 						data.Tier = data.Tier - 1
@@ -597,8 +597,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--end
 			end
 			if not sprite:IsPlaying("Die") then sprite:Play("Die", true) end
-			print(data.HitPoints)
-			print("yeeehoa")
+			--print(data.HitPoints)
+			--print("yeeehoa")
 		end
 		
 		if data.Tier > 1 then

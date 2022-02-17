@@ -4,6 +4,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
+	local pldata = yandereWaifu.GetEntityData(player)
 	--items function!
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_GREATPHEONIX ) then
 		player:AddNullCostume(RebekahCurseCostumes.GreatPheonix)
@@ -14,7 +15,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 end)
 
 local function SpawnFlies(player, amount)
-	local amountFlies = amount or 2
+	local amountFlies = amount or 4
+	
 	for i = 1, amountFlies do 
 		local maggot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, math.random(1,5), player.Position, Vector(0,0), player)
 	end
@@ -40,8 +42,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 			
 			if pldata.GPFireCount > 30 then
 				pldata.GPFireCount = 0
-				
-				SpawnFlies(player)
+				local amount = 4
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+					amount = 2
+				end
+				SpawnFlies(player, amount)
 			end
 		else
 			pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
@@ -73,7 +78,14 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 						if pldata.GPFireCount > 30 then
 							pldata.GPFireCount = 0
 							
-							SpawnFlies(player)
+							if pldata.GPFireCount > 30 then
+								pldata.GPFireCount = 0
+								local amount = 4
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+									amount = 2
+								end
+								SpawnFlies(player, amount)
+							end
 						end
 					else
 						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
@@ -109,7 +121,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 						if pldata.GPFireCount > 90 then
 							pldata.GPFireCount = 0
 							
-							SpawnFlies(player)
+							if pldata.GPFireCount > 30 then
+								pldata.GPFireCount = 0
+								local amount = 4
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+									amount = 2
+								end
+								SpawnFlies(player, amount)
+							end
 						end
 					else
 						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()

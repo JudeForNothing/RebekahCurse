@@ -91,11 +91,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local trail = InutilLib.SpawnTrail(eff, Color(1,0,0,0.5))
 	end
 	if data.Parent then
-		eff.Velocity = (eff.Velocity + (data.Parent.Position - eff.Position):Resized(3))*0.9
 		if (data.Parent.Position - eff.Position):Length() <= 30 then
-			yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
-			eff:Remove()
+			sprite:Play("Splash")
+			eff.Velocity = Vector.Zero
+		else
+			eff.Velocity = (eff.Velocity + (data.Parent.Position - eff.Position):Resized(3))*0.9
 		end
+	end
+	if sprite:IsFinished("Splash") then
+		yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
+		eff:Remove()
+	end
+	if sprite:IsPlaying("Splash") and sprite:GetFrame() == 1 then
+		InutilLib.SFX:Play( SoundEffect.SOUND_GOLD_HEART_DROP, 1, 0, false, 1.1 )
 	end
 end, RebekahCurse.ENTITY_LOVELOVEPARTICLE)
 
@@ -386,3 +394,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff:Remove()
 	end
 end, RebekahCurse.ENTITY_PINGEFFECT)
+
+--rebekah miniisaac thing
+function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
+	local player = fam.Player
+	local sprite = fam:GetSprite()
+	if player:GetPlayerType() == RebekahCurse.REB then
+		sprite:ReplaceSpritesheet(0, "gfx/familiar/familiar_minisaac_rebekah.png")
+		sprite:ReplaceSpritesheet(1, "gfx/familiar/familiar_minisaac_rebekah.png")
+	end
+	sprite:LoadGraphics()
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.MiniIsaacReplaceSpritesheet, FamiliarVariant.MINISAAC)

@@ -12,8 +12,8 @@ function yandereWaifu:usedoLoveMe(collItem, rng, player, flags, slot)
 	--data.LMLMNBuff = data.PersistentPlayerData.LMLMNBuff
 	--data.LovesMe = data.PersistentPlayerData.LovesMe
 	
-	print(data.PersistentPlayerData.LMLMNBuff)
-	print(data.PersistentPlayerData.LovesMe)
+	--print(data.PersistentPlayerData.LMLMNBuff)
+	--print(data.PersistentPlayerData.LovesMe)
 	
 	if data.PersistentPlayerData.LMLMNBuff == nil then data.PersistentPlayerData.LMLMNBuff = 0 end
 	if data.PersistentPlayerData.LovesMe == nil then data.PersistentPlayerData.LovesMe = true end

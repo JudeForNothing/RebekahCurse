@@ -90,14 +90,14 @@ function yandereWaifu:SnappedTiredNewRoom()
 				player:AddCacheFlags(CacheFlag.CACHE_ALL);
 				player:EvaluateItems()
 				player:TryRemoveNullCostume(RebekahCurseCostumes.SnappedCos)
-				print("pog")
+				--print("pog")
 			elseif data.isSnappedTired then
 				data.isSnappedTired = nil
 				player:AddCacheFlags(CacheFlag.CACHE_ALL);
 				player:EvaluateItems()
 				
 				player:AddNullCostume(RebekahCurseCostumes.UnsnappedCos)
-				print("pogchamp")
+				--print("pogchamp")
 			end
 		end
 	end

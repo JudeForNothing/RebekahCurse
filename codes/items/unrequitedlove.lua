@@ -70,67 +70,76 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.delayedVel = (data.Attached.Velocity) * 1.2
 		end)
 		if data.delayedVel then
-			data.Attached.Velocity = (data.Attached.Velocity*0.95 + player:GetShootingInput()*3) + ((neededPosition - data.Attached.Position)*0.02); 
-		end
-		if player:GetShootingInput() then
-			if not data.SwingingInertia then data.SwingingInertia = 0 end
-			data.SwingingInertia = data.SwingingInertia + 1
-		else
-			data.SwingingInertia = 0
+			data.Attached.Velocity = (data.Attached.Velocity*0.95 + player:GetShootingInput()*(3+(data.SwingingAccel))) + ((neededPosition - data.Attached.Position)*0.02); 
 		end
 		-- print(brideProtectorAngle)
 		data.Attached:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
 		--data.Attached:AddEntityFlags(EntityFlag.FLAG_HELD)
 		--data.Attached.Velocity = (data.Attached.Velocity+player:GetShootingInput()*5)*0.9
 		
-		if data.CountdownTilRelease <= 0 or data.Attached:CollidesWithGrid() then
-			eff:Remove()
-			InutilLib.RefundActiveCharge(player, 300)
-			data.Attached:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
-			if data.Attached:CollidesWithGrid() then
-				ILIB.game:ShakeScreen(10)
-				data.Attached:TakeDamage(player.Damage * data.Attached.Velocity:Length()/2, 0, EntityRef(eff), 1)
-				InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1.4 );
-			end
-		end
-		data.CountdownTilRelease = data.CountdownTilRelease - 1
-		--ram stuff
-		local entities = Isaac.GetRoomEntities()
-		for i = 1, #entities do
-			if entities[i]:IsVulnerableEnemy() and GetPtrHash(entities[i]) ~= GetPtrHash(data.Attached) then
-				if entities[i].Position:Distance(data.Attached.Position) < entities[i].Size + data.Attached.Size + 8 then
-					if data.Attached.Velocity:Length() > 9 then
-						entities[i]:TakeDamage(player.Damage * 0.8, 0, EntityRef(eff), 1)
-						data.Attached:TakeDamage(player.Damage * 0.8, 0, EntityRef(eff), 1)
+		if data.SwingingAccel then
+			if data.SwingingAccel > 3 then
+				if data.CountdownTilRelease <= 0 or data.Attached:CollidesWithGrid() then
+					eff:Remove()
+					InutilLib.RefundActiveCharge(player, 300)
+					data.Attached:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+					if data.Attached:CollidesWithGrid() then
+						ILIB.game:ShakeScreen(10)
+						data.Attached:TakeDamage(player.Damage * data.Attached.Velocity:Length()/2, 0, EntityRef(eff), 1)
+						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1.4 );
+					end
+				end
+				data.CountdownTilRelease = data.CountdownTilRelease - 1
+				--ram stuff
+				local entities = Isaac.GetRoomEntities()
+				for i = 1, #entities do
+					if entities[i]:IsVulnerableEnemy() and GetPtrHash(entities[i]) ~= GetPtrHash(data.Attached) then
+						if entities[i].Position:Distance(data.Attached.Position) < entities[i].Size + data.Attached.Size + 8 then
+							if data.Attached.Velocity:Length() > 9 then
+								entities[i]:TakeDamage(player.Damage * 0.8, 0, EntityRef(eff), 1)
+								data.Attached:TakeDamage(player.Damage * 0.8, 0, EntityRef(eff), 1)
+							end
+						end
 					end
 				end
 			end
+		end
+		if player:GetShootingInput() and not  data.Attached:CollidesWithGrid() then
+			if not data.SwingingAccel then data.SwingingAccel = 0 end
+			data.SwingingAccel = data.SwingingAccel + 1
+		else
+			data.SwingingAccel = 0
 		end
 	elseif data.Attached and data.Attached:IsDead() then
 		InutilLib.RefundActiveCharge(player, 120)
 		eff:Remove()
 	else
-		--rotation gimmick
-		local angleNum = (eff.Velocity):GetAngleDegrees();
-		eff:GetSprite().Rotation = angleNum;
-		eff:GetData().Rotation = eff:GetSprite().Rotation;
-		local entities = Isaac.GetRoomEntities()
-		for i = 1, #entities do
-			if entities[i]:IsVulnerableEnemy() then
-				if entities[i].Position:Distance(eff.Position) < entities[i].Size + eff.Size + 8 then
-					if entities[i].Size > 12 then
-						data.Attached = entities[i]
-						entities[i]:TakeDamage(player.Damage * 1.6, 0, EntityRef(eff), 1)
-					else
-						entities[i]:TakeDamage(player.Damage * 1.3, 0, EntityRef(eff), 1)
+		--if its flying
+		if eff.FrameCount < 10 then
+			--rotation gimmick
+			local angleNum = (eff.Velocity):GetAngleDegrees();
+			eff:GetSprite().Rotation = angleNum;
+			eff:GetData().Rotation = eff:GetSprite().Rotation;
+			local entities = Isaac.GetRoomEntities()
+			for i = 1, #entities do
+				if entities[i]:IsVulnerableEnemy() then
+					if entities[i].Position:Distance(eff.Position) < entities[i].Size + eff.Size + 16 then
+						if entities[i].Size > 15 then
+							data.Attached = entities[i]
+							entities[i]:TakeDamage(player.Damage * 1.6, 0, EntityRef(eff), 1)
+						else
+							entities[i]:TakeDamage(player.Damage * 1.3, 0, EntityRef(eff), 1)
+						end
+						data.CountdownTilRelease = math.random(300,400)
 					end
-					data.CountdownTilRelease = math.random(300,400)
 				end
 			end
-		end
-		if eff.FrameCount > 10 then --expiration
-			InutilLib.RefundActiveCharge(player, 300)
-			eff:Remove()
+		elseif eff.FrameCount > 10 then --expiration
+			eff.Velocity = (player.Position - eff.Position):Resized(35)
+			if eff.Position:Distance(player.Position) < player.Size + eff.Size + 16 then
+				InutilLib.RefundActiveCharge(player, 300)
+				eff:Remove()
+			end
 		end
 	end
 end, RebekahCurse.ENTITY_LOVEHOOK);

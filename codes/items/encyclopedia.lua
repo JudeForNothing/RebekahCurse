@@ -39,12 +39,12 @@ function yandereWaifu:WikepidiaInput(entity, inputHook, buttonAction)
 					if not data.PersistentPlayerData.WikepidiaPage then data.PersistentPlayerData.WikepidiaPage = 1 end
 					if not data.PersistentPlayerData.WikepidiaCharge then data.PersistentPlayerData.WikepidiaCharge = player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) end
 					
-					print(player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY))
+					--print(player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY))
 					
 					--something that saves what charges you might have so you dont lose charges
 					if data.PersistentPlayerData.WikepidiaCharge <= player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) then data.PersistentPlayerData.WikepidiaCharge = player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) end
 					
-					print(data.PersistentPlayerData.WikepidiaCharge)
+					--print(data.PersistentPlayerData.WikepidiaCharge)
 					
 					player:RemoveCollectible(RebekahCurse.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, false, slot)
 					

@@ -89,7 +89,7 @@ function yandereWaifu.RebekahBoneBarrage(player, direction)
 			for i = 1, extraWorms do --extra carrion worm thingies when extra tears!!
 				local leech2 = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_BONEJOCKEY, 10, player.Position, Vector(0,0), player)
 				yandereWaifu.GetEntityData(leech2).ParentLeech = leech
-				print("come on, this should work")
+			--	--print("come on, this should work")
 			end
 		end
 		--[[--ludostuff
@@ -129,7 +129,7 @@ function yandereWaifu.RebekahBoneBarrage(player, direction)
 			customBody.RenderZOffset = -10
 			data.IsLeftover = true --sets the corpse to come and eat you
 			data.IsLeftoverFrameLimit = player.FrameCount + 90
-			print("wahsy")
+			--print("wahsy")
 		end
 	end
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SLAMDUST, 0, player.Position, Vector(0,0), player)
@@ -571,9 +571,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 	local butt = data.Butt
 	local controller = player.ControllerIndex
 	
-	print(fam.EntityCollisionClass)
-	print(fam.Player.Type)
-	print(fam:GetEntityFlags())
+	--print(fam.EntityCollisionClass)
+	--print(fam.Player.Type)
+	--print(fam:GetEntityFlags())
 	
 	local leechSize = 1
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
@@ -879,7 +879,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			end
 		else
 			if fam:GetEntityFlags() & EntityFlag.FLAG_CHARM == EntityFlag.FLAG_CHARM then
-				print("FJDHF")
+				--print("FJDHF")
 				player.Visible = false
 				yandereWaifu.addReserveStocks(player, 1)
 				End()

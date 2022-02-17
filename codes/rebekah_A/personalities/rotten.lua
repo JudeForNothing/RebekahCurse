@@ -63,7 +63,7 @@ function yandereWaifu.rottenheadColl(_, fam, collider, low)
 				yandereWaifu.GetEntityData(fam.Player).extraHeadsPresent = false
 				fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.HeadlessHead)
 				fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.SkinlessHead)
-				print(yandereWaifu.GetEntityData(fam.Player).extraHeadsPresent)
+				--print(yandereWaifu.GetEntityData(fam.Player).extraHeadsPresent)
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(fam.Player).currentMode, fam.Player , false)
 				
 				for i, v in pairs (yandereWaifu.GetEntityData(fam.Player).RottenFlyTable) do
@@ -142,7 +142,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		yandereWaifu.GetEntityData(player).extraHeadsPresent = false
 		fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.HeadlessHead)
 		fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.SkinlessHead)
-		print(yandereWaifu.GetEntityData(player).extraHeadsPresent)
+		--print(yandereWaifu.GetEntityData(player).extraHeadsPresent)
 		yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 		
 		for i, v in pairs (yandereWaifu.GetEntityData(player).RottenFlyTable) do
@@ -742,7 +742,7 @@ end, RebekahCurse.ENTITY_FLYTEAR);
 	function yandereWaifu:useHeadItems(collItem, rng, player)
 		if player:GetPlayerType() == RebekahCurse.REB then
 			local data = yandereWaifu.GetEntityData(player)
-			print("fire")
+			--print("fire")
 			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and data.noHead then
 				data.extraHeadsPresent = true
 				if data.extraHeadsPresent then

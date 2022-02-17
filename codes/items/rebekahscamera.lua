@@ -16,7 +16,7 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
 
 			else
 				for i, e in pairs(data.PersistentPlayerData.savedCameraEnemies) do
-					print(i)
+					--print(i)
 					local minion = Isaac.Spawn(e.Type, e.Variant, e.SubType, player.Position, Vector.Zero, player):ToNPC()
 					minion:AddCharmed(EntityRef(player), -1)
 					minion.HitPoints = minion.MaxHitPoints/2

@@ -57,3 +57,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
     end
 end)
 end
+
+
+--rebekah miniisaac thing
+function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
+	local player = fam.Player
+	local sprite = fam:GetSprite()
+	if player:GetPlayerType() == RebekahCurse.REB then
+		sprite:ReplaceSpritesheet(0, "gfx/familiar/familiar_minisaac_rebekah.png")
+		sprite:ReplaceSpritesheet(1, "gfx/familiar/familiar_minisaac_rebekah.png")
+	end
+	sprite:LoadGraphics()
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.MiniIsaacReplaceSpritesheet, FamiliarVariant.MINISAAC)

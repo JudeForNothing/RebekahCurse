@@ -8,15 +8,15 @@ end
 
 function yandereWaifu.addReserveStocks(player, number)
 	yandereWaifu.GetEntityData(player).heartStocks = yandereWaifu.GetEntityData(player).heartStocks + number
-	print("add")
-	print(yandereWaifu.getReserveStocks(player))
+	--print("add")
+	--print(yandereWaifu.getReserveStocks(player))
 	
 end
 
 function yandereWaifu.purchaseReserveStocks(player, number, restore)
 	number = number or 1
-	print("get")
-	print(yandereWaifu.getReserveStocks(player))
+	--print("get")
+	--print(yandereWaifu.getReserveStocks(player))
 	if yandereWaifu.getReserveStocks(player) >= 1 then
 		yandereWaifu.addReserveStocks(player, -number)
 		--just in case, i dont wannt negatives
@@ -80,8 +80,8 @@ function yandereWaifu.heartReserveLogic(player)
 		for j = 0, remainder, 1 do
 			number = j
 		end
-		print(remainder)
-		print("summer")
+		--print(remainder)
+		--print("summer")
 		if number > 0 then
 			yandereWaifu.addReserveStocks(player, number)
 			yandereWaifu.addReserveFill(player, -playerdata.heartReserveMaxFill) --decrease reserve to fit in more reserve

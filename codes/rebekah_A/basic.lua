@@ -102,7 +102,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			player:ChangePlayerType(RebekahCurse.REB)
 			--local data = yandereWaifu.GetEntityData(player)
 				
-			if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
+			if player.FrameCount <= 2 then --trying to make it visually pleasing when she spawns in
 				player.Visible = false
 			end
 			yandereWaifu.ChangeMode( player, REBECCA_MODE.RedHearts, true );
@@ -122,10 +122,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		else
 			wasFromTaintedLocked = true
 			
-			print("sol")
-			print(tostring(RebekahCurse.REB))
+			--print("sol")
+			--print(tostring(RebekahCurse.REB))
 			Isaac.ExecuteCommand("restart "..RebekahCurse.REB)
-			print("did it work?")
+			--print("did it work?")
 		end
 	end
 	
@@ -188,7 +188,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 									if v.Type == EntityType.ENTITY_FAMILIAR then
 										if v.Variant == FamiliarVariant.SCISSORS or v.Variant == FamiliarVariant.DECAP_ATTACK then
 											data.extraHeadsPresent = true
-											print("Something wrong")
+											--print("Something wrong")
 										end
 									end
 								end
@@ -286,12 +286,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		local enableDashByKey = false
 		local controller = player.ControllerIndex;
 		if ModConfigMenu then
-			keyboardKey = ModConfigMenu.Config["Cursed and Brokenhearted"]["Rebekah Dash"]
-			controllerKey = ModConfigMenu.Config["Cursed and Brokenhearted"]["Rebekah Dash (Controller)"]
-			enableDashByKey = ModConfigMenu.Config["Cursed and Brokenhearted"]["Rebekah Dash Alternative Key Enable"]
+			keyboardKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Keyboard Binding"]
+			controllerKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Controller Binding"]
+			enableDashByKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Alternative Key Enable"]
 		end
 		
-		if enableDashByKey then
+		if enableDashByKey and (player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0) then
 			if (Input.IsButtonTriggered(keyboardKey,controller) or Input.IsButtonTriggered(controllerKey,controller)) then
 				RebekahDoubleTapDash(player:GetMovementInput(), player)
 			end
@@ -462,10 +462,10 @@ function yandereWaifu.barrageAndSP(player)
 				data.countdownFrames = 7
 				data.IsDashActive = false
 			end
-			--if Isaac.GetFrameCount() % 3 == 0 then
+			if Isaac.GetFrameCount() % 3 == 0 then
 			AddRebekahDashEffect(player)
-			if not data.currentMode == REBECCA_MODE.EvilHearts then
-				yandereWaifu.SpawnHeartParticles( 1, 3, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, heartType );
+			--if not data.currentMode == REBECCA_MODE.EvilHearts then
+				yandereWaifu.SpawnHeartParticles( 1, 3, player.Position, player.Velocity:Rotated(180+math.random(-5,5)):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, heartType );
 			end
 			
 		end
@@ -774,7 +774,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 0, ent.Position, Vector.FromAngle((player.Position - ent.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
 					yandereWaifu.GetEntityData(heart).Parent = player
 					yandereWaifu.GetEntityData(heart).maxHealth = math.ceil(maxHealth/3)
-					print(math.ceil(maxHealth/3))
+					--print(math.ceil(maxHealth/3))
 				end
 			end
 			if yandereWaifu.GetEntityData(player).IsLeftover then
@@ -790,7 +790,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			yandereWaifu.GetEntityData(damage).BurstGuts = true
 		end
 		if REBEKAHMODE_EXPERIMENTAL.lovelove and dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN then
-			print(damageSource.Entity.SpawnerEntity.Type)
+			--print(damageSource.Entity.SpawnerEntity.Type)
 			--print(damageSource.Type)
 			if (damageSource.Type == 1 --[[or damageSource.Entity.SpawnerType == 1]]) then
 				local player = damageSource.Entity:ToPlayer()
@@ -809,17 +809,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	end
 end)
 
-function yandereWaifu:RebekahNewRoom()
-	print(ILIB.game:GetLevel():GetCurrentRoomIndex())
+function yandereWaifu:RebekahNewRoom()	
 	yandereWaifu.InsertMirrorData()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
-		print(room:GetType())
 		if player:GetPlayerType() == RebekahCurse.REB then
-		
+			
+			--spawn main room mirror
+			if ILIB.game:GetLevel():GetStartingRoomIndex() == ILIB.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() then
+				local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(19), 1);
+				local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, spawnPosition, Vector(0,0), player);
+				yandereWaifu.GetEntityData(mir).Init = false
+				mir:GetSprite():Play("Appear")
+			end
+			
 			--in case it is taken away, because of some softlocks
 			if not player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then
 				player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
@@ -931,7 +936,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNew
 				end
 				--epiphora synergy buff
 				if cacheF == CacheFlag.CACHE_FIREDELAY and data.EpiphoraBuff then
-					print( player.MaxFireDelay - data.EpiphoraBuff )
+					--print( player.MaxFireDelay - data.EpiphoraBuff )
 					if player.MaxFireDelay > 1 then --incase it breaks
 						player.MaxFireDelay = player.MaxFireDelay - data.EpiphoraBuff
 					end
@@ -1152,15 +1157,15 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNew
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	if player:GetPlayerType() == RebekahCurse.SADREBEKAH then 
 		if ILIB.game:GetFrameCount() > 1 then
-			print("fellow")
+			--print("fellow")
 			InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			--print("fellow")
 			player:ChangePlayerType(RebekahCurse.REB)
 			local data = yandereWaifu.GetEntityData(player)
 				
-			--if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
-			--	player.Visible = false
-			--end
+			if player:GetFrameCount() <= 2 then --trying to make it visually pleasing when she spawns in
+				player.Visible = false
+			end
 			RebekahCurse.ChangeMode( player, REBECCA_MODE.RedHearts, true );
 				
 			--personalized doubletap classes
@@ -1176,16 +1181,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 
 			if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
 		else
-			print("sol")
-			print(tostring(RebekahCurse.REB))
+			--print("sol")
+			--print(tostring(RebekahCurse.REB))
 			Isaac.ExecuteCommand("restart "..RebekahCurse.REB)
-			print("did it work?")
+			--print("did it work?")
 		end
 	end
 	if player:GetPlayerType() == RebekahCurse.REB then
-		--if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
-		--	player.Visible = false
-		--end
+		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
+			player.Visible = false
+		end
 		local data = yandereWaifu.GetEntityData(player)
 		
 		--personalized doubletap classes
@@ -1237,7 +1242,7 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 		if player:GetPlayerType() == RebekahCurse.REB then
 			if wasFromTaintedLocked then 
 				wasFromTaintedLocked = false
-				print("fel")
+				--print("fel")
 				InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			end
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
@@ -1247,7 +1252,7 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 				Init(true);
 			end
 
-		print("ffff", yandereWaifu.GetEntityData(player).currentMode)
+		--print("ffff", yandereWaifu.GetEntityData(player).currentMode)
 		if not player:IsCoopGhost() then
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player, false )
 		else
@@ -1322,7 +1327,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				end
 				wasPlayerDead = isPlayerDead;
 			end]]
-			if player:GetMovementInput() then
+			if player:GetMovementInput() and yandereWaifu.GetEntityData(player).DASH_DOUBLE_TAP_READY then
 				yandereWaifu.GetEntityData(player).DASH_DOUBLE_TAP:Update( player:GetMovementInput() , player );
 			end
 			if player:GetShootingInput() then
@@ -1340,7 +1345,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 end);
 
 	-- re-add the appropriate costume when the player rerolls (with d4 or d100)
-	function yandereWaifu.useReroll(collItem, rng, player)
+	function yandereWaifu:useReroll(collItem, rng, player)
 		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		--	local player = Isaac.GetPlayer(p)
 			if player:GetPlayerType() == RebekahCurse.REB then
@@ -1377,7 +1382,7 @@ end);
                 end);]]
 			
 				--player:AddNullCostume(NerdyGlasses)
-				print("haefheaufeaf")
+				--print("haefheaufeaf")
 			end
 		--end
 	end
@@ -1466,13 +1471,29 @@ function yandereWaifu:customMovesInput()
 				yandereWaifu.GetEntityData(arcane).parent = player
 				InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
 				if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-					arcane:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/special_beam.png")
-					arcane:GetSprite():ReplaceSpritesheet(1, "gfx/effects/soul/special_beam.png")
-					arcane:GetSprite():ReplaceSpritesheet(2, "gfx/effects/soul/special_beam.png")
-					arcane:GetSprite():ReplaceSpritesheet(3, "gfx/effects/soul/special_beam.png")
-					arcane:GetSprite():ReplaceSpritesheet(4, "gfx/effects/soul/special_beam.png")
-					arcane:GetSprite():ReplaceSpritesheet(5, "gfx/effects/soul/special_beam.png")
-					arcane:GetSprite():ReplaceSpritesheet(6, "gfx/effects/soul/special_beam.png")
+					for i = 0, 6 do
+						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/soul/special_beam.png")
+					end
+				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then
+					for i = 0, 6 do
+						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/evil/special_beam.png")
+					end
+				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then
+					for i = 0, 6 do
+						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/eternal/special_beam.png")
+					end
+				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
+					for i = 0, 6 do
+						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/gold/special_beam.png")
+					end
+				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+					for i = 0, 6 do
+						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/rotten/special_beam.png")
+					end
+				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+					for i = 0, 6 do
+						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/broken/special_beam.png")
+					end
 				end
 				arcane:GetSprite():LoadGraphics()
 			else
@@ -1877,7 +1898,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								--brim2.Position = ludoTear.Position
 							elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
 								local randomAngleperLaser = math.random(-15,15) --used to be 45, but now the synergy feels so boring
-								print("fire")
+								--print("fire")
 								local techlaser = player:FireTechLaser(ludoTear.Position, 0, Vector.FromAngle(i + direction:GetAngleDegrees() + randomAngleperLaser), false, true)
 								techlaser.DisableFollowParent = true
 								techlaser.OneHit = true;
@@ -2943,3 +2964,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		end
 	end
 end, EntityType.ENTITY_PLAYER)
+
+--rebekah miniisaac thing
+function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
+	local player = fam.Player
+	local sprite = fam:GetSprite()
+	if player:GetPlayerType() == RebekahCurse.REB then
+		sprite:ReplaceSpritesheet(0, "gfx/familiar/familiar_minisaac_rebekah.png")
+		sprite:ReplaceSpritesheet(1, "gfx/familiar/familiar_minisaac_rebekah.png")
+	end
+	sprite:LoadGraphics()
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.MiniIsaacReplaceSpritesheet, FamiliarVariant.MINISAAC)

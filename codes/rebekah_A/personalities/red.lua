@@ -16,7 +16,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff.Velocity = player.Velocity;
 		eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
 		
-		print(eff:GetSprite().Rotation)
+		--print(eff:GetSprite().Rotation)
 		eff.RenderZOffset = 10
 		
 		sprite.Rotation = (data.direction):GetAngleDegrees()
@@ -57,7 +57,7 @@ function yandereWaifu.RedHeartDash(player, vector)
 	end
 	
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, subtype, player.Position, Vector.Zero, player)
-	print(velAng)
+	--print(velAng)
 	if (velAng >= 90 - 15 and velAng <= 90 + 15 and velAng >= 0) or (((velAng >= -135 - 15 and  velAng <= -135 + 15)  or (velAng >= -45 - 15 and  velAng <= -45 + 15)) and velAng <= 0) then
 		poof:GetSprite().FlipX = true
 	end

@@ -7,6 +7,9 @@ function yandereWaifu:useRomComBook(collItem, rng, player)
 	for i, v in pairs (Isaac.GetRoomEntities()) do
 		if v:IsEnemy() and v:IsVulnerableEnemy() and not v:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
 			yandereWaifu.GetEntityData(v).IsLaughing = 300
+			if math.random(1,2) == 2 then
+				v:AddCharmed(EntityRef(player), 300)
+			end
 		end
 	end
 	if math.random(1,10) == 10 then
@@ -14,6 +17,7 @@ function yandereWaifu:useRomComBook(collItem, rng, player)
 	else
 		SFXManager():Play( RebekahCurseSounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
 	end
+	InutilLib.AnimateGiantbook("gfx/ui/giantbook/giantbook_romcom.png", nil, "Shake", _, true)
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRomComBook, RebekahCurse.COLLECTIBLE_ROMCOM );
 

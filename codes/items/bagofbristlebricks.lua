@@ -14,7 +14,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			end
 			if not data.currentIndex then data.currentIndex = 1 end
 			
-			print( TableLength(data.WireCombinations) )
+			--print( TableLength(data.WireCombinations) )
 			
 			if data.BristleCountdown > 100 then
 				if data.BristleCountdown%100 == 0 then
@@ -119,7 +119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 						data.selectedBristleWire = false
 					end
 				else
-					print("heelsdfd")
+					--print("heelsdfd")
 					if dir then --if selecting
 						data.selectedBristleWire = true
 					end

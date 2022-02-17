@@ -60,10 +60,10 @@ function yandereWaifu.InsertMirrorData()
 		if mirrorRoomData[i][1] == ILIB.level:GetCurrentRoomDesc().GridIndex then
 			for m, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
 				if ILIB.room:GetGridIndex(mir.Position) == mirrorRoomData[i][2] then
-					print("scar")
+				--	print("scar")
 					yandereWaifu.GetEntityData(mir).Use = mirrorRoomData[i][3]
-					print(mirrorRoomData[i][3])
-					print("yeah"..tostring(yandereWaifu.GetEntityData(mir).Use))
+				--	print(mirrorRoomData[i][3])
+				--	print("yeah"..tostring(yandereWaifu.GetEntityData(mir).Use))
 				end
 			end
 		end
@@ -76,7 +76,20 @@ end
 function yandereWaifu.MirrorMechanic(player) 
 	local totalTypesofHearts = 0; --counts the total amount of hearts available
 	local totalCurTypesofHearts = {};
+	local totalUnlockedTypesofHearts = {}
 	local getRebekahsPresent = 0
+	
+	
+	local heartTableUnlocks = {
+			ShowRed = true,
+			ShowBlue = true,
+			ShowGold = true,
+			ShowEvil = true,
+			ShowEternal = true,
+			ShowBone = true,
+			ShowRotten = true,
+			ShowBroken = true
+	}
 	
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
@@ -117,6 +130,12 @@ function yandereWaifu.MirrorMechanic(player)
 				table.insert(totalCurTypesofHearts, tostring(i));
 			end
 		end
+		for i, heart in pairs (heartTableUnlocks) do --8 because of eight hearts that exists in Isaac
+			if heart == true then
+				totalTypesofHearts = totalTypesofHearts + 1;
+				table.insert(totalUnlockedTypesofHearts, tostring(i));
+			end
+		end
 	end
 	
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
@@ -136,8 +155,13 @@ function yandereWaifu.MirrorMechanic(player)
 				local sprite = mir:GetSprite();
 				
 				if not mirdata.currentSavedHearts then
-					mirdata.currentSavedHearts = totalCurTypesofHearts;
-					mirdata.currentSavedHeartsNum = #totalCurTypesofHearts;
+					if mir.SubType ~= 10 then
+						mirdata.currentSavedHearts = totalCurTypesofHearts;
+						mirdata.currentSavedHeartsNum = #totalCurTypesofHearts;
+					else --makes all hearts available
+						mirdata.currentSavedHearts = totalUnlockedTypesofHearts;
+						mirdata.currentSavedHeartsNum = #totalUnlockedTypesofHearts;
+					end
 				end --this saves how much totalCurTypesofHearts you have when the mirror is in the process in presenting a bunch of hearts, so that it won't glitch
 				if not mirdata.currentHeart then mirdata.currentHeart = 1 end
 				if mir.FrameCount == 1 then
@@ -154,9 +178,8 @@ function yandereWaifu.MirrorMechanic(player)
 						mirdata.Dead = true;
 					end 
 				end
-				if mir.SubType == 0 then
+				if mir.SubType ~= 1 then --temporary as i still dont know what to do with bride mirror
 					if not mirdata.Init --[[and not sprite:IsPlaying("Idle")]] then
-						print("oh ye gods")
 						if not sprite:IsPlaying("Appear") then
 							sprite:Play("Appear")
 						end
@@ -171,17 +194,23 @@ function yandereWaifu.MirrorMechanic(player)
 							--break
 						end
 					elseif not sprite:IsPlaying("Appear") and mirdata.Init then
-						if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then --heart only drop mechanic
-							sprite:Play("Death", true);
-							for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
-								if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-									local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
-									pickup:Remove()
+						if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then 
+							if mir.SubType ~= 10 then
+								--heart only drop mechanic
+								sprite:Play("Death", true);
+								for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
+									if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
+										local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+										pickup:Remove()
+									end
 								end
+								if not mirdata.DeadFinished then
+									mirdata.DeadFinished = true;
+								end 
+							else
+								Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, mir.Position, Vector(0,0), player)
+								mir:Remove()
 							end
-							if not mirdata.DeadFinished then
-								mirdata.DeadFinished = true;
-							end 
 						else
 							if not mirdata.ForceOverlay then
 								sprite:PlayOverlay(tostring(mirdata.Use).."_Use", true)
@@ -227,9 +256,13 @@ function yandereWaifu.MirrorMechanic(player)
 											mirdata.currentSavedHearts = nil;
 										end
 									elseif not mirdata.currentSavedHearts then
-										mirdata.currentSavedHearts = totalCurTypesofHearts;
-										mirdata.currentSavedHeartsNum = #totalCurTypesofHearts;
-	
+										if mir.SubType ~= 10 then
+											mirdata.currentSavedHearts = totalCurTypesofHearts;
+											mirdata.currentSavedHeartsNum = #totalCurTypesofHearts;
+										else --makes all hearts available
+											mirdata.currentSavedHearts = totalUnlockedTypesofHearts;
+											mirdata.currentSavedHeartsNum = #totalUnlockedTypesofHearts;
+										end
 									end
 									
 									--if sprite:IsFinished("Initiate") then
@@ -240,41 +273,43 @@ function yandereWaifu.MirrorMechanic(player)
 									
 									local newMode = yandereWaifu.GetEntityData(player).currentMode;
 									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and #totalCurTypesofHearts > 0 and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") and not sprite:IsPlaying("Initiate") and not yandereWaifu.GetEntityData(player).IsAttackActive then --if interacted
-										print("trigger")
+										--print("trigger")
 										if sprite:IsPlaying("ShowRed") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RedHearts 
-											and player:GetHearts() > 1 then
+											and (player:GetHearts() > 1 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.RedHearts;
 										elseif sprite:IsPlaying("ShowBlue") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.SoulHearts 
-											and player:GetSoulHearts() > 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0 then
+											and ((player:GetSoulHearts() > 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0) or mir.SubType == 10) then
 											newMode = REBECCA_MODE.SoulHearts
 										elseif sprite:IsPlaying("ShowGold") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts 
-											and player:GetGoldenHearts() > 0 then
+											and (player:GetGoldenHearts() > 0 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.GoldHearts
 										elseif sprite:IsPlaying("ShowEvil") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.EvilHearts 
-											and yandereWaifu.GetPlayerBlackHearts(player) > 1 then
+											and (yandereWaifu.GetPlayerBlackHearts(player) > 1 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.EvilHearts
 										elseif sprite:IsPlaying("ShowEternal") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.EternalHearts 
-											and player:GetEternalHearts() > 0 then
+											and (player:GetEternalHearts() > 0 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.EternalHearts;
 										elseif sprite:IsPlaying("ShowBone") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BoneHearts 
-											and player:GetBoneHearts() > 0 then
+											and (player:GetBoneHearts() > 0 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.BoneHearts;
 										elseif sprite:IsPlaying("ShowRotten") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts
-											and player:GetRottenHearts() > 0 then
+											and (player:GetRottenHearts() > 0 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.RottenHearts;
 										elseif sprite:IsPlaying("ShowBroken") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrokenHearts 
-											and player:GetBrokenHearts() > 0 then
+											and (player:GetBrokenHearts() > 0 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.BrokenHearts;
 										end
 										if newMode ~= yandereWaifu.GetEntityData(player).currentMode and not sprite:IsPlaying("Initiate") and player:GetPlayerType() == RebekahCurse.REB then
+											local isFree = mir.SubType == 10
+											
 											mirdata.notAlive = true;
 											player:AnimateSad();
 											sprite:Play("Initiate", true);
-											yandereWaifu.ChangeMode( player, newMode, _, false);
+											yandereWaifu.ChangeMode( player, newMode, isFree, false);
 											--don't move
 											player.Velocity = Vector(0,0)
 											mirdata.currentHeart = 1; --reset
-											print("happy")
+											--print("happy")
 											--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 										end
 									end
@@ -302,8 +337,7 @@ function yandereWaifu.MirrorMechanic(player)
 										mir:GetData()["EID_Description"] = Description
 									end
 								else
-									if mirdata.Use <= 0 then
-										print("cross")
+									if mirdata.Use <= 0 and mir.SubType ~= 10 then
 										if heartBrideTable.Show then
 											local newpickup = Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 1, mir.Position, Vector(0,0), mir)
 											mir:Remove()
@@ -314,6 +348,8 @@ function yandereWaifu.MirrorMechanic(player)
 										if sprite:IsFinished("FinishedJob") then
 											mir:Remove();
 										end
+									else
+										mirdata.notAlive = false --just to make sure it reactivates, you know?
 									end
 								end
 								if mir.Position:Distance(player.Position) > mir.Size + player.Size + 45 then --if close or far, speed up or not?

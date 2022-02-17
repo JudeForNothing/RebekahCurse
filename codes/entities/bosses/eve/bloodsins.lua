@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_UPDATE, function(_, proj)
 	local data = yandereWaifu.GetEntityData(proj)
 	if data.BloodSlothPuke and proj.FrameCount > 3 then
-		print(proj.Height)
+		--print(proj.Height)
 		if proj.Height >= -2 or proj:CollidesWithGrid() then
 			proj:Die()
 			for i = 0, 360 - 360/8, 360/8 do

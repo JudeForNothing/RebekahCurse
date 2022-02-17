@@ -567,7 +567,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.WindSlas
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff)
-	print(data.BySquire)
+	--print(data.BySquire)
 	if eff.Variant == EffectVariant.BRIMSTONE_BALL and data.BySquire then
 		for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 			if enemy:IsVulnerableEnemy() then
@@ -1065,12 +1065,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					kn.CollisionDamage = 0.9
 					InutilLib.AddHomingIfBabyBender(player, kn)
 					--kn:ChangeVariant(RebekahCurse.ENTITY_PSEUDO_KNIFE);
-					print("does this work, pls")
+					--print("does this work, pls")
 				end
 			else
 				spr:Play("Idle", true)
 			end
-			print(fam.Velocity:GetAngleDegrees())
+			--print(fam.Velocity:GetAngleDegrees())
 			if fam.Velocity:GetAngleDegrees() > 90 or fam.Velocity:GetAngleDegrees() < -90 then
 				spr.FlipX = true
 			else
@@ -1143,8 +1143,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				else
 					x = Round(math.abs(ILIB.room:GetBottomRightPos().X), 0) + 50
 				end
-				print(Round(math.abs(ILIB.room:GetBottomRightPos().Y),0))
-				print(Round(math.abs(ILIB.room:GetTopLeftPos().Y),0))
+				--print(Round(math.abs(ILIB.room:GetBottomRightPos().Y),0))
+				--print(Round(math.abs(ILIB.room:GetTopLeftPos().Y),0))
 				local y1, y2 = Round(math.abs(fam.Position.Y - 50),0), Round(math.abs(fam.Position.Y + 50),0)--the ys that the randomizer will pick from
 				if y1 <= lowestY then y1 = lowestY end
 				if y2 <= highestY then y2 = highestY end
@@ -1649,7 +1649,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif fam.SubType == 4 then
 			if spr:GetFrame() >= 25 then
 				if fam.FrameCount % 5 == 0 then
-					print("fire")
+					--print("fire")
 					local minions = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, fam.Position, Vector(0,0), player)
 				end
 			end

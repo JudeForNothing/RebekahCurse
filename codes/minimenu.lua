@@ -79,8 +79,8 @@ function yandereWaifu.Minimenu:Update( vector , position )
 			self.lastFrameRelease = Game():GetFrameCount()
 		else
 			
-			print(self.lastFrameRelease + self.leniency)
-			print(Game():GetFrameCount())
+			--print(self.lastFrameRelease + self.leniency)
+			--print(Game():GetFrameCount())
 
 			if self.lastFrameRelease + self.leniency <= Game():GetFrameCount() then
 				self.onRelease = true

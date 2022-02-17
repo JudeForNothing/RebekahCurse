@@ -81,7 +81,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 						data.selectedImDieWire = false
 					end
 				else
-					print("heelsdfd")
+					--print("heelsdfd")
 					if dir then --if selecting
 						data.selectedImDieWire = true
 					end
@@ -142,7 +142,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	end
 	
-	print( TableLength(playerdata.WireCombinations) )
+	--print( TableLength(playerdata.WireCombinations) )
 	
 	if data.ImDieCountdown > 100 then
 		if data.ImDieCountdown%100 == 0 then

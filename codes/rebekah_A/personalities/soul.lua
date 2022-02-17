@@ -483,7 +483,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
 		if tr.Variant == RebekahCurse.ENTITY_SBOMBBUNDLE then
 			local player = yandereWaifu.GetEntityData(tr).Parent
-			print(tr.CollisionDamage)
+			--print(tr.CollisionDamage)
 			Isaac.Explode(tr.Position, tr, tr.CollisionDamage * 17.7)
 			for i = 1, math.random(7,10) + 3 * yandereWaifu.GetEntityData(tr).ExtraTears do
                 InutilLib.SetTimer( i*8, function()

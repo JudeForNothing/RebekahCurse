@@ -4,7 +4,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	if not data.PersistentPlayerData then data.PersistentPlayerData = {} end
-	print("2")
+	--print("2")
 end)
 
 --data that will be passed all around the mod
@@ -307,7 +307,7 @@ local function RecapRebekahData()
 				if not saveData.NedHealth[i] then saveData.NedHealth[i] = {} end
 				
 				local name = tonumber(ned.Variant..ned.SubType)
-				print(name)
+				--print(name)
 				--if not tbl[name] then tbl[name] = {} end
 				
 				if GetPtrHash(player) == GetPtrHash(ned:ToFamiliar().Player) then
@@ -337,7 +337,7 @@ JSON = require("json");
 
 -- Load Moddata
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
-	print("1")
+	--print("1")
 	local data = JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
 		if data.currentMode ~= nil then 

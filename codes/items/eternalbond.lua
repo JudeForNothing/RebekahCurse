@@ -206,8 +206,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, iss.Position, iss.Velocity, iss)
 		end
 		local enemy = InutilLib.GetClosestGenericEnemy(iss, 1000, iss.Type)
-		local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
 		if enemy and not enemy:IsDead() and enemy ~= nil and enemy.Type ~= EntityType.ENTITY_FIREPLACE and enemy:IsActiveEnemy() and  enemy:IsVulnerableEnemy() then
+			local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
 			if enemy.Position:Distance(iss.Position) > 100 and path then
 				--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
 				InutilLib.FollowPath(iss, enemy, path, 2, 0.9)

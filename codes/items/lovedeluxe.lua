@@ -83,7 +83,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 	--function code
 	if eff.FrameCount == 1 then
-		print(SubType)
+		--print(SubType)
 		if eff.SubType == 1 then
 			sprite:ReplaceSpritesheet(1, "gfx/effects/items/hairwhip/white.png")
 		elseif eff.SubType == 2 then

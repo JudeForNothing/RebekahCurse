@@ -23,9 +23,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     local bonerOwnerData = yandereWaifu.GetEntityData(data.Player);
 	if data.IsHopping then
 		data.Player:SetShootingCooldown(2)
-		print("hello")
+		--print("hello")
 		local function End()
-			print("how")
+			--print("how")
 			--data.Player.GridCollisionClass = yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass;
 			--data.Player.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
 			data.Player.Visible = true
@@ -351,6 +351,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.DontFollowPlayer = true
 		elseif sprite:IsFinished("Vanish") then
 			yandereWaifu.SpawnEctoplasm( eff.Position, Vector ( 0, 0 ) , math.random(13,15)/10, data.Player);
+			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, 132, 0, eff.Position, Vector.Zero, data.Player):ToEffect()
+			poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/splash_big_ectoplasm.png")
+			poof:GetSprite():LoadGraphics()
 			eff:Remove()
 		end
 		
@@ -484,9 +487,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 				--debug 2
 				if sprite:IsOverlayPlaying("Overlay_2") then
-					print("2222222222222222")
+					--print("2222222222222222")
 					for i, grid in pairs(InutilLib.GetRoomGrids()) do
-						print(grid)
+						--print(grid)
 						if math.random(1,3) == 3 and grid and not grid.State == 2 then
 							if grid:GetType() == 2 or grid:GetType() == 14 then
 								local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
@@ -665,7 +668,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if not data.CurrentTarget then
 			for i, t in pairs(data.LabanTargets) do
-				print(t)
+				--print(t)
 				data.CurrentTarget = t
 				break
 			end

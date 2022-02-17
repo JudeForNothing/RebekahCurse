@@ -418,6 +418,70 @@ function yandereWaifu.RebekahCanShoot(player, canShoot) --alternative so that sh
 	yandereWaifu.ApplyCostumes( data.currentMode, player , false , false)
 end
 
+function yandereWaifu.SpawnStartingRebekahRoomControls(mode)
+	local centerPos = InutilLib.room:GetCenterPos()
+	local playerType = Isaac.GetPlayer(0):GetPlayerType()
+	local playerInfo 
+	if InutilLib.ListOfRegPlayers[playerType] then playerInfo = InutilLib.ListOfRegPlayers[playerType] end
+	local stageType = InutilLib.level:GetStageType()
+	local controlsPos = centerPos
+	
+	--controlsPos = centerPos + Vector(0,-65)
+	
+	if playerInfo then
+		if playerInfo.instructions then
+			local column = TableLength(playerInfo.instructions)
+			local Pos = {}
+			if column then
+				if column == 1 then --definitions
+					Pos[1] = Vector(0,0)
+				elseif column == 2 then 
+					Pos[1] = Vector(0,-55)
+					Pos[2] = Vector(0, 55)
+				elseif column == 3 then
+					Pos[1] = Vector(0,-95)
+					Pos[2] = Vector(0,0)
+					Pos[3] = Vector(0, 95)
+				end
+				for i = 1, column do 
+					local controlsEffect = InutilLib.SpawnFloorEffect(controlsPos + Pos[i], Vector(0,0), nil, "gfx/backdrop/controls.anm2", true)
+					local controlsSprite = controlsEffect:GetSprite()
+					controlsSprite:Play("Idle")
+					controlsSprite:ReplaceSpritesheet(0, playerInfo.instructions[i])
+					controlsSprite:LoadGraphics()
+					if column == 3 then controlsEffect.SpriteScale = Vector(0.8, 0.8) end
+					
+					if stageType == StageType.STAGETYPE_AFTERBIRTH then
+						controlsSprite.Color = burningBasementColor
+					elseif REVEL then
+						if REVEL.STAGE.Glacier:IsStage() then
+							controlsSprite.Color = glacierColor
+						end
+					end
+				end
+			end
+		end
+	elseif CommunityRemixRemixed and playerType == p20PlayerType.PLAYER_ADAM then --crr compat, I have to do this unless they like to fix it in their side
+		--do nothing
+	else
+		if playerType ~= PlayerType.PLAYER_THEFORGOTTEN and playerType ~= PlayerType.PLAYER_THESOUL then
+			local controlsEffect = InutilLib.SpawnFloorEffect(controlsPos, Vector(0,0), nil, "gfx/backdrop/controls.anm2", true)
+			local controlsSprite = controlsEffect:GetSprite()
+			controlsSprite:Play("Idle")
+			--controlsSprite:ReplaceSpritesheet(0, InutilLib.DefaultInstructions)
+			controlsSprite:LoadGraphics()
+
+			if stageType == StageType.STAGETYPE_AFTERBIRTH then
+				controlsSprite.Color = burningBasementColor
+			elseif REVEL then
+				if REVEL.STAGE.Glacier:IsStage() then
+					controlsSprite.Color = glacierColor
+				end
+			end
+		end
+	end
+end
+
 function yandereWaifu.AddGenericTracer(position, color, angle, timeout)     
 	local timeout = timeout or 30
 	local line = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_UNGENERICTRACER, 0, position, Vector(0,0), ent)

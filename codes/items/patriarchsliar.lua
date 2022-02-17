@@ -14,7 +14,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			end
 		end
 	
-		if not fist and player.FrameCount % 600 and math.random(1,2) == 2 then
+		if not fist and player.FrameCount % 600 and math.random(1,10) == 10 then
 			local pos = Vector.Zero
 			if wall == Direction.DOWN then
 				pos = Vector(player.Position.X, room:GetBottomRightPos().Y+60)
@@ -106,34 +106,76 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 	if data.Angle then
 		if eff.FrameCount == 1 then
-			sprite.Rotation = data.Angle
+			--sprite.Rotation = data.Angle
+			if data.Angle == 90 then
+				sprite:Play("HoldDown", true)
+			elseif data.Angle == 270 then
+				sprite:Play("HoldDown", true)
+				sprite.Rotation = 180
+			elseif data.Angle == 180 then
+				sprite:Play("Hold2", true)
+			end
 		end
-		if sprite:IsFinished("Disappear") then
+		if InutilLib.IsFinishedMultiple(sprite, "Punch", "Punch2", "PunchDown")then
+			if data.Angle == 90 then
+				sprite:Play("DisappearDown", true)
+			elseif data.Angle == 270 then
+				sprite:Play("DisappearDown", true)
+				sprite.Rotation = 180
+			elseif data.Angle == 180 then
+				sprite:Play("Disappear2", true)
+			else
+				sprite:Play("Disappear", true)
+			end
+		end
+		if InutilLib.IsFinishedMultiple(sprite, "Disappear", "Disappear2", "DisappearDown") then
 			eff:Remove()
 		end
-		if eff.FrameCount == 30 then
-			eff.Velocity = Vector.FromAngle(data.Angle)*25
-		elseif eff.FrameCount >= 30 and not sprite:IsPlaying("Disappear") then
-			if eff.Velocity:Length() > 6 then
+		if eff.FrameCount == 10 then
+			if data.Angle == 90 then
+				sprite:Play("PunchDown", true)
+			elseif data.Angle == 270 then
+				sprite:Play("PunchDown", true)
+				sprite.Rotation = 180
+			elseif data.Angle == 180 then
+				sprite:Play("Punch2", true)
+			else
+				sprite:Play("Punch")
+			end
+		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() == 11 then
+			eff.Velocity = Vector.FromAngle(data.Angle)*20
+		elseif eff.FrameCount > 10 and InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() > 11 then
+			--if eff.Velocity:Length() > 6 then
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 						if eff.FrameCount % 3 == 0 then
 							if ent.Position:Distance(eff.Position) <= 90 then
 								ent:TakeDamage(15, 0, EntityRef(eff), 1)
 								ent.Velocity = ent.Velocity + eff.Velocity * 3
-								sprite:Play("Disappear")
+								
+								ILIB.game:ShakeScreen(10)
+								
+								if data.Angle == 90 then
+									sprite:Play("DisappearDown", true)
+								elseif data.Angle == 270 then
+									sprite:Play("DisappearDown", true)
+									sprite.Rotation = 180
+								elseif data.Angle == 180 then
+									sprite:Play("Disappear2", true)
+								else
+									sprite:Play("Disappear", true)
+								end
 							end
 						end
 					elseif ent.Type == 1 then
 						if ent.Position:Distance(eff.Position) <= 80 then
 							ent:TakeDamage(1, 0, EntityRef(player), 10)
 							ent.Velocity = ent.Velocity + eff.Velocity * 3
+							ILIB.game:ShakeScreen(10)
 						end
 					end
 				end
-			else
-				sprite:Play("Disappear")
-			end
+			--end
 			eff.Velocity = eff.Velocity * 0.9
 		else
 			eff.Velocity = eff.Velocity * 0.9
