@@ -13,6 +13,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX, "On pickup, drops 3 random hearts")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB, "On pickup, adds an orbital of Jacob and Esau#Jacob Familiar has less damage but shoots slighly faster#Esau Familiar shoots less but has more damage")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_DICEOFFATE, "Use to reroll your hearts# Each half heart is rerolled into another heart # Broken Hearts do not get rerolled")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_SNAP, "On hurt, gain buffs # After next room, gain debuff until next room")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND, "Spawns a Tiny Isaac if you are Rebekah else spawns a Tiny Rebekah# Both types of familiars shoot tears at enemies# Tiny Rebekah can burst tears similar to Red Personality's {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}} # Tiny Rebekah can pick up heart pickups and drop certain hearts # Tiny Isaac can pick up coins and drop various rewards")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVESICK, "Chance to spawn a pheromones aura which shortly charmes enemies on range# Aura also has a chance to spawn on tears")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE, "Each filled half red heart gives 0.50 damage# Each empty half red heart gives 0.10 speed")

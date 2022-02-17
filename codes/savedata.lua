@@ -199,7 +199,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isSaveGa
 end)
 
 --item pool unlockables!
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	local itemPool = ILIB.game:GetItemPool()
 	if RebekahLocalSavedata.CurrentRebeccaUnlocks then
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX then --boss rush
@@ -237,7 +237,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE)
 		end
 	end
-end)
+end)]]
 
 
 ------
