@@ -2141,7 +2141,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										for i, angle in pairs(data.eyeSoreBarAngles) do
 											local tears = player:FireTechXLaser(player.Position, Vector.FromAngle(angle + (data.addedbarrageangle))*(20), data.Xsize)
 											tears.Position = player.Position
-											tears.Scale = tears.Scale + tearSize
+											tears.Size = tears.Size + tearSize
 											tears.CollisionDamage = tears.CollisionDamage * 1.2
 										end
 									end

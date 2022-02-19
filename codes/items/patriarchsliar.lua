@@ -133,12 +133,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if eff.FrameCount == 10 then
 			if data.Angle == 90 then
-				sprite:Play("PunchDown", true)
+				sprite:Play("PunchDown")
 			elseif data.Angle == 270 then
-				sprite:Play("PunchDown", true)
+				sprite:Play("PunchDown")
 				sprite.Rotation = 180
 			elseif data.Angle == 180 then
-				sprite:Play("Punch2", true)
+				sprite:Play("Punch2")
 			else
 				sprite:Play("Punch")
 			end
@@ -155,20 +155,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 								
 								ILIB.game:ShakeScreen(10)
 								
-								if data.Angle == 90 then
-									sprite:Play("DisappearDown", true)
-								elseif data.Angle == 270 then
-									sprite:Play("DisappearDown", true)
-									sprite.Rotation = 180
-								elseif data.Angle == 180 then
-									sprite:Play("Disappear2", true)
-								else
-									sprite:Play("Disappear", true)
-								end
+								--[[if sprite:GetFrame() > 16 then
+									if data.Angle == 90 then
+										sprite:Play("DisappearDown")
+									elseif data.Angle == 270 then
+										sprite:Play("DisappearDown")
+										sprite.Rotation = 180
+									elseif data.Angle == 180 then
+										sprite:Play("Disappear2")
+									else
+										sprite:Play("Disappear")
+									end
+								end]]
 							end
 						end
 					elseif ent.Type == 1 then
-						if ent.Position:Distance(eff.Position) <= 80 then
+						if ent.Position:Distance(eff.Position) <= 40 then
 							ent:TakeDamage(1, 0, EntityRef(player), 10)
 							ent.Velocity = ent.Velocity + eff.Velocity * 3
 							ILIB.game:ShakeScreen(10)
@@ -181,4 +183,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff.Velocity = eff.Velocity * 0.9
 		end
 	end
-end)
+end, RebekahCurse.ENTITY_GOLEMFIST)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_, eff, offset)
+	if ILIB.room:GetRenderMode() >= 3 then
+		local sprite = eff:GetSprite()
+		local data = yandereWaifu.GetEntityData(eff)
+		local player = data.Player
+		local endpos = endpos or eff.Position
+		if  data.Angle == 270 or data.Angle == 90 then
+		--	sprite.Rotation = 0
+		end
+		sprite.Scale = eff.SpriteScale
+		--sprite:Render(Isaac.WorldToRenderPosition(endpos) + offset)
+	end
+end, RebekahCurse.ENTITY_GOLEMFIST) 

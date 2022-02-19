@@ -35,7 +35,6 @@
 		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Wikepidia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Wishful Thinking" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="library">
 		<Item Name="Typical Rom-Com" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />

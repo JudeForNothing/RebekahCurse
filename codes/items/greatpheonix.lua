@@ -173,7 +173,7 @@ end)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 	--local parent = eff.Parent
 	local player = eff.SpawnerEntity:ToPlayer()
-	print(player)
+	--print(player)
 	if player and player.Type == EntityType.ENTITY_PLAYER then
 		local pldata = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
