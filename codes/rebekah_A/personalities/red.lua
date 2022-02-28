@@ -13,24 +13,187 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			direction = player:GetAimDirection()
 		end
 		
+		if eff.FrameCount == 1 then
+			sprite:Stop()
+		end
+		
+		--if not data.StartCountFrame then data.StartCountFrame= 1 end
+		
+		if eff.FrameCount == (data.StartCountFrame) + 1 then
+			sprite:Play("Startup", true)
+			InutilLib.SetTimer( data.StartCountFrame*8,function()
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1+(data.StartCountFrame/5))
+			end)
+		end
+		
 		eff.Velocity = player.Velocity;
-		eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		if data.Extra then --what am i doing
+			eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		else
+			eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		end
 		
 		--print(eff:GetSprite().Rotation)
 		eff.RenderZOffset = 10
+		sprite.Offset = Vector(0,-10)
 		
-		sprite.Rotation = (data.direction):GetAngleDegrees()
-		
-			if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootBeginRight") then
-				sprite:Play("ShootBeginRight", true)
-				--sprite.FlipY = true
-			elseif sprite.Rotation >= 0 and sprite.Rotation <= 45 and not sprite:IsPlaying("ShootBeginLeft") then
-				sprite:Play("ShootBeginLeft", true)
-			elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootBeginDown") then
-				sprite:Play("ShootBeginDown", true)
-			elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootBeginUp") then
-				sprite:Play("ShootBeginUp", true)
+		if sprite:IsFinished("Spawn") then
+			sprite.Rotation = Round((data.direction):GetAngleDegrees(), 1)
+
+			if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightDr") then
+					sprite:Play("ShootRightDr", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftDr") then
+					sprite:Play("ShootLeftDr", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownDr") then
+					sprite:Play("ShootDownDr", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpDr") then
+					sprite:Play("ShootUpDr", true)
+				end
+				playerdata.BarrageIntro = true 
+			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightTech") then
+					sprite:Play("ShootRightTech", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftTech") then
+					sprite:Play("ShootLeftTech", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownTech") then
+					sprite:Play("ShootDownTech", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpTech") then
+					sprite:Play("ShootUpTech", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SPARKELECTRIC, 0.8, 0, false, 0.8)
+			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightBrimstone") then
+					sprite:Play("ShootRightBrimstone", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftBrimstone") then
+					sprite:Play("ShootLeftBrimstone", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownBrimstone") then
+					sprite:Play("ShootDownBrimstone", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstone") then
+					sprite:Play("ShootUpBrimstone", true)
+				end
+				print("hello")
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGEHEAVY, 1, 0, false, 0.8)
+			else
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) and not sprite:IsPlaying("ShootRight") then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif(sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeft") then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDown") then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUp") then
+					sprite:Play("ShootUp", true)
+				end
+				playerdata.BarrageIntro = true 
 			end
+		end
+		--charging item synergy stuff
+		if InutilLib.IsFinishedMultiple(sprite, "ShootRightTech", "ShootLeftTech", "ShootDownTech", "ShootUpTech") then
+			if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightTechGo") then
+				sprite:Play("ShootRightTechGo", true)
+				--sprite.FlipY = true
+			elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftTechGo") then
+				sprite:Play("ShootLeftTechGo", true)
+			elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownTechGo") then
+				sprite:Play("ShootDownTechGo", true)
+			elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpTechGo") then
+				sprite:Play("ShootUpTechGo", true)
+			end
+			playerdata.BarrageIntro = true 
+		end
+		if InutilLib.IsFinishedMultiple(sprite, "ShootRightBrimstone", "ShootLeftBrimstone", "ShootDownBrimstone", "ShootUpBrimstone") then
+			if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightBrimstoneGo") then
+				sprite:Play("ShootRightBrimstoneGo", true)
+				--sprite.FlipY = true
+			elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftBrimstoneGo") then
+				sprite:Play("ShootLeftBrimstoneGo", true)
+			elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownBrimstoneGo") then
+				sprite:Play("ShootDownBrimstoneGo", true)
+			elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
+				sprite:Play("ShootUpBrimstoneGo", true)
+			end
+			playerdata.BarrageIntro = true 
+		end
+		
+		if data.Shoot then
+			if data.Heavy then
+			elseif data.DrFetus then
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRightDr", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeftDr", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDownDr", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUpDr", true)
+				end
+			elseif data.Tech then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightTechGo") then
+					sprite:Play("ShootRightTechGo", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftTechGo") then
+					sprite:Play("ShootLeftTechGo", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownTechGo") then
+					sprite:Play("ShootDownTechGo", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpTechGo") then
+					sprite:Play("ShootUpTechGo", true)
+				end
+			elseif data.Brimstone then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightBrimstoneGo") then
+					sprite:Play("ShootRightBrimstoneGo", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftBrimstoneGo") then
+					sprite:Play("ShootLeftBrimstoneGo", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownBrimstoneGo") then
+					sprite:Play("ShootDownBrimstoneGo", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
+					sprite:Play("ShootUpBrimstoneGo", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 0.8)
+			else
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUp", true)
+				end
+				if data.Light then
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTLIGHT, 1, 0, false, 1)
+				elseif data.Medium then
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				end
+			end
+			print(sprite:GetAnimation())
+			data.Shoot = false
+		end
+		
+		--sounds
+		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
+			if sprite:GetFrame() == 0 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+			end
+		end]]
+		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
+			if sprite:GetFrame() == 12 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSPIT, 1, 0, false, 1)
+			end
+		end
+		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
+			if sprite:GetFrame() == 0 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDELECTRICITY, 1, 0, false, 1)
+			end
+		end
 	end
 end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
 
@@ -77,7 +240,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 		local player = bb.SpawnerEntity:ToPlayer()
 		local controller = player.ControllerIndex;
 		local sprite = bb:GetSprite();
-		
+		bb.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 		if bb.FrameCount == 1 then
 			--print("callie")
 			if bb.Variant ~= BombVariant.BOMB_ROCKET then
@@ -134,6 +297,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 					--ent.Velocity = ent.Velocity * 0.8 --slow him down
 					for i= 1, 4, 1 do
 						local tear = player:FireTear( bb.Position, Vector.FromAngle((data.BarAngle + vec:GetAngleDegrees())+(i*90)-45)*(20), false, false, false):ToTear()
+						--local bomb = player:FireBomb( bb.Position,  Vector.FromAngle((data.BarAngle + vec:GetAngleDegrees())+(i*90)-45)*(20)):ToBomb()
+						--yandereWaifu.GetEntityData(bomb).IsSmall = true
 						tear.Position = bb.Position + Vector.FromAngle((data.BarAngle + vec:GetAngleDegrees())+(i*90)-45)*(20)
 					end
 					--local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, ent.Position, Vector.FromAngle(data.BarAngle + vec:GetAngleDegrees())*(20), ent):ToTear()

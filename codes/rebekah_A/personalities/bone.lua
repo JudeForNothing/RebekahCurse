@@ -829,7 +829,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					yandereWaifu.GetEntityData(player).IsLeftover = false
 					End()
 				end
-				if spr:IsEventTriggered("Chomp") and not fam:GetEntityFlags() & EntityFlag.FLAG_CHARM == EntityFlag.FLAG_CHARM then
+				if spr:IsEventTriggered("Chomp") --[[and not fam:GetEntityFlags() & EntityFlag.FLAG_CHARM == EntityFlag.FLAG_CHARM]] then
 					for i, entities in pairs(Isaac.GetRoomEntities()) do
 						if entities.Variant == RebekahCurse.ENTITY_EXTRACHARANIMHELPER then
 							if yandereWaifu.GetEntityData(entities).IsLeftover and GetPtrHash(yandereWaifu.GetEntityData(entities).Player) == GetPtrHash(player) then

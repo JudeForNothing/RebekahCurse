@@ -9,6 +9,38 @@
 		<sample weight="1" path="reb_death.wav" />
 	</sound>
 	
+	<sound name="Ground Crack">
+		<sample weight="1" path="groundcrack.wav" />
+	</sound>
+	
+	<sound name="RedCharge Light">
+		<sample weight="1" path="red/shotcharge_light.wav" />
+	</sound>
+	
+	<sound name="RedShot Light">
+		<sample weight="1" path="red/light1.wav" />
+	</sound>
+	
+	<sound name="RedShot Medium">
+		<sample weight="1" path="red/medium1.wav" />
+	</sound>
+	
+	<sound name="RedShot Heavy">
+		<sample weight="1" path="red/heavy1.wav" />
+	</sound>
+	
+	<sound name="Red Spit">
+		<sample weight="1" path="red/spit1.wav" />
+	</sound>
+	
+	<sound name="Red Electricity">
+		<sample weight="1" path="red/laser1.wav" />
+	</sound>
+	
+	<sound name="RedCharge Heavy">
+		<sample weight="1" path="red/charge_heavy.wav" />
+	</sound>
+	
 	<sound name="Christian Chant">
 		<sample weight="1" path="ned/christian/chant.wav" />
 	</sound>	

@@ -654,8 +654,8 @@ function yandereWaifu.FlamethrowerLogic(player)
 				yandereWaifu.GetEntityData(cut).StackedFeathers = data.StackedFeathers
 				--yandereWaifu.GetEntityData(cut).TearDelay = modulusnum
 			elseif player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
-				for k, v in pairs(ILIB.roomFamiliars) do
-					if v.Variant == RebekahCurse.ENTITY_BIG_OPHANIM then
+				for k, v in pairs(Isaac.GetRoomEntities()) do
+					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_BIG_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							yandereWaifu.GetEntityData(v).StackedFeathers = data.StackedFeathers*2
@@ -685,8 +685,8 @@ function yandereWaifu.FlamethrowerLogic(player)
 				yandereWaifu.GetEntityData(bomb).StackedFeathers = data.StackedFeathers*2
 				data.IsAttackActive = false
 			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then --brimstone
-				for k, v in pairs(ILIB.roomFamiliars) do
-					if v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
+				for k, v in pairs(Isaac.GetRoomEntities()) do
+					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							v:GetSprite():Play("Shoot", true)
@@ -696,8 +696,8 @@ function yandereWaifu.FlamethrowerLogic(player)
 				data.IsAttackActive = false
 			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then --tech x
 				local dividingNum = data.TinyOrphanims
-				for k, v in pairs(ILIB.roomFamiliars) do
-					if v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
+				for k, v in pairs(Isaac.GetRoomEntities()) do
+					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							v:GetSprite():Play("Shoot", true)
@@ -707,8 +707,8 @@ function yandereWaifu.FlamethrowerLogic(player)
 				end
 			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then --technology
 				local dividingNum = data.TinyOrphanims
-				for k, v in pairs(ILIB.roomFamiliars) do
-					if v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
+				for k, v in pairs(Isaac.GetRoomEntities()) do
+					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							v:GetSprite():Play("Shoot", true)

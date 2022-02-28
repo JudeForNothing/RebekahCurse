@@ -508,19 +508,62 @@ function yandereWaifu.HasCollectibleConfirmedUseMultiple(player, ...)
 	return false
 end
 
-function yandereWaifu.SpawnRedGun(player, direction)
+function yandereWaifu.SpawnRedGun(player, direction, extra)
 	local data = yandereWaifu.GetEntityData(player)
 	if not data.HugsRed then
-		data.HugsRed = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 0, player.Position,  Vector.Zero, player):ToEffect()
-		yandereWaifu.GetEntityData(data.HugsRed).parent = player
-		yandereWaifu.GetEntityData(data.HugsRed).direction = direction
+		if extra then
+			if not data.extraHugsRed then data.extraHugsRed = {} end
+			local gun = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 0, player.Position,  Vector.Zero, player):ToEffect()
+			yandereWaifu.GetEntityData(gun).parent = player
+			yandereWaifu.GetEntityData(gun).direction = direction
+			table.insert( data.extraHugsRed, gun )
+			print("pew")
+			return gun
+		else
+			data.HugsRed = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 0, player.Position,  Vector.Zero, player):ToEffect()
+			yandereWaifu.GetEntityData(data.HugsRed).parent = player
+			yandereWaifu.GetEntityData(data.HugsRed).direction = direction
+		end
 	end
 end
 
 function yandereWaifu.RemoveRedGun(player)
 	local data = yandereWaifu.GetEntityData(player)
-	if data.HugsRed then
-		data.HugsRed:Remove()
-		data.HugsRed = nil
+		if data.HugsRed then
+			data.HugsRed:Remove()
+			data.HugsRed = nil
+		end
+		if data.extraHugsRed then
+			for k, v in pairs(data.extraHugsRed) do
+				v:Remove()
+			end
+			data.extraHugsRed = nil
+		end
+end
+
+function yandereWaifu.PlayAllRedGuns(player, mode)
+	mode = mode or 0
+	local data = yandereWaifu.GetEntityData(player)
+	for k, v in pairs (data.extraHugsRed) do
+		yandereWaifu.GetEntityData(v).Shoot = true
+		
+		if mode == 0 then
+			yandereWaifu.GetEntityData(v).Medium = true
+		end
+		if mode == 1 then
+			yandereWaifu.GetEntityData(v).Light = true
+		end
+		if mode == 2 then
+			yandereWaifu.GetEntityData(v).Heavy = true
+		end
+		if mode == 3 then
+			yandereWaifu.GetEntityData(v).DrFetus = true
+		end
+		if mode == 4 then
+			yandereWaifu.GetEntityData(v).Tech = true
+		end
+		if mode == 5 then
+			yandereWaifu.GetEntityData(v).Brimstone = true
+		end
 	end
 end

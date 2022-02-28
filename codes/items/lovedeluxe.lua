@@ -33,8 +33,8 @@ yandereWaifu.RegisterCharacterHairColor("The Lost", LoveDeluxeHairColor.WHITE)
 yandereWaifu.RegisterCharacterHairColor("Bethany", LoveDeluxeHairColor.BROWN)
 yandereWaifu.RegisterCharacterHairColor("Jacob", LoveDeluxeHairColor.STRAWBERRY)
 yandereWaifu.RegisterCharacterHairColor("Esau", LoveDeluxeHairColor.BROWN)
-yandereWaifu.RegisterCharacterHairColor("Forgotten", LoveDeluxeHairColor.WHITE)
-
+yandereWaifu.RegisterCharacterHairColor("The Forgotten", LoveDeluxeHairColor.WHITE)
+yandereWaifu.RegisterCharacterHairColor("The Soul", LoveDeluxeHairColor.WHITE)
 yandereWaifu.RegisterCharacterHairColor("Rebekah", LoveDeluxeHairColor.BLACK)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
@@ -44,7 +44,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			if data.loveDeluxeTick and data.loveDeluxeDir then
 				if data.loveDeluxeTick >= 30 then
 					local subtype = 0
-					subtype = CharacterHair[player:GetName()]
+					subtype = CharacterHair[player:GetName()] or 0
+					
 
 					local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HAIRWHIP, subtype, player.Position, Vector(0,0), player);
 					yandereWaifu.GetEntityData(cut).PermanentAngle = data.loveDeluxeDir

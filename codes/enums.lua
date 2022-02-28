@@ -169,6 +169,7 @@ RebekahCurse = {
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
 	ENTITY_REBEKAH_DUST = Isaac.GetEntityVariantByName("Rebekah Dust Effect"),
 	
+	ENTITY_BACKGROUNDTINT = Isaac.GetEntityVariantByName("Background Tint"),
 	ENTITY_UNGENERICTRACER = Isaac.GetEntityVariantByName("Ungeneric Tracer"),
 	ENTITY_PINGEFFECT = Isaac.GetEntityVariantByName("Ping Effect"),
 	
@@ -184,7 +185,17 @@ RebekahCurse = {
 RebekahCurseSounds = {
 	SOUND_REBHURT = Isaac.GetSoundIdByName("RebekahHurt"),
 	SOUND_REBDIE = Isaac.GetSoundIdByName("RebekahDie"),
-
+	
+	SOUND_GROUNDCRACK = Isaac.GetSoundIdByName("Ground Crack"),
+	
+	SOUND_REDCHARGELIGHT = Isaac.GetSoundIdByName("RedCharge Light"),
+	SOUND_REDCHARGEHEAVY = Isaac.GetSoundIdByName("RedCharge Heavy"),
+	SOUND_REDSHOTLIGHT = Isaac.GetSoundIdByName("RedShot Light"),
+	SOUND_REDSHOTMEDIUM = Isaac.GetSoundIdByName("RedShot Medium"),
+	SOUND_REDSHOTHEAVY = Isaac.GetSoundIdByName("RedShot Heavy"),
+	SOUND_REDSPIT = Isaac.GetSoundIdByName("Red Spit"),
+	SOUND_REDELECTRICITY = Isaac.GetSoundIdByName("Red Electricity"),
+	
 	SOUND_CHRISTIAN_CHANT = Isaac.GetSoundIdByName("Christian Chant"),
 	SOUND_CHRISTIAN_OVERTAKE = Isaac.GetSoundIdByName("Christian Overtake"),
 	SOUND_CHRISTIAN_READ = Isaac.GetSoundIdByName("Christian Read"),
@@ -197,6 +208,7 @@ RebekahCurseSounds = {
 	SOUND_LASEREXPLOSION = Isaac.GetSoundIdByName("Laser Explosion"),
 	SOUND_DEEPELECTRIC = Isaac.GetSoundIdByName("Deep Electricity"),
 	SOUND_ELECTRIC = Isaac.GetSoundIdByName("Electricity"),
+	SOUND_SPARKELECTRIC = Isaac.GetSoundIdByName("Spark Effect"),
 	SOUND_PUNCH = Isaac.GetSoundIdByName("Punch Effect"),
 	
 	SOUND_IMDIEBEEP = Isaac.GetSoundIdByName("Im Die Beep"),
@@ -226,6 +238,7 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_GENERIC_DUST_FRONT = 1,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED = 2,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK = 3,
+	ENTITY_REBEKAH_CHARGE_DUST = 4
 }
 
 local wasFromTaintedLocked = false

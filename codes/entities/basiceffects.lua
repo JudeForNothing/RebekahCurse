@@ -58,6 +58,7 @@ end, RebekahCurse.ENTITY_PERSONALITYPOOF);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
 	
 	if eff.FrameCount == 1 then
 		sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
@@ -69,11 +70,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Play("Angled", true) 
 		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK then
 			sprite:Play("AngledBack", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
+			sprite:Load("gfx/effects/red/charge_dust.anm2", true)
+			sprite:Play("Charge", true) 
 		end
 		eff.RenderZOffset = 100;
 	end
 	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") then
 		eff:Remove()
+	end
+	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
+		eff.Position = data.Parent.Position
+		eff.Velocity = data.Parent.Velocity
 	end
 end, RebekahCurse.ENTITY_REBEKAH_DUST);
 
@@ -330,15 +338,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite()
 	local data = yandereWaifu.GetEntityData(eff)
 	
+	if data.parent then
+		eff.Position = data.parent.Position
+		eff.Velocity = data.parent.Velocity
+	end
+	
 	--sprite:LoadGraphics()
 	if eff.FrameCount == 1 then
 		sprite:Play("FadeIn", true)
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_GROUNDCRACK, 1, 0, false, 0.9 )
+	end
+	if sprite:IsPlaying("FadeIn") then
+		ILIB.game:ShakeScreen(4)
 	end
 	if sprite:IsFinished("FadeIn") then
 		sprite:Play("Pentagram", true)
 	end
 	if sprite:IsFinished("FadeOut") then
-		eff:Remove()
+		eff:AddEntityFlags(EntityFlag.FLAG_RENDER_FLOOR)
+		--eff:Remove()
 	end
 	eff.RenderZOffset = -10000;
 end, RebekahCurse.ENTITY_ARCANE_CIRCLE)

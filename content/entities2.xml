@@ -1,21 +1,12 @@
 <entities anm2root="gfx/" version="5">
 	<!--misc-->
-	<entity anm2path="effect_cleaver.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="16" friction="1" id="34762" name="Cleaver" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="0" subtype="0">
-        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
-    </entity>
-	<entity anm2path="008.001_Bone Club.anm2" baseHP="0" boss="0" champion="0" collisionDamage="15" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Cleaver Hitbox" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="35" subtype="9424">
-        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
-    </entity>
-	<entity anm2path="effect_cleaver.anm2" baseHP="0" boss="0" champion="0" collisionDamage="15" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Cleaver Hitbox" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="35" subtype="617">
-        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
-    </entity>
-	<entity anm2path="circle_arcane.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Arcane Circle" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="93371854">
+	<entity anm2path="effects/circle_arcane.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Arcane Circle" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="93371854">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="specialbeam.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Special Beam" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="93371855">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="brokenglasses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Broken Glasses" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835285">
+	<entity anm2path="brokenglasses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Broken Glasses" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="815285">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
@@ -130,7 +121,7 @@
 	<entity anm2path="darkboom2.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Dark Boom 2" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="7821272" portrait="160" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
-	<entity anm2path="darkmaw.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="7" collisionRadius="22" friction="1" id="1000" name="Dark Maw" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="835287">
+	<entity anm2path="darkmaw.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="7" collisionRadius="22" friction="1" id="1000" name="Dark Maw" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="845285">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="effects/evil/tear_darkknife.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Dark Knife Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62683">
@@ -318,16 +309,20 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
+	
+	<entity anm2path="effects/shade.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Background Tint" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="845287" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	<entity anm2path="effects/ungeneric_tracer.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ungeneric Tracer" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835284" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/items/imdie/ping.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ping Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835285" gridCollision="none">
+	<entity anm2path="effects/items/imdie/ping.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ping Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="825285" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/items/lovesick_slash.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Lovesick Slash" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835286" gridCollision="none">
+	<entity anm2path="effects/items/lovesick_slash.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Lovesick Slash" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="825286" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="familiar/imdie_polty.anm2" baseHP="0" boss="0" champion="0" collisionDamage="7" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Oh, I'm Polty" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663126">
+	<entity anm2path="familiar/imdie_polty.anm2" baseHP="0" boss="0" champion="0" collisionDamage="7" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Oh, I'm Polty" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663127">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -335,10 +330,10 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
-	<entity anm2path="bosses/rivals/eve/circle.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Eve Summon Circle" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835287" gridCollision="none">
+	<entity anm2path="bosses/rivals/eve/circle.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Eve Summon Circle" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="845286" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/items/golemfist.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Patriarch's Fist" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835288" gridCollision="none">
+	<entity anm2path="effects/items/golemfist.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Patriarch's Fist" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="845288" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="effects/red/dash_dust.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
