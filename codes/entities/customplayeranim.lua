@@ -414,6 +414,43 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			end)
 		end
+		
+	--rebekah red heart mode
+	
+	elseif data.RedIsShootingHigh then
+		if eff.FrameCount == 1 then
+			sprite:Load("gfx/characters/rebekahshootsup.anm2",true)
+			sprite:Play("Shoot",false)
+			if data.Player:GetHeadColor() == SkinColor.SKIN_WHITE then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/red/rebekah_shootup_white.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLACK then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/red/rebekah_shootup_black.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLUE then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/red/rebekah_shootup_blue.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_RED then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/red/rebekah_shootup_red.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREEN then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/red/rebekah_shootup_green.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREY then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/red/rebekah_shootup_grey.png")
+			end
+			sprite:LoadGraphics()
+			data.Player.Visible = false
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1)
+		elseif sprite:GetFrame() == 54 and sprite:IsPlaying("Shoot") then
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
+		elseif sprite:IsFinished("Shoot") then
+			if not data.RedLudo then
+				yandereWaifu.GetEntityData(data.Player).isPlayingCustomAnim = false
+				yandereWaifu.GetEntityData(data.Player).FinishedPlayingCustomAnim = true
+				yandereWaifu.GetEntityData(data.Player).BarrageIntro = true 
+			else
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, player)
+				yandereWaifu.GetEntityData(poof).Parent = data.Player
+			end
+			data.Player.Visible = true
+			eff:Remove()
+		end
 	elseif data.IsGreivous then
 		if eff.FrameCount == 1 then --beginning
 			eff.Visible = true

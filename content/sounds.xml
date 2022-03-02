@@ -41,6 +41,19 @@
 		<sample weight="1" path="red/charge_heavy.wav" />
 	</sound>
 	
+	<sound name="Red Jingle">
+		<sample weight="1" path="red/jingle1.wav" />
+	</sound>
+	<sound name="Red Crash">
+		<sample weight="1" path="red/crash1.wav" />
+	</sound>
+	<sound name="Red Fetus1">
+		<sample weight="1" path="red/fetus1.wav" />
+	</sound>
+	<sound name="Red Fetus2">
+		<sample weight="1" path="red/fetus2.wav" />
+	</sound>
+	
 	<sound name="Christian Chant">
 		<sample weight="1" path="ned/christian/chant.wav" />
 	</sound>	

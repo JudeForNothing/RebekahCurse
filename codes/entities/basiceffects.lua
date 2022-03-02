@@ -73,15 +73,26 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
 			sprite:Load("gfx/effects/red/charge_dust.anm2", true)
 			sprite:Play("Charge", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
+			sprite:Load("gfx/effects/red/red_ludocrashlightning.anm2", true)
+			sprite:Play("Crash", true) 
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDJINGLE, 1, 0, false, 1)
 		end
 		eff.RenderZOffset = 100;
 	end
-	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") then
+	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Crash") then
 		eff:Remove()
 	end
 	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
 		eff.Position = data.Parent.Position
 		eff.Velocity = data.Parent.Velocity
+	end
+	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
+		if sprite:GetFrame() == 25 then
+			yandereWaifu.GetEntityData(data.Parent).isPlayingCustomAnim = false
+			yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
+			yandereWaifu.GetEntityData(data.Parent).BarrageIntro = true 
+		end
 	end
 end, RebekahCurse.ENTITY_REBEKAH_DUST);
 

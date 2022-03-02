@@ -196,6 +196,11 @@ RebekahCurseSounds = {
 	SOUND_REDSPIT = Isaac.GetSoundIdByName("Red Spit"),
 	SOUND_REDELECTRICITY = Isaac.GetSoundIdByName("Red Electricity"),
 	
+	SOUND_REDJINGLE = Isaac.GetSoundIdByName("Red Jingle"),
+	SOUND_REDCRASH = Isaac.GetSoundIdByName("Red Crash"),
+	SOUND_REDFETUS1 = Isaac.GetSoundIdByName("Red Fetus1"),
+	SOUND_REDFETUS2 = Isaac.GetSoundIdByName("Red Fetus2"),
+	
 	SOUND_CHRISTIAN_CHANT = Isaac.GetSoundIdByName("Christian Chant"),
 	SOUND_CHRISTIAN_OVERTAKE = Isaac.GetSoundIdByName("Christian Overtake"),
 	SOUND_CHRISTIAN_READ = Isaac.GetSoundIdByName("Christian Read"),
@@ -238,7 +243,8 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_GENERIC_DUST_FRONT = 1,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED = 2,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK = 3,
-	ENTITY_REBEKAH_CHARGE_DUST = 4
+	ENTITY_REBEKAH_CHARGE_DUST = 4,
+	ENTITY_REBEKAH_LUDO_LIGHTNING = 5
 }
 
 local wasFromTaintedLocked = false

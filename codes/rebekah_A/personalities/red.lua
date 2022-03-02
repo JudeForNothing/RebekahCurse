@@ -121,6 +121,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		
 		if data.Shoot then
 			if data.Heavy then
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				sprite.Scale = Vector(2,2)
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUp", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -380,6 +393,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == 1 then
 			sprite:Play("Idle", true)
 			yandereWaifu.RebekahCanShoot(player, false)
+			data.SoundFrame = 1
 		elseif sprite:IsFinished("Idle") then
 			sprite:Play("Blink",true)
 		elseif eff.FrameCount >= 55 then
@@ -395,9 +409,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			end
 		end
-		if eff.FrameCount < 35 then
+		--[[if eff.FrameCount < 55 then
 			--player.Velocity = Vector(0,0)
-		end
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, data.SoundFrame)
+			data.SoundFrame = data.SoundFrame - 0.01
+		end]]
 end, RebekahCurse.ENTITY_ORBITALTARGET)
 
 
@@ -462,6 +478,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					brim.CollisionDamage = player.Damage * 5
 				end
 			end
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCRASH, 1, 0, false, 1)
 		elseif sprite:IsFinished("Falling") or sprite:IsFinished("FallingSingular") then
 			eff:Remove()
 		end
@@ -481,16 +498,42 @@ function yandereWaifu:RedKnifeRender(tr, _)
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.RedKnifeRender)
 
-function yandereWaifu:RedKnifeUpdate(tr)
+function yandereWaifu:RedPersonalityTearUpdate(tr)
 	local data = yandereWaifu.GetEntityData(tr)
 	if tr.Variant == RebekahCurse.ENTITY_REDKNIFE then
 		local angleNum = (tr.Velocity):GetAngleDegrees();
 		tr:GetSprite().Rotation = angleNum + 90;
 		tr:GetData().Rotation = tr:GetSprite().Rotation;
 		tr.Velocity = tr.Velocity * 0.9
+	elseif tr.Variant == 50 and data.IsJacobFetus or data.IsEsauFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount == 1 and data.IsJacobFetus then
+			tr:GetSprite():ReplaceSpritesheet(0, "gfx/fetus_tears_jacob.png")
+			tr:GetSprite():LoadGraphics();
+		end
+		if tr.FrameCount == 1 and data.IsEsauFetus then
+			tr:GetSprite():ReplaceSpritesheet(0, "gfx/fetus_tears_esau.png")
+			tr:GetSprite():LoadGraphics();
+			tr.CollisionDamage = tr.BaseDamage + 2.5
+		end
+		if tr.FrameCount <= 200 and data.IsJacobFetus then
+			tr.Height = -12
+			local e = InutilLib.GetClosestGenericEnemy(tr, 500)
+			if e then
+				InutilLib.MoveDirectlyTowardsTarget(tr, e, 2+math.random(1,5)/10, 0.85)
+			end
+			tr.Velocity = tr.Velocity * (0.85+math.random(1,5)/10)
+		end
+		if tr.FrameCount <= 150 and data.IsEsauFetus then
+			tr.Height = -12
+			local e = InutilLib.GetClosestGenericEnemy(tr, 500)
+			if e then
+				InutilLib.MoveDirectlyTowardsTarget(tr, e, 1+math.random(1,5)/10, 0.85)
+			end
+			tr.Velocity = tr.Velocity * (0.85+math.random(1,5)/10)
+		end
 	end
 end
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.RedKnifeUpdate)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.RedPersonalityTearUpdate)
 
 local RebekahNormalSword = {
 	[1] = "1.png",

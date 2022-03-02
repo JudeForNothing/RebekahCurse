@@ -419,7 +419,7 @@ function yandereWaifu.barrageAndSP(player)
 					local beam = EntityLaser.ShootAngle(12, player.Position, data.shiftyBeam.Angle + math.random(-10,10) + i, 10, Vector(0,10), player):ToLaser();
 					beam.MaxDistance = math.random(50,200)
 					beam.Timeout = 2
-					InutilLib.UpdateLaserSize(beam, math.random(1,2))
+					--InutilLib.UpdateLaserSize(beam, math.random(1,2))
 				end
 			end
 			if player.FrameCount % 3 == 0 then
@@ -1693,8 +1693,13 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) and player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
 			modulusnum = math.ceil(player.MaxFireDelay/3)
+		elseif player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+			modulusnum = math.ceil(player.MaxFireDelay/2)
 		else
 			modulusnum = math.ceil((player.MaxFireDelay/5))
+		end
+		if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+			modulusnum = modulusnum - 2
 		end
 		
 		local endFrameCount = 40
@@ -1816,9 +1821,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				end
 			end
 			
-			if data.redcountdownFrames == 0 then
-				
-				
+			if data.redcountdownFrames == 0 then	
 				--moms wig synergy
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_WIG) then
 					local numLimit = 5
@@ -1881,184 +1884,159 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					local angle = direction:GetAngleDegrees()
 					local beam = EntityLaser.ShootAngle(12, player.Position, angle + 180, 30, Vector(0,0), player):ToLaser()
 					beam.MaxDistance = 250
-					InutilLib.UpdateLaserSize(beam, 2)
+					--InutilLib.UpdateLaserSize(beam, 2)
 					data.shiftyBeam = beam
 				end
 			end
-			
+			--setup of red personality's gun effects and barrage
+			if not data.MainArcaneCircle then
+				data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 0, player.Position,  Vector.Zero, nil)
+				yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+				data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+				data.ArcaneCircleDust.RenderZOffset = -1
+				yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player --why this parent and Parent isnt consistent is beyond me and im too lazy to fix it
+			end
+				
 			local ludoTear
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) and not player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 				ludoTear = InutilLib.GetPlayerLudo(player)
-				if IsValidRedBarrage() then
-					if ludoTear then
-						--if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player) else
-						--	if not data.KnifeHelper.incubus:Exists() then
-						--		data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player)
-						--	end
-						--end
-						mainLudoSpawned = false -- sets if the main tear pointer has spawned
-						for i = 0, 270, 360/4 do
-							--knife sucks
-							if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-								ludoTear.Velocity = ludoTear.Velocity * 0.7
-								local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
-								kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
-								kn.CollisionDamage = player.Damage * numofShots;
-								kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE);
-								if not mainLudoSpawned then
-									mainLudoSpawned = true
-									kn.Scale = kn.Scale + .2
-									kn.CollisionDamage = kn.CollisionDamage * 1.5
-								end
-								--this makes so much bugs
-								--data.KnifeHelper.incubus.Position = ludoTear.Position
-								--InutilLib.SpawnKnife(player, (i + data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 300, data.KnifeHelper)
-							elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
-								--local brim = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
-								local brim = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() - 45, 5, Vector(0,-5), player):ToLaser()
-								brim:SetActiveRotation( 0, 135, 10, false );
-								brim:AddTearFlags(player.TearFlags)
-								brim:SetColor(ludoTear:GetColor(), 999, 999)
-								brim.DisableFollowParent = true
-								brim.CollisionDamage = player.Damage * numofShots;
-								--brim.Position = ludoTear.Position
-								--local brim2 = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
-								local brim2 = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() + 45, 5, Vector(0,-5), player):ToLaser()
-								brim2:SetActiveRotation( 0, -135, -10, false );
-								brim2:AddTearFlags(player.TearFlags)
-								brim2:SetColor(ludoTear:GetColor(), 999, 999)
-								brim2.DisableFollowParent = true
-								brim2.CollisionDamage = player.Damage * numofShots;
-								if not mainLudoSpawned then
-									mainLudoSpawned = true
-									InutilLib.UpdateLaserSize(brim, 6 * (tearSize + .2))
-									brim.CollisionDamage = brim.CollisionDamage * 1.5
-									InutilLib.UpdateLaserSize(brim2, 6 * (tearSize + .2))
-									brim2.CollisionDamage = brim2.CollisionDamage * 1.5
-								end
-								--brim2.Position = ludoTear.Position
-							elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
-								local randomAngleperLaser = math.random(-15,15) --used to be 45, but now the synergy feels so boring
-								--print("fire")
-								local techlaser = player:FireTechLaser(ludoTear.Position, 0, Vector.FromAngle(i + direction:GetAngleDegrees() + randomAngleperLaser), false, true)
-								techlaser.DisableFollowParent = true
-								techlaser.OneHit = true;
-								techlaser.Timeout = 1;
-								techlaser.CollisionDamage = player.Damage * numofShots;
-								techlaser:SetHomingType(1)
-								InutilLib.UpdateLaserSize(techlaser, 6 * tearSize)
-								if not mainLudoSpawned then
-									mainLudoSpawned = true
-									InutilLib.UpdateLaserSize(techlaser, 6 * (tearSize + .2))
-									techlaser.CollisionDamage = techlaser.CollisionDamage * 1.5
-								end
-							else
-								--local num = 1
-								--for j = 0, 90, 90/numofShots do
-									--print(num)
-									--num = num + 1
-									--local fix
-									--if numofShots > 1 then fix = 1 else fix = 0 end
-									local tears = player:FireTear(ludoTear.Position, Vector.FromAngle(--[[i + (j - 45)*fix +]] (i + data.addedbarrageangle + direction:GetAngleDegrees()))*(10), false, false, false):ToTear()
-									tears.Position = ludoTear.Position
-									tears.Scale = tears.Scale + tearSize
-									tears.CollisionDamage = player.Damage * numofShots
+				
+				if data.BarrageIntro then
+							
+					if IsValidRedBarrage() then
+						if ludoTear then
+							--if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player) else
+							--	if not data.KnifeHelper.incubus:Exists() then
+							--		data.KnifeHelper = InutilLib:SpawnKnifeHelper(ludoTear, player)
+							--	end
+							--end
+							mainLudoSpawned = false -- sets if the main tear pointer has spawned
+							for i = 0, 270, 360/4 do
+								--knife sucks
+								if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
+									ludoTear.Velocity = ludoTear.Velocity * 0.7
+									local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+									kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
+									kn.CollisionDamage = player.Damage * numofShots;
+									kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE);
 									if not mainLudoSpawned then
 										mainLudoSpawned = true
-										tears.Scale = tears.Scale + .2
-										tears.CollisionDamage = tears.CollisionDamage * 1.5
+										kn.Scale = kn.Scale + .2
+										kn.CollisionDamage = kn.CollisionDamage * 1.5
 									end
-								--end
-							end
-						end
-					end
-					if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then
-						if ludoTear then
-							for i = 0, 360, 360/3 do
-								local tears = player:FireTear(ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle2 + direction:GetAngleDegrees())*(10), false, false, false):ToTear()
-								tears.Position = ludoTear.Position
-								tears.Scale = tears.Scale + tearSize
-							end
-						end
-					end
-				elseif data.redcountdownFrames >= endFrameCount then
-					EndBarrageIfValid()
-				end
-			else
-				if not data.MainArcaneCircle then
-					data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 0, player.Position,  Vector.Zero, nil)
-					yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
-					data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
-					data.ArcaneCircleDust.RenderZOffset = -1
-					yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player --why this parent and Parent isnt consistent is beyond me and im too lazy to fix it
-				end
-				local gunCount = 0 
-				if not data.extraHugsRed then --for her neutral special, she weilds a gun
-					for lhorns = 0, 270, 360/4 do
-						direction = Vector.FromAngle(direction:GetAngleDegrees() + lhorns) --lokis horns offset
-						local oldDir = direction
-						for wizAng = -45, 90, 135 do
-							if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) and lhorns == 0 then --sets the wiz angles
-								direction = Vector.FromAngle(direction:GetAngleDegrees() + wizAng)
-							end
-							
-							for j = 0, numofShots do -- 90, 90/numofShots do
-								--InutilLib.SetTimer( j * 3, function()
-									local fix = 0
-									local baseOffset = 7 * (numofShots) --offset set depending on how much multishots are there
-									if numofShots > 1 then fix = 1 else fix = 0 end
-									if j > 0 then --idk what this is
-		
-										local gun = yandereWaifu.SpawnRedGun(player, Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix )*(20), true)
-										yandereWaifu.GetEntityData(gun).StartCountFrame = gunCount
-										
-										gunCount = gunCount + 1
+									--this makes so much bugs
+									--data.KnifeHelper.incubus.Position = ludoTear.Position
+									--InutilLib.SpawnKnife(player, (i + data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 300, data.KnifeHelper)
+								elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+									--local brim = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+									local brim = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() - 45, 5, Vector(0,-5), player):ToLaser()
+									brim:SetActiveRotation( 0, 135, 10, false );
+									brim:AddTearFlags(player.TearFlags)
+									brim:SetColor(ludoTear:GetColor(), 999, 999)
+									brim.DisableFollowParent = true
+									brim.CollisionDamage = player.Damage * numofShots;
+									--brim.Position = ludoTear.Position
+									--local brim2 = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+									local brim2 = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() + 45, 5, Vector(0,-5), player):ToLaser()
+									brim2:SetActiveRotation( 0, -135, -10, false );
+									brim2:AddTearFlags(player.TearFlags)
+									brim2:SetColor(ludoTear:GetColor(), 999, 999)
+									brim2.DisableFollowParent = true
+									brim2.CollisionDamage = player.Damage * numofShots;
+									if not mainLudoSpawned then
+										mainLudoSpawned = true
+										InutilLib.UpdateLaserSize(brim, 6 * (tearSize + .2))
+										brim.CollisionDamage = brim.CollisionDamage * 1.5
+										InutilLib.UpdateLaserSize(brim2, 6 * (tearSize + .2))
+										brim2.CollisionDamage = brim2.CollisionDamage * 1.5
 									end
-								--end)
-							end
-				
-							if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
-								break -- just makes sure it doesnt duplicate
+									--brim2.Position = ludoTear.Position
+								elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
+									local randomAngleperLaser = math.random(-15,15) --used to be 45, but now the synergy feels so boring
+									--print("fire")
+									local techlaser = player:FireTechLaser(ludoTear.Position, 0, Vector.FromAngle(i + direction:GetAngleDegrees() + randomAngleperLaser), false, true)
+									techlaser.DisableFollowParent = true
+									techlaser.OneHit = true;
+									techlaser.Timeout = 1;
+									techlaser.CollisionDamage = player.Damage * numofShots;
+									techlaser:SetHomingType(1)
+									InutilLib.UpdateLaserSize(techlaser, 6 * tearSize)
+									if not mainLudoSpawned then
+										mainLudoSpawned = true
+										InutilLib.UpdateLaserSize(techlaser, 6 * (tearSize + .2))
+										techlaser.CollisionDamage = techlaser.CollisionDamage * 1.5
+									end
+								else
+									--local num = 1
+									--for j = 0, 90, 90/numofShots do
+										--print(num)
+										--num = num + 1
+										--local fix
+										--if numofShots > 1 then fix = 1 else fix = 0 end
+										local tears = player:FireTear(ludoTear.Position, Vector.FromAngle(--[[i + (j - 45)*fix +]] (i + data.addedbarrageangle + direction:GetAngleDegrees()))*(10), false, false, false):ToTear()
+										tears.Position = ludoTear.Position
+										tears.Scale = tears.Scale + tearSize
+										tears.CollisionDamage = player.Damage * numofShots
+										if not mainLudoSpawned then
+											mainLudoSpawned = true
+											tears.Scale = tears.Scale + .2
+											tears.CollisionDamage = tears.CollisionDamage * 1.5
+										end
+									--end
+								end
 							end
 						end
-						direction = oldDir
-						if not data.IsLokiHornsTriggered then 
-							break
-						end --break if not loki horns is triggered
-					end	
+						if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then
+							if ludoTear then
+								for i = 0, 360, 360/3 do
+									local tears = player:FireTear(ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle2 + direction:GetAngleDegrees())*(10), false, false, false):ToTear()
+									tears.Position = ludoTear.Position
+									tears.Scale = tears.Scale + tearSize
+								end
+							end
+						end
+					elseif data.redcountdownFrames >= endFrameCount then
+						EndBarrageIfValid()
+					end
+				else
+					if data.redcountdownFrames == 0 and not data.isPlayingCustomAnim then
+						local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+						yandereWaifu.GetEntityData(customBody).Player = player
+						yandereWaifu.GetEntityData(customBody).RedIsShootingHigh = true
+						yandereWaifu.GetEntityData(customBody).RedLudo = true
+						data.isPlayingCustomAnim = true
+					end
 					if not data.canModifyGuns then data.canModifyGuns = true end
-					--if not data.gunFrameCount then data.gunFrameCount = player.FrameCount + (gunCount)*5 end
 				end
-				--if data.gunFrameCount then --this thing makes all the hugs guns in the room play around something idk
-				--	if player.FrameCount > data.gunFrameCount then
-				if #data.extraHugsRed > 0 and data.canModifyGuns then
+				
+				local canModifyGunsLudo = player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) and data.canModifyGuns
+				if canModifyGunsLudo then
 					local gunIdle = true
-					for k, v in pairs(data.extraHugsRed) do
-						if v:GetSprite():IsPlaying("Startup") or InutilLib.IsPlayingMultiple(v:GetSprite(), "ShootRightTech", "ShootLeftTech", "ShootDownTech", "ShootUpTech",  "ShootRightBrimstone", "ShootLeftBrimstone", "ShootDownBrimstone", "ShootUpBrimstone") then
-							gunIdle = false
-							break
-						end
-					end					
+					if not data.FinishedPlayingCustomAnim then
+						gunIdle = false
+					end
+
 					if gunIdle then
-						for k, v in pairs(data.extraHugsRed) do
-							v:GetSprite():Play("Spawn", true)
-						end
 						--player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_PAUSE, -1)
 						for k, v in pairs (Isaac.GetRoomEntities()) do
 							v:ClearEntityFlags(EntityFlag.FLAG_FREEZE)
 						end
-						data.canModifyGuns = nil
 						data.tintEffect:Remove()
 						data.tintEffect = nil
+						yandereWaifu.RebekahCanShoot(player, true)
+						player.FireDelay = 60
+						data.canModifyGuns = nil
+						data.FinishedPlayingCustomAnim = nil
 					else
 						if not data.tintEffect then
 							data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
 							data.tintEffect.RenderZOffset = -10
+							yandereWaifu.RebekahCanShoot(player, false)
 						end
 						--player:UseActiveItem(CollectibleType.COLLECTIBLE_PAUSE, true, false, false, false, -1)
 						--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_PAUSE, false, 1)
 						for k, v in pairs (Isaac.GetRoomEntities()) do
-							if v.Type ~= 1000 then
+							if v.Type ~= 1000 and v.Type ~= 1 then
 								v:AddEntityFlags(EntityFlag.FLAG_FREEZE)
 							end
 						end
@@ -2066,9 +2044,52 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						--we need to freeze the player
 						player.Position = player.Position
 						player.Velocity = Vector.Zero
+						player.FireDelay = 60
 					end
 				end
-				--end
+			else
+				local gunCount = 0 
+				if not player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then --epic fetus has 
+					if not data.extraHugsRed then --for her neutral special, she weilds a gun
+						for lhorns = 0, 270, 360/4 do
+							direction = Vector.FromAngle(direction:GetAngleDegrees() + lhorns) --lokis horns offset
+							local oldDir = direction
+							for wizAng = -45, 90, 135 do
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) and lhorns == 0 then --sets the wiz angles
+									direction = Vector.FromAngle(direction:GetAngleDegrees() + wizAng)
+								end
+								
+								for j = 0, numofShots do -- 90, 90/numofShots do
+									--InutilLib.SetTimer( j * 3, function()
+										local fix = 0
+										local baseOffset = 7 * (numofShots) --offset set depending on how much multishots are there
+										if numofShots > 1 then fix = 1 else fix = 0 end
+										if j > 0 then --idk what this is
+			
+											local gun = yandereWaifu.SpawnRedGun(player, Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix )*(20), true)
+											yandereWaifu.GetEntityData(gun).StartCountFrame = gunCount
+											
+											gunCount = gunCount + 1
+										end
+									--end)
+								end
+					
+								if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
+									break -- just makes sure it doesnt duplicate
+								end
+							end
+							direction = oldDir
+							if not data.IsLokiHornsTriggered then 
+								break
+							end --break if not loki horns is triggered
+						end	
+						if not data.canModifyGuns then data.canModifyGuns = true end
+						--if not data.gunFrameCount then data.gunFrameCount = player.FrameCount + (gunCount)*5 end
+					end
+				else
+					if not data.canModifyGuns then data.canModifyGuns = true end
+				end
+
 				for lhorns = 0, 270, 360/4 do
 					direction = Vector.FromAngle(direction:GetAngleDegrees() + lhorns) --lokis horns offset
 					local oldDir = direction
@@ -2111,13 +2132,18 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								player:EvaluateItems()
 							end
 						end
-						
 						data.barrageInit = true
 						if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then --rocket synergy
-							local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALTARGET, 0, player.Position,  Vector.FromAngle(direction:GetAngleDegrees())*(9), nil)
-							yandereWaifu.GetEntityData(target).Parent = player
-							EndBarrageIfValid()
-							
+							if data.BarrageIntro then
+								local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALTARGET, 0, player.Position,  Vector.FromAngle(direction:GetAngleDegrees())*(120), nil)
+								yandereWaifu.GetEntityData(target).Parent = player
+								EndBarrageIfValid()
+							elseif data.redcountdownFrames == 0 and not data.isPlayingCustomAnim then
+								local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+								yandereWaifu.GetEntityData(customBody).Player = player
+								yandereWaifu.GetEntityData(customBody).RedIsShootingHigh = true
+								data.isPlayingCustomAnim = true
+							end
 						elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then --slashing time! sword effect 
 							if data.redcountdownFrames == 1 and not data.isPlayingCustomAnim then --too lazy to set data.isPlayingCustomAnim to every condition, might have to one day
 								if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY) then
@@ -2161,6 +2187,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 												--local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, player.Position,  Vector.FromAngle(direction:GetAngleDegrees()):Resized( 9 ), player);
 												yandereWaifu.GetEntityData(bomb).IsByAFanGirl = true; --makes sure that it's Rebecca's bombs
 												bomb:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
+												InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDFETUS1, 1, 0, false, 1)
 											end
 										end)
 									end
@@ -2205,6 +2232,18 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									end
 									yandereWaifu.PlayAllRedGuns(player, 5)
 								elseif data.redcountdownFrames >= endFrameCount then
+									local num = 1
+									for j = 0, numofShots do
+										num = num + 1
+										local fix
+										local baseOffset = 7 * (numofShots)
+										if numofShots > 1 then fix = 1 else fix = 0 end
+										if (j == 0 and numofShots <= 1) or (j > 0 and numofShots > 1) then --tells if you need to shoot once if you have 1 numofShots or if more than 1 numofShots, no need for shoot once correction
+											local brim = player:FireBrimstone( Vector.FromAngle((-7 + (15*j))*fix + (direction:GetAngleDegrees()) - baseOffset*fix ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+											--InutilLib.UpdateLaserSize(brim, 2)
+											brim.Timeout = 30
+										end
+									end
 									EndBarrageIfValid()
 								end
 							end
@@ -2291,14 +2330,27 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										num = num + 1
 										local fix
 										local baseOffset = 7 * (numofShots)
+										local isFetus = 0
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+											isFetus = 18
+										end
 										if numofShots > 1 then fix = 1 else fix = 0 end
 										if (j == 0 and numofShots <= 1) or (j > 0 and numofShots > 1) then --tells if you need to shoot once if you have 1 numofShots or if more than 1 numofShots, no need for shoot once correction
-											local tears = player:FireTear(player.Position, Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix )*(20), false, false, false):ToTear()
+											local tears = player:FireTear(player.Position, Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix )*(20-isFetus), false, false, false):ToTear()
 											tears.Position = player.Position
 											tears.Scale = tears.Scale + tearSize
 											tears.CollisionDamage = tears.CollisionDamage * 1.2
 											if tears.Variant == 1 then isBlood = true end
 											player.Velocity = player.Velocity + (Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix + 180)*(1))*0.7
+											if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+												tears:ChangeVariant(50)
+												tears.TearFlags = tears.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+												if math.random(1,3) == 3 then
+													yandereWaifu.GetEntityData(tears).IsEsauFetus = true
+												else
+													yandereWaifu.GetEntityData(tears).IsJacobFetus = true
+												end
+											end
 										end
 									end
 									--eye drop synergy
@@ -2330,11 +2382,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									local mode = 0
 									if player.MaxFireDelay <= 1 then
 										mode = 1
+									elseif player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) or player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
+										mode = 2
 									end
 									yandereWaifu.PlayAllRedGuns(player, mode)
 								end
 								InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 1, 0, false, 1.2)
 								if player.MaxFireDelay <= 5 and player.MaxFireDelay > 1 then
+									local isFetus = 0
+									if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+										isFetus = 18
+									end
 									if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 										local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(addedbarrageangle2.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 										kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
@@ -2345,14 +2403,23 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 										local circle = player:FireTechXLaser(player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees())*(20), data.Xsize)
 									else
-										local tears = player:FireTear(player.Position, Vector.FromAngle((data.addedbarrageangle2) + direction:GetAngleDegrees())*(20), false, false, false)
+										local tears = player:FireTear(player.Position, Vector.FromAngle((data.addedbarrageangle2) + direction:GetAngleDegrees())*(20-isFetus), false, false, false)
 										tears.Position = player.Position
 										tears.Scale = tears.Scale + tearSize
 										tears.CollisionDamage = tears.CollisionDamage * 1.2
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+											tears:ChangeVariant(50)
+											tears.TearFlags = tears.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+											yandereWaifu.GetEntityData(tears).IsEsauFetus = true
+										end
 									end
 									yandereWaifu.PlayAllRedGuns(player, 0)
 								end
 								if player.MaxFireDelay <= 1 then
+									local isFetus = 0
+									if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+										isFetus = 18
+									end
 									if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 										local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 										kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
@@ -2363,12 +2430,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 										local circle = player:FireTechXLaser(player.Position, Vector.FromAngle((data.addedbarrageangle2) - direction:GetAngleDegrees())*(20), data.Xsize)
 									else
-										local tears = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees())*(20), false, false, false)
+										local tears = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees())*(20-isFetus), false, false, false)
 										tears.Position = player.Position
 										tears.Scale = tears.Scale + tearSize
 										tears.CollisionDamage = tears.CollisionDamage * 1.2
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+											tears:ChangeVariant(50)
+											tears.TearFlags = tears.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+											yandereWaifu.GetEntityData(tears).IsJacobFetus = true
+										end
 									end
-									yandereWaifu.PlayAllRedGuns(player, 0)
+									yandereWaifu.PlayAllRedGuns(player, 1)
 								end
 								
 								if player:HasWeaponType(WeaponType.WEAPON_MONSTROS_LUNGS) then
@@ -2408,6 +2480,61 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					end --break if not loki horns is triggered
 					
 				end	
+				
+				--checks if red personality's gun is done
+				local canModifyGunsGeneral = data.extraHugsRed and (#data.extraHugsRed > 0 and data.canModifyGuns)
+				local canModifyGunsEpicFetus = player:HasWeaponType(WeaponType.WEAPON_ROCKETS) and data.canModifyGuns
+
+				if canModifyGunsGeneral or canModifyGunsEpicFetus then
+					local gunIdle = true
+					if canModifyGunsGeneral then
+						for k, v in pairs(data.extraHugsRed) do
+							if v:GetSprite():IsPlaying("Startup") or InutilLib.IsPlayingMultiple(v:GetSprite(), "ShootRightTech", "ShootLeftTech", "ShootDownTech", "ShootUpTech",  "ShootRightBrimstone", "ShootLeftBrimstone", "ShootDownBrimstone", "ShootUpBrimstone") then
+								gunIdle = false
+								break
+							end
+						end	
+					end
+					if not data.FinishedPlayingCustomAnim and canModifyGunsEpicFetus then
+						gunIdle = false
+					end
+
+					if gunIdle then
+						if canModifyGunsGeneral then
+							for k, v in pairs(data.extraHugsRed) do
+								v:GetSprite():Play("Spawn", true)
+							end
+						end
+						--player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_PAUSE, -1)
+						for k, v in pairs (Isaac.GetRoomEntities()) do
+							v:ClearEntityFlags(EntityFlag.FLAG_FREEZE)
+						end
+						data.canModifyGuns = nil
+						data.tintEffect:Remove()
+						data.tintEffect = nil
+						data.FinishedPlayingCustomAnim = nil
+						yandereWaifu.RebekahCanShoot(player, true)
+						player.FireDelay = 60
+					else
+						if not data.tintEffect then
+							data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
+							data.tintEffect.RenderZOffset = -10
+							yandereWaifu.RebekahCanShoot(player, false)
+						end
+						--player:UseActiveItem(CollectibleType.COLLECTIBLE_PAUSE, true, false, false, false, -1)
+						--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_PAUSE, false, 1)
+						for k, v in pairs (Isaac.GetRoomEntities()) do
+							if v.Type ~= 1000 and v.Type ~= 1 then
+								v:AddEntityFlags(EntityFlag.FLAG_FREEZE)
+							end
+						end
+						yandereWaifu.SpawnHeartParticles( 2, 4, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+						--we need to freeze the player
+						player.Position = player.Position
+						player.Velocity = Vector.Zero
+						player.FireDelay = 60
+					end
+				end
 			end
 		end
 	elseif modes == REBECCA_MODE.SoulHearts then
@@ -2762,7 +2889,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						local angle = direction:GetAngleDegrees()
 						local beam = EntityLaser.ShootAngle(12, player.Position, angle + 180, 30, Vector(0,0), player):ToLaser()
 						beam.MaxDistance = 250
-						InutilLib.UpdateLaserSize(beam, 2)
+						--InutilLib.UpdateLaserSize(beam, 2, false)
 						--data.shiftyBeam = beam
 						--stream of painful blood
 						for i = 1, math.random(20,30) do
