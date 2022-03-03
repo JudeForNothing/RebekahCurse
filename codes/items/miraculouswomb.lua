@@ -25,7 +25,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	fam.OrbitDistance = Vector(20, 20)
 	fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
-	fam.Velocity = (fam.Velocity + (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
+	fam.Velocity = ((fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9 --(fam.Velocity + (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
 	
 	if data.Stat.FireDelay > 0 then data.Stat.FireDelay = data.Stat.FireDelay - 1 end
 	
@@ -74,7 +74,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	fam.OrbitDistance = Vector(20, 20)
 	fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
-	fam.Velocity = (fam.Velocity + (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
+	fam.Velocity = ((fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
 	
 	if data.Stat.FireDelay > 0 then data.Stat.FireDelay = data.Stat.FireDelay - 1 end
 	

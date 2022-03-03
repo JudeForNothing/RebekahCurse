@@ -5,9 +5,9 @@
 	<passive name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" tags="food" quality="1"/>
 	<passive name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" quality="2"/>
 	<passive name="Great Pheonix" description="Rain war along with your shots" gfx="collectibles_great_pheonix.png" quality="3"/>
-	<active name="Love me, love me not" description="A La Folie Pas du Tout" gfx="collectibles_lovesme.png" maxcharges="0" quality="3"/>
-	<active name=" Love me, love me not " description="M aiment-ils?" gfx="collectibles_lovesme2.png" maxcharges="0" quality="3"/>
-	<active name="  Love me, love me not  " description="Est-ce qu ils ne m aiment pas?" gfx="collectibles_lovesme3.png" maxcharges="0" quality="3"/>
+	<active name="Love me, love me not" description="A La Folie Pas du Tout" gfx="collectibles_lovesme.png" maxcharges="1" quality="3"/>
+	<active name=" Love me, love me not " description="M aiment-ils?" gfx="collectibles_lovesme2.png" maxcharges="1" quality="3"/>
+	<active name="  Love me, love me not  " description="Est-ce qu ils ne m aiment pas?" gfx="collectibles_lovesme3.png" maxcharges="1" quality="3"/>
 	<active name="Doorstopper" description="Slam your knowledge to others!" gfx="collectibles_doorstopper.png" tags="book" maxcharges="3" quality="2"/>
 	<passive name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2"/>
 	<active name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" maxcharges="5" quality="3"/>

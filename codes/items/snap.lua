@@ -47,9 +47,12 @@ InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amoun
 		local data = yandereWaifu.GetEntityData(damage)
 		if not data.hasSnap and not data.isSnappedTired then
 			damage = damage:ToPlayer()
-			local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SNAP_EFFECT, 0, damage.Position, Vector(0,0), damage)
-			damage:AnimateSad()
-				
+			ILIB.game:ShowHallucination(15, 0)
+			InutilLib.SetTimer( 60, function()
+				local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SNAP_EFFECT, 0, damage.Position, Vector(0,0), damage)
+				damage:AnimateSad()
+				ILIB.game:ShakeScreen(5)
+			end)
 			damage:AddNullCostume(RebekahCurseCostumes.SnappedCos)
 			damage:TryRemoveNullCostume(RebekahCurseCostumes.UnsnappedCos)
 			data.hasSnap = true

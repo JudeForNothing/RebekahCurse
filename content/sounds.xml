@@ -114,4 +114,7 @@
 	<sound name="Laugh Unsettling">
 		<sample weight="1" path="items/laugh_unsettling.wav" />
 	</sound>
+	<sound name="Camera Use">
+		<sample weight="1" path="items/camera_use.wav" />
+	</sound>
 </sounds>

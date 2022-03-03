@@ -71,7 +71,8 @@ RebekahCurse = {
 	ENTITY_HAIRWHIP = Isaac.GetEntityVariantByName("Hairwhip Effect"),
 	ENTITY_DOORSTOPPER = Isaac.GetEntityVariantByName("Doorstopper"),
 	ENTITY_FINGER_CLICKER = Isaac.GetEntityVariantByName("Finger Clicker"),
-	ENTITY_LOVESICK_SLASH = Isaac.GetEntityVariantByName("Lovesick Slash"),
+	ENTITY_LOVESICK_SLASH = Isaac.GetEntityVariantByName("Lovesick Slash"), -- am i even using this?
+	ENTITY_PLUCKED_PETAL = Isaac.GetEntityVariantByName("Plucked Petal"),
 	
 	ENTITY_OHIMPOLTY = Isaac.GetEntityVariantByName("Oh, I'm Polty"),
 	
@@ -218,7 +219,8 @@ RebekahCurseSounds = {
 	
 	SOUND_IMDIEBEEP = Isaac.GetSoundIdByName("Im Die Beep"),
 	SOUND_LAUGHTRACK = Isaac.GetSoundIdByName("Laugh Track"),
-	SOUND_LAUGHUNSETTLING = Isaac.GetSoundIdByName("Laugh Unsettling")
+	SOUND_LAUGHUNSETTLING = Isaac.GetSoundIdByName("Laugh Unsettling"),
+	SOUND_CAMERAUSE = Isaac.GetSoundIdByName("Camera Use")
 }
 
 RebekahCurseEnemies = {

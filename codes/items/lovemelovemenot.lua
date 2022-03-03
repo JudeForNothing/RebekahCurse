@@ -6,8 +6,21 @@
 	end
 end)]]
 
+function yandereWaifu.spawnLoveMePetals(position)
+	local petal = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PLUCKED_PETAL, 0, position, Vector(0,0), nil)
+end
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	if sprite:IsFinished("Petal")then
+		eff:Remove()
+	end
+end, RebekahCurse.ENTITY_PLUCKED_PETAL);
 
 function yandereWaifu:usedoLoveMe(collItem, rng, player, flags, slot)
+	yandereWaifu.spawnLoveMePetals(player.Position)
 	local data = yandereWaifu.GetEntityData(player)
 	--data.LMLMNBuff = data.PersistentPlayerData.LMLMNBuff
 	--data.LovesMe = data.PersistentPlayerData.LovesMe
@@ -70,6 +83,7 @@ function yandereWaifu:usedoLoveMe(collItem, rng, player, flags, slot)
 end
 
 function yandereWaifu:usedoLoveMe2(collItem, rng, player, flags, slot)
+	yandereWaifu.spawnLoveMePetals(player.Position)
 	local data = yandereWaifu.GetEntityData(player)
 	--data.LMLMNBuff = data.PersistentPlayerData.LMLMNBuff
 	--data.LovesMe = data.PersistentPlayerData.LovesMe
@@ -148,14 +162,14 @@ local function SpawnRandomReward(player)
 		local rng2 = math.random(1,3)
 		for i = 1, 8 do
 			if rng2 == 1 then
-				local mob = Isaac.Spawn( EntityType.ENTITY_SLOTH, 0, 0, player.Position, Vector(0,0), player );
+				local mob = Isaac.Spawn( EntityType.ENTITY_SLOTH, 0, 0, player.Position, Vector(0,0), player ):ToNPC();
 				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED | EntityFlag.FLAG_FRIENDLY)
 				break
 			elseif rng2 == 2 then
-				local mob = Isaac.Spawn( EntityType.ENTITY_MULLIGAN, 0, 0, player.Position, Vector(0,0), player );
+				local mob = Isaac.Spawn( EntityType.ENTITY_MULLIGAN, 0, 0, player.Position, Vector(0,0), player ):ToNPC();
 				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED | EntityFlag.FLAG_FRIENDLY)
 			elseif rng2 == 3 then
-				local mob = Isaac.Spawn( EntityType.ENTITY_LUST, 0, 0, player.Position, Vector(0,0), player );
+				local mob = Isaac.Spawn( EntityType.ENTITY_LUST, 0, 0, player.Position, Vector(0,0), player ):ToNPC();
 				mob:AddEntityFlags(EntityFlag.FLAG_CHARMED | EntityFlag.FLAG_FRIENDLY)
 				break
 			end
@@ -170,6 +184,7 @@ local function SpawnRandomReward(player)
 end
 
 function yandereWaifu:usedoLoveMe3(collItem, rng, player, flags, slot)
+	yandereWaifu.spawnLoveMePetals(player.Position)
 	local data = yandereWaifu.GetEntityData(player)
 	--data.LMLMNBuff = data.PersistentPlayerData.LMLMNBuff
 	--data.LovesMe = data.PersistentPlayerData.LovesMe

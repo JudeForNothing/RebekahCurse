@@ -2040,7 +2040,9 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								v:AddEntityFlags(EntityFlag.FLAG_FREEZE)
 							end
 						end
-						yandereWaifu.SpawnHeartParticles( 2, 4, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+						if player.FrameCount % 3 == 0 then
+							yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+						end
 						--we need to freeze the player
 						player.Position = player.Position
 						player.Velocity = Vector.Zero

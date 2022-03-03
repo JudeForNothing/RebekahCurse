@@ -10,7 +10,7 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
 				for i, e in pairs(Isaac.GetRoomEntities()) do
 					if e:IsEnemy() and e:IsVulnerableEnemy() and not e:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
 						table.insert(data.PersistentPlayerData.savedCameraEnemies, e)
-						e:AddFreeze(EntityRef(player), math.random(30,60))
+						e:AddFreeze(EntityRef(player), math.random(60,120))
 					end
 				end
 
@@ -19,10 +19,12 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
 					--print(i)
 					local minion = Isaac.Spawn(e.Type, e.Variant, e.SubType, player.Position, Vector.Zero, player):ToNPC()
 					minion:AddCharmed(EntityRef(player), -1)
+					minion:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
 					minion.HitPoints = minion.MaxHitPoints/2
 				end
 				data.PersistentPlayerData.savedCameraEnemies = nil
 			end
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CAMERAUSE, 1, 0, false, 1 );
 		--end
 	--end
 	if slot == ActiveSlot.SLOT_POCKET then
