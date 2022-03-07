@@ -117,6 +117,15 @@ function yandereWaifu:useWiki4(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
+	if data.lastActiveUsedFrameCount then
+		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+			return
+		end
+						
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	else
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	end
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_HOW_TO_JUMP, false, false, false, false, -1)
 	if player:GetActiveCharge(slot) <= 1 then
 		InutilLib.SetTimer( 15*30, function()

@@ -56,6 +56,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 end, RebekahCurse.ENTITY_PERSONALITYPOOF);
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	sprite.Color = Color( 1, 1, 1, 0, 0, 0, 0 );
+end, RebekahCurse.ENTITY_REBEKAH_DUST);
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = yandereWaifu.GetEntityData(eff)
@@ -77,6 +83,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Load("gfx/effects/red/red_ludocrashlightning.anm2", true)
 			sprite:Play("Crash", true) 
 			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDJINGLE, 1, 0, false, 1)
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 		end
 		eff.RenderZOffset = 100;
 	end
@@ -88,10 +95,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff.Velocity = data.Parent.Velocity
 	end
 	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
-		if sprite:GetFrame() == 25 then
+		if sprite:GetFrame() == 9 then
 			yandereWaifu.GetEntityData(data.Parent).isPlayingCustomAnim = false
 			yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
 			yandereWaifu.GetEntityData(data.Parent).BarrageIntro = true 
+			ILIB.game:ShakeScreen(10)
 		end
 	end
 end, RebekahCurse.ENTITY_REBEKAH_DUST);

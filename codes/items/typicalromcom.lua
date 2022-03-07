@@ -6,9 +6,9 @@ function yandereWaifu:useRomComBook(collItem, rng, player)
 	--InutilLib.ToggleShowActive(player, true)
 	for i, v in pairs (Isaac.GetRoomEntities()) do
 		if v:IsEnemy() and v:IsVulnerableEnemy() and not v:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
-			yandereWaifu.GetEntityData(v).IsLaughing = 300
+			yandereWaifu.GetEntityData(v).IsLaughing = 300*player:GetCollectibleNum(CollectibleType.COLLECTIBLE_CAR_BATTERY) 
 			if math.random(1,2) == 2 then
-				v:AddCharmed(EntityRef(player), 300)
+				v:AddCharmed(EntityRef(player), 300*player:GetCollectibleNum(CollectibleType.COLLECTIBLE_CAR_BATTERY) )
 			end
 		end
 	end

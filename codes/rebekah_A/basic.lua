@@ -1391,10 +1391,21 @@ end);
 
 function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 	local ispocket = false
+	local data = yandereWaifu.GetEntityData(player)
 	if slot == ActiveSlot.SLOT_POCKET then
 		ispocket = true
 	end
-	if not yandereWaifu.GetEntityData(player).IsAttackActive then
+	if data.lastActiveUsedFrameCount then
+		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+			return
+		end
+						
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	else
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	end
+
+	if not data.IsAttackActive then
 		InutilLib.ConsumeActiveCharge(player, ispocket) --just in case
 		InutilLib.ToggleShowActive(player, false, ispocket)
 	end
@@ -1710,6 +1721,10 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			endFrameCount = 40
 		end
 		
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+			endFrameCount = endFrameCount * (player:GetCollectibleNum(CollectibleType.COLLECTIBLE_CAR_BATTERY) * 2)
+		end
+		
 		--print("weaponss"..modulusnum)
 		local function IsValidRedBarrage()
 			if data.BarrageIntro and data.redcountdownFrames >= 1 and data.redcountdownFrames < endFrameCount and data.redcountdownFrames % modulusnum == (0) then
@@ -1749,7 +1764,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		if HasChargeCollectibles(player) then
 			if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) and not data.barrageInit then
 				if data.chargeDelay < player.MaxFireDelay * 1.3 then
-					data.chargeDelay = data.chargeDelay + 1
+					data.chargeDelay = data.chargeDelay + 0.1
+					print(math.floor(data.chargeDelay*10) % 5)
+					if math.floor(data.chargeDelay*10) % 5 == 0 then
+						local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
+						charge.SpriteOffset = Vector(0,-40)
+						charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/red/chocolate_charge.png");
+						charge:GetSprite():ReplaceSpritesheet(1, "gfx/effects/red/chocolate_charge.png");
+						charge:GetSprite():LoadGraphics();
+						InutilLib.SFX:Play( SoundEffect.SOUND_BATTERYCHARGE , 1, 0, false, data.chargeDelay/10);
+						InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGEHEAVY, 1, 0, false, 0.5)
+					end
 				end
 			end
 			
@@ -1758,11 +1783,9 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			end
 			
 			if player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0 then
-				--print(player:GetShootingInput())
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_CHOCOLATE_MILK) then
 					local chargeFrameToPercent = (data.chargeDelay/player.MaxFireDelay)*2
 					tearSize = math.floor(chargeFrameToPercent)
-					--print(tearSize)
 				end
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_CURSED_EYE) then
 					local chargeFrameToPercent = (data.chargeDelay/player.MaxFireDelay)*5
@@ -1794,6 +1817,18 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				data.addedbarrageangle = data.addedbarrageangle + 4
 				data.addedbarrageangle2 = data.addedbarrageangle2 - 4
 				data.Xsize = data.Xsize + 6
+			elseif data.redcountdownFrames >= 40 then
+				if ((data.redcountdownFrames/10) % 1) == (0) then --reset for a bit
+					data.addedbarrageangle = 0
+					data.addedbarrageangle2 = 0
+				end
+				if (math.floor(data.redcountdownFrames/10) % 2) == 1 then
+					data.addedbarrageangle = data.addedbarrageangle + 2
+					data.addedbarrageangle2 = data.addedbarrageangle2 - 2
+				elseif (math.floor(data.redcountdownFrames/10) % 2) == 0 then
+					data.addedbarrageangle = data.addedbarrageangle - 2
+					data.addedbarrageangle2 = data.addedbarrageangle2 + 2
+				end
 			else
 				data.addedbarrageangle = 0
 				data.addedbarrageangle2 = 0
@@ -2190,6 +2225,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 												yandereWaifu.GetEntityData(bomb).IsByAFanGirl = true; --makes sure that it's Rebecca's bombs
 												bomb:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 												InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDFETUS1, 1, 0, false, 1)
+												player.Velocity = player.Velocity + (Vector.FromAngle((-7 + (15*j))*fix + (direction:GetAngleDegrees()) - baseOffset*fix + 180)*(12))*0.7
 											end
 										end)
 									end
@@ -2232,6 +2268,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											--InutilLib.UpdateLaserSize(brim2, tearSize)
 										end
 									end
+									player.Velocity = player.Velocity + (Vector.FromAngle( angle ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ))*0.7
 									yandereWaifu.PlayAllRedGuns(player, 5)
 								elseif data.redcountdownFrames >= endFrameCount then
 									local num = 1
@@ -2245,6 +2282,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											--InutilLib.UpdateLaserSize(brim, 2)
 											brim.Timeout = 30
 										end
+										player.Velocity = player.Velocity + (Vector.FromAngle((-7 + (15*j))*fix + (direction:GetAngleDegrees()) - baseOffset*fix + 180)*(1))*0.7
 									end
 									EndBarrageIfValid()
 								end
@@ -2262,6 +2300,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									InutilLib.UpdateLaserSize(techlaser, 6 * (1+ tearSize))
 									techlaser.DisableFollowParent = true
 								end
+								player.Velocity = player.Velocity + (Vector.FromAngle( direction:GetAngleDegrees() + 180)*(1))*0.7
 									--techlaser.Damage = player.Damage * 5 doesn't exist lol
 								--end
 								if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_SORE) and data.willEyeSoreBar then

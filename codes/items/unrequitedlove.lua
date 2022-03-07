@@ -19,9 +19,19 @@ end)
 
 --unrequited love code
 function yandereWaifu:useUnLove(collItem, rng, player)
-	--for i,player in ipairs(ILIB.players) do
+	local data = yandereWaifu.GetEntityData(player)
+	--hopefully will cancel out if you use something like car battery, i hate car battery lol
+	if data.lastActiveUsedFrameCount then
+		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+			return
+		end
+						
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	else
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	end
 	InutilLib.ToggleShowActive(player, true)
-	--end
+
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE );
 
@@ -59,7 +69,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.Attached.Velocity = data.Attached.Velocity * 1.5
 		end
 		if data.Attached.EntityCollisionClass == EntityCollisionClass.ENTCOLL_NONE then --remove cases
-			InutilLib.RefundActiveCharge(player, 120)
+			InutilLib.RefundActiveCharge(player, 120, false, true)
 			eff:Remove()
 		end
 		
@@ -81,7 +91,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if data.SwingingAccel > 3 then
 				if data.CountdownTilRelease <= 0 or data.Attached:CollidesWithGrid() then
 					eff:Remove()
-					InutilLib.RefundActiveCharge(player, 300)
+					print("flp")
+					InutilLib.RefundActiveCharge(player, 300,  false, true)
 					data.Attached:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
 					if data.Attached:CollidesWithGrid() then
 						ILIB.game:ShakeScreen(10)
@@ -111,7 +122,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.SwingingAccel = 0
 		end
 	elseif data.Attached and data.Attached:IsDead() then
-		InutilLib.RefundActiveCharge(player, 120)
+		print("cesspool")
+		InutilLib.RefundActiveCharge(player, 120,  false, true)
 		eff:Remove()
 	else
 		--if its flying
@@ -124,7 +136,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			for i = 1, #entities do
 				if entities[i]:IsVulnerableEnemy() then
 					if entities[i].Position:Distance(eff.Position) < entities[i].Size + eff.Size + 16 then
-						if entities[i].Size > 15 then
+						if entities[i].Size >= 13 then
 							data.Attached = entities[i]
 							entities[i]:TakeDamage(player.Damage * 1.6, 0, EntityRef(eff), 1)
 						else
@@ -137,8 +149,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		elseif eff.FrameCount > 10 then --expiration
 			eff.Velocity = (player.Position - eff.Position):Resized(35)
 			if eff.Position:Distance(player.Position) < player.Size + eff.Size + 16 then
-				InutilLib.RefundActiveCharge(player, 300)
+				InutilLib.RefundActiveCharge(player, 300,  false, true)
 				eff:Remove()
+				print("pain")
 			end
 		end
 	end

@@ -1,5 +1,15 @@
 function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
+	if data.lastActiveUsedFrameCount then
+		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+			return
+		end
+						
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	else
+		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+	end
+
 	InutilLib.ToggleShowActive(player, true)
 end
 
@@ -15,6 +25,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			--data.specialAttackVector = Vector( vector.X, vector.Y )
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(7), player );
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+				InutilLib.SetTimer( 15, function()
+					local mob2 = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(10), player );
+					yandereWaifu.GetEntityData(mob2).DontCharge = true
+					mob2:GetSprite():ReplaceSpritesheet(0, "gfx/effects/items/doorstopper_extra.png")
+					mob2:GetSprite():LoadGraphics()
+					yandereWaifu.GetEntityData(mob2).Player = player
+					mob2:GetSprite():Play("Thrown", true)
+					yandereWaifu.GetEntityData(mob2).Brother = mob
+				end)
+			end
 			InutilLib.ConsumeActiveCharge(player)
 			InutilLib.ToggleShowActive(player, false)
 			yandereWaifu.GetEntityData(mob).Player = player
@@ -42,7 +63,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				if pl.Position:Distance(eff.Position) <= 50 then 
 					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.COLLECTIBLE_DOORSTOPPER then
 						eff:Remove()
-						pl:FullCharge(ActiveSlot.SLOT_PRIMARY, true)
+						if not data.DontCharge then
+							pl:FullCharge(ActiveSlot.SLOT_PRIMARY, true)
+						end
 					end
 				end
 			end
@@ -94,6 +117,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					end
 				end
 			end
+		end
+	end
+	if data.Brother then --this is for the other book spawned with car battery
+		if data.Brother:IsDead() then
+			eff:Remove()
 		end
 	end
 end, RebekahCurse.ENTITY_DOORSTOPPER)
