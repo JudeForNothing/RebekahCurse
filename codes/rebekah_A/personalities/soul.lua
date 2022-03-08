@@ -521,7 +521,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local parent, spr, data = tear.Parent, tear:GetSprite(), yandereWaifu.GetEntityData(tear)
 		local player = parent:ToPlayer()
 		
-		if player:GetPlayerType() == RebekahCurse.REB and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
 			if yandereWaifu.GetEntityData(player).SoulBuff and yandereWaifu.GetEntityData(player).specialCooldown <= 0 then --give lenience to the barrage
 				yandereWaifu.GetEntityData(player).SoulBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);

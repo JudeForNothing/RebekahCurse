@@ -243,13 +243,13 @@ function yandereWaifu:changetoDifferentLaser(lz)
 	end
 	if entityData.IsLvlOneBeam then
 		if lz.FrameCount == 1 then
-			lz:GetSprite():Load("gfx/lightbeam.anm2", true)
+			lz:GetSprite():Load("gfx/effects/eternal/lightbeam.anm2", true)
 			lz:GetSprite():Play("LargeRedLaser", true)
 		end
 	 end
 	if entityData.IsLvlTwoBeam then
 		if lz.FrameCount == 1 then
-			lz:GetSprite():Load("gfx/lightbeam2.anm2", true)
+			lz:GetSprite():Load("gfx/effects/eternal/lightbeam2.anm2", true)
 			lz:GetSprite():Play("LargeRedLaser", true)
 			if lz.Child ~= nil then
 				lz.Child:GetSprite():Load("gfx/lvltwobrimimpact.anm2", true)
@@ -260,7 +260,7 @@ function yandereWaifu:changetoDifferentLaser(lz)
 	 end
 	if entityData.IsLvlThreeBeam then
 		if lz.FrameCount == 1 then
-			lz:GetSprite():Load("gfx/lightbeam3.anm2", true)
+			lz:GetSprite():Load("gfx/effects/eternal/lightbeam3.anm2", true)
 			lz:GetSprite():Play("LargeRedLaser", true)
 			lz:GetSprite():LoadGraphics()
 		end
@@ -436,7 +436,7 @@ end, RebekahCurse.ENTITY_PINGEFFECT)
 function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
 	local player = fam.Player
 	local sprite = fam:GetSprite()
-	if player:GetPlayerType() == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 		sprite:ReplaceSpritesheet(0, "gfx/familiar/familiar_minisaac_rebekah.png")
 		sprite:ReplaceSpritesheet(1, "gfx/familiar/familiar_minisaac_rebekah.png")
 	end

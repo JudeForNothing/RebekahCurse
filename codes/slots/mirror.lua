@@ -10,7 +10,7 @@ function yandereWaifu.TrySpawnMirror()
 	--print(game:GetLevel():GetCurrentRoomDesc().GridIndex)
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:GetPlayerType() == RebekahCurse.REB  then
+		if yandereWaifu.IsNormalRebekah(player)  then
 			local room = ILIB.game:GetRoom()
 			local level = ILIB.game:GetLevel()
 			-- if we're in a boss room and the room is clear
@@ -109,7 +109,7 @@ function yandereWaifu.MirrorMechanic(player)
 		--health code
 
 		--heart code checking
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			if player:GetHearts() > 1 then heartTable.ShowRed = true end
 			if player:GetSoulHearts() > 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0 then heartTable.ShowBlue = true end	
 			if player:GetGoldenHearts() > 0 then heartTable.ShowGold = true end
@@ -299,7 +299,7 @@ function yandereWaifu.MirrorMechanic(player)
 											and (player:GetBrokenHearts() > 0 or mir.SubType == 10) then
 											newMode = REBECCA_MODE.BrokenHearts;
 										end
-										if newMode ~= yandereWaifu.GetEntityData(player).currentMode and not sprite:IsPlaying("Initiate") and player:GetPlayerType() == RebekahCurse.REB then
+										if newMode ~= yandereWaifu.GetEntityData(player).currentMode and not sprite:IsPlaying("Initiate") and yandereWaifu.IsNormalRebekah(player) then
 											local isFree = mir.SubType == 10
 											
 											mirdata.notAlive = true;
@@ -384,7 +384,7 @@ function yandereWaifu.MirrorMechanic(player)
 								if not sprite:IsPlaying("ShowBRed") then  sprite:Play("ShowBRed", true) end
 								
 								local newMode = yandereWaifu.GetEntityData(player).currentMode;
-								if player:GetPlayerType() == RebekahCurse.REB then
+								if yandereWaifu.IsNormalRebekah(player) then
 									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and heartBrideTable.Show and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") then --if interacted
 										if sprite:IsPlaying("ShowBRed") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
 											newMode = REBECCA_MODE.BrideRedHearts;

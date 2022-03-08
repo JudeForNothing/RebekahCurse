@@ -327,7 +327,7 @@ end]]
 function yandereWaifu:TinyEternalBondCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG())
 		else
 			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG())

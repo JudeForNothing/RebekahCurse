@@ -251,14 +251,28 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	local hair = RebeccaModeCostumes[mode] --reminder to iplement eternal heart wing sprite
 	player:TryRemoveNullCostume(RebekahCurseCostumes.RebeccasFate);
 	player:TryRemoveNullCostume(RebekahCurseCostumes.GlitchEffect);
-
-	--for i,costume in pairs(RebeccaModeCostumes[mode]) do
-	--	--player:AddNullCostume(costume);
-	--	hair = costume
-	--end
-	
+	local name = RebeccaModeNames[mode]
+	local skincolor = ""
+	if player:GetHeadColor() == SkinColor.SKIN_WHITE then
+		skincolor = "_white"
+	elseif player:GetHeadColor() == SkinColor.SKIN_BLACK then
+		skincolor = "_black"
+	elseif player:GetHeadColor() == SkinColor.SKIN_BLUE then
+		skincolor = "_blue"
+	elseif player:GetHeadColor() == SkinColor.SKIN_RED then
+		skincolor = "_red"
+	elseif player:GetHeadColor() == SkinColor.SKIN_GREEN then
+		skincolor = "_green"
+	elseif player:GetHeadColor() == SkinColor.SKIN_GREY then
+		skincolor = "_grey"
+	end
+	local skinpath='gfx/characters/costumes/character_rebekah_'..tostring(name)..tostring(skincolor)..'.png'
+	player:GetSprite():ReplaceSpritesheet(12,skinpath)	
+	player:GetSprite():ReplaceSpritesheet(4,skinpath)
+	player:GetSprite():ReplaceSpritesheet(1,skinpath)
+	print(skinpath)
 	local hairpath='gfx/characters/costumes/rebekah_hair/character_'..tostring(hair)..'.png'
-	if playerType == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 		if mode == REBECCA_MODE.SoulHearts then --special interacts
 			if yandereWaifu.GetEntityData(player).SoulBuff then
 				hairpath='gfx/characters/costumes/rebekah_hair/character_wizoobopenhair.png'
@@ -393,6 +407,24 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 		yandereWaifu.RebekahCanShoot(player, false)
 	else
 		yandereWaifu.RebekahCanShoot(player, true)
+	end
+	
+	if mode == REBECCA_MODE.RedHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.SoulHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.GoldHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.EvilHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.EternalHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.BoneHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.RottenHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+	elseif mode == REBECCA_MODE.BrokenHearts then
+		player:ChangePlayerType(RebekahCurse.REB_RED)
 	end
 	--reset effects --KIL FIX YOUR GAMEEEEEEEEE
 	--local playerEffects = player:GetEffects();
@@ -565,5 +597,11 @@ function yandereWaifu.PlayAllRedGuns(player, mode)
 		if mode == 5 then
 			yandereWaifu.GetEntityData(v).Brimstone = true
 		end
+	end
+end
+
+function yandereWaifu.IsNormalRebekah(player)
+	if player:GetPlayerType() == RebekahCurse.REB_RED or player:GetPlayerType() == RebekahCurse.REB_SOUL then
+		return true
 	end
 end

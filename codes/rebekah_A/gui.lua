@@ -24,7 +24,7 @@ function yandereWaifu.meterLogic(player)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				moveMeter:SetOverlayRenderPriority(true)
 				attackMeter:SetOverlayRenderPriority(true)
@@ -126,7 +126,7 @@ function yandereWaifu.heartReserveRenderLogic(player, id)
 		
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				--heartReserve:SetOverlayRenderPriority(true)
 				if data.heartReserveFill and data.heartReserveMaxFill then
@@ -163,7 +163,7 @@ function yandereWaifu.heartBoneReserveRenderLogic(player)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				--heartBReserve:SetOverlayRenderPriority(true)
 				if data.BoneJockeyTimeLeft then
@@ -227,7 +227,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, _)
 	if Options.ChargeBars then
 		for p = 0, ILIB.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
-			if player:GetPlayerType() == RebekahCurse.REB then
+			if yandereWaifu.IsNormalRebekah(player) then
 				yandereWaifu.meterLogic(player);
 			end
 		end
@@ -240,7 +240,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == PlayerType.PLAYER_ESAU or player.Parent then
 			excludeBetaFiends = excludeBetaFiends + 1
-		elseif player:GetPlayerType() == RebekahCurse.REB then
+		elseif yandereWaifu.IsNormalRebekah(player) then
 			yandereWaifu.heartReserveRenderLogic(player, p - excludeBetaFiends);
 			if yandereWaifu.GetEntityData(player).IsLeftover then
 				yandereWaifu.heartBoneReserveRenderLogic(player)
@@ -257,7 +257,7 @@ function yandereWaifu.eternalBarLogic(player)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			local maxEternalFeather = data.maxEternalFeather
 			if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				eternalFeatherReserve:SetOverlayRenderPriority(true)

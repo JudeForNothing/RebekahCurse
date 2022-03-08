@@ -182,7 +182,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.MaggotTe
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	
-	if player:GetPlayerType() == RebekahCurse.REB and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+	if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
 		if not data.RottenFlyTable then 
 			data.RottenFlyTable = {} 
 			
@@ -740,7 +740,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 end, RebekahCurse.ENTITY_FLYTEAR);
 
 	function yandereWaifu:useHeadItems(collItem, rng, player)
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			local data = yandereWaifu.GetEntityData(player)
 			--print("fire")
 			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and data.noHead then

@@ -7,6 +7,12 @@ RebekahCurse = {
 	--items
 	COLLECTIBLE_LOVECANNON = Isaac.GetItemIdByName("Hugs N' Roses"),
 	COLLECTIBLE_WIZOOBTONGUE = Isaac.GetItemIdByName("Wizoob Tongue"),
+	COLLECTIBLE_APOSTATE = Isaac.GetItemIdByName("Apostate"),
+	COLLECTIBLE_PSALM45 = Isaac.GetItemIdByName("Psalm .45"),
+	COLLECTIBLE_BARACHIELSPETAL = Isaac.GetItemIdByName("Barachiel's Petal"),
+	COLLECTIBLE_FANG = Isaac.GetItemIdByName("Fang"),
+	COLLECTIBLE_BEELZEBUBSBREATH = Isaac.GetItemIdByName("Beelzebub's Breath"),
+	COLLECTIBLE_MAINLUA = Isaac.GetItemIdByName("main.lua"),
 	
 	COLLECTIBLE_CANDYWEDDINGRING = Isaac.GetItemIdByName("Candy Wedding Ring!"),
 	COLLECTIBLE_LOVEDELUXE = Isaac.GetItemIdByName("Love Deluxe"),
@@ -177,7 +183,8 @@ RebekahCurse = {
 	ENTITY_EVESUMMONCIRCLE = Isaac.GetEntityVariantByName("Eve Summon Circle"),
 	ENTITY_GOLEMFIST = Isaac.GetEntityVariantByName("Patriarch's Fist"),
 	
-	REB = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
+	REB_RED = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
+	REB_SOUL = Isaac.GetPlayerTypeByName("Rebekah_Soul"),
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
 	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false)
@@ -359,6 +366,19 @@ REBECCA_MODE = {
 	BrideRedHearts = 12
 }
 
+RebeccaModeNames = {
+	[REBECCA_MODE.RedHearts] = "red", --InnocentHair,
+	[REBECCA_MODE.SoulHearts] = "soul", --WizoobHair,
+	[REBECCA_MODE.GoldHearts] = "gold", --SwagHair,
+	[REBECCA_MODE.EvilHearts] = "evil", --HadFunHair,
+	[REBECCA_MODE.EternalHearts] = "eternal", --AoDHair,
+	[REBECCA_MODE.BoneHearts] =  "bone", --DeadHair,
+	[REBECCA_MODE.RottenHearts] =  "rotten",
+	[REBECCA_MODE.BrokenHearts] =  "broken",
+	[REBECCA_MODE.BrideRedHearts] = "bride" --BridalHair
+}
+
+
 RebeccaModeCostumes = {
 	[REBECCA_MODE.RedHearts] = "innocenthair", --InnocentHair,
 	[REBECCA_MODE.SoulHearts] = "wizoobhair", --WizoobHair,
@@ -459,7 +479,7 @@ RebekahMirrorHeartDrop = {
 	[6] = 11 --bone
 }
 
-local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
 if StageAPI and StageAPI.Loaded then
     StageAPI.AddPlayerGraphicsInfo("Rebekah", 

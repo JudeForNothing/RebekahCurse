@@ -99,7 +99,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				print("fel")
 			end]]
 			
-			player:ChangePlayerType(RebekahCurse.REB)
+			player:ChangePlayerType(RebekahCurse.REB_RED)
 			--local data = yandereWaifu.GetEntityData(player)
 				
 			if player.FrameCount <= 2 then --trying to make it visually pleasing when she spawns in
@@ -122,14 +122,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		else
 			wasFromTaintedLocked = true
 			
-			--print("sol")
-			--print(tostring(RebekahCurse.REB))
-			Isaac.ExecuteCommand("restart "..RebekahCurse.REB)
-			--print("did it work?")
+			Isaac.ExecuteCommand("restart "..RebekahCurse.REB_RED)
 		end
 	end
 	
-	if player:GetPlayerType() == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 	
 		--double tap local dash function
 		local function RebekahDoubleTapDash(vector, playerTapping)
@@ -570,7 +567,7 @@ function yandereWaifu.barrageAndSP(player)
 			player:EvaluateItems()
 		end
 		
-		if player:GetPlayerType() == RebekahCurse.REB and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
 			if yandereWaifu.GetEntityData(player).BrokenBuff then
 				yandereWaifu.GetEntityData(player).BrokenBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -674,7 +671,7 @@ function yandereWaifu:RenderMegaMushOverlay()
 	--local player = Isaac.GetPlayer(0)
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			local psprite = player:GetSprite()
 			
 			--print("test")
@@ -744,7 +741,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.RenderMegaMus
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			local entityData = yandereWaifu.GetEntityData(player);
 			if ( entityData.invincibleTime or 0 ) > 0 then
 				pickup.Wait = 10;
@@ -760,7 +757,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 		local playerType = player:GetPlayerType()
 		local room = ILIB.game:GetRoom()
 		
-		if playerType == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			if ent.Type == EntityType.ENTITY_ISAAC or (ent.Type == EntityType.ENTITY_SATAN and not didKillSatan ) then -- isaac heart spawn
 				if ILIB.game:GetLevel():GetStage() == 10 then
 					didKillSatan = true
@@ -797,7 +794,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				local playerType = player:GetPlayerType()
 				local room = ILIB.game:GetRoom()
 				
-				if playerType == RebekahCurse.REB and not yandereWaifu.GetEntityData(player).IsAttackActive then
+				if yandereWaifu.IsNormalRebekah(player) and not yandereWaifu.GetEntityData(player).IsAttackActive then
 					local maxHealth = damage.MaxHitPoints
 
 					if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax then
@@ -815,7 +812,7 @@ function yandereWaifu:RebekahNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			
 			--spawn main room mirror
 			if ILIB.game:GetLevel():GetStartingRoomIndex() == ILIB.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() and ILIB.level:GetStage() == LevelStage.STAGE1_1 and (ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B) then
@@ -883,7 +880,7 @@ function yandereWaifu:RebekahNewRoom()
 			if data.currentMode == REBECCA_MODE.RottenHearts then
 				data.RottenHiveTable = {}
 				for i, entity in pairs(Isaac.GetRoomEntities()) do
-					if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
+					if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == RebekahCurse.ENTITY_ROTTENFLYBALL then
 						if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
 							table.insert(data.RottenHiveTable, entity)
 							yandereWaifu.GetEntityData(entity).Hidden = true
@@ -906,18 +903,18 @@ end
 yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNewRoom)
 
 --stat cache for each mode
-	function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
+function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 		local data = yandereWaifu.GetEntityData(player)
 		local num, num2, num3
-		if data.currentMode == REBECCA_MODE.BrideRedHearts and  player:GetPlayerType() == RebekahCurse.REB then num1 = 1 else num1 = 0 end
-		if data.currentMode == REBECCA_MODE.EternalHearts and  player:GetPlayerType() == RebekahCurse.REB then num2 = 1 else num2 = 0 end
-		--if data.currentMode == REBECCA_MODE.BoneHearts and  player:GetPlayerType() == RebekahCurse.REB then num3 = 1 else num3 = 0 end
+		if data.currentMode == REBECCA_MODE.BrideRedHearts and yandereWaifu.IsNormalRebekah(player) then num1 = 1 else num1 = 0 end
+		if data.currentMode == REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
+		--if data.currentMode == REBECCA_MODE.BoneHearts and yandereWaifu.IsNormalRebekah(player) then num3 = 1 else num3 = 0 end
 		if cacheF == CacheFlag.CACHE_FAMILIARS then
 			player:CheckFamiliar(RebekahCurse.ENTITY_LABAN, num1, RNG())
 			player:CheckFamiliar(RebekahCurse.ENTITY_MORNINGSTAR, num2, RNG())
 		--	player:CheckFamiliar(RebekahCurse.ENTITY_BONEJOCKEY, num3, RNG())
 		end
-		if player:GetPlayerType() == RebekahCurse.REB then -- Especially here!
+		if yandereWaifu.IsNormalRebekah(player) then -- Especially here!
 			--if data.UpdateHair then
 			--	print("tuck")
 			if ILIB.room:GetFrameCount() < 1 then
@@ -1151,7 +1148,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNew
 		end
 		
 	end
-	yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.Rebekahcacheregister)
+yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.Rebekahcacheregister)
 	
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
@@ -1160,7 +1157,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 			--print("fellow")
 			InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			--print("fellow")
-			player:ChangePlayerType(RebekahCurse.REB)
+			player:ChangePlayerType(RebekahCurse.REB_RED)
 			local data = yandereWaifu.GetEntityData(player)
 				
 			if player:GetFrameCount() <= 2 then --trying to make it visually pleasing when she spawns in
@@ -1183,11 +1180,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 		else
 			--print("sol")
 			--print(tostring(RebekahCurse.REB))
-			Isaac.ExecuteCommand("restart "..RebekahCurse.REB)
+			Isaac.ExecuteCommand("restart "..RebekahCurse.REB_RED)
 			--print("did it work?")
 		end
 	end
-	if player:GetPlayerType() == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
 			player.Visible = false
 		end
@@ -1226,7 +1223,6 @@ local function Init(force)
 			
 			--set for player 1
 			if not player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON) then
-				--Isaac.DebugString("jk", "   ", player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVECANNON))
 				player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 			end
@@ -1239,7 +1235,7 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 	JacobPresent = false
 	
 	for i,player in ipairs(ILIB.players) do
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			if wasFromTaintedLocked then 
 				wasFromTaintedLocked = false
 				--print("fel")
@@ -1280,7 +1276,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		elseif player:GetPlayerType() == 19 then
 			JacobPresent = true
 		end
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			-- for debugging, remove when release
 			Init();
 			--if Game():GetFrameCount() - lastSaveTime >= OPTIONS.SAVE_INTERVAL then
@@ -1348,7 +1344,7 @@ end);
 	function yandereWaifu:useReroll(collItem, rng, player)
 		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		--	local player = Isaac.GetPlayer(p)
-			if player:GetPlayerType() == RebekahCurse.REB then
+			if yandereWaifu.IsNormalRebekah(player) then
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
 				--player:AddNullCostume(NerdyGlasses)
 			end
@@ -1361,7 +1357,7 @@ end);
 		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		--	local player = Isaac.GetPlayer(p)
 			local data = yandereWaifu.GetEntityData(player)
-			if player:GetPlayerType() == RebekahCurse.REB then
+			if yandereWaifu.IsNormalRebekah(player) then
 				data.currentMode = data.lastMode
 				data.heartReserveFill = data.lastHeartReserve
 				data.heartStocks = data.lastStockReserve
@@ -1430,7 +1426,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketTongue
 function yandereWaifu:customMovesInput()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			local playerdata = yandereWaifu.GetEntityData(player);
 			local controller = player.ControllerIndex;
 			
@@ -3218,7 +3214,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	local player = damage:ToPlayer();
 	local data = yandereWaifu.GetEntityData(player)
 
-	if player:GetPlayerType() == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 		if yandereWaifu.GetEntityData(player).invincibleTime > 0 then
 
 			-- non-red heart damage
@@ -3271,7 +3267,7 @@ end, EntityType.ENTITY_PLAYER)
 function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
 	local player = fam.Player
 	local sprite = fam:GetSprite()
-	if player:GetPlayerType() == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 		sprite:ReplaceSpritesheet(0, "gfx/familiar/familiar_minisaac_rebekah.png")
 		sprite:ReplaceSpritesheet(1, "gfx/familiar/familiar_minisaac_rebekah.png")
 	end

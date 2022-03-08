@@ -287,7 +287,7 @@ local function RecapRebekahData()
 	
 	saveData.NedHealth = {} -- first ned
 	for i,player in ipairs(ILIB.players) do
-		if player:GetPlayerType() == RebekahCurse.REB then
+		if yandereWaifu.IsNormalRebekah(player) then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
 			saveData.heartStockReserve[i] = yandereWaifu.getReserveStocks(player)
@@ -326,7 +326,7 @@ local function RecapRebekahData()
 end
 
 local function IsRebekahPlayer(player)
-	if player:GetPlayerType() == RebekahCurse.REB or player.GetPlayerTypeByName == Isaac.GetPlayerTypeByName("Isaac") then
+	if yandereWaifu.IsNormalRebekah(player) or player.GetPlayerTypeByName == Isaac.GetPlayerTypeByName("Isaac") then
 		return true
 	else
 		return false
@@ -342,7 +342,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 	if data ~= nil then
 		if data.currentMode ~= nil then 
 			for i,player in pairs(ILIB.players) do
-				if player:GetPlayerType() == RebekahCurse.REB then
+				if yandereWaifu.IsNormalRebekah(player) then
 					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[i]
 					yandereWaifu.addReserveFill(player, data.heartFillReserve[i])
 					yandereWaifu.addReserveStocks(player, data.heartStockReserve[i])

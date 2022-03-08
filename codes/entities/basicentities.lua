@@ -63,7 +63,7 @@ end
 function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
 	local player = fam.Player
 	local sprite = fam:GetSprite()
-	if player:GetPlayerType() == RebekahCurse.REB then
+	if yandereWaifu.IsNormalRebekah(player) then
 		sprite:ReplaceSpritesheet(0, "gfx/familiar/familiar_minisaac_rebekah.png")
 		sprite:ReplaceSpritesheet(1, "gfx/familiar/familiar_minisaac_rebekah.png")
 	end

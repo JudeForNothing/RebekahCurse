@@ -168,7 +168,7 @@ end, RebekahCurse.ENTITY_FEATHERBREAK)
 --tearbreak functionality effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
 	if tr.Variant == RebekahCurse.ENTITY_ETERNALFEATHER then
-		local part = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_FEATHERBREAK, 0, tr.Position, Vector(0,0), tr) --heart effect
+		local part = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_FEATHERBREAK, 0, tr.Position, Vector(0,0), tr) --heart effect
 		part:GetSprite().Rotation = tr:GetData().Rotation
 	end
 end, EntityType.ENTITY_TEAR)
@@ -184,7 +184,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
 	--tear:ChangeVariant(ENTITY_ETERNALFEATHER)
     --tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL
 	
-    if player:GetPlayerType() == RebekahCurse.REB and currentMode == REBECCA_MODE.EternalHearts and tear.TearFlags & TearFlags.TEAR_LUDOVICO ~= TearFlags.TEAR_LUDOVICO then
+    if yandereWaifu.IsNormalRebekah(player) and currentMode == REBECCA_MODE.EternalHearts and tear.TearFlags & TearFlags.TEAR_LUDOVICO ~= TearFlags.TEAR_LUDOVICO then
         tear:ChangeVariant(RebekahCurse.ENTITY_ETERNALFEATHER)
         tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL
 		tear:GetData().NotSmart = true

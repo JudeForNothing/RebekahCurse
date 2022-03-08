@@ -439,7 +439,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1)
 		elseif sprite:GetFrame() == 54 and sprite:IsPlaying("Shoot") then
 			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
-		elseif sprite:IsFinished("Shoot") then
+		elseif sprite:IsPlaying("Shoot") and sprite:GetFrame() == 55 then
 			if not data.RedLudo then
 				yandereWaifu.GetEntityData(data.Player).isPlayingCustomAnim = false
 				yandereWaifu.GetEntityData(data.Player).FinishedPlayingCustomAnim = true
@@ -448,6 +448,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, player)
 				yandereWaifu.GetEntityData(poof).Parent = data.Player
 			end
+		elseif sprite:IsFinished("Shoot") then
 			data.Player.Visible = true
 			eff:Remove()
 		end

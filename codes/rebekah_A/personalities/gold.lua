@@ -2555,7 +2555,7 @@ function yandereWaifu:LevelUpNeds()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local canUpgrade = false
 		local player = Isaac.GetPlayer(p)
-		if player:GetPlayerType() == RebekahCurse.REB and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
 			canUpgrade = true
 	--		break
 		end
