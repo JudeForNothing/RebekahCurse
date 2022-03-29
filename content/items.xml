@@ -16,9 +16,9 @@
 	<active name="  Love me, love me not  " description="Est-ce qu ils ne m aiment pas?" gfx="collectibles_lovesme3.png" maxcharges="1" quality="3"/>
 	<active name="Doorstopper" description="Slam your knowledge to others!" gfx="collectibles_doorstopper.png" tags="book" maxcharges="3" quality="2"/>
 	<passive name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2"/>
-	<active name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" maxcharges="5" quality="3"/>
+	<passive name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3"/>
 	<active name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
-	<active name="Defuse = Rewards" description="Oh, I'm die, thank you forever" gfx="collectibles_oh_im_die.png" maxcharges="2" quality="3"/>
+	<active name="Defuse = Rewards" description="Oh, I'm die, thank you forever" gfx="collectibles_oh_im_die.png" maxcharges="4" quality="3"/>
 	
 	<active name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="3"/>
 	
@@ -39,6 +39,9 @@
 	
 	<active name="Bag of Bristle Bricks" description="Be creative!" gfx="collectibles_bag_of_bristle_bricks.png" maxcharges="0" quality="2"/>
 	
+	<passive name="Nut Water" description="HP up + Don't noclip!" gfx="collectibles_nut_water.png" quality="0"/>
+	<passive name="Twin Vision" description="Seeing the special things twice" gfx="collectibles_twin_vision.png" quality="4"/>
+	
 	<passive name="A Lunchbox" description="Meal for a special someone" gfx="collectibles_lunchbox.png" tags="food" quality="1"/>
 	<active name="Typical Rom-Com" description="Forced laughing" gfx="collectibles_book_romcom.png" maxcharges="4" tags="book" quality="1"/>
 	<familiar name="Miraculous Womb" description="A promise is a promise" gfx="collectibles_miraculous_womb.png" quality="2"/>
@@ -51,11 +54,9 @@
 	<passive name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" quality="3"/>
 	<active name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4" quality="2"/>
 	<passive name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/>
-	<passive name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="placeholder.png" quality="2"/>
+	<passive name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="collectibles_rebekahs_favorite.png" quality="3"/>
 	
 	<active name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3"/>
-	
-	<passive name="Twin Vision" description="Seeing the special things twice" gfx="collectibles_twin_vision.png" />
 	
 	<passive name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3"/>
 </items>

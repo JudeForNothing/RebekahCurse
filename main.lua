@@ -31,6 +31,10 @@ yandereWaifuCodes = {
 	entities = {
 		basiceffects = require('codes.entities.basiceffects'),
 		customplayeranim = require('codes.entities.customplayeranim'),
+		mirrorentities = require('codes.entities.mirrorentities'),
+		liminal = {
+			faceling = require('codes.entities.liminal.faceling'),
+		},
 		bosses = {
 			maggy = require('codes.entities.bosses.magdalene'),
 			eve = require('codes.entities.bosses.eve'),
@@ -52,6 +56,8 @@ yandereWaifuCodes = {
 		typicalromcom = require('codes.items.typicalromcom'),
 		wikepdia = require('codes.items.encyclopedia'),
 		bagofbristlebricks = require('codes.items.bagofbristlebricks'),
+		nutwater = require('codes.items.nutwater'),
+		twinvision = require('codes.items.twinvision'),
 		
 		lunchbox = require('codes.items.lunchbox'),
 		miraculouswomb = require('codes.items.miraculouswomb'),
@@ -72,6 +78,9 @@ yandereWaifuCodes = {
 	},
 	slots = {
 		mirror = require('codes.slots.mirror')
+	},
+	stages = {
+		liminal = require('codes.floors.backrooms')
 	},
 	unlocks = {
 	},

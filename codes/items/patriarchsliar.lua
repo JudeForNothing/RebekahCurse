@@ -13,8 +13,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				break
 			end
 		end
-	
-		if not fist and player.FrameCount % 600 and math.random(1,10) == 10 then
+
+		if not fist and (player.FrameCount % 15) <= 0 and math.random(1,10) == 10 then
 			local pos = Vector.Zero
 			if wall == Direction.DOWN then
 				pos = Vector(player.Position.X, room:GetBottomRightPos().Y+60)
@@ -115,6 +115,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			elseif data.Angle == 180 then
 				sprite:Play("Hold2", true)
 			end
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PATRIARCHSLIARBELL, 1, 0, false, 1)
 		end
 		if InutilLib.IsFinishedMultiple(sprite, "Punch", "Punch2", "PunchDown")then
 			if data.Angle == 90 then
@@ -142,15 +143,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			else
 				sprite:Play("Punch")
 			end
-		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() == 11 then
-			eff.Velocity = Vector.FromAngle(data.Angle)*20
-		elseif eff.FrameCount > 10 and InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() > 11 then
+		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() == 5 then
+			sprite.PlaybackSpeed = 0.5
+		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() == 10 then
+			sprite.PlaybackSpeed = 1
+		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() == 13 then
+			eff.Velocity = Vector.FromAngle(data.Angle)*70
+		elseif eff.FrameCount > 10 and InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() > 13 then
 			--if eff.Velocity:Length() > 6 then
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 						if eff.FrameCount % 3 == 0 then
 							if ent.Position:Distance(eff.Position) <= 90 then
-								ent:TakeDamage(15, 0, EntityRef(eff), 1)
+								ent:TakeDamage(20, 0, EntityRef(eff), 1)
 								ent.Velocity = ent.Velocity + eff.Velocity * 3
 								
 								ILIB.game:ShakeScreen(10)
@@ -170,7 +175,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 							end
 						end
 					elseif ent.Type == 1 then
-						if ent.Position:Distance(eff.Position) <= 40 then
+						if ent.Position:Distance(eff.Position) <= 35 then
 							ent:TakeDamage(1, 0, EntityRef(player), 10)
 							ent.Velocity = ent.Velocity + eff.Velocity * 3
 							ILIB.game:ShakeScreen(10)
@@ -178,9 +183,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					end
 				end
 			--end
-			eff.Velocity = eff.Velocity * 0.9
+			eff.Velocity = eff.Velocity * 0.8
 		else
-			eff.Velocity = eff.Velocity * 0.9
+			eff.Velocity = eff.Velocity * 0.8
 		end
 	end
 end, RebekahCurse.ENTITY_GOLEMFIST)

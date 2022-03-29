@@ -8,7 +8,10 @@
 	<costume anm2path="deadhair.anm2" type="none" priority="200" skinColor="0" overwriteColor="true"/>
 	<costume anm2path="rebeccasfate.anm2" type="none" isFlying="true" hasSkinAlt="true"/>
 	<costume anm2path="glitch_costume.anm2" type="none" priority="90" />
-
+	
+	<costume anm2path="rebekahspitsout.anm2" type="none" priority="210" hasSkinAlt="true"/>
+	<costume anm2path="costumes/soul/wizoobhairgoingdown.anm2" type="none" priority="999"/>
+	
 	<costume anm2path="costumes/rebekah_hair/rottenmode_headremove.anm2" type="none" priority="999" />
 	<costume anm2path="costumes/rebekah_hair/rottenmode_skinremove.anm2" type="none" priority="999" />
 	

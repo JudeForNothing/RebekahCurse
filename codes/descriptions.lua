@@ -1,27 +1,33 @@
 
 if EID then
+	EID:setModIndicatorName("Rebekah: Cursed and Heartbroken")
+	EID:setModIndicatorIcon("Heart")
     -- EID items
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_CANDYWEDDINGRING, "On pickup, gains 0.2 speed and one heart")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVEDELUXE, "After releasing the fire keys after holding for more than 2 seconds unleashes a hait whip#Hair damage is 2.5 damage per frame#Does not scale of Isaac's Damage")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX, "Every 30 shots fired, spawn two random locusts")
 	
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_DOORSTOPPER, "On use, aim to throw a giant book which deals 7.5 damage on landing# Deals 2.5 damage while flying in air #Get close to book in the floor to pick it up")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER, "Killing an enemy drops a finger which can poke the first enemy you hit to death")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER, "Enemies killed spawn a finger familiar, which surrounds and deal damage to the first enemy you damaged in the room until death")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_MORIAHDIARY, "Enemies and projectiles show a visual line on where they might go # Using the item also unlocks hitboxes and warning")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_THESHINING, "On use, all doors in the room bleed with creep, blood tears and end with brimstone # Tears and brimstone follow your tearflags")
-	
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_TWINVISION, "On new floor, spawns two invulnerable clones of you # Clones disappear on your damage")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE, "When charged, a familiar ticks and shows a color order for you to defuse # Rewards dropped are exactly a locked chest # Failure to defuse on time or doing 3 mistakes blows you up # Difficuty spikes up the more successes you have by shorter timer and explosion damage")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSCAMERA, "Captures enemies in room on first use, respawns them as charmed on second use")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX, "On pickup, drops 3 random hearts")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB, "On pickup, adds an orbital of Jacob and Esau#Jacob Familiar has less damage but shoots slighly faster#Esau Familiar shoots less but has more damage")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB, "On pickup, adds an orbital of Jacob and Esau#Jacob Familiar has less damage but shoots slighly faster # Esau Familiar shoots less but has more damage")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_DICEOFFATE, "Use to reroll your hearts# Each half heart is rerolled into another heart # Broken Hearts do not get rerolled")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_SNAP, "On hurt, gain buffs # After next room, gain debuff until next room")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND, "Spawns a Tiny Isaac if you are Rebekah else spawns a Tiny Rebekah# Both types of familiars shoot tears at enemies# Tiny Rebekah can burst tears similar to Red Personality's {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}} # Tiny Rebekah can pick up heart pickups and drop certain hearts # Tiny Isaac can pick up coins and drop various rewards")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVESICK, "Chance to spawn a pheromones aura which shortly charmes enemies on range# Aura also has a chance to spawn on tears")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND, "Spawns a Tiny Isaac and Tiny Rebekah# Both types of familiars shoot tears at enemies# Rebekah can burst tears similar to Red Personality's {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}} # Rebekah can pick up heart pickups and drop certain hearts # Isaac can pick up coins and drop various rewards")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVESICK, "Tears are replaced by charming notes")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE, "Each filled half red heart gives 0.50 damage# Each empty half red heart gives 0.10 speed")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_ROMCOM, "Gives every vulnerable enemy the Laughing effect # Laughing effect disables the ability to shoot projectiles")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON, "On hurt, spawns a Mom's Shadow-esque entity which only deals contact damage to both enemies and Isaac when she dashes")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_PATRIARCHSLIAR, "Occasionally spawns a giant fist punching at your direction from a wall # Damages enemies")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE, "Shoot a spear to enemy # If enemy is attached, use arrow keys to swing around attached enemy # Enemies eventually detach naturally or if they collide in the walls")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE, "Spawns a Happy Jacob # This Jacob gains damage, range, tears and other stats depending on how many items given to him")
 	
-	EID:addTrinket(RebekahCurse.TRINKET_ISAACSLOCKS, "When entering either a {{Shop}}, {{BossRoom}}, {{TreasureRoom}}, {{DevilRoom}} or {{AngelRoom}}, a reroll slot machine spawns# A reroll machine spawning in {{DevilRoom}} or {{AngelRoom}} is chance-based")
+	EID:addTrinket(RebekahCurse.TRINKET_ISAACSLOCKS, "When entering either a {{Shop}}, {{BossRoom}}, {{TreasureRoom}}, {{DevilRoom}} or {{AngelRoom}}, a reroll slot machine spawns # A reroll machine spawning in {{DevilRoom}} or {{AngelRoom}} is chance-based")
 	
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_WISHFULTHINKING, "On death, respawn as Wishful Isaac # Wishful Isaac has 10 Luck")
 	

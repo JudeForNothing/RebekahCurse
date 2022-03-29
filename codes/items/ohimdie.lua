@@ -70,7 +70,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 							player:AnimateHappy()
 						else
 							player:AnimateSad()
-							yandereWaifu.GetEntityData(data.ImDiePolty).Mistakes = yandereWaifu.GetEntityData(data.ImDiePolty).Mistakes + 1
+							yandereWaifu.GetEntityData(player).PersistentPlayerData.Mistakes = yandereWaifu.GetEntityData(player).PersistentPlayerData.Mistakes + 1
 							data.ImDiePolty:GetSprite():Play("IdleWrong", true)
 							
 							SFXManager():Play(SoundEffect.SOUND_THUMBS_DOWN , 1, 0, false, 0.8 );
@@ -118,26 +118,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	--fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
 	--fam.Velocity = fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position
 	if not playerdata.ImDiePolty then playerdata.ImDiePolty = fam end
-	if not data.ImDieCountdown or data.ImDieCountdown == 0 then data.ImDieCountdown = 2000 end
+	if not data.ImDieCountdown or data.ImDieCountdown == 0 then 
+		data.ImDieCountdown = 2000
+		if not playerdata.PersistentPlayerData.Successes then playerdata.PersistentPlayerData.Successes = 0 end
+		local subtract = data.ImDieCountdown - playerdata.PersistentPlayerData.Successes*30
+		if subtract >= 300 then
+			data.ImDieCountdown = subtract 
+		else
+			data.ImDieCountdown = 300
+		end
+	end
 	if not playerdata.WireCombinations then 
 		playerdata.WireCombinations = {}
 		for i = 1, 4 do
 			playerdata.WireCombinations[i] = math.random(0,3)
-
 		end
 	end
 	if not playerdata.currentIndex then playerdata.currentIndex = 1 end
-	if not data.Mistakes then 
-		data.Mistakes = 0 
-		data.LastMistake = 0
+	if not playerdata.PersistentPlayerData.Mistakes then 
+		playerdata.PersistentPlayerData.Mistakes = 0 
+		playerdata.PersistentPlayerData.LastMistake = 0
 	end
 	
-	if data.Mistakes > data.LastMistake and spr:IsFinished("IdleWrong") then
-		if data.Mistakes == 1 then
+	if playerdata.PersistentPlayerData.Mistakes > playerdata.PersistentPlayerData.LastMistake and spr:IsFinished("IdleWrong") then
+		if playerdata.PersistentPlayerData.Mistakes == 1 then
 			spr:Play("PickupIdle2", true)
-		elseif data.Mistakes == 2 then
+		elseif playerdata.PersistentPlayerData.Mistakes == 2 then
 			spr:Play("PickupIdle3", true)
-		elseif data.Mistakes == 3 then
+		elseif playerdata.PersistentPlayerData.Mistakes == 3 then
 			spr:Play("Throw", true)
 		end
 	end
@@ -154,6 +162,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					if player:HasCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE) and fam and not fam:IsDead() then
 						if (player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)) or (player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == RebekahCurse.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)) or (player:GetActiveItem(ActiveSlot.SLOT_POCKET) == RebekahCurse.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)) then
 							local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, playerdata.WireCombinations[i], fam.Position, Vector.Zero, player)
+							SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1 + playerdata.WireCombinations[i]/5)
 						end
 					end
 				end);
@@ -173,7 +182,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	data.ImDieCountdown = data.ImDieCountdown - 1
 	
 	if spr:IsFinished("PickupFirst") then
-		spr:Play("PickupIdle", true)
+		if playerdata.PersistentPlayerData.Mistakes == 1 then
+			spr:Play("PickupIdle2", true)
+		elseif playerdata.PersistentPlayerData.Mistakes == 2 then
+			spr:Play("PickupIdle3", true)
+		else
+			spr:Play("PickupIdle", true)
+		end
 	end
 	
 	if data.ImDieCountdown == 0 and not spr:IsPlaying("Throw") then
@@ -189,20 +204,35 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if spr:IsPlaying("Throw") then
 		if spr:IsEventTriggered("PickupThrow") then
-			local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_GIGA, 0, fam.Position,  Vector.Zero, nil):ToBomb();
-			bomb.ExplosionDamage = 5
-			bomb:SetExplosionCountdown(0)
+			if not playerdata.PersistentPlayerData.Successes then playerdata.PersistentPlayerData.Successes = 0 end
+			if not player:HasTrinket(TrinketType.TRINKET_SAFETY_SCISSORS) then
+				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_GIGA, 0, fam.Position,  Vector.Zero, nil):ToBomb();
+				bomb.ExplosionDamage = 1 + playerdata.PersistentPlayerData.Successes
+				bomb:SetExplosionCountdown(0)
+				if not player:HasCollectible(CollectibleType.COLLECTIBLE_HOST_HAT) or not player:HasCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC) then
+					player:TakeDamage(1 + playerdata.PersistentPlayerData.Successes, 0, EntityRef(fam), 0)
+				end
+				ILIB.room:MamaMegaExplosion(fam.Position)
+			else
+				local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1),  Vector.Zero, nil):ToPickup();
+			end
 			player:RemoveCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_PRIMARY)
 			player:RemoveCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_SECONDARY)
 			player:RemoveCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_POCKET)
 			fam:Kill()
 			RemoveStuff()
+			playerdata.PersistentPlayerData.Mistakes = 0
 		end
 	end
 	
 	if spr:IsPlaying("Reward") then
 		if spr:IsEventTriggered("PickupThrow") then
-			if ILIB.room:IsClear() then
+			--local itemPool = ILIB.game:GetItemPool()
+			--local randomItem = itemPool:GetCollectible(ItemPoolType.POOL_GOLDEN_CHEST, true, ILIB.game:GetSeeds():GetStartSeed(), CollectibleType.COLLECTIBLE_NULL)
+			--local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, randomItem, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil)
+			local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil):ToPickup()
+			item:TryOpenChest(player)
+			--[[if ILIB.room:IsClear() then
 				local hasItems = false
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if ent.Type == 5 and ent.Variant == 100 then
@@ -255,16 +285,35 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						local pickup = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 0, fam.Position,  Vector.Zero, player):ToPickup();
 					end
 				end
-			end
+			end]]
 		end
 	end
 	
 	if spr:IsFinished("Reward") then
-		fam:Kill()
+		if not playerdata.PersistentPlayerData.Successes then 
+			playerdata.PersistentPlayerData.Successes = 1
+		else
+			playerdata.PersistentPlayerData.Successes = playerdata.PersistentPlayerData.Successes + 1
+		end
+		fam:Remove()
 		RemoveStuff()
 	end
 	
 end, RebekahCurse.ENTITY_OHIMPOLTY);
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_, fam)
+	local sprite = fam:GetSprite();
+	local data = yandereWaifu.GetEntityData(fam);
+	local player = fam.Player
+	
+	if data.ImDieCountdown and InutilLib.IsPlayingMultiple(sprite, "PickupIdle", "PickupIdle2", "PickupIdle3") then
+		local text = math.floor(data.ImDieCountdown/30)
+		--Isaac.RenderText(tostring(text),Isaac.WorldToScreen(fam.Position).X-7,  Isaac.WorldToScreen(fam.Position).Y-15, 1 ,1 ,1 ,1 )
+		local f = Font() -- init font object
+		f:Load("font/pftempestasevencondensed.fnt") -- load a font into the font object
+		f:DrawString(text,Isaac.WorldToScreen(fam.Position).X-6,Isaac.WorldToScreen(fam.Position).Y-45,KColor(1,1,1,1,0,0,0),0,true)
+	end
+end, RebekahCurse.ENTITY_OHIMPOLTY)
 
 function yandereWaifu:ImDiePoltyCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
@@ -273,8 +322,9 @@ function yandereWaifu:ImDiePoltyCache(player, cacheF) --The thing the checks and
 			if InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) or  InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY) or InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET) then
 				player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_OHIMDIE), RNG())
 			end
+		elseif not player:HasCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE) then
+			player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_OHIMDIE), RNG())
 		end
 	end
-		
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.ImDiePoltyCache)

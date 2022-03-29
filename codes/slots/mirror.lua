@@ -200,7 +200,11 @@ function yandereWaifu.MirrorMechanic(player)
 								sprite:Play("Death", true);
 								for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 									if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-										local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+										if math.random(1,3) == 3 then
+											local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+										else
+											local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, 0, pickup.Position,  pickup.Velocity, pickup)
+										end
 										pickup:Remove()
 									end
 								end
@@ -209,6 +213,13 @@ function yandereWaifu.MirrorMechanic(player)
 								end 
 							else
 								Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, mir.Position, Vector(0,0), player)
+								for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
+									if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
+										local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, 1, pickup.Position,  Vector.FromAngle( math.random() * 360 ):Resized(math.random(1,6)), pickup)
+										yandereWaifu.GetEntityData(newpickup).NoDrop = true
+										pickup:Remove()
+									end
+								end
 								mir:Remove()
 							end
 						else

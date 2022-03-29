@@ -69,7 +69,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	local currentStage = game:GetLevel():GetStage()
 	local roomType = room:GetType()
 	
-	for i,player in ipairs(ILIB.players) do
+	for i=0, ILIB.game:GetNumPlayers()-1 do
+		local player = Isaac.GetPlayer(i)
 		if player:GetPlayerType() == Reb and CurrentRebeccaUnlocks and readyToUnlock then
 			
 			if game:IsGreedMode() then

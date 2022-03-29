@@ -58,7 +58,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end 
 	
 	local function Pickup()
-		for i,pl in ipairs(ILIB.players) do
+		for i=0, ILIB.game:GetNumPlayers()-1 do
+			local pl = Isaac.GetPlayer(i)
 			if GetPtrHash(pl) == GetPtrHash(player) then
 				if pl.Position:Distance(eff.Position) <= 50 then 
 					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.COLLECTIBLE_DOORSTOPPER then

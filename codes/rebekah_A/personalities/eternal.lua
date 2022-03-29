@@ -110,7 +110,7 @@ function yandereWaifu:FeatherUpdate(tr)
 		data.closestEnt = 0
 		--laggy
 		if tr.FrameCount == 1 then
-			InutilLib.SpawnTrail(tr)
+			data.trail = InutilLib.SpawnTrail(tr)
 		end
 		--so this thing floats forever
 		if tr.FrameCount >= 1 and tr.FrameCount <= 10 then
@@ -142,6 +142,7 @@ function yandereWaifu:FeatherUpdate(tr)
 			end
 		end
 		if player.Position:Distance(tr.Position) >= 500 then
+			data.trail:Remove()
 			tr:Remove()
 		end
 		if tr:IsDead() then
@@ -424,7 +425,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_EPICFIRETARGET)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.players) do
+	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -500,7 +501,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.EternalFamiliarCheck)
 	
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.players) do
+	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player

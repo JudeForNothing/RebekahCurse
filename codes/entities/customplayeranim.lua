@@ -403,16 +403,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass = nil
 			yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
 			
-			InutilLib.SetTimer( 60*3, function()
-				if yandereWaifu.GetEntityData(data.Player).SoulBuff then --give lenience to the barrage
-					yandereWaifu.GetEntityData(data.Player).SoulBuff = false
-					data.Player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
-					data.Player:EvaluateItems()
-					--become depressed again
-					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(data.Player).currentMode, data.Player , false, false)
-					data.Player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-				end
-			end)
+			yandereWaifu.GetEntityData(data.Player).LeakingSoulBuff = 60*7
 		end
 		
 	--rebekah red heart mode
@@ -464,6 +455,54 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(cut).TearDelay = data.TearDelay
 			yandereWaifu.GetEntityData(data.Player).isPlayingCustomAnim = false
 			eff:Remove()
+		end
+	
+	elseif data.SoulIsPukingUp then
+		if eff.FrameCount == 1 then
+			sprite:Load("gfx/characters/rebekahpukesup.anm2",true)
+			if data.extraAction then
+				sprite:Play("PukeUp",false)
+			else
+				sprite:Play("Puke",false)
+			end
+			if data.Player:GetHeadColor() == SkinColor.SKIN_WHITE then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_white.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLACK then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_black.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLUE then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_blue.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_RED then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_red.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREEN then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_green.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREY then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_grey.png")
+			end
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULCHARGELIGHT, 1, 0, false, 1 )
+			sprite:LoadGraphics()
+			data.Player.Visible = false
+		elseif sprite:IsFinished("Puke") or sprite:IsFinished("PukeUp") then
+			InutilLib.SFX:Stop(RebekahCurseSounds.SOUND_SOULGARGLE)
+			data.Player.Visible = true
+			eff:Remove()
+			local ArcaneCircleDust= Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 6, data.Player.Position, Vector.Zero, data.Player)
+			yandereWaifu.GetEntityData(ArcaneCircleDust).Parent = data.Player
+			if not data.SoulLudo then
+				yandereWaifu.GetEntityData(data.Player).FinishedPlayingCustomAnim = true 
+			else
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, data.Player)
+				yandereWaifu.GetEntityData(poof).Parent = data.Player
+				yandereWaifu.GetEntityData(poof).Soul = true
+			end
+		end
+		for k, v in pairs (Isaac.GetRoomEntities()) do
+			if v.Type ~= 1000 and v.Type ~= 1 and v.Type ~= 8 then
+				v:AddEntityFlags(EntityFlag.FLAG_SLOW)
+			end
+		end
+		data.Player.Velocity = data.Player.Velocity * 0.7
+		if data.Player.FrameCount % 3 == 0 then
+			yandereWaifu.SpawnHeartParticles( 1, 2, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), data.Player, RebekahHeartParticleType.Soul );
 		end
 	elseif data.DashBrokenGlitch then
 		if eff.FrameCount == 1 then --beginning

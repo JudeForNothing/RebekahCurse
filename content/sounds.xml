@@ -54,6 +54,40 @@
 		<sample weight="1" path="red/fetus2.wav" />
 	</sound>
 	
+	<sound name="SoulCharge Light">
+		<sample weight="1" path="soul/charge.wav" />
+	</sound>
+	<sound name="SoulShot Light">
+		<sample weight="1" path="soul/light1.wav" />
+	</sound>
+	<sound name="SoulShot Medium">
+		<sample weight="1" path="soul/medium.wav" />
+	</sound>
+	<sound name="SoulShot Heavy">
+		<sample weight="1" path="soul/heavy.wav" />
+	</sound>
+	<sound name="Soul Spit">
+		<sample weight="1" path="soul/spit.wav" />
+	</sound>
+	<sound name="Soul Electricity">
+		<sample weight="1" path="soul/laser.wav" />
+	</sound>
+	<sound name="Soul Jingle">
+		<sample weight="1" path="soul/jingle.wav" />
+	</sound>
+	<sound name="Soul Crash">
+		<sample weight="1" path="soul/crash.wav" />
+	</sound>
+	<sound name="Soul Fetus1">
+		<sample weight="1" path="soul/fetus1.wav" />
+	</sound>
+	<sound name="Soul Fetus2">
+		<sample weight="1" path="soul/fetus2.wav" />
+	</sound>
+	<sound name="Soul Gargle">
+		<sample weight="1" path="soul/soulgargle.wav" />
+	</sound>
+	
 	<sound name="Christian Chant">
 		<sample weight="1" path="ned/christian/chant.wav" />
 	</sound>	
@@ -108,6 +142,10 @@
 		<sample weight="1" path="items/imdiebeep.wav" />
 	</sound>
 	
+	<sound name="Im Die Chime">
+		<sample weight="1" path="items/imdiechime.wav" />
+	</sound>
+	
 	<sound name="Laugh Track">
 		<sample weight="1" path="items/laugh_track.wav" />
 	</sound>
@@ -116,5 +154,11 @@
 	</sound>
 	<sound name="Camera Use">
 		<sample weight="1" path="items/camera_use.wav" />
+	</sound>
+	<sound name="Patriarch's Fist Bell">
+		<sample weight="1" path="items/fistbell.wav" />
+	</sound>
+	<sound name="Unrequited Love Chain">
+		<sample weight="1" path="items/unrequitedlovechain.wav" />
 	</sound>
 </sounds>

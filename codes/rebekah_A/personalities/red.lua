@@ -533,6 +533,16 @@ function yandereWaifu:RedPersonalityTearUpdate(tr)
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.RedPersonalityTearUpdate)
 
+function yandereWaifu:RedPersonalityTearCollision(tr, cool)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and (data.IsJacobFetus or IsEsauFetus) then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount <= 300 and tr.FrameCount % 30 == 0 then
+			cool:TakeDamage(tr.CollisionDamage, 0, EntityRef(tr), 4)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, yandereWaifu.RedPersonalityTearCollision)
+
 local RebekahNormalSword = {
 	[1] = "1.png",
 	[2] = "2.png",
@@ -595,7 +605,8 @@ local LightSaberTable = {
 
 --slash effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i,player in ipairs(ILIB.players) do
+	for i=0, ILIB.game:GetNumPlayers()-1 do
+		local player = Isaac.GetPlayer(i)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
@@ -664,7 +675,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if ent:IsEnemy() and ent:IsVulnerableEnemy() and not ent:IsDead() then
 						if ent.Position:Distance((eff.Position)) <= 50 then
-							ent:TakeDamage((player.Damage * data.MultiTears) * 3, 0, EntityRef(eff), 1)
+							ent:TakeDamage((player.Damage * data.MultiTears) * 1.8, 0, EntityRef(eff), 1)
 						end
 					end
 				end

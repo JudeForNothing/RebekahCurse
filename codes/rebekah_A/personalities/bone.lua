@@ -244,7 +244,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 end, RebekahCurse.ENTITY_BONESTAND);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.players) do
+	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -323,7 +323,7 @@ end, RebekahCurse.ENTITY_BONEPUNCH)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.players) do
+	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -424,7 +424,7 @@ end, RebekahCurse.ENTITY_BONESPEAR)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-	--for i,player in ipairs(ILIB.players) do
+	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -466,7 +466,7 @@ end, RebekahCurse.ENTITY_LUDOBONE)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.players) do
+	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player

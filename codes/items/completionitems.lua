@@ -2,21 +2,6 @@
 local giant = Sprite()
 giant:Load("gfx/characters/big_rebekah.anm2",true)
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_,player, offset)
-	local data = GetEntityData(player)
-	
-	if data.IsThicc == true then
-		--print("fire")
-		--giant:SetOverlayRenderPriority(true)
-		--giant:Play("HeadDown", true)
-		--local playerLocation = Isaac.WorldToScreen(player.Position)
-		--print(InutilLib.IsInMirroredFloor(player))
-		if not InutilLib.IsInMirroredFloor(player) then
-		--	giant:Render(playerLocation, Vector(0,0), Vector(0,0))
-		end
-	end
-end)
-
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
@@ -138,7 +123,6 @@ end)
 function yandereWaifu:ItemsNewRoom()
 	for p = 0, game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-	--for i,player in ipairs(ILIB.players) do
 		local data = GetEntityData(player)
 		local room = game:GetRoom()
 		print(room:GetType())

@@ -20,7 +20,7 @@ REBEKAHMODE_EXPERIMENTAL = {
 
 function yandereWaifu:SaveAchievement()
 	local saveData = RecapRebekahData()
-	Isaac.SaveModData(yandereWaifu, JSON.encode( saveData ) );
+	Isaac.SaveModData(yandereWaifu, REB_JSON.encode( saveData ) );
 end
 
 function yandereWaifu:ExecuteCommand( command, params )

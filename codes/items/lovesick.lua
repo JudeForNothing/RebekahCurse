@@ -1,3 +1,6 @@
+local uiReserve = Sprite();
+uiReserve:Load("gfx/ui/ui_lovesick_reserve.anm2", true);
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
@@ -271,3 +274,184 @@ function yandereWaifu:LovesickTearRender(tr, _)
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.LovesickTearRender)
+
+--[[
+yandereWaifu:AddCallback(ModCallbacks.MC_INPUT_ACTION, function(_, ent, hook, action)
+	if ent and ent:ToPlayer() then
+		if ent:ToPlayer():HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+		print("exodus")
+			local returnvalue = Input.GetActionValue(buttonAction, player.ControllerIndex)
+				if inputHook == InputHook.GET_ACTION_VALUE then
+					--move either AI determined direction or player instructed direction
+					if buttonAction == 0 then --left
+						if returnvalue == 1 then
+							holdingleft[j] = true
+						else
+							holdingleft[j] = false
+						end
+						if moveX[j] == -1 and (holdingright[j] == false or subplayer) then --move left
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					if buttonAction == 1 then --right
+						if returnvalue == 1 then
+							holdingright[j] = true
+						else
+							holdingright[j] = false
+						end
+						if moveX[j] == 1 and (holdingleft[j] == false or subplayer) then --move right
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					if buttonAction == 2 then --up
+						if returnvalue == 1 then
+							holdingup[j] = true
+						else
+							holdingup[j] = false
+						end
+						if moveY[j] == -1 and (holdingdown[j] == false or subplayer) then --move up
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					if buttonAction == 3 then --down
+						if returnvalue == 1 then
+							holdingdown[j] = true
+						else
+							holdingdown[j] = false
+						end
+						if moveY[j] == 1 and (holdingup[j] == false or subplayer) then --move down
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					--shooting directions
+					if buttonAction == 4 then --attack left
+						if returnvalue > 0.75 then
+							attackingleft[j] = true
+						else
+							attackingleft[j] = false
+						end
+						if subplayer and shootX[j] == 0 and attackingleft[j] then
+							returnvalue = 0
+                            player:SetShootingCooldown(1)
+						elseif shootX[j] == -1 and (attackingright[j] == false or subplayer) then
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					if buttonAction == 5 then --attack right
+						if returnvalue > 0.75 then
+							attackingright[j] = true
+						else
+							attackingright[j] = false
+						end
+						if subplayer and shootX[j] == 0 and attackingright[j] then
+							returnvalue = 0
+                            player:SetShootingCooldown(1)
+						elseif shootX[j] == 1 and (attackingleft[j] == false or subplayer) then
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					if buttonAction == 6 then --attack up
+						if returnvalue > 0.75 then
+							attackingup[j] = true
+						else
+							attackingup[j] = false
+						end
+						if subplayer and shootY[j] == 0 and attackingup[j] then
+							returnvalue = 0
+                            player:SetShootingCooldown(1)
+						elseif shootY[j] == -1 and (attackingdown[j] == false or subplayer) then
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+					end
+					if buttonAction == 7 then --attack down
+						if returnvalue > 0.75 then
+							attackingdown[j] = true
+						else
+							attackingdown[j] = false
+						end
+						if subplayer and shootY[j] == 0 and attackingdown[j] then
+							returnvalue = 0
+                            player:SetShootingCooldown(1)
+						elseif shootY[j] == 1 and (attackingup[j] == false or subplayer) then
+							returnvalue = 1
+						elseif subplayer then
+							returnvalue = 0
+						end
+						--make character face down if charging with no target
+						if mymod:isChargeWeapon(player) and shootX[j] == 0 and shootY[j] == 0 and (player:GetName() ~= "Moth" or Game():GetFrameCount() % 60 < 5) then
+							returnvalue = 1
+						end
+					end
+					return returnvalue
+				end
+		end
+	end
+end);]]
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
+	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and Options.ChargeBars then
+			yandereWaifu.lovesickUI(player)
+
+		end
+	end
+end);
+
+function yandereWaifu.lovesickUI(player)
+		local data = yandereWaifu.GetEntityData(player)
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
+		local tick = data.lovesickTick
+		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
+			uiReserve:SetOverlayRenderPriority(true)
+		
+			if tick > 0 then
+				if tick < 30 then
+					local FramePercentResult = math.floor((tick/30)*100)
+					uiReserve:SetFrame("Charging", FramePercentResult)
+					data.lovesickBarFade = gameFrame
+					data.FinishedlovesickUICharge = false
+				elseif tick >= 30 then
+					if not data.FinishedlovesickUICharge then
+						uiReserve:SetFrame("StartCharged",gameFrame - data.lovesickBarFade)
+						if uiReserve:GetFrame() == 11 then
+							data.lovesickBarFade = gameFrame
+							data.FinishedlovesickUICharge = true
+						end
+					elseif data.FinishedlovesickUICharge then
+						if uiReserve:GetFrame() == 5 then
+							data.lovesickBarFade = gameFrame
+						end
+						uiReserve:SetFrame("Charged",gameFrame - data.lovesickBarFade)
+					end
+				end
+			else
+				if not uiReserve:IsPlaying("Disappear") and data.lovesickBarFade then
+					uiReserve:SetFrame("Disappear",gameFrame - data.lovesickBarFade);
+				end
+			end
+	
+				local playerLocation = Isaac.WorldToScreen(player.Position)
+				--print(InutilLib.IsInMirroredFloor(player))
+				if not InutilLib.IsInMirroredFloor(player) then
+					uiReserve:Render(playerLocation + Vector(-15, -15), Vector(0,0), Vector(0,0));
+				end
+			end
+	--end
+end

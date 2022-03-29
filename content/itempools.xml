@@ -3,44 +3,49 @@
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Typical Rom-Com" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Rebekah's Camera" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Lovesick" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
+		<Item Name="Rebekah's Camera" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="The Shining" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Finger Finger" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Great Pheonix" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.3"/>
 	</Pool>
 	<Pool Name="shop">
-		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="1"/>
+		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
 	</Pool>
 	<Pool Name="boss">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Candy Wedding Ring" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Candy Wedding Ring!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="devil">
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="angel">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Patriarch's Liar" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Patriarch's Liar" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="secret">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Wikepidia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Defuse = Rewards" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Twin Vision" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="library">
-		<Item Name="Typical Rom-Com" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
-		<Item Name="The Shining" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Wikepidia" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Doorstopper" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Typical Rom-Com" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
+		<Item Name="The Shining" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
+		<Item Name="Wikepidia" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.2" />
+		<Item Name="Doorstopper" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="curse">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -49,6 +54,7 @@
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Rebekah's Camera" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Defuse = Rewards" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="goldenChest">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -102,7 +108,7 @@
 	</Pool>
 	<Pool Name="greedBoss">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Candy Wedding Ring" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Candy Wedding Ring!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedDevil">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -116,6 +122,7 @@
 		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="greedSecret">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />

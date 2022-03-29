@@ -84,7 +84,6 @@ end)
 function yandereWaifu:SnappedTiredNewRoom()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
 			if data.hasSnap then

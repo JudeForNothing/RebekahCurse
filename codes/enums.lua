@@ -43,6 +43,8 @@ RebekahCurse = {
 	COLLECTIBLE_WIKEPIDIA14 = Isaac.GetItemIdByName("   Wikepidia"),
 	
 	COLLECTIBLE_BAGOFBRISTLEBRICKS = Isaac.GetItemIdByName("Bag of Bristle Bricks"),
+	COLLECTIBLE_NUTWATER = Isaac.GetItemIdByName("Nut Water"),
+	COLLECTIBLE_TWINVISION = Isaac.GetItemIdByName("Twin Vision"),
 	
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
@@ -209,6 +211,19 @@ RebekahCurseSounds = {
 	SOUND_REDFETUS1 = Isaac.GetSoundIdByName("Red Fetus1"),
 	SOUND_REDFETUS2 = Isaac.GetSoundIdByName("Red Fetus2"),
 	
+	SOUND_SOULCHARGELIGHT = Isaac.GetSoundIdByName("SoulCharge Light"),
+	SOUND_SOULSHOTLIGHT = Isaac.GetSoundIdByName("SoulShot Light"),
+	SOUND_SOULSHOTMEDIUM = Isaac.GetSoundIdByName("SoulShot Medium"),
+	SOUND_SOULSHOTHEAVY = Isaac.GetSoundIdByName("SoulShot Heavy"),
+	SOUND_SOULSPIT = Isaac.GetSoundIdByName("Soul Spit"),
+	SOUND_SOULELECTRICITY = Isaac.GetSoundIdByName("Soul Electricity"),
+	
+	SOUND_SOULJINGLE = Isaac.GetSoundIdByName("Soul Jingle"),
+	SOUND_SOULCRASH = Isaac.GetSoundIdByName("Soul Crash"),
+	SOUND_SOULFETUS1 = Isaac.GetSoundIdByName("Soul Fetus1"),
+	SOUND_SOULFETUS2 = Isaac.GetSoundIdByName("Soul Fetus2"),
+	SOUND_SOULGARGLE = Isaac.GetSoundIdByName("Soul Gargle"),
+	
 	SOUND_CHRISTIAN_CHANT = Isaac.GetSoundIdByName("Christian Chant"),
 	SOUND_CHRISTIAN_OVERTAKE = Isaac.GetSoundIdByName("Christian Overtake"),
 	SOUND_CHRISTIAN_READ = Isaac.GetSoundIdByName("Christian Read"),
@@ -225,13 +240,19 @@ RebekahCurseSounds = {
 	SOUND_PUNCH = Isaac.GetSoundIdByName("Punch Effect"),
 	
 	SOUND_IMDIEBEEP = Isaac.GetSoundIdByName("Im Die Beep"),
+	SOUND_IMDIECHIME = Isaac.GetSoundIdByName("Im Die Chime"),
 	SOUND_LAUGHTRACK = Isaac.GetSoundIdByName("Laugh Track"),
 	SOUND_LAUGHUNSETTLING = Isaac.GetSoundIdByName("Laugh Unsettling"),
-	SOUND_CAMERAUSE = Isaac.GetSoundIdByName("Camera Use")
+	SOUND_CAMERAUSE = Isaac.GetSoundIdByName("Camera Use"),
+	SOUND_PATRIARCHSLIARBELL = Isaac.GetSoundIdByName("Patriarch's Fist Bell"),
+	SOUND_UNREQUITEDLOVECHAIN = Isaac.GetSoundIdByName("Unrequited Love Chain")
 }
 
 RebekahCurseEnemies = {
+	ENTITY_FACELING = Isaac.GetEntityVariantByName("Faceling"),
+	
 	ENTITY_REBEKAH_ENEMY = Isaac.GetEntityTypeByName("Rebekah Entities"),
+	ENTITY_REDTATO = Isaac.GetEntityVariantByName("Red Tato"),
 	ENTITY_MAGDALENE_HEART = Isaac.GetEntityVariantByName("Magdalene Hearts"),
 	
 	ENTITY_MAGDALENE_BOSS = Isaac.GetEntityVariantByName("Magdalene (Boss)"),
@@ -253,7 +274,11 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED = 2,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK = 3,
 	ENTITY_REBEKAH_CHARGE_DUST = 4,
-	ENTITY_REBEKAH_LUDO_LIGHTNING = 5
+	ENTITY_REBEKAH_LUDO_LIGHTNING = 5,
+	ENTITY_REBEKAH_SOUL_ARCANE_CIRCLE = 6,
+	ENTITY_REBEKAH_SOUL_PUKE_EFFECT = 7,
+	ENTITY_REBEKAH_SPECIAL_ARCANE_CIRCLE = 8,
+	ENTITY_REBEKAH_LUDO_MOUTH = 9
 }
 
 local wasFromTaintedLocked = false
@@ -272,6 +297,9 @@ RebekahCurseCostumes = {
 	DeadHair = Isaac.GetCostumeIdByPath("gfx/characters/deadhair.anm2"),
 	GlitchEffect = Isaac.GetCostumeIdByPath("gfx/characters/glitch_costume.anm2"),
 	boneStackForAnim = 0, --asks how much number is there for the anim
+
+	RebekahSpitsOut = Isaac.GetCostumeIdByPath("gfx/characters/rebekahspitsout.anm2"),
+	WizoobHairGoingDown = Isaac.GetCostumeIdByPath("gfx/characters/costumes/soul/wizoobhairgoingdown.anm2"),
 
 	HeadlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_headremove.anm2"),
 	SkinlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_skinremove.anm2"),
@@ -306,7 +334,7 @@ REBEKAH_BALANCE = {
 	ETERNAL_HEARTS_DASH_COOLDOWN = 110, --55
 	ETERNAL_HEARTS_DASH_ATTACK_COUNTDOWN = 7,
 	ETERNAL_HEARTS_DASH_FEATHER_SPEED = 5,
-	SOUL_HEARTS_DASH_COOLDOWN = 120, --120
+	SOUL_HEARTS_DASH_COOLDOWN = 160, --120
 	SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES = 35,
 	SOUL_HEARTS_DASH_RETAINS_VELOCITY = true,
 	SOUL_HEARTS_DASH_TARGET_SPEED = 3,

@@ -20,7 +20,6 @@ knifeSpearReserve:Load("gfx/ui/ui_spear_reserve.anm2", true);
 
 --meter
 function yandereWaifu.meterLogic(player)
-	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
@@ -152,7 +151,6 @@ function yandereWaifu.heartReserveRenderLogic(player, id)
 end
 
 function yandereWaifu.heartBoneReserveRenderLogic(player)
-	--for i,player in ipairs(ILIB.players) do
 		local position = player.Position - Vector(24,-18)
 		--print(player.Position.X)
 		--if InutilLib.IsInMirroredFloor(player) then
@@ -253,7 +251,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 end);
 
 function yandereWaifu.eternalBarLogic(player)
-	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();

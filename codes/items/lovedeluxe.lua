@@ -148,7 +148,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 end);
 
 function yandereWaifu.loveDeluxeUI(player)
-	--for i,player in ipairs(ILIB.players) do
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
@@ -185,7 +184,7 @@ function yandereWaifu.loveDeluxeUI(player)
 				local playerLocation = Isaac.WorldToScreen(player.Position)
 				--print(InutilLib.IsInMirroredFloor(player))
 				if not InutilLib.IsInMirroredFloor(player) then
-					uiReserve:Render(playerLocation + Vector(0, -70), Vector(0,0), Vector(0,0));
+					uiReserve:Render(playerLocation + Vector(-15, -40), Vector(0,0), Vector(0,0));
 				end
 			end
 	--end

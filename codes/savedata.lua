@@ -2,6 +2,7 @@
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
+	Isaac.DebugString("c")
 	local data = yandereWaifu.GetEntityData(player)
 	if not data.PersistentPlayerData then data.PersistentPlayerData = {} end
 	--print("2")
@@ -286,7 +287,11 @@ local function RecapRebekahData()
 	saveData.PersistentPlayerData = {}
 	
 	saveData.NedHealth = {} -- first ned
-	for i,player in ipairs(ILIB.players) do
+	local players = {}
+	for i=0, ILIB.game:GetNumPlayers()-1 do
+		table.insert(players, Isaac.GetPlayer(i)) --dont use, its crap
+	end
+	for i,player in ipairs(players) do
 		if yandereWaifu.IsNormalRebekah(player) then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
@@ -333,12 +338,12 @@ local function IsRebekahPlayer(player)
 	end
 end
 
-JSON = require("json");
+REB_JSON = require("json");
 
 -- Load Moddata
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 	--print("1")
-	local data = JSON.decode(Isaac.LoadModData(yandereWaifu));
+	local data = REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
 		if data.currentMode ~= nil then 
 			for i,player in pairs(ILIB.players) do
@@ -388,7 +393,7 @@ end)
 -- this doesn't need to be called every frame and especially not for characters that aren't rebecca
 function yandereWaifu.Save()
 	local saveData = RecapRebekahData()
-	Isaac.SaveModData(yandereWaifu, JSON.encode( saveData ) );
+	Isaac.SaveModData(yandereWaifu, REB_JSON.encode( saveData ) );
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()

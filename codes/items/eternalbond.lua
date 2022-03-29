@@ -168,6 +168,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 					end
 				end
 			end
+		else
+			local pos = player.Position
+			if pos and pos:Distance(iss.Position) > 100 then
+				InutilLib.MoveRandomlyTypeI(iss, pos, 2.5, 0.9, 0, 0, 0)
+			end
 		end
 		iss.Velocity = iss.Velocity * 0.8
 	end
@@ -210,7 +215,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			local path = InutilLib.GenerateAStarPath(iss.Position, enemy.Position)
 			if enemy.Position:Distance(iss.Position) > 100 and path then
 				--InutilLib.XalumMoveTowardsTarget(iss, enemy, 6, 0.9, false)
-				InutilLib.FollowPath(iss, enemy, path, 2, 0.9)
+				InutilLib.FollowPath(iss, enemy, path, 2.5, 0.9)
 			else
 				if not data.bomb or data.bomb:IsDead() then
 					if Isaac.GetFrameCount() % 1200 == 0 then
@@ -232,9 +237,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			end
 		else
 			local nearPickup, pos = InutilLib.GetClosestPickup(iss, 400, 20, -1)
-			local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
-			if nearPickup and PickUppath then
-				if (nearPickup.Position - iss.Position):Length() > 15 then
+			if nearPickup then
+				local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
+				if PickUppath and (nearPickup.Position - iss.Position):Length() > 15 then
 					InutilLib.FollowPath(iss, nearPickup, PickUppath, 5, 0.9)
 					--InutilLib.XalumMoveTowardsTarget(iss, nearPickup, 6, 0.9, false)
 				else
@@ -327,11 +332,11 @@ end]]
 function yandereWaifu:TinyEternalBondCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if yandereWaifu.IsNormalRebekah(player) then
+		--if yandereWaifu.IsNormalRebekah(player) then
 			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG())
-		else
+		--else
 			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG())
-		end
+		--end
 	end
 		
 end

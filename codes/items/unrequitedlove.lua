@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			yandereWaifu.GetEntityData(hook).Player = player
 			InutilLib.ConsumeActiveCharge(player)
 			InutilLib.ToggleShowActive(player, false)
-			
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 1)
 		end
 	end
 	--yandereWaifu:EctoplasmLeaking(player) 
@@ -79,8 +79,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		InutilLib.SetTimer( 1, function()
 			data.delayedVel = (data.Attached.Velocity) * 1.2
 		end)
+		local pullVelocity = (neededPosition - data.Attached.Position)*0.05
+		if player.Position:Distance(data.Attached.Position) <= 300 then
+			pullVelocity = Vector.Zero
+		end
 		if data.delayedVel then
-			data.Attached.Velocity = (data.Attached.Velocity*0.95 + player:GetShootingInput()*(3+(data.SwingingAccel))) + ((neededPosition - data.Attached.Position)*0.02); 
+			data.Attached.Velocity = (data.Attached.Velocity*0.95 + player:GetShootingInput()*(0.5+(data.SwingingAccel)) + pullVelocity); 
 		end
 		-- print(brideProtectorAngle)
 		data.Attached:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
@@ -91,12 +95,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if data.SwingingAccel > 3 then
 				if data.CountdownTilRelease <= 0 or data.Attached:CollidesWithGrid() then
 					eff:Remove()
-					print("flp")
 					InutilLib.RefundActiveCharge(player, 300,  false, true)
 					data.Attached:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
 					if data.Attached:CollidesWithGrid() then
 						ILIB.game:ShakeScreen(10)
-						data.Attached:TakeDamage(player.Damage * data.Attached.Velocity:Length()/2, 0, EntityRef(eff), 1)
+						data.Attached:TakeDamage(player.Damage + (1 * data.Attached.Velocity:Length()/3), 0, EntityRef(eff), 1)
 						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1.4 );
 					end
 				end
@@ -115,9 +118,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			end
 		end
-		if player:GetShootingInput() and not  data.Attached:CollidesWithGrid() then
+		if player:GetShootingInput() and not data.Attached:CollidesWithGrid() then
 			if not data.SwingingAccel then data.SwingingAccel = 0 end
-			data.SwingingAccel = data.SwingingAccel + 1
+			data.SwingingAccel = data.SwingingAccel + 0.2
 		else
 			data.SwingingAccel = 0
 		end
@@ -153,6 +156,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				eff:Remove()
 				print("pain")
 			end
+			--InutilLib.SFX:Play(RebekahCurseSounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 0.5)
 		end
 	end
 end, RebekahCurse.ENTITY_LOVEHOOK);

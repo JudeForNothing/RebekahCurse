@@ -70,7 +70,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		sprite:Play("Blink",true);
 	end
 	
-    if eff.FrameCount == 35 then
+    if eff.FrameCount == 40 then
         if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
             player.Velocity = Vector( 0, 0 );
         else
@@ -94,13 +94,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		yandereWaifu.GetEntityData(customBody).WizoobOut = true
 		player.ControlsEnabled = false
     	eff:Remove();
+		
+		yandereWaifu.GetEntityData(player).LeaksJuices = math.random(30,40)
     	
     	data.IsUninteractible = false;
     	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
     else
 		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
     	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_WALLS;
-		player.EntityCollisionClass =  EntityCollisionClass.ENTCOLL_NONE;
+		player.EntityCollisionClass =  EntityCollisionClass.ENTCOLL_PLAYEROBJECTS;
     end
 	--if eff.FrameCount < 35 then
 	--	player.Velocity = Vector( 0, 0 );
@@ -159,18 +161,19 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 			tr:GetData().Rotation = tr:GetSprite().Rotation;
 			--make it float for a while
 			if tr.FrameCount == 1 then
-				InutilLib.SpawnTrail(tr, Color(0,0,0,0.7,170,170,210))
+				InutilLib.SpawnTrail(tr, Color(0,0,0,0.7,170,170,210), tr.Position - Vector(0,20))
 				data.firstHeight = tr.Height
 			elseif tr.FrameCount < 300 then
 				tr.Height = data.firstHeight
 			end
 			--dash ability
 			local target = InutilLib.GetClosestGenericEnemy(tr, 10000)
-			if math.random(1,8) == 1 and tr.FrameCount % 3 == 0 then
+			if math.random(1,5) == 1 and tr.FrameCount % 3 == 0 then
 				if target then
-					--print("woahdjfdf")
-					--tr.Velocity = tr.Velocity * 5000
 					InutilLib.MoveDirectlyTowardsTarget(tr, target, 20, 0.9)
+				else
+					InutilLib.MoveDirectlyTowardsTarget(tr, tr.SpawnerEntity:ToPlayer(), 20, 0.9)
+					--InutilLib.MoveRandomlyTypeI(tr, tr.SpawnerEntity:ToPlayer().Position, 10, 0.9, 30, 30, 60)
 				end
 			else
 				tr.Velocity = tr.Velocity * 0.95
@@ -187,7 +190,7 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 			end
 			--on death
 			if tr.Height >= -7 or tr:CollidesWithGrid() then
-				SpawnPoofParticle( tr.Position, Vector(0,0), tr, PoofParticleType.Soul )
+				yandereWaifu.SpawnPoofParticle( tr.Position, Vector(0,0), tr, RebekahPoofParticleType.Soul )
 				tr:Remove()
 			end
 		end
@@ -234,6 +237,36 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 	end
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.EctoplasmaUpdate)
 	
+function yandereWaifu:SoulPersonalityTearUpdate(tr)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and data.IsSoulFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount == 1 and data.IsSoulFetus then
+			tr:GetSprite():ReplaceSpritesheet(0, "gfx/fetus_tears_blue.png")
+			tr:GetSprite():LoadGraphics();
+		end
+		if tr.FrameCount <= 300 and data.IsSoulFetus then
+			tr.Height = -12
+			local e = InutilLib.GetClosestGenericEnemy(tr, 500)
+			if e then
+				InutilLib.MoveDirectlyTowardsTarget(tr, e, 2+math.random(1,5)/10, 0.85)
+			end
+			tr.Velocity = tr.Velocity * 0.95
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.SoulPersonalityTearUpdate)
+
+function yandereWaifu:SoulPersonalityTearCollision(tr, cool)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and data.IsSoulFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount <= 300 and tr.FrameCount % 30 == 0 and data.IsSoulFetus then
+			cool:TakeDamage(tr.CollisionDamage, 0, EntityRef(tr), 4)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, yandereWaifu.SoulPersonalityTearCollision)
+
+	
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
 		if tr.Variant == RebekahCurse.ENTITY_ECTOPLASMA then
 			local player = yandereWaifu.GetEntityData(tr).Parent
@@ -245,7 +278,7 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 				local circle = player:FireTechXLaser(tr.Position, Vector.FromAngle(math.random(1,360))*(20), math.random(10,20))
 				circle:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
 			end
-			SpawnEctoplasm( tr.Position, Vector ( 0, 0 ) , math.random(12,35)/10, player);
+			--SpawnEctoplasm( tr.Position, Vector ( 0, 0 ) , math.random(12,35)/10, player);
 		end
 	end, EntityType.ENTITY_TEAR)
 
@@ -382,7 +415,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			megumin:SetExplosionCountdown(1)
 			megumin.Visible = false
 			megumin.RadiusMultiplier = 1.6 --my favorite part
-			megumin.ExplosionDamage = player.Damage*20
+			megumin.ExplosionDamage = player.Damage*5
+			ILIB.room:MamaMegaExplosion(megumin.Position)
 			for i, ent in pairs(Isaac.GetRoomEntities()) do
 				if ent:IsEnemy() and not ent:IsVulnerableEnemy() then
 					ent:AddPoison(EntityRef(eff), 5, player.Damage*17)
@@ -400,8 +434,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					brim.CollisionDamage = player.Damage * 5
 				end
 			end
-			for i = 1, 4 do
+			for i = 1, 2 do
 				local minions = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, eff.Position, Vector(0,0), player)
+				minions:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/purgatory_soul.png")
+				minions:GetSprite():ReplaceSpritesheet(1, "gfx/effects/soul/purgatory_soul.png")
+				minions:GetSprite():LoadGraphics()
 			end
 			local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SOULNUKECRACK, 0, eff.Position, Vector(0,0), player)
 			yandereWaifu.GetEntityData(crack).ExtraTears = data.ExtraTears
@@ -429,9 +466,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		elseif sprite:IsFinished("HoleOpen_old") then
 			sprite:Play("HoleIdle", true)
 		elseif sprite:IsPlaying("HoleIdle") then
-			if sprite:GetFrame() == 5 then
+			if sprite:GetFrame() == 5 and math.random(1,3) == 3 then
 				for i = 1, math.random(1,2) + data.ExtraTears do
 					local minions = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PURGATORY, 1, eff.Position, Vector(0,0), player)
+					minions:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/purgatory_soul.png")
+					minions:GetSprite():ReplaceSpritesheet(1, "gfx/effects/soul/purgatory_soul.png")
+					minions:GetSprite():LoadGraphics()
 				end
 			end
 		elseif sprite:IsFinished("HoleClose") then
@@ -443,10 +483,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff.RenderZOffset = -100
 	end
 end, RebekahCurse.ENTITY_SOULNUKECRACK)
+
 	
 	function yandereWaifu:EctoplasmLaser(lz)
 		 if lz:GetData().IsEctoplasm then
 			if lz.FrameCount == 1 then
+				lz:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
 				lz:GetSprite():Load("gfx/effect_ectoplasmlaser.anm2", true)
 				lz:GetSprite():Play("LargeRedLaser", true)
 				if lz.Child ~= nil then
@@ -458,13 +500,47 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		 end
 		 if yandereWaifu.GetEntityData(lz).IsEctoplasm then
 			local player = lz.SpawnerEntity:ToPlayer()
-			 local rand = math.random(1,2)
-				if lz.FrameCount % 8 == 0 then
-					for i = 1, rand do
-						local circle = player:FireTechXLaser(lz.Position, Vector.FromAngle(math.random(1,360))*(20), math.random(20,40))
-						circle:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
-					end
+			local rand = math.random(1,2)
+			if lz.FrameCount % 5 == 0 then
+				for i = 1, rand do
+					local circle = player:FireTechXLaser(lz.Position, Vector.FromAngle(math.random(1,360))*(20), math.random(20,40))
+					yandereWaifu.GetEntityData(circle).IsEctoplasmLaserX = true
+					circle.Visible = false
+					--circle:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
 				end
+			end
+		end
+		if yandereWaifu.GetEntityData(lz).IsEctoplasmLaser then
+			lz.Visible = true
+			lz:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/techlaser.png");
+			lz:GetSprite():LoadGraphics();
+			if lz.Child ~= nil then
+				lz.Child.Visible = true
+				lz.Child:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/tech_dot.png");
+				lz.Child:GetSprite():LoadGraphics();
+			end
+		 end
+		  if yandereWaifu.GetEntityData(lz).IsEctoplasmLaserX then
+			lz.Visible = true
+			lz:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/techlaser.png");
+			lz:GetSprite():LoadGraphics();
+			if lz.Child ~= nil then
+				lz.Child.Visible = true
+				lz.Child:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/techimpact.png");
+				lz.Child:GetSprite():LoadGraphics();
+			end
+		 end
+		if yandereWaifu.GetEntityData(lz).IsMonstrosLung and yandereWaifu.GetEntityData(lz).LaserCount > 0 then
+			local player = lz.SpawnerEntity:ToPlayer()
+			local techlaser = player:FireTechLaser(lz:GetEndPoint(), 0, Vector.FromAngle(lz.Angle + math.random(-30,30)), false, true)
+			yandereWaifu.GetEntityData(techlaser).LaserCount = yandereWaifu.GetEntityData(lz).LaserCount - 1
+			yandereWaifu.GetEntityData(techlaser).IsMonstrosLung = true
+			yandereWaifu.GetEntityData(techlaser).IsEctoplasmLaser = true
+			techlaser.Visible = false
+			techlaser.OneHit = true;
+			techlaser.Timeout = 1;
+			techlaser:SetMaxDistance(60)
+			techlaser.CollisionDamage = player.Damage;
 		end
 	end
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, yandereWaifu.EctoplasmLaser)
@@ -485,6 +561,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 			local player = yandereWaifu.GetEntityData(tr).Parent
 			--print(tr.CollisionDamage)
 			Isaac.Explode(tr.Position, tr, tr.CollisionDamage * 17.7)
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULFETUS1, 1, 0, false, 1.2)
 			for i = 1, math.random(7,10) + 3 * yandereWaifu.GetEntityData(tr).ExtraTears do
                 InutilLib.SetTimer( i*8, function()
 					local bomb = player:FireBomb( tr.Position + Vector(math.random(1,10),math.random(1,10)),  Vector(0,5):Rotated(math.random(1,360)):Resized(4))
@@ -500,6 +577,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 					InutilLib.MakeBombLob(bomb, 1, 15 )
                 end);
 			end
+			yandereWaifu.SpawnEctoplasm( tr.Position, Vector ( 0, 0 ) , math.random(35,40)/10, player);
 		end
 	end, EntityType.ENTITY_TEAR)
 
@@ -510,11 +588,32 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 			if data.LeaksJuices and data.LeaksJuices > 0 then
 				data.LeaksJuices = data.LeaksJuices - 1
 				if math.random(1,5) == 3 then
-					SpawnEctoplasm( player.Position, Vector ( 0, 0 ) , 1, player);
+					yandereWaifu.SpawnEctoplasm( player.Position, Vector ( 0, 0 ) , 1, player);
+				end
+			end
+			if data.LeakingSoulBuff then
+				if data.LeakingSoulBuff <= 0 then
+					yandereWaifu.GetEntityData(player).SoulBuff = false
+					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+					player:EvaluateItems()
+					--become depressed again
+					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, data.Player , false, false)
+					player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+					player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					InutilLib.SetTimer( 10*3, function()
+						player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					end)
+					data.LeakingSoulBuff = nil
+				else
+					if not yandereWaifu.GetEntityData(player).IsAttackActive then
+						data.LeakingSoulBuff = data.LeakingSoulBuff - 1
+					end
+					if not yandereWaifu.GetEntityData(player).SoulBuff then data.LeakingSoulBuff = nil end
 				end
 			end
 		end
 	end
+	yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, yandereWaifu.EctoplasmLeaking)
 	
 	--soul buff 
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
@@ -522,13 +621,86 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local player = parent:ToPlayer()
 		
 		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-			if yandereWaifu.GetEntityData(player).SoulBuff and yandereWaifu.GetEntityData(player).specialCooldown <= 0 then --give lenience to the barrage
+			if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
 				yandereWaifu.GetEntityData(player).SoulBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 				player:EvaluateItems()
 				--become depressed again
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+			end
+		end
+	end)
+	
+	InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
+		if lz.SpawnerEntity then
+			local player = lz.SpawnerEntity:ToPlayer()
+			if player then
+				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+					if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+						yandereWaifu.GetEntityData(player).SoulBuff = false
+						player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+						player:EvaluateItems()
+						--become depressed again
+						yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+						player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+					end
+				end
+			end
+		end
+	end)
+
+	InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
+		local player = bb.SpawnerEntity:ToPlayer()
+		local pldata = yandereWaifu.GetEntityData(player)
+		if player then
+			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+				if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+					yandereWaifu.GetEntityData(player).SoulBuff = false
+					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+					player:EvaluateItems()
+					--become depressed again
+					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+					player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+				end
+			end
+		end
+	end)
+
+	yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
+		--local parent = eff.Parent
+		local player = eff.SpawnerEntity:ToPlayer()
+		--print(player)
+		if player and player.Type == EntityType.ENTITY_PLAYER then
+			if player then
+				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+					if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+						yandereWaifu.GetEntityData(player).SoulBuff = false
+						player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+						player:EvaluateItems()
+						--become depressed again
+						yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+						player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+					end
+				end
+			end
+		end
+	end, EffectVariant.TARGET);
+
+	InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+
+		local player = kn.SpawnerEntity:ToPlayer()
+		local pldata = yandereWaifu.GetEntityData(player)
+		if player then
+			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+				if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+					yandereWaifu.GetEntityData(player).SoulBuff = false
+					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
+					player:EvaluateItems()
+					--become depressed again
+					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+					player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
+				end
 			end
 		end
 	end)
@@ -547,7 +719,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:Remove()
 		end
 		if player then
-			local damage = player.Damage*1.5 or 3.5
+			local damage = player.Damage*3 or 3.5
 			if sprite:IsEventTriggered("Hurt") then
 				InutilLib.SFX:Play(SoundEffect.SOUND_SWORD_SPIN, 0.5, 0, false, 1)
 				InutilLib.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.5, 0, false, 1)

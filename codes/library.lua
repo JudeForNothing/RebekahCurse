@@ -172,11 +172,13 @@ function yandereWaifu.AddRandomHeart(player)
 end
 
 function yandereWaifu.GetEntityData( entity )
-	local data = entity:GetData();
-	if data.REBECCA_DATA == nil then
-		data.REBECCA_DATA = {};
+	if entity then
+		local data = entity:GetData();
+		if data.REBECCA_DATA == nil then
+			data.REBECCA_DATA = {};
+		end
+		return data.REBECCA_DATA;
 	end
-	return data.REBECCA_DATA;
 end
 
 function yandereWaifu.GetMainEFetusTarget( target , player )
@@ -244,7 +246,11 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	if poof == nil then poof = true end
 	reloadanm2=reloadanm2 or true
 	if reloadanm2 then
-		player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
+		if mode == REBECCA_MODE.SoulHearts then --special interacts
+			player:GetSprite():Load('gfx/rebekahsfluidhairforsoul.anm2',false)
+		else
+			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
+		end
 	end
 	local player = player or Isaac.GetPlayer(0);
 	local playerType = player:GetPlayerType()
@@ -270,7 +276,6 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	player:GetSprite():ReplaceSpritesheet(12,skinpath)	
 	player:GetSprite():ReplaceSpritesheet(4,skinpath)
 	player:GetSprite():ReplaceSpritesheet(1,skinpath)
-	print(skinpath)
 	local hairpath='gfx/characters/costumes/rebekah_hair/character_'..tostring(hair)..'.png'
 	if yandereWaifu.IsNormalRebekah(player) then
 		if mode == REBECCA_MODE.SoulHearts then --special interacts
@@ -346,12 +351,14 @@ function yandereWaifu.SpawnDashPoofParticle( position, velocity, spawner, poofTy
 end
 
 ---spawn ectoplasm in one place
-function yandereWaifu.SpawnEctoplasm( position, velocity, size, parent )
+function yandereWaifu.SpawnEctoplasm( position, velocity, size, parent, dontupdate)
 	local puddle = Isaac.Spawn( EntityType.ENTITY_EFFECT, 46, 0, position, velocity, parent):ToEffect();
 	--puddle.Scale = size or 1
 	--puddle:PostRender()
-	InutilLib.RevelSetCreepData(puddle)
-	InutilLib.RevelUpdateCreepSize(puddle, size or 1, true)
+	if not dontupdate then
+		InutilLib.RevelSetCreepData(puddle)
+		InutilLib.RevelUpdateCreepSize(puddle, size or 1, true)
+	end
 	puddle:GetData().IsEctoplasm = true;
 end
 
@@ -402,13 +409,6 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 		yandereWaifu.SpawnPoofParticle( player.Position + Vector( 0, 1 ), Vector( 0, 0 ), player, RebekahPoofParticleTypeByMode[ mode ] );
 	end
 	
-	
-	if mode == REBECCA_MODE.EternalHearts then
-		yandereWaifu.RebekahCanShoot(player, false)
-	else
-		yandereWaifu.RebekahCanShoot(player, true)
-	end
-	
 	if mode == REBECCA_MODE.RedHearts then
 		player:ChangePlayerType(RebekahCurse.REB_RED)
 	elseif mode == REBECCA_MODE.SoulHearts then
@@ -435,12 +435,22 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 
 	--stat evaluation =3=
 	--yandereWaifu.ApplyCollectibleEffects(player);
+	
+	if mode == REBECCA_MODE.EternalHearts then
+		yandereWaifu.RebekahCanShoot(player, false)
+	else
+		yandereWaifu.RebekahCanShoot(player, true)
+	end
+	
 	yandereWaifu.ApplyCostumes( mode, player );
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	
 	--make changes to Rebecca
 	player:AddCacheFlags(CacheFlag.CACHE_ALL);
 	player:EvaluateItems();
+	
+	yandereWaifu.GetEntityData(player).countdownFrames = 0
+	yandereWaifu.GetEntityData(player).IsDashActive = false
 end
 
 function yandereWaifu.RebekahCanShoot(player, canShoot) --alternative so that she doesnt get a weird hair do
@@ -549,7 +559,6 @@ function yandereWaifu.SpawnRedGun(player, direction, extra)
 			yandereWaifu.GetEntityData(gun).parent = player
 			yandereWaifu.GetEntityData(gun).direction = direction
 			table.insert( data.extraHugsRed, gun )
-			print("pew")
 			return gun
 		else
 			data.HugsRed = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 0, player.Position,  Vector.Zero, player):ToEffect()

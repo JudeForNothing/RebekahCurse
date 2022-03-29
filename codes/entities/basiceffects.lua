@@ -27,7 +27,6 @@ end
 
 --broken glasses effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.players) do
 		local sprite = eff:GetSprite();
 		--local playerdata = yandereWaifu.GetEntityData(player)
 		
@@ -82,12 +81,33 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
 			sprite:Load("gfx/effects/red/red_ludocrashlightning.anm2", true)
 			sprite:Play("Crash", true) 
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDJINGLE, 1, 0, false, 1)
+			if data.Soul then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1)
+				sprite:ReplaceSpritesheet(0, "gfx/effects/soul/hugsandroses_flare.png")
+				sprite:LoadGraphics()
+			else
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDJINGLE, 1, 0, false, 1)
+			end
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_SOUL_ARCANE_CIRCLE then
+			sprite:Load("gfx/effects/soul/effectchargeoutro.anm2", true)
+			sprite:Play("Poof", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_SOUL_PUKE_EFFECT then
+			sprite:Load("gfx/effects/soul/ectoplasm_spit.anm2", true)
+			sprite:Play("Poof", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_SPECIAL_ARCANE_CIRCLE then
+			sprite:Load("gfx/effects/soul/special_arcane_circle.anm2", true)
+			sprite:Play("Poof", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_MOUTH then
+			sprite:Load("gfx/effects/soul/ludo_mouth.anm2", true)
+			sprite:Play("Poof", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 		end
 		eff.RenderZOffset = 100;
 	end
-	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Crash") then
+	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Poof") or sprite:IsFinished("Crash") then
 		eff:Remove()
 	end
 	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
@@ -96,9 +116,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
 		if sprite:GetFrame() == 9 then
-			yandereWaifu.GetEntityData(data.Parent).isPlayingCustomAnim = false
-			yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
-			yandereWaifu.GetEntityData(data.Parent).BarrageIntro = true 
+			if data.Soul then
+				yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 9, InutilLib.GetPlayerLudo(data.Parent).Position, Vector.Zero, data.Parent)
+			else
+				yandereWaifu.GetEntityData(data.Parent).isPlayingCustomAnim = false
+				yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
+				yandereWaifu.GetEntityData(data.Parent).BarrageIntro = true 
+			end
 			ILIB.game:ShakeScreen(10)
 		end
 	end
@@ -115,7 +140,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if math.random(1,2) == 1 then
 			sprite.FlipX = true
 		end
-		local trail = InutilLib.SpawnTrail(eff, Color(1,0,0,0.5))
+		data.trail = InutilLib.SpawnTrail(eff, Color(1,0,0,0.5))
 	end
 	if data.Parent then
 		if (data.Parent.Position - eff.Position):Length() <= 30 then
@@ -127,6 +152,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	if sprite:IsFinished("Splash") then
 		yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
+		data.trail:Remove()
 		eff:Remove()
 	end
 	if sprite:IsPlaying("Splash") and sprite:GetFrame() == 1 then
@@ -270,6 +296,30 @@ function yandereWaifu:changetoDifferentLaser(lz)
 			lz:GetSprite():ReplaceSpritesheet(0, "gfx/effects/red_laser.png")
 		end
 	end
+	if entityData.IsEcto then
+		if lz.FrameCount == 1 then
+			if lz.Variant == 11 then
+				lz:GetSprite():Load("gfx/effects/soul/effect_ectoplasmlaserthicker.anm2", true)
+				lz:GetSprite():Play("LargeRedLaser", true)
+				if lz.Child ~= nil then
+					lz.Child:GetSprite():Load("gfx/effects/soul/effect_ectoplasmlaserthickerend.anm2", true)
+					lz.Child.Color =  Color( 1, 1, 1, 1, 0, 0, 0 )
+					lz.Child:GetSprite():LoadGraphics()
+					lz.Child:GetSprite():Play("Loop", true)
+				end
+			else
+				lz:GetSprite():Load("gfx/effects/soul/effect_ectoplasmlaser.anm2", true)
+				lz:GetSprite():Play("LargeRedLaser", true)
+				if lz.Child ~= nil then
+					lz.Child.Color =  Color( 1, 1, 1, 0, 0, 0, 0 )
+					--[[lz.Child:GetSprite():Load("gfx/effects/soul/effect_ectoplasmlaserend.anm2", true)
+					lz.Child:GetSprite():LoadGraphics()
+					lz.Child.Color = lz.Parent:GetSprite().Color
+					lz.Child:GetSprite():Play("Loop", true)]]
+				end
+			end
+		end
+	end
 	 if entityData.AngelBrimstone == true then
 		if lz.FrameCount == 1 then
 			lz:GetSprite():Load("gfx/effects/eternal/angelbrimstone.anm2", true)
@@ -363,7 +413,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	
 	--sprite:LoadGraphics()
-	if eff.FrameCount == 1 then
+	if eff.FrameCount == 1 and eff.SubType == 0 then
 		sprite:Play("FadeIn", true)
 		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_GROUNDCRACK, 1, 0, false, 0.9 )
 	end
@@ -417,6 +467,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
 			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/green.png")
 		elseif eff.SubType == 3 then
 			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/yellow.png")
+		elseif eff.SubType == 4 then
+			sprite:ReplaceSpritesheet(0, "gfx/effects/items/imdie/gray.png")
 		end
 		sprite:LoadGraphics()
 	--end
