@@ -1,8 +1,8 @@
 <AnimatedActor>
-	<Info CreatedBy="trtv" CreatedOn="3/29/2022 3:40:26 PM" Version="10" Fps="30"/>
+	<Info CreatedBy="trtv" CreatedOn="3/30/2022 8:52:40 AM" Version="11" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="imdie_polty_old.png" Id="0"/>
+			<Spritesheet Path="imdie_polty.png" Id="0"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="body" Id="0" SpritesheetId="0"/>
