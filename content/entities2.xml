@@ -387,4 +387,8 @@
 	<entity anm2path="bosses/rivals/lilith/robobaby.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Robo Baby (Enemy)" numGridCollisionPoints="3" shadowSize="22" stageHP="5" variant="34">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+	
+	<entity anm2path="bosses/liminal/the_scum.anm2" baseHP="4000000" boss="1" champion="0" collisionDamage="4" collisionMass="5" collisionRadius="13" friction="1" id="600" name="The Scum" numGridCollisionPoints="3" shadowSize="22" stageHP="0" variant="220" shutdoors="false">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 </entities>

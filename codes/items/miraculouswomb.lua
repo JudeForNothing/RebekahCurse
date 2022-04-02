@@ -34,9 +34,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		InutilLib.AnimShootFrame(fam, true, InutilLib.DirToVec(playerDir), "FloatShootSide", "FloatShootDown", "FloatShootUp")
 		--if firedelay is ready then
 		if data.Stat.FireDelay <= 0 then
-			local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
-			tears.Position = fam.Position
-			tears.CollisionDamage = data.Stat.Damage * player.Damage
+			if fam:GetEntityFlags() & EntityFlag.FLAG_CHARM == EntityFlag.FLAG_CHARM then
+			else
+				local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
+				tears.Position = fam.Position
+				tears.CollisionDamage = data.Stat.Damage * player.Damage
+			end
 			data.Stat.FireDelay = data.Stat.MaxFireDelay
 		end
 		
@@ -83,9 +86,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		InutilLib.AnimShootFrame(fam, true, InutilLib.DirToVec(playerDir), "FloatShootSide", "FloatShootDown", "FloatShootUp")
 		--if firedelay is ready then
 		if data.Stat.FireDelay <= 0 then
-			local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
-			tears.Position = fam.Position
-			tears.CollisionDamage = player.Damage - data.Stat.Damage
+			if fam:GetEntityFlags() & EntityFlag.FLAG_CHARM == EntityFlag.FLAG_CHARM then
+			else
+				local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
+				tears.Position = fam.Position
+				tears.CollisionDamage = player.Damage - data.Stat.Damage
+			end
 			data.Stat.FireDelay = data.Stat.MaxFireDelay
 		end
 		if data.Stat.PlayerMaxDelay ~= player.MaxFireDelay then --balance purposes. They are so broken if I don't do this

@@ -1,5 +1,9 @@
 local currentLevelIDX
 function yandereWaifu:usetheShining(collItem, rng, player)
+	local data = yandereWaifu.GetEntityData(player)
+	data.GonnaChopOffTheDoor = true
+	player:AddCacheFlags(CacheFlag.CACHE_ALL);
+	player:EvaluateItems()
 	for i = 0, 7 do
 		local door = ILIB.game:GetRoom():GetDoor(i)
 		currentLevelIDX = ILIB.level:GetCurrentRoomDesc().GridIndex
@@ -31,3 +35,30 @@ function yandereWaifu:usetheShining(collItem, rng, player)
 	end
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usetheShining, RebekahCurse.COLLECTIBLE_THESHINING);
+
+
+function yandereWaifu:ItsJohnnyenteringtheroom()
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local data = yandereWaifu.GetEntityData(player)
+		if player:HasCollectible(RebekahCurse.COLLECTIBLE_THESHINING) and data.GonnaChopOffTheDoor then
+			data.GonnaChopOffTheDoor = false
+			player:AddCacheFlags(CacheFlag.CACHE_ALL);
+			player:EvaluateItems()
+		end
+	end
+end
+yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ItsJohnnyenteringtheroom)
+
+function yandereWaifu:ItsJonnyVibes(player, cacheF) --The thing the checks and updates the game, i guess?
+	local data = yandereWaifu.GetEntityData(player)
+	if data.GonnaChopOffTheDoor then
+		if cacheF == CacheFlag.CACHE_DAMAGE then
+			player.Damage = player.Damage * 1.5
+		end
+		if cacheF == CacheFlag.CACHE_SPEED then
+			player.MoveSpeed = player.MoveSpeed + 0.15
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.ItsJonnyVibes)

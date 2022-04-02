@@ -61,8 +61,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
 		player.Visible = true
-	
-	
+		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		sprite:Play("Idle", true);
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
@@ -259,7 +258,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.SoulPers
 function yandereWaifu:SoulPersonalityTearCollision(tr, cool)
 	local data = yandereWaifu.GetEntityData(tr)
 	if tr.Variant == 50 and data.IsSoulFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
-		if tr.FrameCount <= 300 and tr.FrameCount % 30 == 0 and data.IsSoulFetus then
+		if tr.FrameCount <= 300 and tr.FrameCount % 7 == 0 and data.IsSoulFetus then
 			cool:TakeDamage(tr.CollisionDamage, 0, EntityRef(tr), 4)
 		end
 	end
@@ -410,6 +409,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--function code
 		if eff.FrameCount == 1 then
 			sprite:Play("Falling", true)
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		elseif sprite:IsEventTriggered("Blow") then
 			local megumin = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, eff.Position, Vector(0,0), eff):ToBomb() --this is a workaround to make explosions larger
 			megumin:SetExplosionCountdown(1)
@@ -621,7 +621,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local player = parent:ToPlayer()
 		
 		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-			if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+			if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 				yandereWaifu.GetEntityData(player).SoulBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 				player:EvaluateItems()
@@ -637,7 +637,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 			local player = lz.SpawnerEntity:ToPlayer()
 			if player then
 				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-					if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+					if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 						yandereWaifu.GetEntityData(player).SoulBuff = false
 						player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 						player:EvaluateItems()
@@ -655,7 +655,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local pldata = yandereWaifu.GetEntityData(player)
 		if player then
 			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-				if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+				if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 					yandereWaifu.GetEntityData(player).SoulBuff = false
 					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 					player:EvaluateItems()
@@ -674,7 +674,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		if player and player.Type == EntityType.ENTITY_PLAYER then
 			if player then
 				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-					if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+					if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 						yandereWaifu.GetEntityData(player).SoulBuff = false
 						player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 						player:EvaluateItems()
@@ -693,7 +693,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local pldata = yandereWaifu.GetEntityData(player)
 		if player then
 			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
-				if yandereWaifu.GetEntityData(player).SoulBuff then --give lenience to the barrage
+				if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 					yandereWaifu.GetEntityData(player).SoulBuff = false
 					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 					player:EvaluateItems()

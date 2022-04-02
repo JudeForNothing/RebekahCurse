@@ -257,6 +257,8 @@ RebekahCurseEnemies = {
 	
 	ENTITY_MAGDALENE_BOSS = Isaac.GetEntityVariantByName("Magdalene (Boss)"),
 	
+	ENTITY_THE_SCUM = Isaac.GetEntityVariantByName("The Scum"),
+	
 	ENTITY_EVE_BOSS = Isaac.GetEntityVariantByName("Eve (Boss)"),
 	ENTITY_BLOOD_SLOTH = Isaac.GetEntityVariantByName("Blood Sloth"),
 	ENTITY_BLOOD_WRATH = Isaac.GetEntityVariantByName("Blood Wrath"),

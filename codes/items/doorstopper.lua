@@ -61,13 +61,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		for i=0, ILIB.game:GetNumPlayers()-1 do
 			local pl = Isaac.GetPlayer(i)
 			if GetPtrHash(pl) == GetPtrHash(player) then
-				if pl.Position:Distance(eff.Position) <= 50 then 
+				if pl.Position:Distance(eff.Position) <= 40 then 
 					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.COLLECTIBLE_DOORSTOPPER then
 						eff:Remove()
 						if not data.DontCharge then
 							pl:FullCharge(ActiveSlot.SLOT_PRIMARY, true)
 						end
 					end
+				end
+			end
+		end
+		for i, ent in pairs (Isaac.GetRoomEntities()) do
+			if ent.Position:Distance(eff.Position) <= 20 and ent.Type ~= EntityType.ENTITY_PLAYER and ent.Type ~= EntityType.ENTITY_EFFECT and ent.Type ~= EntityType.ENTITY_TEAR then
+				local vec = ent.Position-eff.Position
+				ent.Velocity = vec:Resized(10)
+				if ent.Type == EntityType.ENTITY_PROJECTILE then
+					ent:Die()
 				end
 			end
 		end
@@ -88,6 +97,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					if ent.Position:Distance(eff.Position) <= 80 then
 						ent:TakeDamage(7.5, 0, EntityRef(eff), 1)
 					end
+				end
+				if ent.Position:Distance(eff.Position) <= 120 and ent.Type ~= EntityType.ENTITY_PLAYER and ent.Type ~= EntityType.ENTITY_EFFECT then
+					InutilLib.DoKnockbackTypeI(eff, ent, 0.35)
 				end
 			end
 			--destroy grids
@@ -126,3 +138,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 	end
 end, RebekahCurse.ENTITY_DOORSTOPPER)
+

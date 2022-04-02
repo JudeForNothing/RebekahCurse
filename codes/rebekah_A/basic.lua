@@ -2600,6 +2600,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			data.soulcountdownFrames = data.soulcountdownFrames + 1
 		end
 		
+		local canFire = true
 		
 		--tear-damage configuration thingy
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_20_20) then
@@ -2618,6 +2619,43 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
 			endFrameCount = endFrameCount * 2
 			extraTearDmg = extraTearDmg * (player:GetCollectibleNum(CollectibleType.COLLECTIBLE_CAR_BATTERY) * 1.5)
+		end
+		
+		if HasChargeCollectibles(player) then
+			if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) and not data.barrageInit then
+				if not data.chargeDelay then data.chargeDelay = 0 end
+				if data.chargeDelay < player.MaxFireDelay * 3 then
+					data.chargeDelay = data.chargeDelay + 0.1
+					print(math.floor(data.chargeDelay*10) % 5)
+					if math.floor(data.chargeDelay*10) % 5 == 0 then
+						local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
+						charge.SpriteOffset = Vector(0,-40)
+						charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/red/chocolate_charge.png");
+						charge:GetSprite():ReplaceSpritesheet(1, "gfx/effects/red/chocolate_charge.png");
+						charge:GetSprite():LoadGraphics();
+						InutilLib.SFX:Play( SoundEffect.SOUND_BATTERYCHARGE , 1, 0, false, data.chargeDelay/10);
+						--InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULCHARGEHEAVY, 1, 0, false, 0.5)
+					end
+				end
+			end
+			
+			if not data.barrageInit then
+				canFire = false
+			end
+			
+			if player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0 then
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_CHOCOLATE_MILK) then
+					local chargeFrameToPercent = (data.chargeDelay/player.MaxFireDelay)*0.5
+					print(chargeFrameToPercent)
+					extraTearDmg = data.soulcountdownFrames + math.ceil(chargeFrameToPercent)
+				end
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_CURSED_EYE) then
+					local chargeFrameToPercent = (data.chargeDelay/player.MaxFireDelay)*1.5
+					extraTearDmg = data.soulcountdownFrames + math.ceil(chargeFrameToPercent)
+				end
+				canFire = true
+				data.barrageNumofShots = extraTearDmg --update to new because charged shots changes it
+			end
 		end
 		
 		local function SoulLeadPencilBarrage()
@@ -2671,7 +2709,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			yandereWaifu.GetEntityData(knife).IsSoul = true
 		end
 		
-		if data.BarrageIntro then
+		if data.BarrageIntro and canFire then
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 				local arcane = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 8, player.Position, Vector.Zero, nil)
 				for i = 1, math.random(10,20) do --loop possible times a sword will drop from the sky
@@ -2679,7 +2717,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					for i, e in pairs(Isaac.GetRoomEntities()) do
 						if e:IsActiveEnemy() and e:IsVulnerableEnemy() then
 							if (player.Position - e.Position):Length() < 750 then
-								InutilLib.SetTimer( i * math.random(5,20), function()
+								InutilLib.SetTimer( i * math.random(10,20), function()
 									local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDDROP, 0, e.Position + Vector(0,math.random(3,50)):Rotated(math.random(0,360)), Vector.Zero, nil)
 									yandereWaifu.GetEntityData(target).Parent = player
 									--[[if math.random(1,3) == 3 and i < 5 then
@@ -2832,7 +2870,11 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				for lhorns = 0, 270, 360/4 do
 					direction = Vector.FromAngle(direction:GetAngleDegrees() + lhorns) --lokis horns offset
 					local oldDir = direction
-					
+					--effect thing
+					if data.soulcountdownFrames == 1 then
+						local dust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 7, player.Position, Vector(0,0), nil) 
+						dust:GetSprite().Rotation = direction:GetAngleDegrees() + 90
+					end
 					--[[spit effect
 					local spit = Isaac.Spawn( EntityType.ENTITY_EFFECT, 2, 5, player.Position, Vector(0,0), player );
 					spit:GetSprite():ReplaceSpritesheet(4,"gfx/effects/soul/ectoplasm_spit.png")
@@ -2852,7 +2894,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								for i = -30, 30, 15 do
 									InutilLib.SetTimer( 1*delay, function()
 										FireSoulKnife(player.Position, Vector.FromAngle(direction:GetAngleDegrees() - i):Resized(8))
-										InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTLIGHT, 1, 0, false, 1)
+										InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTLIGHT, 1, 0, false, 1.2)
 									end)
 									delay = delay + 20
 								end
@@ -2866,14 +2908,16 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 							for i = 1, chosenNumofBarrage do
 								if i == 1 then
+									local didtrigger = false
 									if player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE) < 2 then
 										player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
+										didtrigger = true
 									end
 									local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees()):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
 									brim:GetData().IsEctoplasm = true;
 									brim.CollisionDamage = player.Damage * 2 * extraTearDmg
 									yandereWaifu.GetEntityData(brim).IsEcto = true
-									if player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE) < 2 then
+									if didtrigger then
 										player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
 									end
 								else
@@ -2978,15 +3022,13 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 										InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 0.5 );
 									end
 								end
-								local dust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 7, player.Position, Vector(0,0), nil) 
-								dust:GetSprite().Rotation = direction:GetAngleDegrees() + 90
 							elseif data.soulcountdownFrames >= endFrameCount then
 								InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 								EndBarrage()
 								SoulLeadPencilBarrage()
 							end
 							if data.soulcountdownFrames == 1 then
-								InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTMEDIUM, 1.2, 0, false, 1)
+								InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTMEDIUM, 1.2, 0, false, 1.2)
 							end
 							
 						end
@@ -3064,7 +3106,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					end --break if not loki horns is triggered
 				end
 			end
-		elseif not data.BarrageIntro then
+		elseif not data.BarrageIntro and canFire then
 			if not data.isPlayingCustomAnim then
 				data.isPlayingCustomAnim = true
 				local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect

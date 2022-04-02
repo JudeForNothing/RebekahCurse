@@ -92,10 +92,10 @@ yandereWaifu.STAGE.Liminal:SetBossMusic(Isaac.GetMusicIdByName("Garden Boss"), M
 yandereWaifu.STAGE.Liminal:OverrideRockAltEffects()
 --yandereWaifu.STAGE.Liminal:SetTransitionIcon("gfx/ui/stage/LiminalIcon.png")
 
-yandereWaifu.STAGE.Liminal:SetDisplayName("The Backrooms")
+yandereWaifu.STAGE.Liminal:SetDisplayName("")
 
 local LiminalXL = yandereWaifu.STAGE.Liminal("Liminal XL")
-LiminalXL:SetDisplayName("The Backrooms")
+LiminalXL:SetDisplayName("")
 --LiminalXL:SetNextStage("Liminal2")
 LiminalXL.IsSecondStage = true
 
@@ -103,7 +103,7 @@ yandereWaifu.STAGE.Liminal:SetXLStage(LiminalXL)
 
 local LiminalTwo = yandereWaifu.STAGE.Liminal("Liminal 2")
 
-LiminalTwo:SetDisplayName("Liminal II")
+LiminalTwo:SetDisplayName("")
 yandereWaifu.STAGE.Liminal:SetNextStage(yandereWaifu.STAGE.Liminal)
 LiminalTwo:SetReplace(StageAPI.StageOverride.NecropolisTwo)
 LiminalTwo.IsSecondStage = true

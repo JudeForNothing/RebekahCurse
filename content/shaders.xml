@@ -1,0 +1,68 @@
+<shaders>
+    <!-- Empty shader, only used for rendering above HUD workaround -->
+    <shader name="apologizeimscared">
+        <parameters>
+			<param name="colored" type="float"/>
+			<param name="pulse" type="float"/> 
+			<param name="shaderActive" type="float"/> 
+        </parameters>
+        <vertex><![CDATA[
+            attribute vec3 Position;
+            attribute vec4 Color;
+            attribute vec2 TexCoord;
+            attribute vec4 RenderData;
+            attribute float Scale;
+            
+			attribute float colored;
+			attribute float pulse;
+			attribute float shaderActive;
+			
+            varying lowp vec4 Color0;
+            varying mediump vec2 TexCoord0;
+            varying lowp vec4 RenderDataOut;
+            varying lowp float ScaleOut;
+            uniform sampler2D Texture0;
+			varying float fcolored;
+			varying float fpulse;
+			varying float shaderActiveOut;
+            uniform mat4 Transform;
+            void main(void)
+            {
+                RenderDataOut = RenderData;
+                ScaleOut = Scale;
+				fcolored = colored;
+				fpulse = pulse;
+				shaderActiveOut = shaderActive;
+                Color0 = Color;
+                TexCoord0 = TexCoord;
+                gl_Position = Transform * vec4(Position.xyz, 1.0);
+            }
+        ]]></vertex>
+        <fragment><![CDATA[
+            varying lowp vec4 Color0;
+            varying mediump vec2 TexCoord0;
+            varying lowp vec4 RenderDataOut;
+            varying lowp float ScaleOut;
+			
+			varying mediump float fcolored; 
+			varying mediump float fpulse; 
+			varying mediump float shaderActiveOut; 
+            uniform sampler2D Texture0;
+            void main(void)
+            {
+				if (shaderActiveOut == 0)
+				{
+					gl_FragColor = Color0 * texture2D(Texture0, TexCoord0);
+				}
+				else
+				{
+					vec4 Color = Color0 * texture2D(Texture0, TexCoord0);
+					float brightness = (Color.r + Color.g + Color.b) / 5;
+					brightness = ceil(brightness*fcolored)/fcolored;
+					gl_FragColor = vec4(vec3(0.15882f,0.0f,0.0f)*brightness*fpulse,1.0f);
+				}
+            }
+        ]]></fragment>
+    </shader>
+</shaders>
+
