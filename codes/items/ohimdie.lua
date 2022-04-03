@@ -330,7 +330,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_, fam)
 		--Isaac.RenderText(tostring(text),Isaac.WorldToScreen(fam.Position).X-7,  Isaac.WorldToScreen(fam.Position).Y-15, 1 ,1 ,1 ,1 )
 		local f = Font() -- init font object
 		f:Load("font/pftempestasevencondensed.fnt") -- load a font into the font object
-		f:DrawString(text,Isaac.WorldToScreen(fam.Position).X-6,Isaac.WorldToScreen(fam.Position).Y-45,KColor(1,1,1,1,0,0,0),0,true)
+		f:DrawString(text,Isaac.WorldToScreen(fam.Position).X-5,Isaac.WorldToScreen(fam.Position).Y-59,KColor(1,1,1,1,0,0,0),0,true)
 	end
 end, RebekahCurse.ENTITY_OHIMPOLTY)
 

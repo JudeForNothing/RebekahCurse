@@ -18,7 +18,7 @@
 	<passive name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2"/>
 	<passive name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3"/>
 	<active name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
-	<active name="Defuse = Rewards" description="Oh, I'm die, thank you forever" gfx="collectibles_oh_im_die.png" maxcharges="4" quality="3"/>
+	<active name="Defuse = Rewards" description="Oh, I'm die, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
 	
 	<active name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="3"/>
 	

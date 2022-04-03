@@ -49,6 +49,7 @@
 		<Item Name="The Shining" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
 		<Item Name="Wikepidia" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.2" />
 		<Item Name="Doorstopper" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
+		<Item Name="Defuse = Rewards" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="curse">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -87,7 +88,6 @@
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Typical Rom-Com" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -99,7 +99,6 @@
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Typical Rom-Com" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -127,7 +126,6 @@
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="greedSecret">
@@ -149,7 +147,6 @@
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 </ItemPools>

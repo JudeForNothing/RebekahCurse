@@ -880,7 +880,7 @@ function yandereWaifu:RebekahNewRoom()
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 				player:EvaluateItems()
 				--become depressed again
-				yandereWaifu.ApplyCostumes( data.currentMode, player , false)
+				yandereWaifu.ApplyCostumes( data.currentMode, player , false, false)
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 				player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
 				InutilLib.SetTimer( 10*3, function()
@@ -1592,7 +1592,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 			player:EvaluateItems()
 			--become depressed again
-			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 			player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 			player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
 			InutilLib.SetTimer( 10*3, function()
