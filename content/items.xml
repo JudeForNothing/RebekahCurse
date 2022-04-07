@@ -1,12 +1,12 @@
 <items gfxroot="gfx/items/" version="1" deathanm2="gfx/death items.anm2"> 
 	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
 	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" maxcharges="1" tags="quest"/>
-	<active id="3" name="Apostate" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active id="4" name="Psalm .45" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active id="5" name="Barachiel's Petal" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active id="6" name="Fang" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active id="7" name="Beelzebub's Breath" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
-	<active id="8" name="main.lua" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="1" tags="quest"/>
+	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" maxcharges="1" tags="quest"/>
+	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" maxcharges="1" tags="quest"/>
+	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" maxcharges="1" tags="quest"/>
+	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" maxcharges="1" tags="quest"/>
+	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" maxcharges="1" tags="quest"/>
+	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" maxcharges="1" tags="quest"/>
 	
 	<passive id="16" name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" tags="food" quality="1"/>
 	<passive id="37" name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" quality="2"/>
