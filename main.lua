@@ -32,9 +32,10 @@ yandereWaifuCodes = {
 		basiceffects = require('codes.entities.basiceffects'),
 		customplayeranim = require('codes.entities.customplayeranim'),
 		mirrorentities = require('codes.entities.mirrorentities'),
-		liminal = {
-			faceling = require('codes.entities.liminal.faceling'),
-		},
+		--liminal = {
+		--	faceling = require('codes.entities.liminal.faceling'),
+		--	maggy = require('codes.entities.liminal.thescum'),
+		--},
 		bosses = {
 			maggy = require('codes.entities.bosses.magdalene'),
 			eve = require('codes.entities.bosses.eve'),
@@ -79,8 +80,13 @@ yandereWaifuCodes = {
 	slots = {
 		mirror = require('codes.slots.mirror')
 	},
+	shaders = require('codes.shaders'),
 	stages = {
-		liminal = require('codes.floors.backrooms')
+		gen = {
+			rebekahsroom = require('codes.floors.gen.rebekahsbedroom'),
+			},
+		rebekahsroom = nil,
+		--liminal = require('codes.floors.backrooms')
 	},
 	unlocks = {
 	},

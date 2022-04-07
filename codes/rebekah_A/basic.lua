@@ -799,7 +799,6 @@ function yandereWaifu:RebekahNewRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		if yandereWaifu.IsNormalRebekah(player) then
-			
 			--spawn main room mirror
 			if ILIB.game:GetLevel():GetStartingRoomIndex() == ILIB.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() and ILIB.level:GetStage() == LevelStage.STAGE1_1 and (ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B) then
 				local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(19), 1);
@@ -816,7 +815,12 @@ function yandereWaifu:RebekahNewRoom()
 			data.ATTACK_DOUBLE_TAP:Reset();
 			--neded for soul heart and bone heart movement lol
 			--if this was tampered to being with
-			if data.IsUninteractible then data.IsUninteractible = false end --reset orbitals
+			if data.IsUninteractible then 
+				if data.currentMode == REBECCA_MODE.SoulHearts then
+					yandereWaifu.RebekahCanShoot(player, true)
+				end
+				data.IsUninteractible = false 
+			end --reset orbitals
 			if data.IsDashActive then data.IsDashActive = false end --stop any active dashes
 			if data.NoBoneSlamActive ~= true then data.NoBoneSlamActive = true end
 
@@ -874,7 +878,6 @@ function yandereWaifu:RebekahNewRoom()
 					end
 				end
 			end
-			
 			if data.SoulBuff then
 				data.SoulBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
