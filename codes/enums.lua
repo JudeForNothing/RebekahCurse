@@ -187,6 +187,12 @@ RebekahCurse = {
 	
 	REB_RED = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	REB_SOUL = Isaac.GetPlayerTypeByName("Rebekah_Soul"),
+	REB_EVIL = Isaac.GetPlayerTypeByName("Rebekah_Evil"),
+	REB_ETERNAL = Isaac.GetPlayerTypeByName("Rebekah_Eternal"),
+	REB_GOLD = Isaac.GetPlayerTypeByName("Rebekah_Gold"),
+	REB_BONE = Isaac.GetPlayerTypeByName("Rebekah_Bone"),
+	REB_ROTTEN = Isaac.GetPlayerTypeByName("Rebekah_Rotten"),
+	REB_BROKEN = Isaac.GetPlayerTypeByName("Rebekah_Broken"),
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
 	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false)
@@ -510,9 +516,86 @@ RebekahMirrorHeartDrop = {
 }
 
 local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_SOUL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_SOUL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_EVIL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_EVIL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_GOLD_INFO = InutilLib.Players:New({}, RebekahCurse.REB_GOLD, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_ETERNAL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ETERNAL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ROTTEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
 if StageAPI and StageAPI.Loaded then
-    StageAPI.AddPlayerGraphicsInfo("Rebekah", 
+    StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_RED, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_SOUL, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_soul_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_EVIL, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_GOLD, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_ETERNAL, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_BONE, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_ROTTEN, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_BROKEN, 
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",

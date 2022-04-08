@@ -362,6 +362,26 @@ function yandereWaifu.SpawnEctoplasm( position, velocity, size, parent, dontupda
 	puddle:GetData().IsEctoplasm = true;
 end
 
+function yandereWaifu:SetRebekahPocketActiveItem( player, mode )
+	if mode == REBECCA_MODE.RedHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
+	elseif mode == REBECCA_MODE.SoulHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_WIZOOBTONGUE)
+	elseif mode == REBECCA_MODE.GoldHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_PSALM45)
+	elseif mode == REBECCA_MODE.EvilHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_APOSTATE)
+	elseif mode == REBECCA_MODE.EternalHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_BARACHIELSPETAL)
+	elseif mode == REBECCA_MODE.BoneHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_FANG)
+	elseif mode == REBECCA_MODE.RottenHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH)
+	elseif mode == REBECCA_MODE.BrokenHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_MAINLUA)
+	end
+end
+
 function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 	local data = yandereWaifu.GetEntityData(player)
 	data.currentMode = mode;
@@ -412,20 +432,22 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 	if mode == REBECCA_MODE.RedHearts then
 		player:ChangePlayerType(RebekahCurse.REB_RED)
 	elseif mode == REBECCA_MODE.SoulHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_SOUL)
 	elseif mode == REBECCA_MODE.GoldHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_GOLD)
 	elseif mode == REBECCA_MODE.EvilHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_EVIL)
 	elseif mode == REBECCA_MODE.EternalHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_ETERNAL)
 	elseif mode == REBECCA_MODE.BoneHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_BONE)
 	elseif mode == REBECCA_MODE.RottenHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_ROTTEN)
 	elseif mode == REBECCA_MODE.BrokenHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		player:ChangePlayerType(RebekahCurse.REB_BROKEN)
 	end
+	
+	yandereWaifu:SetRebekahPocketActiveItem(player,mode)
 	--reset effects --KIL FIX YOUR GAMEEEEEEEEE
 	--local playerEffects = player:GetEffects();
 	--playerEffects:RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_20_20);
@@ -610,7 +632,7 @@ function yandereWaifu.PlayAllRedGuns(player, mode)
 end
 
 function yandereWaifu.IsNormalRebekah(player)
-	if player:GetPlayerType() == RebekahCurse.REB_RED or player:GetPlayerType() == RebekahCurse.REB_SOUL then
+	if player:GetPlayerType() == RebekahCurse.REB_RED or player:GetPlayerType() == RebekahCurse.REB_SOUL or player:GetPlayerType() == RebekahCurse.REB_EVIL or player:GetPlayerType() == RebekahCurse.REB_GOLD or player:GetPlayerType() == RebekahCurse.REB_ETERNAL or player:GetPlayerType() == RebekahCurse.REB_BONE or player:GetPlayerType() == RebekahCurse.REB_ROTTEN or player:GetPlayerType() == RebekahCurse.REB_BROKEN then
 		return true
 	end
 end
