@@ -291,13 +291,13 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
-	<entity anm2path="familiar/gravebaby.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Grave Baby" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663126">
+	<entity anm2path="familiar/gravebaby.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Grave Baby" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663132">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	<entity anm2path="familiar/bunbun.anm2" baseHP="0" boss="0" champion="0" gridCollision="walls" collisionInterval="15" collisionDamage="2" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Bun Bun (Familiar)" numGridCollisionPoints="12" shadowSize="24" stageHP="0" variant="663127">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
-	<entity anm2path="familiar/rabbet.anm2" baseHP="0" boss="0" champion="0" gridCollision="walls" collisionDamage="3" collisionMass="3" collisionRadius="24" friction="1" id="1000" name="Rabbet (Familiar)" numGridCollisionPoints="12" shadowSize="32
+	<entity anm2path="familiar/rabbet.anm2" baseHP="0" boss="0" champion="0" gridCollision="walls" collisionDamage="3" collisionMass="3" collisionRadius="24" friction="1" id="3" name="Rabbet (Familiar)" numGridCollisionPoints="12" shadowSize="32
 	" stageHP="0" variant="663128">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
@@ -364,7 +364,7 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
-	<entity anm2path="effects/items/eggshells.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Eggshells" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835290" gridCollision="none">
+	<entity anm2path="effects/items/eggshells.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Eggshells" numGridCollisionPoints="0" shadowSize="7" stageHP="0" variant="835290" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	

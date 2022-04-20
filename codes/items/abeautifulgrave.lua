@@ -62,6 +62,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif not spr:IsPlaying("Warp") then
 			spr:Play("Warp", true)
 			fam.Velocity = Vector.Zero
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 0.8)
+			data.lastDir = nil
+			ILIB.game:Darken(2, 35)
 		end
 	elseif data.State == 2 then
 		if spr:IsFinished("Grab") then
@@ -88,12 +91,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 		if spr:IsEventTriggered("Finish") then
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BEAUTIFULGRAVEDROP, 0, fam.Position, Vector.Zero, fam );
+			InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.8)
+			local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 2, eff.Position, Vector(0,0), player );
 		end
 	elseif data.State == 3 then
 		if spr:IsFinished("WarpBack") then
 			data.State = 0
 		elseif not spr:IsPlaying("WarpBack") then
 			spr:Play("WarpBack", true)
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 0.8)
 		end
 	end
 end, RebekahCurse.ENTITY_GRAVEBABY);

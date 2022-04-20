@@ -259,6 +259,8 @@ RebekahCurseSounds = {
 	SOUND_SOULFETUS2 = Isaac.GetSoundIdByName("Soul Fetus2"),
 	SOUND_SOULGARGLE = Isaac.GetSoundIdByName("Soul Gargle"),
 	
+	SOUND_EVILSUMMONAPOSTATE = Isaac.GetSoundIdByName("Evil Spawn"),
+	
 	SOUND_CHRISTIAN_CHANT = Isaac.GetSoundIdByName("Christian Chant"),
 	SOUND_CHRISTIAN_OVERTAKE = Isaac.GetSoundIdByName("Christian Overtake"),
 	SOUND_CHRISTIAN_READ = Isaac.GetSoundIdByName("Christian Read"),
@@ -280,7 +282,36 @@ RebekahCurseSounds = {
 	SOUND_LAUGHUNSETTLING = Isaac.GetSoundIdByName("Laugh Unsettling"),
 	SOUND_CAMERAUSE = Isaac.GetSoundIdByName("Camera Use"),
 	SOUND_PATRIARCHSLIARBELL = Isaac.GetSoundIdByName("Patriarch's Fist Bell"),
-	SOUND_UNREQUITEDLOVECHAIN = Isaac.GetSoundIdByName("Unrequited Love Chain")
+	SOUND_UNREQUITEDLOVECHAIN = Isaac.GetSoundIdByName("Unrequited Love Chain"),
+	SOUND_PSALM23UTTER = Isaac.GetSoundIdByName("Psalm 23 Utter"),
+	
+	SOUND_KAPPA = Isaac.GetSoundIdByName("Easter Kappa"),
+	SOUND_ISAAC_HIDDEN = Isaac.GetSoundIdByName("Easter Isaac Hidden"),
+	SOUND_FOES_HIDDEN = Isaac.GetSoundIdByName("Easter Foes Hidden"),
+	SOUND_LOOT_HIDDEN = Isaac.GetSoundIdByName("Easter Loot Hidden"),
+	SOUND_DYSLEXIA = Isaac.GetSoundIdByName("Easter Dyslexia"),
+	SOUND_DOGMAS_VISION = Isaac.GetSoundIdByName("Easter Dogma's Vision"),
+	SOUND_MORE_GORE = Isaac.GetSoundIdByName("Easter More Gore"),
+	SOUND_MEGAHEAD = Isaac.GetSoundIdByName("Easter Megahead"),
+	SOUND_TINYHEAD = Isaac.GetSoundIdByName("Easter Tinyhead"),
+	SOUND_SILLOUHETTE = Isaac.GetSoundIdByName("Easter Sillouhette"),
+	SOUND_RELAX = Isaac.GetSoundIdByName("Easter Relax"),
+	SOUND_RELAX2 = Isaac.GetSoundIdByName("Easter Relax 2"),
+	SOUND_ROCK_ON = Isaac.GetSoundIdByName("Easter Rock On"),
+	SOUND_ROCK_ON2 = Isaac.GetSoundIdByName("Easter Rock On 2"),
+	SOUND_SLIPPERY_SLOPE = Isaac.GetSoundIdByName("Easter Slippery Slope"),
+	SOUND_CHRISTMAS = Isaac.GetSoundIdByName("Easter Christmas"),
+	SOUND_RETRO_VISION = Isaac.GetSoundIdByName("Easter Retro Vision"),
+	SOUND_LOOT_ROTS = Isaac.GetSoundIdByName("Easter Loot Rots"),
+	SOUND_BRAVERY = Isaac.GetSoundIdByName("Easter Bravery"),
+	SOUND_COWARDICE = Isaac.GetSoundIdByName("Easter Cowardice"),
+	SOUND_CURSE_DARKNESS = Isaac.GetSoundIdByName("Easter Darkness"),
+	SOUND_CURSE_LABYRINTH = Isaac.GetSoundIdByName("Easter Labyrinth"),
+	SOUND_CURSE_LOST = Isaac.GetSoundIdByName("Easter Lost"),
+	SOUND_CURSE_UNKNOWN = Isaac.GetSoundIdByName("Easter Unknown"),
+	SOUND_CURSE_MAZE = Isaac.GetSoundIdByName("Easter Maze"),
+	SOUND_CURSE_BLINDNESS = Isaac.GetSoundIdByName("Easter Blindness"),
+	SOUND_CURSE_CURSED = Isaac.GetSoundIdByName("Easter Curse"),
 }
 
 RebekahCurseEnemies = {

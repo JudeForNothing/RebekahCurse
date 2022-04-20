@@ -583,6 +583,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.Player:SetMinDamageCooldown(90)
 			if sprite:GetFrame() == 8 and not data.CancelEnd then
 				data.CantCancel = true
+				InutilLib.SFX:Play( SoundEffect.SOUND_GHOST_SHOOT, 1, 0, false, 1 );
+				
 				for i, entities in pairs(Isaac.GetRoomEntities()) do
 					if entities:IsEnemy() and entities:IsVulnerableEnemy() and not entities:IsDead() then
 						if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 120 then
@@ -600,6 +602,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass = nil
 				yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
 			elseif sprite:GetFrame() == 8 and data.CancelEnd then
+				InutilLib.SFX:Play( SoundEffect.SOUND_GHOST_SHOOT, 1, 0, false, 1 );
 				local target = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILTARGET, 0, data.Player.Position, Vector(0,0), data.Player );
 				yandereWaifu.GetEntityData(target).Parent = data.Player
 				yandereWaifu.GetEntityData(target).EndFrames = 10

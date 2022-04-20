@@ -12,6 +12,8 @@
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.3"/>
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
@@ -46,6 +48,8 @@
 		<Item Name="Defuse = Rewards" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Twin Vision" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="library">
 		<Item Name="Typical Rom-Com" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -73,6 +77,8 @@
 		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Doorstopper" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="redChest">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -80,12 +86,19 @@
 		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="beggar">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
 	</Pool>
 	<Pool Name="demonBeggar">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
+		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
     <!-- Greed Mode -->
 	<Pool Name="greedTreasure">
@@ -98,6 +111,8 @@
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="greedShop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="1"/>
@@ -116,6 +131,8 @@
 		<Item Name="Doorstopper" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="greedBoss">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />

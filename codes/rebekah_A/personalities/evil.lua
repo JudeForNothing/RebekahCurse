@@ -18,6 +18,10 @@ function yandereWaifu:EvilPersonalityTearUpdate(tr)
 			tr.Velocity = tr.Velocity * 0.95
 		end
 	end
+
+    for i = 1, 817 do
+        if SFXManager():IsPlaying(i) then print(i) end
+    end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.EvilPersonalityTearUpdate)
 function yandereWaifu:SoulPersonalityTearCollision(tr, cool)
@@ -50,7 +54,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -94,7 +98,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.5)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -129,7 +133,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -143,9 +147,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTLIGHT, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -159,18 +163,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSPIT, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDELECTRICITY, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 			end
 		end
 	end
 end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
 
 function yandereWaifu.SpawnEvilOrb(player, position)
+	InutilLib.SFX:Play( SoundEffect.SOUND_FIRE_RUSH, 1, 0, false, 1 );
 	local SubType = 0
 	--replacing tear code
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_CROWN_OF_LIGHT) and player:GetEffectiveMaxHearts() >= player:GetHearts() and math.random(0,10) + player.Luck >= 3 then
@@ -380,6 +385,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
 		yandereWaifu.RebekahCanShoot(player, false)
+		data.IsUninteractible = true
 		if not data.EndFrames then data.EndFrames = 40 end
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true);
@@ -1014,6 +1020,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 				tear.CollisionDamage = player.Damage * 0.8
 				tear.SpriteScale = eff.SpriteScale
+				tear:GetSprite():ReplaceSpritesheet(0, "gfx/effects/effect_005_fire_purple.png")
+				tear:GetSprite():LoadGraphics()
 			end
 		end
 		--dust effect

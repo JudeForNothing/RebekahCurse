@@ -28,24 +28,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						spr:Play("ChargeStart", true)
 						data.DashDir = dir
 						data.lastDir = nil
+						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					elseif InutilLib.CuccoLaserCollision(ent, 90, 700, player) then
 						dir  = "DashFront"
 						data.State = 1
 						spr:Play("ChargeStart", true)
 						data.DashDir = dir
 						data.lastDir = nil
+						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					elseif InutilLib.CuccoLaserCollision(ent, 180, 700, player) then
 						dir  = "DashLeft"
 						data.State = 1
 						spr:Play("ChargeStart", true)
 						data.DashDir = dir
 						data.lastDir = nil
+						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					elseif InutilLib.CuccoLaserCollision(ent, 270, 700, player) then
 						dir  = "DashBack"
 						data.State = 1
 						spr:Play("ChargeStart", true)
 						data.DashDir = dir
 						data.lastDir = nil
+						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					end
 				elseif math.random(1,3) == 3 and ent.FrameCount % 5 == 0 then
 					if math.random(1,5) == 5 then
@@ -70,11 +74,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
 					if ent.HitPoints - 100 <= 0 then
 						ent:Die()
+						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					else
 						ent.HitPoints = ent.HitPoints - 100
 						spr:Play("CrashHurt", true)
 					end
 					ILIB.game:ShakeScreen(10)
+					InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.6 );
 					ent.Velocity = Vector.Zero
 					--crackwaves
 					for i = 0, 360-360/4, 360/4 do
@@ -141,12 +147,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					data.add = 0
 					data.projectileOffset = math.random(-30,30)
 					spr:Play("Idle")
+					InutilLib.SFX:Stop( SoundEffect.SOUND_ULTRA_GREED_SPINNING);
 				end
 				if not spr:IsPlaying("Spin") then
 					spr:Play("Spin", true)
 					ent.Velocity = ent.Velocity * 0
+					InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 				elseif spr:IsPlaying("Spin") then
 					if spr:WasEventTriggered("StartSpin") and not spr:IsEventTriggered("EndSpin") and math.floor(ent.FrameCount % 7) == 0 then
+						InutilLib.SFX:Play( SoundEffect.SOUND_ULTRA_GREED_SPINNING, 1, 0, false, 0.6 );
 						if not data.add then data.add = 0 end
 						if not data.projectileOffset then data.projectileOffset = math.random(-60,60) end
 						for i = 0, 360 - 360/4, 360/4  do
@@ -171,6 +180,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("Spit", true)
 				elseif spr:IsPlaying("Spit") then
 					if spr:IsEventTriggered("Spit") then
+						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_SPIT_BLOB_BARF, 1, 0, false, 0.6 );
 						local egg = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, 0, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
 						egg:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, ent.Position, Vector(0,0), ent ):ToEffect()

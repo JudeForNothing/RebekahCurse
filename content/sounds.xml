@@ -88,6 +88,10 @@
 		<sample weight="1" path="soul/soulgargle.wav" />
 	</sound>
 	
+	<sound name="Evil Spawn">
+		<sample weight="1" path="evil/evil_summon_apostate.wav" />
+	</sound>
+	
 	<sound name="Christian Chant">
 		<sample weight="1" path="ned/christian/chant.wav" />
 	</sound>	
@@ -160,5 +164,94 @@
 	</sound>
 	<sound name="Unrequited Love Chain">
 		<sample weight="1" path="items/unrequitedlovechain.wav" />
+	</sound>
+	
+	<sound name="Psalm 23 Utter">
+		<sample weight="1" path="items/psalm23_1.wav" />
+		<sample weight="1" path="items/psalm23_2.wav" />
+		<sample weight="1" path="items/psalm23_3.wav" />
+	</sound>
+	
+	<sound name="Easter Kappa">
+		<sample weight="1" path="eggs/kappa.wav" />
+	</sound>
+	<sound name="Easter Isaac Hidden">
+		<sample weight="1" path="eggs/isaacisnowhidden.wav" />
+	</sound>
+	<sound name="Easter Foes Hidden">
+		<sample weight="1" path="eggs/foesarenowhidden.wav" />
+	</sound>
+	<sound name="Easter Loot Hidden">
+		<sample weight="1" path="eggs/lootisnowhidden.wav" />
+	</sound>
+	<sound name="Easter Dyslexia">
+		<sample weight="1" path="eggs/dyslexia.wav" />
+	</sound>
+	<sound name="Easter Dogma's Vision">
+		<sample weight="1" path="eggs/dogmasvision.wav" />
+	</sound>
+	<sound name="Easter More Gore">
+		<sample weight="1" path="eggs/moregore.wav" />
+	</sound>
+	<sound name="Easter Megahead">
+		<sample weight="1" path="eggs/megahead.wav" />
+	</sound>
+	<sound name="Easter Tinyhead">
+		<sample weight="1" path="eggs/tinyhead.wav" />
+	</sound>
+	<sound name="Easter Sillouhette">
+		<sample weight="1" path="eggs/sillouhette.wav" />
+	</sound>
+	<sound name="Easter Relax">
+		<sample weight="1" path="eggs/relax.wav" />
+	</sound>
+	<sound name="Easter Relax 2">
+		<sample weight="1" path="eggs/relax2.wav" />
+	</sound>
+	<sound name="Easter Rock On">
+		<sample weight="1" path="eggs/rockon.wav" />
+	</sound>
+	<sound name="Easter Rock On 2">
+		<sample weight="1" path="eggs/rockon2.wav" />
+	</sound>
+	<sound name="Easter Slippery Slope">
+		<sample weight="1" path="eggs/slipperyslope.wav" />
+	</sound>
+	<sound name="Easter Christmas">
+		<sample weight="1" path="eggs/christmas.wav" />
+	</sound>
+	<sound name="Easter Retro Vision">
+		<sample weight="1" path="eggs/retrovision.wav" />
+	</sound>
+	<sound name="Easter Loot Rots">
+		<sample weight="1" path="eggs/lootrots.wav" />
+	</sound>
+	<sound name="Easter Bravery">
+		<sample weight="1" path="eggs/bravery.wav" />
+	</sound>
+	<sound name="Easter Cowardice">
+		<sample weight="1" path="eggs/cowardice.wav" />
+	</sound>
+	
+	<sound name="Easter Darkness">
+		<sample weight="1" path="eggs/darkness.wav" />
+	</sound>
+	<sound name="Easter Labyrinth">
+		<sample weight="1" path="eggs/labyrinth.wav" />
+	</sound>
+	<sound name="Easter Lost">
+		<sample weight="1" path="eggs/lost.wav" />
+	</sound>
+	<sound name="Easter Unknown">
+		<sample weight="1" path="eggs/unknown.wav" />
+	</sound>
+	<sound name="Easter Maze">
+		<sample weight="1" path="eggs/maze.wav" />
+	</sound>
+	<sound name="Easter Blindness">
+		<sample weight="1" path="eggs/blindness.wav" />
+	</sound>
+	<sound name="Easter Curse">
+		<sample weight="1" path="eggs/curse.wav" />
 	</sound>
 </sounds>

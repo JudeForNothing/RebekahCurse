@@ -495,6 +495,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = yandereWaifu.GetEntityData(eff)
 	
+	if sprite:IsPlaying("Drop") and sprite:GetFrame() == 4 then
+		local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, 16, 2, eff.Position, Vector.Zero, eff );
+		InutilLib.SFX:Play( SoundEffect.SOUND_CHEST_DROP, 1, 0, false, 0.5 )
+		ILIB.game:ShakeScreen(10)
+	end
 	if sprite:IsFinished("Drop") then
 		eff:Remove()
 	end
