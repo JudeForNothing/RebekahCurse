@@ -124,13 +124,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 					and not playerdata.IsAttackActive and data.specialCooldown <= 0 and not data.IsParalysed then
 						if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
 							yandereWaifu.RedHeartDash(player, vector)
-							
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue
 							yandereWaifu.SoulHeartTeleport(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow
 							yandereWaifu.GoldHeartSlam(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black
-							yandereWaifu.EvilHeartDash(player, vector)
+							yandereWaifu.EvilHeartTeleport(player, vector)
+							--yandereWaifu.EvilHeartDash(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternalhearts
 							player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
 							yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Eternal );
@@ -481,7 +481,7 @@ function yandereWaifu.barrageAndSP(player)
 			data.soulspitframecount = data.soulspitframecount + 1
 		end
 	end
-	if data.currentMode == REBECCA_MODE.RedHearts or data.currentMode == REBECCA_MODE.EvilHearts or data.currentMode == REBECCA_MODE.BoneHearts then
+	if data.currentMode == REBECCA_MODE.RedHearts or data.currentMode == REBECCA_MODE.BoneHearts then
 		if data.IsDashActive then --movement code
 			local heartType = RebekahHeartParticleType.Red
 			if data.currentMode == REBECCA_MODE.RedHearts then
@@ -876,11 +876,37 @@ function yandereWaifu:RebekahNewRoom()
 			--neded for soul heart and bone heart movement lol
 			--if this was tampered to being with
 			if data.IsUninteractible then 
-				if data.currentMode == REBECCA_MODE.SoulHearts then
+				if data.currentMode == REBECCA_MODE.SoulHearts or data.currentMode == REBECCA_MODE.EvilHearts then
 					yandereWaifu.RebekahCanShoot(player, true)
 				end
 				data.IsUninteractible = false 
 			end --reset orbitals
+			print(data.specialActiveAtkCooldown)
+			if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 then --reset special attack
+				yandereWaifu.RebekahCanShoot(player, true)
+				player.FireDelay = 60
+				data.FinishedPlayingCustomAnim = nil
+				data.IsAttackActive = false
+				data.chargeDelay = 0
+				data.barrageInit = false
+				
+				data.isPlayingCustomAnim = nil
+				--data.soulspitframecount = 0
+				data.FinishedPlayingCustomAnim = nil
+				data.isPlayingCustomAnim2  = nil
+				
+				data.BarrageIntro = false
+				
+				yandereWaifu.RemoveRedGun(player)
+				yandereWaifu.RemoveEvilGun(player)
+				if data.MainArcaneCircle then
+					data.MainArcaneCircle:GetSprite():Play("FadeOut", true)
+					data.MainArcaneCircle = nil
+					data.ArcaneCircleDust:Remove()
+					data.tintEffect = nil
+				end
+				
+			end
 			if data.IsDashActive then data.IsDashActive = false end --stop any active dashes
 			if data.NoBoneSlamActive ~= true then data.NoBoneSlamActive = true end
 
@@ -1505,8 +1531,8 @@ function yandereWaifu:customMovesInput()
 			
 			--charge pocket item after ready
 
-			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) <= 0 and yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then --could need attendance later, this can be optimized
-				InutilLib.RefundActiveCharge(player, 0, true)
+			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) < InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges and yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then --could need attendance later, this can be optimized
+				InutilLib.RefundActiveCharge(player, 0, true, true)
 			end
 			if playerdata.specialCooldown == 1 then --1 is already close to 0 without being 0 so eh
 				local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
@@ -1534,6 +1560,7 @@ function yandereWaifu:customMovesInput()
 			--special beam thing
 			--print(InutilLib.GetShowingActive(player))
 			if playerdata.isReadyForSpecialAttack == false and (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua) and yandereWaifu.getReserveStocks(player) >= 1 then
+				print("frick")
 				playerdata.isReadyForSpecialAttack = true;
 				local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
 				yandereWaifu.GetEntityData(arcane).parent = player
@@ -1573,7 +1600,7 @@ function yandereWaifu:customMovesInput()
 				local isFang = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_FANG
 				local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH
 				local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_MAINLUA
-				if playerdata.isReadyForSpecialAttack and (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua) then
+				if playerdata.isReadyForSpecialAttack and not (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua) then
 					playerdata.isReadyForSpecialAttack = false
 				end
 			end
@@ -2758,7 +2785,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			end
 		end
 		
-		--setup of red personality's gun effects and barrage
+		--setup of soul personality's gun effects and barrage
 		if not data.MainArcaneCircle then
 			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
 			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
@@ -3222,37 +3249,160 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		EndBarrage()
 		InutilLib.SFX:Play( SoundEffect.SOUND_COIN_SLOT, 1, 0, false, 1 );
 	elseif modes == REBECCA_MODE.EvilHearts then
-		--Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_EXPLOSION, 0, player.Position, Vector.FromAngle( direction:GetAngleDegrees() ):	Resized(15), player );
-		local target
-		local nearestOrb = 177013 -- labels the highest enemy hp
-		for i, ent in pairs (Isaac.GetRoomEntities()) do
-			if ent.Type == EntityType.ENTITY_EFFECT and ent.Variant == RebekahCurse.ENTITY_EVILORB then
-				if nearestOrb >= ent.Position:Distance(player.Position) then
-					nearestOrb = ent.Position:Distance(player.Position)
-					target = ent
+		if not data.MainArcaneCircle then
+			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
+			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+			for i = 0, 8 do
+				data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/evil/arcane_circle.png")
+			end
+			data.MainArcaneCircle:GetSprite():LoadGraphics()
+			data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+			data.ArcaneCircleDust.RenderZOffset = -1
+			yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
+		end
+		
+		--do the weird animation first before firing the beam
+		if data.BarrageIntro then
+					
+			--Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_EXPLOSION, 0, player.Position, Vector.FromAngle( direction:GetAngleDegrees() ):	Resized(15), player );
+			local target
+			local nearestOrb = 177013 -- labels the highest enemy hp
+			for i, ent in pairs (Isaac.GetRoomEntities()) do
+				if ent.Type == EntityType.ENTITY_EFFECT and ent.Variant == RebekahCurse.ENTITY_EVILORB then
+					if nearestOrb >= ent.Position:Distance(player.Position) then
+						nearestOrb = ent.Position:Distance(player.Position)
+						target = ent
+					end
+				end
+			end
+			
+			local beam
+			local angle = direction:GetAngleDegrees()
+			local ludoTear = InutilLib.GetPlayerLudo(player)
+			local hasWiz = 0
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then --derp
+				hasWiz = 1
+			end
+			for i = -15, 15, 30 do
+				if ludoTear then
+					angle = InutilLib.ObjToTargetAngle(player, ludoTear, true)
+					beam = player:FireBrimstone( Vector.FromAngle(angle + i * hasWiz), player, 2):ToLaser();
+					beam.MaxDistance = player.Position:Distance(ludoTear.Position)
+					if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+						for j = 1, 5 do
+							InutilLib.SetTimer( j*15,function()
+								yandereWaifu.ThrowDarkKnife(player, player.Position, Vector.FromAngle(angle + i * hasWiz):Resized(15))
+							end)
+						end
+					end
+				--	yandereWaifu.GetEntityData(target).Heretic = true
+					beam.DisableFollowParent = true
+					for i, ent in pairs (Isaac.GetRoomEntities()) do
+						if ent.Type == EntityType.ENTITY_EFFECT and ent.Variant == RebekahCurse.ENTITY_EVILORB then
+							for i2 = -15, 15, 30 do
+								local extrabeam = player:FireBrimstone( Vector.FromAngle(InutilLib.ObjToTargetAngle(ludoTear, ent, true)+ i2 * hasWiz), player, 2):ToLaser();
+								extrabeam.Position = ludoTear.Position
+								extrabeam.MaxDistance = ludoTear.Position:Distance(ent.Position)
+								extrabeam.DisableFollowParent = true
+								yandereWaifu.GetEntityData(ent).Heretic = true
+								extrabeam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+								yandereWaifu.GetEntityData(extrabeam).IsEvil = true
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+									for j = 1, 5 do
+										InutilLib.SetTimer( j*15,function()
+											yandereWaifu.ThrowDarkKnife(player, ludoTear.Position, Vector.FromAngle(InutilLib.ObjToTargetAngle(ludoTear, ent, true) + i2 * hasWiz):Resized(15))
+										end)
+									end
+								end
+								if hasWiz == 0 then break end
+							end
+						end
+					end
+				else
+					if target then --aims then to the furthest orb
+						angle = InutilLib.ObjToTargetAngle(player, target, true)
+						beam = player:FireBrimstone( Vector.FromAngle(angle + i * hasWiz), player, 2):ToLaser();
+						beam.MaxDistance = nearestOrb
+						yandereWaifu.GetEntityData(target).Heretic = true
+						beam.DisableFollowParent = true
+						yandereWaifu.GetEntityData(beam).IsEvil = true
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+							for j = 1, 5 do
+								InutilLib.SetTimer( j*15,function()
+									yandereWaifu.ThrowDarkKnife(player, player.Position, Vector.FromAngle(angle + i * hasWiz):Resized(15))
+								end)
+							end
+						end
+					else
+						beam = player:FireBrimstone( Vector.FromAngle(angle + i * hasWiz), player, 2):ToLaser();
+						beam.MaxDistance = 150
+						yandereWaifu.GetEntityData(beam).IsEvil = true
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+							for j = 1, 5 do
+								InutilLib.SetTimer( j*15,function()
+									yandereWaifu.ThrowDarkKnife(player, player.Position, Vector.FromAngle(angle + i * hasWiz):Resized(15))
+								end)
+							end
+						end
+					end
+				end
+				beam.Timeout = 20
+				--EntityLaser.ShootAngle(1, player.Position, angle, 10, Vector(0,10), player):ToLaser()
+				beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+				beam.CollisionDamage = player.Damage * (3);
+				beam.DisableFollowParent = true
+				if hasWiz == 0 then break end
+			end
+			yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Black );
+			InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
+			EndBarrage()
+			--player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_PAUSE, -1)
+			for k, v in pairs (Isaac.GetRoomEntities()) do
+				v:ClearEntityFlags(EntityFlag.FLAG_SLOW)
+			end
+			data.tintEffect:Remove()
+			data.tintEffect = nil
+			yandereWaifu.RebekahCanShoot(player, true)
+			player.FireDelay = 60
+			data.FinishedPlayingCustomAnim = nil
+			
+			yandereWaifu.PlayAllEvilGuns(player, 0)
+			InutilLib.SetTimer( 30*9, function()
+				yandereWaifu.RemoveEvilGun(player)
+			end)
+		else
+			if not data.tintEffect then
+				data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
+				data.tintEffect.RenderZOffset = -10
+				yandereWaifu.RebekahCanShoot(player, false)
+			end
+			for k, v in pairs (Isaac.GetRoomEntities()) do
+				if v.Type ~= 1000 and v.Type ~= 1 and v.Type ~= 8 then
+					v:AddEntityFlags(EntityFlag.FLAG_SLOW)
+				end
+			end
+			if player.FrameCount % 3 == 0 then
+				yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			end
+			if not data.extraHugsEvil then
+				local gun = yandereWaifu.SpawnEvilGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
+				yandereWaifu.GetEntityData(gun).StartCountFrame = 1
+			else
+				local canModifyGunsGeneral = data.extraHugsEvil and (#data.extraHugsEvil > 0 --[[and data.canModifyGuns]])
+				if canModifyGunsGeneral then
+					local gunIdle = true
+					for k, v in pairs(data.extraHugsEvil) do
+						if v:GetSprite():IsPlaying("Startup") or v:GetSprite():IsPlaying("Spawn") or InutilLib.IsPlayingMultiple(v:GetSprite(), "ShootRightTech", "ShootLeftTech", "ShootDownTech", "ShootUpTech",  "ShootRightBrimstone", "ShootLeftBrimstone", "ShootDownBrimstone", "ShootUpBrimstone") then
+							gunIdle = false
+							break
+						end
+					end	
+					if gunIdle then
+						data.BarrageIntro = true
+					end
 				end
 			end
 		end
-		
-		local beam
-		local angle = direction:GetAngleDegrees()
-		if target then --aims then to the furthest orb
-			angle = InutilLib.ObjToTargetAngle(player, target, true)
-			beam = player:FireBrimstone( Vector.FromAngle(angle), player, 2):ToLaser();
-			beam.MaxDistance = nearestOrb
-			yandereWaifu.GetEntityData(target).Heretic = true
-		else
-			beam = player:FireBrimstone( Vector.FromAngle(angle), player, 2):ToLaser();
-			beam.MaxDistance = 50
-		end
-		beam.Timeout = 20
-		--EntityLaser.ShootAngle(1, player.Position, angle, 10, Vector(0,10), player):ToLaser()
-		beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
-		beam.CollisionDamage = player.Damage * (3);
-		beam.DisableFollowParent = true
-		yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Black );
-		InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
-		EndBarrage()
 	elseif modes == REBECCA_MODE.EternalHearts then
 		yandereWaifu.RebekahEternalBarrage(player, direction)
 		EndBarrage()

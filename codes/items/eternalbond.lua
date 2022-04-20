@@ -240,10 +240,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			if nearPickup then
 				local PickUppath = InutilLib.GenerateAStarPath(iss.Position, nearPickup.Position)
 				if PickUppath and (nearPickup.Position - iss.Position):Length() > 15 then
-					InutilLib.FollowPath(iss, nearPickup, PickUppath, 5, 0.9)
+					InutilLib.FollowPath(iss, nearPickup, PickUppath, 1, 0.9)
 					--InutilLib.XalumMoveTowardsTarget(iss, nearPickup, 6, 0.9, false)
 				else
-					InutilLib.MoveDirectlyTowardsTarget(iss, nearPickup, 5, 0.9)
+					InutilLib.MoveDirectlyTowardsTarget(iss, nearPickup, 1, 0.9)
 				end
 				if (nearPickup.Position-iss.Position):Length() < 40 and not nearPickup.Touched then
 					local picked = InutilLib.PickupPickup(nearPickup)

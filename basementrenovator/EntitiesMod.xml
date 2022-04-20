@@ -1,3 +1,5 @@
 <data>
 	<entity BaseHP="20" Group="Liminal" ID="10" Image="entities/liminal/faceling.png" Kind="Cursed and Heartbroken" Name="Faceling" Subtype="0" Variant="1071" />
+	
+	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/the_stalwart.png" Kind="Cursed and Heartbroken" Name="The Stalwart" Subtype="0" Variant="222" />
 </data>

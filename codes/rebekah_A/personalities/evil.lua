@@ -2,16 +2,176 @@
 --BLACK HEART --
 --do
 
-function yandereWaifu.EvilHeartDash(player, vector)
-	local playerdata = yandereWaifu.GetEntityData(player)
-	local SubType = 0
-	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
-		trinketBonus = 5
+function yandereWaifu:EvilPersonalityTearUpdate(tr)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and data.IsEvilFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount == 1 and data.IsEvilFetus then
+			tr:GetSprite():ReplaceSpritesheet(0, "gfx/characters/costumes_shadow/fetus_tears.png")
+			tr:GetSprite():LoadGraphics();
+		end
+		if tr.FrameCount <= 300 and data.IsEvilFetus then
+			tr.Height = -12
+			local e = InutilLib.GetClosestGenericEnemy(tr, 500)
+			if e then
+				InutilLib.MoveDirectlyTowardsTarget(tr, e, 2+math.random(1,5)/10, 0.85)
+			end
+			tr.Velocity = tr.Velocity * 0.95
+		end
 	end
-	
-	--transform code
-	
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.EvilPersonalityTearUpdate)
+function yandereWaifu:SoulPersonalityTearCollision(tr, cool)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and data.IsEvilFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount <= 300 and tr.FrameCount % 7 == 0 and data.IsEvilFetus then
+			cool:TakeDamage(tr.CollisionDamage, 0, EntityRef(tr), 4)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, yandereWaifu.SoulPersonalityTearCollision)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	if eff.SubType == 3 then
+		local player = yandereWaifu.GetEntityData(eff).parent
+		local sprite = eff:GetSprite();
+		local playerdata = yandereWaifu.GetEntityData(player)
+		local data = yandereWaifu.GetEntityData(eff)
+		
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
+			direction = player:GetAimDirection()
+		end
+		
+		if eff.FrameCount == 1 then
+		--	sprite:Stop()
+		end
+		
+		--if not data.StartCountFrame then data.StartCountFrame= 1 end
+		
+		if eff.FrameCount == (data.StartCountFrame) + 1 then
+			sprite:Play("Startup", true)
+			InutilLib.SetTimer( data.StartCountFrame*8,function()
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1+(data.StartCountFrame/5))
+			end)
+		end
+		
+		eff.Velocity = player.Velocity;
+		if data.Extra then --what am i doing
+			eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		else
+			eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		end
+		
+		--print(eff:GetSprite().Rotation)
+		eff.RenderZOffset = 10
+		sprite.Offset = Vector(0,-10)
+		
+		if sprite:IsFinished("Spawn") then
+			sprite.Rotation = Round((data.direction):GetAngleDegrees(), 1)
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) and not sprite:IsPlaying("ShootRight") then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif(sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeft") then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDown") then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUp") then
+					sprite:Play("ShootUp", true)
+				end
+				--playerdata.BarrageIntro = true 
+		end
+
+		if data.Shoot then
+			if data.Heavy then
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				sprite.Scale = Vector(2,2)
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUp", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
+			elseif data.DrFetus then
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRightDr", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeftDr", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDownDr", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUpDr", true)
+				end
+			elseif data.Tech then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightTechGo") then
+					sprite:Play("ShootRightTechGo", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftTechGo") then
+					sprite:Play("ShootLeftTechGo", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownTechGo") then
+					sprite:Play("ShootDownTechGo", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpTechGo") then
+					sprite:Play("ShootUpTechGo", true)
+				end
+			elseif data.Brimstone then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightBrimstoneGo") then
+					sprite:Play("ShootRightBrimstoneGo", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftBrimstoneGo") then
+					sprite:Play("ShootLeftBrimstoneGo", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownBrimstoneGo") then
+					sprite:Play("ShootDownBrimstoneGo", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
+					sprite:Play("ShootUpBrimstoneGo", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 0.8)
+			else
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUp", true)
+				end
+				if data.Light then
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTLIGHT, 1, 0, false, 1)
+				elseif data.Medium then
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				end
+			end
+			data.Shoot = false
+		end
+		
+		--sounds
+		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
+			if sprite:GetFrame() == 0 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+			end
+		end]]
+		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
+			if sprite:GetFrame() == 12 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSPIT, 1, 0, false, 1)
+			end
+		end
+		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
+			if sprite:GetFrame() == 0 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDELECTRICITY, 1, 0, false, 1)
+			end
+		end
+	end
+end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
+
+function yandereWaifu.SpawnEvilOrb(player, position)
+	local SubType = 0
 	--replacing tear code
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_CROWN_OF_LIGHT) and player:GetEffectiveMaxHearts() >= player:GetHearts() and math.random(0,10) + player.Luck >= 3 then
 		SubType = 18
@@ -37,9 +197,8 @@ function yandereWaifu.EvilHeartDash(player, vector)
 		SubType = 48
 	end
 	
-	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.EVIL_HEARTS_DASH_SPEED );
 	--if player:GetMaxHearts() > 0 then
-	local orb = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILORB, SubType, player.Position, Vector(0,0), player ); --heart effect
+	local orb = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILORB, SubType, position, Vector(0,0), player ); --heart effect
 	yandereWaifu.GetEntityData(orb).Parent = player
 	--tear flag code
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_LIGHT) and math.random(0,10) + player.Luck >= 5 then
@@ -70,6 +229,228 @@ function yandereWaifu.EvilHeartDash(player, vector)
 		yandereWaifu.GetEntityData(orb).HasGodhead = true
 	end
 	
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
+	local data = yandereWaifu.GetEntityData(player)
+	if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then
+		if player:GetFireDirection() > -1 then --if not firing
+			if not data.evilOrbTick then data.evilOrbTick = 0 end
+			
+			data.evilOrbTick = data.evilOrbTick + 1
+			
+			local dir
+			if player:GetFireDirection() == 3 then --down
+				dir = 90
+			elseif player:GetFireDirection() == 1 then --up
+				dir = -90
+			elseif player:GetFireDirection() == 0 then --left
+				dir = 180
+			elseif player:GetFireDirection() == 2 then --right
+				dir = 0
+			end
+			data.evilOrbTickDir = dir
+			if data.evilOrbTick and data.evilOrbTickDir then
+				if data.evilOrbTick >= 120 then
+					yandereWaifu.SpawnEvilOrb(player, player.Position)
+					data.evilOrbTick = 0
+				end
+			end
+		else
+			data.evilOrbTick = 0
+		end
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
+	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts and Options.ChargeBars then
+			yandereWaifu.evilOrbUI(player)
+		end
+	end
+end);
+
+local uiReserve = Sprite();
+uiReserve:Load("gfx/ui/ui_evilorb_reserve.anm2", true);
+
+function yandereWaifu.evilOrbUI(player)
+		local data = yandereWaifu.GetEntityData(player)
+		local room = ILIB.game:GetRoom()
+		local gameFrame = ILIB.game:GetFrameCount();
+		local tick = data.evilOrbTick
+		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
+			uiReserve:SetOverlayRenderPriority(true)
+		
+			if tick > 0 then
+				if tick < 120 then
+					local FramePercentResult = math.floor((tick/120)*100)
+					uiReserve:SetFrame("Charging", FramePercentResult)
+					data.evilorbBarFade = gameFrame
+					data.FinishedevilOrbUICharge = false
+				elseif tick >= 120 then
+					if not data.FinishedevilOrbUICharge then
+						uiReserve:SetFrame("StartCharged",gameFrame - data.evilorbBarFade)
+						if uiReserve:GetFrame() == 11 then
+							data.evilorbBarFade = gameFrame
+							data.FinishedevilOrbUICharge = true
+						end
+					elseif data.FinishedevilOrbUICharge then
+						if uiReserve:GetFrame() == 5 then
+							data.evilorbBarFade = gameFrame
+						end
+						uiReserve:SetFrame("Charged",gameFrame - data.evilorbBarFade)
+					end
+				end
+			else
+				if not uiReserve:IsPlaying("Disappear") and data.evilorbBarFade then
+					uiReserve:SetFrame("Disappear",gameFrame - data.evilorbBarFade);
+				end
+			end
+	
+				local playerLocation = Isaac.WorldToScreen(player.Position)
+				--print(InutilLib.IsInMirroredFloor(player))
+				if not InutilLib.IsInMirroredFloor(player) then
+					uiReserve:Render(playerLocation + Vector(-15, 15), Vector(0,0), Vector(0,0));
+				end
+			end
+	--end
+end
+
+
+
+function yandereWaifu.EvilHeartTeleport(player, vector)
+	local playerdata = yandereWaifu.GetEntityData(player)
+	local SubType = 0
+	local trinketBonus = 0
+	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+		trinketBonus = 5
+	end
+	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+	
+	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
+	yandereWaifu.GetEntityData(customBody).Player = player
+	yandereWaifu.GetEntityData(customBody).HereticIn = true
+	player.Velocity = Vector( 0, 0 );
+	player.ControlsEnabled = false;
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Evil );
+	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+	playerdata.specialCooldown = REBEKAH_BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = REBEKAH_BALANCE.EVIL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	playerdata.IsUninteractible = true
+	playerdata.IsDashActive = true
+	
+	yandereWaifu.SpawnEvilOrb(player, player.Position)
+end
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local player = yandereWaifu.GetEntityData(eff).Parent
+	local controller = player.ControllerIndex;
+	local sprite = eff:GetSprite();
+	local room =  Game():GetRoom();
+	local data = yandereWaifu.GetEntityData(player)
+    local roomClampSize = math.max( player.Size, 20 );
+	local wall = InutilLib.ClosestHorizontalWall(eff)
+	local wallPos = yandereWaifu:GetClosestHorizontalWallPos(wall, eff)
+	--movement code
+	eff.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
+
+	--local movementDirection = player:GetMovementInput();
+	--if movementDirection:Length() < 0.05 then
+	
+	player.Velocity = player.Velocity * 1.1
+	eff.Velocity = player.Velocity;
+	eff.Position = player.Position --room:GetClampedPosition(eff.Position, roomClampSize);
+	
+		--eff.Velocity = player.Velocity;
+	--else
+	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+	--end
+	
+	--trail
+	local trail = InutilLib.SpawnTrail(eff, Color(1,0,1,0.5))
+	--function code
+	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
+	if eff.FrameCount == 1 then
+		player.Visible = true
+		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+		sprite:Play("Idle", true);
+		data.LastEntityCollisionClass = player.EntityCollisionClass;
+		data.LastGridCollisionClass = player.GridCollisionClass;
+		yandereWaifu.RebekahCanShoot(player, false)
+		if not data.EndFrames then data.EndFrames = 40 end
+	elseif sprite:IsFinished("Idle") then
+		sprite:Play("Blink",true);
+	end
+	
+    if eff.FrameCount == data.EndFrames then
+        if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
+            player.Velocity = Vector( 0, 0 );
+        else
+            player.Velocity = eff.Velocity;
+        end
+    	if player.CanFly == true and room:GetType() ~= RoomType.ROOM_DUNGEON then
+    		player.Position = eff.Position;
+            if room:IsPositionInRoom(player.Position, 0) == false then
+                player.Velocity = Vector( 0, 0 );
+                player.Position = room:GetClampedPosition( player.Position, roomClampSize );
+            end
+    	else
+            player.Position = room:FindFreeTilePosition( eff.Position, 0 )
+            if room:IsPositionInRoom(player.Position, 0) == false then
+                player.Velocity = Vector( 0, 0 );
+                player.Position = room:FindFreeTilePosition( room:GetClampedPosition( player.Position, roomClampSize ), 0 );
+            end
+        end
+		local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, wallPos, Vector(0,0), player) --body effect
+		yandereWaifu.GetEntityData(customBody).Player = player
+		yandereWaifu.GetEntityData(customBody).HereticOut = true
+		yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
+		player.ControlsEnabled = false
+    	eff:Remove();
+    	
+    	data.IsUninteractible = false;
+		yandereWaifu.RebekahCanShoot(player, true)
+    else
+		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
+    	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
+		player.EntityCollisionClass =  EntityCollisionClass.ENTCOLL_PLAYEROBJECTS;
+    end
+	--if eff.FrameCount < 35 then
+	--	player.Velocity = Vector( 0, 0 );
+	--end
+end, RebekahCurse.ENTITY_EVILTARGET)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff) --orbital target
+	local sprite = eff:GetSprite()
+	local data = yandereWaifu.GetEntityData(eff)
+	local player = data.Parent
+	local wall = InutilLib.ClosestHorizontalWall(eff)
+	local wallPos = yandereWaifu:GetClosestHorizontalWallPos(wall, eff)
+	
+	if not data.Init then      
+		eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NOPITS 
+		data.spr = Sprite()                                                 
+		data.spr:Load("gfx/effects/evil/line.anm2", true) 
+		data.spr:Play("Line", true)
+		data.Init = true                                              
+	end      
+		
+	InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(wallPos), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
+end, RebekahCurse.ENTITY_EVILTARGET);
+
+function yandereWaifu.EvilHeartDash(player, vector)
+	local playerdata = yandereWaifu.GetEntityData(player)
+	local SubType = 0
+	local trinketBonus = 0
+	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+		trinketBonus = 5
+	end
+	
+	--transform code
+	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.EVIL_HEARTS_DASH_SPEED );
 	--local jet = Isaac.Spawn( EntityType.ENTITY_EFFECT, 147, 1, player.Position, Vector(0,0), player ):ToEffect(); 
 	--jet.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 	--jet.GridCollisionClass = GridCollisionClass.COLLISION_NONE
@@ -192,7 +573,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						end
 					end
 				end
-				SpawnHeartParticles( 1, 1, eff.Position, RandomHeartParticleVelocity(), player, HeartParticleType.Black );
+				yandereWaifu.SpawnHeartParticles( 1, 1, eff.Position, RandomHeartParticleVelocity(), player, HeartParticleType.Black );
 			else
 				local entities = Isaac.GetRoomEntities()
 				for i = 1, #entities do
@@ -294,7 +675,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--if eff.SubType == 0 then
 	if eff.FrameCount == 1 then
 		if not sprite:IsPlaying("Spawn") then sprite:Play("Spawn", true) end
-		if not data.setDespawn then data.setDespawn = 900 end
+		if not data.setDespawn then data.setDespawn = math.random( 600, 900 ) end
 		if not data.HitPoints then data.HitPoints = 10 end;
 		
 		if eff.SubType == 2 then --tough love synergy
@@ -594,6 +975,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) then
 					Isaac.Explode(eff.Position, player, player.Damage)
 				end
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
+					local sword = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DARKSPIRITSWORD, 0, eff.Position, Vector(0,0), player)
+					yandereWaifu.GetEntityData(sword).Parent = player
+				end
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_DR_FETUS) then
+					local bomb = player:FireBomb(eff.Position, Vector(0,0)):ToBomb() --this is a workaround to make explosions larger
+					bomb:SetExplosionCountdown(1)
+					bomb.Visible = false
+					bomb.ExplosionDamage = player.Damage*1.77013
+				end
 			--end
 			end
 			if not sprite:IsPlaying("Die") then sprite:Play("Die", true) end
@@ -606,6 +997,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				local tear = player:FireTear(eff.Position, Vector.FromAngle(i):Resized(5), false, false, false):ToTear()
 				tear.Position = eff.Position
 				tear:ChangeVariant(TearVariant.FIRE)
+				tear:GetSprite():ReplaceSpritesheet(0, "gfx/effects/effect_005_fire_purple.png")
+				tear:GetSprite():LoadGraphics()
 				tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 				tear.CollisionDamage = player.Damage
 				tear.Size = data.Tier/2
@@ -632,6 +1025,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 	if (data.HitPoints <= 0 and not sprite:IsPlaying("Die")) then
 		sprite:Play("Die", true)
+		
 	end
 	
 	if data.ChainExplode then --deprecated?
@@ -672,16 +1066,45 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--if not data.delay then data.delay = 1 else data.delay = data.delay + 1 end
 			--InutilLib.SetTimer( data.delay*30, function()
 				angle = InutilLib.ObjToTargetAngle(eff, target, true)
-				beam = player:FireBrimstone( Vector.FromAngle(angle), eff, 2):ToLaser();
-				--beam = EntityLaser.ShootAngle(1, eff.Position, angle, 5, Vector(0,-5), player):ToLaser()
-				beam.Position = eff.Position
-				--beam:AddTearFlags(player.TearFlags)
-				beam.MaxDistance = farthestOrb
-				beam.Timeout = 20
-				beam.DisableFollowParent = true
-				yandereWaifu.GetEntityData(target).Heretic = true
-				beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
-				yandereWaifu.GetEntityData(beam).IsEvil = true
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then --derp
+					for i = -15, 15, 30 do
+						beam = player:FireBrimstone( Vector.FromAngle(angle + i), eff, 2):ToLaser();
+						--beam = EntityLaser.ShootAngle(1, eff.Position, angle, 5, Vector(0,-5), player):ToLaser()
+						beam.Position = eff.Position
+						--beam:AddTearFlags(player.TearFlags)
+						beam.MaxDistance = farthestOrb
+						beam.Timeout = 20
+						beam.DisableFollowParent = true
+						yandereWaifu.GetEntityData(target).Heretic = true
+						beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+						yandereWaifu.GetEntityData(beam).IsEvil = true
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+							for j = 1, 5 do
+								InutilLib.SetTimer( j*15,function()
+									yandereWaifu.ThrowDarkKnife(player, eff.Position, Vector.FromAngle(angle + i):Resized(15))
+								end)
+							end
+						end
+					end
+				else
+					beam = player:FireBrimstone( Vector.FromAngle(angle), eff, 2):ToLaser();
+					--beam = EntityLaser.ShootAngle(1, eff.Position, angle, 5, Vector(0,-5), player):ToLaser()
+					beam.Position = eff.Position
+					--beam:AddTearFlags(player.TearFlags)
+					beam.MaxDistance = farthestOrb
+					beam.Timeout = 20
+					beam.DisableFollowParent = true
+					yandereWaifu.GetEntityData(target).Heretic = true
+					beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+					yandereWaifu.GetEntityData(beam).IsEvil = true
+					if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+						for j = 1, 5 do
+							InutilLib.SetTimer( j*15,function()
+								yandereWaifu.ThrowDarkKnife(player, eff.Position, Vector.FromAngle(angle):Resized(15))
+							end)
+						end
+					end
+				end
 			--	yandereWaifu.GetEntityData(target).delay = data.delay
 			--end)
 		else
@@ -695,20 +1118,58 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					end
 				end
 			end
+
 			if newTarget then
 				--if not data.delay then data.delay = 1 else data.delay = data.delay + 1 end
 				--InutilLib.SetTimer( data.delay*30, function()
 					angle = InutilLib.ObjToTargetAngle(eff, newTarget, true)
-					beam = player:FireBrimstone( Vector.FromAngle(angle), eff, 2):ToLaser();
-					--beam = EntityLaser.ShootAngle(1, eff.Position, angle, 5, Vector(0,-5), player):ToLaser()
-					beam:AddTearFlags(player.TearFlags)
-					beam.Position = eff.Position
-					--beam.Damage = player.Damage * 2
-					beam.CollisionDamage = player.Damage * 2 * extraTearDmg
-					beam.Timeout = 20
-					beam.DisableFollowParent = true
-					beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
-					yandereWaifu.GetEntityData(beam).IsEvil = true
+					if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then --derp
+						for i = -15, 15, 30 do
+							beam = player:FireBrimstone( Vector.FromAngle(angle + i), eff, 2):ToLaser();
+							--beam = EntityLaser.ShootAngle(1, eff.Position, angle, 5, Vector(0,-5), player):ToLaser()
+							beam.Position = eff.Position
+							--beam:AddTearFlags(player.TearFlags)
+							beam.MaxDistance = farthestOrb
+							beam.Timeout = 20
+							beam.DisableFollowParent = true
+							--yandereWaifu.GetEntityData(newTarget).Heretic = true
+							beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+							yandereWaifu.GetEntityData(beam).IsEvil = true
+							if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+								for j = 1, 5 do
+									InutilLib.SetTimer( j*15,function()
+										yandereWaifu.ThrowDarkKnife(player, eff.Position, Vector.FromAngle(angle + i):Resized(15))
+									end)
+								end
+							end
+						end
+					else
+						beam = player:FireBrimstone( Vector.FromAngle(angle), eff, 2):ToLaser();
+						--beam = EntityLaser.ShootAngle(1, eff.Position, angle, 5, Vector(0,-5), player):ToLaser()
+						beam:AddTearFlags(player.TearFlags)
+						beam.Position = eff.Position
+						--beam.Damage = player.Damage * 2
+						beam.CollisionDamage = player.Damage * 2 * extraTearDmg
+						beam.Timeout = 20
+						beam.DisableFollowParent = true
+						beam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+						yandereWaifu.GetEntityData(beam).IsEvil = true
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+							for j = 1, 5 do
+								InutilLib.SetTimer( j*15,function()
+									yandereWaifu.ThrowDarkKnife(player, eff.Position, Vector.FromAngle(angle):Resized(15))
+								end)
+							end
+						end
+					end
+					for i = 1, math.random(2,3) do
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+							local tear = player:FireTear( eff.Position, Vector.FromAngle(math.random(1,360)):Resized(8), false, false, false):ToTear()
+							tear:ChangeVariant(50)
+							tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+							yandereWaifu.GetEntityData(tear).IsEvilFetus = true
+						end
+					end
 				--	yandereWaifu.GetEntityData(target).delay = data.delay
 				--end)
 			else
@@ -718,18 +1179,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.HitPoints = 0 --kill it
 		data.beam = beam
 		
-		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
-			local bomb = player:FireBomb(eff.Position, Vector(0,0)):ToBomb() --this is a workaround to make explosions larger
-			bomb:SetExplosionCountdown(1)
-			bomb.Visible = false
-			bomb.ExplosionDamage = player.Damage*1.77013
-		end
-		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) and not data.ThrownKnife then
-			--[[if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(eff, player) else
+		--[[if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) and not data.ThrownKnife then
+			yandereWaifu.ThrowDarkKnife(player, position)
+			if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(eff, player) else
 				if not data.KnifeHelper.incubus:Exists() then
 					data.KnifeHelper = InutilLib:SpawnKnifeHelper(eff, player)
 				end
-			end]]
+			end
 			for i = 0, 315, 360/8 do
 				--local knife = InutilLib.SpawnKnife(player, (i), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 60, data.KnifeHelper)
 				--yandereWaifu.GetEntityData(knife).IsEvil = true
@@ -745,7 +1201,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				--local knife = InutilLib.SpawnKnife(player, (direction:GetAngleDegrees() - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 90)
 				data.ThrownKnife = true
 			end
-		end
+		end]]
+		
 	end
 	--end
 end, RebekahCurse.ENTITY_EVILORB);
@@ -988,7 +1445,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff);
 	
 	if eff.FrameCount == 1 then
-		if not data.setDespawn then data.setDespawn = math.random( 300, 2000 ) end
+		if not data.setDespawn then data.setDespawn = math.random( 30, 200 ) end
 		if not data.extraTears then data.extraTears = 0 end
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_INNER_EYE) and player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
 			data.extraTears = 7
@@ -1058,7 +1515,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					tear.Position = eff.Position
 					tear.TearFlags = tear.TearFlags | TearFlags.TEAR_HOMING | TearFlags.TEAR_PIERCING;
 					tear.CollisionDamage = player.Damage * 2;
-					tear:ChangeVariant(ENTITY_DARKKNIFE);
+					tear:ChangeVariant(RebekahCurse.ENTITY_DARKKNIFE);
 				end
 			end
 			if player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
@@ -1149,4 +1606,44 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 end, RebekahCurse.ENTITY_HOLEFABRIC);
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local player = yandereWaifu.GetEntityData(eff).Parent:ToPlayer();
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff);
+	
+	if eff.FrameCount == 1 then
+		sprite:Play("SpinLeft")
+	end
+	
+	local numofShots = 1
+	local tearSize = 0
+		
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
+		--curAng = -25
+		numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) * 3
+	end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_20_20) then
+		--curAng = -25
+		numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_20_20) 
+	end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_INNER_EYE) then
+		--curAng = -20
+		numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_INNER_EYE) * 2
+	end
+	
+	if eff.FrameCount % numofShots == (0) then
+		for i, ent in pairs (Isaac.GetRoomEntities()) do
+			if ent:IsEnemy() and ent:IsVulnerableEnemy() and not ent:IsDead() then
+				if ent.Position:Distance((eff.Position)) <= 150 then
+					ent:TakeDamage((player.Damage * numofShots)/2, 0, EntityRef(eff), 1)
+				end
+			end
+		end
+	end
+	
+	if sprite:IsFinished("SpinLeft") then
+		eff:Remove()
+	end
+
+end, RebekahCurse.ENTITY_DARKSPIRITSWORD);
 --end

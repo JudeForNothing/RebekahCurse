@@ -362,6 +362,143 @@ function yandereWaifu.SpawnEctoplasm( position, velocity, size, parent, dontupda
 	puddle:GetData().IsEctoplasm = true;
 end
 
+function yandereWaifu:GetClosestWallPos(wall, player)
+	local room = ILIB.room
+	local pos = Vector.Zero
+	if wall == Direction.DOWN then
+		pos = Vector(player.Position.X, room:GetBottomRightPos().Y+60)
+	elseif wall == Direction.UP then
+		pos = Vector(player.Position.X, room:GetTopLeftPos().Y-60)
+	elseif wall == Direction.RIGHT then
+		pos = Vector(room:GetBottomRightPos().X+60, player.Position.Y)
+	elseif wall == Direction.LEFT then
+		pos = Vector(room:GetTopLeftPos().X-60, player.Position.Y)
+	end
+	if room:IsLShapedRoom() then
+		--[[print((ILIB.room:GetDoorSlotPosition(0) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(1) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(2) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(3) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(4) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(5) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(6) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(7) - player.Position):Length())
+		print("end")]]
+		local leftWall = math.abs(ILIB.room:GetTopLeftPos().X-player.Position.X)
+		local rightWall = math.abs(ILIB.room:GetBottomRightPos().X-player.Position.X)
+		local topWall = math.abs(ILIB.room:GetTopLeftPos().Y-player.Position.Y)
+		local bottomWall = math.abs(ILIB.room:GetBottomRightPos().Y-player.Position.Y)
+		local shape = room:GetRoomShape()
+		if shape == RoomShape.ROOMSHAPE_LTL then
+			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(1).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(0).X - player.Position.X)
+
+			if (wall == Direction.LEFT or wall == Direction.DOWN) and (topLwall <= sideLwall and leftWall <= 500 and topLwall <= topWall) then
+				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(1).Y-60)
+				wall = Direction.UP
+			elseif wall == Direction.UP and (sideLwall <= topLwall and sideLwall <= leftWall and sideLwall <= topWall) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(0).X-60, player.Position.Y)
+				wall = Direction.LEFT
+			end
+		elseif shape == RoomShape.ROOMSHAPE_LTR then
+			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(5).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(2).X - player.Position.X)
+
+			if (wall == Direction.RIGHT or wall == Direction.DOWN) and (topLwall <= sideLwall and rightWall <= 500 and topLwall <= topWall) then
+				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(5).Y-60)
+				wall = Direction.UP
+			elseif wall == Direction.UP and (sideLwall <= topLwall and sideLwall <= rightWall and sideLwall <= topWall) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(2).X+60, player.Position.Y)
+				wall = Direction.RIGHT
+			end
+		elseif shape == RoomShape.ROOMSHAPE_LBL then
+			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(3).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(4).X - player.Position.X)
+			if (wall == Direction.LEFT or wall == Direction.UP) and (topLwall <= sideLwall and leftWall <= 500 and topLwall <= topWall) then
+				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(3).Y+60)
+				wall = Direction.DOWN
+			elseif wall == Direction.DOWN and (sideLwall <= topLwall and sideLwall <= leftWall and sideLwall <= topWall) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(4).X-60, player.Position.Y)
+				wall = Direction.LEFT
+			end
+		elseif shape == RoomShape.ROOMSHAPE_LBR then
+			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(7).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(6).X - player.Position.X)
+
+			if (wall == Direction.RIGHT or wall == Direction.UP) and (topLwall <= sideLwall and rightWall <= 500 and topLwall <= topWall) then
+				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(7).Y+60)
+				wall = Direction.DOWN
+			elseif wall == Direction.DOWN and (sideLwall <= topLwall and sideLwall <= rightWall and sideLwall <= topWall) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(6).X+60, player.Position.Y)
+				wall = Direction.RIGHT
+			end
+		end
+	end
+	return pos
+end
+
+
+function yandereWaifu:GetClosestHorizontalWallPos(wall, player)
+	local room = ILIB.room
+	local pos = Vector.Zero
+	if wall == Direction.DOWN then
+		pos = Vector(player.Position.X, room:GetBottomRightPos().Y+60)
+	elseif wall == Direction.UP then
+		pos = Vector(player.Position.X, room:GetTopLeftPos().Y-60)
+	elseif wall == Direction.RIGHT then
+		pos = Vector(room:GetBottomRightPos().X+60, player.Position.Y)
+	elseif wall == Direction.LEFT then
+		pos = Vector(room:GetTopLeftPos().X-60, player.Position.Y)
+	end
+	if room:IsLShapedRoom() then
+		--[[print((ILIB.room:GetDoorSlotPosition(0) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(1) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(2) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(3) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(4) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(5) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(6) - player.Position):Length())
+		print((ILIB.room:GetDoorSlotPosition(7) - player.Position):Length())
+		print("end")]]
+		local leftWall = math.abs(ILIB.room:GetTopLeftPos().X-player.Position.X)
+		local rightWall = math.abs(ILIB.room:GetBottomRightPos().X-player.Position.X)
+		local topWall = math.abs(ILIB.room:GetTopLeftPos().Y-player.Position.Y)
+		local bottomWall = math.abs(ILIB.room:GetBottomRightPos().Y-player.Position.Y)
+		local shape = room:GetRoomShape()
+		
+		if shape == RoomShape.ROOMSHAPE_LTL then
+			local topLwall = (ILIB.room:GetDoorSlotPosition(1).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(0).X - player.Position.X)
+			if (wall == Direction.RIGHT) and (topLwall > 0 and sideLwall <= 275) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(1).X+60, player.Position.Y)
+				wall = Direction.LEFT
+			end
+		elseif shape == RoomShape.ROOMSHAPE_LTR then
+			local topLwall = (ILIB.room:GetDoorSlotPosition(5).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(2).X - player.Position.X)
+			if (wall == Direction.LEFT) and (topLwall > 0 and sideLwall <= 275) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(5).X+60, player.Position.Y)
+				wall = Direction.RIGHT
+			end
+		elseif shape == RoomShape.ROOMSHAPE_LBL then
+			local topLwall = (ILIB.room:GetDoorSlotPosition(3).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(4).X - player.Position.X)
+			if (wall == Direction.RIGHT) and (topLwall < 0 and sideLwall <= 275) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(3).X+60, player.Position.Y)
+				wall = Direction.LEFT
+			end
+		elseif shape == RoomShape.ROOMSHAPE_LBR then
+			local topLwall = (ILIB.room:GetDoorSlotPosition(7).Y - player.Position.Y)
+			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(6).X - player.Position.X)
+			if (wall == Direction.LEFT) and (topLwall < 0 and sideLwall <= 275) then
+				pos = Vector(ILIB.room:GetDoorSlotPosition(7).X+60, player.Position.Y)
+				wall = Direction.RIGHT
+			end
+		end
+	end
+	return pos
+end
+
 function yandereWaifu:SetRebekahPocketActiveItem( player, mode )
 	if mode == REBECCA_MODE.RedHearts then
 		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
@@ -475,11 +612,16 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 	yandereWaifu.GetEntityData(player).IsDashActive = false
 end
 
+function yandereWaifu.RebekahRefreshCostume(player)
+	local data = yandereWaifu.GetEntityData(player)
+	yandereWaifu.ApplyCostumes( data.currentMode, player , false , false)
+end
+
 function yandereWaifu.RebekahCanShoot(player, canShoot) --alternative so that she doesnt get a weird hair do
 	local data = yandereWaifu.GetEntityData(player)
 	--data.currentMode = mode;
 	InutilLib.DumpySetCanShoot(player, canShoot)
-	yandereWaifu.ApplyCostumes( data.currentMode, player , false , false)
+	yandereWaifu.RebekahRefreshCostume(player)
 end
 
 function yandereWaifu.SpawnStartingRebekahRoomControls(mode)
@@ -635,4 +777,124 @@ function yandereWaifu.IsNormalRebekah(player)
 	if player:GetPlayerType() == RebekahCurse.REB_RED or player:GetPlayerType() == RebekahCurse.REB_SOUL or player:GetPlayerType() == RebekahCurse.REB_EVIL or player:GetPlayerType() == RebekahCurse.REB_GOLD or player:GetPlayerType() == RebekahCurse.REB_ETERNAL or player:GetPlayerType() == RebekahCurse.REB_BONE or player:GetPlayerType() == RebekahCurse.REB_ROTTEN or player:GetPlayerType() == RebekahCurse.REB_BROKEN then
 		return true
 	end
+end
+
+
+
+function yandereWaifu.SpawnEvilGun(player, direction, extra)
+	local data = yandereWaifu.GetEntityData(player)
+	if not data.HugsEvil then
+		if extra then
+			if not data.extraHugsEvil then data.extraHugsEvil = {} end
+			local gun = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 3, player.Position,  Vector.Zero, player):ToEffect()
+			yandereWaifu.GetEntityData(gun).parent = player
+			yandereWaifu.GetEntityData(gun).direction = direction
+			table.insert( data.extraHugsEvil, gun )
+			return gun
+		else
+			data.HugsEvil = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 3, player.Position,  Vector.Zero, player):ToEffect()
+			yandereWaifu.GetEntityData(data.HugsEvil).parent = player
+			yandereWaifu.GetEntityData(data.HugsEvil).direction = direction
+		end
+	end
+end
+
+function yandereWaifu.RemoveEvilGun(player)
+	local data = yandereWaifu.GetEntityData(player)
+	if data.HugsEvil then
+		data.HugsEvil:Remove()
+		data.HugsEvil = nil
+	end
+	if data.extraHugsEvil then
+		for k, v in pairs(data.extraHugsEvil) do
+			v:Remove()
+		end
+		data.extraHugsEvil = nil
+	end
+end
+
+function yandereWaifu.PlayAllEvilGuns(player, mode)
+	mode = mode or 0
+	local data = yandereWaifu.GetEntityData(player)
+	for k, v in pairs (data.extraHugsEvil) do
+		yandereWaifu.GetEntityData(v).Shoot = true
+		
+		--[[if mode == 0 then
+			yandereWaifu.GetEntityData(v).Medium = true
+		end
+		if mode == 1 then
+			yandereWaifu.GetEntityData(v).Light = true
+		end
+		if mode == 2 then
+			yandereWaifu.GetEntityData(v).Heavy = true
+		end
+		if mode == 3 then
+			yandereWaifu.GetEntityData(v).DrFetus = true
+		end
+		if mode == 4 then
+			yandereWaifu.GetEntityData(v).Tech = true
+		end
+		if mode == 5 then
+			yandereWaifu.GetEntityData(v).Brimstone = true
+		end]]
+	end
+end
+
+function yandereWaifu.ThrowDarkKnife(player, position, vel)
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
+		local sword = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DARKSPIRITSWORD, 0, position, vel, player)
+		yandereWaifu.GetEntityData(sword).Parent = player
+	else
+		local knife = player:FireTear( position, vel, false, false, false):ToTear()
+		knife.Position = position
+		----local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+		knife.TearFlags = knife.TearFlags | TearFlags.TEAR_PIERCING --| TearFlags.TEAR_WIGGLE;
+		--knife.CollisionDamage = player.Damage * 4;
+		knife:ChangeVariant(RebekahCurse.ENTITY_DARKKNIFE);
+		knife.CollisionDamage = player.Damage*3
+		knife.DepthOffset = 20000
+	end
+end
+
+local eastereggtbl = {
+		[0] = RebekahCurse.CARD_EASTEREGG,
+		[1] = RebekahCurse.CARD_AQUA_EASTEREGG,
+		[2] = RebekahCurse.CARD_YELLOW_EASTEREGG,
+		[3] = RebekahCurse.CARD_GREEN_EASTEREGG,
+		[4] = RebekahCurse.CARD_BLUE_EASTEREGG,
+		[5] = RebekahCurse.CARD_PINK_EASTEREGG,
+
+		[6] = RebekahCurse.CARD_STRIPE_EASTEREGG,
+		[7] = RebekahCurse.CARD_STRIPE_AQUA_EASTEREGG,
+		[8] = RebekahCurse.CARD_ZIGZAG_YELLOW_EASTEREGG,
+		[9] = RebekahCurse.CARD_ZIGZAG_GREEN_EASTEREGG,
+		[10] = RebekahCurse.CARD_ZIGZAG_BLUE_EASTEREGG,
+		[11] = RebekahCurse.CARD_STRIPE_PINK_EASTEREGG,
+		[12] = RebekahCurse.CARD_CURSED_EASTEREGG,
+		[13] = RebekahCurse.CARD_BLESSED_EASTEREGG,
+		[14] = RebekahCurse.CARD_GOLDEN_EASTEREGG,
+	}
+
+function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier)
+	local rng 
+	if tier == 1 then
+		rng = math.random(0,11)
+	elseif tier == 2 then
+		rng = math.random(12,14)
+	else
+		rng = math.random(0,13)
+	end
+	local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, eastereggtbl[rng], spawnPosition, Vector(0,0), player):ToPickup()
+	return newpickup
+end
+
+function yandereWaifu.optionsCheck(pickup)
+    if pickup.OptionsPickupIndex > 0 then
+        for _, entity in pairs(Isaac.FindByType(5, -1, -1)) do
+            if entity:ToPickup().OptionsPickupIndex and entity:ToPickup().OptionsPickupIndex == pickup.OptionsPickupIndex and GetPtrHash(entity:ToPickup()) ~= GetPtrHash(pickup) then
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, entity.Position, Vector.Zero, nil)
+            entity:Remove()
+            end
+        end
+    end
 end

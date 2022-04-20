@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if eff.FrameCount == 1 then
 		data.Mode = 0
 		data.OrbitStart = 0
-	elseif eff.FrameCount >= 1100 then
+	elseif eff.FrameCount >= 210 then
 		eff:Remove()
 	end
 	

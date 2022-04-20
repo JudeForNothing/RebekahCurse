@@ -11,6 +11,7 @@
 		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.3"/>
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
@@ -20,12 +21,14 @@
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Candy Wedding Ring!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="devil">
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="A Beautiful Grave" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="angel">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -59,6 +62,7 @@
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Rebekah's Camera" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Defuse = Rewards" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="A Beautiful Grave" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="goldenChest">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -93,6 +97,7 @@
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedShop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="1"/>
@@ -110,6 +115,7 @@
 		<Item Name="Wikepidia" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Doorstopper" DecreaseBy="0.1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedBoss">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />

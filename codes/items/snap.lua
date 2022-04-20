@@ -124,7 +124,7 @@ function yandereWaifu:snapcacheregister(player, cacheF) --The thing the checks a
 		end
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			if data.hasSnap then
-				player.Damage = player.Damage * 2.5
+				player.Damage = player.Damage + ((player.Damage/3) * 2.5)
 			elseif data.isSnappedTired then
 				player.Damage = player.Damage - 1.5
 			end

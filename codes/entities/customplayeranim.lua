@@ -504,6 +504,125 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if data.Player.FrameCount % 3 == 0 then
 			yandereWaifu.SpawnHeartParticles( 1, 2, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), data.Player, RebekahHeartParticleType.Soul );
 		end
+	
+	elseif data.HereticIn then
+		for i = 0, math.random(0,2) do
+			InutilLib.SetTimer( i, function()
+				local hole = Isaac.Spawn(EntityType.ENTITY_EFFECT, 111, 0, eff.Position, Vector(0,0), data.Player);
+				hole:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/eviltrail.png")
+				hole:GetSprite():LoadGraphics()
+				hole.SpriteOffset = Vector( 0, -20 );
+				hole.RenderZOffset = -10;
+			end)
+		end
+		local wall = InutilLib.ClosestHorizontalWall(eff)
+		if eff.FrameCount == 1 then --beginning
+			data.Player.Visible = false
+			eff.Visible = true
+			sprite:Load("gfx/characters/rebekahevildash.anm2",true)
+			sprite:Play("LeaveLeft",true)
+			if wall == Direction.RIGHT then
+				sprite.FlipX = true
+			end
+		elseif sprite:GetFrame() == 2 then
+			local target = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILTARGET, 0, data.Player.Position, Vector(0,0), data.Player );
+			yandereWaifu.GetEntityData(target).Parent = data.Player
+			data.Player.ControlsEnabled = true
+			data.DontFollowPlayer = true
+		elseif sprite:IsFinished("LeaveLeft") then
+			eff:Remove()
+		end
+		local wallPos = yandereWaifu:GetClosestWallPos(wall, eff)
+		eff.Velocity = (eff.Velocity - (eff.Position - wallPos)):Resized(20)
+		
+	elseif data.HereticOut then
+		for i = 0, math.random(1,3) do
+			InutilLib.SetTimer( i, function()
+				local hole = Isaac.Spawn(EntityType.ENTITY_EFFECT, 111, 0, eff.Position, Vector(0,0), data.Player);
+				hole:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/eviltrail.png")
+				hole:GetSprite():LoadGraphics()
+				hole.SpriteOffset = Vector( 0, -20 );
+				hole.RenderZOffset = -10;
+			end)
+		end
+		local wall = InutilLib.ClosestHorizontalWall(eff)
+		--data.Player.Position = eff.Position
+		--data.Player.Velocity = eff.Velocity
+		--if yandereWaifu.GetEntityData(eff).CanHurt then
+			for i, entities in pairs(Isaac.GetRoomEntities()) do
+				if entities:IsEnemy() and entities:IsVulnerableEnemy() and not entities:IsDead() then
+					if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 85 and math.floor(eff.FrameCount % data.Player.MaxFireDelay/3) == 0 then
+						entities:TakeDamage(data.Player.Damage, 0, EntityRef(data.Player), 1)
+					end
+				elseif entities.Type == EntityType.ENTITY_EFFECT and entities.Variant == RebekahCurse.ENTITY_EVILORB and not data.CantCancel then
+					if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 10 then
+						data.CancelEnd = true
+						yandereWaifu.GetEntityData(entities).HitPoints = 0
+					end
+				end
+			end
+		--end
+		if eff.FrameCount == 1 then --beginning
+			data.Player.Visible = false
+			eff.Visible = true
+			sprite:Load("gfx/characters/rebekahevildash.anm2",true)
+			sprite:Play("DashEnter",true)
+			yandereWaifu.GetEntityData(eff).CanHurt = true
+			--poof smoke thing
+			if wall == Direction.LEFT then
+				sprite.FlipX = true
+			end
+		--	Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, data.Player.Position, Vector(0,0), data.Player)
+		elseif sprite:IsFinished("DashEnter") then
+			sprite:Play("DashLoop",true)
+		elseif not sprite:IsPlaying("DashEnd") and data.Player.Position:Distance(eff.Position) <= 120 then
+			sprite:Play("DashEnd",true)
+			yandereWaifu.GetEntityData(eff).CanHurt = false
+		elseif sprite:IsPlaying("DashEnd") then
+			eff.Velocity = eff.Velocity * 0.9
+			data.Player:SetMinDamageCooldown(90)
+			if sprite:GetFrame() == 8 and not data.CancelEnd then
+				data.CantCancel = true
+				for i, entities in pairs(Isaac.GetRoomEntities()) do
+					if entities:IsEnemy() and entities:IsVulnerableEnemy() and not entities:IsDead() then
+						if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 120 then
+							entities:TakeDamage(data.Player.Damage*1.2, 0, EntityRef(data.Player), 1)
+						end
+					end
+				end
+				yandereWaifu.GetEntityData(data.Player).IsDashActive = false
+				data.Player.Visible = true;
+				data.Player.ControlsEnabled = true;
+				data.Player.GridCollisionClass = yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass;
+				data.Player.EntityCollisionClass = yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass;
+				
+				--reset
+				yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass = nil
+				yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
+			elseif sprite:GetFrame() == 8 and data.CancelEnd then
+				local target = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILTARGET, 0, data.Player.Position, Vector(0,0), data.Player );
+				yandereWaifu.GetEntityData(target).Parent = data.Player
+				yandereWaifu.GetEntityData(target).EndFrames = 10
+				data.Player.ControlsEnabled = true
+				
+				data.Player.Visible = true;
+				data.Player.ControlsEnabled = true;
+				data.Player.GridCollisionClass = yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass;
+				data.Player.EntityCollisionClass = yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass;
+				
+				--reset
+				yandereWaifu.GetEntityData(data.Player).LastEntityCollisionClass = nil
+				yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
+				yandereWaifu.RebekahCanShoot(data.Player, true)
+			end
+			ILIB.game:ShakeScreen(10)
+		elseif sprite:IsFinished("DashEnd") then
+			eff:Remove()
+		end
+		if yandereWaifu.GetEntityData(eff).CanHurt then
+			eff.Velocity = (eff.Velocity - (eff.Position - data.Player.Position)):Resized(40)
+		end
+		
 	elseif data.DashBrokenGlitch then
 		if eff.FrameCount == 1 then --beginning
 			eff.Visible = true

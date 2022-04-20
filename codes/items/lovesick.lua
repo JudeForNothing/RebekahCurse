@@ -6,7 +6,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--lovesick
-	if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LOVESICK) then
 		player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
 	end
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then

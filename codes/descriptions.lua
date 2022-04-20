@@ -12,6 +12,8 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_MORIAHDIARY, "Enemies and projectiles show a visual line on where they might go # Using the item also unlocks hitboxes and warning")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_THESHINING, "On use, all doors in the room bleed with creep, blood tears and end with brimstone # Tears and brimstone follow your tearflags")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_TWINVISION, "On new floor, spawns two invulnerable clones of you # Clones disappear on your damage")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_NUTWATER, "On pickup, drops a heart based on your character + DMG + Speed")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE, "Gain a familiar that shoots fear tears # When an enemy is feared, he grabs them # If boss, he damages them, else he kills them instantly")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE, "When charged, a familiar ticks and shows a color order for you to defuse # Rewards dropped are exactly a locked chest # Failure to defuse on time or doing 3 mistakes blows you up # Difficuty spikes up the more successes you have by shorter timer and explosion damage")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSCAMERA, "Captures enemies in room on first use, respawns them as charmed on second use")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX, "On pickup, drops 3 random hearts")

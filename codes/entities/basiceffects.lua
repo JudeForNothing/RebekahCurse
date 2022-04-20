@@ -401,6 +401,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_,  knf)
 		end
 	end
 end)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	if eff.Type == 1000 and eff.Variant == 71 and eff.FrameCount == 1 then
+		if yandereWaifu.GetEntityData(eff.Child).IsEvil then
+			eff:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+		end
+	end
+end)
 
 --arcane stuff
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
@@ -483,6 +490,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff:Remove()
 	end
 end, RebekahCurse.ENTITY_PINGEFFECT)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	
+	if sprite:IsFinished("Drop") then
+		eff:Remove()
+	end
+end, RebekahCurse.ENTITY_BEAUTIFULGRAVEDROP)
 
 --rebekah miniisaac thing
 function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)

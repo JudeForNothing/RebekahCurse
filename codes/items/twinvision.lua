@@ -67,7 +67,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		if entityData.isredTwin or entityData.isblueTwin then
-			pickup.Wait = 10;
+			--pickup.Wait = 10;
+			
 		end
 	end
 end)
@@ -92,7 +93,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_TWINVISION) and not (data.isredTwin or data.isblueTwin) and not (data.redTwin or data.blueTwin) then
+	if player:HasCollectible(RebekahCurse.COLLECTIBLE_TWINVISION) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_TWINVISION) and not (data.isredTwin or data.isblueTwin) and not (data.redTwin or data.blueTwin) then
 		spawnTwins(player)
 	end
 	--[[if data.isredTwin then

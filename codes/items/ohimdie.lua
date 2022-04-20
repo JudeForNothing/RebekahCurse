@@ -11,6 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			--	data.ImDieCountdown = 0
 			end
 		end
+		
 	else
 		if data.ImDiePolty then
 			data.WireCombinations = nil
@@ -132,6 +133,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	
 	fam:FollowParent()
+	
+	if player:HasTrinket(TrinketType.TRINKET_LEFT_HAND) and not data.Red then
+		data.Red = true
+		for i = 0, 5 do
+			spr:ReplaceSpritesheet(i, "gfx/familiar/imdie_polty_red.png")
+		end
+		spr:LoadGraphics()
+	else
+		if data.Red and not player:HasTrinket(TrinketType.TRINKET_LEFT_HAND) then
+			data.Red = false
+			for i = 0, 5 do
+			spr:ReplaceSpritesheet(i, "gfx/familiar/imdie_polty.png")
+			end
+			spr:LoadGraphics()
+		end
+	end
 	
 	--fam.OrbitDistance = Vector(20, 20)
 	--fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06

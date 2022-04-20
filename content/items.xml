@@ -18,7 +18,7 @@
 	<passive id="32" name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2"/>
 	<passive id="33" name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3"/>
 	<active id="29" name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
-	<active id="31" name="Defuse = Rewards" description="Oh, I'm die, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
+	<active id="31" name="Defuse = Rewards" description="Use your manual to defuse, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
 	
 	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="3"/>
 	
@@ -59,4 +59,10 @@
 	<active id="34" name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3"/>
 	
 	<passive id="28" name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3"/>
+	
+	<familiar id="40" name="A Beautiful Grave" description="Something is behind you" gfx="collectibles_abeautifulgrave.png" tags="baby" quality="2"/>
+	<passive id="41" name="Tight Hairtie" description="Speed + Range up!" gfx="collectibles_hairtie.png" cache="speed range" quality="1"/>
+	<passive id="42" name="Basket of Eggs" description="An egg a day keeps... what?" gfx="collectibles_basket_of_eggs.png" quality="2"/>
+	<trinket name="Rabbit's Foot" description="Find more eggs!" gfx="collectibles_rabbits_foot.png" />
+	<passive id="43" name="Eggshell Walk" description="Careful how you tread" gfx="collectibles_eggshellwalk.png" quality="2"/>
 </items>

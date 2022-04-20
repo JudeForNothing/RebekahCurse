@@ -1,10 +1,12 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_NUTWATER ) then
+	if player:HasCollectible(RebekahCurse.COLLECTIBLE_NUTWATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_NUTWATER ) then
 		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 		player:AddCacheFlags(CacheFlag.CACHE_SPEED);
 		player:EvaluateItems()
+		print("pain")
+		player:AddNullCostume(RebekahCurseCostumes.NutWater)
 		--for i = 0, 1, 1 do
 			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
 				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position,3) , player.Velocity, player)

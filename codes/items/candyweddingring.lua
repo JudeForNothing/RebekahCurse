@@ -11,6 +11,6 @@ end)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CANDYWEDDINGRING) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_CANDYWEDDINGRING) then
-		--player:AddNullCostume(RebekahCurseCostumes.LovePower)
+		player:AddNullCostume(RebekahCurseCostumes.CandyWeddingRing)
 	end
 end)

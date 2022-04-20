@@ -38,7 +38,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
 				tears.Position = fam.Position
-				tears.CollisionDamage = data.Stat.Damage * player.Damage
+				tears.CollisionDamage = data.Stat.Damage + player.Damage/2
 			end
 			data.Stat.FireDelay = data.Stat.MaxFireDelay
 		end

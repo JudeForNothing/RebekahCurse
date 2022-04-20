@@ -41,8 +41,12 @@ yandereWaifuCodes = {
 			eve = require('codes.entities.bosses.eve'),
 			bloodsins = require('codes.entities.bosses.eve.bloodsins'),
 			lilith = require('codes.entities.bosses.lilith'),
-			bloodsins = require('codes.entities.bosses.lilith.familiars'),
+			lilithfamiliars = require('codes.entities.bosses.lilith.familiars'),
+			thestalwart = require('codes.entities.bosses.thestalwart'),
 		}
+	},
+	pocketitems = {
+		egg = require('codes.pocketitems.easteregg'),
 	},
 	items = {
 		candyweddingring = require('codes.items.candyweddingring'),
@@ -75,16 +79,21 @@ yandereWaifuCodes = {
 		
 		isaacslocks = require('codes.items.isaacslocks'),
 		
-		wishfulthinking = require('codes.items.tainted.wishful_thinking')
+		wishfulthinking = require('codes.items.tainted.wishful_thinking'),
+		abeautifulgrave = require('codes.items.abeautifulgrave'),
+		tighthairtie = require('codes.items.tighthairtie'),
+		basketofeggs = require('codes.items.basketofeggs'),
+		rabbitsfoot = require('codes.items.rabbitsfoot'),
+		eggshellwalk = require('codes.items.eggshellwalk')
 	},
 	slots = {
 		mirror = require('codes.slots.mirror')
 	},
 	shaders = require('codes.shaders'),
 	stages = {
-		gen = {
+		--[[gen = {
 			rebekahsroom = require('codes.floors.gen.rebekahsbedroom'),
-			},
+			},]]
 		rebekahsroom = nil,
 		--liminal = require('codes.floors.backrooms')
 	},

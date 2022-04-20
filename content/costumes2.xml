@@ -33,5 +33,9 @@
 	<costume anm2path="unsnapped.anm2" priority="22" type="none" hasSkinAlt="true"/>
 	<costume anm2path="snap.anm2" priority="24" type="none" hasSkinAlt="true"/>
 	
+	<costume anm2path="nutwater.anm2" priority="20" type="none"/>
+	<costume anm2path="tighthairtie.anm2" priority="100" type="none"/>
 	<costume anm2path="hornface.anm2" type="none"/>
+	<costume anm2path="basket_of_eggs.anm2" type="none"/>
+	<costume anm2path="candyweddingring.anm2" type="none"/>
 </costumes>
