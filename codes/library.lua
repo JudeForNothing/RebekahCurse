@@ -875,7 +875,7 @@ local eastereggtbl = {
 		[14] = RebekahCurse.CARD_GOLDEN_EASTEREGG,
 	}
 
-function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier)
+function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)
 	local rng 
 	if tier == 1 then
 		rng = math.random(0,11)
@@ -885,6 +885,10 @@ function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier)
 		rng = math.random(0,13)
 	end
 	local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, eastereggtbl[rng], spawnPosition, Vector(0,0), player):ToPickup()
+	if shop then
+		newpickup.Price = 5
+	end
+	newpickup.ShopItemId = -1
 	return newpickup
 end
 

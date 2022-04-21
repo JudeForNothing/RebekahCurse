@@ -28,9 +28,12 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_PATRIARCHSLIAR, "Occasionally spawns a giant fist punching at your direction from a wall # Damages enemies")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE, "Shoot a spear to enemy # If enemy is attached, use arrow keys to swing around attached enemy # Enemies eventually detach naturally or if they collide in the walls")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE, "Spawns a Happy Jacob # This Jacob gains damage, range, tears and other stats depending on how many items given to him")
-	
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_WIKEPIDIA, "Can act like every vanilla book # Switch book page with the Drop key like DInfinity")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_TIGHTHAIRTIE, "Gives + .2 Speed and +2 Range")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_BASKETOFEGGS, "Drops 5 eggs on pickup")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_EGGSHELLWALK, "On new room, eggs spawn # Walking around the eggs breaks egg to spawn a Bun Bun, which helps fight enemies # If breaking an egg with 2 Bun Buns are in the room, a Rabbet spawns instead, collecting eggs in the room + collision damage to you # If Rabbet is active and you break an egg, Rabbet becomes angry")
 	EID:addTrinket(RebekahCurse.TRINKET_ISAACSLOCKS, "When entering either a {{Shop}}, {{BossRoom}}, {{TreasureRoom}}, {{DevilRoom}} or {{AngelRoom}}, a reroll slot machine spawns # A reroll machine spawning in {{DevilRoom}} or {{AngelRoom}} is chance-based")
-	
+	EID:addTrinket(RebekahCurse.TRINKET_RABBITSFOOT, "Pickups have a chance to be replaced by easter eggs")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_WISHFULTHINKING, "On death, respawn as Wishful Isaac # Wishful Isaac has 10 Luck")
 	
 	-- EID mirror render

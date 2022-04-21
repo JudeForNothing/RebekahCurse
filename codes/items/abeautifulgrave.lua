@@ -12,7 +12,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		data.Init = true
 		data.State = 0
 	end
-	
+	fam.Velocity = fam.Velocity * 0.9
 	if data.State == 0 then --idle
 		--if not spr:IsPlaying("FloatDown") then spr:Play("FloatDown") end
 		fam:FollowParent()
@@ -92,7 +92,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		if spr:IsEventTriggered("Finish") then
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BEAUTIFULGRAVEDROP, 0, fam.Position, Vector.Zero, fam );
 			InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.8)
-			local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 2, eff.Position, Vector(0,0), player );
+			local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 2, fam.Position, Vector(0,0), player );
 		end
 	elseif data.State == 3 then
 		if spr:IsFinished("WarpBack") then

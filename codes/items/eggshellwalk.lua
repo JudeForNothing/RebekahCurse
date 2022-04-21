@@ -353,7 +353,7 @@ end, RebekahCurse.ENTITY_EGGSHELLS)
 
 function yandereWaifu:EggshellWalkNewRoom()
 	for k, v in pairs (Isaac.GetRoomEntities()) do
-		if (v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_BUNBUN_FAMILIAR) or (v.Type == EntityType.ENTITY_FAMILIAR or v.Variant == RebekahCurse.ENTITY_RABBET_FAMILIAR) then
+		if (v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_BUNBUN_FAMILIAR) or (v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_RABBET_FAMILIAR) then
 			v:Remove()
 		end
 	end
@@ -379,4 +379,4 @@ end
 	end
 end]]
 yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.EggshellWalkNewRoom)
-yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.EggshellWalkNewFloor)
+--yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.EggshellWalkNewFloor)

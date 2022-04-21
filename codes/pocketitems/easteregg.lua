@@ -87,13 +87,50 @@ local function UseRandomSeedEffect(player)
 	if math.random(1,2) == 2 then
 		InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
 	end
-	if not OldChallenge then
+	
+	yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed
+	
+	if not OldChallenge then 
 		InutilLib.DumpySetCanShoot(player, false)
 	end
 	if yandereWaifu.IsNormalRebekah(player) then
 		yandereWaifu.RebekahRefreshCostume(player)
 	end
+	
+	yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggDecreaseTick = 30
 end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
+	--local player = Isaac.GetPlayer(0);
+    local room = Game():GetRoom();
+	local data = yandereWaifu.GetEntityData(player)
+	if data.PersistentPlayerData.EasterEggSeeds then
+		if not data.PersistentPlayerData.EasterEggDecreaseTick then data.PersistentPlayerData.EasterEggDecreaseTick = 1200 end
+		
+		data.PersistentPlayerData.EasterEggDecreaseTick = data.PersistentPlayerData.EasterEggDecreaseTick - 1
+		
+		print(data.PersistentPlayerData.EasterEggDecreaseTick)
+		
+		if data.PersistentPlayerData.EasterEggDecreaseTick <= 0 then --clear seed effect
+			ILIB.game:GetSeeds():RemoveSeedEffect(data.PersistentPlayerData.EasterEggSeeds)
+			
+			print("did went here")
+			local OldChallenge = player:CanShoot()
+			player:ChangePlayerType(player:GetPlayerType())
+
+			
+			if not OldChallenge then 
+				InutilLib.DumpySetCanShoot(player, false)
+			end
+			if yandereWaifu.IsNormalRebekah(player) then
+				yandereWaifu.RebekahRefreshCostume(player)
+			end
+			data.PersistentPlayerData.EasterEggDecreaseTick = nil
+			data.PersistentPlayerData.EasterEggSeeds = nil
+		end
+	end
+end)
+
 
 local enemytbl = {
 		[0] = {type = EntityType.ENTITY_GAPER, variant = 0, subtype = 0},
@@ -117,7 +154,9 @@ local function UseRandomAmbush(level)
 		local rng = math.random(0,10)
 		if door then
 			Isaac.Spawn( enemytbl[rng].type, enemytbl[rng].variant, enemytbl[rng].subtype, ILIB.room:FindFreePickupSpawnPosition(door.Position, 1), Vector(0,0), nil );
-			door:Bar()
+			if door:IsOpen() then
+				door:Bar()
+			end
 		end
 	end
 end

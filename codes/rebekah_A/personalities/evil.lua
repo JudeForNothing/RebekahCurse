@@ -19,9 +19,9 @@ function yandereWaifu:EvilPersonalityTearUpdate(tr)
 		end
 	end
 
-    for i = 1, 817 do
+    --[[for i = 1, 817 do
         if SFXManager():IsPlaying(i) then print(i) end
-    end
+    end]]
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.EvilPersonalityTearUpdate)
 function yandereWaifu:SoulPersonalityTearCollision(tr, cool)
