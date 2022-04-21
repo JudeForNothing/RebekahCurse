@@ -524,6 +524,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if wall == Direction.RIGHT then
 				sprite.FlipX = true
 			end
+			if data.Player:GetHeadColor() == SkinColor.SKIN_WHITE then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/evil/rebekah_evil_dash_white.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLACK then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/evil/rebekah_evil_dash_black.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLUE then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/evil/rebekah_evil_dash_blue.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_RED then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/evil/rebekah_evil_dash_red.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREEN then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/evil/rebekah_evil_dash_green.png")
+			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREY then
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/evil/rebekah_evil_dash_grey.png")
+			end
+			sprite:LoadGraphics()
 		elseif sprite:GetFrame() == 2 then
 			local target = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILTARGET, 0, data.Player.Position, Vector(0,0), data.Player );
 			yandereWaifu.GetEntityData(target).Parent = data.Player

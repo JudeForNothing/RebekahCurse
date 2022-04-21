@@ -47,6 +47,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		
 		if eff.FrameCount == 1 then
 		--	sprite:Stop()
+			eff.DepthOffset = 400
 		end
 		
 		--if not data.StartCountFrame then data.StartCountFrame= 1 end

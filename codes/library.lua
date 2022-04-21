@@ -248,6 +248,8 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	if reloadanm2 then
 		if mode == REBECCA_MODE.SoulHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforsoul.anm2',false)
+		elseif mode == REBECCA_MODE.EvilHearts then --special interacts
+			player:GetSprite():Load('gfx/rebekahsfluidhairforevil.anm2',false)
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 		end

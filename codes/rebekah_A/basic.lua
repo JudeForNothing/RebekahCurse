@@ -3288,6 +3288,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					angle = InutilLib.ObjToTargetAngle(player, ludoTear, true)
 					beam = player:FireBrimstone( Vector.FromAngle(angle + i * hasWiz), player, 2):ToLaser();
 					beam.MaxDistance = player.Position:Distance(ludoTear.Position)
+					beam.DepthOffset = -400
 					if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
 						for j = 1, 5 do
 							InutilLib.SetTimer( j*15,function()
@@ -3306,6 +3307,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 								extrabeam.DisableFollowParent = true
 								yandereWaifu.GetEntityData(ent).Heretic = true
 								extrabeam:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+								extrabeam.DepthOffset = -400
 								yandereWaifu.GetEntityData(extrabeam).IsEvil = true
 								if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
 									for j = 1, 5 do
@@ -3326,6 +3328,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 						yandereWaifu.GetEntityData(target).Heretic = true
 						beam.DisableFollowParent = true
 						yandereWaifu.GetEntityData(beam).IsEvil = true
+						beam.DepthOffset = -400
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
 							for j = 1, 5 do
 								InutilLib.SetTimer( j*15,function()
@@ -3336,6 +3339,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 					else
 						beam = player:FireBrimstone( Vector.FromAngle(angle + i * hasWiz), player, 2):ToLaser();
 						beam.MaxDistance = 150
+						beam.DepthOffset = -400
 						yandereWaifu.GetEntityData(beam).IsEvil = true
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
 							for j = 1, 5 do

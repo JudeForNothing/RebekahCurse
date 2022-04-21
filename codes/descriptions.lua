@@ -21,7 +21,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_DICEOFFATE, "Use to reroll your hearts# Each half heart is rerolled into another heart # Broken Hearts do not get rerolled")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_SNAP, "On hurt, gain buffs # After next room, gain debuff until next room")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND, "Spawns a Tiny Isaac and Tiny Rebekah# Both types of familiars shoot tears at enemies# Rebekah can burst tears similar to Red Personality's {{Collectible"..RebekahCurse.COLLECTIBLE_LOVECANNON .."}} # Rebekah can pick up heart pickups and drop certain hearts # Isaac can pick up coins and drop various rewards")
-	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVESICK, "Tears are replaced by charming notes")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_LOVESICK, "Tears are replaced by charming notes # Charging your fire keys shoots a ring of tears around Isaac with weak knockback")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE, "Each filled half red heart gives 0.50 damage# Each empty half red heart gives 0.10 speed")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_ROMCOM, "Gives every vulnerable enemy the Laughing effect # Laughing effect disables the ability to shoot projectiles")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON, "On hurt, spawns a Mom's Shadow-esque entity which only deals contact damage to both enemies and Isaac when she dashes")
