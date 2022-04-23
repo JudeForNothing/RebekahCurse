@@ -15,7 +15,8 @@ local REBECCA_MODE_COMMAND_KEYS = {
 }
 
 REBEKAHMODE_EXPERIMENTAL = {
-	lovelove = false
+	lovelove = false,
+	easter = false
 }
 
 function yandereWaifu:SaveAchievement()

@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--COLLECTIBLE_REBEKAHSFAVORITE
-	if  player:HasCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE) then
+	if player:HasCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE) then
 		InutilLib:SpawnCustomStrawman(RebekahCurse.HAPPYJACOB, player, true)
 	end
 	if player:GetPlayerType() == RebekahCurse.HAPPYJACOB then
@@ -14,7 +14,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				player:AddCacheFlags(CacheFlag.CACHE_LUCK);
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 				player:EvaluateItems()
-				print("bruh")
 			end
 		else
 			data.CollectibleCount = player:GetCollectibleCount()

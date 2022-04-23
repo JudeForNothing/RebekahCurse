@@ -49,6 +49,8 @@ yandereWaifuCodes = {
 		egg = require('codes.pocketitems.easteregg'),
 	},
 	items = {
+		glowinghourglass = require('codes.items.glowinghourglass'),
+		
 		candyweddingring = require('codes.items.candyweddingring'),
 		lovedeluxe = require('codes.items.lovedeluxe'),
 		greatpheonix = require('codes.items.greatpheonix'),
