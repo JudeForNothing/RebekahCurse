@@ -97,7 +97,7 @@ local function UseRandomSeedEffect(player)
 		yandereWaifu.RebekahRefreshCostume(player)
 	end
 	
-	yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggDecreaseTick = 30
+	yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggDecreaseTick = 240
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
