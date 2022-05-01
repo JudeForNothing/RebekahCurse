@@ -259,7 +259,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurseEnemies.ENTITY_OVUM_EGG_EFFECT)
 
 
-if StageAPI then	
+if StageAPI and StageAPI.Loaded then	
 	yandereWaifu.StalwartStageAPIRooms = {
 		StageAPI.AddBossData("The Stalwart", {
 			Name = "The Stalwart",
