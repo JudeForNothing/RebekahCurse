@@ -132,15 +132,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 							yandereWaifu.EvilHeartTeleport(player, vector)
 							--yandereWaifu.EvilHeartDash(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternalhearts
-							player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
-							yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Eternal );
-							yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Eternal );
-							--local lightboom = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LIGHTBOOM, 0, player.Position, Vector(0,0), player);
-							playerdata.specialCooldown = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
-							playerdata.invincibleTime = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
-							playerdata.IsDashActive = true;
-							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
-							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
+							yandereWaifu.EternalHeartDash(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
 							yandereWaifu.BoneHeartPunch(player, vector)
 						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
@@ -1529,7 +1521,6 @@ function yandereWaifu:customMovesInput()
 			--special beam thing
 			--print(InutilLib.GetShowingActive(player))
 			if playerdata.isReadyForSpecialAttack == false and (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua) and yandereWaifu.getReserveStocks(player) >= 1 then
-				print("frick")
 				playerdata.isReadyForSpecialAttack = true;
 				local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
 				yandereWaifu.GetEntityData(arcane).parent = player
@@ -1922,6 +1913,10 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			end
 			
 			if data.redcountdownFrames == 0 then	
+			
+			end
+			
+			if data.redcountdownFrames >= endFrameCount then
 				--moms wig synergy
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_WIG) then
 					local numLimit = 5
@@ -1934,13 +1929,11 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 							trite:AddEntityFlags(EntityFlag.FLAG_CHARM)
 							trite:AddEntityFlags(EntityFlag.FLAG_APPEAR)
 							trite:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
+							yandereWaifu.GetEntityData(trite).CharmedToParent = player
 							trite.CollisionDamage = player.Damage * 2
 						end);
 					end
 				end
-			end
-			
-			if data.redcountdownFrames >= endFrameCount then
 				--lead pencil synergy
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_LEAD_PENCIL) then
 					local numLimit = 9
@@ -2081,6 +2074,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											mainLudoSpawned = true
 											tears.Scale = tears.Scale + .2
 											tears.CollisionDamage = tears.CollisionDamage * 1.5
+										end
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) and math.random(1,14) + player.Luck >= 14 then
+											local tears2 = player:FireTear(ludoTear.Position, Vector.FromAngle(--[[i + (j - 45)*fix +]] (i + data.addedbarrageangle + direction:GetAngleDegrees()))*(10), false, false, false):ToTear()
+											tears2.CollisionDamage = player.Damage * 0.8
+											tears2:ChangeVariant(TearVariant.FIRE)
+											tears2.Scale = 1.5
+										end
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+											local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, ludoTear.Position, Vector.FromAngle(--[[i + (j - 45)*fix +]] (i + data.addedbarrageangle + direction:GetAngleDegrees()))*(14), player):ToEffect()
+											fire.Scale = tears.Scale
+											fire:GetSprite().Scale = Vector(tears.Scale,tears.Scale)
 										end
 									--end
 								end
@@ -2454,6 +2458,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 												else
 													yandereWaifu.GetEntityData(tears).IsJacobFetus = true
 												end
+											end
+											if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) and math.random(1,14) + player.Luck >= 14 then
+												local tears2 = player:FireTear(player.Position, Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix )*(20-isFetus), false, false, false):ToTear()
+												tears2.CollisionDamage = player.Damage * 0.8
+												tears2:ChangeVariant(TearVariant.FIRE)
+												tears2.Scale = 1.5
+											end
+											if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+												local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, player.Position, Vector.FromAngle((-7 + (15*j))*fix + (data.addedbarrageangle + direction:GetAngleDegrees()) - baseOffset*fix )*(20-isFetus), player):ToEffect()
+												fire.Scale = tears.Scale
+												fire:GetSprite().Scale = Vector(tears.Scale,tears.Scale)
 											end
 										end
 									end
@@ -2918,6 +2933,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 									--if not tear:GetData().IsEctoplasm then  tear:GetData().IsEctoplasm = true end
 									--print(tear:GetData().IsEctoplasm)
 									--tear.BaseDamage = player.Damage * 2
+									if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) and math.random(1,14) + player.Luck >= 14 then
+										local tears2 = player:FireTear(ludoTear.Position, Vector.FromAngle(i + direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(4,6)), false, false, false):ToTear()
+										tears2.CollisionDamage = player.Damage * 0.8
+										tears2:ChangeVariant(TearVariant.FIRE)
+										tears2.Scale = 1.5
+									end
+									if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+										local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, ludoTear.Position, Vector.FromAngle(i + direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(4,6)), player):ToEffect()
+										fire.Scale = tear.Scale
+										fire:GetSprite().Scale = Vector(tear.Scale,tear.Scale)
+									end
 								if j == math.floor(chosenNumofBarrage/2) then
 									InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 									EndBarrage()
@@ -3089,6 +3115,17 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 											tear.FallingSpeed = -9 + math.random() * 2;
 											tear.FallingAcceleration = 0.5;
 										end
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) and math.random(1,14) + player.Luck >= 14 then
+											local tears2 = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(6,9)), false, false, false):ToTear()
+											tears2.CollisionDamage = player.Damage * 0.8
+											tears2:ChangeVariant(TearVariant.FIRE)
+											tears2.Scale = 1.5
+										end
+										if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+											local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(6,9)), player):ToEffect()
+											fire.Scale = tear.Scale
+											fire:GetSprite().Scale = Vector(tear.Scale,tear.Scale)
+										end
 									if i == chosenNumofBarrage then
 										InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 0.5 );
 									end
@@ -3218,6 +3255,7 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 		EndBarrage()
 		InutilLib.SFX:Play( SoundEffect.SOUND_COIN_SLOT, 1, 0, false, 1 );
 	elseif modes == REBECCA_MODE.EvilHearts then
+		--set mainarcanecircle of evil
 		if not data.MainArcaneCircle then
 			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
 			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
@@ -3377,8 +3415,68 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			end
 		end
 	elseif modes == REBECCA_MODE.EternalHearts then
-		yandereWaifu.RebekahEternalBarrage(player, direction)
-		EndBarrage()
+		--setup of eternal personality's gun effects and barrage
+		if not data.MainArcaneCircle then
+			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
+			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+			for i = 0, 8 do
+				data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/eternal/arcane_circle.png")
+			end
+			data.MainArcaneCircle:GetSprite():LoadGraphics()
+			data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+			data.ArcaneCircleDust.RenderZOffset = -1
+			yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
+		end
+		--do the weird animation first before firing the beam
+		if data.BarrageIntro then
+			yandereWaifu.RebekahEternalBarrage(player, direction)
+			EndBarrage()
+			
+			--make guns play
+			for k, v in pairs (Isaac.GetRoomEntities()) do
+				v:ClearEntityFlags(EntityFlag.FLAG_SLOW)
+			end
+			data.tintEffect:Remove()
+			data.tintEffect = nil
+			player.FireDelay = 60
+			data.FinishedPlayingCustomAnim = nil
+			
+			yandereWaifu.PlayAllEternalGuns(player, 0)
+			InutilLib.SetTimer( 30*9, function()
+				yandereWaifu.RemoveEternalGun(player)
+			end)
+		else
+			if not data.tintEffect then
+				data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
+				data.tintEffect.RenderZOffset = -10
+			end
+			for k, v in pairs (Isaac.GetRoomEntities()) do
+				if v.Type ~= 1000 and v.Type ~= 1 and v.Type ~= 8 then
+					v:AddEntityFlags(EntityFlag.FLAG_SLOW)
+				end
+			end
+			if player.FrameCount % 3 == 0 then
+				yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			end
+			if not data.extraHugsEternal then
+				local gun = yandereWaifu.SpawnEternalGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
+				yandereWaifu.GetEntityData(gun).StartCountFrame = 1
+			else
+				local canModifyGunsGeneral = data.extraHugsEternal and (#data.extraHugsEternal > 0 --[[and data.canModifyGuns]])
+				if canModifyGunsGeneral then
+					local gunIdle = true
+					for k, v in pairs(data.extraHugsEternal) do
+						if v:GetSprite():IsPlaying("Startup") or v:GetSprite():IsPlaying("Spawn") or InutilLib.IsPlayingMultiple(v:GetSprite(), "ShootRightTech", "ShootLeftTech", "ShootDownTech", "ShootUpTech",  "ShootRightBrimstone", "ShootLeftBrimstone", "ShootDownBrimstone", "ShootUpBrimstone") then
+							gunIdle = false
+							break
+						end
+					end	
+					if gunIdle then
+						data.BarrageIntro = true
+					end
+				end
+			end
+		end
 	elseif modes == REBECCA_MODE.BoneHearts then
 		yandereWaifu.RebekahBoneBarrage(player, direction)
 	elseif modes == REBECCA_MODE.RottenHearts then

@@ -91,3 +91,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_RENDER, function(_,  pr
 		--end
 	end
 end);
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_,  bb)
+	if yandereWaifu.GetEntityData(bb).HasMoriahDiaryEffect and not yandereWaifu.GetEntityData(bb).HasMoriahDiaryEffectInit then
+		local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, 10, bb.Position, bb.Velocity, bb):ToEffect()
+		yandereWaifu.GetEntityData(target).Parent = bb
+		if not bb.IsFetus then
+			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
+		end
+		if bb.Variant == 17 then
+			bb:GetSprite().Scale = Vector(1.5,1.5)
+		end
+		print(bb.RadiusMultiplier)
+		yandereWaifu.GetEntityData(bb).HasMoriahDiaryEffectInit = true
+	end
+end)

@@ -38,4 +38,8 @@
 	<costume anm2path="hornface.anm2" type="none"/>
 	<costume anm2path="basket_of_eggs.anm2" type="none"/>
 	<costume anm2path="candyweddingring.anm2" type="none"/>
+	
+	<costume anm2path="oversizedsweater.anm2" type="none" priority="300"/>
+	<costume anm2path="techhz.anm2" type="none" priority="20"/>
+	<costume anm2path="originalsin.anm2" type="none" priority="210"/>
 </costumes>

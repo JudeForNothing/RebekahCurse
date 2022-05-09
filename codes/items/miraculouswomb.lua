@@ -23,6 +23,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	local player = fam.Player
 	player:ToPlayer()
 	
+	--bffs! synergy
+	local extraDmg = 0
+	local extraFireDelay = false
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+		extraDmg = 2
+	end
+	if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
+		extraFireDelay = true
+	end
 	fam.OrbitDistance = Vector(20, 20)
 	fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
 	fam.Velocity = ((fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9 --(fam.Velocity + (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
@@ -38,9 +47,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
 				tears.Position = fam.Position
-				tears.CollisionDamage = data.Stat.Damage + player.Damage/2
+				tears.CollisionDamage = data.Stat.Damage + player.Damage/2 + extraDmg/2
+				tears:ChangeVariant(TearVariant.BLOOD)
+				if player:HasTrinket(TrinketType.TRINKET_BABY_BENDER) then
+					tears:AddTearFlags(TearFlags.TEAR_HOMING)
+					tears.Color = Color(1,0,1,1)
+				end
 			end
-			data.Stat.FireDelay = data.Stat.MaxFireDelay
+			local totalMaxFireDelay = data.Stat.MaxFireDelay
+			if extraFireDelay then totalMaxFireDelay = data.Stat.MaxFireDelay/2 end
+			data.Stat.FireDelay = totalMaxFireDelay
 		end
 		
 		if data.Stat.PlayerMaxDelay ~= player.MaxFireDelay then --balance purposes. They are so broken if I don't do this
@@ -75,6 +91,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	local player = fam.Player
 	player:ToPlayer()
 	
+	--bffs! synergy
+	local extraDmg = 0
+	local extraFireDelay = false
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+		extraDmg = 2
+	end
+	if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
+		extraFireDelay = true
+	end
+	
 	fam.OrbitDistance = Vector(20, 20)
 	fam.OrbitAngleOffset = fam.OrbitAngleOffset+0.06
 	fam.Velocity = ((fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)) * 0.9
@@ -90,9 +116,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
 				tears.Position = fam.Position
-				tears.CollisionDamage = player.Damage - data.Stat.Damage
+				tears.CollisionDamage = player.Damage - data.Stat.Damage + extraDmg/2
+				if player:HasTrinket(TrinketType.TRINKET_BABY_BENDER) then
+					tears:AddTearFlags(TearFlags.TEAR_HOMING)
+					tears.Color = Color(1,0,1,1)
+				end
 			end
-			data.Stat.FireDelay = data.Stat.MaxFireDelay
+			local totalMaxFireDelay = data.Stat.MaxFireDelay
+			if extraFireDelay then totalMaxFireDelay = data.Stat.MaxFireDelay/2 end
+			data.Stat.FireDelay = totalMaxFireDelay
 		end
 		if data.Stat.PlayerMaxDelay ~= player.MaxFireDelay then --balance purposes. They are so broken if I don't do this
 			data.Stat.MaxFireDelay = 6 + player.MaxFireDelay/4

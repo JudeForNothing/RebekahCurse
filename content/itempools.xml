@@ -12,8 +12,11 @@
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.3"/>
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tech Hz" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
@@ -39,6 +42,7 @@
 		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Patriarch's Liar" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Enchiridion" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="secret">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -48,8 +52,8 @@
 		<Item Name="Defuse = Rewards" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Twin Vision" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
-		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Enchiridion" DecreaseBy="0.2" RemoveOn="0.1" Weight="0.2" />
 	</Pool>
 	<Pool Name="library">
 		<Item Name="Typical Rom-Com" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -57,6 +61,7 @@
 		<Item Name="Wikepidia" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.2" />
 		<Item Name="Doorstopper" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
 		<Item Name="Defuse = Rewards" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Enchiridion" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="curse">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -77,8 +82,9 @@
 		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Doorstopper" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="redChest">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -90,7 +96,7 @@
 	</Pool>
 	<Pool Name="beggar">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="demonBeggar">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -113,6 +119,10 @@
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Enchiridion" DecreaseBy="0.2" RemoveOn="0.1" Weight="0.2" />
+		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tech Hz" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedShop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="1"/>
@@ -133,6 +143,7 @@
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="2" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Enchiridion" DecreaseBy="0.2" RemoveOn="0.1" Weight="0.2" />
 	</Pool>
 	<Pool Name="greedBoss">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />

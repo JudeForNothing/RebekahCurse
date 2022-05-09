@@ -117,9 +117,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 						else
 							pldata.GPFireCount = pldata.GPFireCount + 1
 						end
-						
-						if pldata.GPFireCount > 90 then
-							pldata.GPFireCount = 0
+						print(pldata.GPFireCount)
+						--if pldata.GPFireCount > 90 then
+						--	pldata.GPFireCount = 0
 							
 							if pldata.GPFireCount > 30 then
 								pldata.GPFireCount = 0
@@ -129,7 +129,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 								end
 								SpawnFlies(player, amount)
 							end
-						end
+						--end
 					else
 						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
 					end

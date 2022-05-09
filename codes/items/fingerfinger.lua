@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if eff.FrameCount == 1 then
 		data.Mode = 0
 		data.OrbitStart = 0
-	elseif eff.FrameCount >= 210 then
+	elseif eff.FrameCount >= 420 then
 		eff:Remove()
 	end
 	
@@ -21,7 +21,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		sprite.Rotation = eff.FrameCount
 		if sprite:GetFrame() == 8 then
-			data.Player:TakeDamage( 1, 0, EntityRef(data.TruePlayer), 0);
+			local extraDmg = 1
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+				extraDmg = 2
+			end
+			data.Player:TakeDamage( 1.5*extraDmg, 0, EntityRef(data.TruePlayer), 0);
 		end
 	else
 		if sprite:IsPlaying("Poke") then

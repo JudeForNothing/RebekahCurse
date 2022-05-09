@@ -47,8 +47,11 @@ function yandereWaifu.Minimenu:ToggleMenu(forceboolean)
 	end
 end
 
-function yandereWaifu.Minimenu:UpdateOptions(table)
+function yandereWaifu.Minimenu:UpdateOptions(table, table2)
 	o.options = table
+	if table2 then
+		o.optionsValue = table2
+	end
 end
 
 function yandereWaifu.Minimenu:Reset()
@@ -70,6 +73,7 @@ function yandereWaifu.Minimenu:Update( vector , position )
 	local menuAnchor = self.menuAnchor
 	if self.open then --if menu is open
 		local dir = -1
+		local value 
 		if vector.X ~= 0 or vector.Y ~= 0 then
 			self.onRelease = false
 			self.rawRelease = false
@@ -96,40 +100,55 @@ function yandereWaifu.Minimenu:Update( vector , position )
 				dir = 3
 			end
 		end
-
+		local availableDir = 0
 		if self.options then --display options
 			self.menuHud:ReplaceSpritesheet(5, "gfx/ui/none.png")
 			self.menuHud:ReplaceSpritesheet(6, "gfx/ui/none.png")
 			self.menuHud:ReplaceSpritesheet(7, "gfx/ui/none.png")
 			self.menuHud:ReplaceSpritesheet(8, "gfx/ui/none.png")
+			
+			--refresh in case
+			for i = 1, 4 do
+				self.menuHud:ReplaceSpritesheet(i, "gfx/ui/minimenu_icon_default.png");
+			end
 			for i, v in pairs (self.options) do
 				if i == 1 then
 					self.menuHud:ReplaceSpritesheet(1, v or "gfx/ui/minimenu_icon_default.png");
 					if self.lastVector.X == 1 and self.lastVector.Y == 0  then --right
 						self.menuHud:ReplaceSpritesheet(5, "gfx/ui/minimenu_select.png")
+						if self.optionsValue and self.optionsValue[i] then value = self.optionsValue[i] end
 					end
 				elseif i == 2 then
 					self.menuHud:ReplaceSpritesheet(2, v or "gfx/ui/minimenu_icon_default.png");
 					if self.lastVector.X == 0 and self.lastVector.Y == 1 then --down
 						self.menuHud:ReplaceSpritesheet(6, "gfx/ui/minimenu_select.png")
+						if self.optionsValue and self.optionsValue[i] then value = self.optionsValue[i] end
 					end
 				elseif i == 3 then
 					self.menuHud:ReplaceSpritesheet(3, v or "gfx/ui/minimenu_icon_default.png");
 					if self.lastVector.X == -1 and self.lastVector.Y == 0 then --left
 						self.menuHud:ReplaceSpritesheet(7, "gfx/ui/minimenu_select.png")
+						if self.optionsValue and self.optionsValue[i] then value = self.optionsValue[i] end
 					end
 				elseif i == 4 then
 					self.menuHud:ReplaceSpritesheet(4, v or "gfx/ui/minimenu_icon_default.png");
 					if self.lastVector.X == 0 and self.lastVector.Y == -1 then --up
 						self.menuHud:ReplaceSpritesheet(8, "gfx/ui/minimenu_select.png")
+						if self.optionsValue and self.optionsValue[i] then value = self.optionsValue[i] end
 					end
 				end
+				availableDir = availableDir + 1
 			end
 			self.menuHud:LoadGraphics();
 		end
 		
+		local isAvailable = true
+		if dir > availableDir-1 then
+			isAvailable = false
+		end
+		
 		for j=1,#self.callbacks,1 do
-			self.callbacks[j](dir);
+			self.callbacks[j](dir, value, isAvailable);
 		end 
 		
 		--glowing code

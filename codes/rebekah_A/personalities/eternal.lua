@@ -12,6 +12,149 @@ function yandereWaifu.RebekahEternalBarrage(player, direction)
 	local beam = EntityLaser.ShootAngle(5, player.Position, angle, 10, Vector(0,10), player):ToLaser()
 	if not yandereWaifu.GetEntityData(beam).IsLvlOneBeam then yandereWaifu.GetEntityData(beam).IsLvlOneBeam = true end
 end
+
+--eternal gun effect
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	if eff.SubType == 4 then
+		local player = yandereWaifu.GetEntityData(eff).parent
+		local sprite = eff:GetSprite();
+		local playerdata = yandereWaifu.GetEntityData(player)
+		local data = yandereWaifu.GetEntityData(eff)
+		
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
+			direction = player:GetAimDirection()
+		end
+		
+		if eff.FrameCount == 1 then
+		--	sprite:Stop()
+			eff.DepthOffset = 400
+		end
+		
+		--if not data.StartCountFrame then data.StartCountFrame= 1 end
+		
+		if eff.FrameCount == (data.StartCountFrame) + 1 then
+			sprite:Play("Startup", true)
+			InutilLib.SetTimer( data.StartCountFrame*8,function()
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1+(data.StartCountFrame/5))
+			end)
+		end
+		
+		eff.Velocity = player.Velocity;
+		if data.Extra then --what am i doing
+			eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		else
+			eff.Position = player.Position + (Vector(0,20)):Rotated((data.direction):GetAngleDegrees()-90);
+		end
+		
+		--print(eff:GetSprite().Rotation)
+		eff.RenderZOffset = 10
+		sprite.Offset = Vector(0,-10)
+		
+		if sprite:IsFinished("Spawn") then
+			sprite.Rotation = Round((data.direction):GetAngleDegrees(), 1)
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) and not sprite:IsPlaying("ShootRight") then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif(sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeft") then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDown") then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUp") then
+					sprite:Play("ShootUp", true)
+				end
+				--playerdata.BarrageIntro = true 
+		end
+
+		if data.Shoot then
+			if data.Heavy then
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				sprite.Scale = Vector(2,2)
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUp", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.5)
+			elseif data.DrFetus then
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRightDr", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeftDr", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDownDr", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUpDr", true)
+				end
+			elseif data.Tech then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightTechGo") then
+					sprite:Play("ShootRightTechGo", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftTechGo") then
+					sprite:Play("ShootLeftTechGo", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownTechGo") then
+					sprite:Play("ShootDownTechGo", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpTechGo") then
+					sprite:Play("ShootUpTechGo", true)
+				end
+			elseif data.Brimstone then
+				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightBrimstoneGo") then
+					sprite:Play("ShootRightBrimstoneGo", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) and not sprite:IsPlaying("ShootLeftBrimstoneGo") then
+					sprite:Play("ShootLeftBrimstoneGo", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 and not sprite:IsPlaying("ShootDownBrimstoneGo") then
+					sprite:Play("ShootDownBrimstoneGo", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
+					sprite:Play("ShootUpBrimstoneGo", true)
+				end
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.8)
+			else
+				sprite.Rotation = (data.direction):GetAngleDegrees()
+				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
+					sprite:Play("ShootRight", true)
+					--sprite.FlipY = true
+				elseif (sprite.Rotation >= 0 and sprite.Rotation <= 45) or (sprite.Rotation >= -180 and sprite.Rotation <= -135) then
+					sprite:Play("ShootLeft", true)
+				elseif sprite.Rotation < 135 and sprite.Rotation > 45 then
+					sprite:Play("ShootDown", true)
+				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
+					sprite:Play("ShootUp", true)
+				end
+				if data.Light then
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+				elseif data.Medium then
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+				end
+			end
+			data.Shoot = false
+		end
+		
+		--sounds
+		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
+			if sprite:GetFrame() == 0 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+			end
+		end]]
+		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
+			if sprite:GetFrame() == 12 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+			end
+		end
+		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
+			if sprite:GetFrame() == 0 then
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+			end
+		end
+	end
+end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
+
 --light boom effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local player = Isaac.GetPlayer(0)
@@ -67,7 +210,44 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --et
 	end
 	-- print(brideProtectorAngle)
 	fam:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
+	
+	local grid = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex(fam.Position)) --top grid destroy
+	if grid ~= nil and grid.State ~= 2 then
+		grid:Destroy()
+		if grid:GetType() == GridEntityType.GRID_ROCK or grid:GetType() == GridEntityType.GRID_POOP then
+			fam.Velocity = fam.Velocity * 0.8
+		end
+	end
+	if fam.FrameCount % 3 == 0 and fam.Velocity:Length() > 2 then
+		local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, fam.Position, Vector(0,0), fam ):ToEffect()
+		dust:GetSprite().PlaybackSpeed = 0.3
+		dust.Timeout = 3
+		dust.LifeSpan = 3
+	end
+	
+	fam.CollisionDamage = 3 + player.Damage/2
+	if fam.SubType == 1 then
+		fam.SpriteScale = Vector(0.8, 0.8)
+		fam.Size = 14 
+	end
+	for i, collider in pairs(Isaac.GetRoomEntities()) do
+		if collider.Type == 3 and collider.Variant == RebekahCurse.ENTITY_MORNINGSTAR and fam.Position:Distance(collider.Position) <= 25 and GetPtrHash(collider) ~= GetPtrHash(fam) then
+			local vec = fam.Position-collider.Position
+			fam.Velocity = fam.Velocity + vec:Resized(2)
+		end
+	end
 end, RebekahCurse.ENTITY_MORNINGSTAR);
+
+function yandereWaifu:EternalMorningstarCollision(fam, collider)
+	if collider:IsEnemy() then
+		local data = yandereWaifu.GetEntityData(fam)
+		--collider:TakeDamage(fam.CollisionDamage, 0, EntityRef(tr), 4)
+		fam.Velocity = fam.Velocity * 0.8
+	end
+	local vec = fam.Position-collider.Position
+	fam.Velocity = fam.Velocity + vec:Resized(2)
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_FAMILIAR_COLLISION, yandereWaifu.EternalMorningstarCollision, RebekahCurse.ENTITY_MORNINGSTAR)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam) --eternal star
@@ -88,6 +268,47 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
 	data.sprOverlay = fam:GetSprite()
 	data.sprOverlay:Render(Isaac.WorldToScreen(fam.Position))
 end, RebekahCurse.ENTITY_MORNINGSTAR);
+
+
+function yandereWaifu:EternalPersonalityTearUpdate(tr)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and data.IsAngelFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount == 1 and data.IsAngelFetus then
+			tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/eternal/angel_fetus_tears.png")
+			tr:GetSprite():LoadGraphics();
+		end
+		if tr.FrameCount <= 100 and data.IsAngelFetus then
+			tr.Height = -12
+			local e = InutilLib.GetClosestGenericEnemy(tr, 500)
+			if e then
+				--InutilLib.MoveDirectlyTowardsTarget(tr, e, 2+math.random(1,5)/10, 0.85)
+				InutilLib.StrafeAroundTarget(tr, e, 2+math.random(1,5)/10, 0.85, 45)
+				if tr.FrameCount % 45 == 0 then
+					for i = 1, 5 do
+						local tear = data.Player:FireTear(tr.Position, (e.Position - tr.Position):Resized(9), false, false, false):ToTear()
+						tear.Position = tr.Position
+						tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
+						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
+						tear.CollisionDamage = tr.CollisionDamage
+						yandereWaifu.GetEntityData(tear).EternalFlame = true
+					end
+				end
+			end
+			--tr.Velocity = tr.Velocity * (0.85+math.random(1,5)/10)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.EternalPersonalityTearUpdate)
+
+function yandereWaifu:EternalPersonalityTearCollision(tr, cool)
+	local data = yandereWaifu.GetEntityData(tr)
+	if tr.Variant == 50 and data.IsAngelFetus then --just using 50 since the docs doesnt seem to have enums for fetus tears
+		if tr.FrameCount <= 300 and tr.FrameCount % 7 == 0 and data.IsAngelFetus then
+			cool:TakeDamage(tr.CollisionDamage, 0, EntityRef(tr), 4)
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, yandereWaifu.EternalPersonalityTearCollision)
 
 --eternal feather
 function yandereWaifu:FeatherRender(tr, _)
@@ -110,11 +331,14 @@ function yandereWaifu:FeatherUpdate(tr)
 		data.closestEnt = 0
 		--laggy
 		if tr.FrameCount == 1 then
-			data.trail = InutilLib.SpawnTrail(tr)
+			data.trail = InutilLib.SpawnTrail(tr, Color(0,0,1,1))
 		end
 		--so this thing floats forever
 		if tr.FrameCount >= 1 and tr.FrameCount <= 10 then
 			data.firstHeight = tr.Height
+			local angleNum = (tr.Velocity):GetAngleDegrees();
+			tr.SpriteRotation = angleNum + 90;
+			tr:GetData().Rotation = tr:GetSprite().Rotation;
 		else
 			if tr.FrameCount >= 10 and tr.FrameCount <= 30 then
 				if not tr:GetData().NotSmart then
@@ -232,7 +456,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 		if sprite:IsFinished("Pulse") or (data.HolyRocket and bb:CollidesWithGrid()) then
 			local numLimit = data.StackedFeathers
 			for i = 1, numLimit do
-				for j = 0, 360-360/6, 360/6 do
+				for j = 0, 360-360/3, 360/3 do
 					local randomRotate = math.random(-40,40)
 					InutilLib.SetTimer( i*7, function()
 						local tear = player:FireTear(bb.Position, Vector.FromAngle(j + randomRotate)*(13), false, false, false):ToTear()
@@ -259,6 +483,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam)
     fam:AddToOrbit(7)
 end, RebekahCurse.ENTITY_TINY_OPHANIM);
 
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam) 
+    fam:AddToOrbit(5)
+end, RebekahCurse.ENTITY_TINY_OPHANIM2);
+
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) 
     local spr = fam:GetSprite()
 	local data = yandereWaifu.GetEntityData(fam)
@@ -266,14 +494,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if not data.OrbitPlace then data.OrbitPlace = 7 end
 	
-	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
-	fam.SpriteScale = Vector(0.6, 0.6)
-	fam.OrbitDistance = Vector(110,90)
-	if spr:IsPlaying("Idle") then
-		fam.Velocity = (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)*0.2
-	else
-		fam.Velocity = fam.Velocity * 0.3
+	if not data.Init then
+		data.Init = true
+		spr:Play("Fade", true)
+		fam:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 	end
+	
+	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
+	fam.SpriteScale = Vector(0.8, 0.8)
+	fam.OrbitDistance = Vector(110,90)
+	--if spr:IsPlaying("Idle") then
+		fam.Velocity = (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)*0.2
+	--else
+	--	fam.Velocity = fam.Velocity * 0.3
+	--end
 	
 	if spr:IsPlaying("Shoot") then
 		if spr:GetFrame() == 1 then
@@ -287,7 +521,77 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				local numLimit = data.StackedFeathers
 				for i = 1, numLimit do
 					InutilLib.SetTimer( i, function()
-						local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-10,10)), false, true)
+						local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-2,2)), false, true)
+						techlaser.OneHit = true;
+						techlaser.Timeout = 1;
+						techlaser.CollisionDamage = player.Damage * 0.4;
+						techlaser:SetMaxDistance((fam.Position - player.Position):Length())
+						techlaser:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
+					end)
+				end
+			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
+				local numLimit = data.StackedFeathers
+				print("push here")
+				for i = 1, numLimit do
+					InutilLib.SetTimer( i, function()
+						local circle = player:FireTechXLaser(fam.Position, Vector.FromAngle(data.FireDir+math.random(-30,30))*(20), 40+math.random(-3,3))
+						circle.Position = fam.Position
+						--local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-10,10)), false, true)
+						--techlaser.OneHit = true;
+						--techlaser.Timeout = 1;
+						circle.CollisionDamage = player.Damage * 0.65;
+						--techlaser:SetMaxDistance((fam.Position - player.Position):Length())
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE) then
+							yandereWaifu.GetEntityData(circle).AngelBrimstone = true
+						else
+							circle:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
+						end
+					end)
+				end
+			end
+		end
+	elseif spr:IsFinished("Shoot") then
+		spr:Play("Fade", true)
+	elseif spr:IsFinished("Fade") then
+		spr:Play("Idle", true)
+	end
+end, RebekahCurse.ENTITY_TINY_OPHANIM);
+
+yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) 
+    local spr = fam:GetSprite()
+	local data = yandereWaifu.GetEntityData(fam)
+	local player = fam.Player
+	
+	if not data.OrbitPlace then data.OrbitPlace = 5 end
+	
+	if not data.Init then
+		data.Init = true
+		spr:Play("Fade", true)
+		fam:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+	end
+	
+	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
+	--fam.SpriteScale = Vector(0.8, 0.8)
+	fam.OrbitDistance = Vector(90,70)
+	--if spr:IsPlaying("Idle") then
+		fam.Velocity = (fam:GetOrbitPosition(player.Position+player.Velocity) - fam.Position)*0.2
+	--else
+	--	fam.Velocity = fam.Velocity * 0.3
+	--end
+	
+	if spr:IsPlaying("Shoot") then
+		if spr:GetFrame() == 1 then
+			if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+				local beam = player:FireBrimstone( Vector.FromAngle(data.FireDir), fam, 2):ToLaser();
+				beam.Position = fam.Position
+				beam.DisableFollowParent = true
+				yandereWaifu.GetEntityData(beam).AngelBrimstone = true
+				beam.CollisionDamage = player.Damage * 0.3
+			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
+				local numLimit = data.StackedFeathers
+				for i = 1, numLimit do
+					InutilLib.SetTimer( i, function()
+						local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-2,2)), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
 						techlaser.CollisionDamage = player.Damage * 0.4;
@@ -318,10 +622,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	elseif spr:IsFinished("Shoot") then
 		spr:Play("Fade", true)
 	elseif spr:IsFinished("Fade") then
+		spr:Play("Spawn", true)
+	elseif spr:IsFinished("Spawn") then
 		spr:Play("Idle", true)
 	end
-end, RebekahCurse.ENTITY_TINY_OPHANIM);
-
+end, RebekahCurse.ENTITY_TINY_OPHANIM2);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) 
     local spr = fam:GetSprite()
@@ -332,6 +637,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
 	fam.Velocity = player:GetShootingInput() + fam.Velocity * 0.9 
+	
+	if fam.FrameCount == 1 then
+		fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+	end
 	
 	if spr:IsPlaying("Shoot") then
 		if spr:GetFrame() == 1 then
@@ -365,6 +674,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 						tear.CollisionDamage = player.Damage * 0.4
 						yandereWaifu.GetEntityData(tear).EternalFlame = true
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) then
+							tear.CollisionDamage = player.Damage * 0.8
+							tear.Scale = 1.5
+						end
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+							local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, player.Position, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(14,17)), player):ToEffect()
+							fire.Scale = tear.Scale
+							fire:GetSprite().Scale = Vector(tear.Scale,tear.Scale)
+						end
 						--tear:GetData().NotSmart = true
 						--tear.BaseDamage = player.Damage * 2
 
@@ -390,6 +708,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			end
 		end
 	end
+	
 end, RebekahCurse.ENTITY_BIG_OPHANIM);
 
 
@@ -490,8 +809,13 @@ function yandereWaifu:EternalFamiliarCheck(player, cacheF) --The thing the check
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then
 		if not data.TinyOrphanims then data.TinyOrphanims = 0 end
-		if not data.currentMode == REBECCA_MODE.EternalHearts then data.TinyOrphanims = 0 end
+		if not data.TinyOrphanims2 then data.TinyOrphanims2 = 0 end
+		if not data.currentMode == REBECCA_MODE.EternalHearts then 
+			data.TinyOrphanims = 0 
+			data.TinyOrphanims2 = 0
+		end
 		player:CheckFamiliar(RebekahCurse.ENTITY_TINY_OPHANIM, data.TinyOrphanims, RNG())
+		player:CheckFamiliar(RebekahCurse.ENTITY_TINY_OPHANIM2, data.TinyOrphanims2-1, RNG())
 		if data.EternalLudo then
 			player:CheckFamiliar(RebekahCurse.ENTITY_BIG_OPHANIM, 1, RNG())
 		end
@@ -564,6 +888,51 @@ end, RebekahCurse.ENTITY_ETERNALSLASH)
 
 end
 
+
+function yandereWaifu.EternalHeartDash(player, vector)
+	local playerdata = yandereWaifu.GetEntityData(player)
+	local SubType = 0
+	local trinketBonus = 0
+	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+		trinketBonus = 5
+	end
+	
+	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
+	
+	local velAng = math.floor(player.Velocity:Rotated(-90):GetAngleDegrees())
+	local subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_BIG
+	if (velAng >= 180 - 15 and velAng <= 180 + 15) or (velAng >= -180 - 15 and  velAng <= -180 + 15) or (velAng >= 0 - 15 and  velAng <= 0 + 15) then
+		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG
+	end
+	if (velAng >= 45 - 15 and  velAng <= 45 + 15) or (velAng >= -45 - 15 and  velAng <= -45 + 15) then
+		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG
+	end
+	if (velAng >= 135 - 15 and  velAng <= 135 + 15) or (velAng >= -135 - 15 and  velAng <= -135 + 15) then
+		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG
+	end
+	
+	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, subtype, player.Position, Vector.Zero, player)
+	--print(velAng)
+	if (velAng >= 90 - 15 and velAng <= 90 + 15 and velAng >= 0) or (((velAng >= -135 - 15 and  velAng <= -135 + 15)  or (velAng >= -45 - 15 and  velAng <= -45 + 15)) and velAng <= 0) then
+		poof:GetSprite().FlipX = true
+	end
+	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
+
+	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Eternal );
+	yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Eternal );
+	--local lightboom = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LIGHTBOOM, 0, player.Position, Vector(0,0), player);
+	playerdata.specialCooldown = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	playerdata.IsDashActive = true;
+	for i = 0, math.random(2,3) do
+		local tear = player:FireTear(player.Position, Vector.FromAngle(velAng - 90 - math.random(-45,45))*(math.random(4,6)), false, false, false):ToTear()
+		tear.Position = player.Position
+		tear:ChangeVariant(RebekahCurse.ENTITY_ETERNALFEATHER)
+	end
+	InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 0.5);
+end
+
+
 function yandereWaifu.FlamethrowerLogic(player)
 	local data = yandereWaifu.GetEntityData(player)
 	
@@ -591,6 +960,14 @@ function yandereWaifu.FlamethrowerLogic(player)
 	else
 		extraTears = 1
 	end
+	
+	if not data.extraTears or extraTears ~= data.extraTears then
+		data.TinyOrphanims2 = extraTears
+		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
+		player:EvaluateItems()
+		
+		data.extraTears = extraTears
+	end
 
 	local extraPenalty = 0 --this increases if you have special items, for balance
 	
@@ -606,8 +983,17 @@ function yandereWaifu.FlamethrowerLogic(player)
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_HAEMOLACRIA)  then
 		extraPenalty = extraPenalty + 3
 	end
-
-	data.maxEternalFeather = math.floor(100/(player.MaxFireDelay/5)) * extraTears
+	
+	local extraPenalty = 1 --this increases if you have special items, for balance
+	
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+		extraPenalty = extraPenalty + 5
+	end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+		numLimit = numLimit/3
+	end
+	
+	data.maxEternalFeather = math.floor(80/(player.MaxFireDelay/5)) --* extraTears
 	
 	
 	if player:GetFireDirection() == -1 then --feather stack code
@@ -618,9 +1004,9 @@ function yandereWaifu.FlamethrowerLogic(player)
 		data.StackedFeathersTransition = data.StackedFeathersTransition + 1
 		if data.StackedFeathersTransition >= (1+extraPenalty)*(player.MaxFireDelay) then
 			if data.StackedFeathers < data.maxEternalFeather then
-				data.StackedFeathers = data.StackedFeathers + (1*extraTears)
+				data.StackedFeathers = data.StackedFeathers + 2 --+ (2*extraTears)
 				if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) or player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
-					data.TinyOrphanims = math.ceil((data.StackedFeathers/data.maxEternalFeather)*100/12) - 1
+					data.TinyOrphanims = math.ceil((data.StackedFeathers/data.maxEternalFeather)*80/12) - 1
 					player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 					player:EvaluateItems()
 				else
@@ -737,11 +1123,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				end
 			else
 				InutilLib.SFX:Play( SoundEffect.SOUND_FIRE_RUSH, 1, 0, false, 1 )
-				local extraPenalty = 1 --this increases if you have special items, for balance
-	
-				if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
-					extraPenalty = extraPenalty + 5
-				end
+				
 				for i = 1, numLimit do
 					InutilLib.SetTimer( (i*extraPenalty), function()
 						if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
@@ -759,6 +1141,21 @@ function yandereWaifu.FlamethrowerLogic(player)
 							tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 							--tear.CollisionDamage = player.Damage * 0.8
 							yandereWaifu.GetEntityData(tear).EternalFlame = true
+							if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) then
+								tear.CollisionDamage = player.Damage * 0.8
+								tear.Scale = 1.5
+							end
+							if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+								local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, player.Position, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(14,17)), player):ToEffect()
+								fire.Scale = tear.Scale
+								fire:GetSprite().Scale = Vector(tear.Scale,tear.Scale)
+							end
+							if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+								tear:ChangeVariant(50)
+								tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+								yandereWaifu.GetEntityData(tear).IsAngelFetus = true
+								yandereWaifu.GetEntityData(tear).Player = player
+							end
 							--tear:GetData().NotSmart = true
 							--tear.BaseDamage = player.Damage * 2
 						end
@@ -772,6 +1169,47 @@ function yandereWaifu.FlamethrowerLogic(player)
 					end);
 				end
 			end
+			for i = 1, numLimit/2 do
+				InutilLib.SetTimer( (i*extraPenalty), function()
+					for k, v in pairs(Isaac.GetRoomEntities()) do --extra eyes stuff
+						if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM2 then
+							if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
+								yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
+								local tear = player:FireTear(v.Position, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
+								tear.Position = v.Position
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) or player:HasCollectible(CollectibleType.COLLECTIBLE_HAEMOLACRIA) then
+									tear:ChangeVariant(RebekahCurse.ENTITY_HOLYBOMBTEAR)
+									InutilLib.MakeTearLob(tear, 1.5, 7)
+									yandereWaifu.GetEntityData(tear).StackedFeathers = data.StackedFeathers
+								else
+									tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
+								end
+								tear:AddTearFlags(TearFlags.TEAR_PIERCING)
+								--tear.CollisionDamage = player.Damage * 0.8
+								yandereWaifu.GetEntityData(tear).EternalFlame = true
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) then
+									tear.CollisionDamage = player.Damage * 0.8
+									tear.Scale = 1.5
+								end
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRDS_EYE) and math.random(1,14) + player.Luck >= 14 then
+									local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, 51, 0, player.Position, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(14,17)), player):ToEffect()
+									fire.Scale = tear.Scale
+									fire:GetSprite().Scale = Vector(tear.Scale,tear.Scale)
+								end
+								if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+									tear:ChangeVariant(50)
+									tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+									yandereWaifu.GetEntityData(tear).IsAngelFetus = true
+									yandereWaifu.GetEntityData(tear).Player = player
+								end
+								--tear:GetData().NotSmart = true
+								--tear.BaseDamage = player.Damage * 2
+							
+							end
+						end
+					end
+				end)
+				end
 		data.StackedFeathers = 0
 		end
 	end
@@ -807,7 +1245,12 @@ function yandereWaifu:FlamethrowerTearsUpdate(tr)
 							yandereWaifu.GetEntityData(tear).EternalFlame = true
 							--tear:GetData().NotSmart = true
 							--tear.BaseDamage = player.Damage * 2
-
+							if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+								tear:ChangeVariant(50)
+								tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+								yandereWaifu.GetEntityData(tear).IsAngelFetus = true
+								yandereWaifu.GetEntityData(tear).Player = player
+							end
 							if i == data.StackedFeathers then
 								InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 							end

@@ -5,6 +5,7 @@ yandereWaifu = RegisterMod("Rebekah", 1)
 -- Good Lord what have I done
 
 -- Require up those extra modules
+
 yandereWaifuCodes = {
 	init = nil,
 	enums = require('codes.enums'),
@@ -30,6 +31,7 @@ yandereWaifuCodes = {
 	isaacC = require('codes.isaac_C.basic'),
 	entities = {
 		basiceffects = require('codes.entities.basiceffects'),
+		basicentities = require('codes.entities.basicentities'),
 		customplayeranim = require('codes.entities.customplayeranim'),
 		mirrorentities = require('codes.entities.mirrorentities'),
 		--liminal = {
@@ -86,16 +88,26 @@ yandereWaifuCodes = {
 		tighthairtie = require('codes.items.tighthairtie'),
 		basketofeggs = require('codes.items.basketofeggs'),
 		rabbitsfoot = require('codes.items.rabbitsfoot'),
-		eggshellwalk = require('codes.items.eggshellwalk')
+		eggshellwalk = require('codes.items.eggshellwalk'),
+		destroyedlullaby = require('codes.items.destroyedlullaby'),
+		oversizedsweater = require('codes.items.oversizedsweater'),
+		heartsandcrafts = require('codes.items.heartsandcrafts'),
+		techhz = require('codes.items.techhz'),
+		angelsmorningstar = require('codes.items.angelsmorningstar'),
+		potatosnack = require('codes.items.potatosnack'),
+		originalsin = require('codes.items.originalsin'),
+		enchiridion = require('codes.items.enchiridion'),
+		bodydysmorphia = require('codes.items.bodydysmorphia'),
 	},
 	slots = {
-		mirror = require('codes.slots.mirror')
+		mirror = require('codes.slots.mirror'),
+		mirrorconverter = require('codes.slots.mirrorconverter')
 	},
 	shaders = require('codes.shaders'),
 	stages = {
-		--[[gen = {
+		gen = {
 			rebekahsroom = require('codes.floors.gen.rebekahsbedroom'),
-			},]]
+			},
 		rebekahsroom = nil,
 		--liminal = require('codes.floors.backrooms')
 	},
@@ -104,4 +116,3 @@ yandereWaifuCodes = {
 	descriptions = require('codes.descriptions'),
 	commands = require('codes.commands')
 }
--- Reset the information when moving rooms so that we don't have false positive double taps across rooms

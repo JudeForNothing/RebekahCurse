@@ -43,12 +43,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 	local room = ILIB.game:GetRoom()
 	if iss.Variant == RebekahCurse.ENTITY_TINYBECCA then
 		--bffs! synergy
-		local extra = 0
+		local extraDmg = 0
+		local extraFireDelay = false
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
-			extra = 2
-		--	iss.Scale = 1.5
-		else
-		--	iss.Scale = 1
+			extraDmg = 2
+		end
+		if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
+			extraFireDelay = true
 		end
 		
 		player:ToPlayer()
@@ -93,11 +94,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 							if data.Stat.FireDelay <= 0 then
 								local tears =  Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position + Vector(0,-3):Rotated(data.specialAttackVector:GetAngleDegrees()), (enemy.Position - iss.Position):Resized(12), player):ToTear()
 								tears.Scale = 0.3
-								tears.CollisionDamage = data.Stat.Damage + extra/2
+								tears.CollisionDamage = data.Stat.Damage + extraDmg/2
+								local totalMaxFireDelay = data.Stat.MaxFireDelay
+								if extraFireDelay then totalMaxFireDelay = data.Stat.MaxFireDelay/2 end
+								data.Stat.FireDelay = totalMaxFireDelay
 								local tears2 =  Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position + Vector(0,3):Rotated(data.specialAttackVector:GetAngleDegrees()), (enemy.Position - iss.Position):Resized(12), player):ToTear()
 								tears2.Scale = 0.3
-								tears2.CollisionDamage = data.Stat.Damage + extra/2
-								data.Stat.FireDelay = data.Stat.MaxFireDelay
+								tears2.CollisionDamage = data.Stat.Damage + extraDmg/2
+								local totalMaxFireDelay = data.Stat.MaxFireDelay
+								if extraFireDelay then totalMaxFireDelay = data.Stat.MaxFireDelay/2 end
+								data.Stat.FireDelay = totalMaxFireDelay
+								if player:HasTrinket(TrinketType.TRINKET_BABY_BENDER) then
+									tears:AddTearFlags(TearFlags.TEAR_HOMING)
+									tears.Color = Color(1,0,1,1)
+									tears2:AddTearFlags(TearFlags.TEAR_HOMING)
+									tears2.Color = Color(1,0,1,1)
+								end
 							end
 						end
 					end
@@ -162,7 +174,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 								tears.Position = iss.Position
 								tears.Scale = 0.3
 								tears.CollisionDamage = data.Stat.Damage
-								data.Stat.FireDelay = data.Stat.MaxFireDelay
+								local totalMaxFireDelay = data.Stat.MaxFireDelay
+								if extraFireDelay then totalMaxFireDelay = data.Stat.MaxFireDelay/2 end
+								data.Stat.FireDelay = totalMaxFireDelay
+								if player:HasTrinket(TrinketType.TRINKET_BABY_BENDER) then
+									tears:AddTearFlags(TearFlags.TEAR_HOMING)
+									tears.Color = Color(1,0,1,1)
+								end
 							end
 						end
 					end
@@ -180,12 +198,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 		player:ToPlayer()
 		
 		--bffs! synergy
-		local extra = 0
+		local extraDmg = 0
+		local extraFireDelay = false
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
-			extra = 2
-		--	iss.Scale = 1.5
-		else
-		--	iss.Scale = 1
+			extraDmg = 2
+		end
+		if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
+			extraFireDelay = true
 		end
 		
 		if not player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
@@ -224,9 +243,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 						InutilLib.MoveAwayFromTarget(iss, enemy, 4, 0.9)
 						if data.Stat.FireDelay <= 0 then
 							local tears = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, iss.Position, (enemy.Position - iss.Position):Resized(10), player):ToTear()
-							tears.Scale = 0.3 + extra/4
-							tears.CollisionDamage = data.Stat.Damage + extra
-							data.Stat.FireDelay = data.Stat.MaxFireDelay
+							tears.Scale = 0.3 + extraDmg/4
+							tears.CollisionDamage = data.Stat.Damage + extraDmg
+							local totalMaxFireDelay = data.Stat.MaxFireDelay
+							if extraFireDelay then totalMaxFireDelay = data.Stat.MaxFireDelay/2 end
+							data.Stat.FireDelay = totalMaxFireDelay
+							if player:HasTrinket(TrinketType.TRINKET_BABY_BENDER) then
+								tears:AddTearFlags(TearFlags.TEAR_HOMING)
+								tears.Color = Color(1,0,1,1)
+							end
 						end
 					end
 				else

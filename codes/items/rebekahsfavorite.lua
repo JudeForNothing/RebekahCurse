@@ -1,4 +1,4 @@
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player) --peffect cant detect player dying for some reason
 	local data = yandereWaifu.GetEntityData(player)
 	--COLLECTIBLE_REBEKAHSFAVORITE
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE) then
@@ -17,6 +17,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 		else
 			data.CollectibleCount = player:GetCollectibleCount()
+		end
+
+		if player:IsDead() and (player:GetSprite():IsFinished("LostDeath") or player:GetSprite():IsFinished("Death")) then
+			player.Parent:ToPlayer():RemoveCollectible(RebekahCurse.COLLECTIBLE_REBEKAHSFAVORITE)
 		end
 	end
 end)

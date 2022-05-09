@@ -27,12 +27,15 @@ end)
 
 function yandereWaifu:useimDie(collItem, rng, player, flag, slot)
 	local data = yandereWaifu.GetEntityData(player)
-	
+	if data.IMDIE_MENU then --reset in case
+		data.IMDIE_MENU.lastVector = Vector.Zero
+		data.IMDIE_MENU.onRelease = false
+		data.selectedImDieWire = false
+	end
 	if data.lastActiveUsedFrameCount then
 		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
-						
 		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
 	else
 		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
@@ -52,7 +55,7 @@ function yandereWaifu:useimDie(collItem, rng, player, flag, slot)
 	InutilLib.ToggleShowActive(player, false, slot)
 	
 	--if data.IMDIE_MENU.open then
-	if data.currentIndex < 5 then
+	if data.currentIndex and data.currentIndex < 5 then
 		InutilLib.RefundActiveCharge(player, 0)
 	end
 	--end
@@ -188,7 +191,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	--print( TableLength(playerdata.WireCombinations) )
 	
-	if data.ImDieCountdown > 100 then
 		if data.ImDieCountdown%100 == 0 then
 			spr.Color = Color(1,0,0,1)
 			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
@@ -206,7 +208,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		else
 			spr.Color = Color(1,1,1,1)
 		end
-	else
+	if data.ImDieCountdown < 80 then
 		if data.ImDieCountdown%2 == 0 then
 			spr.Color = Color(1,0,0,1)
 			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )

@@ -1,0 +1,4 @@
+<music root="music/">
+	<!-- Rebekah's room -->
+	<track name="Calm Before the Storm" path="Calm Before Storm_01.ogg" loop="true" />
+</music>

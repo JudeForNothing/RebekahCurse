@@ -1,4 +1,4 @@
-
+local evilOrbTickMax = 90
 --BLACK HEART --
 --do
 
@@ -257,7 +257,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 			data.evilOrbTickDir = dir
 			if data.evilOrbTick and data.evilOrbTickDir then
-				if data.evilOrbTick >= 120 then
+				if data.evilOrbTick >= evilOrbTickMax then
 					yandereWaifu.SpawnEvilOrb(player, player.Position)
 					data.evilOrbTick = 0
 				end
@@ -290,12 +290,12 @@ function yandereWaifu.evilOrbUI(player)
 			uiReserve:SetOverlayRenderPriority(true)
 		
 			if tick > 0 then
-				if tick < 120 then
-					local FramePercentResult = math.floor((tick/120)*100)
+				if tick < evilOrbTickMax then
+					local FramePercentResult = math.floor((tick/evilOrbTickMax)*100)
 					uiReserve:SetFrame("Charging", FramePercentResult)
 					data.evilorbBarFade = gameFrame
 					data.FinishedevilOrbUICharge = false
-				elseif tick >= 120 then
+				elseif tick >= evilOrbTickMax then
 					if not data.FinishedevilOrbUICharge then
 						uiReserve:SetFrame("StartCharged",gameFrame - data.evilorbBarFade)
 						if uiReserve:GetFrame() == 11 then
@@ -360,6 +360,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     local roomClampSize = math.max( player.Size, 20 );
 	local wall = InutilLib.ClosestHorizontalWall(eff)
 	local wallPos = yandereWaifu:GetClosestHorizontalWallPos(wall, eff)
+	
+	yandereWaifu.GetEntityData(player).invincibleTime = 10
 	--movement code
 	eff.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
 
@@ -375,8 +377,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 	--end
 	
-	--trail
-	local trail = InutilLib.SpawnTrail(eff, Color(1,0,1,0.5))
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
@@ -388,6 +388,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		yandereWaifu.RebekahCanShoot(player, false)
 		data.IsUninteractible = true
 		if not data.EndFrames then data.EndFrames = 40 end
+		--trail
+		data.trail = InutilLib.SpawnTrail(eff, Color(1,0,1,0.5))
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true);
 	end
@@ -417,6 +419,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
 		player.ControlsEnabled = false
     	eff:Remove();
+		data.trail:Remove()
     	
     	data.IsUninteractible = false;
 		yandereWaifu.RebekahCanShoot(player, true)

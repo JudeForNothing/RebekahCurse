@@ -31,14 +31,17 @@ local function SpawnRandomReward(player)
 				local mob = Isaac.Spawn( EntityType.ENTITY_SLOTH, 0, 0, player.Position, Vector(0,0), player ):ToNPC();
 				mob:AddEntityFlags(EntityFlag.FLAG_CHARM | EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_PERSISTENT)
 				mob.HitPoints = mob.MaxHitPoints / 2
+				yandereWaifu.GetEntityData(mob).CharmedToParent = player
 				break
 			elseif rng2 == 2 then
 				local mob = Isaac.Spawn( EntityType.ENTITY_MULLIGAN, 0, 0, player.Position, Vector(0,0), player ):ToNPC();
 				mob:AddEntityFlags(EntityFlag.FLAG_CHARM | EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_PERSISTENT)
+				yandereWaifu.GetEntityData(mob).CharmedToParent = player
 			elseif rng2 == 3 then
 				local mob = Isaac.Spawn( EntityType.ENTITY_LUST, 0, 0, player.Position, Vector(0,0), player ):ToNPC();
 				mob:AddEntityFlags(EntityFlag.FLAG_CHARM | EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_PERSISTENT)
 				mob.HitPoints = mob.MaxHitPoints / 2
+				yandereWaifu.GetEntityData(mob).CharmedToParent = player
 				break
 			end
 		end
@@ -109,12 +112,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		
 		data.PersistentPlayerData.EasterEggDecreaseTick = data.PersistentPlayerData.EasterEggDecreaseTick - 1
 		
-		print(data.PersistentPlayerData.EasterEggDecreaseTick)
 		
 		if data.PersistentPlayerData.EasterEggDecreaseTick <= 0 then --clear seed effect
 			ILIB.game:GetSeeds():RemoveSeedEffect(data.PersistentPlayerData.EasterEggSeeds)
 			
-			print("did went here")
 			local OldChallenge = player:CanShoot()
 			player:ChangePlayerType(player:GetPlayerType())
 
@@ -311,22 +312,45 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseCursedEgg, Re
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseBlessedEgg, RebekahCurse.CARD_BLESSED_EASTEREGG);
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGoldenEgg, RebekahCurse.CARD_GOLDEN_EASTEREGG);
 
+function yandereWaifu:useDuplicateOnEasterEgg(collItem, rng, player)
+	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = game:GetFrameCount()
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useDuplicateOnEasterEgg, CollectibleType.COLLECTIBLE_CROOKED_PENNY)
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useDuplicateOnEasterEgg, CollectibleType.COLLECTIBLE_DIPLOPIA)
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
+function yandereWaifu:useVurpOnEasterEgg(eff, player, flags)
+	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = game:GetFrameCount()
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, yandereWaifu.useVurpOnEasterEgg, PillEffect.PILLEFFECT_VURP);
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 	local chance = 1/16
 	local rng = pickup:GetDropRNG()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
-		if player:HasTrinket(RebekahCurse.TRINKET_RABBITSFOOT) then
+		local validPickup = (pickup.Variant == PickupVariant.PICKUP_PILL)
+		if validPickup and ILIB.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
+		and (pickup:GetSprite():IsPlaying("Appear") or pickup:GetSprite():IsPlaying("AppearFast")) and pickup:GetSprite():GetFrame() == 1 and not pickup.SpawnerEntity then
 			--pickup.Wait = 10;
-			local validPickup = (pickup.Variant == PickupVariant.PICKUP_TAROTCARD and (pickup.SubType >= RebekahCurse.CARD_EASTEREGG and pickup.SubType <= RebekahCurse.CARD_PINK_EASTEREGG) )
 			if rng:RandomFloat() <= (chance) and validPickup then
-				local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 2)
-				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
-				newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
+				if rng:RandomFloat() <= (1/4) then
+					local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 2)
+					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
+				else
+					local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1)
+					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
+					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
+				end
 				pickup:Remove()
 			end
 		end
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+	if RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME > 0 and game:GetFrameCount() > RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME + 1 then --set frame back to zero
+		RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME = 0
 	end
 end)

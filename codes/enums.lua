@@ -41,7 +41,7 @@ RebekahCurse = {
 	COLLECTIBLE_WIKEPIDIA12 = Isaac.GetItemIdByName(" Wikepidia"),
 	COLLECTIBLE_WIKEPIDIA13 = Isaac.GetItemIdByName("  Wikepidia"),
 	COLLECTIBLE_WIKEPIDIA14 = Isaac.GetItemIdByName("   Wikepidia"),
-	
+	COLLECTIBLE_WIKEPIDIAPASSIVE = Isaac.GetItemIdByName("Wikepidia (passive)"),
 	COLLECTIBLE_BAGOFBRISTLEBRICKS = Isaac.GetItemIdByName("Bag of Bristle Bricks"),
 	COLLECTIBLE_NUTWATER = Isaac.GetItemIdByName("Nut Water"),
 	COLLECTIBLE_TWINVISION = Isaac.GetItemIdByName("Twin Vision"),
@@ -51,6 +51,15 @@ RebekahCurse = {
 	COLLECTIBLE_BASKETOFEGGS = Isaac.GetItemIdByName("Basket of Eggs"),
 	TRINKET_RABBITSFOOT = Isaac.GetTrinketIdByName("Rabbit's Foot"),
 	COLLECTIBLE_EGGSHELLWALK = Isaac.GetItemIdByName("Eggshell Walk"),
+	TRINKET_DESTROYEDLULLABY = Isaac.GetTrinketIdByName("Destroyed Lullaby"),
+	COLLECTIBLE_OVERSIZEDSWEATER = Isaac.GetItemIdByName("Oversized Sweater"),
+	COLLECTIBLE_HEARTSANDCRAFTS = Isaac.GetItemIdByName("Hearts and Crafts"),
+	COLLECTIBLE_TECHHZ = Isaac.GetItemIdByName("Tech Hz"),
+	COLLECTIBLE_ANGELSMORNINGSTAR = Isaac.GetItemIdByName("Angel's Morningstar"),
+	COLLECTIBLE_POTATOSNACK = Isaac.GetItemIdByName("Potato Snack"),
+	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
+	COLLECTIBLE_THEENCHIRIDION = Isaac.GetItemIdByName("The Enchiridion"),
+	COLLECTIBLE_BODYDYSMORHIA = Isaac.GetItemIdByName("Body Dysmorphia"),
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
 	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
@@ -166,6 +175,7 @@ RebekahCurse = {
 	ENTITY_FEATHERBREAK = Isaac.GetEntityVariantByName("Feather Break"),
 	ENTITY_MORNINGSTAR = Isaac.GetEntityVariantByName("Morning Star"),
 	ENTITY_TINY_OPHANIM = Isaac.GetEntityVariantByName("Tiny Ophanim"),
+	ENTITY_TINY_OPHANIM2 = Isaac.GetEntityVariantByName("Tiny Ophanim with an Eye"),
 	ENTITY_BIG_OPHANIM = Isaac.GetEntityVariantByName("Big Ophanim"),
 	ENTITY_ETERNALSLASH = Isaac.GetEntityVariantByName("Eternal Slash"),
 	ENTITY_ETERNALEPICFIRE = Isaac.GetEntityVariantByName("Eternal Epic Fire"),
@@ -312,6 +322,11 @@ RebekahCurseSounds = {
 	SOUND_CURSE_MAZE = Isaac.GetSoundIdByName("Easter Maze"),
 	SOUND_CURSE_BLINDNESS = Isaac.GetSoundIdByName("Easter Blindness"),
 	SOUND_CURSE_CURSED = Isaac.GetSoundIdByName("Easter Curse"),
+	SOUND_ORIGINALSIN_SHATTER = Isaac.GetSoundIdByName("Original Sin Shatter"),
+}
+
+RebekahCurseMusic = {
+	MUSIC_HEARTROOM = Isaac.GetMusicIdByName("Calm Before the Storm"),
 }
 
 RebekahCurseEnemies = {
@@ -350,7 +365,11 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_SOUL_ARCANE_CIRCLE = 6,
 	ENTITY_REBEKAH_SOUL_PUKE_EFFECT = 7,
 	ENTITY_REBEKAH_SPECIAL_ARCANE_CIRCLE = 8,
-	ENTITY_REBEKAH_LUDO_MOUTH = 9
+	ENTITY_REBEKAH_LUDO_MOUTH = 9,
+	ENTITY_REBEKAH_GENERIC_DUST_BIG = 10,
+	ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG = 11,
+	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG = 12,
+	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG = 13,
 }
 
 local wasFromTaintedLocked = false
@@ -396,6 +415,9 @@ RebekahCurseCostumes = {
 	NutWater = Isaac.GetCostumeIdByPath("gfx/characters/nutwater.anm2"),
 	TightHairtie = Isaac.GetCostumeIdByPath("gfx/characters/tighthairtie.anm2"),
 	BasketOfEggs = Isaac.GetCostumeIdByPath("gfx/characters/basket_of_eggs.anm2"),
+	OversizedSweater = Isaac.GetCostumeIdByPath("gfx/characters/oversizedsweater.anm2"),
+	TechHz = Isaac.GetCostumeIdByPath("gfx/characters/techhz.anm2"),
+	OriginalSin = Isaac.GetCostumeIdByPath("gfx/characters/originalsin.anm2"),
 }
 
 

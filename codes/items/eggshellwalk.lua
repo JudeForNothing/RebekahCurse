@@ -33,6 +33,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	--fam:FollowParent()
 	
+	--bffs! synergy
+	local extraDmg = 1
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+		extraDmg = 2
+	end
+	
+	fam.CollisionDamage = 2 * extraDmg
+	
 	if data.State == 0 then
 		if not spr:IsPlaying("Idle") then spr:Play("Idle", true) end
 		if math.random(1,2) == 2 and enemy then --to hop
@@ -58,6 +66,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					end
 				elseif spr:IsEventTriggered("Land") then
 					fam.Velocity = Vector.Zero
+					InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
 				end
 			end
 			fam.Velocity = fam.Velocity  * 0.9
@@ -72,6 +81,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				InutilLib.MoveRandomlyTypeI(fam, ILIB.room:GetRandomPosition(3), 5, 0.9, 30, 30, 90)
 			elseif spr:IsEventTriggered("Land") then
 				fam.Velocity = Vector.Zero
+				InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
 			end
 			InutilLib.FlipXByVec(fam, false)
 		end
@@ -100,6 +110,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	end
 	
 	--fam:FollowParent()
+	
+	--bffs! synergy
+	local extraDmg = 1
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+		extraDmg = 2
+	end
+	
+	fam.CollisionDamage = 2 * extraDmg
 	
 	--[[if fam.SubType == 0 then
 		if data.State == 0 then
@@ -188,6 +206,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					end
 				elseif spr:IsEventTriggered("Land") then
 					fam.Velocity = Vector.Zero
+					InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
 				end
 			end
 		elseif data.State == 3 then
@@ -261,6 +280,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					end
 				elseif spr:IsEventTriggered("Land") then
 					fam.Velocity = Vector.Zero
+					InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
 				end
 			end
 		elseif data.State == 6 then
@@ -275,7 +295,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			if v.Type == 1 and v.Position:Distance(fam.Position) <= 60 then
 				v:TakeDamage(1, 0, EntityRef(fam), 1)
 			elseif v:IsEnemy() and v.Position:Distance(fam.Position) <= 60 then
-				v:TakeDamage(5, 0, EntityRef(fam), 1)
+				v:TakeDamage(5* extraDmg, 0, EntityRef(fam), 1)
 			end
 		end
 		if spr:IsEventTriggered("Jump") --[[and (not spr:IsPlaying("Hop") and not spr:IsPlaying("AngryHop"))]] then
@@ -285,6 +305,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		if spr:IsEventTriggered("Land") --[[and (not spr:IsPlaying("Hop") and not spr:IsPlaying("AngryHop"))]] then
 			data.Collidable = true
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 2, fam.Position, Vector(0,0), player );
+			InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
 		end
 	end
 	if spr:IsFinished("JumpUp") then

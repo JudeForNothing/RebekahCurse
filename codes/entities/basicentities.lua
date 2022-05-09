@@ -2,7 +2,7 @@
 local customColor = Color(1, 1, 2.25, 1, 0, 0, 0)
 
 --NPC UPDATE!11!!1!!
-do
+--[[do
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = Isaac.GetPlayer(0)
 	local data = GetEntityData(ent)
@@ -57,7 +57,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
     end
 end)
 end
-
+]]
 
 --rebekah miniisaac thing
 function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
@@ -70,3 +70,13 @@ function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
 	sprite:LoadGraphics()
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.MiniIsaacReplaceSpritesheet, FamiliarVariant.MINISAAC)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	for k, v in pairs(Isaac.GetRoomEntities()) do
+		local data = yandereWaifu.GetEntityData(v)
+		
+		if data.CharmedToParent then
+			v.Position = data.CharmedToParent.Position
+		end
+	end
+end)

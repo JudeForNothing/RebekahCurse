@@ -35,6 +35,8 @@ if EID then
 	EID:addTrinket(RebekahCurse.TRINKET_ISAACSLOCKS, "When entering either a {{Shop}}, {{BossRoom}}, {{TreasureRoom}}, {{DevilRoom}} or {{AngelRoom}}, a reroll slot machine spawns # A reroll machine spawning in {{DevilRoom}} or {{AngelRoom}} is chance-based")
 	EID:addTrinket(RebekahCurse.TRINKET_RABBITSFOOT, "Pickups have a chance to be replaced by easter eggs")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_WISHFULTHINKING, "On death, respawn as Wishful Isaac # Wishful Isaac has 10 Luck")
+	EID:addTrinket(RebekahCurse.TRINKET_DESTROYEDLULLABY, "Familiars have random tears and tearflags")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_OVERSIZEDSWEATER, "Picking up hearts also spawn their respective clot versions")
 	
 	-- EID mirror render
 	EIDRebekahsMirror = {

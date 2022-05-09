@@ -254,4 +254,7 @@
 	<sound name="Easter Curse">
 		<sample weight="1" path="eggs/curse.wav" />
 	</sound>
+	<sound name="Original Sin Shatter">
+		<sample weight="1" path="items/originalsin_shatter.wav" />
+	</sound>
 </sounds>

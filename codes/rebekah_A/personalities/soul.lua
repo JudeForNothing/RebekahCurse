@@ -40,6 +40,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local room =  Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
     local roomClampSize = math.max( player.Size, 20 );
+	
+	yandereWaifu.GetEntityData(player).invincibleTime = 10
 	--movement code
 	eff.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
 
@@ -55,8 +57,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 	--end
 	
-	--trail
-	local trail = InutilLib.SpawnTrail(eff, Color(0,0.5,1,0.5))
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
@@ -66,6 +66,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
 		yandereWaifu.RebekahCanShoot(player, false)
+		--trail
+		data.trail = InutilLib.SpawnTrail(eff, Color(0,0.5,1,0.5))
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true);
 	end
@@ -94,6 +96,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		yandereWaifu.GetEntityData(customBody).WizoobOut = true
 		player.ControlsEnabled = false
     	eff:Remove();
+		data.trail:Remove()
 		
 		yandereWaifu.GetEntityData(player).LeaksJuices = math.random(30,40)
     	
@@ -162,7 +165,7 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 			tr:GetData().Rotation = tr:GetSprite().Rotation;
 			--make it float for a while
 			if tr.FrameCount == 1 then
-				InutilLib.SpawnTrail(tr, Color(0,0,0,0.7,170,170,210), tr.Position - Vector(0,20))
+				data.trail = InutilLib.SpawnTrail(tr, Color(0,0,0,0.7,170,170,210), tr.Position - Vector(0,20))
 				data.firstHeight = tr.Height
 			elseif tr.FrameCount < 300 then
 				tr.Height = data.firstHeight
@@ -193,6 +196,7 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 			if tr.Height >= -7 or tr:CollidesWithGrid() then
 				yandereWaifu.SpawnPoofParticle( tr.Position, Vector(0,0), tr, RebekahPoofParticleType.Soul )
 				tr:Remove()
+				data.trail:Remove()
 			end
 		end
 	end

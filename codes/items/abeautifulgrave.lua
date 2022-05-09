@@ -6,6 +6,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	player:ToPlayer()
 	local playerdata = yandereWaifu.GetEntityData(player)
 	
+	--bffs! synergy
+	local extraDmg = 1
+	local extraFireDelay = false
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+		extraDmg = 2
+	end
+	if player:HasTrinket(TrinketType.TRINKET_FORGOTTEN_LULLABY) then
+		extraFireDelay = true
+	end
 	
 	if not data.Init then
 		fam:AddToFollowers()
@@ -40,9 +49,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				else
 					local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
 					tears.Position = fam.Position
-					tears.CollisionDamage = data.Stat.Damage
+					tears.CollisionDamage = data.Stat.Damage * extraDmg
 					tears:ChangeVariant(TearVariant.DARK_MATTER)
 					tears:AddTearFlags(TearFlags.TEAR_FEAR)
+					if player:HasTrinket(TrinketType.TRINKET_BABY_BENDER) then
+						tears:AddTearFlags(TearFlags.TEAR_HOMING)
+						tears.Color = Color(1,0,1,1)
+					end
 				end
 				data.Stat.FireDelay = data.Stat.MaxFireDelay
 			end
@@ -62,7 +75,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif not spr:IsPlaying("Warp") then
 			spr:Play("Warp", true)
 			fam.Velocity = Vector.Zero
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 0.8)
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
 			data.lastDir = nil
 			ILIB.game:Darken(2, 35)
 		end
@@ -99,7 +112,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			data.State = 0
 		elseif not spr:IsPlaying("WarpBack") then
 			spr:Play("WarpBack", true)
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 0.8)
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
 		end
 	end
 end, RebekahCurse.ENTITY_GRAVEBABY);

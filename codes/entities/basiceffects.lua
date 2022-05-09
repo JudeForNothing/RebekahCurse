@@ -104,6 +104,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Load("gfx/effects/soul/ludo_mouth.anm2", true)
 			sprite:Play("Poof", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_BIG then
+			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
+			sprite:Play("Side", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG then
+			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
+			sprite:Play("Front", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG then
+			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
+			sprite:Play("Angled", true) 
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG then
+			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
+			sprite:Play("AngledBack", true) 
 		end
 		eff.RenderZOffset = 100;
 	end
@@ -488,6 +500,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 	if sprite:IsFinished("Ping") then
 		eff:Remove()
+	end
+	if eff.SubType == 10 then
+		eff.Position = data.Parent.Position
+		eff.Variant = data.Parent.Variant
 	end
 end, RebekahCurse.ENTITY_PINGEFFECT)
 

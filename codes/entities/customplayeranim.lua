@@ -339,6 +339,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:Remove()
 		end
 	elseif data.WizoobIn then
+		yandereWaifu.GetEntityData(data.Player).invincibleTime = 10
 		if eff.FrameCount == 1 then --beginning
 			data.Player.Visible = false
 			eff.Visible = true
@@ -358,6 +359,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		
 	elseif data.WizoobOut then
+		yandereWaifu.GetEntityData(data.Player).invincibleTime = 10
 		data.Player.Position = eff.Position
 		data.Player.Velocity = eff.Velocity
 		if eff.FrameCount == 1 then --beginning
@@ -506,6 +508,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 	
 	elseif data.HereticIn then
+		yandereWaifu.GetEntityData(data.Player).invincibleTime = 10
 		for i = 0, math.random(0,2) do
 			InutilLib.SetTimer( i, function()
 				local hole = Isaac.Spawn(EntityType.ENTITY_EFFECT, 111, 0, eff.Position, Vector(0,0), data.Player);
@@ -550,6 +553,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff.Velocity = (eff.Velocity - (eff.Position - wallPos)):Resized(20)
 		
 	elseif data.HereticOut then
+		yandereWaifu.GetEntityData(data.Player).invincibleTime = 10
 		for i = 0, math.random(1,3) do
 			InutilLib.SetTimer( i, function()
 				local hole = Isaac.Spawn(EntityType.ENTITY_EFFECT, 111, 0, eff.Position, Vector(0,0), data.Player);
@@ -565,8 +569,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--if yandereWaifu.GetEntityData(eff).CanHurt then
 			for i, entities in pairs(Isaac.GetRoomEntities()) do
 				if entities:IsEnemy() and entities:IsVulnerableEnemy() and not entities:IsDead() then
-					if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 85 and math.floor(eff.FrameCount % data.Player.MaxFireDelay/3) == 0 then
-						entities:TakeDamage(data.Player.Damage, 0, EntityRef(data.Player), 1)
+					if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 85 and math.floor(eff.FrameCount % data.Player.MaxFireDelay/5) == 0 then
+						entities:TakeDamage(data.Player.Damage/3, 0, EntityRef(data.Player), 1)
 					end
 				elseif entities.Type == EntityType.ENTITY_EFFECT and entities.Variant == RebekahCurse.ENTITY_EVILORB and not data.CantCancel then
 					if entities.Position:Distance(eff.Position) < eff.Size + entities.Size + 10 then
@@ -594,7 +598,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(eff).CanHurt = false
 		elseif sprite:IsPlaying("DashEnd") then
 			eff.Velocity = eff.Velocity * 0.9
-			data.Player:SetMinDamageCooldown(90)
+			data.Player:SetMinDamageCooldown(45)
 			if sprite:GetFrame() == 8 and not data.CancelEnd then
 				data.CantCancel = true
 				InutilLib.SFX:Play( SoundEffect.SOUND_GHOST_SHOOT, 1, 0, false, 1 );
@@ -639,7 +643,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if yandereWaifu.GetEntityData(eff).CanHurt then
 			eff.Velocity = (eff.Velocity - (eff.Position - data.Player.Position)):Resized(40)
 		end
-		
 	elseif data.DashBrokenGlitch then
 		if eff.FrameCount == 1 then --beginning
 			eff.Visible = true

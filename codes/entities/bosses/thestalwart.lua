@@ -137,7 +137,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					ent.Velocity = ent.Velocity  * 0.95
 					if ent.FrameCount % 5 == 0 then
 						local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, ent.Position, Vector(0,0), ent ):ToEffect()
-						dust.Timeout = 1
+						dust:GetSprite().PlaybackSpeed = 0.3
+						dust.Timeout = 6
+						dust.LifeSpan = 6
 					end
 					ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
 				end
@@ -184,7 +186,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						local egg = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, 0, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
 						egg:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, ent.Position, Vector(0,0), ent ):ToEffect()
-						dust.Timeout = 2
+						dust:GetSprite().PlaybackSpeed = 0.3
+						dust.Timeout = 6
+						dust.LifeSpan = 6
 					end
 				end
 			end
@@ -270,7 +274,7 @@ if StageAPI and StageAPI.Loaded then
 			Rooms = StageAPI.RoomsList("The Stalwart Rooms", require("resources.luarooms.bosses.the_stalwart"))
 		})
 	}
-	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE1_1,StageType.STAGETYPE_ORIGINAL)
+	--[[StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE1_1,StageType.STAGETYPE_ORIGINAL)
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE1_1,StageType.STAGETYPE_WOTL)
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE1_1,StageType.STAGETYPE_AFTERBIRTH)
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE1_2,StageType.STAGETYPE_ORIGINAL)
@@ -286,7 +290,7 @@ if StageAPI and StageAPI.Loaded then
 	
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE3_1,StageType.STAGETYPE_ORIGINAL)
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE3_1,StageType.STAGETYPE_WOTL)
-	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE3_1,StageType.STAGETYPE_AFTERBIRTH)
+	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE3_1,StageType.STAGETYPE_AFTERBIRTH)]]
 	
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE4_1,StageType.STAGETYPE_ORIGINAL)
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stalwart"},LevelStage.STAGE4_1,StageType.STAGETYPE_WOTL)

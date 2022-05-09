@@ -150,7 +150,7 @@ function yandereWaifu.MirrorMechanic(player)
 		
 		--mirror code
 		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-			if not InutilLib.IsShowingItem(player) then
+			if not InutilLib.IsShowingItem(player) and mir.SubType ~= 20 then
 				local mirdata = yandereWaifu.GetEntityData(mir);
 				local sprite = mir:GetSprite();
 				

@@ -1,4 +1,12 @@
 
+RebekahCurseGlobalData = {
+	EASTER_EGG_NO_MORPH_FRAME = 0
+}
+
+
+--
+
+
 function yandereWaifu.DoExtraBarrages(player, mode)
 	local data = yandereWaifu.GetEntityData(player)
 	local game = ILIB.game
@@ -310,6 +318,7 @@ end
 
 
 function yandereWaifu.SpawnParticles( type, variant, subvariant, amount, position, velocity, spawner, spriteSheet )
+	amount = amount or 1
 	local particles = {}
 	for i = 1, amount do
 		local particle = Isaac.Spawn( type, variant, subvariant or 0, position, velocity, player );
@@ -564,9 +573,9 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 		data.heartReserveMaxFill = 100
 	end
 
-	if fanfare ~= false then
-		yandereWaifu.SpawnPoofParticle( player.Position + Vector( 0, 1 ), Vector( 0, 0 ), player, RebekahPoofParticleTypeByMode[ mode ] );
-	end
+	--if fanfare ~= false then
+	--	yandereWaifu.SpawnPoofParticle( player.Position + Vector( 0, 1 ), Vector( 0, 0 ), player, RebekahPoofParticleTypeByMode[ mode ] );
+	--end
 	
 	if mode == REBECCA_MODE.RedHearts then
 		player:ChangePlayerType(RebekahCurse.REB_RED)
@@ -903,4 +912,45 @@ function yandereWaifu.optionsCheck(pickup)
             end
         end
     end
+end
+
+
+function yandereWaifu.SpawnEternalGun(player, direction, extra)
+	local data = yandereWaifu.GetEntityData(player)
+	if not data.HugsEternal then
+		if extra then
+			if not data.extraHugsEternal then data.extraHugsEternal = {} end
+			local gun = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 4, player.Position,  Vector.Zero, player):ToEffect()
+			yandereWaifu.GetEntityData(gun).parent = player
+			yandereWaifu.GetEntityData(gun).direction = direction
+			table.insert( data.extraHugsEternal, gun )
+			return gun
+		else
+			data.HugsEternal = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON, 4, player.Position,  Vector.Zero, player):ToEffect()
+			yandereWaifu.GetEntityData(data.HugsEternal).parent = player
+			yandereWaifu.GetEntityData(data.HugsEternal).direction = direction
+		end
+	end
+end
+
+function yandereWaifu.RemoveEternalGun(player)
+	local data = yandereWaifu.GetEntityData(player)
+	if data.HugsEternal then
+		data.HugsEternal:Remove()
+		data.HugsEternal = nil
+	end
+	if data.extraHugsEternal then
+		for k, v in pairs(data.extraHugsEternal) do
+			v:Remove()
+		end
+		data.extraHugsEternal = nil
+	end
+end
+
+function yandereWaifu.PlayAllEternalGuns(player, mode)
+	mode = mode or 0
+	local data = yandereWaifu.GetEntityData(player)
+	for k, v in pairs (data.extraHugsEternal) do
+		yandereWaifu.GetEntityData(v).Shoot = true
+	end
 end

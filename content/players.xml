@@ -15,7 +15,7 @@
 	
 	<player name="Eternal Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true" canShoot="false"/>
 	
 	<player name="Gold Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 

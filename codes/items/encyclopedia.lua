@@ -14,13 +14,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	
 	--on first time pickup
 	if player:GetActiveItem(slot) == RebekahCurse.COLLECTIBLE_WIKEPIDIA and not data.PersistentPlayerData.WikepidiaPage and  not data.PersistentPlayerData.WikepidiaCharge then
+		
 		InutilLib.SetTimer( 30, function()
 			if player:GetActiveItem(slot) == RebekahCurse.COLLECTIBLE_WIKEPIDIA then
 				player:RemoveCollectible(RebekahCurse.COLLECTIBLE_WIKEPIDIA, false, slot)
 				player:AddCollectible(RebekahCurse.COLLECTIBLE_WIKEPIDIA1, 0, true, slot)
 		
 				player:SetActiveCharge(3, ActiveSlot.SLOT_PRIMARY)
-		
+				print(RebekahCurse.COLLECTIBLE_WIKEPIDIAPASSIVE)
+				player:AddCollectible(RebekahCurse.COLLECTIBLE_WIKEPIDIAPASSIVE, 0, true)
 			end
 		end);
 	end
