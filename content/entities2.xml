@@ -159,13 +159,13 @@
 	<entity anm2path="items/pick ups/bombs/holy_grenade.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="6" collisionRadius="16" friction="1" id="4" name="Holy Grenade" numGridCollisionPoints="12" shadowSize="18" stageHP="0" variant="3780">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/eternal/tiny_ringangel.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Tiny Ophanim" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663122">
+	<entity anm2path="effects/eternal/tiny_ringangel.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Tiny Ophanim" numGridCollisionPoints="12" shadowSize="34" stageHP="0" variant="663122">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
-	<entity anm2path="effects/eternal/tiny_ringangel2.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Tiny Ophanim with an Eye" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663222">
+	<entity anm2path="effects/eternal/tiny_ringangel2.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Tiny Ophanim with an Eye" numGridCollisionPoints="12" shadowSize="34" stageHP="0" variant="663222">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
-	<entity anm2path="effects/eternal/eternal_ludoophanim.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Big Ophanim" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="663123" gridCollision="walls">
+	<entity anm2path="effects/eternal/eternal_ludoophanim.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="8" friction="1" id="3" name="Big Ophanim" numGridCollisionPoints="12" shadowSize="34" stageHP="0" variant="663123" gridCollision="walls">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
 	<entity anm2path="effects/eternal/eternal_slash.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Eternal Slash" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="946999" portrait="160" >
@@ -380,51 +380,54 @@
 	<entity anm2path="effects/items/eggshells.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Eggshells" numGridCollisionPoints="0" shadowSize="7" stageHP="0" variant="835290" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+	<entity anm2path="effects/items/deathnote_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Death Note Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="947002" portrait="160" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
 	
 	<!-- Pickups -->
-	<entity anm2path="items/pick ups/eggs/red_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="120">
+	<entity anm2path="items/pick ups/eggs/red_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="120">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/aqua_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Aqua Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="121">
+	<entity anm2path="items/pick ups/eggs/aqua_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Aqua Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="121">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/yellow_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Yellow Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="122">
+	<entity anm2path="items/pick ups/eggs/yellow_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Yellow Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="122">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/green_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Green Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="123">
+	<entity anm2path="items/pick ups/eggs/green_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Green Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="123">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/blue_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Blue Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="124">
+	<entity anm2path="items/pick ups/eggs/blue_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Blue Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="124">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/pink_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Pink Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="125">
+	<entity anm2path="items/pick ups/eggs/pink_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Pink Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="125">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/red_stripe_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Red Stripe Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="126">
+	<entity anm2path="items/pick ups/eggs/red_stripe_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Red Stripe Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="126">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/aqua_stripe_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Aqua Stripe Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="127">
+	<entity anm2path="items/pick ups/eggs/aqua_stripe_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Aqua Stripe Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="127">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/yellow_zigzag_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Yellow Zigzag Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="128">
+	<entity anm2path="items/pick ups/eggs/yellow_zigzag_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Yellow Zigzag Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="128">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/green_zigzag_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Green Zigzag Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="129">
+	<entity anm2path="items/pick ups/eggs/green_zigzag_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Green Zigzag Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="129">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/blue_zigzag_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Blue Zigzag Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="130">
+	<entity anm2path="items/pick ups/eggs/blue_zigzag_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Blue Zigzag Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="130">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/pink_stripe_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Pink Stripe Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="131">
+	<entity anm2path="items/pick ups/eggs/pink_stripe_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Pink Stripe Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="131">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/cursed_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Cursed Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="132">
+	<entity anm2path="items/pick ups/eggs/cursed_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Cursed Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="132">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/blessed_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Blessed Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="133">
+	<entity anm2path="items/pick ups/eggs/blessed_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Blessed Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="133">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="items/pick ups/eggs/golden_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Golden Easter Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="134">
+	<entity anm2path="items/pick ups/eggs/golden_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Golden Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="134">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
@@ -432,7 +435,13 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 		<preload id="1000" variant="49" />
     </entity>
-	 <entity anm2path="grid/rebekahsroom/rebekahs_carpet.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="1000" name="Rebekah&apos;s Carpet" numGridCollisionPoints="0" shadowSize="0" stageHP="0" subtype="1" variant="74" subtype="177">
+	 <entity anm2path="grid/rebekahsroom/rebekahs_carpet.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="1000" name="Rebekah&apos;s Carpet" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="74" subtype="177">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
+	 <entity anm2path="grid/rebekahsroom/rebekahs_carpet.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="999" name="Rebekah Entity Replace" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="74" subtype="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
+	<entity anm2path="grid/rebekahsroom/rebekahs_carpet.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="999" name="Rebekah&apos;s Carpet (Entity Replace)" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="74" subtype="177">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
     </entity>
 	<!--Enemy related material-->
@@ -484,7 +493,7 @@
 	<entity anm2path="bosses/liminal/the_scum.anm2" baseHP="4000000" boss="1" champion="0" collisionDamage="4" collisionMass="5" collisionRadius="13" friction="1" id="600" name="The Scum" numGridCollisionPoints="3" shadowSize="22" stageHP="0" variant="220" shutdoors="false">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="bosses/normal/thestalwart.anm2" baseHP="500" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="42" friction="1" id="600" name="The Stalwart" numGridCollisionPoints="24" shadowSize="84" stageHP="50" variant="222" tags="nodelirium">
+	<entity anm2path="bosses/normal/thestalwart.anm2" baseHP="900" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="42" friction="1" id="600" name="The Stalwart" numGridCollisionPoints="24" shadowSize="84" stageHP="50" variant="222" tags="nodelirium">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="30" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="23" stageHP="5" variant="223">

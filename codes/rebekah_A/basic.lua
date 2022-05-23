@@ -57,7 +57,7 @@ local function RebeccaInit(player)
 	end
 	
 	player.Visible = true
-	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
+	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 end
 
 
@@ -1096,7 +1096,7 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 					player.MaxFireDelay = player.MaxFireDelay + 2
 				end
 				if cacheF == CacheFlag.CACHE_DAMAGE then
-					player.Damage = player.Damage * 0.4
+					player.Damage = player.Damage * 0.8
 				end
 				if cacheF == CacheFlag.CACHE_SPEED then
 					player.MoveSpeed = player.MoveSpeed + 0.20

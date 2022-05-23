@@ -9,7 +9,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		end
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_TECHHZ) then
 			local movement = player:GetMovementVector()
-			if movement:Length() > 0 then
+			if movement:Length() > 0 and player:GetFireDirection() > -1 then
 				if math.floor(player.FrameCount % 5) == 0 then
 					data.TechHz = player:FireTechXLaser(player.Position, Vector.Zero, 38, player, 0.7):ToLaser()
 					data.TechHz.Timeout = 5

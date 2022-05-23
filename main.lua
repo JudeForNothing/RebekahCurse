@@ -10,6 +10,10 @@ yandereWaifuCodes = {
 	init = nil,
 	enums = require('codes.enums'),
 	library = require('codes.library'),
+	itempools = {
+		loveroom = require('codes.itempools.loveroom'),
+	},
+	itempool = require('codes.itempools'),
 	savedata = require('codes.savedata'),
 	minimenu = require('codes.minimenu'),
 	config = require('codes.config'),
@@ -98,6 +102,9 @@ yandereWaifuCodes = {
 		originalsin = require('codes.items.originalsin'),
 		enchiridion = require('codes.items.enchiridion'),
 		bodydysmorphia = require('codes.items.bodydysmorphia'),
+		eyesofthedead = require('codes.items.eyesofthedead'),
+		notebookofthedead = require('codes.items.notebookofthedead'),
+		psoraisis = require('codes.items.psoraisis'),
 	},
 	slots = {
 		mirror = require('codes.slots.mirror'),
@@ -108,7 +115,7 @@ yandereWaifuCodes = {
 		gen = {
 			rebekahsroom = require('codes.floors.gen.rebekahsbedroom'),
 			},
-		rebekahsroom = nil,
+		rebekahsroom = require('codes.floors.rebekahsbedroom'),
 		--liminal = require('codes.floors.backrooms')
 	},
 	unlocks = {

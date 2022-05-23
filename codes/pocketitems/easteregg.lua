@@ -178,6 +178,7 @@ local function UseRandomAmbush(level)
 			if door:IsOpen() then
 				door:Bar()
 			end
+			ILIB.room:SetClear(false)
 		end
 	end
 end

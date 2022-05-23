@@ -20,7 +20,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					InutilLib.AnimShootFrame(ent, true, ent.Velocity, "IdleRight", "IdleFront", "IdleBack", "IdleLeft")
 					data.lastDir = InutilLib.VecToAppoxDir(ent.Velocity)
 				end
-				if math.random(1,3) == 3 and ent.FrameCount % 5 == 0 then
+				if --[[math.random(1,3) == 3 and]] ent.FrameCount % 5 == 0 then
 					local dir
 					if InutilLib.CuccoLaserCollision(ent, 0, 700, player) then
 						dir  = "DashRight"
@@ -51,7 +51,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						data.lastDir = nil
 						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					end
-				elseif math.random(1,3) == 3 and ent.FrameCount % 5 == 0 then
+				elseif math.random(1,2) == 2 and ent.FrameCount % 9 == 0 then
 					if math.random(1,5) == 5 then
 						data.State = 3
 						ent.Velocity = ent.Velocity * 0
@@ -85,7 +85,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					--crackwaves
 					for i = 0, 360-360/4, 360/4 do
 						local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, ent.Position, Vector.FromAngle(i), ent):ToEffect()
-						crack.LifeSpan = 9;
+						crack.LifeSpan = 12;
+						crack.Timeout = 12
 						crack.Rotation = i
 					end
 					--rock splash
@@ -94,7 +95,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
 						local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
 						tear.Scale = math.random(2,12)/10;
-						tear.FallingSpeed = -27 + math.random() * 2 ;
+						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
 						tear.FallingAccel = 0.5;
 						--tear.BaseDamage = player.Damage * 2
 					end
@@ -156,10 +157,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					ent.Velocity = ent.Velocity * 0
 					InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 				elseif spr:IsPlaying("Spin") then
-					if spr:WasEventTriggered("StartSpin") and not spr:IsEventTriggered("EndSpin") and math.floor(ent.FrameCount % 7) == 0 then
+					if spr:WasEventTriggered("StartSpin") and not spr:IsEventTriggered("EndSpin") and math.floor(ent.FrameCount % 9) == 0 then
 						InutilLib.SFX:Play( SoundEffect.SOUND_ULTRA_GREED_SPINNING, 1, 0, false, 0.6 );
 						if not data.add then data.add = 0 end
-						if not data.projectileOffset then data.projectileOffset = math.random(-60,60) end
+						if not data.projectileOffset then data.projectileOffset = math.random(-90,90) end
 						for i = 0, 360 - 360/4, 360/4  do
 							local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector(9,0):Rotated(i + data.add + data.projectileOffset), ent, 0, 0):ToProjectile()	
 							tear.Height = -30
@@ -207,7 +208,9 @@ end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	if damage.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and damage.Variant == RebekahCurseEnemies.ENTITY_THE_STALWART then
 		local data = yandereWaifu.GetEntityData(damage)
-		return false
+		if (damageSource.Type == EntityType.ENTITY_TEAR and damageSource.Variant ~= 42) and (damageFlag & DamageFlag.DAMAGE_EXPLOSION == 0) then
+			return false
+		end
 	end
 end)
 

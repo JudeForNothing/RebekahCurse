@@ -35,7 +35,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -79,7 +79,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.5)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -114,7 +114,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -128,9 +128,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -144,12 +144,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 	end
@@ -638,9 +638,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	--InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, data.OrbitPlace, 0)
 	fam.Velocity = player:GetShootingInput() + fam.Velocity * 0.9 
 	
-	if fam.FrameCount == 1 then
-		fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-	end
+	--if fam.FrameCount == 1 then
+	fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+	--end
 	
 	if spr:IsPlaying("Shoot") then
 		if spr:GetFrame() == 1 then
@@ -990,7 +990,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 		extraPenalty = extraPenalty + 5
 	end
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
-		numLimit = numLimit/3
+		extraPenalty = extraPenalty + 12
 	end
 	
 	data.maxEternalFeather = math.floor(80/(player.MaxFireDelay/5)) --* extraTears

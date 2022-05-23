@@ -11,6 +11,9 @@ end)
 --data that will be passed all around the mod
 RebekahLocalSavedata = {
 	bossRoomsCleared = {},
+	curseRoomsEntered = {},
+	loveRoomReplacePercent = 0,
+	savedloveRoomDepletePercent = 0, 
 	CurrentRebeccaUnlocks = nil
 }
 
@@ -323,6 +326,9 @@ local function RecapRebekahData()
 		--print(saveData.heartFillReserve[i])
 	end
 	saveData.bossRoomsCleared = RebekahLocalSavedata.bossRoomsCleared;
+	saveData.curseRoomsEntered = RebekahLocalSavedata.curseRoomsEntered;
+	saveData.loveRoomReplacePercent = RebekahLocalSavedata.loveRoomReplacePercent; 
+	saveData.savedloveRoomDepletePercent = RebekahLocalSavedata.savedloveRoomDepletePercent;
 	saveData.unlocks = RebekahLocalSavedata.CurrentRebeccaUnlocks;
 	--print("eclectric chair")
 	
@@ -341,7 +347,7 @@ end
 REB_JSON = require("json");
 
 -- Load Moddata
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinued)
 	--print("1")
 	local data = REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
@@ -364,6 +370,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function()
 		end
 		--this is being called a lot if theres a lot of players, I feel like i should change this
 		if data.bossRoomsCleared ~= nil then RebekahLocalSavedata.bossRoomsCleared = data.bossRoomsCleared end
+		if data.curseRoomsEntered ~= nil then RebekahLocalSavedata.curseRoomsEntered = data.curseRoomsEntered end 
+		if data.loveRoomReplacePercent ~= nil and IsContinued then RebekahLocalSavedata.loveRoomReplacePercent = data.loveRoomReplacePercent else RebekahLocalSavedata.loveRoomReplacePercent = 0 end
+		if data.savedloveRoomDepletePercent ~= nil then RebekahLocalSavedata.savedloveRoomDepletePercent = data.savedloveRoomDepletePercent end
 		if data.unlocks ~= nil then RebekahLocalSavedata.CurrentRebeccaUnlocks = data.unlocks end
 		
 		if data.NedHealth then

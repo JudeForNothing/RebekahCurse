@@ -16,6 +16,7 @@ function yandereWaifu:useEnchiridion(collItem, rng, player, flags, slot)
 		end
 	end
 	player:UseCard(Card.CARD_STRENGTH, UseFlag.USE_NOANIM)
+	player:AnimateCollectible(RebekahCurse.COLLECTIBLE_THEENCHIRIDION)
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useEnchiridion, RebekahCurse.COLLECTIBLE_THEENCHIRIDION )
 

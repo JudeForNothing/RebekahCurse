@@ -2,4 +2,10 @@
 	<entity BaseHP="20" Group="Liminal" ID="10" Image="entities/liminal/faceling.png" Kind="Cursed and Heartbroken" Name="Faceling" Subtype="0" Variant="1071" />
 	
 	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/the_stalwart.png" Kind="Cursed and Heartbroken" Name="The Stalwart" Subtype="0" Variant="222" />
+	
+	<entity BaseHP="0" Group="Rebekah's Room" ID="5" Image="entities/rebekahsroom/rebekahs_bed.png" Kind="Cursed and Heartbroken" Name="Rebekah's Bed" Subtype="177" Variant="380" />
+	<entity BaseHP="0" Group="Rebekah's Room" ID="999" Image="entities/rebekahsroom/rebekahs_carpet.png" Kind="Cursed and Heartbroken" Name="Rebekah&apos;s Carpet (Entity Replace)" Subtype="177" Variant="74" />
+	<entity BaseHP="0" Group="Rebekah's Room" ID="6" Image="entities/rebekahsroom/rebeccas_mirror_temp.png" Kind="Cursed and Heartbroken" Name="Rebecca's Mirror (everyone)" Subtype="20" Variant="19373710" />
+
+	<entity BaseHP="20" Group="Mirror Enemies" ID="600" Image="entities/mirror/redtato.png" Kind="Cursed and Heartbroken" Name="Red Tato" Subtype="0" Variant="4" />
 </data>

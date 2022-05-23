@@ -65,7 +65,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		sprite:Play("Idle", true);
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
-		yandereWaifu.RebekahCanShoot(player, false)
 		--trail
 		data.trail = InutilLib.SpawnTrail(eff, Color(0,0.5,1,0.5))
 	elseif sprite:IsFinished("Idle") then
@@ -102,7 +101,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     	
     	data.IsUninteractible = false;
     	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
-		yandereWaifu.RebekahCanShoot(player, true)
     else
 		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
     	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_WALLS;

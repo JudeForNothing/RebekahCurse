@@ -701,10 +701,18 @@ end
 
 function yandereWaifu.AddGenericTracer(position, color, angle, timeout)     
 	local timeout = timeout or 30
-	local line = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_UNGENERICTRACER, 0, position, Vector(0,0), ent)
-	line:GetSprite().Rotation = angle
+	--local line = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_UNGENERICTRACER, 0, position, Vector(0,0), ent)
+	local line = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.GENERIC_TRACER, 0, position, Vector(0,0), ent):ToEffect()
+	--line:GetSprite().Rotation = angle
+	if type(angle) == 'number' then
+		line.TargetPosition = Vector.FromAngle(angle)
+	else
+		line.TargetPosition = angle
+	end
 	line.Color = color
-	yandereWaifu.GetEntityData(line).Timeout = timeout
+	line.LifeSpan = timeout
+	line.Timeout = timeout
+	--yandereWaifu.GetEntityData(line).Timeout = timeout
 	return line
 end
 function yandereWaifu.HasCollectibleMultiple(player, ...)
@@ -953,4 +961,18 @@ function yandereWaifu.PlayAllEternalGuns(player, mode)
 	for k, v in pairs (data.extraHugsEternal) do
 		yandereWaifu.GetEntityData(v).Shoot = true
 	end
+end
+
+function yandereWaifu:shouldDeHook()
+
+	local reqs = {
+		not (ILIB.room:GetType() == RoomType.ROOM_BOSS and not ILIB.room:IsClear() and ILIB.room:GetFrameCount() < 1),
+		not Options.FoundHUD,
+		not ILIB.game:GetHUD():IsVisible(),
+		ILIB.game:GetRoom():GetType() == RoomType.ROOM_DUNGEON and ILIB.level:GetAbsoluteStage() == LevelStage.STAGE8, --beast fight
+		ILIB.game:GetSeeds():HasSeedEffect(SeedEffect.SEED_NO_HUD),
+		-- Game():IsGreedMode() //The chance should still display on Greed Mode even if its 0 for consistency with the rest of the HUD.
+	}
+
+	return reqs[1] or reqs[2] or reqs[3] or reqs[4] or reqs[5]
 end

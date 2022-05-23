@@ -92,6 +92,10 @@
 		<sample weight="1" path="evil/evil_summon_apostate.wav" />
 	</sound>
 	
+	<sound name="Eternal Jingle">
+		<sample weight="1" path="eternal/jingle.wav" />
+	</sound>
+	
 	<sound name="Christian Chant">
 		<sample weight="1" path="ned/christian/chant.wav" />
 	</sound>	

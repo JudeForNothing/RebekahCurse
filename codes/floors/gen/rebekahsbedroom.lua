@@ -1,71 +1,104 @@
-local RebekahCurseRoomBackdrop = StageAPI.BackdropHelper({
-    Walls = {"room_2", "room_1", "room_2"},
-	NFloors = {"nfloor"}
-}, "gfx/backdrop/rebekahsroom/", ".png")
+function yandereWaifu.WillSpawnLoveRoom()
+	local seed = Game():GetSeeds():GetStartSeed()
 
-
-local replacesong = false
-local RebekahsRoomCurseGrid = StageAPI.GridGfx()
-RebekahsRoomCurseGrid:AddDoors("gfx/backdrop/rebekahsroom/door_curse_door.png", {RequireEither = {RoomType.ROOM_CURSE}, NotEither = {RoomType.ROOM_SECRET, RoomType.ROOM_SUPERSECRET}})
-
-local RebekahsRoomCurseGfx = StageAPI.RoomGfx(RebekahCurseRoomBackdrop, RebekahsRoomCurseGrid, "_default", "stageapi/shading/shading")
-
-local LiminalRoomList = StageAPI.RoomsList("Basic Backrooms", {
-    Name = "Basic Backrooms",
-    Rooms = require('resources.luarooms.liminal.backrooms')
-})
-
-
-local function ReplaceCurseDoorstoMirrors()
-    for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
-		if door and (door:IsRoomType(RoomType.ROOM_CURSE) --[[or newRoom:GetType("Love Curse Room")]]) then
-			--StageAPI.ChangeDoorSprite(door, RebekahsRoomCurseGfx)
-			--StageAPI.ChangeDoor(door, RebekahsRoomCurseGrid, false)
-			StageAPI.ChangeDoors(RebekahsRoomCurseGrid)
-		end
+	if seed % 100 <= RebekahLocalSavedata.loveRoomReplacePercent then
+		return true
+	else
+		return false
 	end
 end
 
+function yandereWaifu.OnEnterCurseRoom()
+	local room = ILIB.game:GetRoom()
+	local level = ILIB.game:GetLevel()
+	-- if we're in a curse room and the room is new
+	local isGreed = ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREED or ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
+	if (room:GetType() == RoomType.ROOM_CURSE and room:IsFirstVisit()) and StageAPI.GetCurrentRoomType() ~= "Love Room"  then
 
---Replace curse rooms
-StageAPI.AddCallback("RebekahCurse", "PRE_STAGEAPI_NEW_ROOM_GENERATION", 0, function(currentRoom, justGenerated, currentListIndex)
-	ReplaceCurseDoorstoMirrors()
-	if (ILIB.room:GetType() == RoomType.ROOM_CURSE) and not currentRoom then
-		local testRoom = StageAPI.LevelRoom("Love Curse Room", LiminalRoomList, ILIB.room:GetSpawnSeed(), ILIB.room.Shape, ILIB.room.Type, nil, nil, nil, nil, nil, StageAPI.GetCurrentRoomID())
-		MusicManager():Play(RebekahCurseMusic.MUSIC_HEARTROOM, 0.1)
-        MusicManager():Queue(RebekahCurseMusic.MUSIC_HEARTROOM)
-        MusicManager():UpdateVolume()
-		replacesong = true
-		return testRoom
+		local add = false
+		-- iterate through the saved curse rooms
+		for i, something in pairs(RebekahLocalSavedata.curseRoomsEntered) do 
+			-- if we're in a room that had been cleared before, flag it
+			if RebekahLocalSavedata.curseRoomsEntered[i][1] == level:GetCurrentRoomDesc().GridIndex and RebekahLocalSavedata.curseRoomsEntered[i][2] == level:GetStage() then
+				add = true
+			end
+		end
+		if not add then
+			table.insert(RebekahLocalSavedata.curseRoomsEntered, {level:GetCurrentRoomDesc().GridIndex, level:GetStage()} );
+		end
+		RebekahLocalSavedata.savedloveRoomDepletePercent = RebekahLocalSavedata.savedloveRoomDepletePercent + 35
 	end
-end)
+end
+yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.OnEnterCurseRoom)
 
---replace curse room door sprites
-StageAPI.AddCallback("RebekahCurse", "POST_UPDATE_GRID_GFX", 10, function(gridGfx)
-    ReplaceCurseDoorstoMirrors()
-end)
+local showDifference = false
+local coords = Vector(21, 197.5+16)
+local Alpha = 2.9
+local rebroom_hudSprite = Sprite()
+rebroom_hudSprite:Load("gfx/ui/rebekah_hudstats.anm2", true)
+rebroom_hudSprite.Color = Color(1,1,1,0.5)
+rebroom_hudSprite:SetFrame("IdleIcons", 2)
+local font = Font()
+font:Load("font/luaminioutlined.fnt")
 
-StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --POST_ROOM_INIT
-    if newRoom.LayoutName == "Love Curse Room" then --(newRoom:GetType() == "Love Room") 
-        --if newRoom.Layout.Name and string.sub(string.lower(newRoom.Layout.Name), 1, 4) == "trap" then
-        newRoom:SetTypeOverride("Love Room")
-		newRoom.Data.RoomGfx = RebekahsRoomCurseGfx
-       -- end
-	    --MusicManager():Stop()
-	    MusicManager():Play(RebekahCurseMusic.MUSIC_HEARTROOM, 0.1)
-        MusicManager():Queue(RebekahCurseMusic.MUSIC_HEARTROOM)
-        MusicManager():UpdateVolume()
-		replacesong = true
-    end
-end)
-
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	replacesong = false
-end)
-
-MMC.AddMusicCallback(yandereWaifu, function(self, music)
-	if replacesong then
-        return RebekahCurseMusic.MUSIC_HEARTROOM
+function yandereWaifu.UpdateCurseRoomDeplete()
+	if RebekahLocalSavedata.savedloveRoomDepletePercent then
+		if --[[RebekahLocalSavedata.savedloveRoomDepletePercent]] 0 >= RebekahLocalSavedata.loveRoomReplacePercent + RebekahLocalSavedata.savedloveRoomDepletePercent then
+			RebekahLocalSavedata.loveRoomReplacePercent = 0
+		else
+			RebekahLocalSavedata.loveRoomReplacePercent = RebekahLocalSavedata.loveRoomReplacePercent + RebekahLocalSavedata.savedloveRoomDepletePercent
+		end
+		RebekahLocalSavedata.savedloveRoomDepletePercent = 0
+		showDifference = true
+		Alpha = 2.9
 	end
-end)
+
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, yandereWaifu.UpdateCurseRoomDeplete)
+
+function yandereWaifu:rebekahsroomDisplayonRender(shaderName)
+	--if yandereWaifu:shouldDeHook() then return end
+	
+	local isShader = shaderName == "UI_DrawRebekahHUD_DummyShader" and true or false
+	
+	if not (Game():IsPaused() and Isaac.GetPlayer(0).ControlsEnabled) and not isShader then return end -- no render when unpaused 
+	if (Game():IsPaused() and Isaac.GetPlayer(0).ControlsEnabled) and isShader then return end -- no shader when paused
+	
+	if shaderName ~= nil and not isShader then return end -- final failsafe
+	
+	--yandereWaifu:updateCheck()
+
+	--account for screenshake offset
+	local textCoords = coords + Game().ScreenShakeOffset
+	local valueOutput = string.format("%.1s%%", "?")
+	if RebekahLocalSavedata.loveRoomReplacePercent then
+		valueOutput = string.format("%.1f%%", RebekahLocalSavedata.loveRoomReplacePercent)
+	else
+	--	yandereWaifu:updatePlanetariumChance()
+	end
+	 font:DrawString(valueOutput, textCoords.X+16, textCoords.Y+1, KColor(1,1,1,0.5),0,true)
+	 rebroom_hudSprite:Render(coords, Vector(0,0), Vector(0,0))
+
+	--differential popup
+	if Alpha and Alpha>0 then
+		local alpha = Alpha
+		if Alpha > 0.5 then
+			alpha = 0.5
+		end
+		--if  storage.previousFloorSpawnChance == nil then 
+		--	 storage.previousFloorSpawnChance =  storage.currentFloorSpawnChance
+		--end
+		local difference = RebekahLocalSavedata.loveRoomReplacePercent + RebekahLocalSavedata.savedloveRoomDepletePercent
+		local differenceOutput = string.format("%.1f%%", difference)
+		local slide = TextAcceleration((2.9 - Alpha)/(2 * 0.01))
+		if difference>0 then --positive difference
+			 font:DrawString("+"..differenceOutput, textCoords.X + 46 + slide, textCoords.Y+1, KColor(0,1,0,alpha),0,true)
+		elseif difference<0 then --negative difference
+			 font:DrawString(differenceOutput, textCoords.X + 46 + slide, textCoords.Y+1, KColor(1,0,0,alpha),0,true)
+		end
+		Alpha = Alpha-0.01
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, yandereWaifu.rebekahsroomDisplayonRender)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.rebekahsroomDisplayonRender)

@@ -60,6 +60,9 @@ RebekahCurse = {
 	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
 	COLLECTIBLE_THEENCHIRIDION = Isaac.GetItemIdByName("The Enchiridion"),
 	COLLECTIBLE_BODYDYSMORHIA = Isaac.GetItemIdByName("Body Dysmorphia"),
+	COLLECTIBLE_EYESOFTHEDEAD = Isaac.GetItemIdByName("Eyes of the Dead"),
+	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoraisis"),
+	COLLECTIBLE_NOTEBOOKOFTHEDEAD = Isaac.GetItemIdByName("Notebook of the Dead"),
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
 	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
@@ -124,6 +127,8 @@ RebekahCurse = {
 	ENTITY_ARCANE_CIRCLE = Isaac.GetEntityVariantByName("Arcane Circle"),
 	ENTITY_SPECIALBEAM = Isaac.GetEntityVariantByName("Special Beam"),
 	ENTITY_BROKEN_GLASSES = Isaac.GetEntityVariantByName("Broken Glasses"),
+	ENTITY_REBEKAH_ENTITY_REPLACE = Isaac.GetEntityVariantByName("Rebekah Entity Replace"),
+	ENTITY_REBEKAHS_CARPET_REPLACE = Isaac.GetEntityVariantByName("Rebekah&apos;s Carpet (Rebekah Entity Replace)"),
 	
 	--red heart mode
 	ENTITY_ORBITALTARGET = Isaac.GetEntityVariantByName("Orbital Target"),
@@ -223,6 +228,7 @@ RebekahCurse = {
 	ENTITY_GOLEMFIST = Isaac.GetEntityVariantByName("Patriarch's Fist"),
 	ENTITY_BEAUTIFULGRAVEDROP = Isaac.GetEntityVariantByName("Beautiful Grave Drop"),
 	ENTITY_EGGSHELLS = Isaac.GetEntityVariantByName("Eggshells"),
+	ENTITY_DEATHNOTETARGET = Isaac.GetEntityVariantByName("Death Note Target"),
 	
 	REB_RED = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	REB_SOUL = Isaac.GetPlayerTypeByName("Soul Rebekah"),
@@ -270,6 +276,8 @@ RebekahCurseSounds = {
 	SOUND_SOULGARGLE = Isaac.GetSoundIdByName("Soul Gargle"),
 	
 	SOUND_EVILSUMMONAPOSTATE = Isaac.GetSoundIdByName("Evil Spawn"),
+	
+	SOUND_ETERNALJINGLE = Isaac.GetSoundIdByName("Eternal Jingle"),
 	
 	SOUND_CHRISTIAN_CHANT = Isaac.GetSoundIdByName("Christian Chant"),
 	SOUND_CHRISTIAN_OVERTAKE = Isaac.GetSoundIdByName("Christian Overtake"),

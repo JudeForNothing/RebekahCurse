@@ -1,18 +1,18 @@
 <pocketitems>
-	<card type="object" pickup="120" description="Hatch a surprise" name="Easter Egg" hud="redegg" mimiccharge="4"/>
-	<card type="object" pickup="121" description="Hatch a surprise" name="Aqua Easter Egg" hud="aquaegg" mimiccharge="4"/>
-	<card type="object" pickup="122" description="Hatch a surprise" name="Yellow Easter Egg" hud="yellowegg" mimiccharge="4"/>
-	<card type="object" pickup="123" description="Hatch a surprise" name="Green Easter Egg" hud="greenegg" mimiccharge="4"/>
-	<card type="object" pickup="124" description="Hatch a surprise" name="Blue Easter Egg" hud="blueegg" mimiccharge="4"/>
-	<card type="object" pickup="125" description="Hatch a surprise" name="Pink Easter Egg" hud="pinkegg" mimiccharge="4"/>
-	<card type="object" pickup="126" description="Hatch a surprise" name="Striped Easter Egg" hud="redstripeegg" mimiccharge="4"/>
-	<card type="object" pickup="127" description="Hatch a surprise" name="Aqua Striped Easter Egg" hud="aquastripeegg" mimiccharge="4"/>
-	<card type="object" pickup="128" description="Hatch a surprise" name="Yellow Zigzag Easter Egg" hud="yellowzigzagegg" mimiccharge="4"/>
-	<card type="object" pickup="129" description="Hatch a surprise" name="Green Zigzag Easter Egg" hud="greenzigzagegg" mimiccharge="4"/>
-	<card type="object" pickup="130" description="Hatch a surprise" name="Blue Zigzag Easter Egg" hud="bluezigzagegg" mimiccharge="4"/>
-	<card type="object" pickup="131" description="Hatch a surprise" name="Pink Striped Easter Egg" hud="pinkstripeegg" mimiccharge="4"/>
+	<card type="object" pickup="120" description="Hatch a surprise" name="Surprise Egg" hud="redegg" mimiccharge="4"/>
+	<card type="object" pickup="121" description="Hatch a surprise" name="Aqua Surprise Egg" hud="aquaegg" mimiccharge="4"/>
+	<card type="object" pickup="122" description="Hatch a surprise" name="Yellow Surprise Egg" hud="yellowegg" mimiccharge="4"/>
+	<card type="object" pickup="123" description="Hatch a surprise" name="Green Surprise Egg" hud="greenegg" mimiccharge="4"/>
+	<card type="object" pickup="124" description="Hatch a surprise" name="Blue Surprise Egg" hud="blueegg" mimiccharge="4"/>
+	<card type="object" pickup="125" description="Hatch a surprise" name="Pink Surprise Egg" hud="pinkegg" mimiccharge="4"/>
+	<card type="object" pickup="126" description="Hatch a surprise" name="Striped Surprise Egg" hud="redstripeegg" mimiccharge="4"/>
+	<card type="object" pickup="127" description="Hatch a surprise" name="Aqua Striped Surprise Egg" hud="aquastripeegg" mimiccharge="4"/>
+	<card type="object" pickup="128" description="Hatch a surprise" name="Yellow Zigzag Surprise Egg" hud="yellowzigzagegg" mimiccharge="4"/>
+	<card type="object" pickup="129" description="Hatch a surprise" name="Green Zigzag Surprise Egg" hud="greenzigzagegg" mimiccharge="4"/>
+	<card type="object" pickup="130" description="Hatch a surprise" name="Blue Zigzag Surprise Egg" hud="bluezigzagegg" mimiccharge="4"/>
+	<card type="object" pickup="131" description="Hatch a surprise" name="Pink Striped Surprise Egg" hud="pinkstripeegg" mimiccharge="4"/>
 	
-	<card type="object" pickup="132" description="Hatch a bad surprise" name="Cursed Easter Egg" hud="cursedegg" mimiccharge="4"/>
-	<card type="object" pickup="133" description="Hatch a good surprise" name="Blessed Easter Egg" hud="blessedegg" mimiccharge="12"/>
-	<card type="object" pickup="134" description="Hatch a lot of surprises" name="Golden Easter Egg" hud="goldenegg" mimiccharge="8"/>
+	<card type="object" pickup="132" description="Hatch a bad surprise" name="Cursed Surprise Egg" hud="cursedegg" mimiccharge="4"/>
+	<card type="object" pickup="133" description="Hatch a good surprise" name="Blessed Surprise Egg" hud="blessedegg" mimiccharge="12"/>
+	<card type="object" pickup="134" description="Hatch a lot of surprises" name="Golden Surprise Egg" hud="goldenegg" mimiccharge="8"/>
 </pocketitems>

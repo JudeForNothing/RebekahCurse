@@ -678,7 +678,7 @@ function yandereWaifu.rottenFlyTearColl(_, fam, collider, low)
 				end
 			end
 			if fam.SubType == 11 then --spit
-				local tears = fam.Player:FireTear(fam.Position, Vector.FromAngle(i):Resized(4), false, false, false):ToTear()
+				local tears = fam.Player:FireTear(fam.Position, Vector.FromAngle(0):Resized(4), false, false, false):ToTear()
 				tears.Position = fam.Position
 				tears:ChangeVariant(TearVariant.BLOOD)
 				tears:AddTearFlags(TearFlags.TEAR_EXPLOSIVE)

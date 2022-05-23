@@ -501,9 +501,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if sprite:IsFinished("Ping") then
 		eff:Remove()
 	end
-	if eff.SubType == 10 then
+	if eff.SubType == 10 and data.Parent then
+		eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
 		eff.Position = data.Parent.Position
-		eff.Variant = data.Parent.Variant
+		--eff.Variant = data.Parent.Variant
 	end
 end, RebekahCurse.ENTITY_PINGEFFECT)
 

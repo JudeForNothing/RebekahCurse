@@ -1,6 +1,16 @@
 --dice of fate code
 function yandereWaifu:useDiceOfFate(collItem, rng, player)
-	local hearts = player:GetMaxHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
+	for i, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, false, false)) do
+		local data = yandereWaifu.GetEntityData(pickup)
+		data.justSpawned = false
+		local validPickup = (pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE)
+		if validPickup and not pickup.SpawnerEntity then
+			yandereWaifu.RerollToLoveRoomPool(pickup)
+			local newColl = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, ent)
+		end
+	end
+	player:AnimateCollectible(RebekahCurse.COLLECTIBLE_DICEOFFATE)
+	--[[local hearts = player:GetMaxHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
 	local addEternal, addGolden = false, 0
 	if player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER then
 		player:AddGoldenHearts(-player:GetGoldenHearts())
@@ -101,6 +111,6 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 		player:AddBoneHearts(1)
 	end
 	
-	return true
+	return true]]
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useDiceOfFate, RebekahCurse.COLLECTIBLE_DICEOFFATE );

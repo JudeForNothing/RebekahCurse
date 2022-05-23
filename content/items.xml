@@ -16,7 +16,7 @@
 	<active id="20" name="  Love me, love me not  " description="Est-ce qu ils ne m aiment pas?" gfx="collectibles_lovesme3.png" maxcharges="1" quality="3" hidden="true"/>
 	<active id="30" name="Doorstopper" description="Slam your knowledge to others!" gfx="collectibles_doorstopper.png" tags="book" maxcharges="3" quality="2"/>
 	<passive id="32" name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2"/>
-	<passive id="33" name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3"/>
+	<passive id="33" name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3" cache="speed"/>
 	<active id="29" name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
 	<active id="31" name="Defuse = Rewards" description="Use your manual to defuse, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
 	
@@ -53,7 +53,7 @@
 	<trinket name="Isaac's Locks" description="Lost locks" gfx="collectibles_isaacs_locks.png" />
 	<passive id="14" name="Lovesick" description="You sing and yearn for love" gfx="collectibles_lovesick.png" quality="4"/>
 	<passive id="35" name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" tag="nolostbr" quality="3"/>
-	<active id="39" name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4" quality="2"/>
+	<active id="39" name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4" quality="4"/>
 	<passive id="18" name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/>
 	<passive id="21" name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="collectibles_rebekahs_favorite.png" quality="3"/>
 	
