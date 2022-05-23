@@ -32,13 +32,19 @@ function yandereWaifu.RebekahRottenBarrage(player, direction)
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 		end
 	else]]
-	local pos 
+	local pos
 	if data.RebHead then pos = data.RebHead.Position else pos = player.Position end
 	local subtype = 0
 	if player:HasWeaponType(WeaponType.WEAPON_BOMBS) or player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then subtype = 1 end
 	if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then subtype = 2 end
 	if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then subtype = 3 end
-	local ball = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENFLYBALL, subtype, pos, direction, player):ToFamiliar();
+	if #Isaac.FindByType( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENFLYBALL, -1 ) < 8 then
+		local ball = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENFLYBALL, subtype, pos, direction, player):ToFamiliar()
+	else
+		SFXManager():Play(SoundEffect.SOUND_BOSS2INTRO_ERRORBUZZ, 0.7333333)
+		 addReserveStocks(player, 1)
+		return
+	end
 	--end
 end
 
@@ -266,6 +272,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--print(#data.RottenFlyTable)
 end)
 function yandereWaifu:onFamiliarRottenFlyInit(fam)
+	print(#Isaac.FindByType(fam.Type, 62690, -1) + #Isaac.FindByType(3, 43, -1))
+	if #Isaac.FindByType(fam.Type, 62690, -1) + #Isaac.FindByType(3, 43, -1) > 64 --[[blue fly]] and fam.Variant == 62690 then fam:Remove() end
 	local player = fam.Player:ToPlayer()
     fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.5
 	if fam.SubType == 1 then
