@@ -48,11 +48,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		local function GrantDmg(player)
 			local room = ILIB.game:GetRoom()
 
-			if amount > damage.HitPoints then
+			if amount > damage.HitPoints and player.Damage < yandereWaifu.GetEntityData(player).PersistentPlayerData.EyeDeadDamage * 3 then
 				if not yandereWaifu.GetEntityData(player).EyesOfDeadDamage then
-					yandereWaifu.GetEntityData(player).EyesOfDeadDamage = (yandereWaifu.GetEntityData(damage).EyesOfDeadAge/300000)*(1+player.Damage/10)
+					yandereWaifu.GetEntityData(player).EyesOfDeadDamage = (yandereWaifu.GetEntityData(damage).EyesOfDeadAge/350000)*(1+player.Damage/10)
 				else
-					yandereWaifu.GetEntityData(player).EyesOfDeadDamage = yandereWaifu.GetEntityData(player).EyesOfDeadDamage + (yandereWaifu.GetEntityData(damage).EyesOfDeadAge/300000)*(1+player.Damage/10)
+					yandereWaifu.GetEntityData(player).EyesOfDeadDamage = yandereWaifu.GetEntityData(player).EyesOfDeadDamage + (yandereWaifu.GetEntityData(damage).EyesOfDeadAge/350000)*(1+player.Damage/10)
 				end
 			end
 		end
@@ -88,3 +88,15 @@ function yandereWaifu:EyeOfDeadCache(player, cacheF) --The thing the checks and 
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.EyeOfDeadCache)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
+	--local player = Isaac.GetPlayer(0);
+    local room = Game():GetRoom();
+	local data = yandereWaifu.GetEntityData(player)
+	--items function!
+		if player:HasCollectible(RebekahCurse.COLLECTIBLE_EYESOFTHEDEAD) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_EYESOFTHEDEAD ) then
+			player:AddNullCostume(RebekahCurseCostumes.EyesOfTheDead)
+			data.PersistentPlayerData.EyeDeadDamage = player.Damage*2
+		end
+	--end
+end)

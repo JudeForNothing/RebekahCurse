@@ -650,11 +650,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			yandereWaifu.GetEntityData(player).IsLeftover = false
 			yandereWaifu.GetEntityData(player).NoBoneSlamActive = true]]
 			
-			local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, fam.Position, Vector(0,0), nil) --body effect
+			--[[local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, fam.Position, Vector(0,0), nil) --body effect
 			yandereWaifu.GetEntityData(customBody).Player = player
 			yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
-			yandereWaifu.GetEntityData(customBody).BoneJumpOffFromJockey = true
+			yandereWaifu.GetEntityData(customBody).BoneJumpOffFromJockey = true]]
 			
+			player:SetMinDamageCooldown(45)
+			player.Visible = true
+			yandereWaifu.GetEntityData(player).IsAttackActive = false
+			yandereWaifu.RebekahCanShoot(player, true)
+			yandereWaifu.GetEntityData(player).IsLeftover = false
+			yandereWaifu.GetEntityData(player).NoBoneSlamActive = true
 			data.DeathFrame = 1800 
 			
 			fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/none.png")

@@ -57,7 +57,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, yandereWaifu.UpdateCurseRoomDeplete)
 
 function yandereWaifu:rebekahsroomDisplayonRender(shaderName)
-	--if yandereWaifu:shouldDeHook() then return end
+	if yandereWaifu:shouldDeHook() then return end
 	
 	local isShader = shaderName == "UI_DrawRebekahHUD_DummyShader" and true or false
 	

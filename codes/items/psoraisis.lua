@@ -14,6 +14,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_PSORAISIS) then
+	if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_PSORAISIS ) then
+		player:AddNullCostume(RebekahCurseCostumes.Psoriasis)
+	end
 		if not data.PsoriasisHealth or (player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and player:GetName() == "Magdalene" and data.MaxPsoriasisHealth < 8) then
 			if player:GetName() == "Magdalene" then
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then

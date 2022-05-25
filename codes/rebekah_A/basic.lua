@@ -39,7 +39,25 @@ local function RebeccaInit(player)
 	--heart reserve
 	BasicRebeccaInit(player)
 	
-	yandereWaifu.ChangeMode( player, REBECCA_MODE.RedHearts, true );
+	local mode = REBECCA_MODE.RedHearts
+	if player:GetPlayerType() ==  RebekahCurse.REB_RED then
+		mode = REBECCA_MODE.RedHearts
+	elseif player:GetPlayerType() == RebekahCurse.REB_SOUL then
+		mode = REBECCA_MODE.SoulHearts 
+	elseif player:GetPlayerType() == RebekahCurse.REB_GOLD then
+		mode = REBECCA_MODE.GoldHearts
+	elseif player:GetPlayerType() == RebekahCurse.REB_EVIL then
+		mode = REBECCA_MODE.EvilHearts
+	elseif player:GetPlayerType() == RebekahCurse.REB_ETERNAL then
+		mode = REBECCA_MODE.EternalHearts
+	elseif player:GetPlayerType() == RebekahCurse.REB_BONE then
+		mode = REBECCA_MODE.BoneHearts
+	elseif player:GetPlayerType() == RebekahCurse.REB_ROTTEN then
+		mode = REBECCA_MODE.RottenHearts 
+	elseif player:GetPlayerType() == RebekahCurse.REB_BROKEN then
+		mode = REBECCA_MODE.BrokenHearts
+	end
+	yandereWaifu.ChangeMode( player, mode, true, _, true);
 	yandereWaifu.AddRandomHeart(player)
 	
 
@@ -873,8 +891,9 @@ function yandereWaifu:RebekahNewRoom()
 				end
 				data.IsUninteractible = false 
 			end --reset orbitals
+			
 			print(data.specialActiveAtkCooldown)
-			if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 then --reset special attack
+			if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 and not data.IsLeftover then --reset special attack
 				yandereWaifu.RebekahCanShoot(player, true)
 				player.FireDelay = 60
 				data.FinishedPlayingCustomAnim = nil

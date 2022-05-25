@@ -42,4 +42,8 @@
 	<costume anm2path="oversizedsweater.anm2" type="none" priority="300"/>
 	<costume anm2path="techhz.anm2" type="none" priority="20"/>
 	<costume anm2path="originalsin.anm2" type="none" priority="210"/>
+	<costume anm2path="potatosnack.anm2" type="none"/>
+	<costume anm2path="eyesofthedead.anm2" type="none"  priority="100" hasSkinAlt="true"/>
+	<costume anm2path="adventuretime.anm2" type="none" priority="200"/>
+	<costume anm2path="psoriasis.anm2" type="none"  priority="50" hasSkinAlt="true"/>
 </costumes>

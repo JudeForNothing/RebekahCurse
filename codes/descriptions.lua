@@ -37,8 +37,16 @@ if EID then
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_WISHFULTHINKING, "On death, respawn as Wishful Isaac # Wishful Isaac has 10 Luck")
 	EID:addTrinket(RebekahCurse.TRINKET_DESTROYEDLULLABY, "Familiars have random tears and tearflags")
 	EID:addCollectible(RebekahCurse.COLLECTIBLE_OVERSIZEDSWEATER, "Picking up hearts also spawn their respective clot versions")
-	
-	-- EID mirror render
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_HEARTSANDCRAFTS, "Spawn a charmed paper enemy")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_TECHHZ, "Moving and shooting at the same time spawns a Tech X beam around you")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_ANGELSMORNINGSTAR, "Spawns a familiar morningstar which can hurt enemies and grids")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_POTATOSNACK, "Grants 2 soul hearts")
+	EID:addTrinket(RebekahCurse.TRINKET_ORIGINALSIN, "Protects your devil deal chance on first hurt each floor")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_THEENCHIRIDION, "Spawns a familiar morningstar which can hurt enemies and grids")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_BODYDYSMORHIA, "Exchange hearts for stats depending on heart chosen")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_EYESOFTHEDEAD, "On pickup, saves your last damage * 2 # Enemies have numbers under them, upon death grant temporary damage up depending on said numbers # Damage cap is the saved last damage before pickup * 3" )
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_PSORAISIS, "Grants skin armor points # saves you from damage at cost of one armor point # armor points regenerate slowly overtime")
+	EID:addCollectible(RebekahCurse.COLLECTIBLE_NOTEBOOKOFTHEDEAD, "Choose an enemy to insta-kill # Bosses drain their health overtime # Killed enemies spawn a dark laser beam around them")
 	EIDRebekahsMirror = {
 		Red = {
 			["Name"] = "{{Heart}} Red Personality", -- Display name of Personality

@@ -61,7 +61,7 @@ RebekahCurse = {
 	COLLECTIBLE_THEENCHIRIDION = Isaac.GetItemIdByName("The Enchiridion"),
 	COLLECTIBLE_BODYDYSMORHIA = Isaac.GetItemIdByName("Body Dysmorphia"),
 	COLLECTIBLE_EYESOFTHEDEAD = Isaac.GetItemIdByName("Eyes of the Dead"),
-	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoraisis"),
+	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoriasis"),
 	COLLECTIBLE_NOTEBOOKOFTHEDEAD = Isaac.GetItemIdByName("Notebook of the Dead"),
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
@@ -230,6 +230,7 @@ RebekahCurse = {
 	ENTITY_EGGSHELLS = Isaac.GetEntityVariantByName("Eggshells"),
 	ENTITY_DEATHNOTETARGET = Isaac.GetEntityVariantByName("Death Note Target"),
 	
+	TECHNICAL_REB = Isaac.GetPlayerTypeByName("Technical Rebekah"),
 	REB_RED = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	REB_SOUL = Isaac.GetPlayerTypeByName("Soul Rebekah"),
 	REB_EVIL = Isaac.GetPlayerTypeByName("Evil Rebekah"),
@@ -331,6 +332,7 @@ RebekahCurseSounds = {
 	SOUND_CURSE_BLINDNESS = Isaac.GetSoundIdByName("Easter Blindness"),
 	SOUND_CURSE_CURSED = Isaac.GetSoundIdByName("Easter Curse"),
 	SOUND_ORIGINALSIN_SHATTER = Isaac.GetSoundIdByName("Original Sin Shatter"),
+	SOUND_SCRIBBLING = Isaac.GetSoundIdByName("Scribbling"),
 }
 
 RebekahCurseMusic = {
@@ -426,6 +428,10 @@ RebekahCurseCostumes = {
 	OversizedSweater = Isaac.GetCostumeIdByPath("gfx/characters/oversizedsweater.anm2"),
 	TechHz = Isaac.GetCostumeIdByPath("gfx/characters/techhz.anm2"),
 	OriginalSin = Isaac.GetCostumeIdByPath("gfx/characters/originalsin.anm2"),
+	PotatoSnack = Isaac.GetCostumeIdByPath("gfx/characters/potatosnack.anm2"),
+	EyesOfTheDead = Isaac.GetCostumeIdByPath("gfx/characters/eyesofthedead.anm2"),
+	AdventureTime = Isaac.GetCostumeIdByPath("gfx/characters/adventuretime.anm2"),
+	Psoriasis = Isaac.GetCostumeIdByPath("gfx/characters/psoriasis.anm2"),
 }
 
 

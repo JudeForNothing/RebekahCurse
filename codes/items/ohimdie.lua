@@ -355,16 +355,20 @@ end, RebekahCurse.ENTITY_OHIMPOLTY)
 
 function yandereWaifu:ImDiePoltyCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
+	local willspawn = 0
+	if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) >=4 then
+		willspawn = 1
+	end
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE) then
 			local activePrimary = InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)) and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)
 			local activeSecondary = InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)) and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)
 			local activePocket = InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)) and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)
 			if activePrimary or activeSecondary or activePocket then
-				player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_OHIMDIE), RNG())
+				player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_OHIMDIE)*(willspawn), RNG())
 			end
 		elseif not player:HasCollectible(RebekahCurse.COLLECTIBLE_OHIMDIE) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_OHIMDIE), RNG())
+			player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_OHIMDIE)*(willspawn), RNG())
 		end
 	end
 end

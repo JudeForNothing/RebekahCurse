@@ -9,7 +9,7 @@ function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 	else
 		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
 	end
-
+	InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SCRIBBLING, 1, 0, false, 1.5)
 	InutilLib.ToggleShowActive(player, true)
 end
 

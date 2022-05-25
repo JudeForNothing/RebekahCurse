@@ -69,8 +69,8 @@
 	<trinket name="Destroyed Lullaby" description="It's torn to pieces" gfx="collectibles_destroyed_lullaby.png" />
 	<passive id="44" name="Oversized Sweater" description="Cover while they clot" gfx="collectibles_oversizedsweater.png" quality="2"/>
 	<active id="34" name="Notebook of the Dead" description="Be justice" gfx="collectibles_deathsnotebook.png" maxcharges="6" quality="3"/>
-	<passive id="44" name="Eyes of the Dead" description="See who drops next" gfx="collectibles_eyeofthedead.png" quality="3"/>
-	<passive id="44" name="Psoraisis" description="Mass defense" gfx="collectibles_psoraisis.png" quality="3"/>
+	<passive id="44" name="Eyes of the Dead" description="See who drops next" gfx="collectibles_eyeofthedead.png" quality="3" devilprice="2"/>
+	<passive id="44" name="Psoriasis" description="Mass defense" gfx="collectibles_psoraisis.png" quality="3"/>
 	<active id="44" name="Hearts and Crafts" description="Made with Love!" gfx="collectibles_heartsandcrafts.png" maxcharges="3" quality="2"/>
 	<passive id="44" name="Tech Hz" description="Love Hertz" gfx="collectibles_techhz.png" quality="2"/>
 	<familiar id="40" name="Angel's Morningstar" description="Swing it" gfx="collectibles_angelsmorningstar.png" quality="3"/>

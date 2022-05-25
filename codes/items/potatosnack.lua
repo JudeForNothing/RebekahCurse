@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--items function!
 	--if player:HasCollectible(RebekahCurse.COLLECTIBLE_POTATOSNACK) then
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_POTATOSNACK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_POTATOSNACK ) then
-			player:AddNullCostume(RebekahCurseCostumes.LunchboxCos)
+			player:AddNullCostume(RebekahCurseCostumes.PotatoSnack)
 		end
 	--end
 end)

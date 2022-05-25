@@ -258,6 +258,8 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 			player:GetSprite():Load('gfx/rebekahsfluidhairforsoul.anm2',false)
 		elseif mode == REBECCA_MODE.EvilHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforevil.anm2',false)
+		elseif mode == REBECCA_MODE.EternalHearts then --special interacts
+			player:GetSprite():Load('gfx/rebekahsfluidhairforeternal.anm2',false)
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 		end
@@ -530,10 +532,10 @@ function yandereWaifu:SetRebekahPocketActiveItem( player, mode )
 	end
 end
 
-function yandereWaifu.ChangeMode( player, mode, free, fanfare )
+function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 	local data = yandereWaifu.GetEntityData(player)
 	data.currentMode = mode;
-	
+	local dontchange = dontchange or false
 	if free ~= true then 
 		if mode == REBECCA_MODE.RedHearts then
 			player:AddHearts(-2);
@@ -577,22 +579,24 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 	--	yandereWaifu.SpawnPoofParticle( player.Position + Vector( 0, 1 ), Vector( 0, 0 ), player, RebekahPoofParticleTypeByMode[ mode ] );
 	--end
 	
-	if mode == REBECCA_MODE.RedHearts then
-		player:ChangePlayerType(RebekahCurse.REB_RED)
-	elseif mode == REBECCA_MODE.SoulHearts then
-		player:ChangePlayerType(RebekahCurse.REB_SOUL)
-	elseif mode == REBECCA_MODE.GoldHearts then
-		player:ChangePlayerType(RebekahCurse.REB_GOLD)
-	elseif mode == REBECCA_MODE.EvilHearts then
-		player:ChangePlayerType(RebekahCurse.REB_EVIL)
-	elseif mode == REBECCA_MODE.EternalHearts then
-		player:ChangePlayerType(RebekahCurse.REB_ETERNAL)
-	elseif mode == REBECCA_MODE.BoneHearts then
-		player:ChangePlayerType(RebekahCurse.REB_BONE)
-	elseif mode == REBECCA_MODE.RottenHearts then
-		player:ChangePlayerType(RebekahCurse.REB_ROTTEN)
-	elseif mode == REBECCA_MODE.BrokenHearts then
-		player:ChangePlayerType(RebekahCurse.REB_BROKEN)
+	if not dontchange then
+		if mode == REBECCA_MODE.RedHearts then
+			player:ChangePlayerType(RebekahCurse.REB_RED)
+		elseif mode == REBECCA_MODE.SoulHearts then
+			player:ChangePlayerType(RebekahCurse.REB_SOUL)
+		elseif mode == REBECCA_MODE.GoldHearts then
+			player:ChangePlayerType(RebekahCurse.REB_GOLD)
+		elseif mode == REBECCA_MODE.EvilHearts then
+			player:ChangePlayerType(RebekahCurse.REB_EVIL)
+		elseif mode == REBECCA_MODE.EternalHearts then
+			player:ChangePlayerType(RebekahCurse.REB_ETERNAL)
+		elseif mode == REBECCA_MODE.BoneHearts then
+			player:ChangePlayerType(RebekahCurse.REB_BONE)
+		elseif mode == REBECCA_MODE.RottenHearts then
+			player:ChangePlayerType(RebekahCurse.REB_ROTTEN)
+		elseif mode == REBECCA_MODE.BrokenHearts then
+			player:ChangePlayerType(RebekahCurse.REB_BROKEN)
+		end
 	end
 	
 	yandereWaifu:SetRebekahPocketActiveItem(player,mode)
@@ -606,18 +610,18 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare )
 	--stat evaluation =3=
 	--yandereWaifu.ApplyCollectibleEffects(player);
 	
-	if mode == REBECCA_MODE.EternalHearts then
+	--[[if mode == REBECCA_MODE.EternalHearts then
 		yandereWaifu.RebekahCanShoot(player, false)
 	else
 		yandereWaifu.RebekahCanShoot(player, true)
-	end
+	end]]
 	
 	yandereWaifu.ApplyCostumes( mode, player );
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	
 	--make changes to Rebecca
-	player:AddCacheFlags(CacheFlag.CACHE_ALL);
-	player:EvaluateItems();
+	--player:AddCacheFlags(CacheFlag.CACHE_ALL);
+	--player:EvaluateItems();
 	
 	yandereWaifu.GetEntityData(player).countdownFrames = 0
 	yandereWaifu.GetEntityData(player).IsDashActive = false
@@ -966,7 +970,7 @@ end
 function yandereWaifu:shouldDeHook()
 
 	local reqs = {
-		not (ILIB.room:GetType() == RoomType.ROOM_BOSS and not ILIB.room:IsClear() and ILIB.room:GetFrameCount() < 1),
+		(ILIB.room:GetType() == RoomType.ROOM_BOSS and not ILIB.room:IsClear() and ILIB.room:GetFrameCount() < 1),
 		not Options.FoundHUD,
 		not ILIB.game:GetHUD():IsVisible(),
 		ILIB.game:GetRoom():GetType() == RoomType.ROOM_DUNGEON and ILIB.level:GetAbsoluteStage() == LevelStage.STAGE8, --beast fight

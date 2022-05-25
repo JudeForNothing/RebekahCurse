@@ -261,4 +261,7 @@
 	<sound name="Original Sin Shatter">
 		<sample weight="1" path="items/originalsin_shatter.wav" />
 	</sound>
+	<sound name="Scribbling">
+		<sample weight="1" path="items/scribble.wav" />
+	</sound>
 </sounds>

@@ -287,8 +287,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  npc)
 			yandereWaifu.AddGenericTracer(npc.Position, beamColor, npc.SpriteRotation + 90, 7)
 		end
 		if (npc.Type == EntityType.ENTITY_REAP_CREEP) then
-			print(data.NotForward)
-			print(spr:GetAnimation())
 			if (spr:IsPlaying("Attack3BeamStart")) and spr:GetFrame() == 15 and not data.NotForward then --start charge beam
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 90, 7)
 			elseif (spr:IsPlaying("Attack3Charge")) and spr:GetFrame() == 15 then --start beam start
@@ -299,6 +297,29 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  npc)
 				data.NotForward = true
 			elseif data.NotForward and spr:IsPlaying("Idle3") then
 				data.NotForward = false
+			end
+		end
+		if (npc.Type == EntityType.ENTITY_VIS) then
+			local angle = 0
+			if (spr:IsPlaying("Attack01Horiz") or spr:IsPlaying("Attack02Horiz") or spr:IsPlaying("Attack03Horiz")) and spr:GetFrame() == 15 then --start charge beam
+				angle = 0
+				if npc.FlipX then
+					angle = 180
+				end
+			elseif (spr:IsPlaying("Attack01Down") or spr:IsPlaying("Attack02Down") or spr:IsPlaying("Attack03Down")) and spr:GetFrame() == 15 then --start charge beam
+				angle = 90
+			elseif (spr:IsPlaying("Attack01Up") or spr:IsPlaying("Attack02Up") or spr:IsPlaying("Attack03Up")) and spr:GetFrame() == 15 then --start charge beam
+				angle = 270
+			end
+			if not (spr:IsPlaying("WalkHori")) and spr:GetFrame() == 15 then
+				yandereWaifu.AddGenericTracer(npc.Position, beamColor, angle, 7)
+				if npc.Variant == 1 then
+					yandereWaifu.AddGenericTracer(npc.Position, beamColor, angle+180, 7)
+				elseif npc.Variant == 3 then
+					for i = 90, 270, 90 do
+						yandereWaifu.AddGenericTracer(npc.Position, beamColor, angle+i, 7)
+					end
+				end
 			end
 		end
 	end
