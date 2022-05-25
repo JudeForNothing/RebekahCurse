@@ -1,3 +1,5 @@
+if StageAPI and StageAPI.Loaded then
+
 local RebekahCurseRoomBackdrop = StageAPI.BackdropHelper({
     Walls = {"room_2", "room_1", "room_2"},
 	NFloors = {"nfloor"}
@@ -76,3 +78,4 @@ MMC.AddMusicCallback(yandereWaifu, function(self, music)
 	end
 end)
 
+end

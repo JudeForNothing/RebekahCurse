@@ -56,6 +56,15 @@ function yandereWaifu.UpdateCurseRoomDeplete()
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, yandereWaifu.UpdateCurseRoomDeplete)
 
+local function TextAcceleration(frame) --Overfit distance profile for difference text slide in
+	frame = frame - 14
+	if frame > 0 then
+		return 0
+	end
+	return -(15.1/(13*13))*frame*frame
+end
+
+
 function yandereWaifu:rebekahsroomDisplayonRender(shaderName)
 	if yandereWaifu:shouldDeHook() then return end
 	

@@ -1,10 +1,9 @@
 
 -------LOVE ROOM----------
+if StageAPI and StageAPI.Loaded then
 
 function yandereWaifu.RerollToLoveRoomPool(pickup)
-	print("test")
 	local index = math.random(0,#yandereWaifu.LoveRoomPool)
-	print(index)
 	local items = yandereWaifu.LoveRoomPool[index]
 	local subtype = items.item
 	pickup = pickup:ToPickup()
@@ -66,3 +65,5 @@ function yandereWaifu:useLoveRoom(collItem, rng) --dice pool reroll
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useLoveRoom, CollectibleType.COLLECTIBLE_D6)
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useLoveRoom, CollectibleType.COLLECTIBLE_D100)
+
+end
