@@ -125,7 +125,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			data.SwingingAccel = 0
 		end
 	elseif data.Attached and data.Attached:IsDead() then
-		print("cesspool")
 		InutilLib.RefundActiveCharge(player, 120,  false, true)
 		eff:Remove()
 	else
@@ -154,7 +153,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if eff.Position:Distance(player.Position) < player.Size + eff.Size + 16 then
 				InutilLib.RefundActiveCharge(player, 300,  false, true)
 				eff:Remove()
-				print("pain")
 			end
 			--InutilLib.SFX:Play(RebekahCurseSounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 0.5)
 		end

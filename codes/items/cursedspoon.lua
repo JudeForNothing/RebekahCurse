@@ -41,7 +41,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if (data.Player.Position - eff.Position):Length() > 250 then
 			InutilLib.MoveDirectlyTowardsTarget(eff, player, 1, 0.9)
 		end
-		if math.random(1,2) == 2 and math.floor(eff.FrameCount % 30) == 0 then
+		if math.random(1,3) == 3 and math.floor(eff.FrameCount % 30) == 0 then
 			sprite:Play("Attack", true)
 			local dir = data.Player.Position - eff.Position
 			data.dir = dir
@@ -50,22 +50,24 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	
 	if sprite:IsPlaying("Attack") then
-		if sprite:GetFrame() >= 15 and sprite:GetFrame() <= 40 then
-			eff.Velocity = data.dir:Resized(20)
+		if sprite:GetFrame() >= 5 and sprite:GetFrame() <= 25 then
+			eff.Velocity = eff.Velocity * 0.7
+		elseif sprite:GetFrame() >= 25 and sprite:GetFrame() <= 45 then
+			eff.Velocity = data.dir:Resized(15)
 			for i, ent in pairs (Isaac.GetRoomEntities()) do
 				if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 					if eff.FrameCount % 3 == 0 then
 						if ent.Position:Distance(eff.Position) <= 120 then
-							ent:TakeDamage(5, 0, EntityRef(eff), 1)
+							ent:TakeDamage(2+player.Damage/3, 0, EntityRef(eff), 1)
 						end
 					end
 				elseif ent.Type == 1 then
-					if ent.Position:Distance(eff.Position) <= 80 then
+					if ent.Position:Distance(eff.Position) <= 55 then
 						ent:TakeDamage(1, 0, EntityRef(player), 10)
 					end
 				end
 			end
-		elseif sprite:GetFrame() > 40 then
+		elseif sprite:GetFrame() > 45 then
 			eff.Velocity = eff.Velocity * 0.9
 		end
 	end

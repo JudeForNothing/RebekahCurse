@@ -13,7 +13,7 @@ function yandereWaifu.RerollToLoveRoomPool(pickup)
 	--	table.remove(yandereWaifu.LoveRoomPool, index)
 	--	print("remove")
 	end
-	print(#yandereWaifu.LoveRoomPool)
+	--print(#yandereWaifu.LoveRoomPool)
 	--local newColl = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, yandereWaifu.LoveRoomPool[math.random(1,#yandereWaifu.LoveRoomPool)], position, Vector.Zero, ent)
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
@@ -30,10 +30,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 		end
 		if validPickup and data.justSpawned and not pickup.SpawnerEntity then
 			--if pickup.SubType ~= yandereWaifu.LoveRoomPool[j] then
-				print("roll one")
-				print(data.IsRerolled)
 				yandereWaifu.RerollToLoveRoomPool(pickup)
-				print(pickup.FrameCount)
 				--data.IsRerolled = false
 			--end
 		end
@@ -57,7 +54,6 @@ function yandereWaifu:useLoveRoom(collItem, rng) --dice pool reroll
 			if coll.SubType ~= 0 then
 				--if coll.SubType ~= yandereWaifu.LoveRoomPool[j] then
 					yandereWaifu.RerollToLoveRoomPool(coll)
-					print("roll 2")
 				--end
 			end
 		end

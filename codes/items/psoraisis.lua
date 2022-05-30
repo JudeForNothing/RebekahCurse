@@ -35,13 +35,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 			--data.PsoriasisFrameCount = 2
 		else
-			if math.floor(player.FrameCount % 150) == 0 and data.MaxPsoriasisHealth > data.PsoriasisHealth then
+			if math.floor(player.FrameCount % 900) == 0 and data.MaxPsoriasisHealth > data.PsoriasisHealth then
 				data.PsoriasisHealth = data.PsoriasisHealth + 1
 				--data.PsoriasisFrameCount = 2
 			end
 		end
 	end
 end)
+
+function yandereWaifu:PsoriasisNewRoom()	
+	yandereWaifu.InsertMirrorData()
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local data = yandereWaifu.GetEntityData(player)
+		local room = ILIB.game:GetRoom()
+		if player:HasCollectible(RebekahCurse.COLLECTIBLE_PSORAISIS) then
+			if data.MaxPsoriasisHealth > data.PsoriasisHealth then
+				data.PsoriasisHealth = data.PsoriasisHealth + 1
+			end
+		end		
+	end
+end
+yandereWaifu:AddCallback( ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, yandereWaifu.PsoriasisNewRoom)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	local data = yandereWaifu.GetEntityData(damage)
@@ -50,9 +65,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		--	data.PsoriasisFrameCount = data.PsoriasisFrameCount - 1
 		--end
 		if data.PsoriasisHealth > 0 then
+			if damageFlag & DamageFlag.DAMAGE_SPIKES > 0 and math.random(1,2) == 2 then
 			--if data.PsoriasisFrameCount > 0 then
 				data.PsoriasisHealth = data.PsoriasisHealth - 1
+			elseif (damageFlag & DamageFlag.DAMAGE_TNT > 0 or damageFlag & DamageFlag.DAMAGE_EXPLOSION > 0) and not damage:ToPlayer():HasCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC) then
+			--if data.PsoriasisFrameCount > 0 then
+				data.PsoriasisHealth = 0
+			elseif damageFlag & DamageFlag.DAMAGE_CRUSH > 0 then
+			--if data.PsoriasisFrameCount > 0 then
+				data.PsoriasisHealth = data.PsoriasisHealth - 2
+			else
+				data.PsoriasisHealth = data.PsoriasisHealth - 1
 			--end
+			end
 			return false
 		end
 		--data.PsoriasisFrameCount = 2

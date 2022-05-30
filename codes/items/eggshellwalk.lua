@@ -196,7 +196,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			if spr:IsPlaying("Hop") then
 				if spr:IsEventTriggered("Jump") then
 					if enemy then
-						print("help me")
 						if fam.Position:Distance(enemy.Position) <= 200 then
 							fam.Velocity = (enemy.Position - fam.Position) / 8
 						else

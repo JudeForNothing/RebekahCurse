@@ -125,7 +125,6 @@ function yandereWaifu:ItemsNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = GetEntityData(player)
 		local room = game:GetRoom()
-		print(room:GetType())
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
 			for i, iss in pairs (Isaac.FindByType(RebekahCurse.ENTITY_TINYISAAC, 663123, -1, false, false)) do
 				iss.Position = player.Position

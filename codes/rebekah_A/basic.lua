@@ -69,7 +69,7 @@ local function RebeccaInit(player)
 	end
 	
 	--for other characters who comes in but not on game_start
-	if Game():GetRoom():GetFrameCount() > -1 and not yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
+	if Game():GetRoom():GetFrameCount() > -1 and not yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
 		yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
 		--player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
 	end
@@ -220,6 +220,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 							yandereWaifu.GetEntityData(player).Parry = tilde
 							tilde.RenderZOffset = 100;
 							playerdata.specialCooldown = REBEKAH_BALANCE.BROKEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.ImmortalHearts then
+							
+							--[[local mantle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ANGLEDHOLYMANTLE, 0, player.Position, vector:Resized(5), player):ToEffect() --body effect
+							local velAng = math.floor(vector:GetAngleDegrees())
+							mantle:GetSprite():Play("Front", true)
+							if (velAng >= 180 - 15 and velAng <= 180 + 15) or (velAng >= -180 - 15 and  velAng <= -180 + 15) or (velAng >= 0 - 15 and  velAng <= 0 + 15) then
+								mantle:GetSprite():Play("Side", true)
+								if (velAng >= 0 - 15 and  velAng <= 0 + 15) then
+									mantle.FlipX = true
+								end
+							end
+							if (velAng >= 45 - 15 and  velAng <= 45 + 15) or (velAng >= -45 - 15 and  velAng <= -45 + 15) then
+								mantle:GetSprite():Play("Side", true)
+							end
+							if (velAng >= -90 - 15 and  velAng <= -90 + 15) or (velAng >= -135 - 15 and  velAng <= -135 + 15) or (velAng >= -45 - 15 and  velAng <= -45 + 15) then
+								mantle:GetSprite():Play("Back", true)
+							end]]
+							local effect=Isaac.Spawn(1000,188,0,player.Position,8.6*vector,player):ToEffect()
+							effect.Rotation=vector:GetAngleDegrees()
+							effect.Timeout=15
+							effect:GetSprite():ReplaceSpritesheet(0, "gfx/effects/immortal/angled_mantle.png")
+							effect:GetSprite():LoadGraphics()
+							--ILIB.speaker:Play(568,1.0)
+							playerdata.specialCooldown = REBEKAH_BALANCE.IMMORTAL_HEARTS_DASH_COOLDOWN - trinketBonus;
 						end
 						playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown
 						-- update the dash double tap cooldown based on Rebecca's mode specific cooldown
@@ -308,8 +332,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			end
 		end
 		--attack skill
-		if yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
-			if yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
+		if yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
+			if yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
 				local vector = InutilLib.DirToVec(player:GetFireDirection())
 				local playerdata = yandereWaifu.GetEntityData(player);
 				local psprite = player:GetSprite()
@@ -341,6 +365,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 							playerdata.specialActiveAtkCooldown = 80;
 							playerdata.invincibleTime = 10;
 							playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
+						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then --if broken 
+							playerdata.specialActiveAtkCooldown = 160;
 						end
 						playerdata.specialAttackVector = Vector( vector.X, vector.Y );
 						playerdata.IsAttackActive = true;
@@ -392,8 +418,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	
 	if not yandereWaifu.IsNormalRebekah(player) then
 		
-		if yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
-			if yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
+		if yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
+			if yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
 				local vector = InutilLib.DirToVec(player:GetFireDirection())
 				local playerdata = yandereWaifu.GetEntityData(player);
 				local psprite = player:GetSprite()
@@ -432,6 +458,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_MAINLUA ) then
 					Isaac.Explode(player.Position, player, 500)
 					player:TakeDamage(2, 0, EntityRef(player), 1)
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_COMFORTERSWING ) then
+					
 				else
 					yandereWaifu.DoExtraBarrages(player, 1)
 				end
@@ -868,16 +896,16 @@ function yandereWaifu:RebekahNewRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		if yandereWaifu.IsNormalRebekah(player) then
-			--spawn main room mirror
+			--[[spawn main room mirror
 			if ILIB.game:GetLevel():GetStartingRoomIndex() == ILIB.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() and ILIB.level:GetStage() == LevelStage.STAGE1_1 and (ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B) then
 				local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(19), 1);
 				local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, spawnPosition, Vector(0,0), player);
 				yandereWaifu.GetEntityData(mir).Init = false
 				mir:GetSprite():Play("Appear")
-			end
+			end]]
 			
 			--in case it is taken away, because of some softlocks
-			if not yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
+			if not yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
 				yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
 				--player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
 			end
@@ -892,7 +920,6 @@ function yandereWaifu:RebekahNewRoom()
 				data.IsUninteractible = false 
 			end --reset orbitals
 			
-			print(data.specialActiveAtkCooldown)
 			if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 and not data.IsLeftover then --reset special attack
 				yandereWaifu.RebekahCanShoot(player, true)
 				player.FireDelay = 60
@@ -997,11 +1024,11 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 		local data = yandereWaifu.GetEntityData(player)
 		local num, num2, num3
 		if data.currentMode == REBECCA_MODE.BrideRedHearts and yandereWaifu.IsNormalRebekah(player) then num1 = 1 else num1 = 0 end
-		if data.currentMode == REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
+		--if data.currentMode == REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
 		--if data.currentMode == REBECCA_MODE.BoneHearts and yandereWaifu.IsNormalRebekah(player) then num3 = 1 else num3 = 0 end
 		if cacheF == CacheFlag.CACHE_FAMILIARS then
 			player:CheckFamiliar(RebekahCurse.ENTITY_LABAN, num1, RNG())
-			player:CheckFamiliar(RebekahCurse.ENTITY_MORNINGSTAR, num2, RNG())
+			--player:CheckFamiliar(RebekahCurse.ENTITY_MORNINGSTAR, num2, RNG())
 		--	player:CheckFamiliar(RebekahCurse.ENTITY_BONEJOCKEY, num3, RNG())
 		end
 		if yandereWaifu.IsNormalRebekah(player) then -- Especially here!
@@ -1115,7 +1142,7 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 					player.MaxFireDelay = player.MaxFireDelay + 2
 				end
 				if cacheF == CacheFlag.CACHE_DAMAGE then
-					player.Damage = player.Damage * 0.8
+					player.Damage = player.Damage * 0.6
 				end
 				if cacheF == CacheFlag.CACHE_SPEED then
 					player.MoveSpeed = player.MoveSpeed + 0.20
@@ -1173,6 +1200,13 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 					else
 						player.Luck = player.Luck
 					end
+				end
+			elseif data.currentMode == REBECCA_MODE.ImmortalHearts then
+				if cacheF == CacheFlag.CACHE_DAMAGE then
+					player.Damage = player.Damage - 1.50
+				end
+				if cacheF == CacheFlag.CACHE_SPEED then
+					player.MoveSpeed = player.MoveSpeed - 0.10
 				end
 			end
 			--special interactions
@@ -1314,7 +1348,7 @@ local function Init(force)
 			
 			
 			--set for player 1
-			if not yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then
+			if not yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then
 				yandereWaifu:SetRebekahPocketActiveItem( player, mode )
 				--player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
@@ -1480,6 +1514,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL );
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH );
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_MAINLUA );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_COMFORTERSWING);
 
 --custom actions code
 function yandereWaifu:customMovesInput()
@@ -1511,7 +1546,7 @@ function yandereWaifu:customMovesInput()
 			
 			--charge pocket item after ready
 
-			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) < InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges and yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH) then --could need attendance later, this can be optimized
+			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) < InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges and yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING) then --could need attendance later, this can be optimized
 				InutilLib.RefundActiveCharge(player, 0, true, true)
 			end
 			if playerdata.specialCooldown == 1 then --1 is already close to 0 without being 0 so eh
@@ -1537,9 +1572,10 @@ function yandereWaifu:customMovesInput()
 			local isFang = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_FANG
 			local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH
 			local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_MAINLUA
+			local isComfortersWing = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_COMFORTERSWING
 			--special beam thing
 			--print(InutilLib.GetShowingActive(player))
-			if playerdata.isReadyForSpecialAttack == false and (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua) and yandereWaifu.getReserveStocks(player) >= 1 then
+			if playerdata.isReadyForSpecialAttack == false and (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua or isComfortersWing) and yandereWaifu.getReserveStocks(player) >= 1 then
 				playerdata.isReadyForSpecialAttack = true;
 				local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
 				yandereWaifu.GetEntityData(arcane).parent = player
@@ -1579,7 +1615,8 @@ function yandereWaifu:customMovesInput()
 				local isFang = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_FANG
 				local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH
 				local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_MAINLUA
-				if playerdata.isReadyForSpecialAttack and not (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua) then
+				local isComfortersWing = InutilLib.GetShowingActive(player) == RebekahCurse.COLLECTIBLE_COMFORTERSWING
+				if playerdata.isReadyForSpecialAttack and not (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isComfortersWing or isBeelzebubsBreath or isMainLua) then
 					playerdata.isReadyForSpecialAttack = false
 				end
 			end
@@ -3682,6 +3719,53 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			elseif data.redcountdownFrames >= 40 then
 				data.redcountdownFrames = 0 
 				yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+			end
+		end
+	elseif modes == REBECCA_MODE.ImmortalHearts then
+		--setup of eternal personality's gun effects and barrage
+		if not data.MainArcaneCircle then
+			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
+			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+			for i = 0, 8 do
+				data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/eternal/arcane_circle.png")
+			end
+			data.MainArcaneCircle:GetSprite():LoadGraphics()
+			data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+			data.ArcaneCircleDust.RenderZOffset = -1
+			yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
+		end
+		--do the weird animation first before firing the beam
+		if data.BarrageIntro then
+			yandereWaifu.RebekahImmortalBarrage(player, direction)
+			EndBarrage()
+			
+			--make guns play
+			for k, v in pairs (Isaac.GetRoomEntities()) do
+				v:ClearEntityFlags(EntityFlag.FLAG_SLOW)
+			end
+			data.tintEffect:Remove()
+			data.tintEffect = nil
+			player.FireDelay = 60
+			data.FinishedPlayingCustomAnim = nil
+			
+		else
+			if not data.tintEffect then
+				data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
+				data.tintEffect.RenderZOffset = -10
+			end
+			for k, v in pairs (Isaac.GetRoomEntities()) do
+				if v.Type ~= 1000 and v.Type ~= 1 and v.Type ~= 8 then
+					v:AddEntityFlags(EntityFlag.FLAG_SLOW)
+				end
+			end
+			if player.FrameCount % 3 == 0 then
+				yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			end
+			if not data.isPlayingCustomAnim then
+				local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+				yandereWaifu.GetEntityData(customBody).Player = player
+				yandereWaifu.GetEntityData(customBody).SummonImmortalBackup = true
+				data.isPlayingCustomAnim = true
 			end
 		end
 	end

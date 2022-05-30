@@ -1,3 +1,4 @@
+local savedItems = {}
 
 yandereWaifu.RebekahPersonalities = {} --table turned into a class
 yandereWaifu.ListOfRegPersonalities = {} --future list of players
@@ -35,6 +36,11 @@ local menuUIDelay = 0
 
 function yandereWaifu.SelectRebekahPersonality(currentPlayer)
 	Isaac.ExecuteCommand("restart "..currentPlayer.playerId --[[RebekahCurse.REB_RED]])
+	InutilLib.SetTimer(12, function()
+		for i, v in pairs(savedItems) do
+			Isaac.GetPlayer(0):AddCollectible(v, 0, false)
+		end
+	end)
 	--Isaac.GetPlayer(0):ChangePlayerType(currentPlayer.playerId)
 end
 
@@ -165,6 +171,7 @@ function yandereWaifu:onTechnicalCharacterInit(player)
 	if playerType == RebekahCurse.TECHNICAL_REB 
 	and playerCount == 1 then
 		yandereWaifu:ShowPersonalityBook()
+		savedItems = {}
 	else
 		--yandereWaifu:ShowCoopMenu(player)
 	end
@@ -178,5 +185,26 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	if playerType == RebekahCurse.TECHNICAL_REB then 
 		player.Velocity = Vector.Zero
 		player.Position = player.Position
+		if player.FrameCount == 2 then
+			--[[if player:HasCollectible(CollectibleType.COLLECTIBLE_EDENS_BLESSING) then
+				for i=1, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_EDENS_BLESSING) do
+					player:RemoveCollectible(CollectibleType.COLLECTIBLE_EDENS_BLESSING)
+				end
+			end]]
+			
+			for i=1, InutilLib.GetMaxCollectibleID() do
+				--print(player:HasCollectible(i))
+				if player:HasCollectible(i) then 
+					--print(tostring(i).."weeeeP")
+					for j=1, player:GetCollectibleNum(i) do
+						--if i~= CollectibleType.COLLECTIBLE_EDENS_BLESSING then
+							table.insert(savedItems, i)
+						--	player:AddCollectible(CollectibleType.COLLECTIBLE_EDENS_BLESSING, 0, false)
+						--	print("wooo")
+						--end
+					end
+				end
+			end
+		end
 	end
 end)

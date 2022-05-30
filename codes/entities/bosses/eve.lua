@@ -33,7 +33,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = ent:GetPlayerTarget()
 	if ent.Variant == RebekahCurseEnemies.ENTITY_EVE_BOSS then
 		if ent.FrameCount == 1 then
-			print("wot")
+			--print("wot")
 			data.State = 0
 			spr:Play("1Start", true)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)

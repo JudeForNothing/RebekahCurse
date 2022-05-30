@@ -524,14 +524,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-2,2)), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
-						techlaser.CollisionDamage = player.Damage * 0.4;
+						techlaser.CollisionDamage = player.Damage * 0.8;
 						techlaser:SetMaxDistance((fam.Position - player.Position):Length())
 						techlaser:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
 					end)
 				end
 			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 				local numLimit = data.StackedFeathers
-				print("push here")
 				for i = 1, numLimit do
 					InutilLib.SetTimer( i, function()
 						local circle = player:FireTechXLaser(fam.Position, Vector.FromAngle(data.FireDir+math.random(-30,30))*(20), 40+math.random(-3,3))
@@ -672,7 +671,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						tear.Position = fam.Position
 						tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
 						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
-						tear.CollisionDamage = player.Damage * 0.4
+						tear.CollisionDamage = player.Damage * 0.2
 						yandereWaifu.GetEntityData(tear).EternalFlame = true
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_GHOST_PEPPER) then
 							tear.CollisionDamage = player.Damage * 0.8
@@ -1033,6 +1032,27 @@ function yandereWaifu.FlamethrowerLogic(player)
 		local numLimit = data.StackedFeathers
 		player.Velocity = player.Velocity * 0.8 --slow him down
 		if data.StackedFeathers >= 1 then
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_2) then
+				local dividingNum = data.TinyOrphanims
+				for i = 1, numLimit do
+					InutilLib.SetTimer( i*4, function()
+						local techlaser = player:FireTechLaser(player.Position, 0, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10)), false, true)
+						techlaser.OneHit = true;
+						techlaser.Timeout = 1;
+						techlaser.CollisionDamage = player.Damage * 0.4;
+						--techlaser.Size = 7
+						techlaser:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
+						InutilLib.UpdateLaserSize(techlaser, 7, false)
+						if i == data.StackedFeathers then
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+							data.IsAttackActive = false
+						end
+						
+						--push back code
+						player.Velocity = player.Velocity - Vector.FromAngle(data.AssignedHeadDir):Resized(0.3)
+					end);
+				end
+			end
 			if player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then
 				local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ETERNALSLASH, 0, player.Position--[[+Vector.FromAngle(direction:GetAngleDegrees()):Resized(40)]], Vector(0,0), player);
 				yandereWaifu.GetEntityData(cut).PermanentAngle = data.AssignedHeadDir
@@ -1229,7 +1249,6 @@ function yandereWaifu:FlamethrowerTearsUpdate(tr)
 			if tr.FrameCount == 1 then
 				tr:GetSprite():Play("RegularTear")
 			end
-			print(tr.Height)
 			if tr.Height >= -7 or tr:CollidesWithGrid() then
 			local numLimit = data.StackedFeathers
 				for i = 1, numLimit do

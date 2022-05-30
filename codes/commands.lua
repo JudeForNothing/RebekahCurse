@@ -10,6 +10,7 @@ local REBECCA_MODE_COMMAND_KEYS = {
 	bone = REBECCA_MODE.BoneHearts,
 	rotten = REBECCA_MODE.RottenHearts,
 	broken = REBECCA_MODE.BrokenHearts,
+	immortal = REBECCA_MODE.ImmortalHearts,
 	
 	bred = REBECCA_MODE.BrideRedHearts
 }

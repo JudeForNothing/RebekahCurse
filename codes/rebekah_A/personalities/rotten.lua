@@ -272,7 +272,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--print(#data.RottenFlyTable)
 end)
 function yandereWaifu:onFamiliarRottenFlyInit(fam)
-	print(#Isaac.FindByType(fam.Type, 62690, -1) + #Isaac.FindByType(3, 43, -1))
 	if #Isaac.FindByType(fam.Type, 62690, -1) + #Isaac.FindByType(3, 43, -1) > 64 --[[blue fly]] and fam.Variant == 62690 then fam:Remove() end
 	local player = fam.Player:ToPlayer()
     fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.5

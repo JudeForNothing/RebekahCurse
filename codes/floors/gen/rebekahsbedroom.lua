@@ -1,3 +1,5 @@
+if StageAPI and StageAPI.Loaded then
+
 function yandereWaifu.WillSpawnLoveRoom()
 	local seed = Game():GetSeeds():GetStartSeed()
 
@@ -32,7 +34,7 @@ end
 yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.OnEnterCurseRoom)
 
 local showDifference = false
-local coords = Vector(21, 197.5+16)
+local maincoords = Vector(2, 197.5+16)
 local Alpha = 2.9
 local rebroom_hudSprite = Sprite()
 rebroom_hudSprite:Load("gfx/ui/rebekah_hudstats.anm2", true)
@@ -78,6 +80,7 @@ function yandereWaifu:rebekahsroomDisplayonRender(shaderName)
 	--yandereWaifu:updateCheck()
 
 	--account for screenshake offset
+	coords = maincoords + (Options.HUDOffset * Vector(20, 12))
 	local textCoords = coords + Game().ScreenShakeOffset
 	local valueOutput = string.format("%.1s%%", "?")
 	if RebekahLocalSavedata.loveRoomReplacePercent then
@@ -111,3 +114,5 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, yandereWaifu.rebekahsroomDisplayonRender)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.rebekahsroomDisplayonRender)
+
+end

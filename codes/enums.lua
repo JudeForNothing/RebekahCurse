@@ -14,6 +14,8 @@ RebekahCurse = {
 	COLLECTIBLE_BEELZEBUBSBREATH = Isaac.GetItemIdByName("Beelzebub's Breath"),
 	COLLECTIBLE_MAINLUA = Isaac.GetItemIdByName("main.lua"),
 	
+	COLLECTIBLE_COMFORTERSWING = Isaac.GetItemIdByName("Comforter's Wing"),
+	
 	COLLECTIBLE_CANDYWEDDINGRING = Isaac.GetItemIdByName("Candy Wedding Ring!"),
 	COLLECTIBLE_LOVEDELUXE = Isaac.GetItemIdByName("Love Deluxe"),
 	COLLECTIBLE_GREATPHEONIX = Isaac.GetItemIdByName("Great Pheonix"),
@@ -210,6 +212,8 @@ RebekahCurse = {
 	ENTITY_ROTTENFLYBALL = Isaac.GetEntityVariantByName("Rotten Fly Ball"),
 	--bride red heart mode
 	ENTITY_LABAN = Isaac.GetEntityVariantByName("Best Man"),
+	--immortal heart mode
+	ENTITY_IMMORTAL_PRISM = Isaac.GetEntityVariantByName("Immortal Prism"),
 	--misc
 	ENTITY_HEARTPOOF = Isaac.GetEntityVariantByName("Heart Poof"),
 	ENTITY_HEARTPARTICLE = Isaac.GetEntityVariantByName("Heart Particle"),
@@ -239,6 +243,7 @@ RebekahCurse = {
 	REB_BONE = Isaac.GetPlayerTypeByName("Bone Rebekah"),
 	REB_ROTTEN = Isaac.GetPlayerTypeByName("Rotten Rebekah"),
 	REB_BROKEN = Isaac.GetPlayerTypeByName("Broken Rebekah"),
+	REB_IMMORTAL = Isaac.GetPlayerTypeByName("Immortal Rebekah"),
 	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
 	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false)
@@ -472,6 +477,7 @@ REBEKAH_BALANCE = {
 	ROTTEN_HEARTS_DASH_SPEED = 20,
 	ROTTEN_HEARTS_FLYBALL_SPEED = 1.5, 
 	BROKEN_HEARTS_DASH_COOLDOWN = 55,
+	IMMORTAL_HEARTS_DASH_COOLDOWN = 55,
 	BRIDE_RED_HEARTS_DASH_SPEED = 25
 }
 
@@ -502,7 +508,7 @@ REBECCA_MODE = {
 	BoneHearts = 6,
 	RottenHearts = 7,
 	BrokenHearts = 8,
-	
+	ImmortalHearts = 9,
 	BrideRedHearts = 12
 }
 
@@ -515,6 +521,7 @@ RebeccaModeNames = {
 	[REBECCA_MODE.BoneHearts] =  "bone", --DeadHair,
 	[REBECCA_MODE.RottenHearts] =  "rotten",
 	[REBECCA_MODE.BrokenHearts] =  "broken",
+	[REBECCA_MODE.ImmortalHearts] =  "immortal",
 	[REBECCA_MODE.BrideRedHearts] = "bride" --BridalHair
 }
 
@@ -528,6 +535,7 @@ RebeccaModeCostumes = {
 	[REBECCA_MODE.BoneHearts] =  "deadhair", --DeadHair,
 	[REBECCA_MODE.RottenHearts] =  "crazyhair",
 	[REBECCA_MODE.BrokenHearts] =  "fourthwallhair",
+	[REBECCA_MODE.ImmortalHearts] =  "heyheyhair",
 	[REBECCA_MODE.BrideRedHearts] = "bridalhair" --BridalHair
 }
 
@@ -641,7 +649,7 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_SOUL, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_soul_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
 	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
 	NoShake = nil,
@@ -651,14 +659,14 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_soul_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_EVIL, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_evil_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
 	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,
 	ControlsOffset = nil
-	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_evil_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_GOLD, 
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
@@ -671,14 +679,14 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_ETERNAL, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_eternal_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
 	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,
 	ControlsOffset = nil
-	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_eternal_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_BONE, 
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 

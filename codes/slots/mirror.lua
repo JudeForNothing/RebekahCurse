@@ -326,7 +326,7 @@ function yandereWaifu.MirrorMechanic(player)
 									end
 									
 									--EID displaying
-									if sprite:GetFrame() == 0 and EID then
+									if sprite:GetFrame() == 0 and EID and EIDRebekahsMirror then
 										local Description
 										if sprite:IsPlaying("ShowRed") then
 											Description = EIDRebekahsMirror.Red

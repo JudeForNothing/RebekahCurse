@@ -30,7 +30,8 @@ yandereWaifuCodes = {
 			eternal = require('codes.rebekah_A.personalities.eternal'),
 			bone = require('codes.rebekah_A.personalities.bone'),
 			rotten = require('codes.rebekah_A.personalities.rotten'),
-			broken = require('codes.rebekah_A.personalities.broken')
+			broken = require('codes.rebekah_A.personalities.broken'),
+			immortal = require('codes.rebekah_A.personalities.immortal')
 		}
 	},
 	isaacC = require('codes.isaac_C.basic'),

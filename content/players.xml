@@ -35,6 +35,10 @@
 	<player name="Broken Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+		  
+	<player name="Immortal Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+          nameimage="name_rebekah.png" 
+          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
 	<player name="RebekahB" birthright="Undying Hope" skin="character_rebekah.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 

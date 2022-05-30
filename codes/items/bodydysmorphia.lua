@@ -9,11 +9,11 @@ local bone = { gfx = "gfx/ui/dysmorphia_hearts/bone.png",id = 6}
 local rotten = { gfx = "gfx/ui/dysmorphia_hearts/rotten.png",id = 7}
 local function GetAllHeartsInTable(player)
 	local heartTable = {}
-	if player:GetHearts() > 1 then table.insert(heartTable, red) 
+	if player:GetHearts() > 2 then table.insert(heartTable, red) 
 	print(heartTable) end
-	if player:GetSoulHearts() > 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0 then table.insert(heartTable, blue) end	
+	if player:GetSoulHearts() > 2 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 2 then table.insert(heartTable, blue) end	
 	if player:GetGoldenHearts() > 0 then table.insert(heartTable, gold) end
-	if yandereWaifu.GetPlayerBlackHearts(player) > 0 then table.insert(heartTable, evil) end
+	if yandereWaifu.GetPlayerBlackHearts(player) > 2 then table.insert(heartTable, evil) end
 	if player:GetEternalHearts() > 0 then table.insert(heartTable, eternal) end
 	if player:GetBoneHearts() > 0 then table.insert(heartTable, bone) end
 	if player:GetRottenHearts() > 0 then table.insert(heartTable, rotten) end
@@ -94,17 +94,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 						data.selectedBodyDysWire = false
 						
 						if value == 1 then
-							data.PersistentPlayerData.RedStatBuff = data.PersistentPlayerData.RedStatBuff + 1
-							player:AddHearts(-1)
+							local rng = math.random(1,6)
+							if rng == 1 then
+								data.PersistentPlayerData.RedStatBuffDamage = data.PersistentPlayerData.RedStatBuffDamage + 1
+							elseif rng == 2 then
+								data.PersistentPlayerData.RedStatBuffFireDelay = data.PersistentPlayerData.RedStatBuffFireDelay + 1
+							elseif rng == 3 then
+								data.PersistentPlayerData.RedStatBuffLuck = data.PersistentPlayerData.RedStatBuffLuck + 1
+							elseif rng == 4 then
+								data.PersistentPlayerData.RedStatBuffRange = data.PersistentPlayerData.RedStatBuffRange + 1
+							elseif rng == 5 then
+								data.PersistentPlayerData.RedStatBuffShotSpeed = data.PersistentPlayerData.RedStatBuffShotSpeed + 1
+							elseif rng == 6 then
+								data.PersistentPlayerData.RedStatBuffSpeed = data.PersistentPlayerData.RedStatBuffSpeed + 1
+							end
+							player:AddHearts(-2)
 						elseif value == 2 then
 							data.PersistentPlayerData.SoulStatBuff = data.PersistentPlayerData.SoulStatBuff + 1
-							player:AddSoulHearts(-1)
+							player:AddSoulHearts(-2)
 						elseif value == 3 then
 							data.PersistentPlayerData.GoldStatBuff = data.PersistentPlayerData.GoldStatBuff + 1
 							player:AddGoldenHearts(-1)
 						elseif value == 4 then
 							data.PersistentPlayerData.EvilStatBuff = data.PersistentPlayerData.EvilStatBuff + 1
-							player:AddBlackHearts(-1)
+							player:AddBlackHearts(-2)
 						elseif value == 5 then
 							data.PersistentPlayerData.EternalStatBuff = data.PersistentPlayerData.EternalStatBuff + 1
 							player:AddEternalHearts(-1)
@@ -142,7 +155,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 					if data.TotalStoredBodyDysmorphiaHearts <= data.currentBodyDysmorphiaNextPage then
 						data.currentBodyDysmorphiaNextPage = 0
 						for i = 1, 4 do
-							print(data.StoredBodyDysmorphiaHearts[i])
 							if data.StoredBodyDysmorphiaHearts[i] then
 								table.insert(wires, data.StoredBodyDysmorphiaHearts[i].gfx)
 								table.insert(wiresValue, data.StoredBodyDysmorphiaHearts[i].id)
@@ -161,7 +173,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 							else
 								--table.insert(wires, nil)
 							end
-							print(i)
 						end
 					end
 					data.BODYDYSMORPHIA_MENU:UpdateOptions(wires, wiresValue)

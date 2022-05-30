@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 		player:AddCacheFlags(CacheFlag.CACHE_SPEED);
 		player:EvaluateItems()
-		print("pain")
+		--print("pain")
 		player:AddNullCostume(RebekahCurseCostumes.NutWater)
 		--for i = 0, 1, 1 do
 			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then

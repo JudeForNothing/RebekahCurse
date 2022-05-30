@@ -58,7 +58,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		ClampToL()
 	else
 		eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize);
-		eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+		eff.Velocity = --[[(eff.Velocity * 0.8) +]] movementDirection:Resized( 18 );
 		data.target = nil
 	end
 	
@@ -118,7 +118,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	if data.HeartAttack and ent.FrameCount % 3 == 0 then
 		ent:TakeDamage( 1, 0, EntityRef(player), 0);
-		if ent.HitPoints <= 1 then
+		if ent.HitPoints <= 1 and not ( ent.Type == 912 and ent.SubType == 1 ) then
 			data.player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, 1)
 			local laser = data.player:FireTechXLaser(ent.Position, Vector.Zero, 15, data.player, 1):ToLaser()
 			laser.Timeout = 90

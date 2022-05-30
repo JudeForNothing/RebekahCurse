@@ -37,10 +37,10 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 
 		--heart code checking
 		--if yandereWaifu.IsNormalRebekah(player) then
-			if player:GetHearts() > 1 then heartTable.ShowRed = true end
-			if player:GetSoulHearts() > 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0 then heartTable.ShowBlue = true end	
+			if player:GetHearts() > 2 then heartTable.ShowRed = true end
+			if player:GetSoulHearts() > 2 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 2 then heartTable.ShowBlue = true end	
 			if player:GetGoldenHearts() > 0 then heartTable.ShowGold = true end
-			if yandereWaifu.GetPlayerBlackHearts(player) > 0 then heartTable.ShowEvil = true end
+			if yandereWaifu.GetPlayerBlackHearts(player) > 2 then heartTable.ShowEvil = true end
 			if player:GetEternalHearts() > 0 then heartTable.ShowEternal = true end
 			if player:GetBoneHearts() > 0 then heartTable.ShowBone = true end
 			if player:GetRottenHearts() > 0 then heartTable.ShowRotten = true end
@@ -122,6 +122,12 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 						end
 					elseif not sprite:IsPlaying("Appear") and mirdata.Init then
 						if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then 
+							for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
+								if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
+									local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+									pickup:Remove()
+								end
+							end
 							mir:Remove()
 						else
 							if not mirdata.ForceOverlay then
@@ -189,12 +195,25 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 										local data = yandereWaifu.GetEntityData(player)
 										if sprite:IsPlaying("ShowRed") 
 											and (player:GetHearts() >= 1 or mir.SubType == 10) then
-											data.PersistentPlayerData.RedStatBuff = data.PersistentPlayerData.RedStatBuff + 1
-											player:AddHearts(-1)
+											local rng = math.random(1,6)
+											if rng == 1 then
+												data.PersistentPlayerData.RedStatBuffDamage = data.PersistentPlayerData.RedStatBuffDamage + 1
+											elseif rng == 2 then
+												data.PersistentPlayerData.RedStatBuffFireDelay = data.PersistentPlayerData.RedStatBuffFireDelay + 1
+											elseif rng == 3 then
+												data.PersistentPlayerData.RedStatBuffLuck = data.PersistentPlayerData.RedStatBuffLuck + 1
+											elseif rng == 4 then
+												data.PersistentPlayerData.RedStatBuffRange = data.PersistentPlayerData.RedStatBuffRange + 1
+											elseif rng == 5 then
+												data.PersistentPlayerData.RedStatBuffShotSpeed = data.PersistentPlayerData.RedStatBuffShotSpeed + 1
+											elseif rng == 6 then
+												data.PersistentPlayerData.RedStatBuffSpeed = data.PersistentPlayerData.RedStatBuffSpeed + 1
+											end
+											player:AddHearts(-2)
 										elseif sprite:IsPlaying("ShowBlue") 
 											and ((player:GetSoulHearts() >= 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0) or mir.SubType == 10) then
 											data.PersistentPlayerData.SoulStatBuff = data.PersistentPlayerData.SoulStatBuff + 1
-											player:AddSoulHearts(-1)
+											player:AddSoulHearts(-2)
 										elseif sprite:IsPlaying("ShowGold") 
 											and (player:GetGoldenHearts() >= 1 or mir.SubType == 10) then
 											data.PersistentPlayerData.GoldStatBuff = data.PersistentPlayerData.GoldStatBuff + 1
@@ -202,7 +221,7 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 										elseif sprite:IsPlaying("ShowEvil") 
 											and (yandereWaifu.GetPlayerBlackHearts(player) >= 1 or mir.SubType == 10) then
 											data.PersistentPlayerData.EvilStatBuff = data.PersistentPlayerData.EvilStatBuff + 1
-											player:AddBlackHearts(-1)
+											player:AddBlackHearts(-2)
 										elseif sprite:IsPlaying("ShowEternal") 
 											and (player:GetEternalHearts() >= 1 or mir.SubType == 10) then
 											data.PersistentPlayerData.EternalStatBuff = data.PersistentPlayerData.EternalStatBuff + 1
@@ -353,7 +372,12 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if not data.PersistentPlayerData.RedStatBuff then data.PersistentPlayerData.RedStatBuff = 0 end
+	if not data.PersistentPlayerData.RedStatBuffSpeed then data.PersistentPlayerData.RedStatBuffSpeed = 0 end
+	if not data.PersistentPlayerData.RedStatBuffFireDelay then data.PersistentPlayerData.RedStatBuffFireDelay = 0 end
+	if not data.PersistentPlayerData.RedStatBuffDamage then data.PersistentPlayerData.RedStatBuffDamage = 0 end
+	if not data.PersistentPlayerData.RedStatBuffShotSpeed then data.PersistentPlayerData.RedStatBuffShotSpeed = 0 end
+	if not data.PersistentPlayerData.RedStatBuffLuck then data.PersistentPlayerData.RedStatBuffLuck = 0 end
+	if not data.PersistentPlayerData.RedStatBuffRange then data.PersistentPlayerData.RedStatBuffRange = 0 end
 	if not data.PersistentPlayerData.SoulStatBuff then data.PersistentPlayerData.SoulStatBuff = 0 end
 	if not data.PersistentPlayerData.GoldStatBuff then data.PersistentPlayerData.GoldStatBuff = 0 end
 	if not data.PersistentPlayerData.EvilStatBuff then data.PersistentPlayerData.EvilStatBuff = 0 end
@@ -362,21 +386,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cach
 	if not data.PersistentPlayerData.RottenStatBuff then data.PersistentPlayerData.RottenStatBuff = 0 end
 	if not data.PersistentPlayerData.BrokenStatBuff then data.PersistentPlayerData.BrokenStatBuff = 0 end
 	if cacheF == CacheFlag.CACHE_SPEED then
-		player.MoveSpeed = player.MoveSpeed + 0.05*data.PersistentPlayerData.RedStatBuff + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.SoulStatBuff + 0.1*data.PersistentPlayerData.BoneStatBuff
+		player.MoveSpeed = player.MoveSpeed + 0.05*data.PersistentPlayerData.RedStatBuffSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.SoulStatBuff + 0.1*data.PersistentPlayerData.BoneStatBuff
 	end
 	if cacheF == CacheFlag.CACHE_FIREDELAY then
-		player.MaxFireDelay = player.MaxFireDelay + 0.5*data.PersistentPlayerData.RedStatBuff + 1*data.PersistentPlayerData.EternalStatBuff + 0.5*data.PersistentPlayerData.SoulStatBuff
+		player.MaxFireDelay = player.MaxFireDelay - 0.5*data.PersistentPlayerData.RedStatBuffFireDelay - 1*data.PersistentPlayerData.EternalStatBuff - 0.5*data.PersistentPlayerData.SoulStatBuff
 	end
 	if cacheF == CacheFlag.CACHE_DAMAGE then
-		player.Damage = player.Damage + 0.5*data.PersistentPlayerData.RedStatBuff + 1.2*data.PersistentPlayerData.EternalStatBuff + 1*data.PersistentPlayerData.EvilStatBuff + 2*data.PersistentPlayerData.GoldStatBuff + 1.5*data.PersistentPlayerData.BoneStatBuff + 1*data.PersistentPlayerData.RottenStatBuff
+		player.Damage = player.Damage + 0.5*data.PersistentPlayerData.RedStatBuffDamage + 1.2*data.PersistentPlayerData.EternalStatBuff + 1*data.PersistentPlayerData.EvilStatBuff + 2*data.PersistentPlayerData.GoldStatBuff + 1.5*data.PersistentPlayerData.BoneStatBuff + 1*data.PersistentPlayerData.RottenStatBuff
 	end
 	if cacheF == CacheFlag.CACHE_SHOTSPEED then
-		player.ShotSpeed = player.ShotSpeed + 0.05*data.PersistentPlayerData.RedStatBuff + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.EvilStatBuff
+		player.ShotSpeed = player.ShotSpeed + 0.05*data.PersistentPlayerData.RedStatBuffShotSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.EvilStatBuff
 	end
 	if cacheF == CacheFlag.CACHE_LUCK then
-		player.Luck = player.Luck + 0.5*data.PersistentPlayerData.RedStatBuff + 1*data.PersistentPlayerData.EternalStatBuff + 2*data.PersistentPlayerData.GoldStatBuff
+		player.Luck = player.Luck + 0.5*data.PersistentPlayerData.RedStatBuffLuck + 1*data.PersistentPlayerData.EternalStatBuff + 2*data.PersistentPlayerData.GoldStatBuff
 	end
 	if cacheF == CacheFlag.CACHE_RANGE then
-		player.TearRange = player.TearRange + 2*data.PersistentPlayerData.RedStatBuff + 4*data.PersistentPlayerData.EternalStatBuff + 4*data.PersistentPlayerData.RottenStatBuff
+		player.TearRange = player.TearRange + 2*data.PersistentPlayerData.RedStatBuffRange + 4*data.PersistentPlayerData.EternalStatBuff + 4*data.PersistentPlayerData.RottenStatBuff
 	end
 end)

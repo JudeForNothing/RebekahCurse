@@ -117,7 +117,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 						else
 							pldata.GPFireCount = pldata.GPFireCount + 1
 						end
-						print(pldata.GPFireCount)
+						--print(pldata.GPFireCount)
 						--if pldata.GPFireCount > 90 then
 						--	pldata.GPFireCount = 0
 							

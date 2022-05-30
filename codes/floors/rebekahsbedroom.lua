@@ -72,10 +72,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	replacesong = false
 end)
 
+if MMC then
 MMC.AddMusicCallback(yandereWaifu, function(self, music)
 	if replacesong then
         return RebekahCurseMusic.MUSIC_HEARTROOM
 	end
 end)
-
+end
 end

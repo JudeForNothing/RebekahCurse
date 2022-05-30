@@ -240,20 +240,29 @@
 		<spawn x="4" y="0">
 			<entity type="6" variant="19373710" subtype="20" weight="1.0"/>
 		</spawn>
+		<spawn x="8" y="0">
+			<entity type="5" variant="360" subtype="0" weight="1.0"/>
+		</spawn>
+		<spawn x="4" y="2">
+			<entity type="5" variant="360" subtype="0" weight="1.0"/>
+		</spawn>
 		<spawn x="6" y="2">
 			<entity type="5" variant="10" subtype="5" weight="1.0"/>
 		</spawn>
 		<spawn x="4" y="3">
 			<entity type="600" variant="4" subtype="0" weight="1.0"/>
 		</spawn>
-		<spawn x="6" y="3">
-			<entity type="5" variant="360" subtype="0" weight="1.0"/>
-		</spawn>
 		<spawn x="8" y="3">
 			<entity type="600" variant="4" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="4">
 			<entity type="5" variant="10" subtype="5" weight="1.0"/>
+		</spawn>
+		<spawn x="8" y="4">
+			<entity type="5" variant="360" subtype="0" weight="1.0"/>
+		</spawn>
+		<spawn x="4" y="6">
+			<entity type="5" variant="360" subtype="0" weight="1.0"/>
 		</spawn>
 	</room>
 </rooms>

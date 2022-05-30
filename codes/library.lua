@@ -529,6 +529,8 @@ function yandereWaifu:SetRebekahPocketActiveItem( player, mode )
 		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH)
 	elseif mode == REBECCA_MODE.BrokenHearts then
 		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_MAINLUA)
+	elseif mode == REBECCA_MODE.ImmortalHearts then
+		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_COMFORTERSWING)
 	end
 end
 
@@ -573,6 +575,8 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 		data.heartReserveMaxFill = 100
 	elseif mode == REBECCA_MODE.BrokenHearts then
 		data.heartReserveMaxFill = 100
+	elseif mode == REBECCA_MODE.ImmortalHearts then
+		data.heartReserveMaxFill = 100
 	end
 
 	--if fanfare ~= false then
@@ -596,6 +600,8 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 			player:ChangePlayerType(RebekahCurse.REB_ROTTEN)
 		elseif mode == REBECCA_MODE.BrokenHearts then
 			player:ChangePlayerType(RebekahCurse.REB_BROKEN)
+			elseif mode == REBECCA_MODE.ImmortalHearts then
+			player:ChangePlayerType(RebekahCurse.REB_IMMORTAL)
 		end
 	end
 	
@@ -797,7 +803,8 @@ function yandereWaifu.PlayAllRedGuns(player, mode)
 end
 
 function yandereWaifu.IsNormalRebekah(player)
-	if player:GetPlayerType() == RebekahCurse.REB_RED or player:GetPlayerType() == RebekahCurse.REB_SOUL or player:GetPlayerType() == RebekahCurse.REB_EVIL or player:GetPlayerType() == RebekahCurse.REB_GOLD or player:GetPlayerType() == RebekahCurse.REB_ETERNAL or player:GetPlayerType() == RebekahCurse.REB_BONE or player:GetPlayerType() == RebekahCurse.REB_ROTTEN or player:GetPlayerType() == RebekahCurse.REB_BROKEN then
+	if player:GetPlayerType() == RebekahCurse.REB_RED or player:GetPlayerType() == RebekahCurse.REB_SOUL or player:GetPlayerType() == RebekahCurse.REB_EVIL or player:GetPlayerType() == RebekahCurse.REB_GOLD or player:GetPlayerType() == RebekahCurse.REB_ETERNAL or player:GetPlayerType() == RebekahCurse.REB_BONE or player:GetPlayerType() == RebekahCurse.REB_ROTTEN or player:GetPlayerType() == RebekahCurse.REB_BROKEN
+	or player:GetPlayerType() == RebekahCurse.REB_IMMORTAL then
 		return true
 	end
 end
