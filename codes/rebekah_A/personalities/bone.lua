@@ -663,6 +663,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			yandereWaifu.GetEntityData(player).NoBoneSlamActive = true
 			data.DeathFrame = 1800 
 			
+			player.GridCollisionClass = yandereWaifu.GetEntityData(player).LastGridCollisionClass
+			yandereWaifu.GetEntityData(player).LastGridCollisionClass = nil
+			
 			fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/none.png")
 			fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/none.png")
 			fam:GetSprite():ReplaceSpritesheet(4, "gfx/effects/bone/corpseeater/none.png")

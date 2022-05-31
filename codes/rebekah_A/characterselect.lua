@@ -138,7 +138,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		yandereWaifu.SelectRebekahPersonality(currentPlayerSelected)
       end
 	  
-	  if Input.IsActionTriggered(ButtonAction.ACTION_LEFT, player.ControllerIndex) then
+	  if Input.IsActionTriggered(ButtonAction.ACTION_LEFT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) then
 		if currentPlayerId <= 1 then
 		  currentPlayerId = #yandereWaifu.ListOfRegPersonalities
 		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
@@ -146,7 +146,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId-1], yandereWaifu.ListOfRegPersonalities[currentPlayerId-1].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
 		  currentPlayerId = currentPlayerId - 1
 		end
-	  elseif Input.IsActionTriggered(ButtonAction.ACTION_RIGHT, player.ControllerIndex) then
+	  elseif Input.IsActionTriggered(ButtonAction.ACTION_RIGHT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) then
 	    if currentPlayerId < #yandereWaifu.ListOfRegPersonalities then
 		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId+1], yandereWaifu.ListOfRegPersonalities[currentPlayerId+1].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
 		  currentPlayerId = currentPlayerId + 1
@@ -172,7 +172,25 @@ function yandereWaifu:onTechnicalCharacterInit(player)
 	and playerCount == 1 then
 		yandereWaifu:ShowPersonalityBook()
 		savedItems = {}
-	else
+	elseif playerType == RebekahCurse.TECHNICAL_REB and playerCount ~= 1 then --this is a bainaid solution, since theres no coop selection screen for her
+		player:ChangePlayerType(RebekahCurse.REB_RED)
+		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
+			player.Visible = false
+		end
+		local data = yandereWaifu.GetEntityData(player)
+		
+		--personalized doubletap classes
+		data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
+		data.ATTACK_DOUBLE_TAP = InutilLib.DoubleTap:New();
+		-- start the meters invisible
+		data.moveMeterFadeStartFrame = -20;
+		data.attackMeterFadeStartFrame = -20;
+		data.bonestackMeterFadeStartFrame = 0;
+		
+		RebeccaInit(player)
+		--yandereWaifu.ApplyCostumes( data.currentMode, player );
+
+		if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
 		--yandereWaifu:ShowCoopMenu(player)
 	end
 end

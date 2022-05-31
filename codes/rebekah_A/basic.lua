@@ -30,7 +30,7 @@ local function BasicRebeccaInit(player, mode) --sets up basic attributes for Reb
 	data.DASH_DOUBLE_TAP:Reset();
 end
 
-local function RebeccaInit(player)
+function RebeccaInit(player)
 	IsaacPresent = false
 	JacobPresent = false
 	
@@ -2768,7 +2768,6 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 				if not data.chargeDelay then data.chargeDelay = 0 end
 				if data.chargeDelay < player.MaxFireDelay * 3 then
 					data.chargeDelay = data.chargeDelay + 0.1
-					print(math.floor(data.chargeDelay*10) % 5)
 					if math.floor(data.chargeDelay*10) % 5 == 0 then
 						local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
 						charge.SpriteOffset = Vector(0,-40)
@@ -2788,7 +2787,6 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 			if player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0 then
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_CHOCOLATE_MILK) then
 					local chargeFrameToPercent = (data.chargeDelay/player.MaxFireDelay)*0.5
-					print(chargeFrameToPercent)
 					extraTearDmg = data.soulcountdownFrames + math.ceil(chargeFrameToPercent)
 				end
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_CURSED_EYE) then
