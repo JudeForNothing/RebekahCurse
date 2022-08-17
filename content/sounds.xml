@@ -1,4 +1,11 @@
 <sounds root="sfx/">
+	<sound name="deadseascrolls_pop">
+        <sample weight="1" path="deadseascrolls/pop.wav"/>
+    </sound>
+    <sound name="deadseascrolls_whoosh">
+        <sample weight="1" path="deadseascrolls/whoosh.wav"/>
+    </sound>
+
 	<sound name="RebekahHurt">
 		<sample weight="1" path="reb_hurt.wav" />
 		<sample weight="1" path="reb_hurt2.wav" />

@@ -20,7 +20,7 @@
 	<active id="29" name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
 	<active id="31" name="Defuse = Rewards" description="Use your manual to defuse, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
 	
-	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="3"/>
+	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="4"/>
 	
 	<active id="37" name=" Wikepidia " description="Summon bombs" gfx="wikepidia/wikepidia_anarchistcookbook.png" maxcharges="3"  hidden="true"/>
 	<active id="37" name="  Wikepidia  " description="Reusable soul protection" gfx="wikepidia/wikepidia_revelations.png" maxcharges="6"  hidden="true"/>

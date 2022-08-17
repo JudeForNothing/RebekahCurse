@@ -100,5 +100,66 @@
             }
         ]]></fragment>
     </shader>
+	
+	<shader name="yourreality">
+        <parameters>
+			<param name="time" type="float"/>
+			<param name="shaderActive" type="float"/> 
+        </parameters>
+        <vertex><![CDATA[
+            attribute vec3 Position;
+            attribute vec4 Color;
+            attribute vec2 TexCoord;
+            attribute vec4 RenderData;
+            attribute float Scale;
+            
+			attribute float time;
+			attribute float shaderActive;
+			
+            varying lowp vec4 Color0;
+            varying mediump vec2 TexCoord0;
+            varying lowp vec4 RenderDataOut;
+            varying lowp float ScaleOut;
+            uniform sampler2D Texture0;
+			varying float ftime;
+			varying float shaderActiveOut;
+            uniform mat4 Transform;
+            void main(void)
+            {
+                RenderDataOut = RenderData;
+                ScaleOut = Scale;
+				ftime = time;
+				shaderActiveOut = shaderActive;
+                Color0 = Color;
+                TexCoord0 = TexCoord;
+                gl_Position = Transform * vec4(Position.xyz, 1.0);
+            }
+        ]]></vertex>
+        <fragment><![CDATA[
+            varying lowp vec4 Color0;
+            varying mediump vec2 TexCoord0;
+            varying lowp vec4 RenderDataOut;
+            varying lowp float ScaleOut;
+			
+			varying mediump float ftime; 
+			varying mediump float shaderActiveOut; 
+            uniform sampler2D Texture0;
+            void main(void)
+            {
+				if (shaderActiveOut == 0)
+				{
+					gl_FragColor = Color0 * texture2D(Texture0, TexCoord0);
+				}
+				else
+				{
+					vec4 Color = Color0 * texture2D(Texture0, TexCoord0);
+					Color.r = 1-Color.r;
+					Color.g = 1-Color.g;
+					Color.b = 1-Color.b;
+					gl_FragColor = Color*ftime;
+				}
+            }
+        ]]></fragment>
+    </shader>
 </shaders>
 

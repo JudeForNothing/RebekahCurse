@@ -9,6 +9,19 @@
 	<entity anm2path="brokenglasses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Broken Glasses" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="815285">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+	<entity anm2path="none.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Underlay" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="9001">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	
+	<entity anm2path="none.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="3" name="MegaMushOverlay" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="9002">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="none.anm2" id="1000" name="CreepFloorEffect" variant="22" subtype="9002" collisionRadius="0" numGridCollisionPoints="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="none.anm2" id="1000" name="FloorEffect" variant="9002" collisionRadius="0" numGridCollisionPoints="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	
 	<!--Red heart-->
 	<entity anm2path="effects/red/orbital_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Orbital Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="78251026">
@@ -283,6 +296,15 @@
 	<entity anm2path="effects/eternal/hugsandroses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Barachiel's Petal (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251513" subtype="4">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+	<entity anm2path="effects/gold/hugsandroses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Psalm .45 (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251513" subtype="5">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/bone/hugsandroses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Fang (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251513" subtype="6">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/rotten/hugsandroses.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Beelzebub's Breath (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251513" subtype="7">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	<entity anm2path="characters/customcharacter.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Extra Character Anim Helper" numGridCollisionPoints="0" shadowSize="16" stageHP="0" variant="42914" portrait="160" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
@@ -385,6 +407,9 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="effects/items/deathnote_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Death Note Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="947002" portrait="160" >
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+	</entity>
+	<entity anm2path="effects/gold/fetus/solomon_baby.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Solomon Ned Baby" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="947003" portrait="160" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
@@ -497,10 +522,13 @@
 	<entity anm2path="bosses/liminal/the_scum.anm2" baseHP="4000000" boss="1" champion="0" collisionDamage="4" collisionMass="5" collisionRadius="13" friction="1" id="600" name="The Scum" numGridCollisionPoints="3" shadowSize="22" stageHP="0" variant="220" shutdoors="false">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="bosses/normal/thestalwart.anm2" baseHP="900" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="42" friction="1" id="600" name="The Stalwart" numGridCollisionPoints="24" shadowSize="84" stageHP="50" variant="222" tags="nodelirium">
+	<entity anm2path="bosses/normal/thestolid.anm2" baseHP="900" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="42" friction="1" id="600" name="The Stolid" numGridCollisionPoints="24" shadowSize="84" stageHP="50" variant="222" tags="nodelirium">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="30" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="23" stageHP="5" variant="223">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/normal/nincompoop.anm2" baseHP="400" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="31" friction="1" id="600" name="Nincompoop" numGridCollisionPoints="24" shadowSize="32" stageHP="50" variant="224" tags="nodelirium">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ovum Egg Effect" numGridCollisionPoints="0" shadowSize="23" stageHP="0" variant="83390" gridCollision="none">
