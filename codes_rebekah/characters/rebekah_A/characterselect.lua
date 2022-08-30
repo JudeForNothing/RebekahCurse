@@ -3,12 +3,13 @@ local savedItems = {}
 yandereWaifu.RebekahPersonalities = {} --table turned into a class
 yandereWaifu.ListOfRegPersonalities = {} --future list of players
 
-function yandereWaifu.RebekahPersonalities:New(o, name, playerId, graphics, tainted)
+function yandereWaifu.RebekahPersonalities:New(o, name, playerId, graphics, coopGraphics, tainted)
 
 	o = o or {};
 	o.name = name
 	o.playerId = playerId
 	o.graphics = graphics
+	o.coopGraphics = coopGraphics
 	o.tainted = tainted
 	--o.giantAnim = giantAnim
 	
@@ -18,14 +19,14 @@ function yandereWaifu.RebekahPersonalities:New(o, name, playerId, graphics, tain
 	return o;
 end
 
-yandereWaifu.RebekahPersonalities:New({}, "Red Personality", RebekahCurse.REB_RED, "gfx/ui/rebekah select/red.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Soul Personality", RebekahCurse.REB_SOUL, "gfx/ui/rebekah select/soul.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Evil Personality", RebekahCurse.REB_EVIL, "gfx/ui/rebekah select/evil.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Eternal Personality", RebekahCurse.REB_ETERNAL, "gfx/ui/rebekah select/eternal.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Gold Personality", RebekahCurse.REB_GOLD, "gfx/ui/rebekah select/gold.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Bone Personality", RebekahCurse.REB_BONE, "gfx/ui/rebekah select/bone.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Rotten Personality", RebekahCurse.REB_ROTTEN, "gfx/ui/rebekah select/rotten.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Broken Personality", RebekahCurse.REB_BROKEN, "gfx/ui/rebekah select/broken.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Red Personality", RebekahCurse.REB_RED, "gfx/ui/rebekah select/red.png", "gfx/ui/coop/icons/red.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Soul Personality", RebekahCurse.REB_SOUL, "gfx/ui/rebekah select/soul.png", "gfx/ui/coop/icons/soul.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Evil Personality", RebekahCurse.REB_EVIL, "gfx/ui/rebekah select/evil.png", "gfx/ui/coop/icons/evil.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Eternal Personality", RebekahCurse.REB_ETERNAL, "gfx/ui/rebekah select/eternal.png", "gfx/ui/coop/icons/eternal.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Gold Personality", RebekahCurse.REB_GOLD, "gfx/ui/rebekah select/gold.png", "gfx/ui/coop/icons/gold.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Bone Personality", RebekahCurse.REB_BONE, "gfx/ui/rebekah select/bone.png", "gfx/ui/coop/icons/bone.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Rotten Personality", RebekahCurse.REB_ROTTEN, "gfx/ui/rebekah select/rotten.png", "gfx/ui/coop/icons/rotten.png", false)
+yandereWaifu.RebekahPersonalities:New({}, "Broken Personality", RebekahCurse.REB_BROKEN, "gfx/ui/rebekah select/broken.png", "gfx/ui/coop/icons/broken.png", false)
 
 
 local shouldRenderAchievement = false
@@ -168,12 +169,15 @@ end
 function yandereWaifu:onTechnicalCharacterInit(player)
 	local playerCount = ILIB.game:GetNumPlayers()
 	local playerType = player:GetPlayerType()
+	local data = yandereWaifu.GetEntityData(player)
 	if playerType == RebekahCurse.TECHNICAL_REB 
 	and playerCount == 1 then
 		yandereWaifu:ShowPersonalityBook()
 		savedItems = {}
 	elseif playerType == RebekahCurse.TECHNICAL_REB and playerCount ~= 1 then --this is a bainaid solution, since theres no coop selection screen for her
-		player:ChangePlayerType(RebekahCurse.REB_RED)
+		yandereWaifu:ShowRebekahCoopMenu(player)
+		
+		--[[player:ChangePlayerType(RebekahCurse.REB_RED)
 		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
 			player.Visible = false
 		end
@@ -191,7 +195,7 @@ function yandereWaifu:onTechnicalCharacterInit(player)
 		--yandereWaifu.ApplyCostumes( data.currentMode, player );
 
 		if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
-		--yandereWaifu:ShowCoopMenu(player)
+		--yandereWaifu:ShowCoopMenu(player)]]
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onTechnicalCharacterInit)

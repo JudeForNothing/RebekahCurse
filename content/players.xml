@@ -20,15 +20,15 @@
           nameimage="name_rebekah.png" 
           portrait="playerportrait_eternal_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true" canShoot="false"/>
 	
-	<player name="Gold Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Gold Rebekah" birthright="Better love" skin="character_rebekah_gold.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_gold_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Bone Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Bone Rebekah" birthright="Better love" skin="character_rebekah_bone.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_bone_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Rotten Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Rotten Rebekah" birthright="Better love" skin="character_rebekah_rotten.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	

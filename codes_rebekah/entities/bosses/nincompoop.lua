@@ -11,13 +11,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			data.State = 0
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
+			ent:AddEntityFlags(EntityFlag.FLAG_SLIPPERY)
 		else
 			if data.State == 0 then
 				if not spr:IsPlaying("Idle") then
 					spr:Play("Idle", true)
 				end
 				if math.random(1,3) == 3 and ent.FrameCount % 5 == 0 then
-					if math.random(1,2) == 2 then
+					if math.random(1,10) <= 5 then
 						data.State = 1
 					else
 						data.State = 3
@@ -68,12 +69,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				ent:GetSprite().FlipX = result
 			elseif data.State == 3 then
 				if spr:IsFinished("BeginCharge") then
-					local rng = math.random(1,20)
-					if rng <= 5 and rng >= 0 then
+					local rng = 4 --math.random(1,20)
+					if rng <= 10 and rng >= 0 then
 						data.State = 4
-					elseif rng <= 10 and rng >= 6 then
+					elseif rng <= 15 and rng >= 10 then
 						data.State = 6
-					elseif rng <= 15 and rng >= 11 then
+					elseif rng <= 18 and rng >= 15 then
 						data.State = 7
 					else
 						data.State = 8
@@ -88,15 +89,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					else
 						spr:Play("Dash", true)
 						data.DashTimes = data.DashTimes + 1
+						data.OriginalDash = (player.Position - ent.Position)
 					end
 				elseif not spr:IsPlaying("Dash") then
 					spr:Play("Dash", true)
 					data.DashTimes = 0
+					data.OriginalDash = (player.Position - ent.Position)
 				elseif spr:IsPlaying("Dash") then
-					if ent.FrameCount % 3 == 0 and spr:GetFrame() < 30 then
-						InutilLib.MoveDirectlyTowardsTarget(ent, player, 10, 0.8)
+					if spr:GetFrame() < 10 then
+						ent.Velocity = ent.Velocity + data.OriginalDash:Resized(8.5)
+					elseif spr:GetFrame() < 15 and ent.FrameCount % 3 == 0 then
+						ent.Velocity = ent.Velocity * 0.99
+					elseif ent.FrameCount % 3 == 0 and spr:GetFrame() < 30 then
+						InutilLib.MoveDirectlyTowardsTarget(ent, player, 12, 1)
 					elseif spr:GetFrame() > 30 then 
-						ent.Velocity = ent.Velocity * 0.9
+						--ent.Velocity = ent.Velocity * 0.99
 					end
 				end
 				InutilLib.FlipXByVec(ent, invert)

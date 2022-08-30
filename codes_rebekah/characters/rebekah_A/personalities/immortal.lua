@@ -14,7 +14,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	for i, v in pairs (Isaac.GetRoomEntities()) do
 		if v:ToPlayer() then
 			local playerdata = yandereWaifu.GetEntityData(v)
-			if (v.Position - eff.Position):Length() <= 140 then
+			if (v.Position - eff.Position):Length() <= 270 then
 				if not playerdata.ImmortalPrismProp or playerdata.ImmortalPrismProp:IsDead() then
 					playerdata.ImmortalPrismProp = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ANGELIC_PRISM, 177, eff.Position, Vector.Zero, nil)
 					yandereWaifu.GetEntityData(playerdata.ImmortalPrismProp).YoureATool = true
@@ -58,6 +58,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_, fam)
 		offset = 25 
 	end
 	if data.YoureATool then
+		fam.Size = 110
 		if (data.YoureAToolParent:ToPlayer():GetShootingJoystick().X ~= 0 or data.YoureAToolParent:ToPlayer():GetShootingJoystick().Y ~= 0) or not data.lastToolPosition then
 			data.lastToolPosition = data.YoureAToolParent:ToPlayer():GetShootingJoystick() * (5 + offset)
 		end

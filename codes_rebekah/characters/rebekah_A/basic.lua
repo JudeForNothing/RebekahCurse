@@ -830,11 +830,16 @@ function yandereWaifu:RebekahNewRoom()
 			--print("im no bald")
 			
 			--heal back tf2 soldiers
-			for i, soldier in pairs (Isaac.GetRoomEntities()) do
-				if soldier.Variant == RebekahCurse.ENTITY_CHRISTIANNED and soldier.SubType == 2 then
-					if soldier:GetSprite():IsFinished("LandFail") then
-						soldier:GetSprite():Play("Spawn", true)
+			for i, fam in pairs (Isaac.GetRoomEntities()) do
+				if fam.Variant == RebekahCurse.ENTITY_CHRISTIANNED and fam.SubType == 2 then
+					if fam:GetSprite():IsFinished("LandFail") then
+						fam:GetSprite():Play("Spawn", true)
 					end
+				end
+				--remove rotten heads
+				if fam.Variant == RebekahCurse.ENTITY_ROTTENHEAD and GetPtrHash(fam:ToFamiliar().Player) == GetPtrHash(player) then
+					fam:Kill()
+					yandereWaifu.resetRottenHead(player)
 				end
 			end
 			
@@ -885,7 +890,9 @@ function yandereWaifu:RebekahNewRoom()
 					player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
 				end)
 			end
-			
+			if data.ImmortalPrismProp then
+				data.ImmortalPrismProp:Remove()
+			end
 			if data.currentMode == REBECCA_MODE.BoneHearts and data.IsLeftover then
 				player.Visible = false
 			end

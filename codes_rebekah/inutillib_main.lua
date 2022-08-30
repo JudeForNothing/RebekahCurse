@@ -2170,7 +2170,7 @@ end)
 
 --movement for moving directly at the target
 function InutilLib.MoveDirectlyTowardsTarget(ent, targetPos, vel, friction)
-	ent.Velocity = ent.Velocity * 0.9
+	--ent.Velocity = ent.Velocity * 0.9
 	ent.Velocity = ent.Velocity * friction + ((targetPos.Position - ent.Position):Resized(1) * vel)
 end
 

@@ -234,6 +234,7 @@ local rebekahdirectory = {
 			{str = 'mr. l'},
 			{str = 'skyline222'},
 			{str = 'shuckster'},
+			{str = 'nixility'},
 			{str = '', nosel = true},
             {str = 'special thanks', fsize = 2},
 			{strpair = {{str = 'agent cucco', color = 3}, {str = 'code help'}}},
@@ -245,6 +246,7 @@ local rebekahdirectory = {
 			{strpair = {{str = 'warhamm2000', color = 3}, {str = 'code help'}}},
 			{strpair = {{str = 'deadinfinity', color = 3}, {str = 'stageapi help'}}},
 			{strpair = {{str = 'planetarium chance', color = 3}, {str = 'code reference'}}},
+			{strpair = {{str = 'scooperman', color = 3}, {str = 'sprite advice'}}},
 			{str = '', nosel = true},
 			{str = 'and especially you!', fsize = 3},
             {str = '', nosel = true}

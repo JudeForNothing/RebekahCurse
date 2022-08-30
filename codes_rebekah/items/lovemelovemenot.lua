@@ -252,7 +252,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe3, R
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if data.PersistentPlayerData.LMLMNBuff and (player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEMELOVEMENOT) or player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEMELOVEMENOT2) or player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEMELOVEMENOT3)) then
+	if data.PersistentPlayerData and data.PersistentPlayerData.LMLMNBuff and (player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEMELOVEMENOT) or player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEMELOVEMENOT2) or player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEMELOVEMENOT3)) then
 		if data.PersistentPlayerData.LMLMNBuff == 1 then
 			if cacheF == CacheFlag.CACHE_DAMAGE then
 				player.Damage = player.Damage + 4

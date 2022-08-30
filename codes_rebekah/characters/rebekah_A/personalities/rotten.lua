@@ -2,6 +2,62 @@
 --ROTTEN HEART--
 do
 
+function yandereWaifu.RottenTossHead(player, vector)
+	local playerdata = yandereWaifu.GetEntityData(player)
+	local trinketBonus = 0
+	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+		trinketBonus = 5
+	end
+	if not playerdata.noHead then
+		local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENHEAD, 0, player.Position, vector:Resized(15), player):ToFamiliar();
+		playerdata.noHead = true
+		playerdata.RebHead = head
+		
+		for i, v in pairs (playerdata.RottenFlyTable) do
+			--if not v:IsDead() and v:Exists() then
+				yandereWaifu.GetEntityData(v).Parent = head
+			--end
+		end
+		
+		playerdata.extraHeadsPresent = false
+		--code that checks if extra heads exist
+		for i, v in pairs (Isaac.GetRoomEntities()) do
+			if v.Type == EntityType.ENTITY_FAMILIAR then
+				if v.Variant == FamiliarVariant.SCISSORS or v.Variant == FamiliarVariant.DECAP_ATTACK then
+					playerdata.extraHeadsPresent = true
+					--print("Something wrong")
+				end
+			end
+		end
+		if playerdata.extraHeadsPresent == false then
+			--player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
+			player:AddNullCostume(RebekahCurseCostumes.BloodGush)
+		else
+			player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
+			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
+		end
+	else
+		playerdata.RebHead.Velocity = vector:Resized(15)
+		yandereWaifu.GetEntityData(playerdata.RebHead).PickupFrames = 30
+	end
+	for i, v in pairs(playerdata.RottenFlyTable) do
+		--if not v:IsDead() or v:Exists() then
+			v.Velocity = v.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+			yandereWaifu.GetEntityData(v).SpecialDash = true
+		--end
+	end
+	for i, entity in pairs(Isaac.GetRoomEntities()) do
+		if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
+			if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
+				entity.Velocity = entity.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+				yandereWaifu.GetEntityData(entity).SpecialDash = true
+			end
+		end
+	end
+	
+	playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+end
+
 function yandereWaifu.RebekahRottenBarrage(player, direction)
 	local data = yandereWaifu.GetEntityData(player)
 	--[[if not data.noHead then
@@ -195,6 +251,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
 
+function yandereWaifu.resetRottenHead(player)
+	yandereWaifu.GetEntityData(player).noHead = false
+	yandereWaifu.GetEntityData(player).extraHeadsPresent = false
+	player:TryRemoveNullCostume(RebekahCurseCostumes.HeadlessHead)
+	player:TryRemoveNullCostume(RebekahCurseCostumes.BloodGush)
+	player:TryRemoveNullCostume(RebekahCurseCostumes.SkinlessHead)
+	--print(yandereWaifu.GetEntityData(player).extraHeadsPresent)
+	yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+end
+
 function yandereWaifu:onFamiliarOllieHeadInit(fam)
     fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_GROUND
 	fam.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYEROBJECTS
@@ -212,13 +278,7 @@ function yandereWaifu.rottenheadColl(_, fam, collider, low)
 		if collider.Type == EntityType.ENTITY_PLAYER or collider.Type == EntityType.ENTITY_TEAR then -- someEngineer's code, thanks!
 			if data.PickupFrames > 0 and GetPtrHash(collider) == GetPtrHash(fam.Player) then
 				fam:Kill()
-				yandereWaifu.GetEntityData(fam.Player).noHead = false
-				yandereWaifu.GetEntityData(fam.Player).extraHeadsPresent = false
-				fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.HeadlessHead)
-				fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.SkinlessHead)
-				--print(yandereWaifu.GetEntityData(fam.Player).extraHeadsPresent)
-				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(fam.Player).currentMode, fam.Player , false)
-				
+				yandereWaifu.resetRottenHead(fam.Player)
 				for i, v in pairs (yandereWaifu.GetEntityData(fam.Player).RottenFlyTable) do
 					--if v:IsDead() or not v:Exists() then
 						yandereWaifu.GetEntityData(v).Parent = fam.Player
@@ -288,15 +348,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		data.PickupFrames = data.PickupFrames - 1
 	end
 	
+	--blood effect
+	if math.random(1,10) == 10 and player.FrameCount % 5 == 0 then
+		local puddle = Isaac.Spawn(EntityType.ENTITY_EFFECT, 7, math.random(0,1), fam.Position, Vector(0,0), fam)
+	end
+
 	--death code
 	if fam.FrameCount == 2300 then --2300
 		fam:Kill()
-		yandereWaifu.GetEntityData(fam.Player).noHead = false
-		yandereWaifu.GetEntityData(player).extraHeadsPresent = false
-		fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.HeadlessHead)
-		fam.Player:TryRemoveNullCostume(RebekahCurseCostumes.SkinlessHead)
-		--print(yandereWaifu.GetEntityData(player).extraHeadsPresent)
-		yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
+		yandereWaifu.resetRottenHead(player)
 		
 		for i, v in pairs (yandereWaifu.GetEntityData(player).RottenFlyTable) do
 			--if v:IsDead() or not v:Exists() then
@@ -357,6 +417,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 						end
 					end
 			end]]
+		end
+		if data.noHead then
+			if math.random(1,10) == 10 and player.FrameCount % 3 == 0 then
+				local puddle = Isaac.Spawn(EntityType.ENTITY_EFFECT, 7, math.random(0,1), player.Position, Vector(0,0), player)
+			end
 		end
 		
 		if not data.RottenFireDelay then data.RottenFireDelay = player.MaxFireDelay end

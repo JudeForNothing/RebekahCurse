@@ -5,7 +5,7 @@ yandereWaifu.MCM = {
 	--DashControllerBinding = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Controller Binding"]
 }
 
-if ModConfigMenu then
+if ModConfigMenu and potatoNachos then
 	ModConfigMenu.SetCategoryInfo("Cursed Rebekah", "Cursed and Brokenhearted Settings")
 	
 	--[[ModConfigMenu.AddSetting("Cursed Rebekah", "General",

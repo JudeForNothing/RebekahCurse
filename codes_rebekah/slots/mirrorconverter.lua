@@ -372,19 +372,21 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if not data.PersistentPlayerData.RedStatBuffSpeed then data.PersistentPlayerData.RedStatBuffSpeed = 0 end
-	if not data.PersistentPlayerData.RedStatBuffFireDelay then data.PersistentPlayerData.RedStatBuffFireDelay = 0 end
-	if not data.PersistentPlayerData.RedStatBuffDamage then data.PersistentPlayerData.RedStatBuffDamage = 0 end
-	if not data.PersistentPlayerData.RedStatBuffShotSpeed then data.PersistentPlayerData.RedStatBuffShotSpeed = 0 end
-	if not data.PersistentPlayerData.RedStatBuffLuck then data.PersistentPlayerData.RedStatBuffLuck = 0 end
-	if not data.PersistentPlayerData.RedStatBuffRange then data.PersistentPlayerData.RedStatBuffRange = 0 end
-	if not data.PersistentPlayerData.SoulStatBuff then data.PersistentPlayerData.SoulStatBuff = 0 end
-	if not data.PersistentPlayerData.GoldStatBuff then data.PersistentPlayerData.GoldStatBuff = 0 end
-	if not data.PersistentPlayerData.EvilStatBuff then data.PersistentPlayerData.EvilStatBuff = 0 end
-	if not data.PersistentPlayerData.EternalStatBuff then data.PersistentPlayerData.EternalStatBuff = 0 end
-	if not data.PersistentPlayerData.BoneStatBuff then data.PersistentPlayerData.BoneStatBuff = 0 end
-	if not data.PersistentPlayerData.RottenStatBuff then data.PersistentPlayerData.RottenStatBuff = 0 end
-	if not data.PersistentPlayerData.BrokenStatBuff then data.PersistentPlayerData.BrokenStatBuff = 0 end
+	if data.PersistentPlayerData then
+		if not data.PersistentPlayerData.RedStatBuffSpeed then data.PersistentPlayerData.RedStatBuffSpeed = 0 end
+		if not data.PersistentPlayerData.RedStatBuffFireDelay then data.PersistentPlayerData.RedStatBuffFireDelay = 0 end
+		if not data.PersistentPlayerData.RedStatBuffDamage then data.PersistentPlayerData.RedStatBuffDamage = 0 end
+		if not data.PersistentPlayerData.RedStatBuffShotSpeed then data.PersistentPlayerData.RedStatBuffShotSpeed = 0 end
+		if not data.PersistentPlayerData.RedStatBuffLuck then data.PersistentPlayerData.RedStatBuffLuck = 0 end
+		if not data.PersistentPlayerData.RedStatBuffRange then data.PersistentPlayerData.RedStatBuffRange = 0 end
+		if not data.PersistentPlayerData.SoulStatBuff then data.PersistentPlayerData.SoulStatBuff = 0 end
+		if not data.PersistentPlayerData.GoldStatBuff then data.PersistentPlayerData.GoldStatBuff = 0 end
+		if not data.PersistentPlayerData.EvilStatBuff then data.PersistentPlayerData.EvilStatBuff = 0 end
+		if not data.PersistentPlayerData.EternalStatBuff then data.PersistentPlayerData.EternalStatBuff = 0 end
+		if not data.PersistentPlayerData.BoneStatBuff then data.PersistentPlayerData.BoneStatBuff = 0 end
+		if not data.PersistentPlayerData.RottenStatBuff then data.PersistentPlayerData.RottenStatBuff = 0 end
+		if not data.PersistentPlayerData.BrokenStatBuff then data.PersistentPlayerData.BrokenStatBuff = 0 end
+	end
 	if cacheF == CacheFlag.CACHE_SPEED then
 		player.MoveSpeed = player.MoveSpeed + 0.05*data.PersistentPlayerData.RedStatBuffSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.SoulStatBuff + 0.1*data.PersistentPlayerData.BoneStatBuff
 	end

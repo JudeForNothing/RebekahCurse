@@ -133,7 +133,7 @@ local data = yandereWaifu.GetEntityData(player)
 		end
 	elseif data.currentMode == REBECCA_MODE.BrokenHearts then
 		if cacheF == CacheFlag.CACHE_SPEED then
-			player.MoveSpeed = player.MoveSpeed - 0.40
+			player.MoveSpeed = player.MoveSpeed - 0.25
 		end
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			if yandereWaifu.GetEntityData(player).BrokenBuff then

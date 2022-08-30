@@ -410,6 +410,7 @@ RebekahCurseCostumes = {
 	RebekahSpitsOut = Isaac.GetCostumeIdByPath("gfx/characters/rebekahspitsout.anm2"),
 	WizoobHairGoingDown = Isaac.GetCostumeIdByPath("gfx/characters/costumes/soul/wizoobhairgoingdown.anm2"),
 
+	BloodGush = Isaac.GetCostumeIdByPath("gfx/characters/blood_gush.anm2"),
 	HeadlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_headremove.anm2"),
 	SkinlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_skinremove.anm2"),
 
@@ -662,7 +663,7 @@ if StageAPI and StageAPI.Loaded then
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_soul_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
-	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportrait_soul_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,
@@ -672,7 +673,7 @@ if StageAPI and StageAPI.Loaded then
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_evil_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
-	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportrait_evil_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,
@@ -680,9 +681,9 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_evil_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_GOLD, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_gold_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
-	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportrait_gold_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,
@@ -692,7 +693,7 @@ if StageAPI and StageAPI.Loaded then
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_eternal_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
-	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportrait_eternal_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,
@@ -700,9 +701,9 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportrait_eternal_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_BONE, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_bone_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
-	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportrait_bone_rebekah.png",
 	NoShake = nil,
 	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
 	ControlsFrame = 2,

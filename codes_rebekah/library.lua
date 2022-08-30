@@ -262,6 +262,10 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 			player:GetSprite():Load('gfx/rebekahsfluidhairforeternal.anm2',false)
 		elseif mode == REBECCA_MODE.GoldHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforgold.anm2',false)
+		elseif mode == REBECCA_MODE.BoneHearts then --special interacts
+			player:GetSprite():Load('gfx/rebekahsfluidhairforbone.anm2',false)
+		elseif mode == REBECCA_MODE.RottenHearts then --special interacts
+			player:GetSprite():Load('gfx/rebekahsfluidhairforrotten.anm2',false)
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 		end
@@ -578,7 +582,7 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 	elseif mode == REBECCA_MODE.BrokenHearts then
 		data.heartReserveMaxFill = 100
 	elseif mode == REBECCA_MODE.ImmortalHearts then
-		data.heartReserveMaxFill = 100
+		data.heartReserveMaxFill = 50
 	end
 
 	--if fanfare ~= false then

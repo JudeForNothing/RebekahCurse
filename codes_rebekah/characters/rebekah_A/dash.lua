@@ -34,53 +34,7 @@ function dash.RebekahDoubleTapDash(vector, playerTapping)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
 					--yandereWaifu.BoneHeartPunch(player, vector)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
-					if not playerdata.noHead then
-						local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENHEAD, 0, player.Position, vector:Resized(15), player):ToFamiliar();
-						playerdata.noHead = true
-						playerdata.RebHead = head
-						
-						for i, v in pairs (playerdata.RottenFlyTable) do
-							--if not v:IsDead() and v:Exists() then
-								yandereWaifu.GetEntityData(v).Parent = head
-							--end
-						end
-						
-						playerdata.extraHeadsPresent = false
-						--code that checks if extra heads exist
-						for i, v in pairs (Isaac.GetRoomEntities()) do
-							if v.Type == EntityType.ENTITY_FAMILIAR then
-								if v.Variant == FamiliarVariant.SCISSORS or v.Variant == FamiliarVariant.DECAP_ATTACK then
-									playerdata.extraHeadsPresent = true
-									--print("Something wrong")
-								end
-							end
-						end
-						if playerdata.extraHeadsPresent == false then
-							player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
-						else
-							player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
-							yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
-						end
-					else
-						playerdata.RebHead.Velocity = vector:Resized(15)
-						yandereWaifu.GetEntityData(playerdata.RebHead).PickupFrames = 30
-					end
-					for i, v in pairs(playerdata.RottenFlyTable) do
-						--if not v:IsDead() or v:Exists() then
-							v.Velocity = v.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
-							yandereWaifu.GetEntityData(v).SpecialDash = true
-						--end
-					end
-					for i, entity in pairs(Isaac.GetRoomEntities()) do
-						if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
-							if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
-								entity.Velocity = entity.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
-								yandereWaifu.GetEntityData(entity).SpecialDash = true
-							end
-						end
-					end
-					
-					playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+					yandereWaifu.RottenTossHead(player, vector)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if red 
 					player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.RED_HEARTS_DASH_SPEED );
 					yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );

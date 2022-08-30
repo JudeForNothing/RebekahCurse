@@ -31,6 +31,7 @@ yandereWaifuCodes = {
 			lovelove = require('codes_rebekah.characters.rebekah_A.lovelovereserve'),
 			basic = require('codes_rebekah.characters.rebekah_A.basic'),
 			characterselect = require('codes_rebekah.characters.rebekah_A.characterselect'),
+			characterselectcoop = require('codes_rebekah.characters.rebekah_A.characterselectcoop'),
 			personalities = {
 				red  = require('codes_rebekah.characters.rebekah_A.personalities.red'),
 				soul = require('codes_rebekah.characters.rebekah_A.personalities.soul'),
