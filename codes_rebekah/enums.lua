@@ -65,6 +65,7 @@ RebekahCurse = {
 	COLLECTIBLE_EYESOFTHEDEAD = Isaac.GetItemIdByName("Eyes of the Dead"),
 	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoriasis"),
 	COLLECTIBLE_NOTEBOOKOFTHEDEAD = Isaac.GetItemIdByName("Notebook of the Dead"),
+	TRINKET_REBEKAHSKEY = Isaac.GetTrinketIdByName("Rebekah's Key"),
 	--unlockables
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
 	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
@@ -210,6 +211,9 @@ RebekahCurse = {
 	ENTITY_FLYTEAR = Isaac.GetEntityVariantByName("Fly Tear"),
 	ENTITY_ROTTENFLY = Isaac.GetEntityVariantByName("Rotten Fly"),
 	ENTITY_ROTTENFLYBALL = Isaac.GetEntityVariantByName("Rotten Fly Ball"),
+	ENTITY_ROTTENBIRTHRIGHTTARGET = Isaac.GetEntityVariantByName("Rotten Birthright Target"),
+	--broken heart mode
+	ENTITY_BROKENCONSOLE = Isaac.GetEntityVariantByName("Broken Console"),
 	--bride red heart mode
 	ENTITY_LABAN = Isaac.GetEntityVariantByName("Best Man"),
 	--immortal heart mode
@@ -339,6 +343,9 @@ RebekahCurseSounds = {
 	SOUND_CURSE_CURSED = Isaac.GetSoundIdByName("Easter Curse"),
 	SOUND_ORIGINALSIN_SHATTER = Isaac.GetSoundIdByName("Original Sin Shatter"),
 	SOUND_SCRIBBLING = Isaac.GetSoundIdByName("Scribbling"),
+
+	SOUND_STOLID_SING = Isaac.GetSoundIdByName("Stolid Sing"),
+	SOUND_STOLID_APPEAR = Isaac.GetSoundIdByName("Stolid Appear"),
 }
 
 RebekahCurseMusic = {
@@ -347,12 +354,18 @@ RebekahCurseMusic = {
 
 RebekahCurseEnemies = {
 	ENTITY_FACELING = Isaac.GetEntityVariantByName("Faceling"),
-	
+	ENTITY_HOUNDPUPPY = Isaac.GetEntityVariantByName("Hound Puppy"),
+
 	ENTITY_THE_STOLID = Isaac.GetEntityVariantByName("The Stolid"),
 	ENTITY_OVUM_EGG = Isaac.GetEntityVariantByName("Ovum Egg"),
 	ENTITY_OVUM_EGG_EFFECT = Isaac.GetEntityVariantByName("Ovum Egg Effect"),
 	ENTITY_NINCOMPOOP = Isaac.GetEntityVariantByName("Nincompoop"),
-	
+
+	ENTITY_POLTYGEIST = Isaac.GetEntityVariantByName("Poltygeist"),
+	ENTITY_POLTY_TONGUE = Isaac.GetEntityVariantByName("Polty Tongue"),
+	ENTITY_GIANTGRIDPROJECTILE = Isaac.GetEntityVariantByName("Giant Grid Projectile"),
+	ENTITY_GIANTGRIDBREAK = Isaac.GetEntityVariantByName("Giant Grid Break"),
+
 	ENTITY_REBEKAH_ENEMY = Isaac.GetEntityTypeByName("Rebekah Entities"),
 	ENTITY_REDTATO = Isaac.GetEntityVariantByName("Red Tato"),
 	ENTITY_MAGDALENE_HEART = Isaac.GetEntityVariantByName("Magdalene Hearts"),
@@ -360,7 +373,8 @@ RebekahCurseEnemies = {
 	ENTITY_MAGDALENE_BOSS = Isaac.GetEntityVariantByName("Magdalene (Boss)"),
 	
 	ENTITY_THE_SCUM = Isaac.GetEntityVariantByName("The Scum"),
-	
+	ENTITY_THE_HOUND = Isaac.GetEntityVariantByName("The Hound"),
+
 	ENTITY_EVE_BOSS = Isaac.GetEntityVariantByName("Eve (Boss)"),
 	ENTITY_BLOOD_SLOTH = Isaac.GetEntityVariantByName("Blood Sloth"),
 	ENTITY_BLOOD_WRATH = Isaac.GetEntityVariantByName("Blood Wrath"),
@@ -370,6 +384,13 @@ RebekahCurseEnemies = {
 	ENTITY_DEMONBABY_ENEMY = Isaac.GetEntityVariantByName("Demon Baby (Enemy)"),
 	ENTITY_MULTIDIMENSIONALBABY_ENEMY = Isaac.GetEntityVariantByName("Multidimensional Baby (Enemy)"),
 	ENTITY_ROBOBABY_ENEMY = Isaac.GetEntityVariantByName("Robo Baby (Enemy)"),
+
+	--undercrofts
+	ENTITY_SISTER = Isaac.GetEntityVariantByName("Sister"),
+	ENTITY_BUMBAB = Isaac.GetEntityVariantByName("Bumbab"),
+	ENTITY_BUMBAB_PUNCH = Isaac.GetEntityVariantByName("Bumbab Punch"),
+	ENTITY_ROACH = Isaac.GetEntityVariantByName("Roach"),
+	ENTITY_MONK = Isaac.GetEntityVariantByName("Monk"),
 }
 
 RebekahCurseDustEffects = {
@@ -637,6 +658,9 @@ RebekahMirrorHeartDrop = {
 	[5] = 7, --gold
 	[6] = 11 --bone
 }
+
+--Stage
+yandereWaifu.STAGE = {}
 
 local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_SOUL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_SOUL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});

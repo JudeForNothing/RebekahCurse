@@ -580,7 +580,7 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 	elseif mode == REBECCA_MODE.RottenHearts then
 		data.heartReserveMaxFill = 50
 	elseif mode == REBECCA_MODE.BrokenHearts then
-		data.heartReserveMaxFill = 100
+		data.heartReserveMaxFill = 50
 	elseif mode == REBECCA_MODE.ImmortalHearts then
 		data.heartReserveMaxFill = 50
 	end
@@ -913,6 +913,7 @@ function yandereWaifu.ThrowDarkKnife(player, position, vel)
 		knife:ChangeVariant(RebekahCurse.ENTITY_DARKKNIFE);
 		knife.CollisionDamage = player.Damage*3
 		knife.DepthOffset = 20000
+		yandereWaifu.GetEntityData(knife).IsBottle = true
 	end
 end
 

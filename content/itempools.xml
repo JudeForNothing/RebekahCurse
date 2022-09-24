@@ -84,18 +84,15 @@
 		<Item Name="Notebook of the Dead" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="goldenChest">
-		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Great Pheonix" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Doorstopper" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Body Dysmorphia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Moriah Diary" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
 	</Pool>
 	<Pool Name="redChest">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -193,9 +190,14 @@
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedGoldenChest">
-		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Body Dysmorphia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Moriah Diary" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
 	</Pool>
 </ItemPools>

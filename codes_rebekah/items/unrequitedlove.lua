@@ -6,7 +6,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	if player:HasCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE) then
 		if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
-			local hook = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVEHOOK, 0, player.Position, vector:Resized(45), player)
+			local vel = 45
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+				vel = 75
+			end
+			local hook = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVEHOOK, 0, player.Position, vector:Resized(vel), player)
 			hook.RenderZOffset = -10000;
 			yandereWaifu.GetEntityData(hook).Player = player
 			InutilLib.ConsumeActiveCharge(player)

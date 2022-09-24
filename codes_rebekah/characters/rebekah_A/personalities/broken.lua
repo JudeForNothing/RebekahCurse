@@ -39,6 +39,7 @@ function yandereWaifu.BrokenRebekahDash(player, vel)
 			v.Velocity = v.Velocity + vel:Resized(80)
 		end
 	end]]
+	SFXManager():Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 0.9 );
 	if not data.BrokenPortal or data.BrokenPortal == 2 then
 		data.BrokenPortal = 1
 	else
@@ -77,6 +78,74 @@ end
 			end
 		end
 end)]]
+
+local function BossReroll(ent, birthright)
+	if birthright then
+	else
+		
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	local player = data.Player
+	local roomClampSize = math.max( player.Size, 20 );
+
+	eff.RenderZOffset = -1000
+	eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize)
+	if data.Attached and data.Attached:Exists() then
+		eff.Velocity = player:GetShootingInput()*5
+		data.Attached.Velocity = eff.Velocity
+		data.Attached.Position = eff.Position
+		local dist = data.Attached.Position:Distance((player.Position ))
+		if dist > 500 and Isaac.GetFrameCount() % math.floor(10) == 0 then
+			data.Attached:TakeDamage(1.5, 0, EntityRef(eff), 1)
+			eff:Remove()
+		end
+
+		for i, v in pairs (Isaac.GetRoomEntities()) do
+			if v:IsVulnerableEnemy() then
+				if v.Position:Distance(eff.Position) < v.Size + eff.Size + 16 + 50 then
+					v:AddFreeze(EntityRef(player), 3)
+				end
+			elseif v:ToProjectile() and math.random(1,3) == 3 and eff.FrameCount % 5 == 0 then
+				if v.Position:Distance(eff.Position) < v.Size + eff.Size + 16 + 100 then
+					v:AddFreeze(EntityRef(player), 3)
+				end
+			end
+		end
+		data.Attached:AddFreeze(EntityRef(player), 3)
+		if sprite:IsOverlayFinished("Bar") then
+			ILIB.game:RerollEnemy(data.Attached)
+			eff:Remove()
+			player:UseActiveItem(CollectibleType.COLLECTIBLE_DATAMINER, true, false, false, false, -1)
+			data.Attached:AddFreeze(EntityRef(player), 120)
+		end
+		if eff.Velocity:Length() <= 2 and not sprite:IsOverlayPlaying("Bar") then
+			sprite:PlayOverlay("Bar", true)
+		elseif sprite:IsOverlayPlaying("Bar") and eff.Velocity:Length() > 2 then
+			sprite:RemoveOverlay()
+		end
+	elseif data.Attached and data.Attached:IsDead() then
+		eff:Remove()
+		player:UseActiveItem(CollectibleType.COLLECTIBLE_DATAMINER, true, false, false, false, -1)
+	else
+		eff.Velocity = player:GetShootingInput()*15
+
+		--[[local angleNum = (eff.Velocity):GetAngleDegrees();
+		eff:GetSprite().Rotation = angleNum;
+		eff:GetData().Rotation = eff:GetSprite().Rotation;]]
+		local enemy = InutilLib.GetStrongestEnemy(eff, 100, true)
+		if enemy then
+			if enemy.Position:Distance(eff.Position) < enemy.Size + eff.Size + 16 then
+				data.Attached = enemy
+				sprite:Play("Standby", true)
+			end
+		end
+	end
+	
+end, RebekahCurse.ENTITY_BROKENCONSOLE);
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)

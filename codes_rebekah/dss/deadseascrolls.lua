@@ -208,7 +208,7 @@ local rebekahdirectory = {
 			{strpair = {{str = 'zer0', color = 3}, {str = 'spriter'}}},
 			{strpair = {{str = 'susuke', color = 3}, {str = 'spriter'}}},
 			{strpair = {{str = 'scroto', color = 3}, {str = 'spriter'}}},
-			{strpair = {{str = 'kruntical', color = 3}, {str = 'spriter'}}},
+			{strpair = {{str = 'kruntical', color = 2}, {str = 'spriter'}}},
 			{str = '', nosel = true},
 			{str = 'voice actors', fsize = 2},
 			{strpair = {{str = 'rebekah'}, {str = 'may'}}},
@@ -247,6 +247,9 @@ local rebekahdirectory = {
 			{strpair = {{str = 'deadinfinity', color = 3}, {str = 'stageapi help'}}},
 			{strpair = {{str = 'planetarium chance', color = 3}, {str = 'code reference'}}},
 			{strpair = {{str = 'scooperman', color = 3}, {str = 'sprite advice'}}},
+            {strpair = {{str = 'sgjd01', color = 3}, {str = 'code reference'}}},
+            {strpair = {{str = 'tainted treasures', color = 3}, {str = 'code reference for synergy'}}},
+            {strpair = {{str = 'fiend folio', color = 3}, {str = 'code reference'}}},
 			{str = '', nosel = true},
 			{str = 'and especially you!', fsize = 3},
             {str = '', nosel = true}

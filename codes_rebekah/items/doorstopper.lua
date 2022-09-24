@@ -40,6 +40,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			InutilLib.ToggleShowActive(player, false)
 			yandereWaifu.GetEntityData(mob).Player = player
 			mob:GetSprite():Play("Thrown", true)
+			player:AddWisp(RebekahCurse.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 		end
 	end
 end)

@@ -47,10 +47,16 @@ local LiminalSacrificeBackdrop = StageAPI.BackdropHelper({
 }, "gfx/backdrop/liminal/", ".png")
 
 
-local LiminalRoomList = StageAPI.RoomsList("Basic Backrooms", {
-    Name = "Basic Backrooms",
-    Rooms = require('resources.luarooms.liminal.backrooms')
+local HoundLiminalRoomList = StageAPI.RoomsList("Hound Backrooms", {
+    Name = "Hound Backrooms",
+    Rooms = require('resources.luarooms.liminal.hound.hound_stage')
 })
+
+local HoundLiminalStartingRoomList = StageAPI.RoomsList("Hound Starting Backrooms", {
+    Name = "Hound Starting Backrooms",
+    Rooms = require('resources.luarooms.liminal.hound.starting_room')
+})
+
 
 --[[
 local LiminalExperimentalRoomList = StageAPI.RoomsList("Garden Experimental", {
@@ -71,16 +77,16 @@ yandereWaifu.LiminalBossRoomGfx = StageAPI.RoomGfx(LiminalBackdropBoss, LiminalG
 yandereWaifu.LiminalChallengeRoomGfx = StageAPI.RoomGfx(LiminalBackdrop, LiminalGrid, "_default", "stageapi/shading/shading")
 yandereWaifu.LiminalSacrificeRoomGfx = StageAPI.RoomGfx(LiminalBackdrop, LiminalGrid, "_default", "stageapi/shading/shading")
 
-yandereWaifu.STAGE = {}
-
 yandereWaifu.STAGE.Liminal = StageAPI.CustomStage("Liminal") --Nametag of the floor itself
 
-yandereWaifu.STAGE.Liminal:SetReplace(StageAPI.StageOverride.NecropolisOne)
+yandereWaifu.STAGE.Liminal:SetReplace(StageAPI.StageOverride.CatacombsOne)
 
 yandereWaifu.STAGE.Liminal:SetDisplayName("Liminal")
-yandereWaifu.STAGE.Liminal:SetRooms(LiminalRoomList)
+yandereWaifu.STAGE.Liminal:SetRooms(HoundLiminalRoomList)
+yandereWaifu.STAGE.Liminal:SetStartingRooms(HoundLiminalStartingRoomList)
+
 --yandereWaifu.STAGE.Liminal:SetPregenerationEnabled(true)
-yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalRoomGfx, {RoomType.ROOM_DEFAULT, RoomType.ROOM_TREASURE, RoomType.ROOM_MINIBOSS, RoomType.ROOM_GREED_EXIT})
+yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalRoomGfx, {RoomType.ROOM_DEFAULT, RoomType.ROOM_TREASURE, RoomType.ROOM_MINIBOSS, RoomType.ROOM_GREED_EXIT, "Safe", "Starting Room"})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalBossRoomGfx, {RoomType.ROOM_BOSS})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalChallengeRoomGfx, {RoomType.ROOM_DEVIL, RoomType.ROOM_CURSE, RoomType.ROOM_CHALLENGE})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalSacrificeRoomGfx, {RoomType.ROOM_SACRIFICE})
@@ -92,10 +98,10 @@ yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalSacrificeRoomGfx, {Roo
 yandereWaifu.STAGE.Liminal:OverrideRockAltEffects()
 --yandereWaifu.STAGE.Liminal:SetTransitionIcon("gfx/ui/stage/LiminalIcon.png")
 
-yandereWaifu.STAGE.Liminal:SetDisplayName("")
+yandereWaifu.STAGE.Liminal:SetDisplayName("The Backrooms?!")
 
 local LiminalXL = yandereWaifu.STAGE.Liminal("Liminal XL")
-LiminalXL:SetDisplayName("")
+LiminalXL:SetDisplayName("The Backrooms?!")
 --LiminalXL:SetNextStage("Liminal2")
 LiminalXL.IsSecondStage = true
 
@@ -103,9 +109,9 @@ yandereWaifu.STAGE.Liminal:SetXLStage(LiminalXL)
 
 local LiminalTwo = yandereWaifu.STAGE.Liminal("Liminal 2")
 
-LiminalTwo:SetDisplayName("")
+LiminalTwo:SetDisplayName("The Backrooms?!")
 yandereWaifu.STAGE.Liminal:SetNextStage(yandereWaifu.STAGE.Liminal)
-LiminalTwo:SetReplace(StageAPI.StageOverride.NecropolisTwo)
+LiminalTwo:SetReplace(StageAPI.StageOverride.CatacombsTwo)
 LiminalTwo.IsSecondStage = true
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
@@ -113,12 +119,177 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		for i = 0, 7 do
 			local door = ILIB.game:GetRoom():GetDoor(i)
 			if door then
-				if door.TargetRoomType == RoomType.ROOM_SECRET_EXIT then
+				if door.TargetRoomType ~= RoomType.ROOM_DEFAULT and door.TargetRoomType ~= RoomType.ROOM_BOSS 
+                and door.TargetRoomType ~= RoomType.ROOM_MINIBOSS then
 					ILIB.room:RemoveDoor(i)
-					ILIB.room:TrySpawnSpecialQuestDoor(true)
+					--ILIB.room:TrySpawnSpecialQuestDoor(true)
 					break
 				end
 			end
 		end
 	end
+end)
+
+function yandereWaifu.GenerateQualityFourItem(pool)
+    local run = true
+    local seed = RNG():SetSeed(Game():GetSeeds():GetStartSeed(), 25)
+    local returnValue
+    while run do
+        local poolItem = ILIB.game:GetItemPool():GetCollectible(pool, true, seed)
+        if InutilLib.config:GetCollectible(poolItem).Quality >= 3 then
+            run = false
+            returnValue = poolItem
+            break
+        end
+    end
+    return returnValue 
+end
+
+local extraPools = {
+    [0] = ItemPoolType.POOL_SECRET,
+    [1] = ItemPoolType.POOL_ULTRA_SECRET,
+    [2] = ItemPoolType.POOL_PLANETARIUM, 
+    [3] = ItemPoolType.POOL_CURSE, 
+    [4] = ItemPoolType.POOL_RED_CHEST,
+    [5] = ItemPoolType.POOL_ANGEL,
+    [6] = ItemPoolType.POOL_DEVIL
+}
+
+local hasTakenItems = false
+local backRoomsItemsSpawned = {}
+function yandereWaifu.GenerateStartingRoomItems()
+    hasTakenItems = false
+    backRoomsItemsSpawned = {}
+    local seed = RNG():SetSeed(Game():GetSeeds():GetStartSeed(), 25)
+    local secretPool = yandereWaifu.GenerateQualityFourItem(ItemPoolType.POOL_SECRET)
+    backRoomsItemsSpawned[0] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, secretPool, ILIB.room:GetGridPosition(50), Vector.Zero, nil):ToPickup()
+    local ultrasecretPool = yandereWaifu.GenerateQualityFourItem(ItemPoolType.POOL_ULTRA_SECRET)
+    backRoomsItemsSpawned[1] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, ultrasecretPool, ILIB.room:GetGridPosition(54), Vector.Zero, nil):ToPickup()
+
+    backRoomsItemsSpawned[2] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, extraPools[math.random(0,6)], ILIB.room:GetGridPosition(80), Vector.Zero, nil):ToPickup()
+    backRoomsItemsSpawned[3] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, extraPools[math.random(0,6)], ILIB.room:GetGridPosition(84), Vector.Zero, nil):ToPickup()
+    for i, v in pairs (backRoomsItemsSpawned) do
+        v.OptionsPickupIndex = 29
+    end
+end
+
+--setting the backroom floors
+StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --POST_ROOM_INIT
+    if yandereWaifu.STAGE.Liminal:IsStage() then
+        if StageAPI.InStartingRoom() and ILIB.room:IsFirstVisit() then
+            newRoom:SetTypeOverride("Starting Room")
+            yandereWaifu.GenerateStartingRoomItems()
+            hasTakenItems = false
+        end
+        if newRoom.Layout.Name and string.sub(string.lower(newRoom.Layout.Name), 1, 6) == "(safe)" then
+            newRoom:SetTypeOverride("Safe")
+        end
+    end
+end)
+
+function yandereWaifu.SpawnHoundFromDoor(noappear)
+    local noappear = noappear or false
+    local dist = 999999
+    local chosenDoor
+     local currentRoomIndex = ILIB.level:GetCurrentRoomDesc().GridIndex
+	for i = 0, 7 do
+		local door = ILIB.game:GetRoom():GetDoor(i)
+		if door then
+			if dist > door.Position:Distance(Isaac.GetPlayer(0).Position) then --this is assuming everyone is together anyway 
+                dist = door.Position:Distance(Isaac.GetPlayer(0).Position)
+                chosenDoor = door
+            end
+        end
+	end
+    if chosenDoor then
+        InutilLib.SetTimer( 120,function()
+           local savedRoomIndex = currentRoomIndex
+           if savedRoomIndex == ILIB.level:GetCurrentRoomDesc().GridIndex then
+                local houndCount = #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, -1, false, false)
+		        if houndCount <= 0 then
+                    local spawn = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, 0, ILIB.room:FindFreePickupSpawnPosition(chosenDoor.Position, 1), Vector(0,0), nil):ToNPC()
+                    if noappear then
+                        spawn:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+                    end
+                end
+           end
+        end)
+    end
+end
+
+local function KeepDoorsLocked()
+    for i = 0, 7 do
+		local door = ILIB.game:GetRoom():GetDoor(i)
+		if door then
+			if door:IsOpen() then
+				door:Bar()
+			end
+			--ILIB.room:SetClear(false)
+        end
+	end
+end
+
+--item checking if the items are still in the backrooms starting room
+InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+    if yandereWaifu.STAGE.Liminal:IsStage() and StageAPI.InStartingRoom() then
+        if not hasTakenItems then
+            KeepDoorsLocked()
+            for i, v in pairs (backRoomsItemsSpawned) do
+                if not v or not v:Exists() then
+                    hasTakenItems = true
+                    yandereWaifu.SpawnHoundFromDoor()
+                    break
+                end
+            end
+        end
+    end
+    if yandereWaifu.STAGE.Liminal:IsStage() then
+        for p = 0, ILIB.game:GetNumPlayers() - 1 do
+            local player = Isaac.GetPlayer(p):ToPlayer()
+            player:AddCurseMistEffect(true)
+        end
+    end
+end)
+
+--softlock from other things so you cant do stuff while in the backrooms
+InutilLib:AddCallback(ModCallbacks.MC_INPUT_ACTION, function(_, entity, hook, action)
+    if hook == InputHook.IS_ACTION_TRIGGERED and yandereWaifu.STAGE.Liminal:IsStage() and not hasTakenItems and (action == ButtonAction.ACTION_ITEM or action == ButtonAction.ACTION_BOMB or action == ButtonAction.ACTION_PILLCARD) then
+       -- InutilLib.SFX:Play(SoundEffect.SOUND_METAL_DOOR_CLOSE, 1, 0, false, 1)
+        --ILIB.game:GetHUD():ShowItemText("Pick an item","It doesn't work for now...")
+        return false
+    end
+end)
+
+--spawning the monster
+StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 1, function(newRoom) 
+    if yandereWaifu.STAGE.Liminal:IsStage() and newRoom:GetType() ~= "Safe" and newRoom.RoomType ~= RoomType.ROOM_BOSS and hasTakenItems then
+        yandereWaifu.SpawnHoundFromDoor(true)
+    end
+end)
+
+yandereWaifu.NincompoopStageAPIRooms = {
+	StageAPI.AddBossData("The Hound", {
+		Name = "The Hound",
+		Portrait = "gfx/ui/boss/portrait_hound.png",
+		Offset = Vector(0,-15),
+		Bossname = "gfx/ui/boss/name_hound.png",
+		Weight = 3,
+		Rooms = StageAPI.RoomsList("Hound Boss Backrooms", require("resources.luarooms.liminal.hound.hound_boss")),
+		Entity =  {Type = RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurseEnemies.ENTITY_THE_HOUND},
+	})
+}
+
+    yandereWaifu.STAGE.Liminal:SetBosses({"The Hound"})
+
+
+--escaping the backrooms
+StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 1, function(newRoom) 
+    if yandereWaifu.STAGE.Liminal:IsStage() and newRoom.RoomType == RoomType.ROOM_BOSS then
+        StageAPI.SpawnCustomTrapdoor(ILIB.room:GetGridPosition(97), {NormalStage = true, Stage = 4, StageType = StageAPI.StageTypes[StageAPI.Random(1, 3, StageAPI.StageRNG)]}, "gfx/grid/liminal/exit_trapdoor.anm2", 32, false)
+        --[[for p = 0, ILIB.game:GetNumPlayers() - 1 do
+            local player = Isaac.GetPlayer(p)
+            player:RemoveCurseMistEffect()
+        end]]
+        StageAPI.SpawnCustomTrapdoor(ILIB.room:GetGridPosition(37), {NormalStage = true, Stage = 4, StageType = StageAPI.StageTypes[StageAPI.Random(4, #StageAPI.StageTypes, StageAPI.StageRNG)]}, "gfx/grid/trapdoor_mines.anm2", 32, false)
+    end
 end)

@@ -234,7 +234,24 @@ function yandereWaifu.SpawnEvilOrb(player, position)
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_GODHEAD) then
 		yandereWaifu.GetEntityData(orb).HasGodhead = true
 	end
-	
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.REAPER) or TaintedTreasure and player:HasCollectible(TaintedCollectibles.SORROWFUL_SHALLOT) then
+		yandereWaifu.GetEntityData(orb).HasSprayFlames = true
+		if TaintedTreasure and player:HasCollectible(TaintedCollectibles.REAPER) then
+			yandereWaifu.GetEntityData(orb).HasReaperFlames = true
+		end
+	end
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.DRYADS_BLESSING) and (math.random(0,10) + player.Luck >= 8) then
+		yandereWaifu.GetEntityData(orb).HasDryadsBlessing = true
+	end
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.POISONED_DART) then
+		yandereWaifu.GetEntityData(orb).HasPoisonedDartEffect = true
+	end
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.EVANGELISM) then
+		yandereWaifu.GetEntityData(orb).HasEvangelism = true
+	end
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.LIL_SLUGGER) then
+		yandereWaifu.GetEntityData(orb).HasLilSlugger = true
+	end
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
@@ -365,8 +382,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--movement code
 	eff.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
 
-	--local movementDirection = player:GetMovementInput();
-	--if movementDirection:Length() < 0.05 then
+	local movementDirection = player:GetMovementInput();
 	
 	player.Velocity = player.Velocity * 1.1
 	eff.Velocity = player.Velocity;
@@ -390,11 +406,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if not data.EndFrames then data.EndFrames = 40 end
 		--trail
 		data.trail = InutilLib.SpawnTrail(eff, Color(1,0,1,0.5))
+		data.movementCountFrame = 50
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true);
 	end
 	
-    if eff.FrameCount == data.EndFrames then
+    if (player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and data.movementCountFrame <= 0) or (not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and eff.FrameCount >= data.EndFrames) then
         if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
             player.Velocity = Vector( 0, 0 );
         else
@@ -428,6 +445,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
 		player.EntityCollisionClass =  EntityCollisionClass.ENTCOLL_PLAYEROBJECTS;
     end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+		if movementDirection:Length() > 1 then
+			data.movementCountFrame = 50
+		else
+			data.movementCountFrame = data.movementCountFrame - 1
+		end
+	end
 	--if eff.FrameCount < 35 then
 	--	player.Velocity = Vector( 0, 0 );
 	--end
@@ -676,7 +700,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_MONSTROS_LUNG) then
 		extraTearDmg = extraTearDmg + math.random(3,5);
 	end
-	
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
+		extraTearDmg = extraTearDmg + player:GetCollectibleNum(TaintedCollectibles.SPIDER_FREAK) * 5
+	end
 	--overload code
 	if data.Tier > 3 then
 		data.HitPoints = 0
@@ -755,6 +781,60 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
 			eff:SetColor(Color(1,0,0,1,0,0,0),9999999,99,false,false)
 		end
+		if data.HasReaperFlames then
+			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
+			local ColorGreyscale = Color(1,1,1)
+			ColorGreyscale:SetColorize(1,1,1,1)
+			eff.Color = ColorGreyscale
+		end
+		if data.HasEvangelism then
+			eff:GetSprite():ReplaceSpritesheet(4, "gfx/effects/evil/orb/evangelism_effect.png") 
+			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
+		end
+		if data.HasDryadsBlessing then
+			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_base.png") 
+			eff:GetSprite():ReplaceSpritesheet(5, "gfx/effects/evil/fire_jet_base.png") 
+			eff:SetColor(Color(0,1,0.3,1,0,0,0),9999999,99,false,false)
+			eff:GetSprite():ReplaceSpritesheet(2, "gfx/effects/evil/orb/dryad.png") 
+			eff:GetSprite():ReplaceSpritesheet(4, "gfx/effects/evil/orb/belial_germinate_effect.png") 
+			local skin01 = true
+			local refLeaf
+			--taken directly from tainted treasures
+			local size = 10*data.Tier
+			local num = math.floor(size / 2)
+			if num % 2 == 1 then
+				num = num + 1
+			end
+			local skin01 = true
+			local refLeaf
+			for i = 360/num, 360, 360/num do
+				local leaf = Isaac.Spawn(1000, TaintedEffects.CRYSTAL_LEAF, 0, eff.Position, Vector.Zero, eff)
+				if skin01 then
+					leaf:GetSprite():Play("Leaf01")
+					skin01 = false
+				else
+					leaf:GetSprite():Play("Leaf02")
+					skin01 = true
+				end
+				local data = leaf:GetData()
+				data.Angle = i
+				data.TargetRadius = size * 10
+				data.CurrentRadius = 0
+				data.RadiusRate = data.TargetRadius / 20
+				data.OrbitPos = eff.Position
+				leaf.Parent = eff
+				if not refLeaf then
+					refLeaf = leaf
+				end
+				--leaf:Update()
+			end
+			eff:GetData().TaintedStatus = "Germinated"
+		end
+		if data.HasLilSlugger then
+			eff:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/orb/orb_saw.png") 
+		end
 		eff:GetSprite():LoadGraphics()
 	end
 	
@@ -767,9 +847,29 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			tear:AddTearFlags(TearFlags.TEAR_BELIAL)
 		end
 	end
+
+	if data.HasSprayFlames then
+		if eff.FrameCount % 5 == (0) and math.random(0,10) == 10 then
+			local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BLUE_FLAME, 0, eff.Position, Vector(math.random(3,7),0):Rotated(math.random(0,360)), eff):ToEffect()
+			fire.Parent = player
+			fire.CollisionDamage = math.max(7, player.Damage*2) / 1.5
+			fire.Timeout = math.random(40, 60)
+			if data.HasReaperFlames then
+				local ColorGreyscale = Color(1,1,1)
+				ColorGreyscale:SetColorize(1,1,1,1)
+				fire.Color = ColorGreyscale
+				fire:GetData().TaintedReaperFire = true
+				fire:Update()
+			else
+				fire:GetSprite():ReplaceSpritesheet(0, "gfx/effects/effect_005_fire_purple.png")
+				fire:GetSprite():LoadGraphics()
+			end
+			fire.Size = 0.5
+		end
+	end
 	--damage code
 	local godheadBuff = 0
-	if data.HasGodhead then godheadBuff = 70 end
+	if data.HasGodhead or data.HasEvangelism then godheadBuff = 70 end
 	for i, entenmies in pairs(Isaac.GetRoomEntities()) do
 		--local ents = Isaac.GetRoomEntities() --shorten this damn thing lol
 		if entenmies:IsEnemy() and entenmies:IsVulnerableEnemy() --[[and not entenmies:IsEffect() and not entenmies:IsInvulnurable()]] then
@@ -784,9 +884,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					break
 				end
 			end
+			if entenmies.Position:Distance(eff.Position) <= 170 and data.HasPoisonedDartEffect and eff.FrameCount % 15 == 0 and not enemy:HasEntityFlags(EntityFlag.FLAG_WEAKNESS) and not enemy:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+				entenmies:AddEntityFlags(EntityFlag.FLAG_WEAKNESS)
+				local weakColor = Color(1,1,1) --taken from TT
+				weakColor:SetColorize(1.3,1,1.5,0.6)
+				entenmies:SetColor(weakColor, -1, 1)
+				SFXManager():Play(SoundEffect.SOUND_WHIP_HIT, 1, 2, false, 1)
+			end
 			if entenmies.Position:Distance(eff.Position) < entenmies.Size + eff.Size + 15 + godheadBuff then
 				if eff.FrameCount % 5 == (0) then
-					entenmies:TakeDamage(player.Damage/2, 0, EntityRef(eff), 4)
+					local sluggerDmgMulti = 1
+					if data.HasLilSlugger then
+						sluggerDmgMulti = 2
+					end
+					entenmies:TakeDamage((player.Damage/2)*sluggerDmgMulti, 0, EntityRef(eff), 4)
 					
 					--explode fire mind stuff
 					if eff.SubType == 5 and math.random(0,10) == 10 then
@@ -833,6 +944,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						tear:AddTearFlags(player.TearFlags)
 						tear:AddTearFlags(TearFlags.TEAR_HORN)
 					end
+					if data.HasEvangelism then
+						--taken directly from TT, sorry lol
+						local enemyData = entenmies:GetData()
+						if enemyData.EvangelismStrength then
+							enemyData.EvangelismStrength = enemyData.EvangelismStrength + 0.2
+							enemyData.EvangelismTimer = 90
+					
+							if enemyData.EvangelismStrength >= 1 then
+								local spawner = player
+								if not (player and player:Exists()) then
+									spawner = Isaac.GetPlayer()
+								end
+							
+								local beam = Isaac.Spawn(1000, EffectVariant.CRACK_THE_SKY, 1, entenmies.Position, Vector.Zero, eff.Player)
+								beam.Parent = spawner
+								beam.CollisionDamage = spawner.Damage * 5
+								beam:Update()
+					
+								sfx:Play(SoundEffect.SOUND_DOGMA_LIGHT_RAY_FIRE, 0.3)
+								enemyData.EvangelismStrength = 0
+							end
+						end
+					end
+
 					data.HitPoints = data.HitPoints - 1
 					--print(data.HitPoints)
 					
@@ -859,6 +994,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						end
 					end
 				end
+			end
+		--dryad's blessing synergy
+		elseif entenmies.Type == 1 then
+			if data.HasDryadsBlessing and entenmies.Position:Distance(eff.Position) < entenmies.Size + eff.Size + 50 then
+				local pdata = entenmies:GetData()
+				pdata.GerminatedStacks = pdata.GerminatedStacks + 1
+				print(pdata.GerminatedStacks)
+				TaintedTreasure:EvaluateGerminatedBoosts(entenmies:ToPlayer(), pdata)
 			end
 		end
 	end
@@ -1190,7 +1333,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		data.HitPoints = 0 --kill it
 		data.beam = beam
-		
+
 		--[[if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) and not data.ThrownKnife then
 			yandereWaifu.ThrowDarkKnife(player, position)
 			if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(eff, player) else
@@ -1352,9 +1495,16 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.DarkKnifeUpdate)
 
 function yandereWaifu:DarkKnifeRender(tr, _)
-	if tr.Variant == RebekahCurse.ENTITY_DARKKNIFE then
+	if tr.Variant == RebekahCurse.ENTITY_DARKKNIFE and tr.FrameCount == 1 then
 		tr:GetSprite():Play("RegularTear", true);
-		--tr:GetSprite():LoadGraphics();
+		if TaintedTreasure and yandereWaifu.GetEntityData(tr).IsBottle then
+			if tr.SpawnerEntity:GetData().BrokenBottle then
+				tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/tear_tt_bottle_broken.png")
+			else
+				tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/evil/tear_tt_bottle.png")
+			end
+		end
+		tr:GetSprite():LoadGraphics()
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.DarkKnifeRender)
@@ -1368,12 +1518,24 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 	end
 end)
+
 --yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, yandereWaifu.DarkKnifeFadeUpdate, RebekahCurse.ENTITY_DARKKNIFEFADE)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
 	if tr.Variant == RebekahCurse.ENTITY_DARKKNIFE then
-		local part = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DARKKNIFEFADE, 0, tr.Position, Vector(0,0), tr) --heart effect
-		part:GetSprite().Rotation = tr:GetSprite().Rotation
+		if yandereWaifu.GetEntityData(tr).IsBottle then
+			InutilLib.SFX:Play(TaintedSounds.BOTTLE_BREAK2)
+			InutilLib.SFX:Play(SoundEffect.SOUND_DEMON_HIT)
+			local shardvec = RandomVector()
+			for i = 1, 2 do
+				local shard = Isaac.Spawn(1000, TaintedEffects.BOTTLE_SHARD, 0, tr.Position, (shardvec * math.random(2,4)):Rotated(i * (360/5)), tr)
+				shard.CollisionDamage = math.max(3.5, tr.CollisionDamage/2)
+			end
+			yandereWaifu.SpawnEvilOrb(tr.SpawnerEntity:ToPlayer(), tr.Position)
+		else
+			local part = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DARKKNIFEFADE, 0, tr.Position, Vector(0,0), tr) --heart effect
+			part:GetSprite().Rotation = tr:GetSprite().Rotation
+		end
 	end
 end, EntityType.ENTITY_TEAR)
 

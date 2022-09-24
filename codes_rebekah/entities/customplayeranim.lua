@@ -1,4 +1,4 @@
-
+local speaker = InutilLib.SFX
 --custom animation actions and other gimmicks that I can't name in one word lol
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
@@ -701,12 +701,46 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		for i, ent in pairs (Isaac.GetRoomEntities()) do
 			if ent.Type ~= 1000 and (ent.Type == 1 or ent:IsEnemy()) then
 				if ent.Position:Distance(eff.Position) < eff.Size + ent.Size + 15 and ( not yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown or yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown <= 0) then
+					local function addEffectByChance()
+						if ent:IsEnemy() and math.random(1,3) == 3 then
+							local rng = math.random(0,4)
+							if rng == 0 then
+								ent:AddFear(EntityRef(data.Player), math.random(30,600))
+							elseif rng == 1 then
+								ent:AddFreeze(EntityRef(data.Player), math.random(30,600))
+							elseif rng == 2 then
+								ent:AddPoison(EntityRef(data.Player), math.random(30,600), math.random(5,10))
+							elseif rng == 3 then
+								ent:AddSlowing(EntityRef(data.Player), math.random(30,600), 2.0, (Color(1.0, 1.0, 1.0, 1.0)))
+							elseif rng == 3 then
+								ent:AddShrink(EntityRef(data.Player), math.random(30,600))
+							end
+						end
+					end
 					if data.IsOrange and yandereWaifu.GetBlueMirror() then
+						if ent.Type == 1 then
+							ent:ToPlayer():AnimateTeleport(true)
+						end
 						ent.Position = yandereWaifu.GetBlueMirror().Position
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
+						ILIB.game:ShakeScreen(5)
+						addEffectByChance()
+						if ent.Type == 1 then
+							ent:ToPlayer():AnimateTeleport(false)
+						end
+						speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 0.9 );
 					elseif data.IsBlue and yandereWaifu.GetOrangeMirror() then
+						if ent.Type == 1 then
+							ent:ToPlayer():AnimateTeleport(true)
+						end
 						ent.Position = yandereWaifu.GetOrangeMirror().Position
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
+						ILIB.game:ShakeScreen(5)
+						addEffectByChance()
+						if ent.Type == 1 then
+							ent:ToPlayer():AnimateTeleport(false)
+						end
+						speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 0.9 );
 					end
 				end
 			elseif ent.Type == 5 then
@@ -715,6 +749,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						pickup:ToPickup():Morph(5, PickupVariant.PICKUP_COIN, math.random(0,2), false, true, false)
 					elseif pickup.Variant == PickupVariant.PICKUP_KEY and math.random(1,4) == 4 then
 						pickup:ToPickup():Morph(5, PickupVariant.PICKUP_KEY, math.random(0,4), false, true, false)
+					elseif pickup.Variant == PickupVariant.PICKUP_BOMB then
+						pickup:ToPickup():Morph(5, PickupVariant.PICKUP_BOMB, math.random(0,4), false, true, false)
+					elseif pickup.Variant >= 50 and pickup.Variant <= 60 and math.random(1,2) == 2 then
+						pickup:ToPickup():Morph(5, math.random(50,60),0, false, true, false)
 					elseif pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 						if math.random(1,2) == 2 then
 							pickup:ToPickup():Morph(5, PickupVariant.PICKUP_COLLECTIBLE, math.random(0,InutilLib.GetMaxCollectibleID()), false, true, false)
@@ -725,22 +763,32 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 							pickup:Remove()
 							data.Player:RemoveCollectible(CollectibleType.COLLECTIBLE_TMTRAINER, 0, 0, 0, 0)
 							yandereWaifu.GetEntityData(coll).MirrorBrokenCooldown = 30
+							speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 0.7 );
 						end
 					end
+					ILIB.game:ShakeScreen(5)
 				end
 				if ent.Position:Distance(eff.Position) < eff.Size + ent.Size + 55 and ( not yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown or yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown <= 0) then
 					if data.IsOrange and yandereWaifu.GetBlueMirror() then
 						ent.Position = ILIB.room:FindFreePickupSpawnPosition(yandereWaifu.GetBlueMirror().Position, 10 )
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
 						convertpickup(ent)
-						yandereWaifu.ClearLastMirror(true)
-						yandereWaifu.ClearLastMirror(false)
+						if ent.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+							yandereWaifu.ClearLastMirror(true)
+							yandereWaifu.ClearLastMirror(false)
+						end
+						ILIB.game:ShakeScreen(5)
+						speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 1.1 );
 					elseif data.IsBlue and yandereWaifu.GetOrangeMirror() then
 						ent.Position = ILIB.room:FindFreePickupSpawnPosition(yandereWaifu.GetOrangeMirror().Position, 10 )
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
 						convertpickup(ent)
-						yandereWaifu.ClearLastMirror(true)
-						yandereWaifu.ClearLastMirror(false)
+						if ent.Variant == PickupVariant.PICKUP_COLLECTIBLE then
+							yandereWaifu.ClearLastMirror(true)
+							yandereWaifu.ClearLastMirror(false)
+						end
+						ILIB.game:ShakeScreen(5)
+						speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 1.1 );
 					end
 				end
 			end

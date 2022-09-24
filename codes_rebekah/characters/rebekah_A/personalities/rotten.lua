@@ -8,6 +8,7 @@ function yandereWaifu.RottenTossHead(player, vector)
 	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
+	playerdata.IsDashActive = true
 	if not playerdata.noHead then
 		local head = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENHEAD, 0, player.Position, vector:Resized(15), player):ToFamiliar();
 		playerdata.noHead = true
@@ -36,8 +37,18 @@ function yandereWaifu.RottenTossHead(player, vector)
 			player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 		end
+
+		playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+		playerdata.IsDashActive = false
 	else
-		playerdata.RebHead.Velocity = vector:Resized(15)
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+			local target = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ROTTENBIRTHRIGHTTARGET, 0, playerdata.RebHead.Position, Vector(0,0), player):ToEffect(); --heart effect
+			yandereWaifu.GetEntityData(target).Parent = player
+		else
+			playerdata.RebHead.Velocity = vector:Resized(15)
+			playerdata.IsDashActive = false
+		end
+		playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 		yandereWaifu.GetEntityData(playerdata.RebHead).PickupFrames = 30
 	end
 	for i, v in pairs(playerdata.RottenFlyTable) do
@@ -55,7 +66,6 @@ function yandereWaifu.RottenTossHead(player, vector)
 		end
 	end
 	
-	playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 end
 
 function yandereWaifu.RebekahRottenBarrage(player, direction)
@@ -95,7 +105,13 @@ function yandereWaifu.RebekahRottenBarrage(player, direction)
 	if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then subtype = 2 end
 	if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then subtype = 3 end
 	if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then subtype = 4 end
-	if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then subtype = 5 end
+	if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then 
+		if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+			subtype = 21
+		else
+			subtype = 5 
+		end
+	end
 	if player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then subtype = 6 end
 	if player:HasWeaponType(WeaponType.WEAPON_FETUS) then subtype = 7 end
 	if #Isaac.FindByType( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENFLYBALL, -1 ) < 8 then
@@ -320,7 +336,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			data.headFrame = 0
 		end
 	else
-		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) then
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
+			local direction = player:GetAimDirection()
+			if (direction.X ~= 0 or direction.Y ~= 0) then
+				--[[if fam.FrameCount % (math.ceil(player.MaxFireDelay/10)) == 0 then --was 4?
+					local tears = player:FireTear(fam.Position, (Vector(direction.X - fam.Position.X, direction.Y - fam.Position.Y)):Resized(10), false, false, false):ToTear()
+					tears.Position = fam.Position
+					
+				end
+				spr:Play("Shake0")]]
+				if not data.headFrame then data.headFrame = 0 end
+					if data.headFrame < 11 then
+						--print(math.ceil(player.MaxFireDelay/4))
+						if fam.FrameCount % (math.ceil(player.MaxFireDelay/2)) == 0 then --was 4?
+							local tears = player:FireTear(fam.Position, Vector.FromAngle(30*(data.headFrame+3)):Resized(10), false, false, false):ToTear()
+							tears.Position = fam.Position
+							
+							data.headFrame = data.headFrame + 1
+						end
+						spr:Play("Shake"..tostring(data.headFrame))
+					else
+						data.headFrame = 0
+				end
+			end
+		elseif (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) and not spr:IsPlaying("Shoot") then
 			if player:GetFireDirection() == 3 then --down
 				spr:Play("Shake0")
 				data.headFrame = 0
@@ -340,6 +379,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				tears.Position = fam.Position
 				--tears:ChangeVariant(RebekahCurse.ENTITY_MAGGOTTEAR)
 			end
+			if fam.FrameCount % 5 == 0 and math.random(1,10) == 10 and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+				spr:Play("Shoot", true)
+			end
 		end
 	end
 	fam.Velocity = fam.Velocity * 0.95 --friction
@@ -348,6 +390,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		data.PickupFrames = data.PickupFrames - 1
 	end
 	
+	if spr:IsPlaying("Shoot") and spr:GetFrame() == 14 then
+		--local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_FLYTEAR, 0, fam.Position, Vector(0,0), player)
+		--player:AddSwarmFlyOrbital(fam.Position)
+		local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, 0, fam.Position, Vector(0,0), fam)
+	end
+	if spr:IsFinished("Shoot") then
+		spr:Play("Shake0")
+	end
 	--blood effect
 	if math.random(1,10) == 10 and player.FrameCount % 5 == 0 then
 		local puddle = Isaac.Spawn(EntityType.ENTITY_EFFECT, 7, math.random(0,1), fam.Position, Vector(0,0), fam)
@@ -734,6 +784,10 @@ function yandereWaifu:onFamiliarRottenFlyHeadInit(fam)
 		fam:GetSprite():ReplaceSpritesheet(0, "gfx/effects/rotten/cluster/rotten_ball_of_flies_c_section.png")
 		fam:GetSprite():LoadGraphics()
 	end
+	if fam.SubType == 21 then
+		fam:GetSprite():ReplaceSpritesheet(0, "gfx/effects/rotten/cluster/rotten_ball_of_flies_bottle.png")
+		fam:GetSprite():LoadGraphics()
+	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarRottenFlyHeadInit, RebekahCurse.ENTITY_ROTTENFLYBALL);
 
@@ -895,15 +949,19 @@ function yandereWaifu:onFamiliarRottenFlyTearInit(fam)
 		fam:GetSprite():Play("Idle", true)
 	end
 	
-	if fam.SubType == 20 then
-		fam:GetSprite():Load("gfx/effects/rotten/fly_seeker_dart.anm2", true)
+	if fam.SubType == 21 then
+		fam:GetSprite():Load("gfx/effects/rotten/fly_seeker_bottle.anm2", true)
 		fam:GetSprite():Play("Fly", true)
 	end
 	
 	fam:AddToOrbit(4)
 	
 	if not data.Health then
-		data.Health = 5
+		if fam.SubType == 21 then
+			data.Health = 1
+		else
+			data.Health = 5
+		end
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarRottenFlyTearInit, RebekahCurse.ENTITY_FLYTEAR);
@@ -959,6 +1017,13 @@ function yandereWaifu.rottenFlyTearColl(_, fam, collider, low)
 					tears:SetColor(Color(0,0,0,1,0,0,0),9999999,99,false,false)
 				end
 			end
+			if fam.SubType == 21 then --bottle
+				for i = 0, math.random(1,2) do
+					local shard = Isaac.Spawn(1000, TaintedEffects.BOTTLE_SHARD, 0, fam.Position, (RandomVector() * math.random(2,4)):Rotated(i * (360/5)), fam)
+					shard.CollisionDamage = 1.5
+				end
+				InutilLib.SFX:Play(TaintedSounds.BOTTLE_BREAK2)
+			end
 		else
 			yandereWaifu.GetEntityData(fam).Health = yandereWaifu.GetEntityData(fam).Health - 1
 		end
@@ -981,7 +1046,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 	local controller = player.ControllerIndex
 	
 	if not data.Health then
-		data.Health = 5
+		if fam.SubType == 21 then
+			data.Health = 1
+		else
+			data.Health = 5
+		end
 	end
 	
 	if not data.Parent then data.Parent = player end
@@ -999,7 +1068,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 	end
 	if fam.SubType ~= 20 then --not dart fly
 		if target then
-			if fam.SubType == 5 or fam.SubType == 6 then
+			if fam.SubType == 5 or fam.SubType == 6 or fam.SubType == 21 then
 				if math.random(1,5) == 5 then
 					InutilLib.MoveDirectlyTowardsTarget(fam, target, 10, 0.9)
 				elseif fam.FrameCount % 15 == 0 then
@@ -1083,3 +1152,70 @@ end, RebekahCurse.ENTITY_FLYTEAR);
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useHeadItems, CollectibleType.COLLECTIBLE_PINKING_SHEARS)
 	yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useHeadItems, CollectibleType.COLLECTIBLE_DECAP_ATTACK)
 end
+
+
+--rotten birthright heart movement
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local player = yandereWaifu.GetEntityData(eff).Parent
+	local controller = player.ControllerIndex;
+	local sprite = eff:GetSprite();
+	local room =  Game():GetRoom();
+	local data = yandereWaifu.GetEntityData(player)
+	local effData = yandereWaifu.GetEntityData(eff)
+    local roomClampSize = math.max( player.Size, 20 );
+	
+	local trinketBonus = 0
+	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+		trinketBonus = 5
+	end
+
+	yandereWaifu.GetEntityData(player).invincibleTime = 10
+	--movement code
+	eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NOPITS;
+
+	local movementDirection = player:GetShootingInput();
+	eff.Velocity = (movementDirection*10)
+	if eff.FrameCount == 1 then
+		player.Visible = true
+		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+		sprite:Play("Idle", true);
+		effData.movementCountFrame = 20
+	elseif sprite:IsFinished("Idle") then
+		sprite:Play("Blink",true);
+	end
+	if data.RebHead then
+		if movementDirection:Length() > 0.5 then
+			effData.movementCountFrame = 20
+		else
+			effData.movementCountFrame = effData.movementCountFrame - 1
+		end
+		if effData.movementCountFrame <= 0 then
+			local vector = (eff.Position - data.RebHead.Position):Resized(2)
+			print( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN)
+			print(data.specialCooldown)
+			data.IsDashActive = false
+			yandereWaifu.GetEntityData(data.RebHead).PickupFrames = 30
+			data.RebHead.Velocity = vector:Resized(15)
+			eff:Remove()
+		end
+	elseif not data.RebHead or data.RebHead:IsDead() then
+		data.IsDashActive = false
+		eff:Remove()
+	end
+
+end, RebekahCurse.ENTITY_ROTTENBIRTHRIGHTTARGET)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff)
+local player = yandereWaifu.GetEntityData(eff).Parent
+local sprite = eff:GetSprite()
+local data = yandereWaifu.GetEntityData(eff)
+if not data.Init then      
+	eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NOPITS 
+	data.spr = Sprite()                                                 
+	data.spr:Load("gfx/effects/soul/orbital_target.anm2", true) 
+	data.spr:Play("Line", true)
+	data.Init = true                                              
+end      
+	
+InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(yandereWaifu.GetEntityData(player).RebHead.Position), Isaac.WorldToScreen(eff.Position), 16, nil, 8, true)
+end, RebekahCurse.ENTITY_ROTTENBIRTHRIGHTTARGET);

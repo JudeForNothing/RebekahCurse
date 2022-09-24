@@ -32,7 +32,7 @@ function dash.RebekahDoubleTapDash(vector, playerTapping)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternalhearts
 					yandereWaifu.EternalHeartDash(player, vector)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bonehearts
-					--yandereWaifu.BoneHeartPunch(player, vector)
+					yandereWaifu.BoneHeartPunch(player, vector)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
 					yandereWaifu.RottenTossHead(player, vector)
 				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if red 

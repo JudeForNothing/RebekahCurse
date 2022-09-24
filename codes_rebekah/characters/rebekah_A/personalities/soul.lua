@@ -467,8 +467,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--movement code
 	eff.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_NOPITS;
 
-	--local movementDirection = player:GetMovementInput();
-	--if movementDirection:Length() < 0.05 then
+	local movementDirection = player:GetMovementInput();
 	
 	player.Velocity = player.Velocity * 1.1
 	eff.Velocity = player.Velocity;
@@ -489,11 +488,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.LastGridCollisionClass = player.GridCollisionClass;
 		--trail
 		data.trail = InutilLib.SpawnTrail(eff, Color(0,0.5,1,0.5))
+		data.movementCountFrame = 50
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true);
 	end
 	
-    if eff.FrameCount == 40 then
+    if (player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and data.movementCountFrame <= 0) or (not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and eff.FrameCount >= 40) then
         if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
             player.Velocity = Vector( 0, 0 );
         else
@@ -528,6 +528,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     	player.GridCollisionClass =  EntityGridCollisionClass.GRIDCOLL_WALLS;
 		player.EntityCollisionClass =  EntityCollisionClass.ENTCOLL_PLAYEROBJECTS;
     end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+		if movementDirection:Length() > 1 then
+			data.movementCountFrame = 50
+		else
+			data.movementCountFrame = data.movementCountFrame - 1
+		end
+	end
 	--if eff.FrameCount < 35 then
 	--	player.Velocity = Vector( 0, 0 );
 	--end
@@ -570,12 +577,32 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 
 	--haunted knife
 	function yandereWaifu:HauntedKnifeRender(tr, _)
-		if tr.Variant == RebekahCurse.ENTITY_HAUNTEDKNIFE then
+		if tr.Variant == RebekahCurse.ENTITY_HAUNTEDKNIFE and tr.FrameCount == 1 then
 			tr:GetSprite():Play("RegularTear", false);
-			--tr:GetSprite():LoadGraphics();
+			
+			if TaintedTreasure and yandereWaifu.GetEntityData(tr).IsBottle then
+				if tr.SpawnerEntity:GetData().BrokenBottle then
+					tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/tear_tt_bottle_broken.png")
+				else
+					tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/soul/tear_tt_bottle.png")
+				end
+			end
+			tr:GetSprite():LoadGraphics()
 		end
 	end
 	yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.HauntedKnifeRender)
+
+	yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
+		if tr.Variant == RebekahCurse.ENTITY_HAUNTEDKNIFE and yandereWaifu.GetEntityData(tr).IsBottle then
+			InutilLib.SFX:Play(TaintedSounds.BOTTLE_BREAK2)
+			InutilLib.SFX:Play(SoundEffect.SOUND_DEMON_HIT)
+			local shardvec = RandomVector()
+			for i = 1, 2 do
+				local shard = Isaac.Spawn(1000, TaintedEffects.BOTTLE_SHARD, 0, tr.Position, (shardvec * math.random(2,4)):Rotated(i * (360/5)), tr)
+				shard.CollisionDamage = math.max(3.5, tr.CollisionDamage/2)
+			end
+		end
+	end, EntityType.ENTITY_TEAR)
 
 	function yandereWaifu:HauntedKnifeUpdate(tr)
 		local data = yandereWaifu.GetEntityData(tr)

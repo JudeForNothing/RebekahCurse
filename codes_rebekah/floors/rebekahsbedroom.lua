@@ -10,21 +10,45 @@ local replacesong = false
 local RebekahsRoomCurseGrid = StageAPI.GridGfx()
 RebekahsRoomCurseGrid:AddDoors("gfx/backdrop/rebekahsroom/door_curse_door.png", {RequireEither = {RoomType.ROOM_CURSE}, NotEither = {RoomType.ROOM_SECRET, RoomType.ROOM_SUPERSECRET}})
 
+local RebekahsRoomCurseFlatGrid = StageAPI.GridGfx()
+RebekahsRoomCurseFlatGrid:AddDoors("gfx/backdrop/rebekahsroom/door_curse_door_flat.png", {RequireEither = {RoomType.ROOM_CURSE}, NotEither = {RoomType.ROOM_SECRET, RoomType.ROOM_SUPERSECRET}})
+
+
 local RebekahsRoomCurseGfx = StageAPI.RoomGfx(RebekahCurseRoomBackdrop, RebekahsRoomCurseGrid, "_default", "stageapi/shading/shading")
+local RebekahsRoomCurseFlatGfx = StageAPI.RoomGfx(RebekahCurseRoomBackdrop, RebekahsRoomCurseFlatGrid, "_default", "stageapi/shading/shading")
+
 
 local LiminalRoomList = StageAPI.RoomsList("Rebekah's Room", {
     Name = "Rebekah's Room",
     Rooms = require('resources.luarooms.rebekahsroom.rebekahsroom')
 })
 
+local function ChangeLoveDoorDynamically(flatfile)
+	if flatfile then
+		StageAPI.ChangeDoors(RebekahsRoomCurseFlatGrid)
+	else
+		StageAPI.ChangeDoors(RebekahsRoomCurseGrid)
+	end
+end
 
 local function ReplaceCurseDoorstoMirrors()
+	local flatfile = false
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		if player:HasTrinket(TrinketType.TRINKET_FLAT_FILE) then
+			flatfile = true
+			break
+		end
+	end
     for i = 0, 7 do
 		local door = ILIB.game:GetRoom():GetDoor(i)
-		if door and (door:IsRoomType(RoomType.ROOM_CURSE) --[[or newRoom:GetType("Love Curse Room")]]) then
+		if door and (door:IsRoomType(RoomType.ROOM_CURSE)) then --vardata 1 is when curse room has no spike --[[or newRoom:GetType("Love Curse Room")]]) then
 			--StageAPI.ChangeDoorSprite(door, RebekahsRoomCurseGfx)
 			--StageAPI.ChangeDoor(door, RebekahsRoomCurseGrid, false)
-			StageAPI.ChangeDoors(RebekahsRoomCurseGrid)
+			if door.VarData == 1 then
+				flatfile = true
+			end
+			ChangeLoveDoorDynamically(flatfile)
 		end
 	end
 end
@@ -55,10 +79,32 @@ StageAPI.AddCallback("RebekahCurse", "POST_UPDATE_GRID_GFX", 0, function(gridGfx
 end)
 
 StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --POST_ROOM_INIT
+	local flatfile = false
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		if player:HasTrinket(TrinketType.TRINKET_FLAT_FILE) then
+			flatfile = true
+			break
+		end
+	end
+
     if newRoom.LayoutName == "Love Curse Room" then --(newRoom:GetType() == "Love Room") 
         --if newRoom.Layout.Name and string.sub(string.lower(newRoom.Layout.Name), 1, 4) == "trap" then
         newRoom:SetTypeOverride("Love Room")
 		newRoom.Data.RoomGfx = RebekahsRoomCurseGfx
+		for i = 0, 7 do
+			local door = ILIB.game:GetRoom():GetDoor(i)
+			if door and (door:IsRoomType(RoomType.ROOM_CURSE)) then --vardata 1 is when curse room has no spike --[[or newRoom:GetType("Love Curse Room")]]) then
+				--StageAPI.ChangeDoorSprite(door, RebekahsRoomCurseGfx)
+				--StageAPI.ChangeDoor(door, RebekahsRoomCurseGrid, false)
+				if door.VarData == 1 then
+					flatfile = true
+					newRoom.Data.RoomGfx = RebekahsRoomCurseFlatGfx
+					break --this is gonna assume each door is filed
+				end
+			end
+		end
+
        -- end
 	    --MusicManager():Stop()
 	    MusicManager():Play(RebekahCurseMusic.MUSIC_HEARTROOM, 0.1)
@@ -70,6 +116,16 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	replacesong = false
+
+	--[[for i = 0, 7 do
+		local door = ILIB.game:GetRoom():GetDoor(i)
+		if door then
+		print("apol")
+		print(door.State)
+		print(door.VarData)
+		print(door:GetVariant())
+		end
+	end]]
 end)
 
 if MMC then

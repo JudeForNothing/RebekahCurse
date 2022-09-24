@@ -11,7 +11,12 @@ function yandereWaifu:usetheShining(collItem, rng, player)
 			local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, door.Position, Vector(0,0), player, 0, 0):ToEffect()
 			InutilLib.RevelSetCreepData(puddle)
 			InutilLib.RevelUpdateCreepSize(puddle, math.random(12,19), true)
-			
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
+				local wisp = player:AddWisp(CollectibleType.COLLECTIBLE_SULFUR, door.Position, false, false):ToFamiliar()
+				if wisp then
+					wisp.HitPoints = 2
+				end
+			end
 			local limit = math.random(7,15)
 			for j = 0, limit do
 				InutilLib.SetTimer( j*30, function()

@@ -34,7 +34,7 @@ local menuUI = Sprite()
 local currentSprite = ""
 menuUI:Load("gfx/ui/rebekah select/select screen.anm2", true)
 local menuUIDelay = 0
-
+local hasSelectedPersonality = false
 function yandereWaifu.SelectRebekahPersonality(currentPlayer)
 	Isaac.ExecuteCommand("restart "..currentPlayer.playerId --[[RebekahCurse.REB_RED]])
 	InutilLib.SetTimer(12, function()
@@ -42,6 +42,7 @@ function yandereWaifu.SelectRebekahPersonality(currentPlayer)
 			Isaac.GetPlayer(0):AddCollectible(v, 0, false)
 		end
 	end)
+	hasSelectedPersonality = true
 	--Isaac.GetPlayer(0):ChangePlayerType(currentPlayer.playerId)
 end
 
@@ -120,44 +121,45 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
     end
 
   if shouldRenderAchievement then
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-      local data =  player:GetData()
-      data.prevAchCharge = data.prevAchCharge or player:GetActiveCharge()
-      if data.prevAchCharge > player:GetActiveCharge() then
-        player:SetActiveCharge(data.prevAchCharge)
+      	local data =  player:GetData()
+     	 data.prevAchCharge = data.prevAchCharge or player:GetActiveCharge()
+     	if data.prevAchCharge > player:GetActiveCharge() then
+        	player:SetActiveCharge(data.prevAchCharge)
 
-        if not IsAnimOn(menuUI, "Dissapear") then
-          menuUI:Play("Dissapear", true)
-        end
-      end
+        	if not IsAnimOn(menuUI, "Dissapear") then
+         		 menuUI:Play("Dissapear", true)
+			end
+		end
 
-      if (Input.IsActionTriggered(ButtonAction.ACTION_MENUCONFIRM, player.ControllerIndex) or
+      	if (Input.IsActionTriggered(ButtonAction.ACTION_MENUCONFIRM, player.ControllerIndex) or
             Input.IsActionTriggered(ButtonAction.ACTION_MENUBACK, player.ControllerIndex)) and
             not InutilLib.IsAnimated(menuUI, "Dissapear") and not menuUI:IsPlaying("Appear") and not ILIB.game:IsPaused() then
-        menuUI:Play("Dissapear", true)
-		yandereWaifu.SelectRebekahPersonality(currentPlayerSelected)
-      end
+       		 menuUI:Play("Dissapear", true)
+				yandereWaifu.SelectRebekahPersonality(currentPlayerSelected)
+			elseif not hasSelectedPersonality then
 	  
-	  if Input.IsActionTriggered(ButtonAction.ACTION_LEFT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) then
-		if currentPlayerId <= 1 then
-		  currentPlayerId = #yandereWaifu.ListOfRegPersonalities
-		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
-		else
-		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId-1], yandereWaifu.ListOfRegPersonalities[currentPlayerId-1].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
-		  currentPlayerId = currentPlayerId - 1
-		end
-	  elseif Input.IsActionTriggered(ButtonAction.ACTION_RIGHT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) then
-	    if currentPlayerId < #yandereWaifu.ListOfRegPersonalities then
-		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId+1], yandereWaifu.ListOfRegPersonalities[currentPlayerId+1].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
-		  currentPlayerId = currentPlayerId + 1
-		else
-		  currentPlayerId = 1
-		  yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
-		end
-	  end
-    end
-  end
+				if Input.IsActionTriggered(ButtonAction.ACTION_LEFT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) then
+					if currentPlayerId <= 1 then
+					currentPlayerId = #yandereWaifu.ListOfRegPersonalities
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
+					else
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId-1], yandereWaifu.ListOfRegPersonalities[currentPlayerId-1].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
+					currentPlayerId = currentPlayerId - 1
+					end
+				elseif Input.IsActionTriggered(ButtonAction.ACTION_RIGHT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) then
+					if currentPlayerId < #yandereWaifu.ListOfRegPersonalities then
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId+1], yandereWaifu.ListOfRegPersonalities[currentPlayerId+1].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
+					currentPlayerId = currentPlayerId + 1
+					else
+					currentPlayerId = 1
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
+					end
+				end
+			end
+   		end
+  	end
 end)
 
 function yandereWaifu:ShowPersonalityBook()
@@ -173,6 +175,7 @@ function yandereWaifu:onTechnicalCharacterInit(player)
 	if playerType == RebekahCurse.TECHNICAL_REB 
 	and playerCount == 1 then
 		yandereWaifu:ShowPersonalityBook()
+		hasSelectedPersonality = false
 		savedItems = {}
 	elseif playerType == RebekahCurse.TECHNICAL_REB and playerCount ~= 1 then --this is a bainaid solution, since theres no coop selection screen for her
 		yandereWaifu:ShowRebekahCoopMenu(player)

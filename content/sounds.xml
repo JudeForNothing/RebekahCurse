@@ -271,4 +271,11 @@
 	<sound name="Scribbling">
 		<sample weight="1" path="items/scribble.wav" />
 	</sound>
+
+	<sound name="Stolid Sing">
+		<sample weight="1" path="stolid/moyai_sing.wav" />
+	</sound>
+	<sound name="Stolid Appear">
+		<sample weight="1" path="stolid/moyai_appear.wav" />
+	</sound>
 </sounds>

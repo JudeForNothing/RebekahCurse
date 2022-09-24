@@ -1,3 +1,4 @@
+local generateSomeHoles = false
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
@@ -23,20 +24,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 		--end
 	end
-	--[[if ILIB.room:GetGridEntityFromPos(player.Position) then
+	if player:HasCollectible(RebekahCurse.COLLECTIBLE_NUTWATER) then
+		generateSomeHoles = true
+	else
+		generateSomeHoles = false
+	end
+	if ILIB.room:GetGridEntityFromPos(player.Position) then
 		if not data.GonnaNoClip then data.GonnaNoClip = 0 end
 		if ILIB.room:GetGridEntityFromPos(player.Position):GetType() == GridEntityType.GRID_WALL and StageAPI and StageAPI.Loaded then
-			if data.GonnaNoClip > 30 then
+			if data.GonnaNoClip > 10 then
 				StageAPI.GotoCustomStage(yandereWaifu.STAGE.Liminal, true)
 			else 
 				data.GonnaNoClip = data.GonnaNoClip + 1
-				player.Velocity = player.Velocity + (Vector.FromAngle(1,365):Resized(math.random(1,2))) * 0.7
+				player.Velocity = player.Velocity + ((ILIB.room:GetGridEntityFromPos(player.Position).Position - player.Position):Resized(math.random(1,2))) * 0.7
 				ILIB.game:ShakeScreen(3)
 			end
 		else
-			data.GonnaNoClip = data.GonnaNoClip - 5
+			data.GonnaNoClip = data.GonnaNoClip - 2
 		end
-	end]]
+	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) 
@@ -51,20 +57,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cach
 	end
 end)
 
---[[InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	local normalGen
 	local thematicGen
 	local withItemGen
-	if ILIB.room:IsFirstVisit() then
+	if (ILIB.room:GetType() == RoomType.ROOM_SUPERSECRET or ILIB.room:GetType() == RoomType.ROOM_SECRET) and generateSomeHoles and not yandereWaifu.STAGE.Liminal:IsStage() then
 		for k, v in pairs(InutilLib.GetRoomGrids()) do
 			if v:GetType() == GridEntityType.GRID_WALL then
 				v:GetRNG():SetSeed(Random(), 1)
-				if v:GetRNG():GetSeed() < 200000000 then
+				if v:GetRNG():GetSeed() < 100000000 then
 					v.CollisionClass = GridCollisionClass.COLLISION_NONE
 					ILIB.room:SpawnGridEntity(v:GetGridIndex(), GridEntityType.GRID_PIT, 0, 0, 0)
-					print(v:GetRNG():GetSeed())
+					local eff = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.WISP, 0, v.Position, Vector.Zero, nil):ToEffect();
 				end
 			end
 		end
 	end
-end)]]
+end)

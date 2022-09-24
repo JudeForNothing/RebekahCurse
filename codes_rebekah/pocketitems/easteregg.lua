@@ -1,3 +1,17 @@
+local hasAnyEasterEggSeedEffectActive = false
+
+local function ReloadForgottenB(player)
+	local SoulHeartsInit = player:GetSoulHearts()
+	--player:GetSprite():Load("001.000_player.anm2", true)
+	player:ChangePlayerType(player:GetPlayerType())
+	print(SoulHeartsInit)
+	print(player:GetSoulHearts())
+	if SoulHeartsInit < player:GetSoulHearts() then
+		local deduction = player:GetSoulHearts() - SoulHeartsInit
+		player:AddSoulHearts(-deduction)
+	end
+end
+
 local function SpawnRandomReward(player)
 	local rng = math.random(1,10)
 	if rng == 1 then
@@ -82,23 +96,37 @@ local function UseRandomSeedEffect(player)
 		ILIB.game:GetSeeds():RemoveSeedEffect(v.seed)
 	end
 	local OldChallenge = player:CanShoot()
-	player:ChangePlayerType(player:GetPlayerType())
-	local rng = math.random(0,19)
-	ILIB.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
-	ILIB.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
-	player:ChangePlayerType(player:GetPlayerType())
-	if math.random(1,2) == 2 then
-		InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
+	local playerType = player:GetPlayerType()
+	if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
+		player = player:GetOtherTwin()
+		local rng = math.random(0,19)
+		ILIB.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
+		ILIB.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
+		ReloadForgottenB(player)
+		if math.random(1,2) == 2 then
+			InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
+		end
+
+		yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed
+	else
+		player:ChangePlayerType(playerType)
+		local rng = math.random(0,19)
+		ILIB.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
+		ILIB.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
+		player:ChangePlayerType(playerType)
+		if math.random(1,2) == 2 then
+			InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
+		end
+		
+		yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed
+		if not OldChallenge then 
+			InutilLib.DumpySetCanShoot(player, false)
+		end
+		if yandereWaifu.IsNormalRebekah(player) then
+			yandereWaifu.RebekahRefreshCostume(player)
+		end
 	end
-	
-	yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed
-	
-	if not OldChallenge then 
-		InutilLib.DumpySetCanShoot(player, false)
-	end
-	if yandereWaifu.IsNormalRebekah(player) then
-		yandereWaifu.RebekahRefreshCostume(player)
-	end
+	hasAnyEasterEggSeedEffectActive = true
 	
 	yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggDecreaseTick = 240
 end
@@ -107,27 +135,44 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
+	local playerType = player:GetPlayerType()
 	if data.PersistentPlayerData.EasterEggSeeds then
-		if not data.PersistentPlayerData.EasterEggDecreaseTick then data.PersistentPlayerData.EasterEggDecreaseTick = 1200 end
+		if not data.PersistentPlayerData.EasterEggDecreaseTick then data.PersistentPlayerData.EasterEggDecreaseTick = 10 end --1200 end
 		
 		data.PersistentPlayerData.EasterEggDecreaseTick = data.PersistentPlayerData.EasterEggDecreaseTick - 1
 		
-		
+		print(data.PersistentPlayerData.EasterEggDecreaseTick)
 		if data.PersistentPlayerData.EasterEggDecreaseTick <= 0 then --clear seed effect
 			ILIB.game:GetSeeds():RemoveSeedEffect(data.PersistentPlayerData.EasterEggSeeds)
-			
-			local OldChallenge = player:CanShoot()
-			player:ChangePlayerType(player:GetPlayerType())
+			print(playerType)
+			if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
+				player = player:GetOtherTwin()
+				local OldChallenge = player:CanShoot()
+				--player:ChangePlayerType(player:GetPlayerType())
+				if not OldChallenge then 
+					InutilLib.DumpySetCanShoot(player, false)
+				end
+				ReloadForgottenB(player)
+			else
+				local OldChallenge = player:CanShoot()
 
-			
-			if not OldChallenge then 
-				InutilLib.DumpySetCanShoot(player, false)
-			end
-			if yandereWaifu.IsNormalRebekah(player) then
-				yandereWaifu.RebekahRefreshCostume(player)
+				if playerType == PlayerType.PLAYER_THESOUL_B then
+					ReloadForgottenB(player)
+
+				else
+					player:ChangePlayerType(player:GetPlayerType())
+				end
+				
+				if not OldChallenge then 
+					InutilLib.DumpySetCanShoot(player, false)
+				end
+				if yandereWaifu.IsNormalRebekah(player) then
+					yandereWaifu.RebekahRefreshCostume(player)
+				end
 			end
 			data.PersistentPlayerData.EasterEggDecreaseTick = nil
 			data.PersistentPlayerData.EasterEggSeeds = nil
+			hasAnyEasterEggSeedEffectActive = false
 		end
 	end
 end)
@@ -151,7 +196,43 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
 		end
 	end
 end)
+function yandereWaifu:EasterEggsInit(hasstarted) --Init
+	for i, v in ipairs (seedtbl) do
+		ILIB.game:GetSeeds():RemoveSeedEffect(v.seed)
+	end
+	if hasAnyEasterEggSeedEffectActive then
+		for i=0, ILIB.game:GetNumPlayers()-1 do
+			local player = Isaac.GetPlayer(i)
+			local playerType = player:GetPlayerType()
+			if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
+				player = player:GetOtherTwin()
+				local OldChallenge = player:CanShoot()
+				--player:ChangePlayerType(player:GetPlayerType())
+				if not OldChallenge then 
+					InutilLib.DumpySetCanShoot(player, false)
+				end
+				ReloadForgottenB(player)
+			else
+				local OldChallenge = player:CanShoot()
+				
+				if playerType == PlayerType.PLAYER_THESOUL_B then
+					ReloadForgottenB(player)
+				else
+					player:ChangePlayerType(player:GetPlayerType())
+				end
 
+				if not OldChallenge then 
+					InutilLib.DumpySetCanShoot(player, false)
+				end
+				if yandereWaifu.IsNormalRebekah(player) then
+					yandereWaifu.RebekahRefreshCostume(player)
+				end
+			end
+		end
+		hasAnyEasterEggSeedEffectActive = false
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.EasterEggsInit)
 
 local enemytbl = {
 		[0] = {type = EntityType.ENTITY_GAPER, variant = 0, subtype = 0},

@@ -358,9 +358,9 @@ function yandereWaifu:TinyEternalBondCache(player, cacheF) --The thing the check
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
 		--if yandereWaifu.IsNormalRebekah(player) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG())
+			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND))
 		--else
-			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG())
+			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND))
 		--end
 	end
 		

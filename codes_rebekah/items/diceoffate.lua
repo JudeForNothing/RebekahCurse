@@ -6,6 +6,10 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 		local validPickup = (pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE)
 		if validPickup and not pickup.SpawnerEntity then
 			yandereWaifu.RerollToLoveRoomPool(pickup)
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
+				local wisp = player:AddWisp(RebekahCurse.COLLECTIBLE_DICEOFFATE, player.Position, false, false)
+				wisp.Position = pickup.Position
+			end
 			local newColl = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, ent)
 		end
 	end

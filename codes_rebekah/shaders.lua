@@ -13,11 +13,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, function(_, shaderNa
 		return param
 	end
 	if shaderName == "yourreality" then
-		local isActive = 1
+		local isActive = 0
 		--local isLiminal = yandereWaifu.STAGE.Liminal:IsStage()
-		--if not isLiminal then
-			isActive = 0
-		--end
+		local isErroring = false
+		for i, player in pairs (Isaac.FindByType(EntityType.ENTITY_PLAYER, -1, -1, false, false)) do
+			local data = yandereWaifu.GetEntityData(player)
+			if data.MirrorBrokenCooldown and data.MirrorBrokenCooldown >= 28 then
+				isErroring = true
+				break
+			end
+		end 
+		if isErroring then
+			isActive = 1
+		end
 		local frame = 1
 		local param = { 
 			time = frame,

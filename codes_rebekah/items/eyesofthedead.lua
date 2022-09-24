@@ -93,15 +93,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			end
 		end
 		if dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN --[[and damageSource.Entity.SpawnerEntity]] then
-			local player 
-			if damageSource.Entity then
-				player = damageSource.Entity:ToPlayer()
-				if damageSource.Entity.SpawnerEntity then
-					if damageSource.Entity.SpawnerEntity.Type == 1 then
-						player = damageSource.Entity.SpawnerEntity:ToPlayer()
-					end
-				end
-			end
+			local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
 			if player then
 				if player:HasCollectible(RebekahCurse.COLLECTIBLE_EYESOFTHEDEAD) then
 					GrantDmg(player)

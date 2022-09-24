@@ -47,7 +47,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			if data.Stat.FireDelay <= 0 then
 				if fam:GetEntityFlags() & EntityFlag.FLAG_CHARM == EntityFlag.FLAG_CHARM then
 				else
-					local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
+					local tears = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, fam.Position, InutilLib.DirToVec(playerDir), fam):ToTear()
+					--local tears = player:FireTear(fam.Position, InutilLib.DirToVec(playerDir), false, false, false):ToTear()
 					tears.Position = fam.Position
 					tears.CollisionDamage = data.Stat.Damage * extraDmg
 					tears:ChangeVariant(TearVariant.DARK_MATTER)
@@ -143,7 +144,7 @@ function yandereWaifu:GraveBabyCache(player, cacheF) --The thing the checks and 
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
 		if player:HasCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_GRAVEBABY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG())
+			player:CheckFamiliar(RebekahCurse.ENTITY_GRAVEBABY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE))
 		end
 	end
 end

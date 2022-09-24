@@ -67,6 +67,9 @@ function yandereWaifu.BoneHeartPunch(player, vector)
 		spear = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BONESPEAR, 0, player.Position, Vector(0,0), player):ToEffect();
 		yandereWaifu.GetEntityData(spear).PermanentAngle = vector:GetAngleDegrees() + 90
 		yandereWaifu.GetEntityData(spear).Player = player
+		if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+			yandereWaifu.GetEntityData(spear).IsBottle = true
+		end
 		spear:GetSprite():Play("Stab", true)
 	else
 		cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BONEPUNCH, 0, player.Position, Vector(0,0), player):ToEffect();
@@ -414,8 +417,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						if ent.Position:Distance((eff.Position)+ (Vector(72 + step,0):Rotated(data.PermanentAngle - 90))) <= 50 + additDistance then
 							ent:TakeDamage((player.Damage)*dmg, 0, EntityRef(eff), 1)
 							--bleed chance
-							if math.random(1,3) == 3 and data.IsJockeySpear then --can only do the bleed if on the jockey
+							if (math.random(1,3) == 3 and data.IsJockeySpear) or data.IsBottle then --can only do the bleed if on the jockey
 								ent:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+								if data.IsBottle and math.random(1,5) == 5 then
+									ent:AddEntityFlags(EntityFlag.FLAG_CONFUSION)
+								end
 							end
 						end
 					end
@@ -1051,6 +1057,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 						data.Dashing = true --this sets you off to a direction, chomping fast while you cant control yourself
 						data.DashVector = vector
 						data.StopDashFrame = fam.FrameCount + 10
+
 						
 						data.specialCooldown = data.specialMaxCooldown
 				--	end
@@ -1063,6 +1070,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				if data.specialCooldown > 0 then data.specialCooldown = data.specialCooldown - 1 end
 			end
 			if data.Dashing then
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+					print(ILIB.room:GetGridIndex((fam.Position)+ (data.DashVector*50)))
+					local grid = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex((fam.Position)+ (data.DashVector*50))) --grids around that Rebecca stepped on
+					if grid ~= nil then 
+						--print( grid:GetType())
+						--if grid:GetType() == GridEntityType.GRID_TNT or grid:GetType() == GridEntityType.GRID_POOP then
+							grid:Destroy()
+						--end
+					end
+				end
+
 				--dr fetus stuff
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_DR_FETUS) and fam.FrameCount % 2 == 0 then
 					local bomb = player:FireBomb( player.Position , Vector.Zero):ToBomb()
@@ -1101,6 +1119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			
 			--dashactive code
 			if data.IsDashActive then
+				
 				if fam:CollidesWithGrid() or (fam.FrameCount == data.StopDashFrame) then
 				--if not data.DashActiveFrame then data.DashActiveFrame = REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_COOLDOWN_FRAME end
 				--print(data.DashActiveFrame)
@@ -1151,7 +1170,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			end
 			
 			--reserve usage
-			if fam.FrameCount % 5 == 0 then
+			if math.floor(fam.FrameCount % 6) == 0 then
 				--[[if yandereWaifu:getReserveFill(player) <= 0 then
 					--yandereWaifu:addReserveStocks(player, -1)
 					if yandereWaifu:getReserveStocks(player) > 0 then
@@ -1185,6 +1204,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 						data.JockeySpear = spear
 						spear:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bone/melee/knife_spear_big.png")
 						spear:GetSprite():LoadGraphics()
+						if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+							yandereWaifu.GetEntityData(spear).IsBottle = true
+							spear:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bone/melee/bottle_spear.png")
+							spear:GetSprite():ReplaceSpritesheet(1, "gfx/effects/bone/melee/bottle_spear.png")
+							spear:GetSprite():LoadGraphics()
+						end
 					end
 				else
 					if (shootingInput.X ~= 0 or shootingInput.Y ~= 0) and fam.FrameCount % 5 == 0 then
@@ -1205,6 +1230,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					yandereWaifu.GetEntityData(spear).Player = player
 					yandereWaifu.GetEntityData(spear).IsJockeySpear = true
 					data.JockeySpear = spear
+					if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+						yandereWaifu.GetEntityData(spear).IsBottle = true
+						spear:GetSprite():ReplaceSpritesheet(0, "gfx/effects/bone/melee/bottle_spear.png")
+						spear:GetSprite():ReplaceSpritesheet(1, "gfx/effects/bone/melee/bottle_spear.png")
+						spear:GetSprite():LoadGraphics()
+					end
 				end
 			end
 			

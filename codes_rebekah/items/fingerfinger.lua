@@ -22,7 +22,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		sprite.Rotation = eff.FrameCount
 		if sprite:GetFrame() == 8 then
 			local extraDmg = 1
-			if data.Player:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
+			if data.TruePlayer:HasCollectible(CollectibleType.COLLECTIBLE_BFFS) then
 				extraDmg = 2
 			end
 			data.Player:TakeDamage( 1.5*extraDmg, 0, EntityRef(data.TruePlayer), 0);
@@ -77,15 +77,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		end
 		
 		if dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN --[[and damageSource.Entity.SpawnerEntity]] then
-			local player 
-			if damageSource.Entity then
-				player = damageSource.Entity:ToPlayer()
-				if damageSource.Entity.SpawnerEntity then
-					if damageSource.Entity.SpawnerEntity.Type == 1 then
-						player = damageSource.Entity.SpawnerEntity:ToPlayer()
-					end
-				end
-			end
+			local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
 			if player then
 				if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
 					if not data.FingerTable then data.FingerTable = {} end

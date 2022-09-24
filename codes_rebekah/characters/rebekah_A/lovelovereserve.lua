@@ -8,16 +8,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if damageSource.Type == 3 and damageSource.Variant == ENTITY_BONEJOCKEY then
 			yandereWaifu.GetEntityData(damage).BurstGuts = true
 		end
-		if REBEKAHMODE_EXPERIMENTAL.lovelove and dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN then
-			local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
-			if player then --(damageSource.Type == 1 or (damageSource.Entity or damageSource.Entity.SpawnerType == 1)) then
-				local playerType = player:GetPlayerType()
-				local room = ILIB.game:GetRoom()
-				if yandereWaifu.IsNormalRebekah(player) and not yandereWaifu.GetEntityData(player).IsAttackActive then
+		local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
+		if player then --(damageSource.Type == 1 or (damageSource.Entity or damageSource.Entity.SpawnerType == 1)) then
+			local playerType = player:GetPlayerType()
+			local room = ILIB.game:GetRoom()
+			if yandereWaifu.IsNormalRebekah(player) and not yandereWaifu.GetEntityData(player).IsAttackActive then
+				if (REBEKAHMODE_EXPERIMENTAL.lovelove or player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)) and dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN then
 					local maxHealth = damage.MaxHitPoints
 					if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax then
-						local fillamount = (amount/5)
-						yandereWaifu.addReserveFill(player, fillamount)
+						--local fillamount = (amount/5)
+						--yandereWaifu.addReserveFill(player, fillamount)
+						local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 0, damage.Position, Vector.FromAngle((player.Position - damage.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), damage)
+						yandereWaifu.GetEntityData(heart).Parent = player
+						yandereWaifu.GetEntityData(heart).maxHealth = player.Damage/10
+						
+						print(yandereWaifu.getReserveFill(player))
 					end
 				end
 			end

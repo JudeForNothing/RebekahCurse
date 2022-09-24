@@ -29,3 +29,26 @@ yandereWaifu.LoveRoomPool = {
 	[27] = { item = RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE, DecreaseBy=1, RemoveOn=0.1, Weight=1 },
 	[28] = { item = RebekahCurse.COLLECTIBLE_DICEOFFATE, DecreaseBy=1, RemoveOn=0.1, Weight=1 },
 }
+
+if ARACHNAMOD then
+	if arachnaIsUnlocked("Witness", false, false) then
+		table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("Yarn Heart"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	end
+end
+
+if Deliverance then
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("D<3"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("Encharmed Penny"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("Good Old Friend"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("The Manuscript"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("Arterial Heart"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("The Covenant"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = Isaac.GetItemIdByName("Time Gal"), DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+end
+
+if FiendFolio then
+	table.insert(yandereWaifu.LoveRoomPool, { item = FiendFolio.ITEM.COLLECTIBLE.HEART_OF_CHINA, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = FiendFolio.ITEM.COLLECTIBLE.X10BADUMP, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = FiendFolio.ITEM.COLLECTIBLE.FIEND_HEART, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+	table.insert(yandereWaifu.LoveRoomPool, { item = FiendFolio.ITEM.COLLECTIBLE.YICK_HEART, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+end

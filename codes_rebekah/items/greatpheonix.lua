@@ -207,7 +207,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) then
+	if player and player:HasCollectible(RebekahCurse.COLLECTIBLE_GREATPHEONIX) then
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end
 			local spr = kn:GetSprite()

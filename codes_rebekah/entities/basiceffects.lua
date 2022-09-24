@@ -372,6 +372,17 @@ function yandereWaifu:changetoDifferentLaser(lz)
 			end
 		end
 	end
+	if entityData.AngelBrimstone2 == true then
+		if lz.FrameCount == 1 then
+			lz:GetSprite():Load("gfx/effects/eternal/angelbrimstone_buffed.anm2", true)
+			lz:GetSprite():Play("LargeRedLaser", true)
+			if lz.Child ~= nil then
+				lz.Child:GetSprite():Load("gfx/effects/eternal/angelbrimstone_impact_buffed.anm2", true)
+				lz.Child:GetSprite():LoadGraphics()
+				lz.Child.Color = lz.Parent:GetSprite().Color
+			end
+		end
+	end
 	if entityData.BrimBone then
 		if lz.FrameCount == 1 then
 			lz:GetSprite():Load("gfx/effects/bone/brimbone.anm2", true)

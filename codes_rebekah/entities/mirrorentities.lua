@@ -4,18 +4,45 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = ent:GetPlayerTarget()
 	if ent.Variant == RebekahCurseEnemies.ENTITY_REDTATO then
 		if not data.Init then
-			if spr:IsFinished("Spawn") then
+			--if spr:IsFinished("Spawn") then
 				data.Init = true
-			end
-			if not spr:IsPlaying("Spawn") then
-				spr:Play("Spawn")
-			end
+			--end
+			--if not spr:IsPlaying("Spawn") then
+			--	spr:Play("Spawn")
+			--end
 			data.FlipX = false
+			spr:PlayOverlay("Head", true)
 		else
-			local path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
+			if not data.path then
+				data.path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
+			else
+				if ent.FrameCount % 15 == 0 then
+					data.path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
+				end
+			end
 			local angle = (ent.Position - player.Position):GetAngleDegrees()
 			
-			data.Flip = false
+			ent:AnimWalkFrame("WalkHori", "WalkVert", 1)
+			if not spr:IsOverlayPlaying("Head") then
+				spr:PlayOverlay("Head", true)
+			end
+
+			if data.path then
+				if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+					InutilLib.FollowPath(ent, player, data.path, 0.8, 0.9)
+				else
+					InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.8, 0.9)
+				end
+				if not spr:IsPlaying("Walk") then
+					spr:Play("Walk", true)
+				end
+			else
+				if not spr:IsPlaying("Idle") then
+					spr:Play("Idle", true)
+				end
+				ent.Velocity = Vector.Zero
+			end
+			--[[data.Flip = false
 			
 			if spr:IsFinished("FlipX") then
 				if not data.FlipX then
@@ -58,7 +85,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end
 					ent.Velocity = Vector.Zero
 				end
-			end
+			end]]
 		end
 	end
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)

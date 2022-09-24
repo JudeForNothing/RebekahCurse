@@ -1,4 +1,7 @@
 
+local ColorGreyscale = Color(1,1,1)
+ColorGreyscale:SetColorize(1,1,1,1)
+
 --ETERNAL HEART--
 do
 
@@ -7,6 +10,11 @@ function yandereWaifu.RebekahEternalBarrage(player, direction)
 		local tickle = Isaac.Spawn(EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_ETERNALFEATHER, 0, player.Position, Vector.FromAngle(j+(direction:GetAngleDegrees())-90)*(5), player):ToTear() --feather attack
 		tickle.TearFlags = player.TearFlags | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_LIGHT_FROM_HEAVEN
 		tickle.CollisionDamage = player.Damage * 3
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+			local tickle = Isaac.Spawn(EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_ETERNALFEATHER, 0, player.Position, Vector.FromAngle(j+(direction:GetAngleDegrees())-90)*(7), player):ToTear() --feather attack
+			tickle.TearFlags = player.TearFlags | TearFlags.TEAR_SPECTRAL | TearFlags.TEAR_LIGHT_FROM_HEAVEN
+			tickle.CollisionDamage = player.Damage * 2
+		end
 	end
 	local angle = direction:GetAngleDegrees()
 	local beam = EntityLaser.ShootAngle(5, player.Position, angle, 10, Vector(0,10), player):ToLaser()
@@ -453,7 +461,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 			sprite:Load("gfx/items/pick ups/bombs/holy_rocket.anm2",true)
 			sprite:Play("Pulse", true)
 		end
-		if sprite:IsFinished("Pulse") or (data.HolyRocket and bb:CollidesWithGrid()) then
+		--[[if sprite:IsFinished("Pulse") or (data.HolyRocket and bb:CollidesWithGrid()) then
 			local numLimit = data.StackedFeathers
 			for i = 1, numLimit do
 				for j = 0, 360-360/3, 360/3 do
@@ -475,9 +483,51 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 					end);
 				end
 			end
-		end
+		end]]
 	end
 end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, bb)
+	local data = yandereWaifu.GetEntityData(bb)
+	if bb.Variant == 3780 or data.HolyRocket then
+		local numLimit = data.StackedFeathers
+		local player = bb.SpawnerEntity:ToPlayer()
+		local extraBuffCount = 0
+		if data.StackedFeatherBuff == 1 then --buff logic
+			extraBuffCount = data.StackedFeathers
+			numLimit = data.maxEternalFeather
+		end
+		if numLimit then
+			for i = 1, numLimit do
+				for j = 0, 360-360/3, 360/3 do
+					local randomRotate = math.random(-40,40)
+					InutilLib.SetTimer( i*7, function()
+						local tear = player:FireTear(bb.Position, Vector.FromAngle(j + randomRotate)*(13), false, false, false):ToTear()
+						tear.Position = bb.Position
+						tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
+						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
+						tear.CollisionDamage = player.Damage * 0.3
+						yandereWaifu.GetEntityData(tear).EternalFlame = true
+						--tear:GetData().NotSmart = true
+						--tear.BaseDamage = player.Damage * 2
+
+						if i == data.StackedFeathers then
+							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
+						end
+						if extraBuffCount > 0 then
+							tear.CollisionDamage = tear.CollisionDamage * 1.5
+							tear.Scale = 1.5
+							tear.Color = ColorGreyscale
+							extraBuffCount = extraBuffCount - 1
+						end
+					end);
+				end
+			end
+		end
+	end
+end, EntityType.ENTITY_BOMB)
+
+
 
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam) 
     fam:AddToOrbit(7)
@@ -515,8 +565,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				local beam = player:FireBrimstone( Vector.FromAngle(data.FireDir), fam, 2):ToLaser();
 				beam.Position = fam.Position
 				beam.DisableFollowParent = true
-				yandereWaifu.GetEntityData(beam).AngelBrimstone = true
-				beam.CollisionDamage = player.Damage * 0.3
+				if data.IsBuffed then
+					yandereWaifu.GetEntityData(beam).AngelBrimstone2 = true
+					beam.CollisionDamage = player.Damage * 1.2;
+					beam:AddTearFlags(TearFlags.TEAR_WIGGLE)
+				else
+					yandereWaifu.GetEntityData(beam).AngelBrimstone = true
+					beam.CollisionDamage = player.Damage * 0.3
+				end
 			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then
 				local numLimit = data.StackedFeathers
 				for i = 1, numLimit do
@@ -527,13 +583,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 						techlaser.CollisionDamage = player.Damage * 0.8;
 						techlaser:SetMaxDistance((fam.Position - player.Position):Length())
 						techlaser:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
+
 					end)
 				end
 			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 				local numLimit = data.StackedFeathers
 				for i = 1, numLimit do
 					InutilLib.SetTimer( i, function()
-						local circle = player:FireTechXLaser(fam.Position, Vector.FromAngle(data.FireDir+math.random(-30,30))*(20), 40+math.random(-3,3))
+						local velSpeed = 20
+						if data.IsBuffed then
+							velSpeed = 10
+						end
+						local circle = player:FireTechXLaser(fam.Position, Vector.FromAngle(data.FireDir+math.random(-30,30))*(velSpeed), 40+math.random(-3,3)):ToLaser()
 						circle.Position = fam.Position
 						--local techlaser = player:FireTechLaser(fam.Position, 0, Vector.FromAngle((player.Position - fam.Position):GetAngleDegrees()+ math.random(-10,10)), false, true)
 						--techlaser.OneHit = true;
@@ -544,6 +605,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 							yandereWaifu.GetEntityData(circle).AngelBrimstone = true
 						else
 							circle:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
+						end
+						if data.IsBuffed then
+							circle:SetColor(Color(150,0,0,1,0,0,0),9999999,99,false,false);
+							circle.Radius = circle.Radius * 0.8
 						end
 					end)
 				end
@@ -948,17 +1013,18 @@ function yandereWaifu.FlamethrowerLogic(player)
 		end
 	end
 	
-	local extraTears --this balances the fact you have mutant spider and inner eye but it slows down you feather stacks? wtf?
+	local extraTears = 1 --this balances the fact you have mutant spider and inner eye but it slows down you feather stacks? wtf?
 	
-	if player:HasCollectible(CollectibleType.COLLECTIBLE_INNER_EYE) and player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
-		extraTears = 7
-	elseif player:HasCollectible(CollectibleType.COLLECTIBLE_INNER_EYE) then
-		extraTears = 3
-	elseif player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
-		extraTears = 4
-	else
-		extraTears = 1
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_INNER_EYE) then
+		extraTears = extraTears + 2
 	end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
+		extraTears = extraTears + 3
+	end
+	if player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
+		extraTears = extraTears + 5
+	end
+
 	
 	if not data.extraTears or extraTears ~= data.extraTears then
 		data.TinyOrphanims2 = extraTears
@@ -971,39 +1037,36 @@ function yandereWaifu.FlamethrowerLogic(player)
 	local extraPenalty = 0 --this increases if you have special items, for balance
 	
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_DR_FETUS) then
-		extraPenalty = extraPenalty + 7
+		extraPenalty = extraPenalty + 1
 	end
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
-		extraPenalty = extraPenalty + 5
-	end
-	if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) then
-		extraPenalty = extraPenalty + 6
-	end
-	if player:HasCollectible(CollectibleType.COLLECTIBLE_HAEMOLACRIA)  then
 		extraPenalty = extraPenalty + 3
 	end
-	
-	local extraPenalty = 1 --this increases if you have special items, for balance
-	
-	if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
-		extraPenalty = extraPenalty + 5
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) then
+		extraPenalty = extraPenalty + 2
 	end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_HAEMOLACRIA)  then
+		extraPenalty = extraPenalty + 2
+	end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_TECH_X)  then
+		extraPenalty = extraPenalty + 2
+	end
+	
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
-		extraPenalty = extraPenalty + 12
+		extraPenalty = extraPenalty + 9
 	end
 	
 	data.maxEternalFeather = math.floor(80/(player.MaxFireDelay/5)) --* extraTears
 	
-	
 	if player:GetFireDirection() == -1 then --feather stack code
 	
-
+		if not data.StackedFeatherBuff then data.StackedFeatherBuff = 0 end --for birthright buff
 		if not data.StackedFeathers then data.StackedFeathers = 0 end --stacked feathers is how much feathers you stacked while you aren't shooting.
 		if not data.StackedFeathersTransition then data.StackedFeathersTransition = 0 end --this thing keeps track or counts on how long before a feather becomes added in the stack
 		data.StackedFeathersTransition = data.StackedFeathersTransition + 1
 		if data.StackedFeathersTransition >= (1+extraPenalty)*(player.MaxFireDelay) then
-			if data.StackedFeathers < data.maxEternalFeather then
-				data.StackedFeathers = data.StackedFeathers + 2 --+ (2*extraTears)
+			if data.StackedFeathers < data.maxEternalFeather and data.StackedFeatherBuff == 0 then
+				data.StackedFeathers = data.StackedFeathers + 2 * (1+(player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BIRTHRIGHT)*2)) --+ (2*extraTears)
 				if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) or player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					data.TinyOrphanims = math.ceil((data.StackedFeathers/data.maxEternalFeather)*80/12) - 1
 					player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
@@ -1015,6 +1078,11 @@ function yandereWaifu.FlamethrowerLogic(player)
 						player:EvaluateItems()
 					end
 				end
+			elseif data.StackedFeathers >= data.maxEternalFeather and data.StackedFeatherBuff == 0 and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+				data.StackedFeatherBuff = 1
+				data.StackedFeathers = 0
+			elseif data.StackedFeathers < data.maxEternalFeather and data.StackedFeatherBuff == 1 then
+				data.StackedFeathers = data.StackedFeathers + 4 * (player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BIRTHRIGHT)*2) --+ (2*extraTears)
 			end
 			data.StackedFeathersTransition = 0 --reset
 		end
@@ -1030,6 +1098,16 @@ function yandereWaifu.FlamethrowerLogic(player)
 			data.AssignedHeadDir = 0
 		end
 		local numLimit = data.StackedFeathers
+		local extraBuffCount = 0
+		if data.StackedFeatherBuff == 1 then --buff logic
+			extraBuffCount = data.StackedFeathers
+			numLimit = data.maxEternalFeather
+		end
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and data.StackedFeatherBuff == 1 then --incase reset
+			numLimit = data.maxEternalFeather
+			data.StackedFeatherBuff = 0
+			extraBuffCount = 0
+		end
 		player.Velocity = player.Velocity * 0.8 --slow him down
 		if data.StackedFeathers >= 1 then
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_2) then
@@ -1047,7 +1125,11 @@ function yandereWaifu.FlamethrowerLogic(player)
 							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 							data.IsAttackActive = false
 						end
-						
+						if extraBuffCount > 0 then
+							techlaser.CollisionDamage = player.Damage * 1.5
+							techlaser.SpriteScale = Vector(1.5,1.5)
+							extraBuffCount = extraBuffCount - 1
+						end
 						--push back code
 						player.Velocity = player.Velocity - Vector.FromAngle(data.AssignedHeadDir):Resized(0.3)
 					end);
@@ -1060,6 +1142,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				yandereWaifu.GetEntityData(cut).Player = player
 				yandereWaifu.GetEntityData(cut).StackedFeathers = data.StackedFeathers
 				--yandereWaifu.GetEntityData(cut).TearDelay = modulusnum
+				
 			elseif player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
 				for k, v in pairs(Isaac.GetRoomEntities()) do
 					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_BIG_OPHANIM then
@@ -1089,37 +1172,80 @@ function yandereWaifu.FlamethrowerLogic(player)
 			elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) then --dr. fetus
 				local bomb = player:FireBomb( player.Position , Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(10,15))):ToBomb()
 				bomb.Position = player.Position
-				yandereWaifu.GetEntityData(bomb).StackedFeathers = data.StackedFeathers*2
-				data.IsAttackActive = false
+				yandereWaifu.GetEntityData(bomb).StackedFeathers = data.StackedFeathers
+				data.IsAttackActive = false 
+				yandereWaifu.GetEntityData(bomb).StackedFeatherBuff = data.StackedFeatherBuff
+				yandereWaifu.GetEntityData(bomb).maxEternalFeather = data.maxEternalFeather
+				--[[if extraBuffCount > 0 then
+					bomb.ExplosionDamage = bomb.ExplosionDamage * 1.5
+					bomb.SpriteScale = Vector(1.5,1.5)
+					extraBuffCount = extraBuffCount - 1
+					bomb.RadiusMultiplier = 2
+				end]]
 			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then --brimstone
+				local dividingNum = data.TinyOrphanims
+				local dividedNumForAngels = math.ceil((data.StackedFeathers/data.maxEternalFeather)*80/12) - 1
 				for k, v in pairs(Isaac.GetRoomEntities()) do
 					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							v:GetSprite():Play("Shoot", true)
+							if dividedNumForAngels > 0 and data.StackedFeatherBuff == 1 then
+								yandereWaifu.GetEntityData(v).IsBuffed = true
+								dividedNumForAngels = dividedNumForAngels - 1
+							else
+								yandereWaifu.GetEntityData(v).IsBuffed = false
+							end
 						end
 					end
 				end
 				data.IsAttackActive = false
 			elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then --tech x
 				local dividingNum = data.TinyOrphanims
+				local dividedNumForAngels = math.ceil((data.StackedFeathers/data.maxEternalFeather)*80/12) - 1
 				for k, v in pairs(Isaac.GetRoomEntities()) do
 					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							v:GetSprite():Play("Shoot", true)
-							yandereWaifu.GetEntityData(v).StackedFeathers = data.StackedFeathers/(dividingNum*3) -- this is just too broken and much
+							if data.StackedFeatherBuff == 1 then
+								yandereWaifu.GetEntityData(v).StackedFeathers = data.maxEternalFeather/(2*dividingNum)
+							else
+								yandereWaifu.GetEntityData(v).StackedFeathers = data.StackedFeathers/(dividingNum*3) -- this is just too broken and much
+							end
+							if dividedNumForAngels > 0 and data.StackedFeatherBuff == 1 then
+								yandereWaifu.GetEntityData(v).IsBuffed = true
+								dividedNumForAngels = dividedNumForAngels - 1
+							else
+								yandereWaifu.GetEntityData(v).IsBuffed = false
+							end
+							--[[yandereWaifu.GetEntityData(v).maxEternalFeather = data.maxEternalFeather/(2*dividingNum)
+							yandereWaifu.GetEntityData(v).StackedFeatherBuff = data.StackedFeatherBuff
+							if data.StackedFeatherBuff == 1 then
+								yandereWaifu.GetEntityData(v).extraBuffCount = extraBuffCount
+							end]]
 						end
 					end
 				end
 			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then --technology
 				local dividingNum = data.TinyOrphanims
+				local dividedNumForAngels = math.ceil((data.StackedFeathers/data.maxEternalFeather)*80/12) - 1
 				for k, v in pairs(Isaac.GetRoomEntities()) do
 					if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM then
 						if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 							yandereWaifu.GetEntityData(v).FireDir = data.AssignedHeadDir
 							v:GetSprite():Play("Shoot", true)
-							yandereWaifu.GetEntityData(v).StackedFeathers = data.StackedFeathers/dividingNum
+							if data.StackedFeatherBuff == 1 then
+								yandereWaifu.GetEntityData(v).StackedFeathers = data.maxEternalFeather/dividingNum
+							else
+								yandereWaifu.GetEntityData(v).StackedFeathers = data.StackedFeathers/dividingNum
+							end
+							if dividedNumForAngels > 0 and data.StackedFeatherBuff == 1 then
+								yandereWaifu.GetEntityData(v).IsBuffed = true
+								dividedNumForAngels = dividedNumForAngels - 1
+							else
+								yandereWaifu.GetEntityData(v).IsBuffed = false
+							end
 						end
 					end
 				end
@@ -1132,6 +1258,15 @@ function yandereWaifu.FlamethrowerLogic(player)
 						--techlaser.Size = 7
 						techlaser:SetColor(Color(0,0,0,0.7,170,170,210),9999999,99,false,false);
 						InutilLib.UpdateLaserSize(techlaser, 7, false)
+						if extraBuffCount > 0 then
+							techlaser.CollisionDamage = player.Damage * 1.5
+							techlaser.SpriteScale = Vector(1.5,1.5)
+							InutilLib.UpdateLaserSize(techlaser, 9, false)
+							extraBuffCount = extraBuffCount - 1
+							techlaser.OneHit = false;
+							techlaser.Timeout = 30;
+							techlaser:SetColor(Color(150,0,0,1,0,0,0),9999999,99,false,false);
+						end
 						if i == data.StackedFeathers then
 							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
 							data.IsAttackActive = false
@@ -1148,6 +1283,13 @@ function yandereWaifu.FlamethrowerLogic(player)
 					InutilLib.SetTimer( (i*extraPenalty), function()
 						if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 							local knife = InutilLib.SpawnKnife(player, (data.AssignedHeadDir - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
+							if extraBuffCount > 0 then
+								knife.CollisionDamage = knife.CollisionDamage * 3
+								knife.Scale = 1.5
+								knife.SpriteScale = Vector(1.5,1.5)
+								knife.Color = ColorGreyscale
+								extraBuffCount = extraBuffCount - 1
+							end
 						else
 							local tear = player:FireTear(player.Position, Vector.FromAngle(data.AssignedHeadDir - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
 							tear.Position = player.Position
@@ -1178,6 +1320,12 @@ function yandereWaifu.FlamethrowerLogic(player)
 							end
 							--tear:GetData().NotSmart = true
 							--tear.BaseDamage = player.Damage * 2
+							if extraBuffCount > 0 then
+								tear.CollisionDamage = tear.CollisionDamage * 1.5
+								tear.Scale = 1.5
+								tear.Color = ColorGreyscale
+								extraBuffCount = extraBuffCount - 1
+							end
 						end
 						if i == data.StackedFeathers then
 							InutilLib.SFX:Play(SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1)
@@ -1190,7 +1338,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 				end
 			end
 			for i = 1, numLimit/2 do
-				InutilLib.SetTimer( (i*extraPenalty), function()
+				InutilLib.SetTimer( (i+3*extraPenalty), function()
 					for k, v in pairs(Isaac.GetRoomEntities()) do --extra eyes stuff
 						if v.Type == EntityType.ENTITY_FAMILIAR and v.Variant == RebekahCurse.ENTITY_TINY_OPHANIM2 then
 							if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
@@ -1224,13 +1372,18 @@ function yandereWaifu.FlamethrowerLogic(player)
 								end
 								--tear:GetData().NotSmart = true
 								--tear.BaseDamage = player.Damage * 2
-							
+								if extraBuffCount > 0 then
+									tear.CollisionDamage = tear.CollisionDamage * 1.5
+									tear.Scale = 1.5
+									tear.Color = ColorGreyscale
+								end
 							end
 						end
 					end
 				end)
-				end
+			end
 		data.StackedFeathers = 0
+		data.StackedFeatherBuff = 0
 		end
 	end
 end

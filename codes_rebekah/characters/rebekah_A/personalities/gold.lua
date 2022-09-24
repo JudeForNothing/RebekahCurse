@@ -228,19 +228,27 @@ function yandereWaifu.RebekahGoldBarrage(player, direction)
 		for i = 1, nedClones do
 			--ned weapon type randomizer
 			local subtype = 0
-			--local rng = math.random(0,120)
-			if player:HasWeaponType(WeaponType.WEAPON_FETUS) then --rng >= 20 and rng <= 110 and player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
-				subtype = 6
-			elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then --rng >= 30 and rng <= 110 and player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
-				subtype = 5
-			elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) or player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then -- rng >= 40 and rng <= 120 and player:HasCollectible(CollectibleType.COLLECTIBLE_DR_FETUS) or  player:HasCollectible(CollectibleType.COLLECTIBLE_EPIC_FETUS) then
-				subtype = 2
-			elseif player:HasWeaponType(WeaponType.WEAPON_KNIFE) then --rng >= 45 and rng <= 120 and player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
-				subtype = 1
-			elseif player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then--rng >= 40 and rng <= 120 and (player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY) or player:HasCollectible(CollectibleType.COLLECTIBLE_TECH_X)) then
-				subtype = 3
-			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then --rng >= 10 and rng <= 120 and player:HasCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE) then
-				subtype = 4
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+				subtype = math.random(0,6)
+			else
+				--local rng = math.random(0,120)
+				if player:HasWeaponType(WeaponType.WEAPON_FETUS) then --rng >= 20 and rng <= 110 and player:HasCollectible(CollectibleType.COLLECTIBLE_C_SECTION) then
+					subtype = 6
+				elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then --rng >= 30 and rng <= 110 and player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
+					subtype = 5
+				elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) or player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then -- rng >= 40 and rng <= 120 and player:HasCollectible(CollectibleType.COLLECTIBLE_DR_FETUS) or  player:HasCollectible(CollectibleType.COLLECTIBLE_EPIC_FETUS) then
+					subtype = 2
+				elseif player:HasWeaponType(WeaponType.WEAPON_KNIFE) then --rng >= 45 and rng <= 120 and player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+					if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+						subtype = 20
+					else
+						subtype = 1
+					end
+				elseif player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then--rng >= 40 and rng <= 120 and (player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY) or player:HasCollectible(CollectibleType.COLLECTIBLE_TECH_X)) then
+					subtype = 3
+				elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then --rng >= 10 and rng <= 120 and player:HasCollectible(CollectibleType.COLLECTIBLE_BRIMSTONE) then
+					subtype = 4
+				end
 			end
 			local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, subtype, player.Position, direction*1.5, player):ToFamiliar();
 			--if i == 5 then yandereWaifu.purchaseReserveStocks(player, 1) --[[player:AddHearts( -1 )]] end
@@ -268,15 +276,15 @@ function yandereWaifu.RebekahGoldBarrage(player, direction)
 	--extra special neds
 	if player.Luck + math.random(1,10) >= 8 and player:HasCollectible(CollectibleType.COLLECTIBLE_LOKIS_HORNS) then
 		for i = 1, 4 do
-			local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 10, player.Position, direction*1.5, player):ToFamiliar();
+			local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 100, player.Position, direction*1.5, player):ToFamiliar();
 		end
 	end
 	if player.Luck + math.random(1,10) >= 5 and player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_EYE) then
-		local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 11, player.Position, direction*1.5, player):ToFamiliar();
+		local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 110, player.Position, direction*1.5, player):ToFamiliar();
 	end
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MONSTROS_LUNG) then
 		for i = 1, math.random(3,5) do
-			local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 12, player.Position, direction*1.5, player):ToFamiliar();
+			local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 120, player.Position, direction*1.5, player):ToFamiliar();
 		end
 	end
 	yandereWaifu.purchaseReserveStocks(player, 1)
@@ -319,15 +327,20 @@ function yandereWaifu:onFamiliarNedInit(fam)
 	elseif fam.SubType == 7 then --ludovico
 		sprite:Load("gfx/effects/gold/ludo/ned_normal.anm2", true)
 		
-	elseif fam.SubType == 10 then --loki horn
+	elseif fam.SubType == 100 then --loki horn
 		sprite:ReplaceSpritesheet(0, "gfx/effects/gold/extra/familiar_ned_loki.png") 
 		sprite:ReplaceSpritesheet(1, "gfx/effects/gold/extra/familiar_ned_loki.png") 
-	elseif fam.SubType == 11 then --moms eye
+	elseif fam.SubType == 110 then --moms eye
 		sprite:ReplaceSpritesheet(0, "gfx/effects/gold/extra/familiar_ned_moms_eye.png") 
 		sprite:ReplaceSpritesheet(1, "gfx/effects/gold/extra/familiar_ned_moms_eye.png") 
-	elseif fam.SubType == 12 then --monstros lung
+	elseif fam.SubType == 120 then --monstros lung
 		sprite:ReplaceSpritesheet(0, "gfx/effects/gold/extra/familiar_ned_monstros_lung.png") 
 		sprite:ReplaceSpritesheet(1, "gfx/effects/gold/extra/familiar_ned_monstros_lung.png") 
+
+	--tainted treasures
+	elseif fam.SubType == 20 then --c section
+		sprite:ReplaceSpritesheet(0, "gfx/effects/gold/bottle/familiar_ned.png") 
+		sprite:ReplaceSpritesheet(1, "gfx/effects/gold/bottle/familiar_ned.png")
 	end
 	sprite:LoadGraphics()
 end
@@ -537,13 +550,24 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				yandereWaifu.GetEntityData(tear).IsPseudoLudo = true
 				--tear:AddTearFlags(TearFlags.FLAG_PIERCING)
 				InutilLib.AddHomingIfBabyBender(player, tear)
-			elseif fam.SubType == 10 then
+			elseif fam.SubType == 20 then
+				local kn = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle((data.target.Position - fam.Position):GetAngleDegrees()):Resized(16), 4)
+				--local kn =InutilLib.SpawnKnife(player, ((data.target.Position - fam.Position):GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 150, InutilLib:SpawnKnifeHelper(fam, player, true), true)
+				kn.Size = 0.8
+				kn.SpriteScale = Vector(0.8, 0.8)
+				kn.CollisionDamage = 0.9
+				yandereWaifu.GetEntityData(kn).IsBottle = true
+				InutilLib.AddHomingIfBabyBender(player, kn)
+				kn:GetSprite():ReplaceSpritesheet(0,"gfx/effects/gold/tear_pseudobottle.png")
+				kn:GetSprite():LoadGraphics()
+				--kn:SetColor(Color(0,0,0,1,0.8,0,1),9999999,99,false,false)
+			elseif fam.SubType == 100 then
 				for i = 0, 270, 360/4 do
 					local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(16)):Rotated(i), TearVariant.BLOOD, fam):ToTear()
 					tear.CollisionDamage = 1.5
 					InutilLib.AddHomingIfBabyBender(player, tear)
 				end
-			elseif fam.SubType == 11 then
+			elseif fam.SubType == 110 then
 				local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + (data.target.Position - fam.Position):Resized(16)), TearVariant.BLOOD, fam):ToTear()
 				tear.CollisionDamage = 2.5
 				InutilLib.AddHomingIfBabyBender(player, tear)
@@ -551,7 +575,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				tear2.CollisionDamage = 5.5
 				tear2.Size = 1.7
 				InutilLib.AddHomingIfBabyBender(player, tear2)
-			elseif fam.SubType == 12 then
+			elseif fam.SubType == 120 then
 				for i = 1, math.random(5,7) do
 					local tear = yandereWaifu.FireBarrageTear(fam.Position, (Vector(0, 0) + fam.Velocity/5 + Vector.FromAngle((data.target.Position - fam.Position):GetAngleDegrees()+math.random(-30,30)):Resized(16)), TearVariant.BLOOD, fam):ToTear()
 					tear.CollisionDamage = 1
@@ -635,6 +659,8 @@ function yandereWaifu:onFamiliarNed2Init(fam)
 	elseif fam.SubType == 7 then --ludovico
 		sprite:ReplaceSpritesheet(0, "gfx/effects/gold/ludo/familiar_ned_the_squire.png") 
 		sprite:ReplaceSpritesheet(1, "gfx/effects/gold/ludo/familiar_ned_the_squire.png") 
+	elseif fam.SubType == 20 then --the bottle
+		sprite:Load("gfx/effects/gold/bottle/squire_ned.anm2", true)
 	end
 	sprite:LoadGraphics()
 	sprite:Play("Idle", true)
@@ -703,6 +729,9 @@ function yandereWaifu:PsuedoKnifeUpdate(tr)
 				if e:IsActiveEnemy() and e:IsVulnerableEnemy() then
 					if (tr.Position - e.Position):Length() < tr.Size + e.Size + 3 then
 						e:TakeDamage(tr.CollisionDamage/1.5, 0, EntityRef(tr), 4)
+						if data.IsBottle then
+							e:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+						end
 					end
 				end
 			end
@@ -992,6 +1021,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
 						yandereWaifu.GetEntityData(tear).IsJacobFetus2 = true
 						tear.CollisionDamage = 2
+					elseif fam.SubType == 20 then
+						for i = 0, math.random(1,2), 1 do
+							local tear = Isaac.Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, 0, fam.Position, Vector.FromAngle( slashAngle + math.random(-95,95)):Resized(4), fam.Player):ToTear()
+							tear.CollisionDamage = 1.5
+							InutilLib.AddHomingIfBabyBender(player, tear)
+							tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING
+							--tear:AddTearFlags(TearFlags.FLAG_PIERCING)
+						end
 					end
 				end
 			else
@@ -1060,6 +1097,8 @@ function yandereWaifu:onFamiliarChristianInit(fam)
 		sprite:Load("gfx/effects/gold/sword/christian_ned.anm2", true)
 	elseif fam.SubType == 6 then --c section
 		sprite:Load("gfx/effects/gold/fetus/christian_ned.anm2", true)
+	elseif fam.SubType == 20 then --bottle
+		sprite:Load("gfx/effects/gold/bottle/christian_ned.anm2", true)
 	end
 	sprite:LoadGraphics()
 	sprite:Play("Spawn", true)
@@ -1201,13 +1240,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			local target = InutilLib.GetClosestGenericEnemy(fam, 450)
 			if target and math.random(1,3) == 3 and fam.FrameCount % 60 == 0 then
 				local angle = (target.Position - fam.Position):GetAngleDegrees();
-					spr:Play("Charge", true)
-					data.target = target
-					if ((angle >= 0 and angle <= 90) or (angle <= 0 and angle >= -90)) then
-						spr.FlipX = false
-					else
-						spr.FlipX = true
-					end
+				spr:Play("Charge", true)
+				data.target = target
+				if ((angle >= 0 and angle <= 90) or (angle <= 0 and angle >= -90)) then
+					spr.FlipX = false
+				else
+					spr.FlipX = true
+				end
+			end
+		elseif fam.SubType == 20 then --if dad ripoff
+			local target = InutilLib.GetClosestGenericEnemy(fam, 450)
+			if target and math.random(1,3) == 3 and fam.FrameCount % 60 == 0 then
+				local angle = (target.Position - fam.Position):GetAngleDegrees();
+				spr:Play("Charge", true)
+				data.target = target
+				if ((angle >= 0 and angle <= 90) or (angle <= 0 and angle >= -90)) then
+					spr.FlipX = false
+				else
+					spr.FlipX = true
+				end
+			end
+			if math.random(1,10) == 10 and fam.FrameCount % 15 == 0 then
+				spr:Play("Vomit", true)
 			end
 		else
 		--if ILIB.game:GetFrameCount() % 120 == 0 then -- every one second
@@ -1274,7 +1328,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				end
 			end
 			spr:Play("Idle", true)
-		elseif fam.SubType == 6 then
+		elseif fam.SubType == 6 or fam.SubType == 20 then
 			spr:Play("Idle", true)
 		else
 			if data.ChargeTo == 0 then
@@ -1292,7 +1346,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			end
 			data.chargingFrameLimit = fam.FrameCount + 30
 		end
-		if fam.SubType ~= 5 and fam.SubType ~= 3 and fam.SubType ~= 6 then
+		if fam.SubType ~= 5 and fam.SubType ~= 3 and fam.SubType ~= 6 and fam.SubType ~= 20 then
 			spr:Play("Charging", true)
 		end
 	elseif spr:IsPlaying("Charge") and fam.SubType == 6 then
@@ -1303,6 +1357,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			yandereWaifu.GetEntityData(tear).IsGiantFetus = true
 			tear.CollisionDamage = 5
 			tear.Scale = 2
+		end
+	elseif spr:IsPlaying("Charge") and fam.SubType == 20 then
+		if spr:GetFrame() == 15 then
+			--crackwaves
+			local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, fam.Position, (data.target.Position - fam.Position):Resized(7), player):ToEffect()
+			crack.LifeSpan = 12;
+			crack.Timeout = 12
+			crack.Rotation = (fam.Position - data.target.Position):GetAngleDegrees()
+			for i = 0, math.random(2,3) do
+				local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, fam.Position, Vector.FromAngle((data.target.Position - fam.Position):GetAngleDegrees() + math.random(-30,30)):Resized(7), fam):ToTear()
+				tear.TearFlags = tear.TearFlags | TearFlags.TEAR_CONFUSION
+				tear.CollisionDamage = 3
+				tear.Scale = math.random(12, 16)/10
+			end
 		end
 	elseif spr:IsPlaying("Charging") then
 		
@@ -1490,6 +1558,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	elseif spr:IsFinished("Attack") then
 		fam.Visible = true
 		spr:Play("Idle", true)
+	elseif spr:IsPlaying("Vomit") then
+		if spr:GetFrame() == 35 then
+			for i = 0, math.random(1,2) do 
+				local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLUE_FLY, 0, fam.Position, Vector.Zero, fam.Player)
+			end
+		end
+	elseif spr:IsFinished("Vomit") then
+		spr:Play("Idle", true)
 	end
 	
 end, RebekahCurse.ENTITY_CHRISTIANNED);
@@ -1656,6 +1732,8 @@ function yandereWaifu:onFamiliarScreamingInit(fam)
 		sprite:Load("gfx/effects/gold/sword/screaming_ned.anm2", true)
 	elseif fam.SubType == 6 then --c section
 		sprite:Load("gfx/effects/gold/fetus/screaming_ned.anm2", true)
+	elseif fam.SubType == 20 then --bottle
+		sprite:Load("gfx/effects/gold/bottle/screaming_ned.anm2", true)
 	end
 	sprite:LoadGraphics()
     sprite:Play("Spawn", true)
@@ -1758,7 +1836,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		InutilLib.FlipXByVec(fam, false)
 	end
 	
-	if not data.SolomonChild1 or data.SolomonChild1:IsDead() then
+	if fam.SubType == 6 and (not data.SolomonChild1 or data.SolomonChild1:IsDead()) then
 		data.SolomonChild1 = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SOLOMONNEDBABY, 0, fam.Position, Vector.Zero, fam.Player)
 		yandereWaifu.GetEntityData(data.SolomonChild1).Parent = fam
 		data.SolomonChild2 = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SOLOMONNEDBABY, 1, fam.Position, Vector.Zero, fam.Player)
@@ -1852,8 +1930,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 									--data.target = e
 								end
 							end
-						else
+						elseif fam.SubType == 20 then --demoman
 							if (fam.Position - e.Position):Length() < 235 then
+								local angle = (e.Position - fam.Position):GetAngleDegrees();
+								if ((angle >= 155 and angle <= 180) or (angle <= -155 and angle >= -180)) then
+									spr.FlipX = true
+									data.ChargeTo = 0
+									spr:Play("Throw", true)
+									--data.target = e
+								elseif ((angle >= 0 and angle <= 25) or (angle <= 0 and angle >= -25)) then 
+									spr.FlipX = false
+									data.ChargeTo = 1
+									spr:Play("Throw", true)
+									--data.target = e
+								end
+							end
+						else
+							if (fam.Position - e.Position):Length() < 235 and fam.FrameCount % 15 == 0 then
 								local angle = (e.Position - fam.Position):GetAngleDegrees();
 								if ((angle >= 178 and angle <= 180) or (angle <= -178 and angle >= -180)) then
 									spr.FlipX = true
@@ -1916,10 +2009,27 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				if not speardata.savedVelocity then speardata.savedVelocity = savedVelocity end
 				spear:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 			end
+		elseif spr:GetFrame() == 5 then
+			local savedVelocity
+			if data.ChargeTo == 0 then
+				savedVelocity = Vector(-10,0) --needed for the velocity it goes + detection what grid is in front
+			elseif data.ChargeTo == 1 then
+				savedVelocity = Vector(10,0)
+			end
+			if fam.SubType == 20 then
+				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_SMALL, 0, fam.Position, (savedVelocity):Resized( 8 ), fam.Player):ToBomb()
+				bomb.ExplosionDamage = 5
+				bomb:SetExplosionCountdown(45)
+				InutilLib.AddHomingIfBabyBender(player, bomb)
+			end
 		end
 	elseif spr:IsFinished("Throw") then
+		print("go here?")
 		if fam.SubType == 3 then
 			spr:Play("Idle", true)
+		elseif fam.SubType == 20 then
+			spr:Play("Idle", true)
+			print("in here?")
 		else
 			spr:Play("March", true)
 		end
@@ -2062,6 +2172,8 @@ function yandereWaifu:onFamiliarBarbaricInit(fam)
 		sprite:Load("gfx/effects/gold/sword/barbaric_ned.anm2", true)
 	elseif fam.SubType == 6 then --c section
 		sprite:Load("gfx/effects/gold/fetus/barbaric_ned.anm2", true)
+	elseif fam.SubType == 20 then --bottle
+		sprite:Load("gfx/effects/gold/bottle/barbaric_ned.anm2", true)
 	end
 	sprite:LoadGraphics()
     sprite:Play("Spawn", true)
@@ -2309,6 +2421,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			if spr:GetFrame() == 9 or spr:GetFrame() == 19 or spr:GetFrame() == 29 or spr:GetFrame() == 39 or spr:GetFrame() == 49 or spr:GetFrame() == 59 or spr:GetFrame() == 69 then
 				data.rot = data.rot + 15
 			end	
+		elseif fam.SubType == 20 then
+			if spr:GetFrame() == 1 then
+				for i = 0, 360, 360/3 do
+					local beam = EntityLaser.ShootAngle(1, fam.Position, i, 32, Vector(0,-5), fam):ToLaser()
+					--local beam = player:FireBrimstone( Vector(data.savedVelocity.X*-1, 0) , fam, 2):ToLaser();
+					beam.Position = fam.Position
+					beam.Timeout = 32
+					beam.CollisionDamage = 1	
+					beam.MaxDistance = 90
+					beam.Color = Color(0, 1, 0, 1, 0, 1, 0)
+					beam:SetActiveRotation(3, 1440, 15, true)
+				end
+			end
 		end
 		if fam.FrameCount % 5 == 0 then
 			InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 0.6 );
@@ -2639,6 +2764,13 @@ function yandereWaifu.nedDefedCollision(_, fam, collider, low)
 				InutilLib.AddHomingIfBabyBender(player, beam)
 			end
 		--end
+		if fam.SubType == 20 and not data.IsBroken then
+			data.IsBroken = true
+			for i = 1, 3 do
+				local shard = Isaac.Spawn(1000, TaintedEffects.BOTTLE_SHARD, 0, fam.Position, (RandomVector() * math.random(2,4)):Rotated(i * (360/5)), fam)
+				shard.CollisionDamage = 1.5
+			end
+		end
 	end
 end
 
@@ -2662,6 +2794,8 @@ function yandereWaifu:onFamiliarDefendingInit(fam)
 		sprite:Load("gfx/effects/gold/sword/defending_ned.anm2", true)
 	elseif fam.SubType == 6 then --c section
 		sprite:Load("gfx/effects/gold/fetus/defending_ned.anm2", true)
+	elseif fam.SubType == 20 then --bottle
+		sprite:Load("gfx/effects/gold/bottle/defending_ned.anm2", true)
 	end
 	sprite:LoadGraphics()
     sprite:Play("Spawn", true)
@@ -2684,6 +2818,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
 		damageNerf = 1
 		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
+	end
+
+	if data.IsBroken then
+		fam:SetColor(Color(0,0,0,1,0,0,0),2,2,false,false)
+		if math.random(1,10) == 10 and fam.FrameCount % 15 == 0 then
+			data.IsBroken = false
+		end
 	end
 	
 	local currentSide = nil
@@ -2708,6 +2849,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	end
 	if fam.SubType == 3 then
 		InutilLib.MoveOrbitAroundTargetType1(fam, player, 2, 0.9, 5, 0)	
+	end
+	if fam.SubType == 20 then
+		InutilLib.MoveOrbitAroundTargetType1(fam, player, 5, 0.9, 3, 0)	
 	end
 	if not spr:IsPlaying("ThrowBomb") then
 		--fam.Velocity = fam.Velocity * 2
@@ -3017,7 +3161,8 @@ function yandereWaifu:LevelUpNeds()
 				[3] = {},
 				[4] = {},
 				[5] = {},
-				[6] = {}
+				[6] = {},
+				[20] = {}
 			}
 			--print("fff"..tostring(AvailableKnights[0][1]))
 			--print(AvailableKnights[1][1])
@@ -3026,7 +3171,7 @@ function yandereWaifu:LevelUpNeds()
 					--check for knights system
 					if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 						--print(ned.SubType)
-						for i = 0, 9 do
+						for i = 0, 50 do
 							if ned.SubType == i then
 								--print(ned.SubType.."  "..i)
 								if ned.Variant == RebekahCurse.ENTITY_CHRISTIANNED then AvailableKnights[i][1] = true end
@@ -3049,9 +3194,9 @@ function yandereWaifu:LevelUpNeds()
 						--local squire = ILIB.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
 						ned:Remove()
 					elseif ned.Variant == RebekahCurse.ENTITY_SQUIRENED then
-						for s = 0, 9 do
-							if ned.SubType == s then
-							
+						for s = 0, 50 do
+							if ned.SubType == s and AvailableKnights[ned.SubType] then
+								print(ned.SubType)
 								--print("amogus"..ned.SubType)
 								--print(AvailableKnights[1][4])
 								--print(AvailableKnights[4][4])

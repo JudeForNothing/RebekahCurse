@@ -51,10 +51,15 @@ yandereWaifuCodes = {
 		basicentities = require('codes_rebekah.entities.basicentities'),
 		customplayeranim = require('codes_rebekah.entities.customplayeranim'),
 		mirrorentities = require('codes_rebekah.entities.mirrorentities'),
-		--liminal = {
-		--	faceling = require('codes_rebekah.entities.liminal.faceling'),
+		liminal = {
+			faceling = require('codes_rebekah.entities.liminal.faceling'),
+			houndpuppy = require('codes_rebekah.entities.liminal.houndpuppy'),
 		--	maggy = require('codes_rebekah.entities.liminal.thescum'),
-		--},
+			hound = require('codes_rebekah.entities.liminal.thehound'),
+		},
+		undercrofts = {
+			enemies = require('codes_rebekah.entities.undercrofts.enemies'),
+		},
 		bosses = {
 			maggy = require('codes_rebekah.entities.bosses.magdalene'),
 			eve = require('codes_rebekah.entities.bosses.eve'),
@@ -63,14 +68,17 @@ yandereWaifuCodes = {
 			lilithfamiliars = require('codes_rebekah.entities.bosses.lilith.familiars'),
 			thestolid = require('codes_rebekah.entities.bosses.thestolid'),
 			nincompoop = require('codes_rebekah.entities.bosses.nincompoop'),
+			poltygeist = require('codes_rebekah.entities.bosses.poltygeist'),
 		}
 	},
 	pocketitems = {
 		egg = require('codes_rebekah.pocketitems.easteregg'),
 	},
 	items = {
-		glowinghourglass = require('codes_rebekah.items.glowinghourglass'),
-		
+		glowinghourglass = require('codes_rebekah.items.vanilla.glowinghourglass'),
+		sacrificialaltar = require('codes_rebekah.items.vanilla.sacrificialaltar'),
+		wisps = require('codes_rebekah.items.familiars.wisps'),
+
 		candyweddingring = require('codes_rebekah.items.candyweddingring'),
 		lovedeluxe = require('codes_rebekah.items.lovedeluxe'),
 		greatpheonix = require('codes_rebekah.items.greatpheonix'),
@@ -119,6 +127,7 @@ yandereWaifuCodes = {
 		eyesofthedead = require('codes_rebekah.items.eyesofthedead'),
 		notebookofthedead = require('codes_rebekah.items.notebookofthedead'),
 		psoraisis = require('codes_rebekah.items.psoraisis'),
+		rebekahskey = require('codes_rebekah.items.rebekahskey'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),
@@ -130,7 +139,8 @@ yandereWaifuCodes = {
 			rebekahsroom = require('codes_rebekah.floors.gen.rebekahsbedroom'),
 			},
 		rebekahsroom = require('codes_rebekah.floors.rebekahsbedroom'),
-		--liminal = require('codes_rebekah.floors.backrooms')
+		liminal = require('codes_rebekah.floors.backrooms'),
+		undercrofts = require('codes_rebekah.floors.undercrofts')
 	},
 	unlocks = {
 	},

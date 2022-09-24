@@ -386,23 +386,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cach
 		if not data.PersistentPlayerData.BoneStatBuff then data.PersistentPlayerData.BoneStatBuff = 0 end
 		if not data.PersistentPlayerData.RottenStatBuff then data.PersistentPlayerData.RottenStatBuff = 0 end
 		if not data.PersistentPlayerData.BrokenStatBuff then data.PersistentPlayerData.BrokenStatBuff = 0 end
-	end
-	if cacheF == CacheFlag.CACHE_SPEED then
-		player.MoveSpeed = player.MoveSpeed + 0.05*data.PersistentPlayerData.RedStatBuffSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.SoulStatBuff + 0.1*data.PersistentPlayerData.BoneStatBuff
-	end
-	if cacheF == CacheFlag.CACHE_FIREDELAY then
-		player.MaxFireDelay = player.MaxFireDelay - 0.5*data.PersistentPlayerData.RedStatBuffFireDelay - 1*data.PersistentPlayerData.EternalStatBuff - 0.5*data.PersistentPlayerData.SoulStatBuff
-	end
-	if cacheF == CacheFlag.CACHE_DAMAGE then
-		player.Damage = player.Damage + 0.5*data.PersistentPlayerData.RedStatBuffDamage + 1.2*data.PersistentPlayerData.EternalStatBuff + 1*data.PersistentPlayerData.EvilStatBuff + 2*data.PersistentPlayerData.GoldStatBuff + 1.5*data.PersistentPlayerData.BoneStatBuff + 1*data.PersistentPlayerData.RottenStatBuff
-	end
-	if cacheF == CacheFlag.CACHE_SHOTSPEED then
-		player.ShotSpeed = player.ShotSpeed + 0.05*data.PersistentPlayerData.RedStatBuffShotSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.EvilStatBuff
-	end
-	if cacheF == CacheFlag.CACHE_LUCK then
-		player.Luck = player.Luck + 0.5*data.PersistentPlayerData.RedStatBuffLuck + 1*data.PersistentPlayerData.EternalStatBuff + 2*data.PersistentPlayerData.GoldStatBuff
-	end
-	if cacheF == CacheFlag.CACHE_RANGE then
-		player.TearRange = player.TearRange + 2*data.PersistentPlayerData.RedStatBuffRange + 4*data.PersistentPlayerData.EternalStatBuff + 4*data.PersistentPlayerData.RottenStatBuff
+		if cacheF == CacheFlag.CACHE_SPEED then
+			player.MoveSpeed = player.MoveSpeed + 0.05*data.PersistentPlayerData.RedStatBuffSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.SoulStatBuff + 0.1*data.PersistentPlayerData.BoneStatBuff
+		end
+		if cacheF == CacheFlag.CACHE_FIREDELAY then
+			player.MaxFireDelay = player.MaxFireDelay - 0.5*data.PersistentPlayerData.RedStatBuffFireDelay - 1*data.PersistentPlayerData.EternalStatBuff - 0.5*data.PersistentPlayerData.SoulStatBuff
+		end
+		if cacheF == CacheFlag.CACHE_DAMAGE then
+			player.Damage = player.Damage + 0.5*data.PersistentPlayerData.RedStatBuffDamage + 1.2*data.PersistentPlayerData.EternalStatBuff + 1*data.PersistentPlayerData.EvilStatBuff + 2*data.PersistentPlayerData.GoldStatBuff + 1.5*data.PersistentPlayerData.BoneStatBuff + 1*data.PersistentPlayerData.RottenStatBuff
+		end
+		if cacheF == CacheFlag.CACHE_SHOTSPEED then
+			player.ShotSpeed = player.ShotSpeed + 0.05*data.PersistentPlayerData.RedStatBuffShotSpeed + 0.1*data.PersistentPlayerData.EternalStatBuff + 0.05*data.PersistentPlayerData.EvilStatBuff
+		end
+		if cacheF == CacheFlag.CACHE_LUCK then
+			player.Luck = player.Luck + 0.5*data.PersistentPlayerData.RedStatBuffLuck + 1*data.PersistentPlayerData.EternalStatBuff + 2*data.PersistentPlayerData.GoldStatBuff
+		end
+		if cacheF == CacheFlag.CACHE_RANGE then
+			player.TearRange = player.TearRange + 2*data.PersistentPlayerData.RedStatBuffRange + 4*data.PersistentPlayerData.EternalStatBuff + 4*data.PersistentPlayerData.RottenStatBuff
+		end
 	end
 end)

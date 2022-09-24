@@ -223,10 +223,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				local playerdata = yandereWaifu.GetEntityData(player);
 				local psprite = player:GetSprite()
 				local controller = player.ControllerIndex;
+				--cooldown
 				if not (psprite:IsPlaying("Trapdoor") or psprite:IsPlaying("Jump") or psprite:IsPlaying("HoleIn") or psprite:IsPlaying("HoleDeath") or psprite:IsPlaying("JumpOut") or psprite:IsPlaying("LightTravel") or psprite:IsPlaying("Appear") or psprite:IsPlaying("Death") or psprite:IsPlaying("TeleportUp") or psprite:IsPlaying("TeleportDown")) and not (playerdata.IsUninteractible) then
 					--if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
-					if (yandereWaifu.getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive and (yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrokenHearts--[[and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts]]))
-						or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts --[[or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and ((not data.noHead) or (data.noHead and yandereWaifu.getReserveStocks(player) >= 1)))]]) then --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
+					if (yandereWaifu.getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive) then --[[ and (yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrokenHearts and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts))]] --[[or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and ((not data.noHead) or (data.noHead and yandereWaifu.getReserveStocks(player) >= 1)))]] --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
 						if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --if red 
 							playerdata.specialActiveAtkCooldown = 500;
 							playerdata.invincibleTime = 10;
@@ -296,6 +296,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 end)
 
 --using rebekah's actives as anyone else but rebekah, i saw eden have this and it makes me angry so here
+--i think this is impossible anyway so it doesnt work anymore
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
@@ -559,7 +560,29 @@ function yandereWaifu.barrageAndSP(player)
 			player:AddCacheFlags(CacheFlag.CACHE_LUCK);
 			player:EvaluateItems()
 		end
-		yandereWaifu.DoRebeccaBarrage(player, data.currentMode, data.specialAttackVector)
+		local mode
+		if not data.currentActiveBarrageMode then
+			if player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_LOVECANNON  then
+				data.currentActiveBarrageMode = REBECCA_MODE.RedHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_WIZOOBTONGUE then
+				data.currentActiveBarrageMode = REBECCA_MODE.SoulHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_APOSTATE then
+				data.currentActiveBarrageMode = REBECCA_MODE.EvilHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_PSALM45 then
+				data.currentActiveBarrageMode = REBECCA_MODE.GoldHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_BARACHIELSPETAL then
+				data.currentActiveBarrageMode = REBECCA_MODE.EternalHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_FANG then
+				data.currentActiveBarrageMode = REBECCA_MODE.BoneHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH then
+				data.currentActiveBarrageMode = REBECCA_MODE.RottenHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_MAINLUA then
+				data.currentActiveBarrageMode = REBECCA_MODE.BrokenHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.COLLECTIBLE_COMFORTERSWING then
+				data.currentActiveBarrageMode = REBECCA_MODE.ImmortalHearts
+			end
+		end
+		yandereWaifu.DoRebeccaBarrage(player, data.currentActiveBarrageMode, data.specialAttackVector)
 	else
 		if data.LuckBuff then 
 			InutilLib.SetTimer( 30, function()
@@ -824,7 +847,7 @@ function yandereWaifu:RebekahNewRoom()
 			data.lastHeartReserve = yandereWaifu.getReserveFill(player)
 			data.lastStockReserve = yandereWaifu.getReserveStocks(player)
 			
-			
+			data.currentActiveBarrageMode = nil --???
 			--workaround for when you go bald in the knife dimension, because theres no way to check what dimension you are in for some reason.......
 			--yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player )
 			--print("im no bald")
@@ -1214,6 +1237,14 @@ end);
 function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 	local ispocket = false
 	local data = yandereWaifu.GetEntityData(player)
+	if yandereWaifu.IsNormalRebekah(player) then
+		if data.IsAttackActive then
+			return
+		end
+		if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 then
+			return
+		end
+	end
 	if slot == ActiveSlot.SLOT_POCKET then
 		ispocket = true
 	end
@@ -1235,7 +1266,7 @@ function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 		InutilLib.ToggleShowActive(player, false, ispocket)
 	end
 	
-	if collItem == RebekahCurse.COLLECTIBLE_MAINLUA then
+	--[[if collItem == RebekahCurse.COLLECTIBLE_MAINLUA then
 		--special parry thing
 		local tilde = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
 		yandereWaifu.GetEntityData(tilde).Player = player
@@ -1243,7 +1274,7 @@ function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 		yandereWaifu.GetEntityData(tilde).TildeConsole = true
 		yandereWaifu.GetEntityData(player).Parry = tilde
 		tilde.RenderZOffset = 100;
-	end
+	end]]
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_LOVECANNON );
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE );
@@ -1411,8 +1442,10 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 	
 	if type(mode) == 'number' then
 		modes = mode
-	else
-		modes = yandereWaifu.GetEntityData(player).currentMode
+		print("nope")
+	--else
+	--	modes = yandereWaifu.GetEntityData(player).currentMode
+	--	print("LMAO")
 	end
 	
 	if not data.BarrageIntro then

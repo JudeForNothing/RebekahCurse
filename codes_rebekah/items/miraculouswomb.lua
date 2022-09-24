@@ -140,8 +140,8 @@ function yandereWaifu:miraculousWombCacheregister(player, cacheF) --The thing th
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then
 		--Miraculous Womb
-		player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALESAU, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB))
-		player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALJACOB, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB))
+		player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALESAU, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB))
+		player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALJACOB, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB))
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.miraculousWombCacheregister)

@@ -846,13 +846,13 @@ function InutilLib.GetClosestPlayer(obj, dist)
 	return returnV
 end
 
-function InutilLib.GetStrongestEnemy(obj, dist)
+function InutilLib.GetStrongestEnemy(obj, dist, isEnemy)
 	local highestHP = 0
 	local returnV
 	for i, e in pairs(Isaac.GetRoomEntities()) do
-		if e:IsEnemy() then
+		if e:IsActiveEnemy() then
 			local minDist = dist or 100
-			if (obj.Position - e.Position):Length() <= minDist and e.HitPoints > highestHP then
+			if (obj.Position - e.Position):Length() <= minDist and e.HitPoints > highestHP and ((isEnemy and GetPtrHash(e) ~= GetPtrHash(obj)) or ( not isEnemy)) then
 				highestHP = e.HitPoints
 				returnV = e
 			end
@@ -1355,6 +1355,23 @@ function InutilLib.GetShowingActiveSlot(player)
 	end
 end
 
+function InutilLib:setLastShownItem(collItem, rng, player, flag, slot)
+	local data = InutilLib.GetILIBData( player )
+	data.LastShownItemByTrigger = collItem
+	data.LastShownItemByTriggerBySlot = slot
+end
+InutilLib:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.setLastShownItem)
+
+function InutilLib.GetLastShownItem(player)
+	local data = InutilLib.GetILIBData( player )
+	return data.LastShownItemByTrigger
+end
+
+function InutilLib.GetLastShownItemBySlot(player)
+	local data = InutilLib.GetILIBData( player )
+	return data.LastShownItemByTriggerBySlot
+end
+
 --from rev, again
 function InutilLib.IsAnimated(spr, anim)
 	return spr:IsPlaying(anim) or spr:IsFinished(anim)
@@ -1367,6 +1384,28 @@ function InutilLib.GetRoomGrids()
 		table.insert(returnT, grid)
 	end
 	return returnT
+end
+
+function InutilLib.GetRoomGridCount()
+	local returnT = 0
+	for i = 1, 1000 do
+		local grid = ILIB.room:GetGridEntity(i)
+		if grid ~= nil and (grid.State ~= 0 and grid.State ~= 2) then
+			if grid:GetType() ~= GridEntityType.GRID_WALL and grid:GetType() ~= GridEntityType.GRID_DOOR then
+				returnT = returnT + 1
+			end
+		end
+	end
+	return returnT
+end
+
+function InutilLib.PressPressurePlate(grid)
+	if grid.State == 0 then
+		grid.State = 3
+		InutilLib.SFX:Play( SoundEffect.SOUND_BUTTON_PRESS, 1, 0, false, 1 );
+		grid:GetSprite():Play("On", true)
+		grid:Update()
+	end
 end
 
 --underlay effects
@@ -2410,7 +2449,7 @@ function InutilLib.CreateGenericPathfinder(ent, target, vel, directly) --hold th
 end
 
 
-function InutilLib.IsGridPassable(index, ground, general, ignorePits)
+function InutilLib.IsGridPassable(index, ground, general, ignorePits, ignoreSpikes)
     room = ILIB.room
 	ground = ground or true --defaultly true
 	general = general or true
@@ -2421,7 +2460,7 @@ function InutilLib.IsGridPassable(index, ground, general, ignorePits)
             return false
         elseif not ignorePits then
             local grid = room:GetGridEntity(index)
-            if grid and (grid.Desc.Type == GridEntityType.GRID_SPIKES or grid.Desc.Type == GridEntityType.GRID_SPIKES_ONOFF) and grid.State ~= 1 then
+            if grid and (grid.Desc.Type == GridEntityType.GRID_SPIKES or grid.Desc.Type == GridEntityType.GRID_SPIKES_ONOFF) and grid.State ~= 1 and not ignoreSpikes then
                 return false
             end
         end
@@ -2437,7 +2476,8 @@ function InutilLib.IsGridPassable(index, ground, general, ignorePits)
     return true
 end
 
-function InutilLib.GenerateAStarPath(ent, target, render)
+function InutilLib.GenerateAStarPath(ent, target, ignoreSpikes, render)
+	ignoreSpikes = ignoreSpikes or false
 	if target then
 		local open = {}
 		local closed = {}
@@ -2481,7 +2521,7 @@ function InutilLib.GenerateAStarPath(ent, target, render)
 			for i = 1, 4 do --code that checks each four directions
 				local angle = i-1
 				local selectedGrid = ILIB.room:GetGridIndex((vPos + Vector(0,0)) + Vector(45,0):Rotated(90*(angle))) --grids around the currtarget selected grid
-				if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid)  then --and not open[ILIB.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
+				if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid, true, true, false, ignoreSpikes)  then --and not open[ILIB.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
 					local gCost, hCost = (target - vPos):Length(), (ent - vPos):Length() 
 					local fCost = math.abs(gCost) + math.abs(hCost)
 					open[selectedGrid] =  {selectedGrid, fCost, v[1]}
@@ -2516,7 +2556,7 @@ function InutilLib.GenerateAStarPath(ent, target, render)
 					local angle = i-1
 					local selectedGrid = ILIB.room:GetGridIndex((vPos + Vector(0,0)) + Vector(45,0):Rotated(90*(angle))) --grids around the currtarget selected grid
 					--print(90*(i))
-					if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid)  then --and not open[ILIB.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
+					if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid, true, true, false, ignoreSpikes) then --and not open[ILIB.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
 						--if open[selectedGrid]  == nil then
 						--Isaac.RenderText("pizza", Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).X-10, Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).Y-2, 1 ,1 ,1 ,1 )
 						--Isaac.RenderText("0", Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).X, Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).Y, 1 ,1 ,1 ,1 )

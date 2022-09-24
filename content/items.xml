@@ -1,12 +1,13 @@
 <items gfxroot="gfx/items/" version="1" deathanm2="gfx/death items.anm2"> 
-	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="4" tags="quest"/>
-	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" maxcharges="2" tags="quest"/>
-	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" maxcharges="4" tags="quest"/>
-	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" maxcharges="4" tags="quest"/>
-	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" maxcharges="5" tags="quest"/>
-	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" maxcharges="8" tags="quest"/>
-	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" maxcharges="3" tags="quest"/>
-	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" maxcharges="4" tags="quest"/>
+	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" hidden="true" tags="quest"/>
+	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" hidden="true" tags="quest"/>
+	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" hidden="true" tags="quest"/>
+	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" hidden="true" tags="quest"/>
+	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" hidden="true" tags="quest"/>
+	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" hidden="true" tags="quest"/>
+	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" hidden="true" tags="quest"/>
+	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" hidden="true" tags="quest"/>
+	<active id="8" name="Comforter's Wing" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" hidden="true" tags="quest"/>
 	
 	<passive id="16" name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" quality="1"/>
 	<passive id="37" name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" quality="2"/>
@@ -77,6 +78,6 @@
 	<passive id="50" name="Potato Snack" description="Take one and eat it" gfx="collectibles_potatosnack.png" quality="2" soulhearts="4"/>
 	<trinket name="Original Sin" description="As fresh as her sins" gfx="collectibles_evesapple.png" />
 	<active id="46" name="The Enchiridion" description="A heroes guide" gfx="collectibles_enchiridion.png" maxcharges="6" quality="4" tags="book"/>
-	<active id="45" name="Body Dysmorphia" description="Fix yourself with a cost" gfx="collectibles_bodydysmorphia.png" quality="4" tags="book"/>
-	<active id="8" name="Comforter's Wing" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" maxcharges="6" tags="quest"/>
+	<active id="45" name="Body Dysmorphia" description="Fix yourself with a cost" gfx="collectibles_bodydysmorphia.png" quality="4"/>
+	<trinket name="Rebekah's Key" description="Find the drawing room more" gfx="collectibles_rebekahs_key.png" />
 </items>

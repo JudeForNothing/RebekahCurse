@@ -11,14 +11,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			data.State = 0
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
-			ent:AddEntityFlags(EntityFlag.FLAG_SLIPPERY)
+			ent:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
 		else
 			if data.State == 0 then
 				if not spr:IsPlaying("Idle") then
 					spr:Play("Idle", true)
 				end
 				if math.random(1,3) == 3 and ent.FrameCount % 5 == 0 then
-					if math.random(1,10) <= 5 then
+					if math.random(1,2) == 2 then
 						data.State = 1
 					else
 						data.State = 3
@@ -69,7 +69,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				ent:GetSprite().FlipX = result
 			elseif data.State == 3 then
 				if spr:IsFinished("BeginCharge") then
-					local rng = 4 --math.random(1,20)
+					local rng = math.random(1,20)
 					if rng <= 10 and rng >= 0 then
 						data.State = 4
 					elseif rng <= 15 and rng >= 10 then
@@ -97,13 +97,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					data.OriginalDash = (player.Position - ent.Position)
 				elseif spr:IsPlaying("Dash") then
 					if spr:GetFrame() < 10 then
-						ent.Velocity = ent.Velocity + data.OriginalDash:Resized(8.5)
-					elseif spr:GetFrame() < 15 and ent.FrameCount % 3 == 0 then
-						ent.Velocity = ent.Velocity * 0.99
+						if ent.FrameCount % 5 == 0 then
+							ent.Velocity = ent.Velocity + data.OriginalDash:Resized(2.5)
+							local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_SLIPPERY_BROWN, 0, ent.Position, Vector(0,0), ent):ToEffect();
+							creep:Update()
+							creep.Timeout = 550
+						end
+					--[[elseif spr:GetFrame() < 20 and ent.FrameCount % 3 == 0 then
+						ent.Velocity = ent.Velocity * 0.99]]
 					elseif ent.FrameCount % 3 == 0 and spr:GetFrame() < 30 then
-						InutilLib.MoveDirectlyTowardsTarget(ent, player, 12, 1)
+						InutilLib.MoveDirectlyTowardsTarget(ent, player, 3, 1)
+						if ent.FrameCount % 5 == 0 then
+							local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_SLIPPERY_BROWN, 0, ent.Position, Vector(0,0), ent):ToEffect();
+							creep:Update()
+							creep.Timeout = 550
+						end
 					elseif spr:GetFrame() > 30 then 
 						--ent.Velocity = ent.Velocity * 0.99
+					else
+						ent.Velocity = ent.Velocity * 0.999
 					end
 				end
 				InutilLib.FlipXByVec(ent, invert)
@@ -120,10 +132,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("LongDash", true)
 				elseif spr:IsPlaying("LongDash") then
 					if ent.FrameCount % 3 == 0 and spr:GetFrame() < 120 then
-						InutilLib.MoveDirectlyTowardsTarget(ent, player, 10, 0.8)
+						InutilLib.MoveDirectlyTowardsTarget(ent, player, 3, 0.8)
+						if ent.FrameCount % 5 == 0 then
+							local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_SLIPPERY_BROWN, 0, ent.Position, Vector(0,0), ent):ToEffect();
+							creep:Update()
+							creep.Timeout = 550
+						end
 						if ent.FrameCount % 30 == 0 then
-							local fly = Isaac.Spawn(EntityType.ENTITY_ATTACKFLY, 0, 0, ent.Position, Vector(0,0), ent):ToNPC()
+							local fly = Isaac.Spawn(EntityType.ENTITY_DIP, 0, 0, ent.Position, Vector(0,0), ent):ToNPC()
 							fly:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+							ILIB.game:Fart(ent.Position, 100, ent, 1, 0)
+							local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_SLIPPERY_BROWN, 0, ent.Position, Vector(0,0), ent):ToEffect();
+							creep.Scale = 1.5
+							creep.SpriteScale = Vector(1.5, 1.5)
+							creep:Update()
+							creep.Timeout = 550
 						end
 					elseif spr:GetFrame() > 120 then
 						ent.Velocity = ent.Velocity * 0.95
@@ -137,7 +160,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("ShortDash", true)
 				elseif spr:IsPlaying("ShortDash") then
 					if spr:GetFrame() == 1 then
-						InutilLib.MoveDirectlyTowardsTarget(ent, player, 25, 0.9)
+						InutilLib.MoveDirectlyTowardsTarget(ent, player, 6, 0.9)
 					end
 				end
 				InutilLib.FlipXByVec(ent, invert)
@@ -150,7 +173,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				ent:GetSprite().FlipX = false
 			end
 		end
-		ent.Velocity = ent.Velocity * 0.7
+		ent.Velocity = ent.Velocity * 0.95
 	end
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 
+if StageAPI and StageAPI.Loaded then	
+	yandereWaifu.NincompoopStageAPIRooms = {
+		StageAPI.AddBossData("Nincompoop", {
+			Name = "Nincompoop",
+			Portrait = "gfx/ui/boss/portrait_nincompoop.png",
+			Offset = Vector(0,-15),
+			Bossname = "gfx/ui/boss/name_nincompoop.png",
+			Weight = 2,
+			Rooms = StageAPI.RoomsList("Nincompoop Rooms", require("resources.luarooms.bosses.nincompoop")),
+			Entity =  {Type = RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurseEnemies.ENTITY_NINCOMPOOP},
+		})
+	}
+
+	StageAPI.AddBossToBaseFloorPool({BossID = "Nincompoop"},LevelStage.STAGE1_1,StageType.STAGETYPE_REPENTANCE_B)
+	StageAPI.AddBossToBaseFloorPool({BossID = "Nincompoop"},LevelStage.STAGE1_2,StageType.STAGETYPE_REPENTANCE_B)
+end

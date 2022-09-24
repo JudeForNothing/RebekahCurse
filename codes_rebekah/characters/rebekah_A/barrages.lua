@@ -34,6 +34,7 @@ function yandereWaifu.EndRebekahBarrage(player, data)
 		data.MainArcaneCircle = nil
 		data.ArcaneCircleDust:Remove()
 	end
+	data.currentActiveBarrageMode = nil
 end
 
 function yandereWaifu.EndRebekahBarrageIfValid(player, data) --used if autocollectible is true and needed	
@@ -85,6 +86,7 @@ function yandereWaifu.EndRebekahBarrageIfValid(player, data) --used if autocolle
 			data.ArcaneCircleDust:Remove()
 		end
 	end
+	data.currentActiveBarrageMode = nil
 end
 
 function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
@@ -103,7 +105,9 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 		--curAng = -20
 		numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_INNER_EYE) * 2
 	end
-	
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
+		numofShots = numofShots + player:GetCollectibleNum(TaintedCollectibles.SPIDER_FREAK) * 5
+	end
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
 		direction = player:GetAimDirection()
 	end
@@ -324,13 +328,62 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 			end
 							
 			--montezuma's revenge synergy
-
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_MONTEZUMAS_REVENGE) then
 				local angle = direction:GetAngleDegrees()
 				local beam = EntityLaser.ShootAngle(12, player.Position, angle + 180, 30, Vector(0,0), player):ToLaser()
 				beam.MaxDistance = 250
 				--InutilLib.UpdateLaserSize(beam, 2)
 				data.shiftyBeam = beam
+			end
+			--tainted treasures' the reaper synergy
+			--code line taken directly from the game
+			if (TaintedTreasure and player:HasCollectible(TaintedCollectibles.REAPER)) then
+				for i = 1, math.random(7,12) do
+					InutilLib.SetTimer( i * 3, function()
+						local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BLUE_FLAME, 0, player.Position, direction:Resized(8)+Vector(math.random(-3,3), math.random(-3,3))+player.Velocity, player):ToEffect()
+						fire.Parent = player
+						fire.CollisionDamage = math.max(7, player.Damage*2) / 1.5
+						fire.Timeout = math.random(40, 60)
+						local ColorGreyscale = Color(1,1,1)
+						ColorGreyscale:SetColorize(1,1,1,1)
+						fire.Color = ColorGreyscale
+						fire:GetData().TaintedReaperFire = true
+						fire:Update()
+					end)
+				end
+				SFXManager():Play(SoundEffect.SOUND_GHOST_ROAR, 1, 2, false, 1)
+			end
+			--birthright
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+				local pos = player.Position
+				local ludoTear = InutilLib.GetPlayerLudo(player)
+				if ludoTear then
+					pos = ludoTear.Position
+				end
+				if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+					ILIB.game:Darken(1, 90)
+					local didtrigger = false
+					if player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE) < 2 then
+						player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
+						didtrigger = true
+					end
+					local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees()):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
+					brim:GetData().IsEctoplasm = true;
+					brim.Position = pos
+					brim.CollisionDamage = player.Damage * 2 * numofShots
+					brim.Timeout = 45
+					player.Velocity = (player.Velocity* direction:Rotated(180):Resized(10))*0.9
+					if didtrigger then
+						player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
+					end
+				else
+
+					local tear = player:FireTear(player.Position, direction:Resized(9), false, false, false):ToTear()
+					tear.Position = pos
+					tear.Scale = tear.Scale + 4 + tearSize
+					tear.CollisionDamage = player.Damage * 5
+					player.Velocity = (player.Velocity* direction:Rotated(180):Resized(7))*0.9
+				end
 			end
 		end
 		--setup of red personality's gun effects and barrage
@@ -341,7 +394,20 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 			data.ArcaneCircleDust.RenderZOffset = -1
 			yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player --why this parent and Parent isnt consistent is beyond me and im too lazy to fix it
 		end
-			
+		
+		if yandereWaifu.IsValidRedBarrage() then
+			--tainted trasure sorrowful shallot synergy
+			--code literally from sorrowful shallot, im just borrowing it ;-;
+			if (TaintedTreasure and player:HasCollectible(TaintedCollectibles.SORROWFUL_SHALLOT)) and math.random(1,14) + player.Luck >= 10 then
+				local tear = player:FireTear(player.Position, RandomVector()*10, false, false, false, player, 1.66)
+				tear.FallingAcceleration = 1.5
+				tear.FallingSpeed = -10
+				data.SorrowfulShallotCooldown = player.MaxFireDelay
+				InutilLib.SFX:Stop(SoundEffect.SOUND_TEARS_FIRE)
+				InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 0.5)
+			end
+		end
+
 		local ludoTear
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) and not player:HasWeaponType(WeaponType.WEAPON_BOMBS) and not player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 			ludoTear = InutilLib.GetPlayerLudo(player)
@@ -653,7 +719,9 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MONSTROS_LUNG) then
 		extraTearDmg = extraTearDmg + math.random(3,5);
 	end
-	
+	if TaintedTreasure and player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
+		extraTearDmg = extraTearDmg + player:GetCollectibleNum(TaintedCollectibles.SPIDER_FREAK) * 5
+	end
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
 		endFrameCount = endFrameCount * 2
 		extraTearDmg = extraTearDmg * (player:GetCollectibleNum(CollectibleType.COLLECTIBLE_CAR_BATTERY) * 1.5)
@@ -718,6 +786,17 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 			--end
 		end
 	end
+
+	function yandereWaifu.SoulSorrowfulShallotBarrage()
+		for i = 0, math.random(2,3) do
+			local tear = player:FireTear(player.Position, RandomVector()*10, false, false, false, player, 1.66)
+			tear.FallingAcceleration = 1.5
+			tear.FallingSpeed = -10
+			data.SorrowfulShallotCooldown = player.MaxFireDelay
+			InutilLib.SFX:Stop(SoundEffect.SOUND_TEARS_FIRE)
+			InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 0.5)
+		end
+	end
 	
 	--setup of soul personality's gun effects and barrage
 	if not data.MainArcaneCircle then
@@ -743,10 +822,33 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 		--InutilLib.SFX:Play( SoundEffect.SOUND_BIRD_FLAP, 1, 0, false, 1.5 );
 		--local knife = InutilLib.SpawnKnife(player, (direction:GetAngleDegrees() - math.random(-10,10)), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 90)
 		yandereWaifu.GetEntityData(knife).IsSoul = true
+		if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+			yandereWaifu.GetEntityData(knife).IsBottle = true
+			knife:AddTearFlags(TearFlags.TEAR_WIGGLE)
+		end
 	end
 	
 	if data.BarrageIntro and canFire then
-		yandereWaifu.RebekahSoulNormalBarrage(player, data, player:GetShootingInput(), endFrameCount, modulusnum, extraTearDmg)
+		yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrameCount, modulusnum, extraTearDmg)
+		if (TaintedTreasure and player:HasCollectible(TaintedCollectibles.SORROWFUL_SHALLOT)) then
+			yandereWaifu.SoulSorrowfulShallotBarrage()
+		end
+		if (TaintedTreasure and player:HasCollectible(TaintedCollectibles.REAPER)) then
+			for i = 1, math.random(2,3) do
+				InutilLib.SetTimer( i * 3, function()
+					local fire = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BLUE_FLAME, 0, player.Position, direction:Resized(8)+Vector(math.random(-3,3), math.random(-3,3))+player.Velocity, player):ToEffect()
+					fire.Parent = player
+					fire.CollisionDamage = math.max(7, player.Damage*2) / 1.5
+					fire.Timeout = math.random(40, 60)
+					local ColorGreyscale = Color(1,1,1)
+					ColorGreyscale:SetColorize(1,1,1,1)
+					fire.Color = ColorGreyscale
+					fire:GetData().TaintedReaperFire = true
+					fire:Update()
+				end)
+			end
+			SFXManager():Play(SoundEffect.SOUND_GHOST_ROAR, 1, 2, false, 1)
+		end
 	elseif not data.BarrageIntro and canFire then
 		if not data.isPlayingCustomAnim then
 			data.isPlayingCustomAnim = true
@@ -801,6 +903,9 @@ function yandereWaifu.SetGoldRebekahBarrage(player, data, direction)
 	--do the weird animation first before firing the beam
 	if data.BarrageIntro then
 		yandereWaifu.RebekahGoldBarrage(player, direction)
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then --do it again
+			yandereWaifu.RebekahGoldBarrage(player, direction)
+		end
 		yandereWaifu.EndRebekahBarrage(player, data)
 		InutilLib.SFX:Play( SoundEffect.SOUND_COIN_SLOT, 1, 0, false, 1 );
 		--make guns play
@@ -1172,6 +1277,9 @@ function yandereWaifu.SetRottenRebekahBarrage(player, data, direction)
 	--do the weird animation first before firing the beam
 	if data.BarrageIntro then
 		yandereWaifu.RebekahRottenBarrage(player, direction)
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) and math.random(1,2) == 2 then
+			yandereWaifu.RebekahRottenBarrage(player, direction)
+		end
 		yandereWaifu.EndRebekahBarrage(player, data)
 		InutilLib.SFX:Play( SoundEffect.SOUND_COIN_SLOT, 1, 0, false, 1 );
 		--make guns play
@@ -1224,8 +1332,7 @@ function yandereWaifu.SetRottenRebekahBarrage(player, data, direction)
 end
 
 function yandereWaifu.SetBrokenRebekahBarrage(player, data, direction)
-	player:UseActiveItem(CollectibleType.COLLECTIBLE_DATAMINER, true, false, false, false, -1)
-	if data.mainGlitch then
+	--[[if data.mainGlitch then
 			if not data.mainGlitch:Exists() then
 				data.mainGlitch = nil 
 			end
@@ -1252,8 +1359,59 @@ function yandereWaifu.SetBrokenRebekahBarrage(player, data, direction)
 					player:ResetDamageCooldown()
 				end
 			end
+		end]]
+	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BROKENCONSOLE, 0, player.Position, Vector(0,0), nil):ToEffect()
+	yandereWaifu.GetEntityData(customBody).Player = player
+	yandereWaifu.EndRebekahBarrage(player, data)
+end
+
+function yandereWaifu.SetImmortalRebekahBarrage(player, data, direction)
+	--setup of eternal personality's gun effects and barrage
+	if not data.MainArcaneCircle then
+		data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
+		yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+		for i = 0, 8 do
+			data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/eternal/arcane_circle.png")
 		end
+		data.MainArcaneCircle:GetSprite():LoadGraphics()
+		data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+		data.ArcaneCircleDust.RenderZOffset = -1
+		yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
+	end
+	--do the weird animation first before firing the beam
+	if data.BarrageIntro then
+		yandereWaifu.RebekahImmortalBarrage(player, direction)
 		yandereWaifu.EndRebekahBarrage(player, data)
+		
+		--make guns play
+		--[[for k, v in pairs (Isaac.GetRoomEntities()) do
+			v:ClearEntityFlags(EntityFlag.FLAG_SLOW)
+		end]]
+		data.tintEffect:Remove()
+		data.tintEffect = nil
+		player.FireDelay = 60
+		data.FinishedPlayingCustomAnim = nil
+		
+	else
+		if not data.tintEffect then
+			data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
+			data.tintEffect.RenderZOffset = -10
+		end
+		--[[for k, v in pairs (Isaac.GetRoomEntities()) do
+			if v.Type ~= 1000 and v.Type ~= 1 and v.Type ~= 8 then
+				v:AddEntityFlags(EntityFlag.FLAG_SLOW)
+			end
+		end]]
+		if player.FrameCount % 3 == 0 then
+			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+		end
+		if not data.isPlayingCustomAnim then
+			local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
+			yandereWaifu.GetEntityData(customBody).Player = player
+			yandereWaifu.GetEntityData(customBody).SummonImmortalBackup = true
+			data.isPlayingCustomAnim = true
+		end
+	end
 end
 
 function barrage.SetRebekahBarragesInit(player, modes, data, direction)
@@ -1274,7 +1432,9 @@ function barrage.SetRebekahBarragesInit(player, modes, data, direction)
 		--curAng = -20
 		numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_INNER_EYE) * 2
 	end
-
+	print("pirayte")
+	print(modes)
+	print(REBECCA_MODE.RedHearts)
 	if modes == REBECCA_MODE.RedHearts then
 		yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 	elseif modes == REBECCA_MODE.SoulHearts then
@@ -1447,52 +1607,7 @@ function barrage.SetRebekahBarragesInit(player, modes, data, direction)
 			end
 		end
 	elseif modes == REBECCA_MODE.ImmortalHearts then
-		--setup of eternal personality's gun effects and barrage
-		if not data.MainArcaneCircle then
-			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
-			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
-			for i = 0, 8 do
-				data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/eternal/arcane_circle.png")
-			end
-			data.MainArcaneCircle:GetSprite():LoadGraphics()
-			data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
-			data.ArcaneCircleDust.RenderZOffset = -1
-			yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
-		end
-		--do the weird animation first before firing the beam
-		if data.BarrageIntro then
-			yandereWaifu.RebekahImmortalBarrage(player, direction)
-			yandereWaifu.EndRebekahBarrage(player, data)
-			
-			--make guns play
-			--[[for k, v in pairs (Isaac.GetRoomEntities()) do
-				v:ClearEntityFlags(EntityFlag.FLAG_SLOW)
-			end]]
-			data.tintEffect:Remove()
-			data.tintEffect = nil
-			player.FireDelay = 60
-			data.FinishedPlayingCustomAnim = nil
-			
-		else
-			if not data.tintEffect then
-				data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
-				data.tintEffect.RenderZOffset = -10
-			end
-			--[[for k, v in pairs (Isaac.GetRoomEntities()) do
-				if v.Type ~= 1000 and v.Type ~= 1 and v.Type ~= 8 then
-					v:AddEntityFlags(EntityFlag.FLAG_SLOW)
-				end
-			end]]
-			if player.FrameCount % 3 == 0 then
-				yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
-			end
-			if not data.isPlayingCustomAnim then
-				local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
-				yandereWaifu.GetEntityData(customBody).Player = player
-				yandereWaifu.GetEntityData(customBody).SummonImmortalBackup = true
-				data.isPlayingCustomAnim = true
-			end
-		end
+		yandereWaifu.SetImmortalRebekahBarrage(player, data, direction)
 	end
 end
 

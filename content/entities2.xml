@@ -122,7 +122,7 @@
 	<entity anm2path="darkbeaminthesky.anm2" baseHP="0" boss="1" champion="1" collisionDamage="0" collisionMass="0" collisionRadius="30" friction="1" id="1000" name="Dark Beam In The Sky" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="92891366">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="effects/evil/evil_orb.anm2" baseHP="30" boss="0" champion="0" collisionDamage="0" collisionMass="70" collisionRadius="10" friction="1" id="1000" name="Evil Orb" numGridCollisionPoints="1" shadowSize="5" stageHP="0" variant="8352810">
+	<entity anm2path="effects/evil/evil_orb.anm2" baseHP="30" boss="0" champion="0" collisionDamage="0" collisionMass="35" collisionRadius="10" friction="1" id="1000" name="Evil Orb" numGridCollisionPoints="1" shadowSize="5" stageHP="0" variant="8352810">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="evil_hole.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="70" collisionRadius="10" friction="1" id="1000" name="Evil Hole" numGridCollisionPoints="1" shadowSize="5" stageHP="0" variant="8352810" subtype="1">
@@ -237,7 +237,10 @@
 	<entity anm2path="effects/rotten/rottenollie.anm2" baseHP="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="13" friction="1" id="3" name="Rotten Crazyhead" numGridCollisionPoints="12" shadowSize="11" stageHP="0" variant="177124">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
-	
+	<entity anm2path="effects/rotten/rotten_birthright_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rotten Birthright Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="642027">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
 	<entity name="Rotten Small Maggot" anm2path="effects/rotten/bullets/rotten_maggot.anm2" id="853" variant="177" baseHP="10" boss="0" champion="0" collisionDamage="1" collisionMass="3" collisionRadius="17" friction="1" gridCollision="ground" numGridCollisionPoints="8" portrait="271" shadowSize="10" stageHP="0">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
     </entity>
@@ -255,7 +258,10 @@
     </entity>
 	
 	<!--Broken heart-->
-	
+	<entity anm2path="effects/broken/console.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Broken Console" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="642028">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
 	<!--Immortal heart-->
 	<entity anm2path="effects/immortal/bigger_angelic_prism.anm2" baseHP="300000" boss="0" champion="0" collisionDamage="0" collisionMass="22" collisionRadius="35" friction="1" id="1000" name="Immortal Prism" numGridCollisionPoints="12" shadowSize="36" stageHP="0" variant="62694" gridCollision="walls">
         <gibs amount="0" blood="0" bone="3" eye="0" gut="0" large="0" />
@@ -313,20 +319,20 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	<!--Item related material-->
-	<entity anm2path="effects/items/tiny_becca.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="17" friction="1" id="3" name="Tiny Becca" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="178122" shutdoors="false">
+	<entity anm2path="effects/items/tiny_becca.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="17" friction="1" id="3" name="Tiny Becca" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="178122" shutdoors="false" tags="cansacrifice">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
-	<entity anm2path="effects/items/tiny_isaac.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="17" friction="1" id="3" name="Tiny Isaac" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="178123" shutdoors="false">
+	<entity anm2path="effects/items/tiny_isaac.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="30" collisionRadius="17" friction="1" id="3" name="Tiny Isaac" numGridCollisionPoints="12" shadowSize="0" stageHP="0" variant="178123" shutdoors="false" tags="cansacrifice">
         <gibs amount="3" blood="5" bone="1" eye="0" gut="2" large="0" />
     </entity>
-	<entity anm2path="orbital_esau.anm2" baseHP="0" boss="0" champion="0" collisionDamage="4" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Orbital Esau" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663124">
+	<entity anm2path="orbital_esau.anm2" baseHP="0" boss="0" champion="0" collisionDamage="4" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Orbital Esau" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663124" tags="cansacrifice">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="orbital_jacob.anm2" baseHP="0" boss="0" champion="0" collisionDamage="2" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Orbital Jacob" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663125">
+	<entity anm2path="orbital_jacob.anm2" baseHP="0" boss="0" champion="0" collisionDamage="2" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Orbital Jacob" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663125" tags="cansacrifice">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	
-	<entity anm2path="familiar/gravebaby.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Grave Baby" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663132">
+	<entity anm2path="familiar/gravebaby.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Grave Baby" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="663132" tags="cansacrifice">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 	<entity anm2path="familiar/bunbun.anm2" baseHP="0" boss="0" champion="0" gridCollision="walls" collisionInterval="15" collisionDamage="2" collisionMass="3" collisionRadius="13" friction="1" id="3" name="Bun Bun (Familiar)" numGridCollisionPoints="12" shadowSize="24" stageHP="0" variant="663127">
@@ -473,20 +479,31 @@
 	<entity anm2path="grid/rebekahsroom/rebekahs_carpet.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="999" name="Rebekah&apos;s Carpet (Entity Replace)" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="74" subtype="177">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
     </entity>
+
 	<!--Enemy related material-->
+
+    <!--Kenopsia related things-->
 	<entity anm2path="010.001_Gaper.anm2" hasFloorAlts="true" reroll="true" baseHP="40" boss="0" champion="1" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="10" name="Faceling" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="1071" portrait="1">
 		<bestiary transform="0,0,1" anim="WalkVert" overlay="Head" />
         <gibs amount="6" blood="1" bone="1" eye="1" gut="1" large="0" />
         <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
     </entity>
-	
+    <entity anm2path="monsters/liminal/hound_puppy.anm2" baseHP="20" boss="0" champion="0" collisionDamage="1" collisionMass="12" collisionRadius="13" friction="1" id="600" name="Hound Puppy" numGridCollisionPoints="12" portrait="357" shadowSize="18" stageHP="0" variant="226">
+        <bestiary anim="Idle Hori" transform="0,0,1"/>
+        <gibs amount="5" blood="1" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
+	<!-- <entity anm2path="grid/liminal/exit_trapdoor.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Bumbab Punch" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="10192">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity> -->>
+
+    <!--Rivals-->
 	<entity anm2path="bosses/rivals/magdalene.anm2" baseHP="600" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Rebekah Entities" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="0" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/rivals/maggy/beatingheart.anm2" baseHP="10" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Magdalene Hearts" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="2" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="monsters/mirror/redtato.anm2" baseHP="20" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="12" friction="1" id="600" name="Red Tato" numGridCollisionPoints="3" shadowSize="22" stageHP="1" variant="4" >
+	<entity anm2path="monsters/mirror/redheart.anm2" baseHP="20" boss="0" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="12" friction="1" id="600" name="Red Tato" numGridCollisionPoints="3" shadowSize="22" stageHP="1" variant="4" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/rivals/magdalene.anm2" baseHP="600" boss="1" champion="0" collisionDamage="1" collisionMass="8" collisionRadius="36" friction="1" id="600" name="Magdalene (Boss)" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="10">
@@ -519,13 +536,19 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	
+    <!--Projectiles-->
+    <entity anm2path="effects/giant_grid_projectile.anm2" baseHP="0" boss="0" champion="0" collisionDamage="2" collisionMass="8" collisionRadius="60" friction="1" id="9" name="Giant Grid Projectile" numGridCollisionPoints="8" shadowSize="62" stageHP="0" variant="62676">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/giant_grid_break.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Giant Grid Break" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="8283">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <!--ALT PATH Bosses-->
 	<entity anm2path="bosses/liminal/the_scum.anm2" baseHP="4000000" boss="1" champion="0" collisionDamage="4" collisionMass="5" collisionRadius="13" friction="1" id="600" name="The Scum" numGridCollisionPoints="3" shadowSize="22" stageHP="0" variant="220" shutdoors="false">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="bosses/normal/thestolid.anm2" baseHP="900" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="42" friction="1" id="600" name="The Stolid" numGridCollisionPoints="24" shadowSize="84" stageHP="50" variant="222" tags="nodelirium">
-        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
-    </entity>
-	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="30" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="23" stageHP="5" variant="223">
+    <entity anm2path="bosses/liminal/the_hound.anm2" baseHP="5000" boss="1" champion="0" collisionDamage="4" collisionMass="3" collisionRadius="10" friction="1" id="600" name="The Hound" shieldStrength="90" numGridCollisionPoints="4" shadowSize="44" stageHP="0" variant="221" shutdoors="false">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/normal/nincompoop.anm2" baseHP="400" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="31" friction="1" id="600" name="Nincompoop" numGridCollisionPoints="24" shadowSize="32" stageHP="50" variant="224" tags="nodelirium">
@@ -533,5 +556,45 @@
     </entity>
 	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ovum Egg Effect" numGridCollisionPoints="0" shadowSize="23" stageHP="0" variant="83390" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="bosses/normal/poltygeist.anm2" baseHP="400" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="24" friction="1" id="600" name="Poltygeist" numGridCollisionPoints="18" shadowSize="32" stageHP="50" variant="225" tags="nodelirium ghost">
+        <gibs amount="1" blood="1" bone="0" eye="2" gut="0" large="1" poop="0" />
+    </entity>
+    <entity anm2path="bosses/normal/polty_tongue.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Polty Tongue" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="835282">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="bosses/normal/thestolid.anm2" baseHP="1500" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="42" friction="1" id="600" name="The Stolid" numGridCollisionPoints="24" shadowSize="84" stageHP="50" variant="222" tags="nodelirium">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="bosses/normal/thestolid_fist.anm2" baseHP="1000" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="26" friction="1" id="600" name="Stolid Fist" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="222" subtype="1">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="23" stageHP="5" variant="223">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <!--Undercrofts-->
+    <entity anm2path="monsters/undercrofts/sister.anm2" reroll="true" baseHP="40" boss="0" champion="1" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Sister" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="171071" portrait="1">
+		<bestiary transform="0,0,1" anim="WalkVert" overlay="Head" />
+        <gibs amount="6" blood="1" bone="1" eye="1" gut="1" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
+    <entity anm2path="monsters/undercrofts/bumbab.anm2" reroll="true" baseHP="35" boss="0" champion="1" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Bumbab" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="171072" portrait="1">
+		<bestiary transform="0,0,1" anim="Idle" />
+        <gibs amount="6" blood="1" bone="1" eye="1" gut="1" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
+    <entity anm2path="monsters/undercrofts/effect_punch.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Bumbab Punch" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="835283">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="monsters/undercrofts/roach.anm2" reroll="true" baseHP="25" boss="0" champion="1" collisionDamage="1" collisionMass="5" collisionRadius="8" friction="1" id="600" name="Roach" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="171073" portrait="1">
+		<bestiary transform="0,0,1" anim="Idle" />
+        <gibs amount="6" blood="1" bone="0" eye="0" gut="0" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
+    <entity anm2path="monsters/undercrofts/monk.anm2" reroll="true" baseHP="30" boss="0" champion="1" collisionDamage="1" collisionMass="5" collisionRadius="13" friction="1" id="600" name="Monk" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="171074" portrait="1">
+		<bestiary transform="0,0,1" anim="WalkVert" overlay="Head" />
+        <gibs amount="6" blood="1" bone="1" eye="1" gut="1" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
     </entity>
 </entities>

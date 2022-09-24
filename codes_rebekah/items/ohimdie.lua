@@ -86,9 +86,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 								data.currentIndex = nil
 								isDiffused = true
 								data.ImDiePolty:GetSprite():Play("Reward", true)
-								player:SetActiveCharge(0, ActiveSlot.SLOT_PRIMARY)
+								if InutilLib.GetLastShownItemBySlot(player) == ActiveSlot.SLOT_POCKET then
+									player:SetActiveCharge(0, ActiveSlot.SLOT_POCKET)
+								else
+									player:SetActiveCharge(0, ActiveSlot.SLOT_PRIMARY)
+								end
 								--player:SetActiveCharge(0, ActiveSlot.SLOT_SECONDARY)
-								player:SetActiveCharge(0, ActiveSlot.SLOT_POCKET)
+								--player:SetActiveCharge(0, ActiveSlot.SLOT_POCKET)
 							end
 							player:AnimateHappy()
 						else
@@ -270,6 +274,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			--local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, randomItem, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil)
 			local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil):ToPickup()
 			item:TryOpenChest(player)
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
+				player:AddWisp(RebekahCurse.COLLECTIBLE_OHIMDIE, player.Position, false, false)
+			end
 			--[[if ILIB.room:IsClear() then
 				local hasItems = false
 				for i, ent in pairs (Isaac.GetRoomEntities()) do

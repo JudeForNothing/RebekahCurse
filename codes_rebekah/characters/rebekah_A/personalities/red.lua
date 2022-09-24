@@ -222,6 +222,9 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 								kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 								kn.CollisionDamage = player.Damage * 2;
 								kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
+								if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+									yandereWaifu.GetEntityData(kn).IsBottle = true
+								end
 							end
 						end
 						--local knife = InutilLib.SpawnKnife(player, (data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
@@ -327,6 +330,9 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 							kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
 							--local knife = InutilLib.SpawnKnife(player, (data.addedbarrageangle2 + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 							--yandereWaifu.GetEntityData(knife).IsRed = true
+							if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+								yandereWaifu.GetEntityData(kn).IsBottle = true
+							end
 						elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 							local circle = player:FireTechXLaser(player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees())*(20), data.Xsize)
 						else
@@ -354,6 +360,9 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 							kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
 							--local knife = InutilLib.SpawnKnife(player, ( direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_OUT_ONLY, 1, 120)
 							--yandereWaifu.GetEntityData(knife).IsRed = true
+							if TaintedTreasure and player:HasCollectible(TaintedCollectibles.THE_BOTTLE) then
+								yandereWaifu.GetEntityData(kn).IsBottle = true
+							end
 						elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 							local circle = player:FireTechXLaser(player.Position, Vector.FromAngle((data.addedbarrageangle2) - direction:GetAngleDegrees())*(20), data.Xsize)
 						else
@@ -898,11 +907,29 @@ end, RebekahCurse.ENTITY_ORBITALNUKE)
 function yandereWaifu:RedKnifeRender(tr, _)
 	if tr.Variant == RebekahCurse.ENTITY_REDKNIFE and tr.FrameCount == 1 then
 		tr:GetSprite():Play("RegularTear", false);
-		--tr:GetSprite():LoadGraphics();
+		if TaintedTreasure and yandereWaifu.GetEntityData(tr).IsBottle then
+			if tr.SpawnerEntity:GetData().BrokenBottle then
+				tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/red/tear_tt_bottle_broken.png")
+			else
+				tr:GetSprite():ReplaceSpritesheet(0, "gfx/effects/red/tear_tt_bottle.png")
+			end
+		end
+		tr:GetSprite():LoadGraphics();
 		
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.RedKnifeRender)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
+	if tr.Variant == RebekahCurse.ENTITY_REDKNIFE and yandereWaifu.GetEntityData(tr).IsBottle then
+		InutilLib.SFX:Play(TaintedSounds.BOTTLE_BREAK2)
+		local shardvec = RandomVector()
+		for i = 1, 2 do
+			local shard = Isaac.Spawn(1000, TaintedEffects.BOTTLE_SHARD, 0, tr.Position, (shardvec * math.random(2,4)):Rotated(i * (360/5)), tr)
+			shard.CollisionDamage = math.max(3.5, tr.CollisionDamage/2)
+		end
+	end
+end, EntityType.ENTITY_TEAR)
 
 function yandereWaifu:RedPersonalityTearUpdate(tr)
 	local data = yandereWaifu.GetEntityData(tr)

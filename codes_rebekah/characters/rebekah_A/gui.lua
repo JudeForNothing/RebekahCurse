@@ -14,6 +14,8 @@ heartBReserve:Load("gfx/ui/ui_bone_heart_reserve.anm2", true);
 
 local eternalFeatherReserve = Sprite();
 eternalFeatherReserve:Load("gfx/ui/ui_eternal_reserve.anm2", true);
+local eternalFeatherReserve2 = Sprite();
+eternalFeatherReserve2:Load("gfx/ui/ui_eternal_reserve_birthright.anm2", true);
 
 local knifeSpearReserve = Sprite();
 knifeSpearReserve:Load("gfx/ui/ui_spear_reserve.anm2", true);
@@ -131,7 +133,8 @@ function yandereWaifu.heartReserveRenderLogic(player, id)
 				if data.heartReserveFill and data.heartReserveMaxFill then
 					--local FramePercentResult = math.floor((data.heartReserveFill/data.heartReserveMaxFill)*100)
 					--print(data.heartReserveFill, "hello")
-					local renderFill = math.floor(data.heartReserveFill/10)
+					local percent = (data.heartReserveFill/data.heartReserveMaxFill)*100
+					local renderFill = math.floor(percent/10)
 					
 					if not data.heartStocksMax then data.heartStocksMax = 1 end --incase
 					
@@ -252,51 +255,110 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts and Options.ChargeBars then
 				yandereWaifu.eternalBarLogic(player)
 			end
+			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and Options.ChargeBars then
+				yandereWaifu.soulTeleportBirthrightBarLogic(player)
+			end
 		end
 	end
 end);
 
 function yandereWaifu.eternalBarLogic(player)
+		local eternalUI = eternalFeatherReserve
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+			eternalUI = eternalFeatherReserve2
+		end
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
 		if yandereWaifu.IsNormalRebekah(player) then
 			local maxEternalFeather = data.maxEternalFeather
 			if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
-				eternalFeatherReserve:SetOverlayRenderPriority(true)
+				eternalUI:SetOverlayRenderPriority(true)
 
 				if data.StackedFeathers then
+					local chargingAnim = "Charging"
+					local chargedAnim = "Charged"
+					if data.StackedFeatherBuff == 1 then
+						chargingAnim = "ChargingBuffed"
+						chargedAnim = "ChargedBuffed"
+					end
 					if data.StackedFeathers < maxEternalFeather then
 						local FramePercentResult = math.floor((data.StackedFeathers/maxEternalFeather)*100)
-						eternalFeatherReserve:SetFrame("Charging", FramePercentResult)
+						eternalUI:SetFrame(chargingAnim, FramePercentResult)
 						data.eternalBarFade = gameFrame
 						data.FinishedEternalUICharge = false
 					elseif data.StackedFeathers >= maxEternalFeather then
 						if not data.FinishedEternalUICharge then
-							eternalFeatherReserve:SetFrame("StartCharged",gameFrame - data.eternalBarFade)
-							if eternalFeatherReserve:GetFrame() == 11 then
+							eternalUI:SetFrame("StartCharged",gameFrame - data.eternalBarFade)
+							if eternalUI:GetFrame() == 11 then
 								data.eternalBarFade = gameFrame
 								data.FinishedEternalUICharge = true
 							end
 						elseif data.FinishedEternalUICharge then
-							if eternalFeatherReserve:GetFrame() == 5 then
+							if eternalUI:GetFrame() == 5 then
 								data.eternalBarFade = gameFrame
 							end
-							eternalFeatherReserve:SetFrame("Charged",gameFrame - data.eternalBarFade)
+							eternalUI:SetFrame(chargedAnim,gameFrame - data.eternalBarFade)
 						end
 					end
 				--[[elseif data.StackedFeathers == 0 then
-					if not eternalFeatherReserve:IsPlaying("Disappear") then
-						eternalFeatherReserve:SetFrame("Disappear",gameFrame - data.eternalBarFade);
+					if not eternalUI:IsPlaying("Disappear") then
+						eternalUI:SetFrame("Disappear",gameFrame - data.eternalBarFade);
 					end]]
 				end
 		
 				local playerLocation = Isaac.WorldToScreen(player.Position)
 				--print(InutilLib.IsInMirroredFloor(player))
 				if not InutilLib.IsInMirroredFloor(player) then
-					eternalFeatherReserve:Render(playerLocation + Vector(0, -50), Vector(0,0), Vector(0,0));
+					eternalUI:Render(playerLocation + Vector(0, -50), Vector(0,0), Vector(0,0));
 				end
 			end
 		end
 	--end
+end
+
+function yandereWaifu.soulTeleportBirthrightBarLogic(player)
+	local data = yandereWaifu.GetEntityData(player)
+	local room = ILIB.game:GetRoom()
+	local gameFrame = ILIB.game:GetFrameCount();
+	if yandereWaifu.IsNormalRebekah(player) then
+		local maxmovementCountFrame = 1
+		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
+			eternalFeatherReserve:SetOverlayRenderPriority(true)
+
+			if data.movementCountFrame then
+				if data.movementCountFrame > maxmovementCountFrame then 
+					
+					local FramePercentResult = math.floor((maxmovementCountFrame/data.movementCountFrame)*100)
+					eternalFeatherReserve:SetFrame("Charging", FramePercentResult)
+					data.soulTeleportBarFade = gameFrame
+					data.FinishedsoulTeleportBirthrightUICharge = false
+				elseif data.movementCountFrame <= maxmovementCountFrame then
+					if not data.FinishedsoulTeleportBirthrightUICharge then
+						eternalFeatherReserve:SetFrame("StartCharged",gameFrame - data.soulTeleportBarFade)
+						if eternalFeatherReserve:GetFrame() == 11 then
+							data.soulTeleportBarFade = gameFrame
+							data.FinishedsoulTeleportBirthrightUICharge = true
+						end
+					elseif data.FinishedsoulTeleportBirthrightUICharge then
+						if eternalFeatherReserve:GetFrame() == 5 then
+							data.soulTeleportBarFade = gameFrame
+						end
+						eternalFeatherReserve:SetFrame("Charged",gameFrame - data.soulTeleportBarFade)
+					end
+				end
+			--[[elseif data.movementCountFrame == 0 then
+				if not eternalFeatherReserve:IsPlaying("Disappear") then
+					eternalFeatherReserve:SetFrame("Disappear",gameFrame - data.soulTeleportBarFade);
+				end]]
+			end
+	
+			local playerLocation = Isaac.WorldToScreen(player.Position)
+			--print(InutilLib.IsInMirroredFloor(player))
+			if not InutilLib.IsInMirroredFloor(player) then
+				eternalFeatherReserve:Render(playerLocation + Vector(0, -50), Vector(0,0), Vector(0,0));
+			end
+		end
+	end
+--end
 end
