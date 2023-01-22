@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="6/27/2021 4:53:37 PM" Version="12" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="8/16/2022 8:33:44 AM" Version="13" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="tilde_effect.png" Id="0"/>
@@ -156,7 +156,7 @@
 			<NullAnimations/>
 			<Triggers>
 				<Trigger EventId="0" AtFrame="0"/>
-				<Trigger EventId="1" AtFrame="6"/>
+				<Trigger EventId="1" AtFrame="10"/>
 			</Triggers>
 		</Animation>
 		<Animation Name="Fail" FrameNum="10" Loop="false">
