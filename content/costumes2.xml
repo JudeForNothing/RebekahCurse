@@ -47,4 +47,7 @@
 	<costume anm2path="eyesofthedead.anm2" type="none"  priority="100" hasSkinAlt="true"/>
 	<costume anm2path="adventuretime.anm2" type="none" priority="200"/>
 	<costume anm2path="psoriasis.anm2" type="none"  priority="50" hasSkinAlt="true"/>
+	<costume anm2path="wickedweaves.anm2" priority="100" type="none"/>
+
+	<costume anm2path="body_dysmorphia.anm2" type="none" priority="200" hasSkinAlt="true"/>
 </costumes>

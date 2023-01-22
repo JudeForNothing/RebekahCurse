@@ -6,10 +6,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--lovesick
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
 	end
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		if data.hasTurnedToLovesickBanshee then
 			if not data.BansheeLovesickCountdown then data.BansheeLovesickCountdown = 3000 end
 			data.BansheeLovesickCountdown = data.BansheeLovesickCountdown - 1
@@ -104,7 +104,7 @@ end)
 --[[InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, function(_, tear)
 	local data = yandereWaifu.GetEntityData(tear)
 	local player = tear.SpawnerEntity:ToPlayer()
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		if math.random(1,4) == 4 then
 			data.IsLovesick = true
 		end
@@ -124,7 +124,7 @@ end)]]
 	
 	if player then
 		player = player:ToPlayer()
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
 			if Isaac.GetFrameCount() % 30 == 0 and math.random(1,3) == 3 then
 				yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahHeartParticleType.Red );
 				local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PHEROMONES_RING, 0, tr.Position, Vector(0,0), player)
@@ -205,7 +205,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_LOVESICK_SLASH);
 
 --[[InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		local data = yandereWaifu.GetEntityData(damage)
 		damage = damage:ToPlayer()
 		local hearts = damage:GetHearts() + damage:GetSoulHearts() + damage:GetGoldenHearts() + damage:GetEternalHearts() + damage:GetBoneHearts() + damage:GetRottenHearts()
@@ -231,7 +231,7 @@ end)]]
 --stat cache for each mode
 function yandereWaifu:lovesickbansheecacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and data.hasTurnedToLovesickBanshee then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and data.hasTurnedToLovesickBanshee then
 		--if data.SnapDelay then
 		--	if cacheF == CacheFlag.CACHE_FIREDELAY then
 		--		player.FireDelay = player.FireDelay - data.SnapDelay
@@ -254,7 +254,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
     if parent.Type == EntityType.ENTITY_FAMILIAR and parent.Variant == FamiliarVariant.INCUBUS then
 		player = parent:ToFamiliar().Player
     end
-    if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		tear:ChangeVariant(RebekahCurse.ENTITY_SINGINGTEAR)
 		tear:AddTearFlags(TearFlags.TEAR_WIGGLE)
 		tear:AddTearFlags(TearFlags.TEAR_SPECTRAL)
@@ -278,7 +278,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.Lovesick
 --[[
 yandereWaifu:AddCallback(ModCallbacks.MC_INPUT_ACTION, function(_, ent, hook, action)
 	if ent and ent:ToPlayer() then
-		if ent:ToPlayer():HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
+		if ent:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		print("exodus")
 			local returnvalue = Input.GetActionValue(buttonAction, player.ControllerIndex)
 				if inputHook == InputHook.GET_ACTION_VALUE then
@@ -406,7 +406,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) and Options.ChargeBars then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and Options.ChargeBars then
 			yandereWaifu.lovesickUI(player)
 
 		end

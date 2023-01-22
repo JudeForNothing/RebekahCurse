@@ -39,14 +39,14 @@ function yandereWaifu:usetheShining(collItem, rng, player)
 		end
 	end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usetheShining, RebekahCurse.COLLECTIBLE_THESHINING);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usetheShining, RebekahCurseItems.COLLECTIBLE_THESHINING);
 
 
 function yandereWaifu:ItsJohnnyenteringtheroom()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_THESHINING) and data.GonnaChopOffTheDoor then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_THESHINING) and data.GonnaChopOffTheDoor then
 			data.GonnaChopOffTheDoor = false
 			player:AddCacheFlags(CacheFlag.CACHE_ALL);
 			player:EvaluateItems()

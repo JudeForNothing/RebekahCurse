@@ -7,38 +7,38 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = GetEntityData(player)
 	--items function!
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LUNCHBOX ) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LUNCHBOX) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_LUNCHBOX ) then
 		for i = 0, 2, 1 do
 			local spawnPosition = room:FindFreePickupSpawnPosition(player.Position, 1);
 			local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, MirrorHeartDrop[math.random(1,6)], spawnPosition, Vector(0,0), player)
 		end
 		player:AddNullCostume(LunchboxCos)
 	end
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_POWERLOVE) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_POWERLOVE) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_POWERLOVE) then
 		player:AddNullCostume(LovePower)
 	end
 	--love = Power
 	local H = player:GetHearts()
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_POWERLOVE) then
 		if data.H ~= H then
 			player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 			player:AddCacheFlags(CacheFlag.CACHE_SPEED);
 			player:EvaluateItems()
 		end
 		data.H = H
-	elseif not player:HasCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE) and data.H then
+	elseif not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_POWERLOVE) and data.H then
 		data.H = nil
 		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 		player:AddCacheFlags(CacheFlag.CACHE_SPEED);
 		player:EvaluateItems()
 	end
 	--cursed spoon
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_CURSEDSPOON) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) then
 		player:AddNullCostume(CursedMawCos)
 	end
 	--typical rom-command
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_ROMCOM) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_ROMCOM ) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ROMCOM) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_ROMCOM ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			data.specialAttackVector = Vector( vector.X, vector.Y )
 			InutilLib.ConsumeActiveCharge(player)
@@ -49,8 +49,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		end
 	end
 	--lovesick
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVESICK) then
-		if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
+		if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 			player:AddNullCostume(LoveSickCos)
 		end
 		if Isaac.GetFrameCount() % 120 == 0 then
@@ -60,8 +60,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		end
 	end
 	--snap
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
-		if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_SNAP) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
+		if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_SNAP) then
 			player:AddNullCostume(UnsnappedCos)
 		end
 		local maxH, H = player:GetMaxHearts(), player:GetHearts()
@@ -100,8 +100,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		end
 	end
 	--unrequited love
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE ) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			local hook = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_LOVEHOOK, 0, player.Position, vector:Resized(45), player)
 			hook.RenderZOffset = -10000;
@@ -125,7 +125,7 @@ function yandereWaifu:ItemsNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = GetEntityData(player)
 		local room = game:GetRoom()
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND) then
 			for i, iss in pairs (Isaac.FindByType(RebekahCurse.ENTITY_TINYISAAC, 663123, -1, false, false)) do
 				iss.Position = player.Position
 			end
@@ -133,7 +133,7 @@ function yandereWaifu:ItemsNewRoom()
 				iss.Position = player.Position
 			end
 		end
-		if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) and room:IsFirstVisit() then
+		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) and room:IsFirstVisit() then
 			local rng = math.random(1,2)
 			local seed = room:GetSpawnSeed()
 			--print(room:GetSpawnSeed())
@@ -153,11 +153,11 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ItemsNewRo
 		local data = GetEntityData(player)
 		if cacheF == CacheFlag.CACHE_FAMILIARS then
 			--Miraculous Womb
-			player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALESAU, player:GetCollectibleNum(CRebekahCurse.OLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB))
-			player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALJACOB, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB))
+			player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALESAU, player:GetCollectibleNum(CRebekahCurse.OLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurseItems.COLLECTIBLE_MIRACULOUSWOMB))
+			player:CheckFamiliar(RebekahCurse.ENTITY_ORBITALJACOB, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_MIRACULOUSWOMB), player:GetCollectibleRNG(RebekahCurseItems.COLLECTIBLE_MIRACULOUSWOMB))
 		end
 		--love = power
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE) then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_POWERLOVE) then
 			local maxH, H = player:GetMaxHearts(), player:GetHearts()
 			if maxH >= 1 then
 				local emptyH, fullH = (maxH - H), H 
@@ -169,7 +169,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ItemsNewRo
 				end
 			end
 		end
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
 			if data.SnapDelay then
 				if cacheF == CacheFlag.CACHE_FIREDELAY then
 					player.FireDelay = player.FireDelay - data.SnapDelay

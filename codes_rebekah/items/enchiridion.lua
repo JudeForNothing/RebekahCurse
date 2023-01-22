@@ -16,7 +16,7 @@ function yandereWaifu:useEnchiridion(collItem, rng, player, flags, slot)
 		end
 	end
 	player:UseCard(Card.CARD_STRENGTH, UseFlag.USE_NOANIM)
-	player:AnimateCollectible(RebekahCurse.COLLECTIBLE_THEENCHIRIDION)
+	player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION)
 	
 	player:AddNullCostume(RebekahCurseCostumes.AdventureTime)
 	if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
@@ -29,14 +29,14 @@ function yandereWaifu:useEnchiridion(collItem, rng, player, flags, slot)
 		player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end
 	end)]]
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useEnchiridion, RebekahCurse.COLLECTIBLE_THEENCHIRIDION )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useEnchiridion, RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION )
 
 function yandereWaifu:useEnchiridionNewRoom()	
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_THEENCHIRIDION) then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION) then
 			player:TryRemoveNullCostume (RebekahCurseCostumes.AdventureTime)
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 			player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end

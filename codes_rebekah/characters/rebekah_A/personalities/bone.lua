@@ -54,7 +54,7 @@ function yandereWaifu.BoneHeartPunch(player, vector)
 	--playerdata.IsVaulting = true;
 	--playerdata.vaultVelocity = vector:Resized( REBEKAH_BALANCE.BONE_HEARTS_VAULT_VELOCITY )
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	

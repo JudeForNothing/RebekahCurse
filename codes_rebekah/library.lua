@@ -266,6 +266,8 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 			player:GetSprite():Load('gfx/rebekahsfluidhairforbone.anm2',false)
 		elseif mode == REBECCA_MODE.RottenHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforrotten.anm2',false)
+		elseif mode == REBECCA_MODE.CursedCurse then --placeholder for tainted
+			player:GetSprite():Load('gfx/rebekahsfluidhairforcursed.anm2',false)
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 		end
@@ -520,23 +522,23 @@ end
 
 function yandereWaifu:SetRebekahPocketActiveItem( player, mode )
 	if mode == REBECCA_MODE.RedHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_LOVECANNON)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_LOVECANNON)
 	elseif mode == REBECCA_MODE.SoulHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_WIZOOBTONGUE)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE)
 	elseif mode == REBECCA_MODE.GoldHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_PSALM45)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_PSALM45)
 	elseif mode == REBECCA_MODE.EvilHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_APOSTATE)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_APOSTATE)
 	elseif mode == REBECCA_MODE.EternalHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_BARACHIELSPETAL)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL)
 	elseif mode == REBECCA_MODE.BoneHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_FANG)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_FANG)
 	elseif mode == REBECCA_MODE.RottenHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH)
 	elseif mode == REBECCA_MODE.BrokenHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_MAINLUA)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_MAINLUA)
 	elseif mode == REBECCA_MODE.ImmortalHearts then
-		player:SetPocketActiveItem(RebekahCurse.COLLECTIBLE_COMFORTERSWING)
+		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
 	end
 end
 
@@ -565,7 +567,9 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 		end
 	end
 	yandereWaifu.resetReserve(player)
-	if mode == REBECCA_MODE.RedHearts then
+	if mode == REBECCA_MODE.EmptyHearts then
+		data.heartReserveMaxFill = 5000
+	elseif mode == REBECCA_MODE.RedHearts then
 		data.heartReserveMaxFill = 50
 	elseif mode == REBECCA_MODE.SoulHearts then
 		data.heartReserveMaxFill = 80
@@ -590,7 +594,9 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 	--end
 	
 	if not dontchange then
-		if mode == REBECCA_MODE.RedHearts then
+		if mode == REBECCA_MODE.EmptyHearts then
+			player:ChangePlayerType(RebekahCurse.REB)
+		elseif mode == REBECCA_MODE.RedHearts then
 			player:ChangePlayerType(RebekahCurse.REB_RED)
 		elseif mode == REBECCA_MODE.SoulHearts then
 			player:ChangePlayerType(RebekahCurse.REB_SOUL)
@@ -611,7 +617,7 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 		end
 	end
 	
-	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING)
+	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurseItems.COLLECTIBLE_LOVECANNON, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
 	--for other characters who comes in but not on game_start
 	if Game():GetRoom():GetFrameCount() > 1 and not hasPocket then
 		yandereWaifu:SetRebekahPocketActiveItem(player,mode)
@@ -819,8 +825,14 @@ function yandereWaifu.IsNormalRebekah(player)
 	end
 end
 
+function yandereWaifu.IsTaintedRebekah(player)
+	if player:GetPlayerType() == RebekahCurse.REB_CURSED then
+		return true
+	end
+end
+
 function yandereWaifu.HasCollectibleGuns(player)
-	return yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.COLLECTIBLE_LOVECANNON, RebekahCurse.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.COLLECTIBLE_APOSTATE, RebekahCurse.COLLECTIBLE_MAINLUA, RebekahCurse.COLLECTIBLE_PSALM45, RebekahCurse.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.COLLECTIBLE_FANG, RebekahCurse.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.COLLECTIBLE_COMFORTERSWING)
+	return yandereWaifu.HasCollectibleMultiple(player, RebekahCurseItems.COLLECTIBLE_LOVECANNON, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
 end
 
 function yandereWaifu.HasChargeCollectibles(player)
@@ -918,22 +930,22 @@ function yandereWaifu.ThrowDarkKnife(player, position, vel)
 end
 
 local eastereggtbl = {
-		[0] = RebekahCurse.CARD_EASTEREGG,
-		[1] = RebekahCurse.CARD_AQUA_EASTEREGG,
-		[2] = RebekahCurse.CARD_YELLOW_EASTEREGG,
-		[3] = RebekahCurse.CARD_GREEN_EASTEREGG,
-		[4] = RebekahCurse.CARD_BLUE_EASTEREGG,
-		[5] = RebekahCurse.CARD_PINK_EASTEREGG,
+		[0] = RebekahCurseCards.CARD_EASTEREGG,
+		[1] = RebekahCurseCards.CARD_AQUA_EASTEREGG,
+		[2] = RebekahCurseCards.CARD_YELLOW_EASTEREGG,
+		[3] = RebekahCurseCards.CARD_GREEN_EASTEREGG,
+		[4] = RebekahCurseCards.CARD_BLUE_EASTEREGG,
+		[5] = RebekahCurseCards.CARD_PINK_EASTEREGG,
 
-		[6] = RebekahCurse.CARD_STRIPE_EASTEREGG,
-		[7] = RebekahCurse.CARD_STRIPE_AQUA_EASTEREGG,
-		[8] = RebekahCurse.CARD_ZIGZAG_YELLOW_EASTEREGG,
-		[9] = RebekahCurse.CARD_ZIGZAG_GREEN_EASTEREGG,
-		[10] = RebekahCurse.CARD_ZIGZAG_BLUE_EASTEREGG,
-		[11] = RebekahCurse.CARD_STRIPE_PINK_EASTEREGG,
-		[12] = RebekahCurse.CARD_CURSED_EASTEREGG,
-		[13] = RebekahCurse.CARD_BLESSED_EASTEREGG,
-		[14] = RebekahCurse.CARD_GOLDEN_EASTEREGG,
+		[6] = RebekahCurseCards.CARD_STRIPE_EASTEREGG,
+		[7] = RebekahCurseCards.CARD_STRIPE_AQUA_EASTEREGG,
+		[8] = RebekahCurseCards.CARD_ZIGZAG_YELLOW_EASTEREGG,
+		[9] = RebekahCurseCards.CARD_ZIGZAG_GREEN_EASTEREGG,
+		[10] = RebekahCurseCards.CARD_ZIGZAG_BLUE_EASTEREGG,
+		[11] = RebekahCurseCards.CARD_STRIPE_PINK_EASTEREGG,
+		[12] = RebekahCurseCards.CARD_CURSED_EASTEREGG,
+		[13] = RebekahCurseCards.CARD_BLESSED_EASTEREGG,
+		[14] = RebekahCurseCards.CARD_GOLDEN_EASTEREGG,
 	}
 
 function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)

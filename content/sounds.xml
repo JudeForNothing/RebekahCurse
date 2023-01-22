@@ -173,6 +173,9 @@
 	<sound name="Patriarch's Fist Bell">
 		<sample weight="1" path="items/fistbell.wav" />
 	</sound>
+	<sound name="Wicked Weaves Spawn">
+		<sample weight="1" path="items/modified_wickedweaves.wav" />
+	</sound>
 	<sound name="Unrequited Love Chain">
 		<sample weight="1" path="items/unrequitedlovechain.wav" />
 	</sound>
@@ -181,6 +184,12 @@
 		<sample weight="1" path="items/psalm23_1.wav" />
 		<sample weight="1" path="items/psalm23_2.wav" />
 		<sample weight="1" path="items/psalm23_3.wav" />
+	</sound>
+
+	<sound name="Body Dysmorphia Groan">
+		<sample weight="1" path="items/dysmorphia_1.wav" />
+		<sample weight="1" path="items/dysmorphia_2.wav" />
+		<sample weight="1" path="items/dysmorphia_3.wav" />
 	</sound>
 	
 	<sound name="Easter Kappa">
@@ -277,5 +286,36 @@
 	</sound>
 	<sound name="Stolid Appear">
 		<sample weight="1" path="stolid/moyai_appear.wav" />
+	</sound>
+
+	<sound name="Hound Charge">
+		<sample weight="1" path="hound/chab_charge_1.wav" />
+		<sample weight="1" path="hound/chab_charge_2.wav" />
+	</sound>
+
+	<sound name="Hound Spawn">
+		<sample weight="1" path="hound/chab_spawn_1.wav" />
+		<sample weight="1" path="hound/chab_spawn_2.wav" />
+	</sound>
+
+	<sound name="Hound Death">
+		<sample weight="1" path="hound/chab_death_1.wav" />
+		<sample weight="1" path="hound/chab_death_2.wav" />
+	</sound>
+
+	<sound name="Cursed Slam">
+		<sample weight="1" path="tainted/slam.wav" />
+	</sound>
+
+	<sound name="Cursed Heavy Strike">
+		<sample weight="1" path="tainted/heavy_strike.wav" />
+	</sound>
+
+	<sound name="Cursed Wild Swing">
+		<sample weight="1" path="tainted/wild_swing.wav" />
+	</sound>
+
+	<sound name="Cursed Rage">
+		<sample weight="1" path="tainted/rage.wav" />
 	</sound>
 </sounds>

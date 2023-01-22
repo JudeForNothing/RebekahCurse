@@ -7,9 +7,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local sprite = eff:GetSprite();
 		local playerdata = yandereWaifu.GetEntityData(player)
 		
+		if eff.FrameCount % 15 == 0 then
+			ILIB.game:MakeShockwave(eff.Position, 0.035, 0.025, 10)
+		end
 		if eff.FrameCount == 1 then
 			sprite:Play("Start", true) --normal attack
 			--eff.RenderZOffset = 10000;
+			ILIB.game:MakeShockwave(eff.Position, 0.035, 0.025, 10)
 		elseif sprite:IsFinished("Start") then
 			sprite:Play("Loop")
 		end
@@ -66,7 +70,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff)
 	
 	if eff.FrameCount == 1 then
-		sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
+		--sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
+		eff.RenderZOffset = 100;
 		if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST then
 			sprite:Play("Side", true) 
 		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT then
@@ -120,10 +125,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GOLD_FORCE_FIELD then
 			sprite:Load("gfx/effects/gold/stomp_shield.anm2", true)
 			sprite:Play("Shield", true) 
+		
+
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM then
+			sprite:Load("gfx/effects/tainted/cursed/slam.anm2", true)
+			sprite:Play("Slam", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+			eff.RenderZOffset = 100;
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT then
+			sprite:Load("gfx/effects/tainted/cursed/slam_default.anm2", true)
+			sprite:Play("Slam", true) 
+			eff.RenderZOffset = 100;
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE then
+			sprite:Load("gfx/effects/tainted/cursed/heavy_strike.anm2", true)
+			sprite:Play("Slam", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+			eff.RenderZOffset = 100;
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING then
+			sprite:Load("gfx/effects/tainted/cursed/wild_swing.anm2", true)
+			sprite:Play("Slam", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 155, 0, 155 );
+			eff.RenderZOffset = 100;
 		end
-		eff.RenderZOffset = 100;
 	end
-	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Poof") or sprite:IsFinished("Crash") or sprite:IsFinished("Shield") then
+	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Poof") or sprite:IsFinished("Crash") or sprite:IsFinished("Shield") or sprite:IsFinished("Slam") then
 		eff:Remove()
 	end
 	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
@@ -586,3 +611,29 @@ function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
 	sprite:LoadGraphics()
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.MiniIsaacReplaceSpritesheet, FamiliarVariant.MINISAAC)
+
+
+--drunk puddle
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	
+	if eff.SubType == 177 then
+		if eff.FrameCount == 1 then
+			sprite:ReplaceSpritesheet(0, "gfx/effects/wine_splat.png")
+			sprite:LoadGraphics()
+			data.IsWine = true
+		end
+	end
+end, EffectVariant.PLAYER_CREEP_LEMON_MISHAP)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+	if damage:IsEnemy() then
+		if not damageSource.Entity then return end
+		local data = yandereWaifu.GetEntityData(damageSource.Entity)
+		if damageSource.Entity.Type == 1000 and damageSource.Entity.Variant == EffectVariant.PLAYER_CREEP_LEMON_MISHAP and data.IsWine then
+			yandereWaifu.GetEntityData(damage).IsDrunk = math.random(60,85)
+			return false
+		end
+	end
+end)

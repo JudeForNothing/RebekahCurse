@@ -25,13 +25,13 @@ function yandereWaifu.meterLogic(player)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = ILIB.game:GetRoom()
 		local gameFrame = ILIB.game:GetFrameCount();
-		if yandereWaifu.IsNormalRebekah(player) then
+		if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah then
 			if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
 				moveMeter:SetOverlayRenderPriority(true)
 				attackMeter:SetOverlayRenderPriority(true)
 				bonestackMeter:SetOverlayRenderPriority(true)
 				--move
-				if data.specialBoneHeartStompCooldown and data.specialBoneHeartStompCooldown > 0 then --for special cooldown for bone heart
+				if data.moveMeterFadeStartFrame and (data.specialBoneHeartStompCooldown and data.specialBoneHeartStompCooldown > 0) then --for special cooldown for bone heart
 					if data.specialBoneHeartStompCooldown and data.specialBoneHeartStompCooldown > 0 then
 						moveMeter:SetFrame("Charging", math.floor(data.specialBoneHeartStompCooldown*0.95/5))
 						data.moveMeterFadeStartFrame = gameFrame;
@@ -69,13 +69,15 @@ function yandereWaifu.meterLogic(player)
 					end
 				else
 					--atack
-					if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 then
-						local FramePercentResult = math.floor((data.specialActiveAtkCooldown/data.specialMaxActiveAtkCooldown)*100)
-						attackMeter:SetFrame("Charging", FramePercentResult );
-						data.attackMeterFadeStartFrame = gameFrame;
-					else
-						if not attackMeter:IsPlaying("Fade") then
-							attackMeter:SetFrame("Fade", gameFrame - data.attackMeterFadeStartFrame);
+					if data.attackMeterFadeStartFrame then
+						if data.specialActiveAtkCooldown and data.specialActiveAtkCooldown > 0 then
+							local FramePercentResult = math.floor((data.specialActiveAtkCooldown/data.specialMaxActiveAtkCooldown)*100)
+							attackMeter:SetFrame("Charging", FramePercentResult );
+							data.attackMeterFadeStartFrame = gameFrame;
+						else
+							if not attackMeter:IsPlaying("Fade") then
+								attackMeter:SetFrame("Fade", gameFrame - data.attackMeterFadeStartFrame);
+							end
 						end
 					end
 				end
@@ -97,11 +99,11 @@ function yandereWaifu.meterLogic(player)
 				end
 				local playerLocation = Isaac.WorldToScreen(player.Position)
 				--print(InutilLib.IsInMirroredFloor(player))
-				if not InutilLib.IsInMirroredFloor(player) then
+				--if not InutilLib.IsInMirroredFloor(player) then
 					moveMeter:Render(playerLocation + Vector(-20, -30), Vector(0,0), Vector(0,0));
 					attackMeter:Render(playerLocation + Vector(-20, -10), Vector(0,0), Vector(0,0));
 					bonestackMeter:Render(playerLocation + Vector(0, -45), Vector(0,0), Vector(0,0));
-				end
+				--end
 			end
 		end
 	--end

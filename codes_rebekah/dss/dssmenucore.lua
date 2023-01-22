@@ -65,16 +65,18 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
     mfdat['_'] = { 54, 2, 4, 5 };
     mfdat[' '] = { 54, 4, 6, 8 };
     mfdat['='] = { 53, 5, 8, 12 };
+    mfdat['^'] = { 55, 3, 4, 5 };
+    mfdat['<'] = { 56, 5, 7, 10 };
+    mfdat['>'] = { 57, 5, 7, 10 };
 
-    local menusounds = {
+    dssmod.menusounds = {
         Pop2 = { Sound = Isaac.GetSoundIdByName("deadseascrolls_pop"), PitchVariance = .1 },
         Pop3 = { Sound = Isaac.GetSoundIdByName("deadseascrolls_pop"), Pitch = .8, PitchVariance = .1 },
         Open = { Sound = Isaac.GetSoundIdByName("deadseascrolls_whoosh"), Volume = .5, PitchVariance = .1 },
         Close = { Sound = Isaac.GetSoundIdByName("deadseascrolls_whoosh"), Volume = .5, Pitch = .8, PitchVariance = .1 }
     }
 
-    local PlaySound
-    PlaySound = function(...) -- A simpler method to play sounds, allows ordered or paired tables.
+    dssmod.playSound = function(...) -- A simpler method to play sounds, allows ordered or paired tables.
         local args = { ... }
 
         for i = 1, 6 do -- table.remove won't work to move values down if values inbetween are nil
@@ -96,9 +98,9 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             if type(tbl[1]) == "table" then
                 for _, sound in ipairs(tbl) do
                     if npc then
-                        PlaySound(npc, sound)
+                        dssmod.playSound(npc, sound)
                     else
-                        PlaySound(sound)
+                        dssmod.playSound(sound)
                     end
                 end
 
@@ -153,6 +155,8 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
     end
 
+    local menusounds = dssmod.menusounds
+    local PlaySound = dssmod.playSound
 
     local function getScreenBottomRight()
         return game:GetRoom():GetRenderSurfaceTopLeft() * 2 + Vector(442, 286)
@@ -541,7 +545,13 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
 
         if base.variable or base.setting then
             local sizedown = math.max(1, fsize - 1)
-            local setting = { type = 'str', settingscursor = not base.keybind, size = sizedown, color = clr2, alpha = .8, shine = shine, select = false }
+            local select = false
+            if base.inline then
+                sizedown = fsize
+                select = nil
+            end
+
+            local setting = { type = 'str', settingscursor = not base.keybind, size = sizedown, color = clr2, alpha = .8, shine = shine, select = select, inline = base.inline }
             setting.min = base.min
             setting.max = base.max
             setting.setting = base.setting
@@ -615,7 +625,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         return dynamicset
     end
 
-    function dssmod.generateMenuDraw(item, buttons, panelPos, input, panel, tbl)
+    function dssmod.generateMenuDraw(item, buttons, panelPos, panel)
         local dssmenu = DeadSeaScrollsMenu
         local menupal = dssmenu.GetPalette()
         local rainbow = menupal.Rainbow
@@ -735,17 +745,17 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             if yOffset < panel.Bounds[2] + panel.TopSpacing then
                 yOffset = panel.Bounds[2] + panel.TopSpacing
             end
+
+            if item.valign == -1 then
+                yOffset = panel.Bounds[2] + panel.TopSpacing
+            elseif item.valign == 1 then
+                yOffset = (panel.Bounds[4] - panel.BottomSpacing) - dynamicset.height
+            end
         end
 
         if not item.noscroll then
             if item.scroller then
                 item.scroll = item.scroll or 0
-                if input.down then
-                    item.scroll = item.scroll + 16
-                elseif input.up then
-                    item.scroll = item.scroll - 16
-                end
-
                 item.scroll = math.max(panel.Height / 2, math.min(item.scroll, dynamicset.height - panel.Height / 2))
                 seloff = item.scroll
             end
@@ -894,7 +904,15 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                 clipb = math.min(math.max(0, (pos.Y + tab.height - 16) - tab.bounds[4]))
             end
 
-            if clipt + clipb >= tab.height then
+            if tab.anim then
+                uspr:SetAnimation(tab.anim, false)
+            end
+
+            if tab.frame then
+                uspr:SetFrame(tab.frame)
+            end
+
+            if tab.height and clipt + clipb >= tab.height then
                 bottomcutoff = clipb >= tab.height
             else
                 uspr.Scale = scale
@@ -906,12 +924,17 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                 if not tab.invisible then
                     uspr.Color = color
 
-                    tab.ref.renderedtopos = root + pos
+                    if tab.ref then
+                        tab.ref.renderedtopos = root + pos
+                    end
+
                     uspr:Render(root + pos, Vector(0, clipt), Vector(0, clipb))
                 end
             end
 
-            selectCursorPos = pos + Vector(-12, tab.height / 2 * scale.Y)
+            if tab.height then
+                selectCursorPos = pos + Vector(-12, tab.height / 2 * scale.Y)
+            end
         elseif dtype == 'str' then
             tab.size = tab.size or 1
             tab.str = tab.str or 'nostring'
@@ -1013,6 +1036,10 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             selectCursorPos = pos + Vector(xoff - 12, myscale / 2)
             if tab.size == 1 then
                 selectCursorPos = pos + Vector(xoff - 6, myscale / 2)
+            end
+
+            if tab.inline and tab.setting ~= 1 then
+                selectCursorPos = selectCursorPos + Vector(-16, 0)
             end
 
             settingsCursorXPlace = math.max(40, -xoff + 10)
@@ -1122,6 +1149,15 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local allnosel = false
         local buttoninteracted = false
         local bselchanged
+
+        if item.scroller then
+            item.scroll = item.scroll or 0
+            if input.down then
+                item.scroll = item.scroll + 16
+            elseif input.up then
+                item.scroll = item.scroll - 16
+            end
+        end
 
         --buttons
         if buttons and #buttons > 0 then
@@ -1264,9 +1300,9 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                     end
                 end
 
-                if dest then
+                if dest and not button.menu then
                     if not item.removefrompath then
-                        table.insert(directorykey.Path, item)
+                        table.insert(directorykey.Path, {menuname = tbl.Name, item = item})
                     end
 
                     directorykey.Item = dest
@@ -1370,10 +1406,97 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             if action == 'resume' then
                 dssmenu.CloseMenu(true)
             elseif action == "openmenu" and button then
-                dssmenu.OpenMenu(button.menu)
+                table.insert(directorykey.Path, {menuname = tbl.Name, item = item})
+                if button.dest then
+                    dssmenu.OpenMenuToPath(button.menu, button.dest, directorykey.Path)
+                else
+                    dssmenu.OpenMenuToPath(button.menu, "main", directorykey.Path)
+                end
             elseif action == "back" then
-                dssmod.back(directorykey)
+                dssmod.back(tbl)
             end
+        end
+    end
+
+    dssmod.defaultPanelStartAppear = function(panel, tbl, skipOpenAnimation)
+        local playAnim = "Appear"
+        if skipOpenAnimation then
+            playAnim = "Idle"
+            panel.MaskAlpha = 0
+            panel.Idle = true
+        else
+            panel.MaskAlpha = 1
+            panel.Idle = false
+        end
+
+        for k, v in pairs(panel.Sprites) do
+            v:Play(playAnim, true)
+        end
+    end
+
+    dssmod.defaultPanelAppearing = function(panel)
+        if not panel.Sprites.Face:IsPlaying("Appear") or panel.Sprites.Face:GetFrame() > 4 then
+            panel.Idle = true
+            for k, v in pairs(panel.Sprites) do
+                v:Play("Idle")
+            end
+
+            panel.MaskAlpha = approach(panel.MaskAlpha, 0, .25)
+            if panel.MaskAlpha == 0 then
+                return true
+            end
+        end
+    end
+
+    dssmod.defaultPanelDisappearing = function(panel, tbl)
+        panel.MaskAlpha = approach(panel.MaskAlpha, 1, .25)
+        
+        if panel.MaskAlpha == 1 or not panel.Sprites.MaskAlpha then
+            panel.Idle = false
+            if panel.Sprites.Face:IsFinished("Disappear") then
+                return true
+            elseif not panel.Sprites.Face:IsPlaying("Disappear") then
+                for k, v in pairs(panel.Sprites) do
+                    v:Play("Disappear", true)
+                end
+            end
+        end
+    end
+
+    dssmod.defaultPanelRenderBack = function(panel, pos, tbl)
+        local useClr = panel.Color or Color.Default
+        if type(useClr) == "number" then
+            useClr = DeadSeaScrollsMenu.GetPalette()[useClr]
+        end
+        
+        if panel.Sprites.Shadow then
+            panel.Sprites.Shadow:Render(pos, Vector.Zero, Vector.Zero)
+        end
+
+        if panel.Sprites.Back then
+            panel.Sprites.Back.Color = useClr
+            panel.Sprites.Back:Render(pos, Vector.Zero, Vector.Zero)
+        end
+
+        if panel.Sprites.Face then
+            panel.Sprites.Face.Color = useClr
+            panel.Sprites.Face:Render(pos, Vector.Zero, Vector.Zero)
+        end
+    end
+
+    dssmod.defaultPanelRenderFront = function(panel, pos, tbl)
+        if panel.Sprites.Border then
+            panel.Sprites.Border:Render(pos, Vector.Zero, Vector.Zero)
+        end
+
+        if panel.Sprites.Mask and panel.Idle and panel.MaskAlpha > 0 then
+            local useClr = panel.Color or Color.Default
+            if type(useClr) == "number" then
+                useClr = DeadSeaScrollsMenu.GetPalette()[useClr]
+            end
+
+            panel.Sprites.Mask.Color = Color(useClr.R, useClr.G, useClr.B, panel.MaskAlpha, 0, 0, 0)
+            panel.Sprites.Mask:Render(pos, Vector.Zero, Vector.Zero)
         end
     end
 
@@ -1389,10 +1512,10 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             ScrollerSymYTop = -46,
             ScrollerSymYBottom = 78,
             DefaultFontSize = 3,
-            GetItem = function(item)
+            GetItem = function(panel, item)
                 return item
             end,
-            GetDrawButtons = function(item)
+            GetDrawButtons = function(panel, item)
                 local psel = item.psel or 1
                 local pages = item.pages
                 local page
@@ -1415,9 +1538,10 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
 
                 return buttons
             end,
-            HandleInputs = function(item, itemswitched, tbl)
+            HandleInputs = function(panel, input, item, itemswitched, tbl)
                 dssmod.handleInputs(item, itemswitched, tbl)
             end,
+            DefaultRendering = true
         },
         tooltip = {
             Sprites = "tooltip",
@@ -1427,14 +1551,14 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             BottomSpacing = 0,
             DefaultFontSize = 2,
             DrawPositionOffset = Vector(2, 2),
-            GetItem = function(item)
+            GetItem = function(panel, item)
                 if item.selectedbutton and item.selectedbutton.tooltip then
                     return item.selectedbutton.tooltip
                 else
                     return item.tooltip
                 end
             end,
-            GetDrawButtons = function(tooltip)
+            GetDrawButtons = function(panel, tooltip)
                 if tooltip then
                     if tooltip.buttons then
                         return tooltip.buttons
@@ -1443,6 +1567,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                     end
                 end
             end,
+            DefaultRendering = true
         }
     }
 
@@ -1476,54 +1601,75 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local directory = tbl.Directory
         local directorykey = tbl.DirectoryKey
         local scenter = getScreenCenterPosition()
-
-        local dssmenu = DeadSeaScrollsMenu
-
-        local menupal = dssmenu.GetPalette()
-
         local item = directorykey.Item
+        if item.menuname and item.item then
+            if type(item.item) == "string" then
+                directorykey.Item = directory[item.item]
+            else
+                directorykey.Item = item.item
+            end
+
+            item = directorykey.Item
+        end
+
         local format = item.format or dssmod.defaultFormat
 
         if not directorykey.ActivePanels then
             directorykey.ActivePanels = {}
         end
 
-        for i, panelData in ipairs(format.Panels) do
-            local activePanel
-            for _, active in ipairs(directorykey.ActivePanels) do
-                if active.Panel == panelData.Panel then
-                    activePanel = active
-                    break
+        directorykey.SpriteUpdateFrame = not directorykey.SpriteUpdateFrame
+
+        if not tbl.Exiting then -- don't add or adjust panels while exiting
+            for i, panelData in ipairs(format.Panels) do
+                local activePanel
+                for _, active in ipairs(directorykey.ActivePanels) do
+                    if active.Panel == panelData.Panel then
+                        activePanel = active
+                        break
+                    end
+                end
+                
+                local justAppeared
+                if not activePanel then
+                    activePanel = {
+                        Sprites = getPanelSprites(panelData),
+                        Offset = panelData.Offset,
+                        Panel = panelData.Panel
+                    }
+
+                    if panelData.Panel.DefaultRendering then
+                        panelData.Panel.StartAppear = panelData.Panel.StartAppear or dssmod.defaultPanelStartAppear
+                        panelData.Panel.UpdateAppear = panelData.Panel.UpdateAppear or dssmod.defaultPanelAppearing
+                        panelData.Panel.UpdateDisappear = panelData.Panel.UpdateDisappear or dssmod.defaultPanelDisappearing
+                        panelData.Panel.RenderBack = panelData.Panel.RenderBack or dssmod.defaultPanelRenderBack
+                        panelData.Panel.RenderFront = panelData.Panel.RenderFront or dssmod.defaultPanelRenderFront
+                    end
+
+                    activePanel.Appearing = true
+                    justAppeared = true
+                    table.insert(directorykey.ActivePanels, i, activePanel)
+                end
+
+                activePanel.TargetOffset = panelData.Offset
+                activePanel.PanelData = panelData
+                activePanel.Color = panelData.Color
+
+                local startAppearFunc = panelData.StartAppear or panelData.Panel.StartAppear
+                if startAppearFunc and justAppeared then
+                    startAppearFunc(activePanel, tbl, directorykey.SkipOpenAnimation)
                 end
             end
-            
-            if not activePanel then
-                activePanel = {
-                    Sprites = getPanelSprites(panelData),
-                    Offset = panelData.Offset,
-                    MaskAlpha = 1,
-                    Panel = panelData.Panel,
-                    Idle = false
-                }
+        end
 
-                for k, v in pairs(activePanel.Sprites) do
-                    v:Play("Appear", true)
-                end
-
-                table.insert(directorykey.ActivePanels, i, activePanel)
-            end
-
-            activePanel.TargetOffset = panelData.Offset
-            activePanel.PanelData = panelData
-            activePanel.Color = panelData.Color
+        if directorykey.SkipOpenAnimation then
+            directorykey.SkipOpenAnimation = false
         end
 
         for _, active in ipairs(directorykey.ActivePanels) do
-            local shouldStartDisappear
-            if tbl.Exiting then
-                active.MaskAlpha = approach(active.MaskAlpha, 1, .25)
-                shouldStartDisappear = active.MaskAlpha == 1 or not active.Sprites.Mask
-            else
+            active.SpriteUpdateFrame = directorykey.SpriteUpdateFrame
+            local shouldDisappear = tbl.Exiting
+            if not shouldDisappear then
                 local isActive
                 for _, panelData in ipairs(format.Panels) do
                     if panelData.Panel == active.Panel then
@@ -1532,45 +1678,43 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                     end
                 end
 
-                shouldStartDisappear = not isActive
+                shouldDisappear = not isActive
             end
 
-            if shouldStartDisappear then
-                active.Idle = false
+            if shouldDisappear then
                 if not active.Disappearing then
                     active.Disappearing = true
-                    for k, v in pairs(active.Sprites) do
-                        v:Play("Disappear", true)
+
+                    local startDisappearFunc = active.PanelData.StartDisappear or active.Panel.StartDisappear
+                    if startDisappearFunc then
+                        startDisappearFunc(active, tbl)
                     end
                 end
             end
         end
 
-        if directorykey.SkipOpenAnimation then
-            for _, active in ipairs(directorykey.ActivePanels) do
-                for k, v in pairs(active.Sprites) do
-                    v:Stop()
-                end
-
-                active.Idle = true
-                active.MaskAlpha = 0
-            end
-            directorykey.SkipOpenAnimation = false
-        end
-
         for i = #directorykey.ActivePanels, 1, -1 do
             local active = directorykey.ActivePanels[i]
             if active.Disappearing then
-                if not active.Sprites.Face:IsPlaying("Disappear") then
+                local disappearFunc = active.PanelData.UpdateDisappear or active.Panel.UpdateDisappear
+                local remove = true
+                if disappearFunc then
+                    remove = disappearFunc(active, tbl)
+                end
+
+                if remove then
                     table.remove(directorykey.ActivePanels, i)
                 end
-            elseif not active.Sprites.Face:IsPlaying("Appear") and not tbl.Exiting then
-                for k, v in pairs(active.Sprites) do
-                    v:Play("Idle")
+            elseif active.Appearing then
+                local appearFunc = active.PanelData.UpdateAppear or active.Panel.UpdateAppear
+                local finished = true
+                if appearFunc then
+                    finished = appearFunc(active, tbl)
                 end
                 
-                active.MaskAlpha = approach(active.MaskAlpha, 0, .25)
-                active.Idle = true
+                if finished then
+                    active.Appearing = nil
+                end
             end
         end
 
@@ -1600,51 +1744,40 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local input = menuinput.menu
 
         for _, active in ipairs(directorykey.ActivePanels) do
-            for k, v in pairs(active.Sprites) do
-                v:Update()
-            end
-
-            local useClr = active.Color or Color.Default
-            if type(useClr) == "number" then
-                useClr = menupal[useClr]
-            end
-            
             active.Offset = Lerp(active.Offset, active.TargetOffset, 0.2)
 
             local panelPos = scenter + active.Offset
-            if active.Sprites.Shadow then
-                active.Sprites.Shadow:Render(panelPos, Vector.Zero, Vector.Zero)
+            
+            if active.Sprites and active.SpriteUpdateFrame then
+                for k, v in pairs(active.Sprites) do
+                    v:Update()
+                end
             end
 
-            if active.Sprites.Back then
-                active.Sprites.Back.Color = useClr
-                active.Sprites.Back:Render(panelPos, Vector.Zero, Vector.Zero)
-            end
-
-            if active.Sprites.Face then
-                active.Sprites.Face.Color = useClr
-                active.Sprites.Face:Render(panelPos, Vector.Zero, Vector.Zero)
+            local renderBack = active.PanelData.RenderBack or active.Panel.RenderBack
+            if renderBack then
+                renderBack(active, panelPos, tbl)
             end
 
             if active.Idle then
                 local getItem = active.PanelData.GetItem or active.Panel.GetItem
                 local object = item
                 if getItem then
-                    object = getItem(item, tbl)
+                    object = getItem(active, item, tbl)
                 end
 
                 local handleInputs = active.PanelData.HandleInputs or active.Panel.HandleInputs
                 if handleInputs then
-                    handleInputs(object, itemswitched, tbl)
+                    handleInputs(active, menuinput, object, itemswitched, tbl)
                 end
 
                 local draw = active.PanelData.Draw or active.Panel.Draw
                 if draw then
-                    draw(panelPos, object, tbl)
+                    draw(active, panelPos, object, tbl)
                 elseif object then
                     local getDrawButtons = active.PanelData.GetDrawButtons or active.Panel.GetDrawButtons
                     if getDrawButtons then
-                        local drawings = dssmod.generateMenuDraw(object, getDrawButtons(object, tbl), panelPos, input, active.Panel)
+                        local drawings = dssmod.generateMenuDraw(object, getDrawButtons(active, object, tbl), panelPos, active.Panel)
                         for _, drawing in ipairs(drawings) do
                             dssmod.drawMenu(tbl, drawing)
                         end
@@ -1652,19 +1785,17 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                 end
             end
 
-            if active.Sprites.Border then
-                active.Sprites.Border:Render(panelPos, Vector.Zero, Vector.Zero)
-            end
-
-            if active.Sprites.Mask and active.Idle and active.MaskAlpha > 0 then
-                active.Sprites.Mask.Color = Color(useClr.R, useClr.G, useClr.B, active.MaskAlpha, 0, 0, 0)
-                active.Sprites.Mask:Render(panelPos, Vector.Zero, Vector.Zero)
+            local renderFront = active.PanelData.RenderFront or active.Panel.RenderFront
+            if renderFront then
+                renderFront(active, panelPos, tbl)
             end
         end
 
         --menu regressing
-        if (input.back or input.toggle) and not itemswitched then
-            dssmod.back(directorykey)
+        if not tbl.Exiting then
+            if (input.back or input.toggle) and not itemswitched then
+                dssmod.back(tbl)
+            end
         end
 
         if item.postrender then
@@ -1672,13 +1803,14 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
     end
 
-    function dssmod.back(directorykey)
+    function dssmod.back(tbl)
         local dssmenu = DeadSeaScrollsMenu
+        local directorykey = tbl.DirectoryKey
         if #directorykey.Path > 0 then
             PlaySound(menusounds.Pop3)
             local backItem = directorykey.Path[#directorykey.Path]
             directorykey.Path[#directorykey.Path] = nil
-            if backItem.menuname then
+            if backItem.menuname and backItem.menuname ~= tbl.Name then
                 local newPath = {}
                 for _, val in ipairs(directorykey.Path) do
                     newPath[#newPath + 1] = val
@@ -1686,9 +1818,22 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
 
                 dssmenu.OpenMenu(backItem.menuname)
                 local menu = dssmenu.Menus[backItem.menuname]
-                menu.DirectoryKey.Item = backItem
+
+
+                if type(backItem.item) == "string" then
+                    menu.DirectoryKey.Item = menu.Directory[backItem.item]
+                else
+                    menu.DirectoryKey.Item = backItem.item
+                end
+
                 menu.DirectoryKey.Path = newPath
                 menu.DirectoryKey.PreviousItem = nil
+            elseif backItem.menuname then
+                if type(backItem.item) == "string" then
+                    directorykey.Item = tbl.Directory[backItem.item]
+                else
+                    directorykey.Item = backItem.item
+                end
             else
                 directorykey.Item = backItem
             end
@@ -1720,7 +1865,13 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                     end
                 end
             else
-                sfx:Play(SoundEffect.SOUND_BOSS2INTRO_ERRORBUZZ, .75, 0, false, 1.5)
+                if not dssmenu.PlayedBuzzer then
+                    if dssmenu.GetMenuBuzzerSetting() == 1 then
+                        sfx:Play(SoundEffect.SOUND_BOSS2INTRO_ERRORBUZZ, .75, 0, false, 1.5)
+                    end
+
+                    dssmenu.PlayedBuzzer = true
+                end
             end
         end
 
@@ -1768,6 +1919,8 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
 
         tbl.DirectoryKey.PreviousItem = nil
+        tbl.DirectoryKey.ActivePanels = nil
+        tbl.Exiting = nil
 
         dssmod.reloadButtons(tbl)
     end
@@ -1800,6 +1953,9 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
     end
 
+    local hintFont = Font()
+    hintFont:Load("font/pftempestasevencondensed.fnt")
+
     --POST RENDER
     local openToggle -- only store data when menu opens / closes
     function dssmod:post_render()
@@ -1808,6 +1964,17 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local isOpen = dssmenu.IsOpen()
         if isCore or isOpen then
             dssmod.getInput(0)
+        end
+
+        local level = game:GetLevel()
+        local inFirstRoom = level:GetStage() == LevelStage.STAGE1_1 and level:GetCurrentRoomIndex() == level:GetStartingRoomIndex() and game:GetRoom():IsFirstVisit() and level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B and not game:GetStateFlag(GameStateFlag.STATE_BACKWARDS_PATH)
+        if isCore and not isOpen and DeadSeaScrollsMenu.GetMenuHintSetting() == 1 and inFirstRoom then
+            local keybind = DeadSeaScrollsMenu.GetMenuKeybindSetting()
+            local keybindText = string.upper(inputButtonNames[keybind])
+            local text = "Press [" .. keybindText .. "] to open Dead Sea Scrolls Menu"
+            hintFont:DrawStringScaled(text, (Isaac.GetScreenWidth() / 2) - (hintFont:GetStringWidth(text) / 2), Isaac.GetScreenHeight() - 38, 1, 1, KColor(1, 191 / 255, 0, 0.6), 0)
+            local text2 = "(this hint can be turned off in the menu's settings!)"
+            hintFont:DrawStringScaled(text2, (Isaac.GetScreenWidth() / 2) - (hintFont:GetStringWidth(text2) / 4), Isaac.GetScreenHeight() - 26, 0.5, 0.5, KColor(1, 191 / 255, 0, 0.6), 0)
         end
 
         if not isCore and dssmenu and openToggle ~= isOpen then -- If not in control of certain settings, be sure to store them!
@@ -1917,6 +2084,42 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         displayif = sharedButtonDisplayCondition
     }
 
+    dssmod.menuHintButton = {
+        str = 'menu hint',
+        tooltip = { strset = { 'disables', 'the starting', 'room hint', 'on how to', 'use this', 'menu' } },
+        choices = {"enabled", "disabled"},
+        variable = 'MenuHint',
+        setting = 1,
+        load = function()
+            return DeadSeaScrollsMenu.GetMenuHintSetting()
+        end,
+        store = function(var)
+            DeadSeaScrollsMenu.SaveMenuHintSetting(var)
+        end,
+        changefunc = function(button)
+            DeadSeaScrollsMenu.SaveMenuHintSetting(button.setting)
+        end,
+        displayif = sharedButtonDisplayCondition
+    }
+
+    dssmod.menuBuzzerButton = {
+        str = 'menu buzzer',
+        tooltip = { strset = { 'disables', 'the buzzer', 'when trying', 'to open this', 'menu in a', 'combat room' } },
+        choices = {"enabled", "disabled"},
+        variable = 'MenuBuzzer',
+        setting = 1,
+        load = function()
+            return DeadSeaScrollsMenu.GetMenuBuzzerSetting()
+        end,
+        store = function(var)
+            DeadSeaScrollsMenu.SaveMenuBuzzerSetting(var)
+        end,
+        changefunc = function(button)
+            DeadSeaScrollsMenu.SaveMenuBuzzerSetting(button.setting)
+        end,
+        displayif = sharedButtonDisplayCondition
+    }
+
     dssmod.paletteButton = {
         str = 'menu palette',
         variable = "MenuPalette",
@@ -1972,7 +2175,8 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
 
     dssmod.changelogsButton = {
         str = 'changelogs',
-        menudest = 'Menu',
+        action = "openmenu",
+        menu = 'Menu',
         dest = 'changelogs',
         generate = function(btn)
             if DeadSeaScrollsMenu.DoesLogWantNotification(DeadSeaScrollsMenu.Changelogs) then
@@ -2196,6 +2400,38 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             MenuProvider.SaveSaveData()
         end
 
+        function dssmenu.GetMenuHintSetting()
+            local menuHint = MenuProvider.GetMenuHintSetting()
+            if menuHint then
+                return menuHint
+            else
+                MenuProvider.SaveMenuHintSetting(1)
+                MenuProvider.SaveSaveData()
+                return 1
+            end
+        end
+
+        function dssmenu.SaveMenuHintSetting(var)
+            MenuProvider.SaveMenuHintSetting(var)
+            MenuProvider.SaveSaveData()
+        end
+
+        function dssmenu.GetMenuBuzzerSetting()
+            local menuHint = MenuProvider.GetMenuBuzzerSetting()
+            if menuHint then
+                return menuHint
+            else
+                MenuProvider.SaveMenuBuzzerSetting(1)
+                MenuProvider.SaveSaveData()
+                return 1
+            end
+        end
+
+        function dssmenu.SaveMenuBuzzerSetting(var)
+            MenuProvider.SaveMenuBuzzerSetting(var)
+            MenuProvider.SaveSaveData()
+        end
+
         function dssmenu.GetMenusNotified()
             local menusNotified = MenuProvider.GetMenusNotified()
             if menusNotified then
@@ -2228,6 +2464,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             MenuProvider.SaveSaveData()
         end
 
+		dssmenu.MenuSprites = nil
         function dssmenu.GetDefaultMenuSprites()
             if not dssmenu.MenuSprites then
                 dssmenu.MenuSprites = {
@@ -2259,7 +2496,9 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             Border = "gfx/ui/deadseascrolls/menu_border.png",
             Mask = "gfx/ui/deadseascrolls/menu_mask.png",
         }
-
+	
+		dssmenu.MenuSpritesMain = nil
+		dssmenu.MenuSpritesTooltip = nil
         function dssmenu.GetDefaultPanelSprites(panelType)
             if panelType == "main" then
                 if not dssmenu.MenuSpritesMain then
@@ -2326,6 +2565,8 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
                     dssmod.hudOffsetButton,
                     dssmod.gamepadToggleButton,
                     dssmod.menuKeybindButton,
+                    dssmod.menuHintButton,
+                    dssmod.menuBuzzerButton,
                     dssmod.paletteButton
                 },
                 tooltip = dssmod.menuOpenToolTip
@@ -2638,7 +2879,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
 
         function dssmenu.IsOpen()
-            return dssmenu.OpenedMenu and not dssmenu.OpenedMenu.Exiting
+            return dssmenu.OpenedMenu
         end
 
         function dssmenu.CanOpenGlobalMenu()
@@ -2664,12 +2905,18 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             if path then
                 for i, v in ipairs(path) do
                     if type(v) == "string" then
-                        path[i] = dir[v]
-                    elseif v.menu then
-                        local menu2 = dssmenu.Menus[v.menu]
+                        path[i] = {
+                            menuname = name,
+                            item = v
+                        }
+                    elseif (v.menuname or v.menu) and v.item then
+                        local menuname = v.menuname or v.menu
+                        local menu2 = dssmenu.Menus[menuname]
                         if menu2.Directory then
-                            path[i] = menu2.Directory[v.item]
-                            path[i].menuname = v.menu
+                            path[i] = {
+                                menuname = menuname,
+                                item = v.item
+                            }
                         else
                             error("Unsupported menu passed to DeadSeaScrollsMenu.OpenMenuToPath.", 2)
                         end
@@ -2702,7 +2949,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         function dssmod:DisablePlayerControlsInMenu(player)
             local open = dssmenu.IsOpen()
             if open then
-                player.ControlsCooldown = math.max(player.ControlsCooldown, 15)
+                player.ControlsCooldown = math.max(player.ControlsCooldown, 3)
                 player:GetData().MenuDisabledControls = true
             else
                 player:GetData().MenuDisabledControls = nil
@@ -2713,7 +2960,21 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
 
         function dssmod:CheckMenuOpen()
             openCalledRecently = false
-            dssmod.checkMenu()
+
+            if not StageAPI or not StageAPI.Loaded or StageAPI.IsPauseMenuOpen() then
+                dssmod.checkMenu()
+            end
+        end
+
+        function dssmod.CheckMenuOpenStageAPI(isPauseMenuOpen)
+            if not isPauseMenuOpen then
+                dssmod.checkMenu()
+            end
+        end
+
+        if StageAPI and StageAPI.Loaded then
+            StageAPI.UnregisterCallbacks("DeadSeaScrollsMenu")
+            StageAPI.AddCallback("DeadSeaScrollsMenu", "POST_HUD_RENDER", 99, dssmod.CheckMenuOpenStageAPI)
         end
 
         dssmod:AddCallback(ModCallbacks.MC_POST_RENDER, dssmod.CheckMenuOpen)
@@ -2728,6 +2989,13 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
 
         dssmod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, dssmod.CloseMenuOnGameStart)
+
+        dssmenu.PlayedBuzzer = false
+        function dssmod.ResetBuzzerCheck()
+            dssmenu.PlayedBuzzer = false
+        end
+
+        dssmod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, dssmod.ResetBuzzerCheck)
 
         function dssmod:OpenQueuedMenus()
             if #dssmenu.QueuedMenus > 0 and not dssmenu.IsOpen() then
@@ -2788,6 +3056,11 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             dssmod:RemoveCallback(ModCallbacks.MC_POST_RENDER, dssmod.CheckMenuOpen)
             dssmod:RemoveCallback(ModCallbacks.MC_POST_GAME_STARTED, dssmod.CloseMenuOnGameStart)
             dssmod:RemoveCallback(ModCallbacks.MC_POST_UPDATE, dssmod.OpenQueuedMenus)
+            dssmod:RemoveCallback(ModCallbacks.MC_POST_NEW_ROOM, dssmod.ResetBuzzerCheck)
+
+            if StageAPI and StageAPI.Loaded then
+                StageAPI.UnregisterCallbacks("DeadSeaScrollsMenu")
+            end
         end
 
         dssmenu.AddMenu("Menu", { Run = dssmod.runMenu, Open = dssmod.openMenu, Close = dssmod.closeMenu, Directory = dssdirectory, DirectoryKey = dssdirectorykey })

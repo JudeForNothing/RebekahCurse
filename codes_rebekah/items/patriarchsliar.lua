@@ -1,9 +1,9 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--cursed spoon
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_PATRIARCHSLIAR) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_PATRIARCHSLIAR) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PATRIARCHSLIAR) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_PATRIARCHSLIAR) then
 	end
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_PATRIARCHSLIAR) then	
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PATRIARCHSLIAR) then	
 		local wall = InutilLib.ClosestWall(player)
 		local fist
 		local room = ILIB.room

@@ -3,14 +3,16 @@ local savedItems = {}
 yandereWaifu.RebekahPersonalities = {} --table turned into a class
 yandereWaifu.ListOfRegPersonalities = {} --future list of players
 
-function yandereWaifu.RebekahPersonalities:New(o, name, playerId, graphics, coopGraphics, tainted)
+function yandereWaifu.RebekahPersonalities:New(o, name, playerId, graphics, coopGraphics, lockedgraphics, locked)
 
 	o = o or {};
 	o.name = name
 	o.playerId = playerId
 	o.graphics = graphics
 	o.coopGraphics = coopGraphics
-	o.tainted = tainted
+	o.lockedgraphics = lockedgraphics
+	o.LockedState = locked
+	o.isLocked = nil
 	--o.giantAnim = giantAnim
 	
 	setmetatable(o,self);
@@ -19,14 +21,54 @@ function yandereWaifu.RebekahPersonalities:New(o, name, playerId, graphics, coop
 	return o;
 end
 
-yandereWaifu.RebekahPersonalities:New({}, "Red Personality", RebekahCurse.REB_RED, "gfx/ui/rebekah select/red.png", "gfx/ui/coop/icons/red.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Soul Personality", RebekahCurse.REB_SOUL, "gfx/ui/rebekah select/soul.png", "gfx/ui/coop/icons/soul.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Evil Personality", RebekahCurse.REB_EVIL, "gfx/ui/rebekah select/evil.png", "gfx/ui/coop/icons/evil.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Eternal Personality", RebekahCurse.REB_ETERNAL, "gfx/ui/rebekah select/eternal.png", "gfx/ui/coop/icons/eternal.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Gold Personality", RebekahCurse.REB_GOLD, "gfx/ui/rebekah select/gold.png", "gfx/ui/coop/icons/gold.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Bone Personality", RebekahCurse.REB_BONE, "gfx/ui/rebekah select/bone.png", "gfx/ui/coop/icons/bone.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Rotten Personality", RebekahCurse.REB_ROTTEN, "gfx/ui/rebekah select/rotten.png", "gfx/ui/coop/icons/rotten.png", false)
-yandereWaifu.RebekahPersonalities:New({}, "Broken Personality", RebekahCurse.REB_BROKEN, "gfx/ui/rebekah select/broken.png", "gfx/ui/coop/icons/broken.png", false)
+function yandereWaifu.RebekahPersonalities:GetPersonalityByName(name)
+	for i, v in pairs (yandereWaifu.ListOfRegPersonalities) do
+		if v.name == name then
+			return v
+		end
+	end
+end
+
+--[[function yandereWaifu.RebekahPersonalities:Unlock(name)
+	local id = yandereWaifu.RebekahPersonalities:GetPersonalityByName(name)
+	if id.isLocked then
+		id.isLocked = false
+	end
+end]]
+
+yandereWaifu.RebekahPersonalities:New({}, "Red Personality", RebekahCurse.REB_RED, "gfx/ui/rebekah select/red.png", "gfx/ui/coop/icons/red.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Soul Personality", RebekahCurse.REB_SOUL, "gfx/ui/rebekah select/soul.png", "gfx/ui/coop/icons/soul.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_SOUL:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Evil Personality", RebekahCurse.REB_EVIL, "gfx/ui/rebekah select/evil.png", "gfx/ui/coop/icons/evil.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_EVIL:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Eternal Personality", RebekahCurse.REB_ETERNAL, "gfx/ui/rebekah select/eternal.png", "gfx/ui/coop/icons/eternal.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_ETERNAL:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Immortal Personality", RebekahCurse.REB_IMMORTAL, "gfx/ui/rebekah select/immortal.png", "gfx/ui/coop/icons/eternal.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_IMMORTAL:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Gold Personality", RebekahCurse.REB_GOLD, "gfx/ui/rebekah select/gold.png", "gfx/ui/coop/icons/gold.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_GOLD:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Bone Personality", RebekahCurse.REB_BONE, "gfx/ui/rebekah select/bone.png", "gfx/ui/coop/icons/bone.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_BONE:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Rotten Personality", RebekahCurse.REB_ROTTEN, "gfx/ui/rebekah select/rotten.png", "gfx/ui/coop/icons/rotten.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_ROTTEN:IsUnlocked() end)
+yandereWaifu.RebekahPersonalities:New({}, "Broken Personality", RebekahCurse.REB_BROKEN, "gfx/ui/rebekah select/broken.png", "gfx/ui/coop/icons/broken.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_BROKEN:IsUnlocked() end)
+
+
+--initialization for unlocked personalities
+yandereWaifu.ListOfRegUnlockedPersonalities = {}
+function yandereWaifu:onNewGamePersonalitiesInit(player)
+	for i, v in pairs (yandereWaifu.ListOfRegPersonalities) do
+		local currentPlayerId = v
+		local returnTable = {
+			name = currentPlayerId.name,
+			playerId = currentPlayerId.playerId,
+			graphics = currentPlayerId.graphics,
+			coopGraphics = currentPlayerId.coopGraphics,
+			lockedgraphics = currentPlayerId.lockedgraphics,
+			isLocked = not currentPlayerId.LockedState()
+		}
+		--print(currentPlayerId.name)
+		--print(currentPlayerId.LockedState)
+		--currentPlayerId.isLocked = currentPlayerId.LockedState()
+		--print(returnTable.IsLocked)
+		yandereWaifu.ListOfRegUnlockedPersonalities[i] = returnTable
+		--print(yandereWaifu.ListOfRegUnlockedPersonalities[i].IsLocked)
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onNewGamePersonalitiesInit)
 
 
 local shouldRenderAchievement = false
@@ -35,21 +77,28 @@ local currentSprite = ""
 menuUI:Load("gfx/ui/rebekah select/select screen.anm2", true)
 local menuUIDelay = 0
 local hasSelectedPersonality = false
-function yandereWaifu.SelectRebekahPersonality(currentPlayer)
-	Isaac.ExecuteCommand("restart "..currentPlayer.playerId --[[RebekahCurse.REB_RED]])
-	InutilLib.SetTimer(12, function()
-		for i, v in pairs(savedItems) do
-			Isaac.GetPlayer(0):AddCollectible(v, 0, false)
-		end
-	end)
-	hasSelectedPersonality = true
-	--Isaac.GetPlayer(0):ChangePlayerType(currentPlayer.playerId)
-end
-
 
 local currentPlayerSelected --saved current personality detail saved
 local currentPlayerId = 1 -- current id of personality
-function yandereWaifu.AnimateIsaacMenu(currentPlayer, spritesheet, sound, doPause, time)
+
+function yandereWaifu.SelectRebekahPersonality(currentPlayer, menuUI)
+	if not currentPlayer.isLocked then
+		Isaac.ExecuteCommand("restart "..currentPlayer.playerId --[[RebekahCurse.REB_RED]])
+		InutilLib.SetTimer(12, function()
+			for i, v in pairs(savedItems) do
+				Isaac.GetPlayer(0):AddCollectible(v, 0, false)
+			end
+		end)
+		hasSelectedPersonality = true
+		menuUI:Play("Dissapear", true)
+		yandereWaifu.ListOfRegUnlockedPersonalities = {}
+	else
+		InutilLib.SFX:Play(SoundEffect.SOUND_BOSS2INTRO_ERRORBUZZ, 1, 0, false, 1)
+		--Isaac.GetPlayer(0):ChangePlayerType(currentPlayer.playerId)
+	end
+end
+
+function yandereWaifu.AnimateIsaacMenu(currentPlayer, sound, doPause, time)
 	if doPause == nil then
 		doPause = true
 	end
@@ -69,7 +118,10 @@ function yandereWaifu.AnimateIsaacMenu(currentPlayer, spritesheet, sound, doPaus
 			end
 		end
 	end
-
+  local spritesheet = currentPlayer.graphics
+  if currentPlayer.isLocked then
+	spritesheet = currentPlayer.lockedgraphics
+  end
   if spritesheet then
     currentSprite = spritesheet
 		menuUI:ReplaceSpritesheet(3, spritesheet)
@@ -136,25 +188,25 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
       	if (Input.IsActionTriggered(ButtonAction.ACTION_MENUCONFIRM, player.ControllerIndex) or
             Input.IsActionTriggered(ButtonAction.ACTION_MENUBACK, player.ControllerIndex)) and
             not InutilLib.IsAnimated(menuUI, "Dissapear") and not menuUI:IsPlaying("Appear") and not ILIB.game:IsPaused() then
-       		 menuUI:Play("Dissapear", true)
-				yandereWaifu.SelectRebekahPersonality(currentPlayerSelected)
+       		 
+				yandereWaifu.SelectRebekahPersonality(currentPlayerSelected, menuUI)
 			elseif not hasSelectedPersonality then
 	  
 				if Input.IsActionTriggered(ButtonAction.ACTION_LEFT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) then
 					if currentPlayerId <= 1 then
-					currentPlayerId = #yandereWaifu.ListOfRegPersonalities
-					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
+					currentPlayerId = #yandereWaifu.ListOfRegUnlockedPersonalities
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegUnlockedPersonalities[currentPlayerId], SoundEffect.SOUND_PAPER_OUT, false, 900)
 					else
-					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId-1], yandereWaifu.ListOfRegPersonalities[currentPlayerId-1].graphics, SoundEffect.SOUND_PAPER_OUT, false, 900)
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegUnlockedPersonalities[currentPlayerId-1], SoundEffect.SOUND_PAPER_OUT, false, 900)
 					currentPlayerId = currentPlayerId - 1
 					end
 				elseif Input.IsActionTriggered(ButtonAction.ACTION_RIGHT, player.ControllerIndex) or Input.IsActionTriggered(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) then
-					if currentPlayerId < #yandereWaifu.ListOfRegPersonalities then
-					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId+1], yandereWaifu.ListOfRegPersonalities[currentPlayerId+1].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
+					if currentPlayerId < #yandereWaifu.ListOfRegUnlockedPersonalities then
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegUnlockedPersonalities[currentPlayerId+1], SoundEffect.SOUND_PAPER_IN, false, 900)
 					currentPlayerId = currentPlayerId + 1
 					else
 					currentPlayerId = 1
-					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[currentPlayerId], yandereWaifu.ListOfRegPersonalities[currentPlayerId].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
+					yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegUnlockedPersonalities[currentPlayerId], SoundEffect.SOUND_PAPER_IN, false, 900)
 					end
 				end
 			end
@@ -164,7 +216,7 @@ end)
 
 function yandereWaifu:ShowPersonalityBook()
 	ILIB.game:GetHUD():SetVisible(false)
-	yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegPersonalities[1], yandereWaifu.ListOfRegPersonalities[1].graphics, SoundEffect.SOUND_PAPER_IN, false, 900)
+	yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegUnlockedPersonalities[1], SoundEffect.SOUND_PAPER_IN, false, 900)
 	currentPlayerId = 1
 end
 

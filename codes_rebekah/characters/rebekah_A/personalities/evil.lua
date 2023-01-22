@@ -347,7 +347,7 @@ function yandereWaifu.EvilHeartTeleport(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
@@ -479,7 +479,7 @@ function yandereWaifu.EvilHeartDash(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	

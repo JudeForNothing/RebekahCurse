@@ -90,7 +90,7 @@
 	<color name="tear_pink" r="180" g="160" b="180" or="130"/>
 
 	<!-- Doorstopper -->
-	<wisp id="30" hp="2" layer="1" damage="7" flameColor="flame_dark_brown" coreColor="core_orange" tearColor="tear_brown" tearFlags="61" count="0" />
+	<wisp id="30" hp="1" layer="1" damage="7" flameColor="flame_dark_brown" coreColor="core_orange" tearColor="tear_brown" tearFlags="61" count="0" />
 	<!-- Defuse = Reward -->
 	<wisp id="31" hp="1" layer="1" damage="15" flameColor="flame_gold" coreColor="core_orange" tearColor="tear_gold" tearFlags="44" count="0" />
 	<!-- Dice of Fate -->

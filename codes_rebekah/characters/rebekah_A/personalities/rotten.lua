@@ -5,7 +5,7 @@ do
 function yandereWaifu.RottenTossHead(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	playerdata.IsDashActive = true
@@ -485,7 +485,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			end
 		end
 		--print(data.RottenFireDelay)
-		local canShoot = yourFlies < 16 and ((player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) and player:GetAimDirection().X ~= 0 or player:GetAimDirection().Y ~= 0 ) or(player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0)) and data.RottenFireDelay <= 0
+		local canShoot = yourFlies < 8 and ((player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) and player:GetAimDirection().X ~= 0 or player:GetAimDirection().Y ~= 0 ) or(player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0)) and data.RottenFireDelay <= 0
 		if canShoot then
 			data.RottenFireDelay = player.MaxFireDelay --resets the firedelay
 		--if player.FireDelay <= 1 and not data.HasJustShot then
@@ -1165,7 +1165,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     local roomClampSize = math.max( player.Size, 20 );
 	
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 

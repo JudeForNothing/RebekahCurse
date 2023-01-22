@@ -1,36 +1,40 @@
 <shaders>
     <!-- Empty shader, only used for rendering above HUD workaround -->
 	<shader name="UI_DrawRebekahHUD_DummyShader">
+        <parameters>
+        </parameters>
         <vertex><![CDATA[
-            attribute vec3 Position;                                        
-            attribute vec4 Color;                                           
-            attribute vec2 TexCoord;                                        
-            attribute vec4 RenderData;                                                                  
+            attribute vec3 Position;
+            attribute vec4 Color;
+            attribute vec2 TexCoord;
+            attribute vec4 RenderData;
             attribute float Scale;
-            attribute vec2 PlayerPos;
-            varying vec4 Color0;                                            
-            varying vec2 TexCoord0;                                     
-            varying vec4 RenderDataOut; 
-            varying float ScaleOut;
-            uniform mat4 Transform;                                     
-            void main(void)                                             
-            {                                                               
-                RenderDataOut = RenderData;                             
-                ScaleOut = Scale;         // Passing data to fragment shader    
-                Color0 = Color;                                             
+            
+            varying lowp vec4 Color0;
+            varying mediump vec2 TexCoord0;
+            varying lowp vec4 RenderDataOut;
+            varying lowp float ScaleOut;
+            uniform sampler2D Texture0;
+
+            uniform mat4 Transform;
+            void main(void)
+            {
+                RenderDataOut = RenderData;
+                ScaleOut = Scale;
+                Color0 = Color;
                 TexCoord0 = TexCoord;
-                gl_Position = Transform * vec4(Position.xyz, 1.0);          
+                gl_Position = Transform * vec4(Position.xyz, 1.0);
             }
         ]]></vertex>
         <fragment><![CDATA[
-            varying lowp vec4 Color0;                                       
-            varying mediump vec2 TexCoord0;                             
+            varying lowp vec4 Color0;
+            varying mediump vec2 TexCoord0;
             varying lowp vec4 RenderDataOut;
-            varying lowp float ScaleOut;            
-            uniform sampler2D Texture0;                                         
-            void main(void)                                             
-            {                                                               
-                vec4 Color = Color0 * texture2D(Texture0, TexCoord0);       
+            varying lowp float ScaleOut;
+            uniform sampler2D Texture0;
+            void main(void)
+            {
+                vec4 Color = Color0 * texture2D(Texture0, TexCoord0);
                 gl_FragColor = Color;
             }
         ]]></fragment>
@@ -86,16 +90,16 @@
             uniform sampler2D Texture0;
             void main(void)
             {
-				if (shaderActiveOut == 0)
+				if (shaderActiveOut == 0.0)
 				{
 					gl_FragColor = Color0 * texture2D(Texture0, TexCoord0);
 				}
 				else
 				{
 					vec4 Color = Color0 * texture2D(Texture0, TexCoord0);
-					float brightness = (Color.r + Color.g + Color.b) / 5;
+					float brightness = (Color.r + Color.g + Color.b) / 5.0;
 					brightness = ceil(brightness*fcolored)/fcolored;
-					gl_FragColor = vec4(vec3(0.15882f,0.0f,0.0f)*brightness*fpulse,1.0f);
+					gl_FragColor = vec4(vec3(0.15882,0.0,0.0)*brightness*fpulse,1.0);
 				}
             }
         ]]></fragment>
@@ -146,16 +150,16 @@
             uniform sampler2D Texture0;
             void main(void)
             {
-				if (shaderActiveOut == 0)
+				if (shaderActiveOut == 0.0)
 				{
 					gl_FragColor = Color0 * texture2D(Texture0, TexCoord0);
 				}
 				else
 				{
 					vec4 Color = Color0 * texture2D(Texture0, TexCoord0);
-					Color.r = 1-Color.r;
-					Color.g = 1-Color.g;
-					Color.b = 1-Color.b;
+					Color.r = 1.0-Color.r;
+					Color.g = 1.0-Color.g;
+					Color.b = 1.0-Color.b;
 					gl_FragColor = Color*ftime;
 				}
             }

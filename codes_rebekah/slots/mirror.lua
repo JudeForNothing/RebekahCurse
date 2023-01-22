@@ -1,7 +1,10 @@
-local mirrorRoomData = {} --keeps mirror data in each room on each grid
+local mirrorRoomData = RebekahLocalSavedata.Data.mirrorRoomData --keeps mirror data in each room on each grid
 
-function yandereWaifu.MirrorRoomInit(hasstarted) --Init
-	RebekahLocalSavedata.mirrorRoomData = {}
+function yandereWaifu.MirrorRoomInit(_, hasstarted) --Init
+	if not hasstarted then
+		RebekahLocalSavedata.Data.mirrorRoomData = {}
+		RebekahLocalSavedata.Data.bossRoomsCleared = {}
+	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.MirrorRoomInit)
 
@@ -17,16 +20,18 @@ function yandereWaifu.TrySpawnMirror()
 			local isGreed = ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREED or ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
 			if (room:GetType() == RoomType.ROOM_BOSS or (isGreed and level:GetCurrentRoomDesc().GridIndex--[[GetCurrentRoomIndex()]] == 110 --[[room:GetType() == RoomType.ROOM_SHOP]])) and room:IsClear() then
 				local add = false
+		
 				-- iterate through the saved boss rooms
-				for i, something in pairs(RebekahLocalSavedata.bossRoomsCleared) do 
+				for i, something in pairs(RebekahLocalSavedata.Data.bossRoomsCleared) do 
 					-- if we're in a room that had been cleared before, flag it
-					if RebekahLocalSavedata.bossRoomsCleared[i][1] == level:GetCurrentRoomDesc().GridIndex and RebekahLocalSavedata.bossRoomsCleared[i][2] == level:GetStage() then
+					if RebekahLocalSavedata.Data.bossRoomsCleared[i][1] == level:GetCurrentRoomDesc().GridIndex and RebekahLocalSavedata.Data.bossRoomsCleared[i][2] == level:GetStage() then
 						add = true
+
 					end
 				end
 				-- if not flagged, add a mirror entity at the center of the room
 				if not add then
-					table.insert(RebekahLocalSavedata.bossRoomsCleared, {level:GetCurrentRoomDesc().GridIndex, level:GetStage()} );
+					table.insert(RebekahLocalSavedata.Data.bossRoomsCleared, {level:GetCurrentRoomDesc().GridIndex, level:GetStage()} );
 					local spawnPosition = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 1);
 					local subtype = 0
 					--bride --if ( yandereWaifu.GetEntityData(player).currentMode==REBECCA_MODE.RedHearts and level:GetStage() == 10 ) then subtype = 1 else subtype = 0 end
@@ -40,28 +45,29 @@ function yandereWaifu.TrySpawnMirror()
 end
 
 function yandereWaifu.HandleMirrorData()
-	if not mirrorRoomData then mirrorRoomData = {} end
-	if mirrorRoomData then
-		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
+	if not RebekahLocalSavedata.Data.mirrorRoomData then return end
+	--if mirrorRoomData then
+		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
 			local room = ILIB.game:GetRoom()
 			local level = ILIB.game:GetLevel()
-			if not mirrorRoomData[i] then mirrorRoomData[i] = {} end
-			mirrorRoomData[i][1] = level:GetCurrentRoomDesc().GridIndex
-			mirrorRoomData[i][2] = room:GetGridIndex(mir.Position)
-			mirrorRoomData[i][3] = yandereWaifu.GetEntityData(mir).Use
+			if not RebekahLocalSavedata.Data.mirrorRoomData[i] then RebekahLocalSavedata.Data.mirrorRoomData[i] = {} end
+			RebekahLocalSavedata.Data.mirrorRoomData[i][1] = level:GetCurrentRoomDesc().GridIndex
+			RebekahLocalSavedata.Data.mirrorRoomData[i][2] = room:GetGridIndex(mir.Position)
+			RebekahLocalSavedata.Data.mirrorRoomData[i][3] = yandereWaifu.GetEntityData(mir).Use
 			--print(room:GetGridIndex(mir.Position))
 		end
-	end
+	--end
 end
 
 function yandereWaifu.InsertMirrorData()
-	for i, something in pairs(mirrorRoomData) do 
+	if not RebekahLocalSavedata.Data.mirrorRoomData then return end
+	for i, something in pairs(RebekahLocalSavedata.Data.mirrorRoomData) do 
 		--if it has, then insert
-		if mirrorRoomData[i][1] == ILIB.level:GetCurrentRoomDesc().GridIndex then
-			for m, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-				if ILIB.room:GetGridIndex(mir.Position) == mirrorRoomData[i][2] then
+		if RebekahLocalSavedata.Data.mirrorRoomData[i][1] == ILIB.level:GetCurrentRoomDesc().GridIndex then
+			for m, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
+				if ILIB.room:GetGridIndex(mir.Position) == RebekahLocalSavedata.Data.mirrorRoomData[i][2] then
 				--	print("scar")
-					yandereWaifu.GetEntityData(mir).Use = mirrorRoomData[i][3]
+					yandereWaifu.GetEntityData(mir).Use = RebekahLocalSavedata.Data.mirrorRoomData[i][3]
 				--	print(mirrorRoomData[i][3])
 				--	print("yeah"..tostring(yandereWaifu.GetEntityData(mir).Use))
 				end
@@ -200,10 +206,10 @@ function yandereWaifu.MirrorMechanic(player)
 								sprite:Play("Death", true);
 								for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 									if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-										if math.random(1,3) == 3 then
+										if math.random(1,4) == 4 then
 											local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
-										else
-											local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, 0, pickup.Position,  pickup.Velocity, pickup)
+										elseif math.random(1,2) == 2 then
+											local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, math.random(0,6), pickup.Position,  pickup.Velocity, pickup)
 										end
 										pickup:Remove()
 									end
@@ -364,7 +370,7 @@ function yandereWaifu.MirrorMechanic(player)
 									end
 								end
 								if mir.Position:Distance(player.Position) > mir.Size + player.Size + 45 then --if close or far, speed up or not?
-									mir:GetSprite().PlaybackSpeed = 3;
+									mir:GetSprite().PlaybackSpeed = 2;
 								else
 									mir:GetSprite().PlaybackSpeed = 0.002;
 								end

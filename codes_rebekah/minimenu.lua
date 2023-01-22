@@ -25,6 +25,14 @@ function yandereWaifu.Minimenu:New(backdrop, position)
 	
 	o.menuAnchor = position --sets where the table will be rendered
 	
+	--this is so scuffed, a more proper code would have options, optionsValue and this as one whole class/table
+	o.optionsStats = {
+		[0] = nil,
+		[1] = nil,
+		[2] = nil,
+		[3] = nil
+	}
+
 	setmetatable(o,self);
 	self.__index = self;
 	return o 

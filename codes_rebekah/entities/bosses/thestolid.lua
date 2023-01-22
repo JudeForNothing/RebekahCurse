@@ -12,7 +12,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 			data.State = 0
 			data.path:SetCanCrushRocks(true)
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
+			--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
 		else
 			if data.State == 0 then
 				InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.8, 0.9)
@@ -50,7 +50,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			data.State = 5
 			data.path:SetCanCrushRocks(true)
 		else
-			if data.State >= 5 and data.State < 10 and ent.HitPoints <= math.floor(ent.MaxHitPoints/2) then
+			if data.State >= 5 and data.State < 10 and ent.HitPoints <= math.floor(ent.MaxHitPoints/1.8) then
 				data.State = 10 
 			end
 			if data.State == 0 then
@@ -98,12 +98,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						data.lastDir = nil
 						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 					end
-				elseif math.random(1,2) == 2 and ent.FrameCount % 9 == 0 then
+				elseif math.random(1,2) == 2 and ent.FrameCount % 5 == 0 then
 					if math.random(1,5) == 5 then
 						data.State = 3
 						ent.Velocity = ent.Velocity * 0
 						data.lastDir = nil
-					elseif #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) < 3 and entnumber < 4 then
+					elseif #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) > 2 and math.random (1,2) then
+						data.State = 11
+						ent.Velocity = ent.Velocity * 0
+						data.lastDir = nil
+					elseif #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) < 5 and entnumber < 4 then
 						data.State = 4
 						ent.Velocity = ent.Velocity * 0
 						data.lastDir = nil
@@ -127,6 +131,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						spr:Play("CrashHurt", true)
 					end
 					ILIB.game:ShakeScreen(10)
+					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
 					InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.6 );
 					ent.Velocity = Vector.Zero
 					--crackwaves
@@ -325,6 +330,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 									local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, ((data.SavedPosition - ent.Position):Rotated(data.addedbarrageangle)):Resized(8))
 									proj.Scale = 1.4
 							--		proj:AddProjectileFlags(ProjectileFlags.BURST)
+									InutilLib.SFX:Play( SoundEffect.SOUND_GHOST_SHOOT, 1, 0, false, 0.9 );
 								--end
 							--end)
 						--end
@@ -350,11 +356,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end
 				elseif not spr:IsPlaying("SingStationary") then
 					spr:Play("SingStationary", true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
 				elseif spr:IsPlaying("SingStationary") then
 					if spr:WasEventTriggered("Spit") then
-						ILIB.game:ShakeScreen(5)
+						ILIB.game:ShakeScreen(10)
 					end
+				end
+				if ent.FrameCount % 15 == 0 then
+					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
 				end
 			elseif data.State == 10 then
 				if spr:IsFinished("Transition") then
@@ -368,8 +377,57 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					--crackwaves
 					for i = 0, 360-360/4, 360/4 do
 						local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, ent.Position, Vector.FromAngle(i), ent):ToEffect()
-						crack.LifeSpan = 12;
-						crack.Timeout = 12
+						crack.LifeSpan = 24;
+						crack.Timeout = 24
+						crack.Rotation = i
+					end
+					--rock splash
+					local chosenNumofBarrage =  math.random( 10, 18 );
+					for i = 1, chosenNumofBarrage do
+						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
+						local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(10), ent, 0, 0):ToProjectile()
+						tear.Scale = math.random(2,12)/10;
+						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
+						tear.FallingAccel = 0.5;
+						--tear.BaseDamage = player.Damage * 2
+					end
+				end
+				if not spr:IsPlaying("Transition") then
+					spr:Play("Transition", true)
+				elseif spr:IsPlaying("Transition") then
+					if spr:WasEventTriggered("Spit") then
+						ILIB.game:ShakeScreen(5)
+					end
+				end
+			elseif data.State == 11 then
+				if spr:IsFinished("Sing") then
+					data.State = 0
+					for i, v in pairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) ) do
+						InutilLib.SetTimer( 7 * i, function()
+							v:Die()
+						end)
+					end
+				elseif not spr:IsPlaying("Sing") then
+					spr:Play("Sing", true)
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
+				elseif spr:IsPlaying("Sing") then
+					if spr:WasEventTriggered("Spit") then
+						ILIB.game:ShakeScreen(10)
+					end
+				end
+				if ent.FrameCount % 15 == 0 then
+					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
+				end
+			elseif spr:IsPlaying("Death") then
+				if spr:GetFrame() == 36 then
+					ILIB.game:ShakeScreen(10)
+					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
+					ent.Velocity = Vector.Zero
+					--crackwaves
+					for i = 0, 360-360/4, 360/4 do
+						local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, ent.Position, Vector.FromAngle(i), ent):ToEffect()
+						--crack.LifeSpan = 12;
+						--crack.Timeout = 12
 						crack.Rotation = i
 					end
 					--rock splash
@@ -382,12 +440,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						tear.FallingAccel = 0.5;
 						--tear.BaseDamage = player.Damage * 2
 					end
-				end
-				if not spr:IsPlaying("Transition") then
-					spr:Play("Transition", true)
-				elseif spr:IsPlaying("Transition") then
-					if spr:WasEventTriggered("Spit") then
-						ILIB.game:ShakeScreen(5)
+					--rocks falling down randomly
+					for i = 0, math.random(5,7) do
+						InutilLib.SetTimer( 7 * i, function()
+							local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
+							tear.Scale = math.random(12,16)/10;
+							tear.Height = -520;
+							tear.FallingAccel = 1.3;
+						end);
+						
 					end
 				end
 			end
@@ -462,7 +523,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff:Remove()
 	elseif sprite:IsPlaying("Death") and sprite:GetFrame() == 15 then
 		if eff.SubType == 1 then
-			local rng = math.random(1,14)
+			local rng = math.random(3,14)
 			if rng <= 7 then
 				local bomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, eff.Position, Vector.Zero, eff):ToEffect()
 			elseif rng <= 9 then
@@ -485,7 +546,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, eff.Position, Vector.FromAngle(Vector(0,10):GetAngleDegrees() + i):Resized(8), eff, 0, 0):ToProjectile()
 			end
 			if math.random(1,3) == 3 then
-				local bomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, eff.Position, Vector.Zero, eff):ToEffect()
+				--local bomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, eff.Position, Vector.Zero, eff):ToEffect()
+				local bomb = Isaac.Spawn(EntityType.ENTITY_ROCK_SPIDER, 2, 0, eff.Position, Vector.Zero, eff)
 			end
 		else
 			local rng = math.random(1,5)

@@ -1,4 +1,5 @@
 local REBECCA_MODE_COMMAND_KEYS = {
+	none = REBECCA_MODE.EmptyHearts,
 	red = REBECCA_MODE.RedHearts,
 	soul = REBECCA_MODE.SoulHearts,
 	blue = REBECCA_MODE.SoulHearts,

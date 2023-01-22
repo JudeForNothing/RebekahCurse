@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	--love = power
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_MORIAHDIARY) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_MORIAHDIARY) then
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed + 0.2
 		end
@@ -12,7 +12,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, pl)
 	local sprite = pl:GetSprite()
 	local data = yandereWaifu.GetEntityData(pl)
 	
-	if pl:HasCollectible(RebekahCurse.COLLECTIBLE_MORIAHDIARY) then
+	if pl:HasCollectible(RebekahCurseItems.COLLECTIBLE_MORIAHDIARY) then
 		for i, v in ipairs (Isaac.GetRoomEntities()) do
 			if v:IsEnemy() then
 				if (pl.Position - v.Position):Length() <= 250 then

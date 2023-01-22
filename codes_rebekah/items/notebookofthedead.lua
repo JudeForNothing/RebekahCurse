@@ -13,15 +13,15 @@ function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 	InutilLib.ToggleShowActive(player, true)
 end
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurse.COLLECTIBLE_NOTEBOOKOFTHEDEAD )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD )
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_NOTEBOOKOFTHEDEAD) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_NOTEBOOKOFTHEDEAD ) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			--data.specialAttackVector = Vector( vector.X, vector.Y )
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEATHNOTETARGET, 0, player.Position, vector:Resized(7), player );

@@ -4,7 +4,7 @@
           nameimage="name_rebekah.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah"/>
 	
-	<player name="Rebekah" birthright="More love, a big way to show love!" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Red Rebekah" birthright="More love, a big way to show love!" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
@@ -40,6 +40,10 @@
           nameimage="name_rebekah.png" 
           portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
+<player name="Rebekah" birthright="More love" skin="character_rebekah_red.png" hp="4" keys="0"
+          nameimage="name_rebekah.png" 
+          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+
 	<player name="RebekahB" birthright="Undying Hope" skin="character_rebekah.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true"/>
@@ -48,10 +52,14 @@
           nameimage="playername_01_isaac.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7"/>
 	
-	<player name="RebekahC"  bSkinParent="Technical Rebekah" birthright="???" skin="character_rebekah.png" hp="2" keys="3"
+	<player name="Technical B Rebekah"  bSkinParent="Technical Rebekah" birthright="???" skin="character_rebekah.png" hp="2" keys="3"
           nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" />
 		  
+    <player name="Cursed Rebekah"  bSkinParent="Technical Rebekah" birthright="???" skin="character_rebekah_cursed.png" hp="0" keys="3"
+            nameimage="name_rebekah.png"
+          portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7" canShoot="false"/>
+
 	<player name="Happy Jacob" birthright="???" costume="52" skin="character_happy_jacob.png" hp="4" keys="0"
           nameimage="PlayerName_02x_Jacob_Esau.png" 
           portrait="PlayerPortrait_Jacob.png" skinColor="-1" hidden="true"/>

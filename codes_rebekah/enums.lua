@@ -2,8 +2,16 @@
 local game = Game(); --Calls the Game
 
 --global table that will keep all these enums in
-RebekahCurse = {
--- don't potentially overwrite information in global tables, keep this local
+
+RebekahCurseTrinkets = {
+	TRINKET_RABBITSFOOT = Isaac.GetTrinketIdByName("Rabbit's Foot"),
+	TRINKET_DESTROYEDLULLABY = Isaac.GetTrinketIdByName("Destroyed Lullaby"),
+	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
+	TRINKET_REBEKAHSKEY = Isaac.GetTrinketIdByName("Rebekah's Key"),
+	TRINKET_ISAACSLOCKS = Isaac.GetTrinketIdByName("Isaac's Locks"),
+}
+
+RebekahCurseItems = {
 	--items
 	COLLECTIBLE_LOVECANNON = Isaac.GetItemIdByName("Hugs N' Roses"),
 	COLLECTIBLE_WIZOOBTONGUE = Isaac.GetItemIdByName("Wizoob Tongue"),
@@ -51,22 +59,18 @@ RebekahCurse = {
 	COLLECTIBLE_ABEAUTIFULGRAVE = Isaac.GetItemIdByName("A Beautiful Grave"),
 	COLLECTIBLE_TIGHTHAIRTIE = Isaac.GetItemIdByName("Tight Hairtie"),
 	COLLECTIBLE_BASKETOFEGGS = Isaac.GetItemIdByName("Basket of Eggs"),
-	TRINKET_RABBITSFOOT = Isaac.GetTrinketIdByName("Rabbit's Foot"),
 	COLLECTIBLE_EGGSHELLWALK = Isaac.GetItemIdByName("Eggshell Walk"),
-	TRINKET_DESTROYEDLULLABY = Isaac.GetTrinketIdByName("Destroyed Lullaby"),
 	COLLECTIBLE_OVERSIZEDSWEATER = Isaac.GetItemIdByName("Oversized Sweater"),
 	COLLECTIBLE_HEARTSANDCRAFTS = Isaac.GetItemIdByName("Hearts and Crafts"),
 	COLLECTIBLE_TECHHZ = Isaac.GetItemIdByName("Tech Hz"),
 	COLLECTIBLE_ANGELSMORNINGSTAR = Isaac.GetItemIdByName("Angel's Morningstar"),
 	COLLECTIBLE_POTATOSNACK = Isaac.GetItemIdByName("Potato Snack"),
-	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
 	COLLECTIBLE_THEENCHIRIDION = Isaac.GetItemIdByName("The Enchiridion"),
 	COLLECTIBLE_BODYDYSMORHIA = Isaac.GetItemIdByName("Body Dysmorphia"),
 	COLLECTIBLE_EYESOFTHEDEAD = Isaac.GetItemIdByName("Eyes of the Dead"),
 	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoriasis"),
 	COLLECTIBLE_NOTEBOOKOFTHEDEAD = Isaac.GetItemIdByName("Notebook of the Dead"),
-	TRINKET_REBEKAHSKEY = Isaac.GetTrinketIdByName("Rebekah's Key"),
-	--unlockables
+	COLLECTIBLE_WICKEDWEAVES = Isaac.GetItemIdByName("Wicked Weaves"),
 	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
 	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
 	COLLECTIBLE_MIRACULOUSWOMB = Isaac.GetItemIdByName("Miraculous Womb"),
@@ -75,16 +79,21 @@ RebekahCurse = {
 	COLLECTIBLE_POWERLOVE = Isaac.GetItemIdByName("Love = Power"),
 	COLLECTIBLE_CURSEDSPOON = Isaac.GetItemIdByName("Cursed Spoon"),
 	COLLECTIBLE_DICEOFFATE = Isaac.GetItemIdByName("Dice of Fate"),
-	TRINKET_ISAACSLOCKS = Isaac.GetTrinketIdByName("Isaac's Locks"),
 	COLLECTIBLE_LOVESICK = Isaac.GetItemIdByName("Lovesick"),
 	COLLECTIBLE_SNAP = Isaac.GetItemIdByName("Snap!"),
 	COLLECTIBLE_PATRIARCHSLIAR = Isaac.GetItemIdByName("Patriarch's Liar"),
 	COLLECTIBLE_REBEKAHSFAVORITE = Isaac.GetItemIdByName("Rebekah's Favorite"),
 	
+	COLLECTIBLE_SKIMMEDMILK = Isaac.GetItemIdByName("Skimmed Milk"),
+
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
 	
 	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
-	
+
+	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Tainted Rebekah Item")
+}
+
+RebekahCurseCards = {
 	CARD_EASTEREGG = Isaac.GetCardIdByName("redegg"),
 	CARD_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquaegg"),
 	CARD_YELLOW_EASTEREGG = Isaac.GetCardIdByName("yellowegg"),
@@ -101,6 +110,10 @@ RebekahCurse = {
 	CARD_CURSED_EASTEREGG = Isaac.GetCardIdByName("cursedegg"),
 	CARD_BLESSED_EASTEREGG = Isaac.GetCardIdByName("blessedegg"),
 	CARD_GOLDEN_EASTEREGG = Isaac.GetCardIdByName("goldenegg"),
+}
+
+RebekahCurse = {
+-- don't potentially overwrite information in global tables, keep this local
 	
 	ENTITY_ORBITALESAU = Isaac.GetEntityVariantByName("Orbital Esau"),
 	ENTITY_ORBITALJACOB = Isaac.GetEntityVariantByName("Orbital Jacob"),
@@ -234,13 +247,21 @@ RebekahCurse = {
 	
 	ENTITY_EVESUMMONCIRCLE = Isaac.GetEntityVariantByName("Eve Summon Circle"),
 	ENTITY_GOLEMFIST = Isaac.GetEntityVariantByName("Patriarch's Fist"),
+	ENTITY_WICKEDLIMB = Isaac.GetEntityVariantByName("Wicked Limb"),
 	ENTITY_BEAUTIFULGRAVEDROP = Isaac.GetEntityVariantByName("Beautiful Grave Drop"),
 	ENTITY_EGGSHELLS = Isaac.GetEntityVariantByName("Eggshells"),
 	ENTITY_DEATHNOTETARGET = Isaac.GetEntityVariantByName("Death Note Target"),
 	ENTITY_SOLOMONNEDBABY = Isaac.GetEntityVariantByName("Solomon Ned Baby"),
 	
+	ENTITY_BODYDYSMORPHIAAURA = Isaac.GetEntityVariantByName("Body Dysmorphia Aura"),
+
+	ENTITY_REBEKAHCURSEDWEAPON = Isaac.GetEntityVariantByName("Rebekah Cursed Weapon"),
+	ENTITY_TAINTEDCURSEDASHTARGET = Isaac.GetEntityVariantByName("Tainted Curse Dash Target"),
+	ENTITY_TAINTEDCURSEENEMYTARGET = Isaac.GetEntityVariantByName("Tainted Curse Enemy Target"),
+
 	TECHNICAL_REB = Isaac.GetPlayerTypeByName("Technical Rebekah"),
-	REB_RED = Isaac.GetPlayerTypeByName("Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
+	REB = Isaac.GetPlayerTypeByName("Rebekah"),
+	REB_RED = Isaac.GetPlayerTypeByName("Red Rebekah"), --Sets an ID for this -- no, this is a Christian channel now
 	REB_SOUL = Isaac.GetPlayerTypeByName("Soul Rebekah"),
 	REB_EVIL = Isaac.GetPlayerTypeByName("Evil Rebekah"),
 	REB_ETERNAL = Isaac.GetPlayerTypeByName("Eternal Rebekah"),
@@ -249,7 +270,9 @@ RebekahCurse = {
 	REB_ROTTEN = Isaac.GetPlayerTypeByName("Rotten Rebekah"),
 	REB_BROKEN = Isaac.GetPlayerTypeByName("Broken Rebekah"),
 	REB_IMMORTAL = Isaac.GetPlayerTypeByName("Immortal Rebekah"),
-	SADREBEKAH = Isaac.GetPlayerTypeByName("RebekahC", true),
+	
+	SADREBEKAH = Isaac.GetPlayerTypeByName("Technical B Rebekah", true),
+	REB_CURSED = Isaac.GetPlayerTypeByName("Cursed Rebekah", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
 	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false)
 }
@@ -311,8 +334,10 @@ RebekahCurseSounds = {
 	SOUND_LAUGHUNSETTLING = Isaac.GetSoundIdByName("Laugh Unsettling"),
 	SOUND_CAMERAUSE = Isaac.GetSoundIdByName("Camera Use"),
 	SOUND_PATRIARCHSLIARBELL = Isaac.GetSoundIdByName("Patriarch's Fist Bell"),
+	SOUND_WICKEDWEAVES = Isaac.GetSoundIdByName("Wicked Weaves Spawn"),
 	SOUND_UNREQUITEDLOVECHAIN = Isaac.GetSoundIdByName("Unrequited Love Chain"),
 	SOUND_PSALM23UTTER = Isaac.GetSoundIdByName("Psalm 23 Utter"),
+	SOUND_BODYDYSMORPHIAGROAN = Isaac.GetSoundIdByName("Body Dysmorphia Groan"),
 	
 	SOUND_KAPPA = Isaac.GetSoundIdByName("Easter Kappa"),
 	SOUND_ISAAC_HIDDEN = Isaac.GetSoundIdByName("Easter Isaac Hidden"),
@@ -346,10 +371,21 @@ RebekahCurseSounds = {
 
 	SOUND_STOLID_SING = Isaac.GetSoundIdByName("Stolid Sing"),
 	SOUND_STOLID_APPEAR = Isaac.GetSoundIdByName("Stolid Appear"),
+
+	SOUND_HOUND_CHARGE = Isaac.GetSoundIdByName("Hound Charge"),
+	SOUND_HOUND_SPAWN = Isaac.GetSoundIdByName("Hound Spawn"),
+	SOUND_HOUND_DEATH = Isaac.GetSoundIdByName("Hound Death"),
+
+	SOUND_CURSED_SLAM = Isaac.GetSoundIdByName("Cursed Slam"),
+	SOUND_CURSED_HEAVY_STRIKE = Isaac.GetSoundIdByName("Cursed Heavy Strike"),
+	SOUND_CURSED_WILD_SWING = Isaac.GetSoundIdByName("Cursed Wild Swing"),
+	SOUND_CURSED_RAGE = Isaac.GetSoundIdByName("Cursed Rage"),
 }
 
 RebekahCurseMusic = {
 	MUSIC_HEARTROOM = Isaac.GetMusicIdByName("Calm Before the Storm"),
+	MUSIC_BACKROOMS = Isaac.GetMusicIdByName("Backrooms"),
+	MUSIC_BACKROOMSBOSS = Isaac.GetMusicIdByName("Moist"),
 }
 
 RebekahCurseEnemies = {
@@ -360,11 +396,13 @@ RebekahCurseEnemies = {
 	ENTITY_OVUM_EGG = Isaac.GetEntityVariantByName("Ovum Egg"),
 	ENTITY_OVUM_EGG_EFFECT = Isaac.GetEntityVariantByName("Ovum Egg Effect"),
 	ENTITY_NINCOMPOOP = Isaac.GetEntityVariantByName("Nincompoop"),
-
 	ENTITY_POLTYGEIST = Isaac.GetEntityVariantByName("Poltygeist"),
 	ENTITY_POLTY_TONGUE = Isaac.GetEntityVariantByName("Polty Tongue"),
 	ENTITY_GIANTGRIDPROJECTILE = Isaac.GetEntityVariantByName("Giant Grid Projectile"),
 	ENTITY_GIANTGRIDBREAK = Isaac.GetEntityVariantByName("Giant Grid Break"),
+	ENTITY_THEPROSPECTOR = Isaac.GetEntityVariantByName("The Prospector"),
+	ENTITY_SENTRYROCKETTARGET = Isaac.GetEntityVariantByName("Sentry Rocket Target"),
+	ENTITY_SENTRYROCKETNUKE = Isaac.GetEntityVariantByName("Sentry Rocket Rocket"),
 
 	ENTITY_REBEKAH_ENEMY = Isaac.GetEntityTypeByName("Rebekah Entities"),
 	ENTITY_REDTATO = Isaac.GetEntityVariantByName("Red Tato"),
@@ -391,6 +429,9 @@ RebekahCurseEnemies = {
 	ENTITY_BUMBAB_PUNCH = Isaac.GetEntityVariantByName("Bumbab Punch"),
 	ENTITY_ROACH = Isaac.GetEntityVariantByName("Roach"),
 	ENTITY_MONK = Isaac.GetEntityVariantByName("Monk"),
+	ENTITY_LONGITS = Isaac.GetEntityVariantByName("Longits"),
+	ENTITY_LOAFERING = Isaac.GetEntityVariantByName("Loafering"),
+	ENTITY_FRUITFLY = Isaac.GetEntityVariantByName("Fruit Fly"),
 }
 
 RebekahCurseDustEffects = {
@@ -409,6 +450,10 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG = 12,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG = 13,
 	ENTITY_REBEKAH_GOLD_FORCE_FIELD = 14,
+	ENTITY_REBEKAH_CURSED_SLAM = 30,
+	ENTITY_REBEKAH_CURSED_SLAM_DEFAULT = 31,
+	ENTITY_REBEKAH_CURSED_HEAVY_STRIKE = 32,
+	ENTITY_REBEKAH_CURSED_WILD_SWING = 33,
 }
 
 local wasFromTaintedLocked = false
@@ -462,6 +507,9 @@ RebekahCurseCostumes = {
 	EyesOfTheDead = Isaac.GetCostumeIdByPath("gfx/characters/eyesofthedead.anm2"),
 	AdventureTime = Isaac.GetCostumeIdByPath("gfx/characters/adventuretime.anm2"),
 	Psoriasis = Isaac.GetCostumeIdByPath("gfx/characters/psoriasis.anm2"),
+
+	BodyDysmorphia = Isaac.GetCostumeIdByPath("gfx/characters/body_dysmorphia.anm2"),
+	WickedWeaves = Isaac.GetCostumeIdByPath("gfx/characters/wickedweaves.anm2"),
 }
 
 
@@ -523,8 +571,8 @@ REBEKAH_OPTIONS = {
 	-- affects both dash and special attack
 	DOUBLE_TAP_ANGLE_ROUNDING = 1,
 	
-	DASHKEY_ENABLE = false,
-	DASHKEY_BIND = nil,
+	DASHKEY_DISABLE = true,
+	DASHKEY_BIND = Keyboard.KEY_LEFT_CONTROL,
 	VOICE_VOLUME = 5,
 	UNLOCK_ITEMS = 0,
 	--DashKeyboardBinding = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Keyboard Binding"],
@@ -532,6 +580,7 @@ REBEKAH_OPTIONS = {
 }
 
 REBECCA_MODE = {
+	EmptyHearts = 0,
 	RedHearts = 1,
 	SoulHearts = 2,
 	EternalHearts = 3,
@@ -541,10 +590,13 @@ REBECCA_MODE = {
 	RottenHearts = 7,
 	BrokenHearts = 8,
 	ImmortalHearts = 9,
-	BrideRedHearts = 12
+	BrideRedHearts = 12,
+
+	CursedCurse = 30
 }
 
 RebeccaModeNames = {
+	[REBECCA_MODE.EmptyHearts] = "empty", --,
 	[REBECCA_MODE.RedHearts] = "red", --InnocentHair,
 	[REBECCA_MODE.SoulHearts] = "soul", --WizoobHair,
 	[REBECCA_MODE.GoldHearts] = "gold", --SwagHair,
@@ -554,12 +606,15 @@ RebeccaModeNames = {
 	[REBECCA_MODE.RottenHearts] =  "rotten",
 	[REBECCA_MODE.BrokenHearts] =  "broken",
 	[REBECCA_MODE.ImmortalHearts] =  "immortal",
-	[REBECCA_MODE.BrideRedHearts] = "bride" --BridalHair
+	[REBECCA_MODE.BrideRedHearts] = "bride", --BridalHair
+
+	[REBECCA_MODE.CursedCurse] =  "cursed",
 }
 
 
 RebeccaModeCostumes = {
-	[REBECCA_MODE.RedHearts] = "innocenthair", --InnocentHair,
+	[REBECCA_MODE.EmptyHearts] = "innocenthair", --InnocentHair,
+	[REBECCA_MODE.RedHearts] = "emergenthair", --InnocentHair,
 	[REBECCA_MODE.SoulHearts] = "wizoobhair", --WizoobHair,
 	[REBECCA_MODE.GoldHearts] = "swaghair", --SwagHair,
 	[REBECCA_MODE.EvilHearts] = "hadfunhair", --HadFunHair,
@@ -568,7 +623,9 @@ RebeccaModeCostumes = {
 	[REBECCA_MODE.RottenHearts] =  "crazyhair",
 	[REBECCA_MODE.BrokenHearts] =  "fourthwallhair",
 	[REBECCA_MODE.ImmortalHearts] =  "heyheyhair",
-	[REBECCA_MODE.BrideRedHearts] = "bridalhair" --BridalHair
+	[REBECCA_MODE.BrideRedHearts] = "bridalhair", --BridalHair
+
+	[REBECCA_MODE.CursedCurse] = "haunted_hairstyle" --BridalHair
 }
 
 RebeccaModeEffects = {
@@ -656,7 +713,8 @@ RebekahMirrorHeartDrop = {
 	[3] = 4, --eternal
 	[4] = 6, --evil
 	[5] = 7, --gold
-	[6] = 11 --bone
+	[6] = 11, --bone
+	[7] = 12
 }
 
 --Stage

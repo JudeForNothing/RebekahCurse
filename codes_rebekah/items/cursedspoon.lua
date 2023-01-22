@@ -2,10 +2,10 @@ local customColor = Color(1, 0.5, 1, 1, 0, 0, 0)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--cursed spoon
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_CURSEDSPOON) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) then
 		player:AddNullCostume(RebekahCurseCostumes.CursedMawCos)
 	end
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON) and (not data.HasSpoonShadow or data.HasSpoonShadow:IsDead()) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and (not data.HasSpoonShadow or data.HasSpoonShadow:IsDead()) then
 		player:SetColor(customColor, 2, 5, true, true)
 	end
 end)
@@ -14,7 +14,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	local player = damage:ToPlayer();
 	local data = yandereWaifu.GetEntityData(player)
 
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and (not data.PsoriasisHealth or data.PsoriasisHealth <= 0) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and (not data.PsoriasisHealth or data.PsoriasisHealth <= 0) then
 		if not data.HasSpoonShadow or data.HasSpoonShadow:IsDead() then
 			--data.LastEntityCollisionClass = player.EntityCollisionClass;
 			--data.LastGridCollisionClass = player.GridCollisionClass;
@@ -47,7 +47,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if math.random(1,3) == 3 and math.floor(eff.FrameCount % 30) == 0 then
 			sprite:Play("Attack", true)
-			local dir = data.Player.Position - eff.Position
+			local target = InutilLib.GetStrongestEnemy(eff, 300)
+			local dir = target.Position - eff.Position
 			data.dir = dir
 		end
 		InutilLib.StrafeAroundTarget(eff, player, 0.5, 0.9, 90)

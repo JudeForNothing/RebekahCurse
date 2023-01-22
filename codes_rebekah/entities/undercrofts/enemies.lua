@@ -124,9 +124,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     end
                 end
             elseif data.State == 1 then
-                if math.random(1,4) == 4 and ent.FrameCount % 15 == 0 then
+                --[[if math.random(1,4) == 4 and ent.FrameCount % 15 == 0 then
                     data.State = 2
-                else
+                else]]
                     if not data.path then
                         data.path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
                     else
@@ -154,7 +154,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         end
                         ent.Velocity = Vector.Zero
                     end
-                end
+                --end
                 InutilLib.FlipXByVec(ent, false) 
             elseif data.State == 2 then
                 if spr:IsFinished("Attack") then
@@ -276,6 +276,120 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
             InutilLib.FlipXByVec(ent, false) 
         end
+    elseif ent.Variant == RebekahCurseEnemies.ENTITY_LONGITS then
+
+        if not data.Init then
+            if spr:IsFinished("Appear") then
+                data.Init = true
+            end
+            if not spr:IsPlaying("Appear") then
+            	spr:Play("Appear")
+            end
+            data.FlipX = false
+            data.State = 0
+        else
+            if data.State == 0 then
+                if not spr:IsPlaying("Move") then
+                    spr:Play("Move", true)
+                end
+                InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.4, 0.9)
+                if ent.FrameCount % 45 == 0 and math.random(1,4) == 4  then
+                    data.State = 1 
+                end
+            elseif data.State == 1 then --recoil
+                if spr:IsFinished("Recoil") then
+                    data.State = 3
+                elseif not spr:IsPlaying("Recoil") then
+                    spr:Play("Recoil", true)
+                else
+                    if spr:GetFrame() == 7 then
+                        ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
+                    end
+                end
+            elseif data.State == 2 then --recoil back down
+                if spr:IsFinished("BackDown") then
+                    data.State = 0
+                elseif not spr:IsPlaying("BackDown") then
+                    spr:Play("BackDown", true)
+                else
+                    if spr:GetFrame() == 8 then
+                        ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
+                    end
+                end
+            elseif data.State == 3 then 
+                print(player:ToPlayer():GetShootingInput().X)
+                print(player:ToPlayer():GetShootingInput().Y)
+                if not spr:IsPlaying("Stay") then
+                    spr:Play("Stay", true)
+                else
+                    if ent.FrameCount % 15 == 0 and math.random(1,3) == 3 and (player:ToPlayer() and player:ToPlayer():GetShootingInput().X == 0 and player:ToPlayer():GetShootingInput().Y == 0) then
+                        data.State = 2 
+                    end
+                end
+                ent.Velocity = ent.Velocity * 0.8
+            end
+        end
+        InutilLib.FlipXByVec(ent, true)
+
+    elseif ent.Variant == RebekahCurseEnemies.ENTITY_LOAFERING then
+
+        if not data.Init then
+            if spr:IsFinished("Appear") then
+                data.Init = true
+            end
+            if not spr:IsPlaying("Appear") then
+            	spr:Play("Appear")
+            end
+            data.FlipX = false
+            data.State = 0
+            data.SpawnPoint = ent.Position
+        else
+            if data.State == 0 then
+                if not spr:IsPlaying("Move") then
+                    spr:Play("Move", true)
+                end
+                InutilLib.MoveRandomlyTypeI(ent, data.SpawnPoint, 1.2, 0.9, 15, 0, 15)
+                if ent.FrameCount % 45 == 0 and math.random(1,4) == 4  then
+                    data.State = 1 
+                end
+                ent.Velocity = ent.Velocity * 0.9
+            elseif data.State == 1 then --recoil
+                if spr:IsFinished("Hiccup") then
+                    data.State = 0
+                elseif not spr:IsPlaying("Hiccup") then
+                    spr:Play("Hiccup", true)
+                else
+                    if spr:GetFrame() == 7 then
+                        for i = 0, 360, 360/16 do
+                             local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position,  Vector(0,7):Rotated(i))
+                             proj.Scale = 0.4
+                        end
+                    end
+                end
+                ent.Velocity = ent.Velocity * 0.7
+            end
+            InutilLib.FlipXByVec(ent, true)
+        end
+    elseif ent.Variant == RebekahCurseEnemies.ENTITY_FRUITFLY then
+
+        if not data.Init then
+            if spr:IsFinished("Appear") then
+                data.Init = true
+            end
+            if not spr:IsPlaying("Appear") then
+            	spr:Play("Appear")
+            end
+            data.FlipX = false
+            data.State = 0
+        else
+            if data.State == 0 then
+                if not spr:IsPlaying("Idle") then
+                    spr:Play("Idle", true)
+                end
+                InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.4, 0.9)
+            end
+        end
+        InutilLib.FlipXByVec(ent, false)
     end
 	
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)

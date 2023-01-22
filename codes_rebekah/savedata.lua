@@ -1,8 +1,7 @@
-
+local hasGameStarted = false -- i cant believe im doing this LOL
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
-	Isaac.DebugString("c")
 	local data = yandereWaifu.GetEntityData(player)
 	if not data.PersistentPlayerData then data.PersistentPlayerData = {} end
 	--print("2")
@@ -10,10 +9,21 @@ end)
 
 --data that will be passed all around the mod
 RebekahLocalSavedata = {
-	bossRoomsCleared = {},
+	--bossRoomsCleared = {},
 	curseRoomsEntered = {},
 	loveRoomReplacePercent = 0,
-	savedloveRoomDepletePercent = 0, 
+	savedloveRoomDepletePercent = 0,
+	menudata = {},
+
+	Data = {},
+	Unlocks = {},
+	CompletionMarks = {},
+	Config = {
+		disablerebekahdash = true,
+		rebekahdashkey = Keyboard.KEY_LEFT_CONTROL,
+		narratorvolume = 5,
+		disableAchievements = false
+	},
 	CurrentRebeccaUnlocks = nil
 }
 
@@ -207,38 +217,38 @@ end)
 	local itemPool = ILIB.game:GetItemPool()
 	if RebekahLocalSavedata.CurrentRebeccaUnlocks then
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX then --boss rush
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_LUNCHBOX)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LUNCHBOX)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then --it lives
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_MIRACULOUSWOMB)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_MIRACULOUSWOMB)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON then --satan
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_CURSEDSPOON)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE then --isaac
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_DICEOFFATE)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_DICEOFFATE)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS then --lamb
 			itemPool:RemoveTrinket(RebekahCurse.TRINKET_ISAACSLOCKS)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND then --???
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE then --greed
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_POWERLOVE)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_POWERLOVE)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK then --ier
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_LOVESICK)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM then --hush
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_ROMCOM)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_ROMCOM)
 		end
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_SNAP then --delirium
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_SNAP)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_SNAP)
 		end
 		
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE then --IF ALL
-			itemPool:RemoveCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE)
+			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE)
 		end
 	end
 end)]]
@@ -283,7 +293,7 @@ end)]]
 
 local function RecapRebekahData()
 	local saveData = {}
-	saveData.menudata = {}
+	--saveData.menudata = {}
 	
 	saveData.currentMode = {};
 	saveData.heartFillReserve = {};
@@ -291,12 +301,14 @@ local function RecapRebekahData()
 	
 	saveData.PersistentPlayerData = {}
 	
+	saveData.Data = {}
+	saveData.Unlocks = {}
+	saveData.CompletionMarks = {}
+	saveData.Config = {}
+
 	saveData.NedHealth = {} -- first ned
 	local players = {}
-	for i=0, ILIB.game:GetNumPlayers()-1 do
-		table.insert(players, Isaac.GetPlayer(i)) --dont use, its crap
-	end
-	for i,player in ipairs(players) do
+	for i ,player in pairs(ILIB.players) do
 		if yandereWaifu.IsNormalRebekah(player) then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
@@ -313,7 +325,7 @@ local function RecapRebekahData()
 		
 		for c, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 		--check for knights health
-			if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
+			if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL or ned.Variant == RebekahCurse.ENTITY_SQUIRENED then 
 				if not saveData.NedHealth[i] then saveData.NedHealth[i] = {} end
 				
 				local name = tonumber(ned.Variant..ned.SubType)
@@ -331,6 +343,12 @@ local function RecapRebekahData()
 	saveData.curseRoomsEntered = RebekahLocalSavedata.curseRoomsEntered;
 	saveData.loveRoomReplacePercent = RebekahLocalSavedata.loveRoomReplacePercent; 
 	saveData.savedloveRoomDepletePercent = RebekahLocalSavedata.savedloveRoomDepletePercent;
+
+	saveData.Data = RebekahLocalSavedata.Data
+	saveData.Unlocks = RebekahLocalSavedata.Unlocks
+	saveData.CompletionMarks = RebekahLocalSavedata.CompletionMarks
+	saveData.Config = RebekahLocalSavedata.Config
+
 	saveData.unlocks = RebekahLocalSavedata.CurrentRebeccaUnlocks;
 	--print("eclectric chair")
 	
@@ -348,39 +366,49 @@ end
 
 REB_JSON = require("json");
 
--- Load Moddata
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinued)
-	--print("1")
-	local data = REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
+function yandereWaifu.LoadSaveData()
+	local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
-		if data.currentMode ~= nil then 
-			for i,player in pairs(ILIB.players) do
-				if yandereWaifu.IsNormalRebekah(player) then
-					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[i]
-					yandereWaifu.addReserveFill(player, data.heartFillReserve[i])
-					yandereWaifu.addReserveStocks(player, data.heartStockReserve[i])
-					
-					--yandereWaifu.GetEntityData(player).savedCameraEnemies[i] = data.RebekahCameraEnemies
-					
-					--if data.PersistentPlayerData ~= nil then
-						yandereWaifu.GetEntityData(player).PersistentPlayerData = data.PersistentPlayerData[i]
-					--end
-					player:AddCacheFlags(CacheFlag.CACHE_ALL);
-					player:EvaluateItems()
-				end
-			end
-		end
+
 		--this is being called a lot if theres a lot of players, I feel like i should change this
 		if data.bossRoomsCleared ~= nil then RebekahLocalSavedata.bossRoomsCleared = data.bossRoomsCleared end
 		if data.curseRoomsEntered ~= nil then RebekahLocalSavedata.curseRoomsEntered = data.curseRoomsEntered end 
 		if data.loveRoomReplacePercent ~= nil and IsContinued then RebekahLocalSavedata.loveRoomReplacePercent = data.loveRoomReplacePercent else RebekahLocalSavedata.loveRoomReplacePercent = 0 end
 		if data.savedloveRoomDepletePercent ~= nil then RebekahLocalSavedata.savedloveRoomDepletePercent = data.savedloveRoomDepletePercent end
-		if data.unlocks ~= nil then RebekahLocalSavedata.CurrentRebeccaUnlocks = data.unlocks end
 		
+		if data.Data ~= nil then RebekahLocalSavedata.Data = data.Data end
+		if data.Unlocks ~= nil then RebekahLocalSavedata.Unlocks = data.Unlocks end
+		if data.CompletionMarks ~= nil then RebekahLocalSavedata.CompletionMarks = data.CompletionMarks end
+		if data.Config ~= nil then RebekahLocalSavedata.Config = data.Config end
+		if data.unlocks ~= nil then RebekahLocalSavedata.CurrentRebeccaUnlocks = data.unlocks end
+	end
+end
+
+function yandereWaifu.LoadPlayerSaveData()
+	local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
+	if data ~= nil then
+		if data.currentMode ~= nil then 
+			for p,player in pairs(ILIB.players) do
+				print("bruh")
+				if yandereWaifu.IsNormalRebekah(player) then
+					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[p]
+					yandereWaifu.addReserveFill(player, data.heartFillReserve[p])
+					yandereWaifu.addReserveStocks(player, data.heartStockReserve[p])
+					--yandereWaifu.GetEntityData(player).savedCameraEnemies[p] = data.RebekahCameraEnemies
+				end
+					--if data.PersistentPlayerData ~= nil then
+					print(yandereWaifu.GetEntityData(player).PersistentPlayerData )
+					if data.PersistentPlayerData[p] then yandereWaifu.GetEntityData(player).PersistentPlayerData = data.PersistentPlayerData[p] end
+					print(yandereWaifu.GetEntityData(player).PersistentPlayerData )
+					--end
+					player:AddCacheFlags(CacheFlag.CACHE_ALL);
+					player:EvaluateItems()
+			end
+		end
 		if data.NedHealth then
-			for i,player in ipairs(ILIB.players) do
+			for i,player in pairs(ILIB.players) do
 				for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
-					if ned.Variant == ENTITY_NED_NORMAL or ned.Variant == ENTITY_SQUIRENED then 
+					if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL or ned.Variant == RebekahCurse.ENTITY_SQUIRENED then 
 						local name = tonumber(ned.Variant..ned.SubType)
 						for k, health in ipairs(data.NedHealth[i]) do
 							if data.NedHealth[i][k][1] == name then
@@ -398,6 +426,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinu
 			end
 		end
 	end
+end
+
+yandereWaifu.LoadSaveData()
+
+-- Load Moddata
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinued)
+	--print("1")
+	yandereWaifu.LoadSaveData()
+	yandereWaifu.LoadPlayerSaveData()
+	hasGameStarted = true
 end)
 
 -- Save Moddata
@@ -408,7 +446,7 @@ function yandereWaifu.Save()
 end
 
 function yandereWaifu.GetSaveData()
-	local data = REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
+	local data = REB_JSON.decode(yandereWaifu:LoadData());
     if data ~= nil then
         --if Isaac.HasModData(yandereWaifu) then
             return data
@@ -419,14 +457,19 @@ end
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
-	yandereWaifu.Save()
+	if hasGameStarted then
+		print("New level")
+		yandereWaifu.Save()
+	end
 end)
 yandereWaifu:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function(_, boo)
 	if boo then
 		yandereWaifu.Save()
+		hasGameStarted = false
 	end
 end)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_END, function(_, boo)
 	currentMode = nil;
 	yandereWaifu.Save()
+	hasGameStarted = false
 end)

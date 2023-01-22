@@ -1,7 +1,7 @@
 function yandereWaifu.GetOrangeMirror()
 	for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, -1, false, false)) do
 		local mirdata = yandereWaifu.GetEntityData(mir)
-		if mirdata.DashBrokenFragment --[[and GetPtrDash(mirdata.Player) == GetPtrDash(player)]] then
+		if mirdata.DashBrokenFragment --[[and GetPtrHash(mirdata.Player) == GetPtrHash(player)]] then
 			if mirdata.IsOrange then
 				return mir
 			end
@@ -11,7 +11,7 @@ end
 function yandereWaifu.GetBlueMirror()
 	for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, -1, false, false)) do
 		local mirdata = yandereWaifu.GetEntityData(mir)
-		if mirdata.DashBrokenFragment --[[and GetPtrDash(mirdata.Player) == GetPtrDash(player)]] then
+		if mirdata.DashBrokenFragment --[[and GetPtrHash(mirdata.Player) == GetPtrHash(player)]] then
 			if mirdata.IsBlue then
 				return mir
 			end
@@ -31,7 +31,7 @@ end
 function yandereWaifu.BrokenRebekahDash(player, vel)
 	local trinketBonus = 0
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	--[[for i, v in pairs (Isaac.GetRoomEntities()) do

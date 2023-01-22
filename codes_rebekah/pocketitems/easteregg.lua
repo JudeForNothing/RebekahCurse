@@ -136,7 +136,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	local playerType = player:GetPlayerType()
-	if data.PersistentPlayerData.EasterEggSeeds then
+	if data.PersistentPlayerData and data.PersistentPlayerData.EasterEggSeeds then
 		if not data.PersistentPlayerData.EasterEggDecreaseTick then data.PersistentPlayerData.EasterEggDecreaseTick = 10 end --1200 end
 		
 		data.PersistentPlayerData.EasterEggDecreaseTick = data.PersistentPlayerData.EasterEggDecreaseTick - 1
@@ -183,13 +183,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
-		if player:HasTrinket(RebekahCurse.TRINKET_RABBITSFOOT) or REBEKAHMODE_EXPERIMENTAL.easter then
-			if isEaster and player:HasTrinket(RebekahCurse.TRINKET_RABBITSFOOT) then chance = 1/2 end
+		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_RABBITSFOOT) or REBEKAHMODE_EXPERIMENTAL.easter then
+			if isEaster and player:HasTrinket(RebekahCurseTrinkets.TRINKET_RABBITSFOOT) then chance = 1/2 end
 			--pickup.Wait = 10;
 			local validPickup = (pickup.Variant == PickupVariant.PICKUP_COIN or pickup.Variant == PickupVariant.PICKUP_KEY or pickup.Variant == PickupVariant.PICKUP_BOMB or pickup.Variant == PickupVariant.PICKUP_CHEST or pickup.Variant == PickupVariant.PICKUP_PILL)
 			if rng:RandomFloat() <= (chance) and validPickup and ILIB.room:IsFirstVisit() and not pickup.Parent then
 				local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
-				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
+				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
 				newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				pickup:Remove()
 			end
@@ -333,19 +333,19 @@ function yandereWaifu:UseBlessedEgg(card, player, flags)
 end
 
 local goldentbl = {
-		[0] = RebekahCurse.CARD_EASTEREGG,
-		[1] = RebekahCurse.CARD_AQUA_EASTEREGG,
-		[2] = RebekahCurse.CARD_YELLOW_EASTEREGG,
-		[3] = RebekahCurse.CARD_GREEN_EASTEREGG,
-		[4] = RebekahCurse.CARD_BLUE_EASTEREGG,
-		[5] = RebekahCurse.CARD_PINK_EASTEREGG,
+		[0] = RebekahCurseCards.CARD_EASTEREGG,
+		[1] = RebekahCurseCards.CARD_AQUA_EASTEREGG,
+		[2] = RebekahCurseCards.CARD_YELLOW_EASTEREGG,
+		[3] = RebekahCurseCards.CARD_GREEN_EASTEREGG,
+		[4] = RebekahCurseCards.CARD_BLUE_EASTEREGG,
+		[5] = RebekahCurseCards.CARD_PINK_EASTEREGG,
 
-		[6] = RebekahCurse.CARD_STRIPE_EASTEREGG,
-		[7] = RebekahCurse.CARD_STRIPE_AQUA_EASTEREGG,
-		[8] = RebekahCurse.CARD_ZIGZAG_YELLOW_EASTEREGG,
-		[9] = RebekahCurse.CARD_ZIGZAG_GREEN_EASTEREGG,
-		[10] = RebekahCurse.CARD_ZIGZAG_BLUE_EASTEREGG,
-		[11] = RebekahCurse.CARD_STRIPE_PINK_EASTEREGG
+		[6] = RebekahCurseCards.CARD_STRIPE_EASTEREGG,
+		[7] = RebekahCurseCards.CARD_STRIPE_AQUA_EASTEREGG,
+		[8] = RebekahCurseCards.CARD_ZIGZAG_YELLOW_EASTEREGG,
+		[9] = RebekahCurseCards.CARD_ZIGZAG_GREEN_EASTEREGG,
+		[10] = RebekahCurseCards.CARD_ZIGZAG_BLUE_EASTEREGG,
+		[11] = RebekahCurseCards.CARD_STRIPE_PINK_EASTEREGG
 	}
 
 function yandereWaifu:UseGoldenEgg(card, player, flags) 
@@ -376,23 +376,23 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, yandereWaifu.EggAddCurses);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.CARD_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.CARD_AQUA_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.CARD_YELLOW_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.CARD_GREEN_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.CARD_BLUE_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.CARD_PINK_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_AQUA_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_YELLOW_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_GREEN_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_BLUE_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_PINK_EASTEREGG);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.CARD_STRIPE_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.CARD_STRIPE_AQUA_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.CARD_ZIGZAG_YELLOW_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.CARD_ZIGZAG_GREEN_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.CARD_ZIGZAG_BLUE_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.CARD_STRIPE_PINK_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_STRIPE_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_STRIPE_AQUA_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_ZIGZAG_YELLOW_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_ZIGZAG_GREEN_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_ZIGZAG_BLUE_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_STRIPE_PINK_EASTEREGG);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseCursedEgg, RebekahCurse.CARD_CURSED_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseBlessedEgg, RebekahCurse.CARD_BLESSED_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGoldenEgg, RebekahCurse.CARD_GOLDEN_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseCursedEgg, RebekahCurseCards.CARD_CURSED_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseBlessedEgg, RebekahCurseCards.CARD_BLESSED_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGoldenEgg, RebekahCurseCards.CARD_GOLDEN_EASTEREGG);
 
 function yandereWaifu:useDuplicateOnEasterEgg(collItem, rng, player)
 	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = game:GetFrameCount()
@@ -422,7 +422,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				else
 					local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1)
-					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
+					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
 					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				end
 				pickup:Remove()

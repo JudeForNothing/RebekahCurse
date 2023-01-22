@@ -53,7 +53,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 		end
 		
 		player:ToPlayer()
-		if not player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
+		if not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND) then
 			iss:Remove()
 		end
 		if not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage") then
@@ -207,7 +207,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			extraFireDelay = true
 		end
 		
-		if not player:HasCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND) then
+		if not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND) then
 			iss:Remove()
 		end
 		if not spr:IsPlaying("Drop") and not spr:IsPlaying("Drop2") then
@@ -358,9 +358,9 @@ function yandereWaifu:TinyEternalBondCache(player, cacheF) --The thing the check
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
 		--if yandereWaifu.IsNormalRebekah(player) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND))
+			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND))
 		--else
-			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_ETERNALBOND))
+			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND))
 		--end
 	end
 		

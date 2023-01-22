@@ -3,7 +3,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		local player = damage:ToPlayer()
 		local data = yandereWaifu.GetEntityData(player)
 
-		if (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and not data.PersistentPlayerData.IsHurt and player:HasTrinket(RebekahCurse.TRINKET_ORIGINALSIN) and (player:GetSoulHearts() == 0 and player:GetBoneHearts() == 0) then
+		if (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and not data.PersistentPlayerData.IsHurt and player:HasTrinket(RebekahCurseTrinkets.TRINKET_ORIGINALSIN) and (player:GetSoulHearts() == 0 and player:GetBoneHearts() == 0) then
 			data.PersistentPlayerData.IsHurt = true
 			player:TakeDamage(1, DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 1)
 			player:TryRemoveNullCostume(RebekahCurseCostumes.OriginalSin)
@@ -23,8 +23,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-	--if player:HasCollectible(RebekahCurse.COLLECTIBLE_POTATOSNACK) then
-		if player:HasTrinket(RebekahCurse.TRINKET_ORIGINALSIN) and data.PersistentPlayerData.IsHurt == nil then
+	--if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_POTATOSNACK) then
+		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ORIGINALSIN) and data.PersistentPlayerData.IsHurt == nil then
 			player:AddNullCostume(RebekahCurseCostumes.OriginalSin)
 			data.PersistentPlayerData.IsHurt = false
 		end

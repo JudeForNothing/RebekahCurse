@@ -1,7 +1,7 @@
 if StageAPI and StageAPI.Loaded then
 
 local RebekahCurseRoomBackdrop = StageAPI.BackdropHelper({
-    Walls = {"room_2", "room_1", "room_2"},
+    Walls = {"room_1", "room_2", "room_3"},
 	NFloors = {"nfloor"}
 }, "gfx/backdrop/rebekahsroom/", ".png")
 
@@ -13,6 +13,17 @@ RebekahsRoomCurseGrid:AddDoors("gfx/backdrop/rebekahsroom/door_curse_door.png", 
 local RebekahsRoomCurseFlatGrid = StageAPI.GridGfx()
 RebekahsRoomCurseFlatGrid:AddDoors("gfx/backdrop/rebekahsroom/door_curse_door_flat.png", {RequireEither = {RoomType.ROOM_CURSE}, NotEither = {RoomType.ROOM_SECRET, RoomType.ROOM_SUPERSECRET}})
 
+RebekahsRoomCurseGrid:SetRocks("gfx/grid/rebekahsroom/rocks.png")
+RebekahsRoomCurseGrid:SetPits("gfx/grid/liminal/grid_pit_liminal.png", _, true)
+RebekahsRoomCurseGrid:SetDecorations("gfx/grid/liminal/props_liminal.png")
+--RebekahsRoomCurseGrid:SetGrid("gfx/grid/rebekahsroom/rocks.png", GridEntityType.GRID_PILLAR)
+RebekahsRoomCurseGrid:SetBridges("gfx/grid/rebekahsroom/rocks.png")
+
+RebekahsRoomCurseFlatGrid:SetRocks("gfx/grid/rebekahsroom/rocks.png")
+RebekahsRoomCurseFlatGrid:SetPits("gfx/grid/liminal/grid_pit_liminal.png", _, true)
+RebekahsRoomCurseFlatGrid:SetDecorations("gfx/grid/liminal/props_liminal.png")
+--RebekahsRoomCurseFlatGrid:SetGrid("gfx/grid/rebekahsroom/rocks.png", GridEntityType.GRID_PILLAR)
+RebekahsRoomCurseFlatGrid:SetBridges("gfx/grid/rebekahsroom/rocks.png")
 
 local RebekahsRoomCurseGfx = StageAPI.RoomGfx(RebekahCurseRoomBackdrop, RebekahsRoomCurseGrid, "_default", "stageapi/shading/shading")
 local RebekahsRoomCurseFlatGfx = StageAPI.RoomGfx(RebekahCurseRoomBackdrop, RebekahsRoomCurseFlatGrid, "_default", "stageapi/shading/shading")

@@ -60,15 +60,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, proj)
                     end)
                 end
             end
-            --water splash tears
-            for i = 0, math.random(9,12) do
-                InutilLib.SetTimer( i*5, function() --ILIB.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
-                    local proj = InutilLib.FireGenericProjAttack(proj, ProjectileVariant.PROJECTILE_TEAR, 1, proj.Position, ((Vector(0,10))):Rotated(math.random(1,360)):Resized(4))
-                    proj.FallingSpeed = (36)*-1;
-                    proj.FallingAccel = 1;
-                    proj.Height = -50
-                end)
-            end
+        end
+        --water splash tears
+        for i = 0, math.random(18,28) do
+            InutilLib.SetTimer( i*2, function() --ILIB.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
+                local proj = InutilLib.FireGenericProjAttack(proj, ProjectileVariant.PROJECTILE_TEAR, 1, proj.Position, ((Vector(0,10))):Rotated(math.random(1,360)):Resized(4))
+                proj.FallingSpeed = (36)*-1;
+                proj.FallingAccel = 1;
+                proj.Height = -50
+                proj.Scale = math.random(8,15)/10
+            end)
         end
     end
 end, 9)
@@ -100,7 +101,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		if not data.State then
 			spr:Play("Spawn", true)
             ent:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
-            ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+            --ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+            ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
+            ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 			data.State = 0
             ent.Position = ent.Position + Vector(230,0)
 		else
@@ -114,17 +117,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 end
                 if spr:IsFinished("Spawn") then
 					data.State = 1
+                    ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
                 end
             elseif data.State == 1 then
-                if ent.FrameCount % 15 == 0 and math.random(1,4) == 4 then
+                if ent.FrameCount % 15 == 0 and math.random(1,2) == 2 then
                     if math.random(1,2) == 2 then
-                        if math.random(1,3) == 3 then
-                            data.State = 4
-                        else
+                        data.State = 4
+                    else
+                        if ent.Position.Y < player.Position.Y then
                             data.State = 3
-                        end
-                    elseif ent.FrameCount % 15 == 0 then
-					    data.State = 2
+                        else
+                            data.State = 2
+                           end
                     end
 				elseif not spr:IsPlaying("Idle") then
 					spr:Play("Idle", true)
@@ -140,7 +144,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     ent.Velocity = ent.Velocity * 0.9
                     if spr:GetFrame() == 24 then
                         for i = -40, 40, 20 do
-                            local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, ((player.Position - ent.Position):Rotated(i)):Resized(9))
+                            local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((player.Position - ent.Position):Rotated(i)):Resized(9))
                             proj.Scale = 1.1
                             --proj:AddProjectileFlags(ProjectileFlags.GHOST)
                             --proj.Color = Color(1,1,1,1,0,0,0)
@@ -167,6 +171,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         yandereWaifu.GetEntityData(tongue).PermanentAngle = 90
                         yandereWaifu.GetEntityData(tongue).Parent = ent
                         tongue.RenderZOffset = 100
+                        for i = -40, 40, 20 do
+                            if i ~= 0 then
+                                local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((Vector(0,10)):Rotated(i)):Resized(9))
+                                proj.Scale = 1.1
+                                --proj:AddProjectileFlags(ProjectileFlags.GHOST)
+                                --proj.Color = Color(1,1,1,1,0,0,0)
+                                --proj:SetColor(Color(1,1,1,1,0,0,0), 9999999, 100, false, false)
+                                proj.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
+                            end
+                        end
                     end
 				end
             elseif data.State == 4 then
@@ -196,9 +210,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         spr:ReplaceSpritesheet(2, "gfx/effects/giant_rock.png");
                         spr:LoadGraphics();
                     end
-                    print(data.IsBucketHolding)
                     --rightwall teleport
-                    ent.Position = Vector(math.abs(ILIB.room:GetBottomRightPos().X-ent.Position.X),ILIB.room:GetCenterPos().Y) + Vector(0,10)
+                    ent.Position = Vector(math.abs(ILIB.room:GetBottomRightPos().X--[[-ent.Position.X]]),ILIB.room:GetCenterPos().Y) + Vector(0,10)
                 else
                     if spr:GetFrame() < 12 then
                         ent.Velocity = (ent.Velocity - Vector(10,0)):Resized(6) * 0.9
@@ -208,7 +221,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     end
 				end
             elseif data.State == 6 then --idle with a rock
-                if ent.FrameCount % 15 == 0 and math.random(1,3) == 3 then
+                if ent.FrameCount % 15 == 0 and math.random(1,3) == 3 or player.Position:Distance(ent.Position) < 150 then
 					data.State = 7
 				elseif not spr:IsPlaying("IdleRock") then
 					spr:Play("IdleRock", true)
@@ -309,7 +322,7 @@ if StageAPI and StageAPI.Loaded then
 			Portrait = "gfx/ui/boss/portrait_poltygeist.png",
 			Offset = Vector(0,-15),
 			Bossname = "gfx/ui/boss/name_poltygeist.png",
-			Weight = 2,
+			Weight = 1,
 			Rooms = StageAPI.RoomsList("Poltygeist Rooms", require("resources.luarooms.bosses.poltygeist")),
 			Entity =  {Type = RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurseEnemies.ENTITY_POLTYGEIST},
 		})

@@ -11,10 +11,6 @@ inutillib_main = require('codes_rebekah.inutillib_main')
 yandereWaifuCodes = {
 	init = nil,
 	savedata = require('codes_rebekah.savedata'),
-	dss = {
-		dsstutorials = require('codes_rebekah.dss.dsstutorials'),
-		deadseascrolls = require('codes_rebekah.dss.deadseascrolls'),
-	},
 	--dssmenucore = require('codes_rebekah.dssmenucore'),
 	
 	enums = require('codes_rebekah.enums'),
@@ -23,6 +19,20 @@ yandereWaifuCodes = {
 		loveroom = require('codes_rebekah.itempools.loveroom'),
 	},
 	itempool = require('codes_rebekah.itempools'),
+
+	unlocks = {
+		enums = require('codes_rebekah.unlocks.enums'),
+		system = require('codes_rebekah.unlocks.unlocksystem'),
+		completionmarks = {
+			rebekah_a = require('codes_rebekah.unlocks.completionmarks.rebekah_a'),
+		}
+	},
+	dss = {
+		dsstutorials = require('codes_rebekah.dss.dsstutorials'),
+		completion_manager = require('codes_rebekah.dss.completion_manager'),
+		deadseascrolls = require('codes_rebekah.dss.deadseascrolls'),
+		deadachievementviewer = require('codes_rebekah.dss.dss_achievementviewer'),
+	},
 	minimenu = require('codes_rebekah.minimenu'),
 	--config = require('codes_rebekah.config'),
 	characters = {
@@ -44,11 +54,17 @@ yandereWaifuCodes = {
 				immortal = require('codes_rebekah.characters.rebekah_A.personalities.immortal')
 			}
 		},
+		rebekahB = {
+			skillmenu = require('codes_rebekah.characters.rebekah_B.skillmenu'),
+			basic = require('codes_rebekah.characters.rebekah_B.basic'),
+			cursed = require('codes_rebekah.characters.rebekah_B.cursed'),
+		},
 		isaacC = require('codes_rebekah.characters.isaac_C.basic'),
 	},
 	entities = {
 		basiceffects = require('codes_rebekah.entities.basiceffects'),
 		basicentities = require('codes_rebekah.entities.basicentities'),
+		statuseffects = require('codes_rebekah.entities.statuseffects'),
 		customplayeranim = require('codes_rebekah.entities.customplayeranim'),
 		mirrorentities = require('codes_rebekah.entities.mirrorentities'),
 		liminal = {
@@ -66,7 +82,9 @@ yandereWaifuCodes = {
 			bloodsins = require('codes_rebekah.entities.bosses.eve.bloodsins'),
 			lilith = require('codes_rebekah.entities.bosses.lilith'),
 			lilithfamiliars = require('codes_rebekah.entities.bosses.lilith.familiars'),
+
 			thestolid = require('codes_rebekah.entities.bosses.thestolid'),
+			theprospector = require('codes_rebekah.entities.bosses.prospector'),
 			nincompoop = require('codes_rebekah.entities.bosses.nincompoop'),
 			poltygeist = require('codes_rebekah.entities.bosses.poltygeist'),
 		}
@@ -103,7 +121,8 @@ yandereWaifuCodes = {
 		lovepower = require('codes_rebekah.items.lovepower'),
 		snap = require('codes_rebekah.items.snap'),
 		cursedspoon = require('codes_rebekah.items.cursedspoon'),
-		patriarchsliar = require('codes_rebekah.items.patriarchsliar'),
+		--patriarchsliar = require('codes_rebekah.items.patriarchsliar'),
+		wickedweaves = require('codes_rebekah.items.wickedweaves'),
 		unrequitedlove = require('codes_rebekah.items.unrequitedlove'),
 		rebekahsfavorite = require('codes_rebekah.items.rebekahsfavorite'),
 		
@@ -128,12 +147,16 @@ yandereWaifuCodes = {
 		notebookofthedead = require('codes_rebekah.items.notebookofthedead'),
 		psoraisis = require('codes_rebekah.items.psoraisis'),
 		rebekahskey = require('codes_rebekah.items.rebekahskey'),
+		skimmedmilk = require('codes_rebekah.items.skimmedmilk'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),
 		mirrorconverter = require('codes_rebekah.slots.mirrorconverter')
 	},
 	shaders = require('codes_rebekah.shaders'),
+	grids = {
+		barrel = require('codes_rebekah.grids.barrel'),
+	},
 	stages = {
 		gen = {
 			rebekahsroom = require('codes_rebekah.floors.gen.rebekahsbedroom'),
@@ -141,8 +164,6 @@ yandereWaifuCodes = {
 		rebekahsroom = require('codes_rebekah.floors.rebekahsbedroom'),
 		liminal = require('codes_rebekah.floors.backrooms'),
 		undercrofts = require('codes_rebekah.floors.undercrofts')
-	},
-	unlocks = {
 	},
 	descriptions = require('codes_rebekah.dss.descriptions'),
 	commands = require('codes_rebekah.commands')

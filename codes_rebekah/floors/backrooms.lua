@@ -3,16 +3,16 @@ LiminalGrid:AddDoors("gfx/grid/liminal/doors/door_liminal.png", StageAPI.Default
 LiminalGrid:AddDoors("gfx/grid/liminal/doors/liminal_hole.png", StageAPI.SecretDoorSpawn)
 LiminalGrid:AddDoors("gfx/grid/door_07_devilroomdoor.png", {RequireEither = {RoomType.ROOM_DEVIL}})
 LiminalGrid:AddDoors("gfx/grid/door_07_holyroomdoor.png", {RequireEither = {RoomType.ROOM_ANGEL}})
-LiminalGrid:AddDoors("gfx/grid/liminal/doors/garden_treasure.png", {RequireEither = {RoomType.ROOM_TREASURE}})
-LiminalGrid:AddDoors("gfx/grid/liminal/doors/garden_boss_2.png", {RequireEither = {RoomType.ROOM_BOSS}})
+LiminalGrid:AddDoors("gfx/grid/liminal/doors/door_liminal.png", {RequireEither = {RoomType.ROOM_TREASURE}})
+LiminalGrid:AddDoors("gfx/grid/liminal/doors/liminal_boss.png", {RequireEither = {RoomType.ROOM_BOSS}})
 LiminalGrid:AddDoors("gfx/grid/door_05_arcaderoomdoor.png", {RequireEither = {RoomType.ROOM_ARCADE}})
 LiminalGrid:AddDoors("gfx/grid/door_04_selfsacrificeroomdoor.png", {RequireEither = {RoomType.ROOM_CURSE}})
-LiminalGrid:AddDoors("gfx/grid/liminal/doors/garden_ambush.png", {RequireEither = {RoomType.ROOM_CHALLENGE}, IsBossAmbush = false})
-LiminalGrid:AddDoors("gfx/grid/liminal/doors/garden_boss_ambush.png", {RequireEither = {RoomType.ROOM_CHALLENGE}, IsBossAmbush = true})
+LiminalGrid:AddDoors("gfx/grid/liminal/doors/door_liminal.png", {RequireEither = {RoomType.ROOM_CHALLENGE}, IsBossAmbush = false})
+LiminalGrid:AddDoors("gfx/grid/liminal/doors/door_liminal.png", {RequireEither = {RoomType.ROOM_CHALLENGE}, IsBossAmbush = true})
 
 
 LiminalGrid:SetRocks("gfx/grid/liminal/rocks_liminal.png")
-LiminalGrid:SetPits("gfx/grid/liminal/grid_pit_liminal.png")
+LiminalGrid:SetPits("gfx/grid/liminal/grid_pit_liminal.png", _, true) --kinda convenient
 LiminalGrid:SetDecorations("gfx/grid/liminal/props_liminal.png")
 LiminalGrid:SetGrid("gfx/grid/grid_poop.png", GridEntityType.GRID_POOP, StageAPI.PoopVariant.Normal)
 LiminalGrid:SetGrid("gfx/grid/liminal/rocks_liminal.png", GridEntityType.GRID_PILLAR)
@@ -25,8 +25,15 @@ local LiminalBackdrop = StageAPI.BackdropHelper({
     Corners = {"main_corner"}
 }, "gfx/backdrop/liminal/", ".png")
 
+local LiminalSafeBackdrop = StageAPI.BackdropHelper({
+    Walls = {"room_1", "room_1", "room_1"},
+    NFloors = {"nfloor"},
+    LFloors = {"lfloor"},
+    Corners = {"main_corner"}
+}, "gfx/backdrop/liminal/", ".png")
+
 local LiminalBackdropBoss = StageAPI.BackdropHelper({
-    Walls = {"room_1"},
+    Walls = {"room_3"},
     NFloors = {"nfloor"},
     LFloors = {"lfloor"},
     Corners = {"main_corner"}
@@ -47,9 +54,9 @@ local LiminalSacrificeBackdrop = StageAPI.BackdropHelper({
 }, "gfx/backdrop/liminal/", ".png")
 
 
-local HoundLiminalRoomList = StageAPI.RoomsList("Hound Backrooms", {
+local LiminalRoomList = StageAPI.RoomsList("Backrooms", {
     Name = "Hound Backrooms",
-    Rooms = require('resources.luarooms.liminal.hound.hound_stage')
+    Rooms = require('resources.luarooms.liminal.stage')
 })
 
 local HoundLiminalStartingRoomList = StageAPI.RoomsList("Hound Starting Backrooms", {
@@ -72,6 +79,7 @@ local LiminalExperimentalRoomList = StageAPI.RoomsList("Garden Experimental", {
 })]]
 
 yandereWaifu.LiminalRoomGfx = StageAPI.RoomGfx(LiminalBackdrop, LiminalGrid, "_default", "stageapi/shading/shading")
+yandereWaifu.LiminalSafeRoomGfx = StageAPI.RoomGfx(LiminalSafeBackdrop, LiminalGrid, "_default", "stageapi/shading/shading")
 
 yandereWaifu.LiminalBossRoomGfx = StageAPI.RoomGfx(LiminalBackdropBoss, LiminalGrid, "_default", "stageapi/shading/shading")
 yandereWaifu.LiminalChallengeRoomGfx = StageAPI.RoomGfx(LiminalBackdrop, LiminalGrid, "_default", "stageapi/shading/shading")
@@ -82,16 +90,18 @@ yandereWaifu.STAGE.Liminal = StageAPI.CustomStage("Liminal") --Nametag of the fl
 yandereWaifu.STAGE.Liminal:SetReplace(StageAPI.StageOverride.CatacombsOne)
 
 yandereWaifu.STAGE.Liminal:SetDisplayName("Liminal")
-yandereWaifu.STAGE.Liminal:SetRooms(HoundLiminalRoomList)
+yandereWaifu.STAGE.Liminal:SetRooms(LiminalRoomList)
 yandereWaifu.STAGE.Liminal:SetStartingRooms(HoundLiminalStartingRoomList)
 
 --yandereWaifu.STAGE.Liminal:SetPregenerationEnabled(true)
-yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalRoomGfx, {RoomType.ROOM_DEFAULT, RoomType.ROOM_TREASURE, RoomType.ROOM_MINIBOSS, RoomType.ROOM_GREED_EXIT, "Safe", "Starting Room"})
+yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalRoomGfx, {RoomType.ROOM_DEFAULT, RoomType.ROOM_TREASURE, RoomType.ROOM_MINIBOSS, RoomType.ROOM_GREED_EXIT, "Starting Room"})
+yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalSafeRoomGfx, {"Safe"})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalBossRoomGfx, {RoomType.ROOM_BOSS})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalChallengeRoomGfx, {RoomType.ROOM_DEVIL, RoomType.ROOM_CURSE, RoomType.ROOM_CHALLENGE})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalSacrificeRoomGfx, {RoomType.ROOM_SACRIFICE})
 
---yandereWaifu.STAGE.Liminal:SetMusic(Isaac.GetMusicIdByName("Garden Floor"), RoomType.ROOM_DEFAULT)
+yandereWaifu.STAGE.Liminal:SetMusic(RebekahCurseMusic.MUSIC_BACKROOMS, RoomType.ROOM_DEFAULT)
+yandereWaifu.STAGE.Liminal:SetBossMusic(RebekahCurseMusic.MUSIC_BACKROOMSBOSS, Music.MUSIC_BOSS_OVER)
 --yandereWaifu.STAGE.Liminal:SetBossMusic(Isaac.GetMusicIdByName("Garden Boss"), Music.MUSIC_BOSS_OVER)
 
 --yandereWaifu.STAGE.Liminal:SetSpots("gfx/ui/boss/bossspot_19_void.png", "gfx/ui/boss/playerspot_19_void.png")
@@ -208,9 +218,14 @@ function yandereWaifu.SpawnHoundFromDoor(noappear)
                 local houndCount = #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, -1, false, false)
 		        if houndCount <= 0 then
                     local spawn = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, 0, ILIB.room:FindFreePickupSpawnPosition(chosenDoor.Position, 1), Vector(0,0), nil):ToNPC()
+                   
                     if noappear then
                         spawn:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
                     end
+                    yandereWaifu.GetEntityData(spawn).IsInvincible = true
+                    yandereWaifu.GetEntityData(spawn).IsBackroomsHunting = true
+                    spawn.CanShutDoors = false
+                    spawn:AddEntityFlags(EntityFlag.FLAG_DONT_COUNT_BOSS_HP)
                 end
            end
         end)
@@ -243,10 +258,13 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
             end
         end
     end
-    if yandereWaifu.STAGE.Liminal:IsStage() then
-        for p = 0, ILIB.game:GetNumPlayers() - 1 do
-            local player = Isaac.GetPlayer(p):ToPlayer()
-            player:AddCurseMistEffect(true)
+    if ILIB.room:GetType() ~= RoomType.ROOM_BOSS then
+        if yandereWaifu.STAGE.Liminal:IsStage() then
+            for p = 0, ILIB.game:GetNumPlayers() - 1 do
+                local player = Isaac.GetPlayer(p):ToPlayer()
+                --player:AddCurseMistEffect(true)
+                player:AddFear(EntityRef(player), 5)
+            end
         end
     end
 end)

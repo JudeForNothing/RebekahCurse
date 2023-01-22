@@ -643,6 +643,10 @@ end)
 
 -----LIBRARY??------------
 
+function InutilLib.ProAPILerp(first,second,percent) --stolen from FF's library
+	return (first + (second - first)*percent)
+end
+
 --function to tell where to vectors/entities are located then product changed into an angle
 function InutilLib.ObjToTargetAngle(obj, targetPos, angleResult)
 	if angleResult == true then
@@ -786,7 +790,7 @@ function InutilLib.GetClosestGenericEnemy(obj, dist, blacklist, checkLine, mode,
 	local closestDist = 177013 --saved Dist to check who is the closest enemy
 	local returnV
 	for i, e in pairs(Isaac.GetRoomEntities()) do
-		if e:IsEnemy() and e:IsVulnerableEnemy() and not e:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+		if GetPtrHash(obj) ~= GetPtrHash(e) and e:IsEnemy() and e:IsVulnerableEnemy() and not e:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
 			if blacklist then
 				if e.Type ~= blacklist then
 					local minDist = dist or 100
@@ -1156,7 +1160,19 @@ function InutilLib.AnimWalkFrame(ent, boo, hori, vert, opUp, opHori2, NE, NW, SE
 end
 
 function InutilLib.FlipXByVec(ent, invert) --invert exists just in case some guy did his sprite the other way and it's making the sprite go backwards each time
-	local angle = (ent.Velocity):GetAngleDegrees()
+		local angle = (ent.Velocity):GetAngleDegrees()
+		if angle >= -90 and angle <= 90 then -- Left
+			if invert == true then result = true else result = false end
+		elseif angle >= 90 or angle <= -90 then -- Right
+			if invert == true then result = false else result = true end
+		end
+			ent:GetSprite().FlipX = result
+		return result
+end
+
+
+function InutilLib.FlipXByTarget(ent, target, invert) --invert exists just in case some guy did his sprite the other way and it's making the sprite go backwards each time
+	local angle = (ent.Position - target.Position):GetAngleDegrees()
 	if angle >= -90 and angle <= 90 then -- Left
 		if invert == true then result = true else result = false end
 	elseif angle >= 90 or angle <= -90 then -- Right
@@ -1165,6 +1181,7 @@ function InutilLib.FlipXByVec(ent, invert) --invert exists just in case some guy
 		ent:GetSprite().FlipX = result
 	return result
 end
+
 
 
 function InutilLib.AnimShootFrame(ent, boo, vec, hori, vert, opUp, opHori2, NE, NW, SE, SW) --because I want to make a more flexible version of npc:AnimWalkFrame + I wanted this to work for other types of entities as well
@@ -1227,6 +1244,24 @@ end
 function InutilLib.IsPlayingMultiple(sprite, ...)
     for _, anim in ipairs({...}) do
         if sprite:IsPlaying(anim) then
+            return true
+        end
+    end
+    return false
+end
+
+function InutilLib.IsOverlayFinishedMultiple(sprite, ...)
+    for _, anim in ipairs({...}) do
+        if sprite:IsOverlayFinished(anim) then
+            return true
+        end
+    end
+    return false
+end
+
+function InutilLib.IsOverlayPlayingMultiple(sprite, ...)
+    for _, anim in ipairs({...}) do
+        if sprite:IsOverlayPlaying(anim) then
             return true
         end
     end
@@ -1408,6 +1443,13 @@ function InutilLib.PressPressurePlate(grid)
 	end
 end
 
+--https://www.redblobgames.com/grids/circle-drawing/ this one is a good one
+function InutilLib.GetGridsInRadius(center, tile, radius)
+	local dx = center.X - tile.X
+	local dy = center.Y - tile.Y;
+	local distance_squared = dx*dx + dy*dy;
+	return distance_squared <= radius*radius;
+end
 --underlay effects
 local ENTITY_ENTUNDERLAY = Isaac.GetEntityVariantByName("Underlay");
 InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
@@ -2104,7 +2146,7 @@ function InutilLib.RoomIsSafe()
 	local roomHasDanger = false
 
 	for i, e in pairs(Isaac.GetRoomEntities()) do
-		if e:IsEnemy() then
+		if e:IsEnemy() and e:IsVulnerableEnemy() then
 			roomHasDanger = true
 			return false
 		end
@@ -2633,6 +2675,16 @@ function InutilLib.FireGenericProjAttack(ent, variant, subtype, position, veloci
 	return proj
 end
 
+function InutilLib.MakeProjectileLob(tear, acc, height )
+	local accel = accel or 1
+	local heightTo = height or 13
+	local data = InutilLib.GetILIBData( tear )
+	if not data.LobInit then
+		tear.FallingSpeed = (heightTo)*-1;
+		tear.FallingAccel = accel;
+		data.LobInit = true
+	end
+end
 
 --Get Tear Size functions
 

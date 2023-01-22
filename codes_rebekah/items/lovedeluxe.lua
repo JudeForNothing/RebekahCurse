@@ -39,7 +39,7 @@ yandereWaifu.RegisterCharacterHairColor("Rebekah", LoveDeluxeHairColor.BLACK)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEDELUXE) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEDELUXE) then
 		if player:GetFireDirection() == -1 then --if not firing
 			if data.loveDeluxeTick and data.loveDeluxeDir then
 				if data.loveDeluxeTick >= 30 then
@@ -140,7 +140,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_LOVEDELUXE) and Options.ChargeBars then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEDELUXE) and Options.ChargeBars then
 			yandereWaifu.loveDeluxeUI(player)
 
 		end

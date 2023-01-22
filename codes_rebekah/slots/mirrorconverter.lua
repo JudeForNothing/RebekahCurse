@@ -6,18 +6,6 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 	local totalUnlockedTypesofHearts = {}
 	local getRebekahsPresent = 0
 	
-	
-	local heartTableUnlocks = {
-			ShowRed = true,
-			ShowBlue = true,
-			ShowGold = true,
-			ShowEvil = true,
-			ShowEternal = true,
-			ShowBone = true,
-			ShowRotten = true,
-			ShowBroken = true
-	}
-	
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
@@ -74,9 +62,8 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 		}
 		
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART) then heartBrideTable.Show = true end
-		
 		--mirror code
-		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT , RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
+		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
 			if not InutilLib.IsShowingItem(player) and mir.SubType == 20 then
 				local mirdata = yandereWaifu.GetEntityData(mir);
 				local sprite = mir:GetSprite();
@@ -124,11 +111,15 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 						if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then 
 							for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 								if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-									local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+									local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, 0, pickup.Position,  pickup.Velocity, pickup)
+									--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
 									pickup:Remove()
 								end
 							end
-							mir:Remove()
+							--mir:Remove()
+							if not sprite:IsFinished("Death") then
+								sprite:Play("Death")
+							end
 						else
 							if not mirdata.ForceOverlay then
 								--sprite:PlayOverlay(tostring(mirdata.Use).."_Use", true)
@@ -190,9 +181,10 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 									--end
 									
 									local newMode = yandereWaifu.GetEntityData(player).currentMode;
+									local data = yandereWaifu.GetEntityData(player)
 									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and #totalCurTypesofHearts > 0 and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") and not sprite:IsPlaying("Initiate") and not yandereWaifu.GetEntityData(player).IsAttackActive then --if interacted
 										--print("trigger")
-										local data = yandereWaifu.GetEntityData(player)
+									
 										if sprite:IsPlaying("ShowRed") 
 											and (player:GetHearts() >= 1 or mir.SubType == 10) then
 											local rng = math.random(1,6)
@@ -252,6 +244,12 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 											--don't move
 											player.Velocity = Vector(0,0)
 											mirdata.currentHeart = 1; --reset
+											if math.random(1,7) == 7 then
+												--Isaac.Explode(mir.Position, player, 0)
+												mir.GridCollisionClass = 1
+												mir:Die()
+												mir.Velocity = (mir.Position - player.Position):Resized(6)
+											end
 											--print("happy")
 											--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 										end
@@ -261,21 +259,21 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 									if sprite:GetFrame() == 0 and EID then
 										local Description
 										if sprite:IsPlaying("ShowRed") then
-											Description = EIDRebekahsMirror.Red
+											Description = EIDMakeupStation.Red
 										elseif sprite:IsPlaying("ShowBlue") then
-											Description = EIDRebekahsMirror.Soul
+											Description = EIDMakeupStation.Soul
 										elseif sprite:IsPlaying("ShowGold") then
-											Description = EIDRebekahsMirror.Gold
+											Description = EIDMakeupStation.Gold
 										elseif sprite:IsPlaying("ShowEvil") then
-											Description = EIDRebekahsMirror.Evil
+											Description = EIDMakeupStation.Evil
 										elseif sprite:IsPlaying("ShowEternal") then
-											Description = EIDRebekahsMirror.Eternal
+											Description = EIDMakeupStation.Eternal
 										elseif sprite:IsPlaying("ShowBone") then
-											Description = EIDRebekahsMirror.Bone
+											Description = EIDMakeupStation.Bone
 										elseif sprite:IsPlaying("ShowRotten") then
-											Description = EIDRebekahsMirror.Rotten
+											Description = EIDMakeupStation.Rotten
 										elseif sprite:IsPlaying("ShowBroken") then
-											Description = EIDRebekahsMirror.Broken
+											Description = EIDMakeupStation.Broken
 										end
 										mir:GetData()["EID_Description"] = Description
 									end
@@ -296,67 +294,10 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 									end
 								end
 								if mir.Position:Distance(player.Position) > mir.Size + player.Size + 45 then --if close or far, speed up or not?
-									mir:GetSprite().PlaybackSpeed = 3;
+									mir:GetSprite().PlaybackSpeed = 2;
 								else
-									mir:GetSprite().PlaybackSpeed = 0.002;
+									mir:GetSprite().PlaybackSpeed = 1;
 								end
-							end
-						end
-					end
-				elseif mir.SubType == 1 then
-					if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then --heart only drop mechanic
-						sprite:Play("Death", true);
-						mirdata.Circle:GetSprite():Play("FadeOut",true)
-						for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
-							if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-								local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
-								pickup:Remove()
-							end
-						end
-						if not mirdata.DeadFinished then
-							mirdata.DeadFinished = true;
-						end 
-					else
-						if mirdata.Circle then mirdata.Circle.Position = mir.Position end
-						if mir.FrameCount == 2 then
-							if not sprite:IsPlaying("Appear") then
-								sprite:Play("StartUp", true);
-							end
-						elseif mir.FrameCount >= 10 and not mirdata.Dead then
-							if not mirdata.notAlive then
-								if not sprite:IsPlaying("ShowBRed") then  sprite:Play("ShowBRed", true) end
-								
-								local newMode = yandereWaifu.GetEntityData(player).currentMode;
-								if yandereWaifu.IsNormalRebekah(player) then
-									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and heartBrideTable.Show and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") then --if interacted
-										if sprite:IsPlaying("ShowBRed") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
-											newMode = REBECCA_MODE.BrideRedHearts;
-										end
-										if newMode ~= yandereWaifu.GetEntityData(player).currentMode then
-											--mirdata.notAlive = true;
-											player:AnimateSad();
-											sprite:Play("Initiate", true);
-											yandereWaifu.ChangeMode( player, newMode );
-											--don't move
-											player:RemoveCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART)
-											player.Velocity = Vector(0,0)
-											mirdata.Circle:GetSprite():Play("FadeOut",true)
-											ILIB.game:Darken(5,1200)
-											InutilLib.AnimateGiantbook(nil, nil, "Marry", "gfx/ui/giantbook/giantbook_marriage.anm2", true, true)
-										end
-									end
-								end
-							else
-								if sprite:IsFinished("Initiate") then
-									sprite:Play("FinishedJob", true);
-								elseif sprite:IsFinished("FinishedJob") then
-									mir:Remove();
-								end
-							end
-							if mir.Position:Distance(player.Position) > mir.Size + player.Size + 45 then --if close or far, speed up or not?
-								mir:GetSprite().PlaybackSpeed = 3;
-							else
-								mir:GetSprite().PlaybackSpeed = 1;
 							end
 						end
 					end

@@ -2,7 +2,7 @@
 function yandereWaifu.GoldHeartSlam(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurse.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	local room = ILIB.room
@@ -43,6 +43,8 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 		end
 	end
 	
+	ILIB.game:MakeShockwave(eff.Position, 0.065, 0.025, 10)
+
 	Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, player.Position, Vector(0,0), player)
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 14, player.Position, Vector.Zero, player):ToEffect()
 	yandereWaifu.GetEntityData(poof).Parent = player

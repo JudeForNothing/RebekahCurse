@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	--love = power
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CANDYWEDDINGRING) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CANDYWEDDINGRING) then
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed + 0.2
 		end
@@ -10,7 +10,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_CANDYWEDDINGRING) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_CANDYWEDDINGRING) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CANDYWEDDINGRING) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_CANDYWEDDINGRING) then
 		player:AddNullCostume(RebekahCurseCostumes.CandyWeddingRing)
 	end
 end)

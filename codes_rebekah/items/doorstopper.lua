@@ -10,37 +10,81 @@ function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
 	end
 
-	InutilLib.ToggleShowActive(player, true)
+	InutilLib.ToggleShowActive(player, false)
+	return {
+		Discharge = false
+	}
 end
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurse.COLLECTIBLE_DOORSTOPPER )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurseItems.COLLECTIBLE_DOORSTOPPER )
+--[[
+function yandereWaifu:useBookstopperBookBelial(collItem, rng, player, flags, slot)
+	local data = yandereWaifu.GetEntityData(player)
+	print("bookasd")
+	--return false
+	return {
+		Discharge = false, 
+		ShowAnim = true
+	}
+end
 
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopperBookBelial, CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL )
+]]
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_DOORSTOPPER) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_DOORSTOPPER ) then
-			local vector = InutilLib.DirToVec(player:GetFireDirection())
-			--data.specialAttackVector = Vector( vector.X, vector.Y )
-			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(7), player );
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
-				InutilLib.SetTimer( 15, function()
-					local mob2 = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(10), player );
-					yandereWaifu.GetEntityData(mob2).DontCharge = true
-					mob2:GetSprite():ReplaceSpritesheet(0, "gfx/effects/items/doorstopper_extra.png")
-					mob2:GetSprite():LoadGraphics()
-					yandereWaifu.GetEntityData(mob2).Player = player
-					mob2:GetSprite():Play("Thrown", true)
-					yandereWaifu.GetEntityData(mob2).Brother = mob
-				end)
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER) then
+		if player:GetName() == "Judas" and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+			if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_DOORSTOPPER ) then
+				local vector = InutilLib.DirToVec(player:GetFireDirection())
+				--data.specialAttackVector = Vector( vector.X, vector.Y )
+				local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(7), player );
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+					InutilLib.SetTimer( 15, function()
+						local mob2 = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(10), player );
+						yandereWaifu.GetEntityData(mob2).DontCharge = true
+						mob2:GetSprite():ReplaceSpritesheet(0, "gfx/effects/items/doorstopper_extra.png")
+						mob2:GetSprite():LoadGraphics()
+						yandereWaifu.GetEntityData(mob2).Player = player
+						mob2:GetSprite():Play("Thrown", true)
+						yandereWaifu.GetEntityData(mob2).Brother = mob
+					end)
+				end
+				InutilLib.ConsumeActiveCharge(player)
+				InutilLib.ToggleShowActive(player, false)
+				yandereWaifu.GetEntityData(mob).Player = player
+				mob:GetSprite():Play("Thrown", true)
+				yandereWaifu.GetEntityData(mob).DontCharge = true
+				yandereWaifu.GetEntityData(mob).IsBelial = true
+				mob:GetSprite():ReplaceSpritesheet(0, "gfx/effects/items/doorstopper_belial.png")
+				player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, 0, -1)
+				mob:GetSprite():LoadGraphics()
+				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 			end
-			InutilLib.ConsumeActiveCharge(player)
-			InutilLib.ToggleShowActive(player, false)
-			yandereWaifu.GetEntityData(mob).Player = player
-			mob:GetSprite():Play("Thrown", true)
-			player:AddWisp(RebekahCurse.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
+		else
+			if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_DOORSTOPPER ) then
+				local vector = InutilLib.DirToVec(player:GetFireDirection())
+				--data.specialAttackVector = Vector( vector.X, vector.Y )
+				local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(7), player );
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
+					InutilLib.SetTimer( 15, function()
+						local mob2 = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(10), player );
+						yandereWaifu.GetEntityData(mob2).DontCharge = true
+						mob2:GetSprite():ReplaceSpritesheet(0, "gfx/effects/items/doorstopper_extra.png")
+						mob2:GetSprite():LoadGraphics()
+						yandereWaifu.GetEntityData(mob2).Player = player
+						mob2:GetSprite():Play("Thrown", true)
+						yandereWaifu.GetEntityData(mob2).Brother = mob
+					end)
+				end
+				InutilLib.ConsumeActiveCharge(player)
+				InutilLib.ToggleShowActive(player, false)
+				yandereWaifu.GetEntityData(mob).Player = player
+				mob:GetSprite():Play("Thrown", true)
+				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
+			end
 		end
 	end
 end)
@@ -63,7 +107,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			local pl = Isaac.GetPlayer(i)
 			if GetPtrHash(pl) == GetPtrHash(player) then
 				if pl.Position:Distance(eff.Position) <= 40 then 
-					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.COLLECTIBLE_DOORSTOPPER then
+					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurseItems.COLLECTIBLE_DOORSTOPPER then
 						eff:Remove()
 						if not data.DontCharge then
 							pl:FullCharge(ActiveSlot.SLOT_PRIMARY, true)
@@ -95,8 +139,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff.Velocity = Vector.Zero
 			for i, ent in pairs (Isaac.GetRoomEntities()) do
 				if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
-					if ent.Position:Distance(eff.Position) <= 80 then
-						ent:TakeDamage(7.5, 0, EntityRef(eff), 1)
+					if ent.Position:Distance(eff.Position) <= 80 or (ent.Position:Distance(eff.Position) <= 260 and data.IsBelial) then
+						if data.IsBelial then
+							ent:TakeDamage(15, 0, EntityRef(eff), 1)
+						else
+							ent:TakeDamage(7.5, 0, EntityRef(eff), 1)
+						end
 					end
 				end
 				if ent.Position:Distance(eff.Position) <= 120 and ent.Type ~= EntityType.ENTITY_PLAYER and ent.Type ~= EntityType.ENTITY_EFFECT then

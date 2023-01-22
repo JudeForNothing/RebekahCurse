@@ -134,7 +134,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.GraveBabyIn
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	--[[if player:HasCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) and InutilLib.HasJustPickedCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) then
+	--[[if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) and InutilLib.HasJustPickedCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) then
 		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 		player:EvaluateItems()
 	end]]
@@ -143,8 +143,8 @@ end)
 function yandereWaifu:GraveBabyCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_GRAVEBABY, player:GetCollectibleNum(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurse.COLLECTIBLE_ABEAUTIFULGRAVE))
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) then
+			player:CheckFamiliar(RebekahCurse.ENTITY_GRAVEBABY, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE))
 		end
 	end
 end

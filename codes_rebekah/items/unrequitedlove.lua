@@ -3,8 +3,8 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 
 	--unrequited love
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE ) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			local vel = 45
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
@@ -34,10 +34,13 @@ function yandereWaifu:useUnLove(collItem, rng, player)
 	else
 		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
 	end
-	InutilLib.ToggleShowActive(player, true)
+	InutilLib.ToggleShowActive(player, false)
+	return {
+		Discharge = false
+	}
 
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, RebekahCurse.COLLECTIBLE_UNREQUITEDLOVE );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE );
 
 --love hook effect
 

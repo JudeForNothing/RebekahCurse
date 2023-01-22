@@ -45,7 +45,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, pl)
 	local sprite = pl:GetSprite()
 	local data = yandereWaifu.GetEntityData(pl)
 	
-	if pl:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
+	if pl:HasCollectible(RebekahCurseItems.COLLECTIBLE_FINGERFINGER) then
 		if not data.FingerTable then data.FingerTable = {} end
 		for i, v in ipairs (Isaac.GetRoomEntities()) do
 			if v.Type == 1000 and v.Variant == RebekahCurse.ENTITY_FINGER_CLICKER then
@@ -79,7 +79,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN --[[and damageSource.Entity.SpawnerEntity]] then
 			local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
 			if player then
-				if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
+				if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FINGERFINGER) then
 					if not data.FingerTable then data.FingerTable = {} end
 					if #yandereWaifu.GetEntityData(player).FingerTable > 0 and damage:IsEnemy() and damage:IsVulnerableEnemy() then
 						for i, v in pairs(yandereWaifu.GetEntityData(player).FingerTable) do
@@ -98,7 +98,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				if (damageSource.Entity.Type == 1) then
 					print("hello")
 					local player = damageSource.Entity:ToPlayer()
-					if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
+					if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FINGERFINGER) then
 						SpawnFinger(player)
 					end
 				end
@@ -106,7 +106,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				if (damageSource.Entity.SpawnerEntity.Type == 1) then
 					print("helloaa")
 					local player = damageSource.Entity.SpawnerEntity:ToPlayer()
-					if player:HasCollectible(RebekahCurse.COLLECTIBLE_FINGERFINGER) then
+					if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FINGERFINGER) then
 						SpawnFinger(player)
 					end
 				end

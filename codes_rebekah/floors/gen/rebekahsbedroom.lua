@@ -5,7 +5,10 @@ function yandereWaifu.WillSpawnLoveRoom()
 	local rng = RNG()
 	rng:SetSeed(seed, 35)
 	local randomChance = rng:RandomInt(100)
-	if --[[seed % 100 <=]] randomChance <= RebekahLocalSavedata.loveRoomReplacePercent then
+	print("loveroomstuff")
+	print(math.abs(randomChance))
+	print(RebekahLocalSavedata.loveRoomReplacePercent)
+	if --[[seed % 100 <=]] math.abs(randomChance) < RebekahLocalSavedata.loveRoomReplacePercent then
 		return true
 	else
 		return false

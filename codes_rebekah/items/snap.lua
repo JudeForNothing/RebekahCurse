@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
-		if InutilLib.HasJustPickedCollectible( player, RebekahCurse.COLLECTIBLE_SNAP) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
+		if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_SNAP) then
 			player:AddNullCostume(RebekahCurseCostumes.UnsnappedCos)
 		end
 		--[[local maxH, H = player:GetMaxHearts(), player:GetHearts()
@@ -43,7 +43,7 @@ end)
 
 
 InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
+	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
 		local data = yandereWaifu.GetEntityData(damage)
 		if not data.hasSnap and not data.isSnappedTired then
 			damage = damage:ToPlayer()
@@ -74,7 +74,7 @@ InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amoun
 	end
 	if player then
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP )and data.hasSnap then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP )and data.hasSnap then
 			--damage:TakeDamage( amount* 2, 0, damageSource, 0);
 			--return false
 		end
@@ -85,7 +85,7 @@ function yandereWaifu:SnappedTiredNewRoom()
 	for p = 0, ILIB.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
 			if data.hasSnap then
 				data.hasSnap = nil
 				data.isSnappedTired = true
@@ -109,7 +109,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.SnappedTir
 --stat cache for each mode
 function yandereWaifu:snapcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.COLLECTIBLE_SNAP) then
+	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
 		--if data.SnapDelay then
 		--	if cacheF == CacheFlag.CACHE_FIREDELAY then
 		--		player.FireDelay = player.FireDelay - data.SnapDelay

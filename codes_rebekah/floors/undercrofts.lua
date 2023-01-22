@@ -47,10 +47,10 @@ local UndercroftSacrificeBackdrop = StageAPI.BackdropHelper({
 }, "gfx/backdrop/undercrofts/", ".png")
 
 
-local UndercroftRoomList = StageAPI.RoomsList("Basic Undercrofts", {
+--[[local UndercroftRoomList = StageAPI.RoomsList("Basic Undercrofts", {
     Name = "Basic Undercrofts",
     Rooms = require('resources.luarooms.liminal.backrooms')
-})
+})]]
 
 --[[
 local UndercroftExperimentalRoomList = StageAPI.RoomsList("Garden Experimental", {
@@ -76,7 +76,7 @@ yandereWaifu.STAGE.Undercroft = StageAPI.CustomStage("Undercroft") --Nametag of 
 yandereWaifu.STAGE.Undercroft:SetReplace(StageAPI.StageOverride.NecropolisOne)
 
 yandereWaifu.STAGE.Undercroft:SetDisplayName("Undercroft")
-yandereWaifu.STAGE.Undercroft:SetRooms(UndercroftRoomList)
+--yandereWaifu.STAGE.Undercroft:SetRooms(UndercroftRoomList)
 --yandereWaifu.STAGE.Undercroft:SetPregenerationEnabled(true)
 yandereWaifu.STAGE.Undercroft:SetRoomGfx(yandereWaifu.UndercroftRoomGfx, {RoomType.ROOM_DEFAULT, RoomType.ROOM_TREASURE, RoomType.ROOM_MINIBOSS, RoomType.ROOM_GREED_EXIT})
 yandereWaifu.STAGE.Undercroft:SetRoomGfx(yandereWaifu.UndercroftBossRoomGfx, {RoomType.ROOM_BOSS})

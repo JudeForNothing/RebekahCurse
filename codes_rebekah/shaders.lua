@@ -1,19 +1,19 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, function(_, shaderName)
 	if shaderName == "apologizeimscared" then
-		local isActive = 1
+		local isActive = 1.0
 		--local isLiminal = yandereWaifu.STAGE.Liminal:IsStage()
 		--if not isLiminal then
-			isActive = 0
+			isActive = 0.0
 		--end
 		local param = { 
 			colored = 12.0,
-			pulse = ILIB.game:GetFrameCount()%15,
+			pulse = math.floor(ILIB.game:GetFrameCount()%15)*1.0,
 			shaderActive = isActive
 		}
 		return param
 	end
 	if shaderName == "yourreality" then
-		local isActive = 0
+		local isActive = 0.0
 		--local isLiminal = yandereWaifu.STAGE.Liminal:IsStage()
 		local isErroring = false
 		for i, player in pairs (Isaac.FindByType(EntityType.ENTITY_PLAYER, -1, -1, false, false)) do
@@ -24,9 +24,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, function(_, shaderNa
 			end
 		end 
 		if isErroring then
-			isActive = 1
+			isActive = 1.0
 		end
-		local frame = 1
+		local frame = 1.0
 		local param = { 
 			time = frame,
 			shaderActive = isActive

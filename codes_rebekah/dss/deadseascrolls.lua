@@ -2,10 +2,10 @@ local json = require("json")
 function yandereWaifu.GetMenuSaveData()
 	local data
 	local savedata = yandereWaifu.GetSaveData().menudata
-    if not savedata.menudata then
+    if not savedata then
 		data = {}
 	else
-		data = savedata.menudata
+		data = savedata
     end
     return data
 end
@@ -94,12 +94,509 @@ end
 local DSSInitializerFunction = include('codes_rebekah.dss.dssmenucore')
 local dssmod = DSSInitializerFunction(DSSModName, DSSCoreVersion, MenuProvider)
 
+yandereWaifu.DSS_MOD = dssmod
+
+local NOTE1_RENDER_OFFSET = Vector(-116, -27)
+local NOTE2_RENDER_OFFSET = Vector(-32, -27)
+local NOTE3_RENDER_OFFSET = Vector(-74, -27)
+
+local completionNoteSprite = Sprite()
+completionNoteSprite:Load("gfx/ui/completion_widget.anm2")
+completionNoteSprite:SetFrame("Idle", 0)
+--completionNoteSprite.Scale = Vector.One / 2
+
+local completionHead = Sprite()
+completionHead:Load("gfx/ui/completion_heads_ff.anm2")
+completionHead:SetFrame("Fiend", 0)
+
+local completionDoor = Sprite()
+completionDoor:Load("gfx/ui/completion_doors_ff.anm2")
+completionDoor:SetFrame("Fiend", 0)
+
+local completionCharacterSets = {
+    {
+        {HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return true end},
+        --{HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
+    },
+    {
+        {HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return true end},
+        --{HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
+    }
+}
+
+-- Sorry I ALSO need these here too for the note rendering!
+local function getScreenBottomRight()
+    return game:GetRoom():GetRenderSurfaceTopLeft() * 2 + Vector(442,286)
+end
+
+local function getScreenCenterPosition()
+    return getScreenBottomRight() / 2
+end
+
+----
+local dssmod = yandereWaifu.DSS_MOD
+local mod = yandereWaifu
+
+local function biendUnlocked()
+    --return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked(true)
+    return false
+end
+
+local achievementGroups = {
+    {
+        Name = "miscellaneous",
+        Tag = "Misc",
+        Icon = "misc"
+    },
+    {
+        Name = "rebekah character",
+        Tag = "Rebekah Character",
+        Icon = "rebekah character"
+    },
+    {
+        Name = "rebekah",
+        Tag = "Rebekah",
+        Icon = "rebekah"
+    },
+    --[[{
+        Name = "sadrebekah",
+        Tag = "SadRebekah",
+        Icon = "sadrebekah",
+        DisplayIf = rebekahUnlocked
+    },
+    {
+        Name = "challenge",
+        Tag = "Challenge",
+        Icon = "challenge"
+    },
+    ]]
+    {
+        Name = "everything",
+        Icon = "everything",
+        TagToName = {
+            --[[Misc = "miscellaneous",
+            RebekahCharacter = "rebekah character",
+            SadRebekah = "sadrebekah",
+            Rebekah = "rebekah",
+            Challenge = "challenge"]]
+        },
+        TagToDisplayIf = {
+            SadRebekah = rebekahUnlocked
+        },
+        Achievements = {}
+    }
+    --[[{
+        Name = "fiend",
+        Tag = "Fiend",
+        Icon = "fiend"
+    },
+    {
+        Name = "tainted fiend",
+        Tag = "Biend",
+        Icon = "biend",
+        DisplayIf = biendUnlocked
+    },
+    {
+        Name = "golem",
+        Tag = "Golem",
+        Icon = "golem"
+    },
+    {
+        Name = "challenge",
+        Tag = "Challenge",
+        Icon = "challenge"
+    },
+    {
+        Name = "everything",
+        Icon = "everything",
+        TagToName = {
+            Misc = "miscellaneous",
+            Fiend = "fiend",
+            Biend = "tainted fiend",
+            Golem = "golem",
+            Challenge = "challenge"
+        },
+        TagToDisplayIf = {
+            Biend = biendUnlocked
+        },
+        Achievements = {}
+    }]]
+}
+
+for _, group in ipairs(achievementGroups) do
+    local sprite = Sprite()
+    sprite:Load("gfx/ui/achievement/group_icons/group_icon.anm2", false)
+    sprite:ReplaceSpritesheet(0, "gfx/ui/achievement/group_icons/icon_" .. group.Icon .. ".png")
+    sprite:LoadGraphics()
+    sprite:SetFrame("Idle", 0)
+    group.Icon = sprite
+end
+
+local arrow = Sprite()
+arrow:Load("gfx/ui/achievement/group_icons/arrow_icon.anm2", true)
+
+local achievementLockedSprite = Sprite()
+achievementLockedSprite:Load("gfx/ui/achievement/_ff_achievement.anm2", false)
+achievementLockedSprite:ReplaceSpritesheet(0, "gfx/nothing.png")
+achievementLockedSprite:ReplaceSpritesheet(2, "gfx/ui/achievement/achievement_locked.png")
+achievementLockedSprite:LoadGraphics()
+
+local achievementTooltipSprites = {
+    Shadow = "gfx/ui/achievement/group_note/menu_achievement_shadow.png",
+    Back = "gfx/ui/achievement/group_note/menu_achievement_back.png",
+    Face = "gfx/ui/achievement/group_note/menu_achievement_face.png",
+    Border = "gfx/ui/achievement/group_note/menu_achievement_border.png",
+    Mask = "gfx/ui/achievement/group_note/menu_achievement_mask.png",
+}
+
+for k, v in pairs(achievementTooltipSprites) do
+    local sprite = Sprite()
+    sprite:Load("gfx/ui/achievement/group_note/menu_achievement.anm2", false)
+    sprite:ReplaceSpritesheet(0, v)
+    sprite:LoadGraphics()
+    achievementTooltipSprites[k] = sprite
+end
+
+
+local displayIndexToScale = {
+    [0] = Vector(1, 1),
+    [1] = Vector(0.75, 0.75),
+    [2] = Vector(0.5, 0.5),
+    [3] = Vector(0, 0),
+    [4] = Vector(0, 0)
+}
+
+local displayIndexToColor = {
+    [0] = Color.Default,
+    [1] = Color(0.9, 0.9, 0.9, 1, 0, 0, 0),
+    [2] = Color(0.8, 0.8, 0.8, 1, 0, 0, 0),
+    [3] = Color(0.8, 0.8, 0.8, 0, 0, 0, 0),
+    [4] = Color(0, 0, 0, 0, 0, 0, 0)
+}
+
+local displayIndexToYPos = {
+    [0] = -50,
+    [1] = -40,
+    [2] = -30,
+    [3] = -20,
+    [4] = 5000
+}
+
+yandereWaifu.achievementviewer = {
+    format = {
+        Panels = {
+            {
+                Panel = {
+                    StartAppear = function(panel)
+                        dssmod.playSound(dssmod.menusounds.Open)
+                        panel.AppearFrame = 0
+                        panel.Idle = false
+                        Isaac.DebugString("did go her")
+                    end,
+                    UpdateAppear = function(panel)
+                        Isaac.DebugString("did go eeeeeeee")
+                        if panel.SpriteUpdateFrame then
+                            panel.AppearFrame = panel.AppearFrame + 1
+                            if panel.AppearFrame >= 10 then
+                                panel.AppearFrame = nil
+                                panel.Idle = true
+                                return true
+                            end
+                        end
+                    end,
+                    StartDisappear = function(panel)
+                        dssmod.playSound(dssmod.menusounds.Close)
+                        panel.DisappearFrame = 0
+                    end,
+                    UpdateDisappear = function(panel)
+                        if panel.SpriteUpdateFrame then
+                            panel.DisappearFrame = panel.DisappearFrame + 1
+                            if panel.DisappearFrame >= 11 then
+                                return true
+                            end
+                        end
+                    end,
+                    RenderBack = function(panel, panelPos, tbl)
+                        local anim, frame = "TrueIdle", 0
+                        if panel.AppearFrame then
+                            anim, frame = "AppearVert", panel.AppearFrame
+                        elseif panel.DisappearFrame then
+                            anim, frame = "DisappearVert", panel.DisappearFrame
+                        end
+
+                        if panel.ShiftFrame then
+                            panel.ShiftFrame = panel.ShiftFrame + 1
+                            if panel.ShiftFrame > panel.ShiftLength then
+                                panel.ShiftLength = nil
+                                panel.ShiftFrame = nil
+                                panel.ShiftDirection = nil
+                            end
+                        end
+
+                        local item = yandereWaifu.achievementviewer
+                        local group = achievementGroups[item.achievementgroupselected]
+                        local numAchievements = #group.Achievements
+
+                        local displayedAchievements = {}
+
+                        local displayedCount = 7 - 1
+                        for i = -(displayedCount / 2), displayedCount / 2, 1 do
+                            local listIndex = #displayedAchievements + 1
+                            local indexOffset = 0
+                            local shiftPercent
+                            if panel.ShiftFrame then
+                                shiftPercent = panel.ShiftFrame / panel.ShiftLength
+                                indexOffset = ((1 - shiftPercent) * panel.ShiftDirection)
+                            end
+
+                            local percent = ((listIndex + indexOffset) - 1) / displayedCount
+                            local xPos = InutilLib.ProAPILerp(-280, 280, percent)
+
+                            local scale = displayIndexToScale[math.abs(i)]
+                            local color = displayIndexToColor[math.abs(i)]
+                            local yPos = displayIndexToYPos[math.abs(i)]
+                            if shiftPercent then
+                                local shiftedScale = displayIndexToScale[math.abs(i + panel.ShiftDirection)]
+                                scale = InutilLib.ProAPILerp(shiftedScale, scale, shiftPercent)
+                                local shiftedColor = displayIndexToColor[math.abs(i + panel.ShiftDirection)]
+                                color = Color.Lerp(shiftedColor, color, shiftPercent)
+                                local shiftedY = displayIndexToYPos[math.abs(i + panel.ShiftDirection)]
+                                yPos = InutilLib.ProAPILerp(shiftedY, yPos, shiftPercent)
+                            end
+
+                            local index = (((item.selectedingroup[group.Name] + i) - 1) % numAchievements) + 1
+                            local achievement = group.Achievements[index]
+                            displayedAchievements[#displayedAchievements + 1] = {
+                                Achievement = achievement.Achievement,
+                                Position = Vector(xPos, yPos),
+                                Scale = scale,
+                                Color = color
+                            }
+                        end
+
+                        table.sort(displayedAchievements, function(a, b)
+                            return a.Position.Y > b.Position.Y
+                        end)
+
+                        for _, display in ipairs(displayedAchievements) do
+                            local achievement = display.Achievement
+                            local useSprite = achievement.Sprite
+                            if not achievement:IsUnlocked(true) then
+                                useSprite = achievementLockedSprite
+                            end
+
+                            useSprite:SetFrame(anim, frame)
+                            useSprite.Scale = display.Scale
+                            useSprite.Color = display.Color
+                            useSprite:Render(panelPos + display.Position + Vector(0, 30), Vector.Zero, Vector.Zero)
+                        end
+                    end,
+                    HandleInputs = function(panel, input, item, itemswitched, tbl)
+                        if not itemswitched then
+                            local menuinput = input.menu
+                            local rawinput = input.raw
+                            if rawinput.left > 0 or rawinput.right > 0 then
+                                local group = achievementGroups[item.achievementgroupselected]
+                                local name = group.Name
+                                local numAchievements = #group.Achievements
+
+
+                                local change
+                                if not panel.ShiftFrame then
+                                    local usingInput, setChange
+                                    if rawinput.right > 0 then
+                                        usingInput = rawinput.right
+                                        setChange = 1
+                                    elseif rawinput.left > 0 then
+                                        usingInput = rawinput.left
+                                        setChange = -1
+                                    end
+
+                                    local shiftLength = 10
+                                    if usingInput >= 88 then
+                                        shiftLength = 7
+                                    end
+
+                                    if (usingInput == 1 or (usingInput >= 18 and usingInput % (shiftLength + 1) == 0)) then
+                                        change = setChange
+                                        panel.ShiftLength = shiftLength
+                                    end
+                                end
+
+                                if change then
+                                    panel.ShiftFrame = 0
+                                    panel.ShiftDirection = change
+                                    item.selectedingroup[name] = ((item.selectedingroup[name] + change -  1) % numAchievements) + 1
+                                    dssmod.playSound(dssmod.menusounds.Pop3)
+                                end
+                            elseif menuinput.down or menuinput.up then
+                                local change
+                                if menuinput.down then
+                                    change = 1
+                                elseif menuinput.up then
+                                    change = -1
+                                end
+
+                                if change then
+                                    local done = false
+                                    while not done do
+                                        item.achievementgroupselected = ((item.achievementgroupselected + change - 1) % #achievementGroups) + 1
+                                        local group = achievementGroups[item.achievementgroupselected]
+                                        if not group.DisplayIf or group.DisplayIf() then
+                                            done = true
+                                        end
+                                    end
+
+                                    dssmod.playSound(dssmod.menusounds.Pop2)
+                                end
+                            end
+                        end
+                    end
+                },
+                Offset = Vector.Zero,
+                Color = Color.Default
+            },
+            {
+                Panel = {
+                    Sprites = achievementTooltipSprites,
+                    Bounds = {-115, -22, 115, 22},
+                    Height = 44,
+                    TopSpacing = 2,
+                    BottomSpacing = 0,
+                    DefaultFontSize = 2,
+                    DrawPositionOffset = Vector(2, 2),
+                    Draw = function(panel, pos, item, tbl)
+                        local drawings = {}
+                        local group = achievementGroups[item.achievementgroupselected]
+                        if item.selectedingroup[group.Name] then
+                            local achievementDat = group.Achievements[item.selectedingroup[group.Name]]
+                            local achievement = achievementDat.Achievement
+                            local tooltipConcat = ""
+                            local tooltipConcat2 = ""
+                            local singleLineLimit = 3
+                            if not achievement.ViewerTooltip then
+                                for i, entry in ipairs(achievement.Tooltip) do
+                                    local toConcat = entry
+                                    if i ~= #achievement.Tooltip and i ~= singleLineLimit then
+                                        toConcat = toConcat .. " "
+                                    end
+
+                                    if i > singleLineLimit then
+                                        tooltipConcat2 = tooltipConcat2 .. toConcat
+                                    else
+                                        tooltipConcat = tooltipConcat .. toConcat
+                                    end
+                                end
+                            end
+
+                            local name = achievement.Name
+                            if not achievement:IsUnlocked(true) then
+                                name = "locked!"
+                            end
+
+                            local buttons = {
+                                {str = "- " .. achievementDat.Group .. " -", fsize = 1},
+                                {str = name, fsize = 2},
+                            }
+
+                            if tooltipConcat ~= "" then
+                                buttons[#buttons + 1] = {str = tooltipConcat, fsize = 1}
+                            end
+
+                            if tooltipConcat2 ~= "" then
+                                buttons[#buttons + 1] = {str = tooltipConcat2, fsize = 1}
+                            end
+
+                            if achievement.ViewerTooltip then
+                                for _, str in ipairs(achievement.ViewerTooltip) do
+                                    buttons[#buttons + 1] = {str = str, fsize = 1}
+                                end
+                            end
+
+                            local drawItem = {
+                                valign = -1,
+                                buttons = buttons
+                            }
+                            drawings = dssmod.generateMenuDraw(drawItem, drawItem.buttons, pos, panel.Panel)
+                        end
+
+                        if group then
+                            table.insert(drawings, {type = "spr", pos = Vector(-96, 1), sprite = group.Icon, noclip = true, root = pos, usemenuclr = true})
+                            table.insert(drawings, {type = "spr", pos = Vector(-96, -14), anim = "Idle", frame = 0, sprite = arrow, noclip = true, root = pos, usemenuclr = true})
+                            table.insert(drawings, {type = "spr", pos = Vector(-96, 16), anim = "Idle", frame = 1, sprite = arrow, noclip = true, root = pos, usemenuclr = true})
+                        end
+
+                        for _, drawing in ipairs(drawings) do
+                            dssmod.drawMenu(tbl, drawing)
+                        end
+                    end,
+                    DefaultRendering = true
+                },
+                Offset = Vector(0, 100),
+                Color = 1
+            }
+        }
+    },
+    generate = function(item, tbl)
+        for _, group in ipairs(achievementGroups) do
+            group.Achievements = {}
+        
+            local achievements
+            if group.Tag then
+                achievements = yandereWaifu.GetAchievementsWithTag(group.Tag)
+            else
+                achievements = yandereWaifu.ACHIEVEMENT_ORDERED
+            end
+        
+            for _, achieve in ipairs(achievements) do
+                if achieve.Sprite then
+                    local groupName = group.Name
+                    if group.TagToName then
+                        for tag, name in pairs(group.TagToName) do
+                            if achieve.Tags[tag] then
+                                groupName = name
+                                break
+                            end
+                        end
+                    end
+
+                    local display = true
+                    if group.TagToDisplayIf then
+                        for tag, func in pairs(group.TagToDisplayIf) do
+                            if achieve.Tags[tag] and not func() then
+                                display = false
+                                break
+                            end
+                        end
+                    end
+
+                    if achieve.ViewerDisplayIf and not achieve.ViewerDisplayIf() then
+                        display = false
+                    end
+                    
+                    if display then
+                        group.Achievements[#group.Achievements + 1] = {Achievement = achieve, Group = groupName}
+                    end
+                end
+            end
+        
+            item.selectedingroup[group.Name] = 1
+        end
+    end,
+    achievementgroupselected = 1,
+    selectedingroup = {}
+}
+
+
+---
+
 local rebekahdirectory = {
     main = {
     title = 'rebekah',
         buttons = {
             {str = 'resume game', action = 'resume'},
             {str = 'settings', dest = 'settings'},
+            {str = 'unlocks', dest = 'unlocks'},
 			{str = 'tutorials', dest = 'tutoriallist'},
 			{str = 'credits', dest = 'credits'},
         },
@@ -118,10 +615,10 @@ local rebekahdirectory = {
                 variable = "disableDoubleTapDash",
                 setting = 2,
                 load = function()
-                    return REBEKAH_OPTIONS.DASHKEY_ENABLE and 2 or 1
+                    return RebekahLocalSavedata.Config.disablerebekahdash and 2 or 1
                 end,
                 store = function(var)
-                    REBEKAH_OPTIONS.DASHKEY_ENABLE = var == 2
+                    RebekahLocalSavedata.Config.disablerebekahdash = var == 2
                 end,
                 tooltip = {strset = {'disable dash', 'for', 'rebekah'}}
             },
@@ -131,27 +628,27 @@ local rebekahdirectory = {
                 variable = 'DashKeybind',
                 setting = -1,
                 load = function()
-                    return REBEKAH_OPTIONS.DASHKEY_BIND or -1
+                    return  RebekahLocalSavedata.Config.rebekahdashkey or -1
                 end,
                 store = function(var)
-                    REBEKAH_OPTIONS.DASHKEY_BIND = var
+                    RebekahLocalSavedata.Config.rebekahdashkey = var
                 end,
                 tooltip = {strset = {'optional', 'keybind', 'to dash', 'for scrubs'}}
             },
-            {
+            --[[ {
                 str = 'narrator volume',
                 increment = 1, max = 10,
                 variable = "volume",
                 slider = true,
                 setting = 10,
                 load = function()
-                    return REBEKAH_OPTIONS.VOICE_VOLUME
+                    return RebekahLocalSavedata.Config.narratorvolume
                 end,
                 store = function(var)
-                    REBEKAH_OPTIONS.VOICE_VOLUME = var
+                    RebekahLocalSavedata.Config.narratorvolume = var
                 end,
                 tooltip = {strset = {'how loud', 'narrator of', 'rebekah', 'needs to be?'}}
-            },
+            }]]--[[,
 			{
                 str = 'unlock basic items',
                 choices = {'no', 'yes'},
@@ -164,10 +661,162 @@ local rebekahdirectory = {
                     REBEKAH_OPTIONS.UNLOCK_ITEMS = var == 2
                 end,
                 tooltip = {strset = {'progress should', 'be saved...', 'stop being a', 'casual!'}}
-            },
+            },]]
         }
     },
+
+    unlocks = {
+        title = 'unlocks!',
+        buttons = {
+            {str = 'achievements', dest = 'achievementviewer'},
+            {str = 'completion notes', dest = 'completionnotes'},
+            {str = 'unlock manager', dest = 'unlockmanager'},
+        },
+        tooltip = {strset = {'check out', 'what you', 'unlocked!'}}
+    },
 	
+    achievementviewer = yandereWaifu.achievementviewer,
+
+    unlockmanager = {
+        title = "unlocks manager",
+        fsize = 2,
+
+        buttons = {
+            {str = "", nosel = true},
+            {
+                str = "achievements",
+                fsize = 3,
+                choices = {"enabled", "disabled"},
+                variable = "AchievementsEnabled",
+                setting = 1,
+                load = function()
+                    if RebekahLocalSavedata.Config.disableAchievements then
+                        return 2
+                    else
+                        return 1
+                    end
+                end,
+                store = function(var)
+                    RebekahLocalSavedata.Config.disableAchievements = var == 2
+                end,
+                tooltip = {strset = {'switch this', 'to enable or', 'disable all', 'unlocks!'}}
+            },
+            {str = "", nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = nil isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = nil isUnlockingAll = false end},
+            {str = "", nosel = true},
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            {str = "character unlocks", fsize = 3, nosel = true},
+            {str = "", nosel = true},
+            {str = "rebekah", fsize = 3, dest = "rebekahaunlocks"},
+
+            --[[
+            {str = "tainted fiend", fsize = 3, dest = "biendunlocks", displayif = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
+            {str = "golem", fsize = 3, dest = "golemunlocks"},
+            {str = "", nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Character" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Character" isUnlockingAll = false end},
+            {str = "", nosel = true},
+
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            {str = "challenge unlocks", fsize = 3, nosel = true},
+            {str = "", fsize = 3, nosel = true},
+            -- this isn't a real button, gets replaced later with list of unlocks automatically
+            {insertUnlockTag = "Challenge"},
+            {str = "", nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Challenge" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Challenge" isUnlockingAll = false end},
+            {str = "", nosel = true},
+
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            {str = "other unlocks", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            {insertUnlockTag = "Misc"},
+            {str = "", fsize = 3, nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Misc" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Misc" isUnlockingAll = false end},]]
+        },
+    },
+    ---
+    completionnotes = {
+        title = "completion notes",
+        nocursor = true,
+        buttons = {
+            {str = ""},
+            {str = ""},
+
+            {str = "", nosel = true},
+            {str = "", nosel = true},
+            {str = "", nosel = true},
+            {str = "", nosel = true},
+            {str = "", nosel = true},
+            {str = "", fsize = 2, nosel = true},
+
+            {
+                str = "press down for golem",
+                nosel = true,
+                fsize = 1,
+
+                displayif = function(_, item)
+                    return item.bsel == 1
+                end,
+            },
+            {
+                str = "press up for fiend",
+                nosel = true,
+                fsize = 1,
+
+                displayif = function(_, item)
+                    return item.bsel > 1
+                end,
+            },
+        },
+
+        postrender = function(item, tbl)
+            if item.bsel > 2 then item.bsel = 1 end -- Idk why DSS is letting me pick a third option in the menu with only 2 non-nosel buttons but whatever
+
+            local centre = getScreenCenterPosition()
+            local renderDataset = completionCharacterSets[item.bsel]
+            local offsets = {NOTE1_RENDER_OFFSET, NOTE2_RENDER_OFFSET}
+            if #renderDataset == 1 then offsets = {NOTE3_RENDER_OFFSET} end
+
+            for index, renderData in pairs(renderDataset) do
+                if renderData.IsUnlocked() then
+                    local dataset = yandereWaifu.GetCompletionNoteLayerDataFromPlayerType(renderData.PlayerID)
+                    for index, value in pairs(dataset) do
+                        completionNoteSprite:SetLayerFrame(index, value)
+                    end
+                    completionHead:SetFrame(renderData.HeadName, 0)
+
+                    completionNoteSprite:Render(centre + offsets[index], Vector.Zero, Vector.Zero)
+                    completionHead:Render(centre + offsets[index] + Vector(30, 85), Vector.Zero, Vector.Zero)
+                else
+                    completionHead:SetFrame(renderData.HeadName, 1)
+                    completionHead:Render(centre + offsets[index] + Vector(30, 85), Vector.Zero, Vector.Zero)
+
+                    completionDoor:SetFrame(renderDataset[index - 1].HeadName, 0)
+                    completionDoor:Render(centre + offsets[index], Vector.Zero, Vector.Zero)
+                end
+            end
+        end,
+        
+        generate = function(item)
+            local numAchievements = yandereWaifu.TOTAL_COMPLETION_ACHIEVEMENTS
+            local numCompleted = yandereWaifu.GetNumCompletedAchievements() + 5
+            local asPercent = string.format("%.f%%", (numCompleted / numAchievements) * 100)
+            local extra = ""
+            if numCompleted > numAchievements then
+                extra = "!?!"
+            elseif numCompleted == numAchievements then
+                extra = "!!"
+            end
+            item.tooltip = {strset = {"you're", asPercent, "done with", "fiend folio!" .. extra}}
+        end
+    },
+    ---
 	tutoriallist = {
         title = 'tutorials',
         buttons = {
@@ -210,6 +859,8 @@ local rebekahdirectory = {
 			{strpair = {{str = 'scroto', color = 3}, {str = 'spriter'}}},
 			{strpair = {{str = 'kruntical', color = 2}, {str = 'spriter'}}},
 			{str = '', nosel = true},
+            {str = 'mod contributers', fsize = 2},
+            {strpair = {{str = 'skulgan', color = 2}, {str = 'made peewee!'}}},
 			{str = 'voice actors', fsize = 2},
 			{strpair = {{str = 'rebekah'}, {str = 'may'}}},
 			{strpair = {{str = 'knights of rebekah'}, {str = 'kakaodcat'}}},
@@ -235,6 +886,12 @@ local rebekahdirectory = {
 			{str = 'skyline222'},
 			{str = 'shuckster'},
 			{str = 'nixility'},
+            {str = 'bruh power'},
+            {str = 'beelzeon'},
+            {str = 'serathespookster'},
+            {str = 'rougewatermelon'},
+            {str = 'serathespookster'},
+            {str = 'suese'},
 			{str = '', nosel = true},
             {str = 'special thanks', fsize = 2},
 			{strpair = {{str = 'agent cucco', color = 3}, {str = 'code help'}}},
@@ -248,15 +905,72 @@ local rebekahdirectory = {
 			{strpair = {{str = 'planetarium chance', color = 3}, {str = 'code reference'}}},
 			{strpair = {{str = 'scooperman', color = 3}, {str = 'sprite advice'}}},
             {strpair = {{str = 'sgjd01', color = 3}, {str = 'code reference'}}},
-            {strpair = {{str = 'tainted treasures', color = 3}, {str = 'code reference for synergy'}}},
+            {strpair = {{str = 'tainted treasures', color = 3}, {str = 'code reference'}}},
             {strpair = {{str = 'fiend folio', color = 3}, {str = 'code reference'}}},
 			{str = '', nosel = true},
 			{str = 'and especially you!', fsize = 3},
             {str = '', nosel = true}
         },
         tooltip = {strset = {'epic credits', 'for epic', 'people!'}}
+    },
+    rebekahaunlocks = {
+        title = "rebekah unlocks",
+        fsize = 2,
+        buttons = {
+            {str = "", nosel = true},
+            --{str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
+            {str = "", nosel = true},
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            --{insertUnlockTag = "RebekahB"},
+            {str = "", nosel = true},
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "personalities", fsize = 3, dest = "rebekahapersonalityunlocks"},
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            {str = "item unlocks", fsize = 3, nosel = true},
+            {str = "", fsize = 3, nosel = true},
+            {insertUnlockTag = "Rebekah"},
+            {str = "", nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
+            {str = "", nosel = true},
+        }
+    },
+    rebekahapersonalityunlocks = {
+        title = "personality unlocks",
+        fsize = 2,
+        buttons = {
+            {insertUnlockTag = "Rebekah Character"},
+            {str = "", nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
+            {str = "", nosel = true},
+        }
     }
 }
+
+local function insertUnlockTags(item)
+    for i, v in ipairs(item.buttons) do
+        if v.insertUnlockTag then
+            local buttons = yandereWaifu.GetMenuButtonsForAchievementTag(v.insertUnlockTag)
+            for b, button in ipairs(buttons) do
+                table.insert(item.buttons, i + b, button)
+            end
+        end
+    end
+    
+    for i = #item.buttons, 1, -1 do
+        local v = item.buttons[i]
+        if v.insertUnlockTag then
+            table.remove(item.buttons, i)
+        end
+    end
+end
+
+insertUnlockTags(rebekahdirectory.unlockmanager)
+insertUnlockTags(rebekahdirectory.rebekahaunlocks)
+insertUnlockTags(rebekahdirectory.rebekahapersonalityunlocks)
 
 local rebekahdirectorykey = {
     Item = rebekahdirectory.main,
