@@ -1,8 +1,4 @@
 <music root="music/">
 	<!-- Rebekah's room -->
 	<track name="Calm Before the Storm" path="Calm Before Storm_01.ogg" loop="true" />
-	<!-- Backrooms Floor Ambiance -->
-	<track name="Backrooms" path="Backrooms.ogg" loop="true" />
-	<!-- Backrooms Boss Music -->
-	<track name="Moist" path="Moist.ogg" loop="true" />
 </music>

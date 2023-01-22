@@ -1,13 +1,12 @@
 <items gfxroot="gfx/items/" version="1" deathanm2="gfx/death items.anm2"> 
-	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" hidden="true" tags="quest"/>
-	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" hidden="true" tags="quest"/>
-	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" hidden="true" tags="quest"/>
-	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" hidden="true" tags="quest"/>
-	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" hidden="true" tags="quest"/>
-	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" hidden="true" tags="quest"/>
-	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" hidden="true" tags="quest"/>
-	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" hidden="true" tags="quest"/>
-	<active id="8" name="Comforter's Wing" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" hidden="true" tags="quest"/>
+	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="4" tags="quest"/>
+	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" maxcharges="2" tags="quest"/>
+	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" maxcharges="4" tags="quest"/>
+	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" maxcharges="4" tags="quest"/>
+	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" maxcharges="5" tags="quest"/>
+	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" maxcharges="8" tags="quest"/>
+	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" maxcharges="3" tags="quest"/>
+	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" maxcharges="4" tags="quest"/>
 	
 	<passive id="16" name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" quality="1"/>
 	<passive id="37" name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" quality="2"/>
@@ -21,7 +20,7 @@
 	<active id="29" name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
 	<active id="31" name="Defuse = Rewards" description="Use your manual to defuse, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
 	
-	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="4"/>
+	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="3"/>
 	
 	<active id="37" name=" Wikepidia " description="Summon bombs" gfx="wikepidia/wikepidia_anarchistcookbook.png" maxcharges="3"  hidden="true"/>
 	<active id="37" name="  Wikepidia  " description="Reusable soul protection" gfx="wikepidia/wikepidia_revelations.png" maxcharges="6"  hidden="true"/>
@@ -55,8 +54,7 @@
 	<passive id="14" name="Lovesick" description="You sing and yearn for love" gfx="collectibles_lovesick.png" quality="4"/>
 	<passive id="35" name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" tag="nolostbr" quality="3"/>
 	<active id="39" name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4" quality="4"/>
-	<!-- <passive id="18" name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/> -->
-	<passive id="18" name="Wicked Weaves" description="Double tap or hold to dance!" gfx="collectibles_wicked_weaves.png" cache="firedelay damage" quality="3"/>
+	<passive id="18" name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/>
 	<passive id="21" name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="collectibles_rebekahs_favorite.png" quality="3"/>
 	
 	<active id="34" name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3"/>
@@ -73,15 +71,12 @@
 	<active id="53" name="Notebook of the Dead" description="Be justice" gfx="collectibles_deathsnotebook.png" maxcharges="6" quality="3"/>
 	<passive id="47" name="Eyes of the Dead" description="See who drops next" gfx="collectibles_eyeofthedead.png" quality="3" devilprice="2"/>
 	<passive id="27" name="Psoriasis" description="Mass defense" gfx="collectibles_psoraisis.png" quality="3"/>
-	<active id="52" name="Hearts and Crafts" description="Made with Love!" gfx="collectibles_heartsandcrafts.png" maxcharges="0" quality="2"/>
+	<active id="52" name="Hearts and Crafts" description="Made with Love!" gfx="collectibles_heartsandcrafts.png" maxcharges="6" quality="2"/>
 	<passive id="51" name="Tech Hz" description="Love Hertz" gfx="collectibles_techhz.png" quality="2"/>
 	<familiar id="44" name="Angel's Morningstar" description="Swing it" gfx="collectibles_angelsmorningstar.png" quality="3"/>
 	<passive id="50" name="Potato Snack" description="Take one and eat it" gfx="collectibles_potatosnack.png" quality="2" soulhearts="4"/>
 	<trinket name="Original Sin" description="As fresh as her sins" gfx="collectibles_evesapple.png" />
 	<active id="46" name="The Enchiridion" description="A heroes guide" gfx="collectibles_enchiridion.png" maxcharges="6" quality="4" tags="book"/>
-	<active id="45" name="Body Dysmorphia" description="Fix yourself with a cost" gfx="collectibles_bodydysmorphia.png" quality="4"/>
-	<trinket name="Rebekah's Key" description="Find the drawing room more" gfx="collectibles_rebekahs_key.png" />
-
-	<passive id="55" name="Skimmed Milk" description="Velocity = Damage" gfx="collectibles_skimmedmilk.png" quality="2"/>
-	<active id="8" name="Tainted Rebekah Item" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" hidden="true" tags="quest"/>
+	<active id="45" name="Body Dysmorphia" description="Fix yourself with a cost" gfx="collectibles_bodydysmorphia.png" quality="4" tags="book"/>
+	<active id="8" name="Comforter's Wing" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" maxcharges="6" tags="quest"/>
 </items>

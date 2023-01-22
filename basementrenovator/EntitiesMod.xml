@@ -1,15 +1,8 @@
 <data>
 	<entity BaseHP="20" Group="Liminal" ID="10" Image="entities/liminal/faceling.png" Kind="Cursed and Heartbroken" Name="Faceling" Subtype="0" Variant="1071" />
-	<entity BaseHP="20" Group="Liminal" ID="600" Image="entities/liminal/the_hound.png" Kind="Cursed and Heartbroken" Name="The Hound" Subtype="0" Variant="221" />
-	<entity BaseHP="20" Group="Liminal" ID="600" Image="entities/liminal/hound_puppy.png" Kind="Cursed and Heartbroken" Name="Hound Puppy" Subtype="0" Variant="226" />
-
-	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/the_stalwart.png" Kind="Cursed and Heartbroken" Name="The Stolid" Subtype="0" Variant="222" />
-	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/nincompoop.png" Kind="Cursed and Heartbroken" Name="Nincompoop" Subtype="0" Variant="224" />
-	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/poltygeist.png" Kind="Cursed and Heartbroken" Name="Poltygeist" Subtype="0" Variant="225" />
-
-	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/prospector.png" Kind="Cursed and Heartbroken" Name="The Prospector" Subtype="0" Variant="227" />
-	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/prospector_sentry.png" Kind="Cursed and Heartbroken" Name="The Prospector's Sentry" Subtype="1" Variant="227" />
-
+	
+	<entity BaseHP="20" Group="Bosses" ID="600" Image="entities/the_stalwart.png" Kind="Cursed and Heartbroken" Name="The Stalwart" Subtype="0" Variant="222" />
+	
 	<entity BaseHP="0" Group="Rebekah's Room" ID="5" Image="entities/rebekahsroom/rebekahs_bed.png" Kind="Cursed and Heartbroken" Name="Rebekah's Bed" Subtype="177" Variant="380" />
 	<entity BaseHP="0" Group="Rebekah's Room" ID="999" Image="entities/rebekahsroom/rebekahs_carpet.png" Kind="Cursed and Heartbroken" Name="Rebekah&apos;s Carpet (Entity Replace)" Subtype="177" Variant="74" />
 	<entity BaseHP="0" Group="Rebekah's Room" ID="6" Image="entities/rebekahsroom/rebeccas_mirror_temp.png" Kind="Cursed and Heartbroken" Name="Rebecca's Mirror (everyone)" Subtype="20" Variant="19373710" />

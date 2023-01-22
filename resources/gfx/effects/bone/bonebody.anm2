@@ -1,8 +1,8 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="8/11/2022 5:08:17 PM" Version="10" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="6/1/2021 4:22:08 PM" Version="9" Fps="30"/>
 	<Content>
 		<Spritesheets>
-			<Spritesheet Path="..\..\characters\costumes\bone\rebekah_bone_wave.png" Id="0"/>
+			<Spritesheet Path="dead_body.png" Id="0"/>
 		</Spritesheets>
 		<Layers>
 			<Layer Name="girl" Id="0" SpritesheetId="0"/>
@@ -11,19 +11,13 @@
 		<Events/>
 	</Content>
 	<Animations DefaultAnimation="Chill">
-		<Animation Name="Chill" FrameNum="23" Loop="true">
+		<Animation Name="Chill" FrameNum="8" Loop="true">
 			<RootAnimation>
 				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 			</RootAnimation>
 			<LayerAnimations>
 				<LayerAnimation LayerId="0" Visible="true">
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="1" YCrop="0" Width="45" Height="55" XScale="100" YScale="100" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="52" YCrop="0" Width="45" Height="55" XScale="100" YScale="100" Delay="4" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="103" YCrop="0" Width="45" Height="55" XScale="90" YScale="110" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="52" YCrop="0" Width="45" Height="55" XScale="120" YScale="80" Delay="4" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="103" YCrop="0" Width="45" Height="55" XScale="90" YScale="110" Delay="2" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="52" YCrop="0" Width="45" Height="55" XScale="100" YScale="100" Delay="4" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
-					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="1" YCrop="0" Width="45" Height="55" XScale="100" YScale="100" Delay="5" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
+					<Frame XPosition="0" YPosition="0" XPivot="23" YPivot="50" XCrop="1" YCrop="0" Width="45" Height="55" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="true"/>
 				</LayerAnimation>
 			</LayerAnimations>
 			<NullAnimations/>
