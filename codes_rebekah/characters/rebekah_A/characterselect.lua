@@ -50,6 +50,17 @@ yandereWaifu.RebekahPersonalities:New({}, "Broken Personality", RebekahCurse.REB
 --initialization for unlocked personalities
 yandereWaifu.ListOfRegUnlockedPersonalities = {}
 function yandereWaifu:onNewGamePersonalitiesInit(player)
+	--tutorial
+	local tutorialTable = {
+		name = "Tutorial",
+		playerId = nil,
+		graphics = "gfx/ui/rebekah select/tutorial_a.png",
+		coopGraphics = "gfx/ui/coop/icons/red.png",
+		lockedgraphics = "gfx/ui/rebekah select/red.png",
+		isLocked = false
+	}
+	yandereWaifu.ListOfRegUnlockedPersonalities[1] = tutorialTable
+	
 	for i, v in pairs (yandereWaifu.ListOfRegPersonalities) do
 		local currentPlayerId = v
 		local returnTable = {
@@ -64,7 +75,7 @@ function yandereWaifu:onNewGamePersonalitiesInit(player)
 		--print(currentPlayerId.LockedState)
 		--currentPlayerId.isLocked = currentPlayerId.LockedState()
 		--print(returnTable.IsLocked)
-		yandereWaifu.ListOfRegUnlockedPersonalities[i] = returnTable
+		yandereWaifu.ListOfRegUnlockedPersonalities[i+1] = returnTable
 		--print(yandereWaifu.ListOfRegUnlockedPersonalities[i].IsLocked)
 	end
 end
@@ -188,7 +199,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
       	if (Input.IsActionTriggered(ButtonAction.ACTION_MENUCONFIRM, player.ControllerIndex) or
             Input.IsActionTriggered(ButtonAction.ACTION_MENUBACK, player.ControllerIndex)) and
             not InutilLib.IsAnimated(menuUI, "Dissapear") and not menuUI:IsPlaying("Appear") and not ILIB.game:IsPaused() then
-       		 
+				if yandereWaifu.ListOfRegUnlockedPersonalities[currentPlayerId].name == "Tutorial" then return end
 				yandereWaifu.SelectRebekahPersonality(currentPlayerSelected, menuUI)
 			elseif not hasSelectedPersonality then
 	  

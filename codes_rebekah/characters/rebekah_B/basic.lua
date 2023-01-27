@@ -10,6 +10,7 @@ function TaintedRebeccaInit(player)
 	local data = yandereWaifu.GetEntityData(player)
 	data.PersistentPlayerData.TaintedHealth = 50
     data.PersistentPlayerData.MaxTaintedHealth = 50
+	data.PersistentPlayerData.MaxRageCrystal = 3
 	data.RageCrystal = 0
 
 	data.DASH_TAINTED_DOUBLE_TAP = InutilLib.DoubleTap:New();
@@ -152,6 +153,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--print(player:GetPlayerType())
 	
 	if yandereWaifu.IsTaintedRebekah(player) then
+
+		--test fly
+		if data.TaintedRageTick then
+			if data.TaintedRageTick > 0 then data.TaintedRageTick = data.TaintedRageTick - 1 end
+		end
+		if data.TaintedRageTick and data.TaintedRageTick == 1 then
+			print("stopped")
+			Isaac.Spawn( EntityType.ENTITY_FLY, 0, 0, player.Position,  Vector(0,0), player );
+		end
+
 		yandereWaifu.HandleTaintedRebHeart(player)
 		if InutilLib.HasCollectiblesUpdated(player) == true then
 			player:AddCacheFlags(CacheFlag.CACHE_ALL);
@@ -327,7 +338,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		elseif damageFlag & DamageFlag.DAMAGE_FIRE > 0 then
 			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 10
 		elseif damageFlag & DamageFlag.DAMAGE_LASER > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 15
+			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 10
 		elseif damageFlag & DamageFlag.DAMAGE_PITFALL > 0 then
 			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 25
 		elseif damageFlag & DamageFlag.DAMAGE_POOP > 0 then
@@ -370,11 +381,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 end, EntityType.ENTITY_PLAYER)
 
 --on bumping collision
-yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, eff, coll, low)
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, eff, coll, low)
 	if coll.Type == 1 and yandereWaifu.IsTaintedRebekah(coll:ToPlayer()) then
 		eff:TakeDamage(1, 0, EntityRef(coll), 1)
 	end
-end)
+end)]]
 
 function yandereWaifu.taintedheartReserveRenderLogic(player, id)
 	local data = yandereWaifu.GetEntityData(player)
@@ -463,6 +474,7 @@ end);
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 	if not damageSource.Entity then return true end
 	local player 
+
 	if not damageSource.Entity.SpawnerEntity then 
 		player = damageSource.Entity:ToPlayer(); 
 	else
@@ -478,8 +490,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			data.HitForCrystal = false
 			if not data.RageCrystal then
 				data.RageCrystal = 1 
-			elseif  data.RageCrystal < 5 then
-				data.RageCrystal =  data.RageCrystal + 1 
+			elseif data.RageCrystal < data.PersistentPlayerData.MaxRageCrystal then
+				local multiplier = 1
+				if data.TaintedRageTick and data.TaintedRageTick > 0 then multiplier = 2 end
+				data.RageCrystal =  data.RageCrystal + 1*multiplier
+				if data.RageCrystal >= data.PersistentPlayerData.MaxRageCrystal then data.RageCrystal = data.PersistentPlayerData.MaxRageCrystal end
 			end
 		end
     end
@@ -519,7 +534,33 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 								local success = false
 								if value == 0 and data.TaintedEnemyTarget and not data.TaintedEnemyTarget:IsDead() then
 									success = true
-									yandereWaifu.SpawnCursedKnife(player, 3, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
+									local IsLokiHornsTriggered = false
+
+									if player:HasCollectible(CollectibleType.COLLECTIBLE_LOKIS_HORNS) and math.random(0,10) + player.Luck >= 10 then
+										IsLokiHornsTriggered = true
+									else
+										IsLokiHornsTriggered = false
+									end
+
+									for lhorns = 0, 270, 360/4 do
+										local direction = (data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees() + lhorns
+										local oldDir = direction
+										for wizAng = -45, 90, 135 do
+											if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) and lhorns == 0 then --sets the wiz angles
+												direction = (direction + wizAng)
+											end
+											yandereWaifu.SpawnCursedKnife(player, 3, direction)
+
+											if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
+												break -- just makes sure it doesnt duplicate
+											end
+										end
+
+										direction = oldDir
+										if not IsLokiHornsTriggered then 
+											break
+										end
+									end
 								elseif value == 1 and data.TaintedEnemyTarget and not data.TaintedEnemyTarget:IsDead() then
 									success = true
 									yandereWaifu.SpawnCursedKnife(player, 4, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
@@ -528,7 +569,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 									yandereWaifu.SpawnCursedKnife(player, 5, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
 								elseif value == 3 then
 									success = true
-									InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_RAGE, 1, 0, false, 1 );
+									InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_RAGE, 0.8, 0, false, 1 );
+									data.TaintedRageTick = 210
 								end
 								if success then
 									data.TAINTEDREBSKILL_MENU:ChargeSkill(value)

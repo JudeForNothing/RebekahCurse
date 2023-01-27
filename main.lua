@@ -56,6 +56,8 @@ yandereWaifuCodes = {
 		},
 		rebekahB = {
 			skillmenu = require('codes_rebekah.characters.rebekah_B.skillmenu'),
+			characterselect = require('codes_rebekah.characters.rebekah_B.characterselect'),
+			characterselectcoop = require('codes_rebekah.characters.rebekah_B.characterselectcoop'),
 			basic = require('codes_rebekah.characters.rebekah_B.basic'),
 			cursed = require('codes_rebekah.characters.rebekah_B.cursed'),
 		},
@@ -148,6 +150,9 @@ yandereWaifuCodes = {
 		psoraisis = require('codes_rebekah.items.psoraisis'),
 		rebekahskey = require('codes_rebekah.items.rebekahskey'),
 		skimmedmilk = require('codes_rebekah.items.skimmedmilk'),
+		haphephobicbombs = require('codes_rebekah.items.haphephobicbombs'),
+		jumpydumpty = require('codes_rebekah.items.jumpydumpty'),
+		pencilsharpener = require('codes_rebekah.items.pencilsharpener'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),

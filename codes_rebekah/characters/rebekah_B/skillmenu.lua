@@ -58,8 +58,9 @@ function yandereWaifu.TaintedSkillMenu:AttachCallback( func )
 end
 
 function yandereWaifu.TaintedSkillMenu:ToggleMenu(forceboolean)
-	if forceboolean then --if forceboolean
+	if type(forceboolean) == "boolean" then --if forceboolean
 		self.open = forceboolean 
+		return
 	else --else it acts like a switch
 		if self.open then
 			self.open = false
@@ -67,7 +68,6 @@ function yandereWaifu.TaintedSkillMenu:ToggleMenu(forceboolean)
 			self.open = true
 		end
 	end
-    print(self.open)
 end
 
 function yandereWaifu.TaintedSkillMenu:UpdateOptions(table, table2)

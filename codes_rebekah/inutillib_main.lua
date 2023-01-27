@@ -206,6 +206,8 @@ ILIBCallbacks = {
 	--function(tear, player)
 	MC_POST_PLAYER_TEAR = 309,
 
+	MC_POST_INCUBUS_TEAR = 310,
+
 	--this is triggered when the room is cleared
 	--MC_POST_ROOM_CLEAR = 313,
 	
@@ -2850,8 +2852,7 @@ end
 --MC_POST_PLAYER_TEAR callback
 function InutilLib.OnPlayerTearInit(tear, player)
 	local data = InutilLib.GetILIBData(tear)
-	data.TearInit = true
-	
+	data.TearInit = true	
 	--MC_POST_PLAYER_TEAR
 	if ILIBCallbackData[ILIBCallbacks.MC_POST_PLAYER_TEAR] then
 		for _, callbackData in ipairs(ILIBCallbackData[ILIBCallbacks.MC_POST_PLAYER_TEAR]) do
@@ -2861,7 +2862,7 @@ function InutilLib.OnPlayerTearInit(tear, player)
 		end
 	end
 end
-
+--[[
 InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_FIRE_TEAR, function(_, tear)
 	local data = InutilLib.GetILIBData(tear)
 	if not data.TearInit then
@@ -2872,20 +2873,46 @@ InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_FIRE_TEAR, function(
 			end
 		end
 	end
-end)
+end)]]
+
+--MC_POST_INCUBUS_TEAR callback
+function InutilLib.OnIncubusTearInit(tear, fam)
+	local data = InutilLib.GetILIBData(tear)
+	print(fam.Type)
+	print("sadds")
+	--MC_POST_INCUBUS_TEAR
+	if ILIBCallbackData[ILIBCallbacks.MC_POST_INCUBUS_TEAR] then
+		for _, callbackData in ipairs(ILIBCallbackData[ILIBCallbacks.MC_POST_INCUBUS_TEAR]) do
+			if not callbackData.extraVariable or callbackData.extraVariable == tear.variant then
+				callbackData.functionToCall(callbackData.modReference, tear, fam)
+			end
+		end
+	end
+end
 
 InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_TEAR_RENDER, function(_, tear)
 	local data = InutilLib.GetILIBData(tear)
 	if not data.TearInit then
 		local parent = tear.Parent
-		if parent and parent.Type == EntityType.ENTITY_FAMILIAR and parent.Variant == FamiliarVariant.INCUBUS and not data.IsIncubusTear then
+		local spawnerEnt = tear.SpawnerEntity
+		--[[print("am i going insane??")
+		print(parent.Type)
+		print(spawnerEnt.Type)]]
+		if spawnerEnt and spawnerEnt.Type == EntityType.ENTITY_FAMILIAR and spawnerEnt.Variant == FamiliarVariant.INCUBUS and not data.IsIncubusTear then
 			data.IsIncubusTear = true
-			local player = parent:ToFamiliar().Player
+			local player = spawnerEnt:ToFamiliar().Player
 
 			if player then
 				InutilLib.OnPlayerTearInit(tear, player)
+				InutilLib.OnIncubusTearInit(tear, spawnerEnt:ToFamiliar())
+			end
+		else
+			if parent then
+				local player = parent.Player
+				InutilLib.OnPlayerTearInit(tear, player)
 			end
 		end
+		data.TearInit = true
 	end
 end)
 --FIRE KNIFE--
@@ -3446,10 +3473,11 @@ function InutilLib.CuccoLaserCollision(laser, angle, length, target, lineWidth)
 end
 
 --BOMB Stuff
-function InutilLib.MakeBombLob(tear, acc, height )
+function InutilLib.MakeBombLob(tear, acc, height, tim )
 	local accel = acc or 4
 	local heightTo = height or 13
 	local data = InutilLib.GetILIBData( tear )
+	local times = tim or 1
 	if not data.gravityData then data.gravityData = {} end
 	
 	local gravityData = data.gravityData
@@ -3465,8 +3493,10 @@ function InutilLib.MakeBombLob(tear, acc, height )
 			
 			if not data.CurrentAirSpan then data.CurrentAirSpan = 0 end
 		end
+		data.LobTimes = times
 		data.LobInit = true
 	end
+
 end
 
 InutilLib:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
@@ -3487,9 +3517,13 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 			gravityData.ZOffsetFloat = gravityData.ZOffsetFloat + gravityData.AccelAddFloat 
 			gravityData.ZProduct = gravityData.ZOffsetFloat ^ 2
 		end
-		if data.CurrentAirSpan == 0 then --if finished being in midair
+		if data.CurrentAirSpan >= gravityData.InAirSpan then --if finished being in midair
 			data.CurrentAirSpan = 0
-			data.LobInit = false
+			if data.LobTimes == 1 then 
+				data.LobInit = false
+			else
+				data.LobTimes = data.LobTimes - 1
+			end
 		end
 	
 		bb.SpriteOffset = Vector(0,(gravityData.ZProduct)-gravityData.InitialPoint) --gravityData.ZOffsetVector

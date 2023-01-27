@@ -61,6 +61,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				mob:GetSprite():ReplaceSpritesheet(0, "gfx/effects/items/doorstopper_belial.png")
 				player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, 0, -1)
 				mob:GetSprite():LoadGraphics()
+				if not player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then return end
 				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 			end
 		else
@@ -83,6 +84,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				InutilLib.ToggleShowActive(player, false)
 				yandereWaifu.GetEntityData(mob).Player = player
 				mob:GetSprite():Play("Thrown", true)
+				if not player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then return end
 				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 			end
 		end

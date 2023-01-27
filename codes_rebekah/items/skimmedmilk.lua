@@ -4,32 +4,37 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_,  tr)
 	local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
     local data = yandereWaifu.GetEntityData(tr)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
-		if tr.FrameCount == 1 then
-            data.OriginalDamage = tr.CollisionDamage
-        else
-            if data.OriginalDamage then
-                tr.CollisionDamage = data.OriginalDamage + (tr.Velocity:Length())/4
+    if player then 
+        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+            if tr.FrameCount == 1 then
+                data.OriginalDamage = tr.CollisionDamage
+            else
+                if data.OriginalDamage then
+                    tr.CollisionDamage = data.OriginalDamage + (tr.Velocity:Length())/4
+                end
             end
         end
-	end
+    end
 end);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 	local player = lz.SpawnerEntity:ToPlayer()
-	local pldata = yandereWaifu.GetEntityData(player)
-    local data = yandereWaifu.GetEntityData(lz)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
-		if lz.FrameCount == 1 then
-            data.OriginalDamage = lz.CollisionDamage
+    if player then
+        local pldata = yandereWaifu.GetEntityData(player)
+        local data = yandereWaifu.GetEntityData(lz)
+        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+            if lz.FrameCount == 1 then
+                data.OriginalDamage = lz.CollisionDamage
+            end
         end
-	end
+    end
 end);
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_,  bb)
     if bb.SpawnerEntity and bb.SpawnerEntity:ToPlayer() then
         local player = bb.SpawnerEntity:ToPlayer()
+        if not player then return end 
         local pldata = yandereWaifu.GetEntityData(player)
         local data = yandereWaifu.GetEntityData(bb)
         if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then

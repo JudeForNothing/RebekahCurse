@@ -208,9 +208,9 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
 	if player and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
+		local spr = kn:GetSprite()
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end
-			local spr = kn:GetSprite()
 			if pldata.lastGPFrameCount then
 				if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount and pldata.NoActiveKnife then
 					return
@@ -253,6 +253,66 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 				data.lastState = data.state
 				data.state = 0
 				pldata.NoActiveKnife = true
+			end
+		elseif player:HasWeaponType(WeaponType.WEAPON_BONE) then
+			if not pldata.DontGreatPheonixTick and InutilLib.IsFinishedMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2") then
+				if pldata.lastGPFrameCount then
+					if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+						return
+					end
+					
+					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					
+					if not pldata.GPFireCount then
+						pldata.GPFireCount = 1
+					else
+						pldata.GPFireCount = pldata.GPFireCount + 1
+					end
+					
+					if pldata.GPFireCount > 30 then
+						pldata.GPFireCount = 0
+						local amount = 4
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+							amount = 2
+						end
+						SpawnFlies(player, amount)
+					end
+				else
+					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				end
+				pldata.DontGreatPheonixTick = true
+			elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
+				pldata.DontGreatPheonixTick = false
+			end
+		elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then
+			if --[[not pldata.DontGreatPheonixTick]] spr:GetFrame() == 1 and InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
+				if pldata.lastGPFrameCount then
+					if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+						return
+					end
+					
+					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					
+					if not pldata.GPFireCount then
+						pldata.GPFireCount = 1
+					else
+						pldata.GPFireCount = pldata.GPFireCount + 1
+					end
+					
+					if pldata.GPFireCount > 30 then
+						pldata.GPFireCount = 0
+						local amount = 1
+						if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+							amount = 1
+						end
+						SpawnFlies(player, amount)
+					end
+				else
+					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				end
+			--	pldata.DontGreatPheonixTick = true
+			--elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
+			--	pldata.DontGreatPheonixTick = false
 			end
 		end
 	end

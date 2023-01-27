@@ -408,10 +408,47 @@
 	<entity anm2path="effects/items/beautifulgrave.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Beautiful Grave Drop" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835490" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+
 	<entity anm2path="effects/red/dash_dust.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	
+    <!--
+    <entity anm2path="effects/red/charge_dust.anm2" subtype="4" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/red/red_ludocrashlightning.anm2" subtype="5" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/soul/effectchargeoutro.anm2" subtype="6" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/soul/ectoplasm_spit.anm2" subtype="7" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/soul/special_arcane_circle.anm2" subtype="8" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/soul/ludo_mouth.anm2" subtype="9" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/gold/stomp_shield.anm2" subtype="14" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="effects/tainted/cursed/slam.anm2" subtype="30" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/tainted/cursed/slam_default.anm2" subtype="31" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+	<entity anm2path="effects/tainted/cursed/heavy_strike.anm2" subtype="32" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/tainted/cursed/wild_swing.anm2" subtype="33" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Dust Effect" numGridCollisionPoints="0" shadowSize="2" stageHP="0" variant="835289" gridCollision="none">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    -->
+    
 	<entity anm2path="effects/items/eggshells.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Eggshells" numGridCollisionPoints="0" shadowSize="7" stageHP="0" variant="835290" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
@@ -664,6 +701,9 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
     <entity anm2path="effects/tainted/cursed/enemy_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Tainted Curse Enemy Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046431">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/tainted/cursed/hope.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Sword of Hope Effect" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046432">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 </entities>

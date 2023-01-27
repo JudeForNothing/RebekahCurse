@@ -85,6 +85,9 @@ RebekahCurseItems = {
 	COLLECTIBLE_REBEKAHSFAVORITE = Isaac.GetItemIdByName("Rebekah's Favorite"),
 	
 	COLLECTIBLE_SKIMMEDMILK = Isaac.GetItemIdByName("Skimmed Milk"),
+	COLLECTIBLE_HAPHEPHOBICBOMBS = Isaac.GetItemIdByName("Haphephobic Bombs"),
+	COLLECTIBLE_JUMPYDUMPTY = Isaac.GetItemIdByName("Jumpy Dumpty"),
+	COLLECTIBLE_PENCILSHARPENER = Isaac.GetItemIdByName("Pencil Sharpener"),
 
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
 	
@@ -258,6 +261,7 @@ RebekahCurse = {
 	ENTITY_REBEKAHCURSEDWEAPON = Isaac.GetEntityVariantByName("Rebekah Cursed Weapon"),
 	ENTITY_TAINTEDCURSEDASHTARGET = Isaac.GetEntityVariantByName("Tainted Curse Dash Target"),
 	ENTITY_TAINTEDCURSEENEMYTARGET = Isaac.GetEntityVariantByName("Tainted Curse Enemy Target"),
+	ENTITY_SWORDOFHOPEEFFECT = Isaac.GetEntityVariantByName("Sword of Hope Effect"),
 
 	TECHNICAL_REB = Isaac.GetPlayerTypeByName("Technical Rebekah"),
 	REB = Isaac.GetPlayerTypeByName("Rebekah"),
@@ -369,6 +373,45 @@ RebekahCurseSounds = {
 	SOUND_ORIGINALSIN_SHATTER = Isaac.GetSoundIdByName("Original Sin Shatter"),
 	SOUND_SCRIBBLING = Isaac.GetSoundIdByName("Scribbling"),
 
+	SOUND_VOCAL_C0 = Isaac.GetSoundIdByName("Vocal C0"),
+	SOUND_VOCAL_CSHARP0 = Isaac.GetSoundIdByName("Vocal C#0"),
+	SOUND_VOCAL_D0 = Isaac.GetSoundIdByName("Vocal D0"),
+	SOUND_VOCAL_DSHARP0 = Isaac.GetSoundIdByName("Vocal D#0"),
+	SOUND_VOCAL_E0 = Isaac.GetSoundIdByName("Vocal E0"),
+	SOUND_VOCAL_F0 = Isaac.GetSoundIdByName("Vocal F0"),
+	SOUND_VOCAL_FSHARP0 = Isaac.GetSoundIdByName("Vocal F#0"),
+	SOUND_VOCAL_G0 = Isaac.GetSoundIdByName("Vocal G0"),
+	SOUND_VOCAL_GSHARP0 = Isaac.GetSoundIdByName("Vocal G#0"),
+	SOUND_VOCAL_A0 = Isaac.GetSoundIdByName("Vocal A0"),
+	SOUND_VOCAL_ASHARP0 = Isaac.GetSoundIdByName("Vocal A#0"),
+	SOUND_VOCAL_B0 = Isaac.GetSoundIdByName("Vocal B0"),
+
+	SOUND_VOCAL_C1 = Isaac.GetSoundIdByName("Vocal C1"),
+	SOUND_VOCAL_CSHARP1 = Isaac.GetSoundIdByName("Vocal C#1"),
+	SOUND_VOCAL_D1 = Isaac.GetSoundIdByName("Vocal D1"),
+	SOUND_VOCAL_DSHARP1 = Isaac.GetSoundIdByName("Vocal D#1"),
+	SOUND_VOCAL_E1 = Isaac.GetSoundIdByName("Vocal E1"),
+	SOUND_VOCAL_F1 = Isaac.GetSoundIdByName("Vocal F1"),
+	SOUND_VOCAL_FSHARP1 = Isaac.GetSoundIdByName("Vocal F#1"),
+	SOUND_VOCAL_G1 = Isaac.GetSoundIdByName("Vocal G1"),
+	SOUND_VOCAL_GSHARP1 = Isaac.GetSoundIdByName("Vocal G#1"),
+	SOUND_VOCAL_A1 = Isaac.GetSoundIdByName("Vocal A1"),
+	SOUND_VOCAL_ASHARP1 = Isaac.GetSoundIdByName("Vocal A#1"),
+	SOUND_VOCAL_B1 = Isaac.GetSoundIdByName("Vocal B1"),
+	SOUND_VOCAL_C2 = Isaac.GetSoundIdByName("Vocal C2"),
+
+	SOUND_VOCAL_CSHARP2 = Isaac.GetSoundIdByName("Vocal C#2"),
+	SOUND_VOCAL_D2 = Isaac.GetSoundIdByName("Vocal D2"),
+	SOUND_VOCAL_DSHARP2 = Isaac.GetSoundIdByName("Vocal D#2"),
+	SOUND_VOCAL_E2 = Isaac.GetSoundIdByName("Vocal E2"),
+	SOUND_VOCAL_F2 = Isaac.GetSoundIdByName("Vocal F2"),
+	SOUND_VOCAL_FSHARP2 = Isaac.GetSoundIdByName("Vocal F#2"),
+	SOUND_VOCAL_G2 = Isaac.GetSoundIdByName("Vocal G2"),
+	SOUND_VOCAL_GSHARP2 = Isaac.GetSoundIdByName("Vocal G#2"),
+	SOUND_VOCAL_A2 = Isaac.GetSoundIdByName("Vocal A2"),
+	SOUND_VOCAL_ASHARP2 = Isaac.GetSoundIdByName("Vocal A#2"),
+	SOUND_VOCAL_B2 = Isaac.GetSoundIdByName("Vocal B2"),
+
 	SOUND_STOLID_SING = Isaac.GetSoundIdByName("Stolid Sing"),
 	SOUND_STOLID_APPEAR = Isaac.GetSoundIdByName("Stolid Appear"),
 
@@ -454,6 +497,7 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_CURSED_SLAM_DEFAULT = 31,
 	ENTITY_REBEKAH_CURSED_HEAVY_STRIKE = 32,
 	ENTITY_REBEKAH_CURSED_WILD_SWING = 33,
+	ENTITY_REBEKAH_SLAM_HAND_THING = 34
 }
 
 local wasFromTaintedLocked = false

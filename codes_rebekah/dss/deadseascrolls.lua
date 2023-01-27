@@ -106,11 +106,11 @@ completionNoteSprite:SetFrame("Idle", 0)
 --completionNoteSprite.Scale = Vector.One / 2
 
 local completionHead = Sprite()
-completionHead:Load("gfx/ui/completion_heads_ff.anm2")
+completionHead:Load("gfx/ui/completion_heads_cab.anm2")
 completionHead:SetFrame("Fiend", 0)
 
 local completionDoor = Sprite()
-completionDoor:Load("gfx/ui/completion_doors_ff.anm2")
+completionDoor:Load("gfx/ui/completion_doors_cab.anm2")
 completionDoor:SetFrame("Fiend", 0)
 
 local completionCharacterSets = {
@@ -119,7 +119,7 @@ local completionCharacterSets = {
         --{HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
     },
     {
-        {HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return true end},
+        {HeadName = "Tainted Rebekah", PlayerID = RebekahCurse.SADREBEKAH, IsUnlocked = function() return true end},
         --{HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
     }
 }
@@ -236,7 +236,7 @@ local arrow = Sprite()
 arrow:Load("gfx/ui/achievement/group_icons/arrow_icon.anm2", true)
 
 local achievementLockedSprite = Sprite()
-achievementLockedSprite:Load("gfx/ui/achievement/_ff_achievement.anm2", false)
+achievementLockedSprite:Load("gfx/ui/achievement/_cab_achievement.anm2", false)
 achievementLockedSprite:ReplaceSpritesheet(0, "gfx/nothing.png")
 achievementLockedSprite:ReplaceSpritesheet(2, "gfx/ui/achievement/achievement_locked.png")
 achievementLockedSprite:LoadGraphics()
@@ -756,7 +756,7 @@ local rebekahdirectory = {
             {str = "", fsize = 2, nosel = true},
 
             {
-                str = "press down for golem",
+                str = "press down for tainted rebekah",
                 nosel = true,
                 fsize = 1,
 
@@ -765,7 +765,7 @@ local rebekahdirectory = {
                 end,
             },
             {
-                str = "press up for fiend",
+                str = "press up for rebekah",
                 nosel = true,
                 fsize = 1,
 
@@ -813,7 +813,7 @@ local rebekahdirectory = {
             elseif numCompleted == numAchievements then
                 extra = "!!"
             end
-            item.tooltip = {strset = {"you're", asPercent, "done with", "fiend folio!" .. extra}}
+            item.tooltip = {strset = {"you're", asPercent, "done with", "this mod! wow!" .. extra}}
         end
     },
     ---
@@ -918,7 +918,7 @@ local rebekahdirectory = {
         fsize = 2,
         buttons = {
             {str = "", nosel = true},
-            --{str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
+            {str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
             {str = "", nosel = true},
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "", fsize = 1, nosel = true},
@@ -936,6 +936,219 @@ local rebekahdirectory = {
             {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
             {str = "", nosel = true},
         }
+    },
+    rebekahacompletion = {
+        title = "rebekah completion",
+        fsize = 2,
+        buttons = {
+            {
+                str = "mom's heart / it lives",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "fiend_heart",
+                setting = 1,
+
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].heart + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].heart = var - 1
+                end,
+
+                tooltip = {strset = {"lil fiend", "", "unlocks on", "hard"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "isaac",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_isaac",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].isaac + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].isaac = var - 1
+                end,
+
+                tooltip = {strset = {"imp soda", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "???",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_bluebaby",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].bbaby + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].bbaby = var - 1
+                end,
+
+                tooltip = {strset = {"shard of", "china", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "satan",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_satan",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].satan + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].satan = var - 1
+                end,
+
+                tooltip = {strset = {"rebekah mix", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "the lamb",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_lamb",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].lamb + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].lamb = var - 1
+                end,
+
+                tooltip = {strset = {"prank cookie", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "boss rush",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_rush",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].rush + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].rush = var - 1
+                end,
+
+                tooltip = {strset = {"gmo corn", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "hush",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_hush",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].hush + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].hush = var - 1
+                end,
+
+                tooltip = {strset = {"+3 fireballs", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "mega satan",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_megasatan",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].mega + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].mega = var - 1
+                end,
+
+                tooltip = {strset = {"pyromancy", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "ultra greed(ier)",
+                choices = {"uncompleted", "completed: greed", "completed: greedier"},
+                variable = "rebekah_greed",
+                setting = 1,
+
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].greed + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].greed = var - 1
+                end,
+
+                tooltip = {strset = {"cool", "sunglasses", "unlocks on", "greed+", "", "jack cards", "unlock on", "greedier"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "delirium",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_delirium",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].deli + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].deli = var - 1
+                end,
+
+                tooltip = {strset = {"rebekahs horn", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "mother",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_mother",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].mother + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].mother = var - 1
+                end,
+
+                tooltip = {strset = {"the devils", "harvest", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "beast",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekah_beast",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekah"].beast + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekah"].beast = var - 1
+                end,
+
+                tooltip = {strset = {"fetal rebekah", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {str = "the rebekah folio", nosel = true},
+            {str = "unlocked by beating everything on hard", fsize = 1, nosel = true},
+            {str = "", nosel = true},
+        },
     },
     rebekahapersonalityunlocks = {
         title = "personality unlocks",

@@ -18,7 +18,7 @@ function Achievement:Init(id, tbl)
 	if tbl.Note then
 		self.Note = "gfx/ui/achievement/" .. tbl.Note .. ".png"
 		self.Sprite = Sprite()
-		self.Sprite:Load("gfx/ui/achievement/_ff_achievement.anm2", false)
+		self.Sprite:Load("gfx/ui/achievement/_cab_achievement.anm2", false)
 		self.Sprite:ReplaceSpritesheet(0, "gfx/nothing.png")
 		self.Sprite:ReplaceSpritesheet(2, self.Note)
 		self.Sprite:LoadGraphics()
@@ -273,9 +273,14 @@ function yandereWaifu.GetAchievementCompletionMarkData(playerType)
 end
 
 function yandereWaifu.InitCharacterCompletionMarks()
+	print("init STUFF I COPIED FROM FF")
 	yandereWaifu.InitCharacterCompletion("Technical Rebekah", false)
 	yandereWaifu.AssociateCompletionUnlocks(RebekahCurse.TECHNICAL_REB, yandereWaifu.GetAchievementCompletionMarkData(RebekahCurse.TECHNICAL_REB))
 
+	yandereWaifu.InitCharacterCompletion("Technical B Rebekah", true)
+	yandereWaifu.AssociateCompletionUnlocks(RebekahCurse.SADREBEKAH, yandereWaifu.GetAchievementCompletionMarkData(RebekahCurse.SADREBEKAH))
+
+	print("init STUFF I COPIED FROM FF (2)")
 	--init stuff, i copied some code from FF
 	--mod.InitCharacterCompletion("Fiend", true)
 	--mod.AssociateCompletionUnlocks(yandereWaifu.PLAYER.BIEND, yandereWaifu.GetAchievementCompletionMarkData(yandereWaifu.PLAYER.BIEND))

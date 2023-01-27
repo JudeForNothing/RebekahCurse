@@ -281,6 +281,120 @@
 		<sample weight="1" path="items/scribble.wav" />
 	</sound>
 
+	<sound name="Vocal C0">
+		<sample weight="1" path="vocal/c0.wav" />
+	</sound>
+	<sound name="Vocal C#0">
+		<sample weight="1" path="vocal/c#0.wav" />
+	</sound>
+	<sound name="Vocal D0">
+		<sample weight="1" path="vocal/d0.wav" />
+	</sound>
+	<sound name="Vocal D#0">
+		<sample weight="1" path="vocal/d#0.wav" />
+	</sound>
+	<sound name="Vocal E0">
+		<sample weight="1" path="vocal/e0.wav" />
+	</sound>
+	<sound name="Vocal F0">
+		<sample weight="1" path="vocal/f0.wav" />
+	</sound>
+	<sound name="Vocal F#0">
+		<sample weight="1" path="vocal/f#0.wav" />
+	</sound>
+	<sound name="Vocal G0">
+		<sample weight="1" path="vocal/g0.wav" />
+	</sound>
+	<sound name="Vocal G#0">
+		<sample weight="1" path="vocal/g#0.wav" />
+	</sound>
+	<sound name="Vocal A0">
+		<sample weight="1" path="vocal/a0.wav" />
+	</sound>
+	<sound name="Vocal A#0">
+		<sample weight="1" path="vocal/a#0.wav" />
+	</sound>
+	<sound name="Vocal B0">
+		<sample weight="1" path="vocal/b0.wav" />
+	</sound>
+
+	<sound name="Vocal C1">
+		<sample weight="1" path="vocal/c1.wav" />
+	</sound>
+	<sound name="Vocal C#1">
+		<sample weight="1" path="vocal/c#1.wav" />
+	</sound>
+	<sound name="Vocal D1">
+		<sample weight="1" path="vocal/d1.wav" />
+	</sound>
+	<sound name="Vocal D#1">
+		<sample weight="1" path="vocal/d#1.wav" />
+	</sound>
+	<sound name="Vocal E1">
+		<sample weight="1" path="vocal/e1.wav" />
+	</sound>
+	<sound name="Vocal F1">
+		<sample weight="1" path="vocal/f1.wav" />
+	</sound>
+	<sound name="Vocal F#1">
+		<sample weight="1" path="vocal/f#1.wav" />
+	</sound>
+	<sound name="Vocal G1">
+		<sample weight="1" path="vocal/g1.wav" />
+	</sound>
+	<sound name="Vocal G#1">
+		<sample weight="1" path="vocal/g#1.wav" />
+	</sound>
+	<sound name="Vocal A1">
+		<sample weight="1" path="vocal/a1.wav" />
+	</sound>
+	<sound name="Vocal A#1">
+		<sample weight="1" path="vocal/a#1.wav" />
+	</sound>
+	<sound name="Vocal B1">
+		<sample weight="1" path="vocal/b1.wav" />
+	</sound>
+	<sound name="Vocal C2">
+		<sample weight="1" path="vocal/c2.wav" />
+	</sound>
+
+	<sound name="Vocal C2">
+		<sample weight="1" path="vocal/c2.wav" />
+	</sound>
+	<sound name="Vocal C#2">
+		<sample weight="1" path="vocal/c#2.wav" />
+	</sound>
+	<sound name="Vocal D2">
+		<sample weight="1" path="vocal/d2.wav" />
+	</sound>
+	<sound name="Vocal D#2">
+		<sample weight="1" path="vocal/d#2.wav" />
+	</sound>
+	<sound name="Vocal E2">
+		<sample weight="1" path="vocal/e2.wav" />
+	</sound>
+	<sound name="Vocal F2">
+		<sample weight="1" path="vocal/f2.wav" />
+	</sound>
+	<sound name="Vocal F#2">
+		<sample weight="1" path="vocal/f#2.wav" />
+	</sound>
+	<sound name="Vocal G2">
+		<sample weight="1" path="vocal/g2.wav" />
+	</sound>
+	<sound name="Vocal G#2">
+		<sample weight="1" path="vocal/g#2.wav" />
+	</sound>
+	<sound name="Vocal A2">
+		<sample weight="1" path="vocal/a2.wav" />
+	</sound>
+	<sound name="Vocal A#2">
+		<sample weight="1" path="vocal/a#2.wav" />
+	</sound>
+	<sound name="Vocal B2">
+		<sample weight="1" path="vocal/b2.wav" />
+	</sound>
+
 	<sound name="Stolid Sing">
 		<sample weight="1" path="stolid/moyai_sing.wav" />
 	</sound>

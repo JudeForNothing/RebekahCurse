@@ -1,6 +1,45 @@
 local uiReserve = Sprite();
 uiReserve:Load("gfx/ui/ui_lovesick_reserve.anm2", true);
 
+local allVocalSounds = {
+	[0] = RebekahCurseSounds.SOUND_VOCAL_C0,
+	[1] = RebekahCurseSounds.SOUND_VOCAL_CSHARP0,
+	[2] = RebekahCurseSounds.SOUND_VOCAL_D0,
+	[3] = RebekahCurseSounds.SOUND_VOCAL_DSHARP0,
+	[4] = RebekahCurseSounds.SOUND_VOCAL_E0,
+	[5] = RebekahCurseSounds.SOUND_VOCAL_F0,
+	[6] = RebekahCurseSounds.SOUND_VOCAL_FSHARP0,
+	[7] = RebekahCurseSounds.SOUND_VOCAL_G0,
+	[8] = RebekahCurseSounds.SOUND_VOCAL_GSHARP0,
+	[9] = RebekahCurseSounds.SOUND_VOCAL_A0,
+	[10] = RebekahCurseSounds.SOUND_VOCAL_ASHARP0,
+	[11] = RebekahCurseSounds.SOUND_VOCAL_B0,
+	[12] = RebekahCurseSounds.SOUND_VOCAL_C1,
+	[13] = RebekahCurseSounds.SOUND_VOCAL_CSHARP1,
+	[14] = RebekahCurseSounds.SOUND_VOCAL_D1,
+	[15] = RebekahCurseSounds.SOUND_VOCAL_DSHARP1,
+	[16] = RebekahCurseSounds.SOUND_VOCAL_E1,
+	[17] = RebekahCurseSounds.SOUND_VOCAL_F1,
+	[18] = RebekahCurseSounds.SOUND_VOCAL_FSHARP1,
+	[19] = RebekahCurseSounds.SOUND_VOCAL_G1,
+	[20] = RebekahCurseSounds.SOUND_VOCAL_GSHARP1,
+	[21] = RebekahCurseSounds.SOUND_VOCAL_A1,
+	[22] = RebekahCurseSounds.SOUND_VOCAL_ASHARP1,
+	[23] = RebekahCurseSounds.SOUND_VOCAL_B1,
+	[24] = RebekahCurseSounds.SOUND_VOCAL_C2,
+	[25] = RebekahCurseSounds.SOUND_VOCAL_CSHARP2,
+	[26] = RebekahCurseSounds.SOUND_VOCAL_D2,
+	[27] = RebekahCurseSounds.SOUND_VOCAL_DSHARP2,
+	[28] = RebekahCurseSounds.SOUND_VOCAL_E2,
+	[29] = RebekahCurseSounds.SOUND_VOCAL_F2,
+	[30] = RebekahCurseSounds.SOUND_VOCAL_FSHARP2,
+	[31] = RebekahCurseSounds.SOUND_VOCAL_G2,
+	[32] = RebekahCurseSounds.SOUND_VOCAL_GSHARP2,
+	[33] = RebekahCurseSounds.SOUND_VOCAL_A2,
+	[34] = RebekahCurseSounds.SOUND_VOCAL_ASHARP2,
+	[35] = RebekahCurseSounds.SOUND_VOCAL_B2,
+}
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
@@ -33,9 +72,105 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				end]]
 			end
 		end
+		local leniency = 30
+		local function play(vec)
+			local x, y = vec.X, vec.Y
+			local x2, y2 = player:GetMovementInput().X, player:GetMovementInput().Y
+			local soundIdx = 0
+			if x == 0 and y == -1 then --up
+				soundIdx = 12
+			elseif x == 1 and y == -1 then --up right
+				soundIdx = 14
+			elseif x == 1 and y == 0 then --right
+				soundIdx = 16
+			elseif x == 1 and y == 1 then --down right
+				soundIdx = 17
+			elseif x == 0 and y == 1 then --down
+				soundIdx = 19
+			elseif x == -1 and y == 1 then --down left
+				soundIdx = 21
+			elseif x == -1 and y == 0 then --left
+				soundIdx = 23
+			elseif x == -1 and y == -1 then --left up
+				soundIdx = 24
+			end
+		--[[if x2 ~= 0 then
+				if x == 0 and y == -1 then --up G
+					soundIdx = 19
+				elseif x == 1 and y == 0 then --right A
+					soundIdx = 21
+				elseif x == 0 and y == 1 then --down B
+					soundIdx = 23
+				elseif x == -1 and y == 0 then --left C higher
+					soundIdx = 24
+				end
+			else
+				if x == 0 and y == -1 then --up C
+					soundIdx = 12
+				elseif x == 1 and y == 0 then --right D
+					soundIdx = 14
+				elseif x == 0 and y == 1 then --down E
+					soundIdx = 16
+				elseif x == -1 and y == 0 then --left F
+					soundIdx = 17
+				end
+			end]]--
+			if x2 == 1 then --sharp
+				soundIdx = soundIdx + 1
+			elseif x2 == -1 then --flat
+				soundIdx = soundIdx - 1
+			end
+
+			if y2 == -1 then --higher octave
+				soundIdx = soundIdx + 12
+			elseif y2 == 1 then --lower octave
+				soundIdx = soundIdx - 12
+			end
+
+			--correction
+			if soundIdx < 0 then 
+				soundIdx = 0
+				elseif soundIdx > 35 then
+				soundIdx = 35
+			end
+			InutilLib.SFX:Play(allVocalSounds[soundIdx], 1, 0, false, 1)
+			InutilLib.SFX:Stop(SoundEffect.SOUND_SIREN_SING)
+		end
+		--singing logic
+		if not data.SingingFrameCount then data.SingingFrameCount = 0 end
+		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) and not data.IsSinging then
+			if data.SingingFrameCount < leniency then 
+				data.SingingFrameCount = data.SingingFrameCount + 1
+				--leniency logic
+				if not data.SingingVector then
+					data.SingingVector = player:GetShootingInput()
+				--if either of x or y is 0, still give the player a chance to change the note
+				elseif data.SingingVector.X == 0 or data.SingingVector.Y == 0 then
+					data.SingingVector = player:GetShootingInput()
+				end
+			--[[elseif data.SingingFrameCount >= leniency then
+				data.IsSinging = true
+				play(data.SingingVector)
+				data.SingingVector = nil]]
+			end
+			if data.SingingFrameCount == 5 then
+				InutilLib.SFX:Play(SoundEffect.SOUND_SIREN_SING, 0.7, 0, false, 1.2)
+			end
+		elseif (player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0) and data.IsSinging then
+			--[[for i, sound in pairs(allVocalSounds) do
+				InutilLib.SFX:Stop(sound)]]
+			data.IsSinging = false
+			data.SingingFrameCount = 0
+			data.SingingVector = nil
+		elseif (player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0) and not data.IsSinging and data.SingingFrameCount > 0 and data.lovesickTick < 45 then
+			play(data.SingingVector)
+			data.SingingFrameCount = 0
+
+			data.SingingVector = nil
+		end
 		if player:GetFireDirection() == -1 then --if not firing
 			if data.lovesickTick and data.lovesickDir then
-				if data.lovesickTick >= 30 then
+				if data.lovesickTick >= 45 then
 
 					local cut = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SIREN_RING, 0, player.Position, Vector(0,0), player);
 					for i = 0, 360 - 360/16, 360/16 do
@@ -45,6 +180,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 					end
 					data.SirenDidShriek = true
 					
+					InutilLib.SFX:Play(SoundEffect.SOUND_SIREN_SCREAM, 0.4, 0, false, 1.2)
+					InutilLib.SFX:Stop(SoundEffect.SOUND_SIREN_SING)
+
 					player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
 					player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
 					

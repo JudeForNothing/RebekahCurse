@@ -141,6 +141,7 @@ end
 
 function yandereWaifu.GetCompletionNoteLayerDataFromPlayerType(playerType)
 	for key, dataset in pairs(RebekahLocalSavedata.CompletionMarks) do
+		print(playertype_cache[key])
 		if playertype_cache[key] == playerType then
 			return {
 				[noteLayer.DELI] 	= dataset.deli + (dataset.istainted and 3 or 0),

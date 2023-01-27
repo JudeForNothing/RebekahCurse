@@ -21,12 +21,11 @@ function dash.CursedRebekahDoubleTapDash(vector, playerTapping)
 			
 			if isFree then
 				if yandereWaifu.IsTaintedRebekah(player) then --IF tainted
-					yandereWaifu.CursedHeartTeleport(player, vector)
+					yandereWaifu.CursedHeartStomp(player, vector)
 				end
 				playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown
 				-- update the dash double tap cooldown based on Rebecca's mode specific cooldown
 			end
-			print(playerdata.specialCooldown)
 			playerdata.DASH_TAINTED_DOUBLE_TAP.cooldown = playerdata.specialCooldown;
 		end
 	end

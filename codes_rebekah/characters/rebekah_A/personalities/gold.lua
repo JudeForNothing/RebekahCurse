@@ -43,7 +43,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 		end
 	end
 	
-	ILIB.game:MakeShockwave(eff.Position, 0.065, 0.025, 10)
+	ILIB.game:MakeShockwave(player.Position, 0.065, 0.025, 10)
 
 	Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, player.Position, Vector(0,0), player)
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 14, player.Position, Vector.Zero, player):ToEffect()

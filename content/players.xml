@@ -43,11 +43,7 @@
 <player name="Rebekah" birthright="More love" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
-
-	<player name="RebekahB" birthright="Undying Hope" skin="character_rebekah.png" hp="4" keys="0"
-          nameimage="name_rebekah.png" 
-          portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true"/>
-	
+          
 	<player name="IsaacC" birthright="???" skin="character_wishful_isaac.png" hp="6" keys="0"
           nameimage="playername_01_isaac.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7"/>
@@ -56,7 +52,7 @@
           nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" />
 		  
-    <player name="Cursed Rebekah"  bSkinParent="Technical Rebekah" birthright="???" skin="character_rebekah_cursed.png" hp="0" keys="3"
+    <player name="Cursed Rebekah"  bSkinParent="Technical Rebekah" birthright="Undying Hope" skin="character_rebekah_cursed.png" hp="0" keys="3"
             nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7" canShoot="false"/>
 

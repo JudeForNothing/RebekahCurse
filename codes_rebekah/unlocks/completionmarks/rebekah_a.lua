@@ -72,7 +72,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	for i=0, ILIB.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if yandereWaifu.IsNormalRebekah(player) then
+			if ILIB.game:IsGreedMode() then
+				if not ultraGreedWasDefeated then
+					if currentStage == LevelStage.STAGE7_GREED then
+						if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS and room:IsCurrentRoomLastBoss() then
+							if not yandereWaifu.ACHIEVEMENT.LOVE_POWER:IsUnlocked() then --greed
+								yandereWaifu.ACHIEVEMENT.LOVE_POWER:Unlock()
+								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_love_power.png", nil, true, 60)
+							end
+							if ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then 
+								if not yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:IsUnlocked() then --greedier
+									yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:Unlock()
 
+									InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rebekahs_camera.png", nil, true, 60)
+								end
+							end
+						end
+					end
+				end
+			else
 				--do boss rush unlock
 				if not bossRushWasCompleted then
 					if roomType == RoomType.ROOM_BOSSRUSH and room:IsAmbushDone() then
@@ -82,6 +100,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 						end
 					end
 				end
+			end
 		end
 	end
 	roomWasCleared = roomIsClear

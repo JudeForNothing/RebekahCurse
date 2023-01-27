@@ -312,6 +312,14 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 					end)
 				end
 			end
+			--pencil sharpener synergy
+			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+				for i = -45, 45, 15 do
+					local tear = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(8), true, false, false, (player), 1)
+					tear:AddTearFlags(TearFlags.TEAR_PIERCING)
+					tear:ChangeVariant(TearVariant.CUPID_BLUE)
+				end
+			end
 							
 			--revelation synergy
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_REVELATION) then
@@ -784,6 +792,14 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 					end
 			--	end)
 			--end
+		end
+		--pencil sharpener synergy
+		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+			for i = -45, 45, 15 do
+				local tear = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(8), true, false, false, (player), 1)
+				tear:AddTearFlags(TearFlags.TEAR_PIERCING)
+				tear:ChangeVariant(TearVariant.CUPID_BLUE)
+			end
 		end
 	end
 

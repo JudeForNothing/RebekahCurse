@@ -69,6 +69,7 @@ function yandereWaifu:render(player) --function that activates the co op menu af
 			sfxmanager:Play(194,1)
 		end
 		if Input.IsActionTriggered(ButtonAction.ACTION_MENUCONFIRM,player.ControllerIndex) and data.ClickPastFirstFrame then
+				if yandereWaifu.ListOfRegUnlockedPersonalities[data.RebekahCurrentPersonality].name == "Tutorial" then return end
 				data.ClickPastFirstFrame=nil
 				data.ShowCoopSelectionMenu=false
 				player.ControlsEnabled=true

@@ -58,7 +58,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if sprite:GetFrame() >= 5 and sprite:GetFrame() <= 25 then
 			eff.Velocity = eff.Velocity * 0.7
 		elseif sprite:GetFrame() >= 25 and sprite:GetFrame() <= 45 then
-			eff.Velocity = data.dir:Resized(15)
+			if data.dir then
+				eff.Velocity = data.dir:Resized(15)
+			end
 			for i, ent in pairs (Isaac.GetRoomEntities()) do
 				if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 					if eff.FrameCount % 5 == 0 then
