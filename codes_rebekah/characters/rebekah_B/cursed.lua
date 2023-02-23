@@ -1,14 +1,23 @@
+local crystalGainFrame = 0
+
 --deprecated
-local function ThrowCursedSword(player)
+local function ThrowCursedSword(player, notSpecial)
     local data = yandereWaifu.GetEntityData(player)
-    data.CanShoot = false
-    local sword = player:FireTear( player.Position,  Vector(0,15):Rotated(data.taintedCursedDir-90), false, false, false):ToTear()
+    local sword = player:FireTear( player.Position,  Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(4+player.ShotSpeed*10), false, false, false):ToTear()
      -- local sword = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, player.Position, Vector(0,20):Rotated(data.taintedCursedDir-90), player):ToTear()
-    sword:AddTearFlags(TearFlags.TEAR_BOOMERANG | TearFlags.TEAR_PIERCING)
+    sword:AddTearFlags(TearFlags.TEAR_BOOMERANG --[[| TearFlags.TEAR_PIERCING]])
+    sword.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
     yandereWaifu.GetEntityData(sword).IsCursedSword = true
-    
-    data.CantTaintedSkill = true
-    data.CantGiveCrystal = true
+    yandereWaifu.GetEntityData(sword).state = 1
+
+    if not notSpecial then
+        data.CantGiveCrystal = true
+        data.CantTaintedSkill = true
+        data.CanShoot = false
+
+        data.taintedWeapon.Visible = false
+    end
+    return sword
 end
 
 local function TeleportToClosestEnemy(player)
@@ -27,7 +36,6 @@ local function TeleportToClosestEnemy(player)
      --yandereWaifu.GetEntityData(data.taintedWeapon).state = 2
      -- yandereWaifu.GetEntityData(data.taintedWeapon).Angle = data.taintedCursedDir
 end
-
 
 --deprecated
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
@@ -188,47 +196,56 @@ function yandereWaifu.CursedHeartStomp(player, vector)
     for i, ent in pairs (Isaac.GetRoomEntities()) do
         if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
             local additDistance = 0
-            if ent.Position:Distance(pos) <= radisu + additDistance then
+            if ent.Position:Distance(player.Position) <= radisu + additDistance + ent.Size then
                 ent:AddFreeze(EntityRef(player), 30)
             end
         end
     end
 end
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
-function()
-    local hasTaintedReb = false
-    local num_players = Game():GetNumPlayers()
-    for i=0,(num_players-1) do
-        local player = Isaac.GetPlayer(i)
-        local data = yandereWaifu.GetEntityData(player)
-        if not yandereWaifu.IsTaintedRebekah(player) then return end
-        data.CanShoot = true
-        data.CantTaintedSkill = false
-        data.CantGiveCrystal = false
-
-        data.taintedWeaponIdle = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDOFHOPEEFFECT, 0, player.Position,  Vector(0,0), player );
-        yandereWaifu.GetEntityData(data.taintedWeaponIdle).Player = player
-
-        if data.TAINTEDREBSKILL_MENU then
-            data.TAINTEDREBSKILL_MENU:ToggleMenu(false)
-        end
-    end
-end
-)
-
 --spawning knife
-function yandereWaifu.SpawnCursedKnife(player, state, angle, flip)
+
+function yandereWaifu.SpawnCursedKnife(player)
+   -- local state = state or 1
+   -- local angle = angle or player:GetShootingInput():GetAngleDegrees()
+    local data = yandereWaifu.GetEntityData(player)
+   -- local willFlip = flip or false
+    data.taintedWeapon = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHCURSEDWEAPON, 0, player.Position,  Vector(0,0), player );
+    yandereWaifu.GetEntityData(data.taintedWeapon).Player = player
+    yandereWaifu.GetEntityData(data.taintedWeapon).state = 0
+end
+
+function yandereWaifu.SpawnAndSwingCursedKnife(player, state, angle, flip)
     local state = state or 1
     local angle = angle or player:GetShootingInput():GetAngleDegrees()
     local data = yandereWaifu.GetEntityData(player)
     local willFlip = flip or false
-    data.taintedWeapon = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHCURSEDWEAPON, 0, player.Position,  Vector(0,0), player );
-    yandereWaifu.GetEntityData(data.taintedWeapon).Player = player
+    local taintedWeapon = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAHCURSEDWEAPON, 0, player.Position,  Vector(0,0), player );
+    yandereWaifu.GetEntityData(taintedWeapon).Player = player
+    yandereWaifu.GetEntityData(taintedWeapon).Temp = true
 
-    yandereWaifu.GetEntityData(data.taintedWeapon).state = state
-    yandereWaifu.GetEntityData(data.taintedWeapon).Angle = angle
-    yandereWaifu.GetEntityData(data.taintedWeapon).willFlip = willFlip
+    taintedWeapon:SetColor(Color(0.5,0.5,0.5,1,0,0,0),99999999,1,false,false)
+
+    yandereWaifu.SwingCursedKnife(player, taintedWeapon, state, angle, flip)
+end
+
+function yandereWaifu.SwingCursedKnife(player, weapon, state, angle, flip)
+    local state = state or 1
+    local angle = angle or player:GetShootingInput():GetAngleDegrees()
+    local data = yandereWaifu.GetEntityData(player)
+    local willFlip = flip or false
+    local weapon = weapon or data.taintedWeapon
+   if not (weapon) then return end
+
+
+   if data.IsGlorykillMode then
+        weapon:GetSprite().PlaybackSpeed = 2
+   else
+        weapon:GetSprite().PlaybackSpeed = 1
+   end
+    yandereWaifu.GetEntityData(weapon).state = state
+    yandereWaifu.GetEntityData(weapon).Angle = angle
+    yandereWaifu.GetEntityData(weapon).willFlip = willFlip
 
     data.CantTaintedSkill = true
     if state ~= 1 then
@@ -247,7 +264,7 @@ function yandereWaifu.SpawnCursedKnife(player, state, angle, flip)
                     local chosenNumofBarrage = 4
 
                     for i = 1, chosenNumofBarrage do
-                        local tear = player:FireTear(player.Position, Vector.FromAngle(angle - math.random(-10,10))*(math.random(7,12)), false, false, false):ToTear()
+                        local tear = player:FireTear(player.Position, Vector.FromAngle(angle - math.random(-10,10))*(math.random(7,12)):Resized(player.ShotSpeed*10), false, false, false):ToTear()
                         tear.Position = player.Position
                         if tear.Variant == 0 then tear:ChangeVariant(TearVariant.BLOOD) end
                         tear.Scale = math.random(07,14)/10
@@ -282,7 +299,7 @@ function yandereWaifu.SpawnCursedKnife(player, state, angle, flip)
 			if data.PSRPFireCount > 7 then
 				data.PSRPFireCount = 0
 				for i = -45, 45, 15 do
-                    local tear = player:FireTear(player.Position, Vector.FromAngle(angle+i):Resized(8), true, false, false, (player), 1)
+                    local tear = player:FireTear(player.Position, Vector.FromAngle(angle+i):Resized(player.ShotSpeed*10), true, false, false, (player), 1)
                     tear:AddTearFlags(TearFlags.TEAR_PIERCING)
                     tear:ChangeVariant(TearVariant.CUPID_BLUE)
                 end
@@ -306,6 +323,35 @@ function yandereWaifu.SpawnCursedKnife(player, state, angle, flip)
 	end
 end
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
+function()
+    local hasTaintedReb = false
+    local num_players = Game():GetNumPlayers()
+    for i=0,(num_players-1) do
+        local player = Isaac.GetPlayer(i)
+        local data = yandereWaifu.GetEntityData(player)
+        if not yandereWaifu.IsTaintedRebekah(player) then return end
+        data.CanShoot = true
+        data.CantTaintedSkill = false
+        data.CantGiveCrystal = false
+
+        if not data.taintedWeapon or data.taintedWeapon:IsDead() then
+            yandereWaifu.SpawnCursedKnife(player)
+        end
+
+        --data.taintedWeaponIdle = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDOFHOPEEFFECT, 0, player.Position,  Vector(0,0), player );
+        --yandereWaifu.GetEntityData(data.taintedWeaponIdle).Player = player
+
+        if data.TAINTEDREBSKILL_MENU then
+            data.TAINTEDREBSKILL_MENU:ToggleMenu(false)
+        end
+
+        crystalGainFrame = 0
+    end
+end
+)
+
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local data = yandereWaifu.GetEntityData(player)
 
@@ -317,7 +363,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     end
 	if yandereWaifu.IsTaintedRebekah(player) then
         local numofShots = 1
-            
+        local tearIntervalPenalty = 0
+        
+        --neptunus synergy
+        if not data.NeptunusTRebCount then data.NeptunusTRebCount = 0 end
         if player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
             --curAng = -25
             numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) * 3
@@ -330,9 +379,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             --curAng = -20
             numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_INNER_EYE) * 2
         end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK) then
+            --curAng = -20
+            numofShots = numofShots*5
+            tearIntervalPenalty = -15
+        end
         if TaintedTreasure and player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
             numofShots = numofShots + player:GetCollectibleNum(TaintedCollectibles.SPIDER_FREAK) * 5
         end
+
+        numofShots = numofShots + math.min(data.NeptunusTRebCount)
 
         --if menu open, slow down
         if data.TAINTEDREBSKILL_MENU and data.TAINTEDREBSKILL_MENU.open then
@@ -355,13 +411,24 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			if data.taintedCursedTick then
 				if data.taintedCursedTick >= 30 then
                     --TeleportToClosestEnemy(player)
-                    --ThrowCursedSword(player)
-                    for i = -45, 45, 15 do
-                        player:FireTear(player.Position, Vector.FromAngle(data.taintedCursedDir+i):Resized(8), true, false, false, (player), 1)
+                    if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+                        local bomb = player:FireBomb(player.Position, Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(2+player.ShotSpeed), player)
+                        bomb:SetExplosionCountdown(75)
+                    else
+                        local sword = ThrowCursedSword(player)
+                        yandereWaifu.GetEntityData(sword).Sword = data.taintedWeapon
                     end
+                    --[[for i = -30, 30, 15 do
+                        local tear = player:FireTear(player.Position, Vector.FromAngle(data.taintedCursedDir+i):Resized(player.ShotSpeed*10), true, false, false, (player), 1)
+                        tear.CollisionDamage = player.Damage * 1.5
+                        tear.Scale = tear.Scale*1.5
+                    end]]
                 end
 			end
 			data.taintedCursedTick = 0
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and data.NeptunusTRebCount < 10 then
+                data.NeptunusTRebCount = data.NeptunusTRebCount + 0.1
+            end
 		else
             --if data.IsCursedCharging then return end
 			if not data.taintedCursedTick then data.taintedCursedTick = 0 end
@@ -378,13 +445,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				dir = 0
 			end
 			data.taintedCursedDir = dir
+
+            data.NeptunusTRebCount = 0
 		end
 
         --when swinging
-        if not data.taintedWeapon and (Input.IsActionPressed(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTUP, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTDOWN, player.ControllerIndex)) then
+        if --[[not data.taintedWeapon and]] (Input.IsActionPressed(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTUP, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTDOWN, player.ControllerIndex)) then
             if not data.CanShoot then return end
             if data.TAINTEDREBSKILL_MENU.open then return end
             if data.TaintedTearDelay > 0 then return end
+
+            if not data.taintedWeapon or data.taintedWeapon:IsDead() then
+                yandereWaifu.SpawnCursedKnife(player)
+            end
 
             local IsLokiHornsTriggered = false
 
@@ -394,6 +467,26 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 IsLokiHornsTriggered = false
             end
 
+            local isOriginal = true
+
+            --eyesore synergy
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_SORE) then
+                if math.random(1,3) == 3 then
+                    data.willEyeSoreBar = true
+                    data.eyeSoreBarAngles = {
+                        [1] = math.random(0,360),
+                        [2] = math.random(0,360)
+                    }
+                else
+                    data.willEyeSoreBar = false
+                    data.eyeSoreBarAngles = nil
+                end
+            end
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_SORE) and data.willEyeSoreBar then
+                for i, angle in pairs(data.eyeSoreBarAngles) do
+                    yandereWaifu.SpawnAndSwingCursedKnife(player, 1, angle, false)
+                end
+            end
             for lhorns = 0, 270, 360/4 do
                 local direction = player:GetShootingInput():GetAngleDegrees() + lhorns
                 local oldDir = direction
@@ -401,25 +494,41 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                     if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) and lhorns == 0 then --sets the wiz angles
                         direction = (direction + wizAng)
                     end
-
                     for i = 0, numofShots-1, 1 do
                         local flip = false
                         if i%2 == 1 then
                             flip = true
                         end
-                        InutilLib.SetTimer(0+i*25, function()
-                            yandereWaifu.SpawnCursedKnife(player, 1, direction, flip)
+                        InutilLib.SetTimer(0+i*(25+tearIntervalPenalty), function()
+                            if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+                                direction = direction + math.random(-10,10)
+                            end
+                            if player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK) then
+                                direction = direction + math.random(-20,20)
+                            end
+                            if isOriginal then
+                                yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 1, direction, flip)
+                            else
+                                yandereWaifu.SpawnAndSwingCursedKnife(player, 1, direction, flip)
+                            end
                         end)
+                        if i == 0 then
+                            isOriginal = false
+                        end
                     end
 
                     if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
                         break -- just makes sure it doesnt duplicate
+                    --[[else 
+                        isOriginal = false]]
                     end
                 end
 
                 direction = oldDir
                 if not IsLokiHornsTriggered then 
                     break
+                --[[else
+                    isOriginal = false]]
                 end
             end
 
@@ -440,8 +549,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 data.taintedWeaponCount = data.taintedWeaponCount - 1
             end
             if data.taintedWeaponCount <= 0 then 
-                data.taintedWeaponIdle = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDOFHOPEEFFECT, 0, player.Position,  Vector(0,0), player );
-                yandereWaifu.GetEntityData(data.taintedWeaponIdle).Player = player 
+                --yandereWaifu.GetEntityData(data.taintedWeapon).state = -1
+                --[[data.taintedWeaponIdle = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SWORDOFHOPEEFFECT, 0, player.Position,  Vector(0,0), player );
+                yandereWaifu.GetEntityData(data.taintedWeaponIdle).Player = player]] 
             end
         end
 
@@ -459,6 +569,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 data.invincibleTime = 0
             end
         end]]
+
+        --held up item
+        --if not player:IsItemQueueEmpty() then
+            --print(player.QueuedItem.Item.DevilPrice)
+        --end
     end
 end)
 
@@ -471,6 +586,8 @@ local function canPoison(player)
         return true
     elseif player:HasCollectible(CollectibleType.COLLECTIBLE_SERPENTS_KISS) and math.random(1,10) + player.Luck >= 10 then
         return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_SCORPIO) then
+        return true 
     end
 end
 
@@ -494,20 +611,144 @@ local function canFreeze(player)
     end
 end
 
+local function canJacobsLadder(player)
+    if player.TearFlags == player.TearFlags | TearFlags.TEAR_JACOBS then 
+        return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_JACOBS_LADDER) then
+        return true
+    end
+end
 
+local function canHaemolacsomething(player)
+    if player.TearFlags == player.TearFlags | TearFlags.TEAR_BURSTSPLIT then 
+        return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_HAEMOLACRIA) then
+        return true 
+    end
+end
+
+local function canRock(player)
+    if player.TearFlags == player.TearFlags | TearFlags.TEAR_ROCK then 
+        return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_TERRA) then
+        return true 
+    end
+end
+
+local function canPop(player)
+    if player.TearFlags == player.TearFlags | TearFlags.TEAR_POP then 
+        return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_POP) then
+        return true 
+    end
+end
+
+local function canGodhead(player)
+    if player.TearFlags == player.TearFlags | TearFlags.TEAR_GLOW then 
+        return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_GODHEAD) then
+        return true 
+    end
+end
+
+local function changeCursedRebekahGfx(player, eff)
+    local data = yandereWaifu.GetEntityData(eff)
+    data.IsLightLoaded = nil
+    data.IsPolyLoaded = nil
+    data.IsEmojiLoaded = nil
+    data.IsTechLoaded = nil
+    data.IsTerraLoaded = nil
+    data.IsIPECACLoaded = nil
+    data.IsGodheadLoaded = nil
+    data.IsDrFetusLoaded = nil
+    eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon.anm2", true)
+    eff:SetColor(Color(1,1,1,1,0,0,0), 7, 1)
+    if ((player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X)) and not data.IsTechLoaded) then
+        eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_tech.anm2", true)
+        data.IsTechLoaded = true
+    elseif ((player:HasWeaponType(WeaponType.WEAPON_BOMBS)) and not data.IsTechLoaded) then
+        eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_drfetus.anm2", true)
+        data.IsDrFetusLoaded = true
+    else
+        if (player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK))and not data.IsLightLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_soy.anm2", true)
+            data.IsLightLoaded = true
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) and not data.IsPolyLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_big.anm2", true)
+            data.IsPolyLoaded = true
+        end
+        if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) and not data.IsEmojiLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_emoji.anm2", true)
+            data.IsEmojiLoaded = true
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_TERRA) and not data.IsTerraLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_terra.anm2", true)
+            data.IsTerraLoaded = true
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) and not data.IsIPECACLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_ipecac.anm2", true)
+            data.IsIPECACLoaded = true
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_GODHEAD) and not data.IsGodheadLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_godhead.anm2", true)
+            data.IsIPECACLoaded = true
+        end
+    end
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND) then
+        eff:SetColor(Color(1,1,1,1,1,0.3,0), 7, 1)
+    end
+end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite()
 	local data = yandereWaifu.GetEntityData(eff)
 	local player = data.Player
     local playerdata = yandereWaifu.GetEntityData(player)
+    local scale = 1
 
-    if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) and eff.FrameCount == 1 then
-        eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_big.anm2", true)
+    local range = player.TearRange
+    local normalRange = 260
+
+    --range size
+    if range >= normalRange then
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_MY_REFLECTION) then
+            range = math.max((range - 50) / 1.5, normalRange)
+        end
+        scale = ((range*0.8)/normalRange)
+    else
+        scale = 1
     end
+    if scale < 1 then scale = 1 end
+    if scale > 2 then scale = 2 end
+
+    if not data.LastCollCount or player:GetCollectibleCount() ~= data.LastCollCount then
+        data.LastCollCount = player:GetCollectibleCount() 
+        changeCursedRebekahGfx(player, eff)
+        player:AddCacheFlags(CacheFlag.CACHE_ALL);
+        player:EvaluateItems()
+
+        eff.SpriteScale = Vector(scale, scale)
+    end
+    
+    --[[if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_ZERO) then
+        if not data.TechZeroSpots then
+            data.TechZeroSpots = {}
+        end
+    end]]
 
     if player and data.state ~= 2 then
-        eff.Position = player.Position
+        --eff.Position = player.Position
+        local lerpVal = 0.6
+        --[[if data.state == -1 then
+		    eff.Velocity = InutilLib.Lerp(eff.Velocity,(player.Position + player.Velocity:Resized(15))-eff.Position, lerpVal)
+        else]]if data.state == 0 then
+            eff.Velocity = InutilLib.Lerp(eff.Velocity,(player.Position + player.Velocity:Resized(15))-eff.Position, lerpVal)
+        elseif data.state == 1 and data.Angle then
+            eff.Velocity = InutilLib.Lerp(eff.Velocity,(player.Position + (eff.Position):Rotated(data.Angle):Resized(2))-eff.Position, lerpVal)
+        elseif data.Angle then
+            eff.Velocity = InutilLib.Lerp(eff.Velocity,(player.Position + (eff.Position):Rotated(data.Angle):Resized(4))-eff.Position, lerpVal)
+        end
     end
 
     local numofShots = 1
@@ -527,24 +768,49 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     if TaintedTreasure and player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
         numofShots = numofShots + player:GetCollectibleNum(TaintedCollectibles.SPIDER_FREAK) * 5
     end
+    local radiusMultiplier = 1 
 
-    local function cut(radius, pos, damage)
-        local radisu = radius or 90
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_PUPULA_DUPLEX) then
+        radiusMultiplier = radiusMultiplier * 2
+        scale = scale + 0.5
+    end
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
+        radiusMultiplier = radiusMultiplier * 2
+        --ILIB.game:ShakeScreen(10)
+        scale = scale + 1
+    end
+
+    local function make_child(tear, damage)
+        tear.CollisionDamage = damage * 0.5 or tear.CollisionDamage * 0.5
+        tear:ClearTearFlags(TearFlags.TEAR_BURSTSPLIT)
+        tear:ClearTearFlags(TearFlags.TEAR_QUADSPLIT)
+        tear:ClearTearFlags(TearFlags.TEAR_SPLIT)
+        tear:ClearTearFlags(TearFlags.TEAR_BONE)
+    end
+
+    local function cut(radius, pos, damage, sp)
+        local radisu = radius or 50
         local pos = pos or (eff.Position)+ (Vector(28,0):Rotated(data.Angle))
         local damage = damage or (player.Damage)
         local did_hit = false
-
+        local special = sp
         local radiusMultiplier = 1 
+        if sp == nil then special = true end
 
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_PUPULA_DUPLEX) then
-            radiusMultiplier = radiusMultiplier * 2
+        radisu = radisu * (scale * 1.2)
+
+        local function isValidHit(ent, radius)
+            if (InutilLib.CuccoLaserCollision(eff, data.Angle, player.TearRange * 15, ent, 40) and player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK)) or (ent.Position:Distance(pos) <= radius + ent.Size) then
+                return true
+            end
         end
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
-            radiusMultiplier = radiusMultiplier * 2
-            ILIB.game:ShakeScreen(10)
-        end
+
+        local isSoy = false
         if player:HasCollectible(CollectibleType.COLLECTIBLE_PROPTOSIS) then
             damage = damage * 3
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK) then
+            isSoy = true
         end
         local numofShots = 1
 
@@ -554,41 +820,288 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         data.canPoison = canPoison(player)
         data.canFear = canFear(player)
         data.canFreeze = canFreeze(player)
+        data.canJacobsLadder = canJacobsLadder(player)
+        data.canHaemolacsomething = canHaemolacsomething(player)
+        data.canRock = canRock(player)
+        data.canPop = canPop(player)
+        data.canGodhead = canGodhead(player)
 
-        for i, ent in pairs (Isaac.GetRoomEntities()) do
-            if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
-                local dmg = 1
-                local additDistance = 0
-                if ent.Position:Distance(pos) <= radisu + additDistance then
-                    ent:TakeDamage((damage) * dmg, 0, EntityRef(eff), 1)
-                    did_hit = true
-
-                    --poison synergies
-                    if data.canPoison then
-                        ent:AddPoison(EntityRef(player), 30, 3)
+        if (player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X)) and (data.state == 1 or data.state == 3) then
+            local randomTick = math.random(5,7)
+            local penalty = 0
+            if player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
+                randomTick = randomTick - 3 
+                penalty = 5
+            end --balance stuff
+            for i = 1, randomTick do
+                local currentRoom = ILIB.level:GetCurrentRoomIndex()
+                InutilLib.SetTimer(0+i*15+penalty, function()
+                    if ILIB.level:GetCurrentRoomIndex() == currentRoom then
+                        if player:HasWeaponType(WeaponType.WEAPON_LASER) then
+                            local position = pos
+                            local rng = math.random(0,5)
+                            local posTable = {
+                                position = {
+                                    [0] = position + Vector(55*scale,0):Rotated(data.Angle),
+                                    [1] = position + Vector(0,55*scale):Rotated(data.Angle),
+                                    [2] = position + Vector(0,-55*scale):Rotated(data.Angle),
+                                    [3] = position + Vector(55*scale,0):Rotated(data.Angle),
+                                    [4] = position + Vector(0,55*scale):Rotated(data.Angle),
+                                    [5] = position + Vector(0,-55*scale):Rotated(data.Angle),
+                                },
+                                angle = {
+                                    [0] = Vector.FromAngle(data.Angle-135),
+                                    [1] = Vector.FromAngle(data.Angle-45),
+                                    [2] = Vector.FromAngle(data.Angle+45),
+                                    [3] = Vector.FromAngle(data.Angle+135),
+                                    [4] = Vector.FromAngle(data.Angle-90),
+                                    [5] = Vector.FromAngle(data.Angle+90),
+                                }
+                            }
+                            local techlaser = player:FireTechLaser(posTable.position[rng], 0, posTable.angle[rng], false, true)
+                            InutilLib.UpdateRepLaserSize(techlaser, 2*scale, false)
+                            techlaser.DisableFollowParent = true
+                            techlaser.MaxDistance = 50*scale
+                            techlaser.CollisionDamage = player.Damage * 0.5
+                        else
+                            local techlaser = player:FireTechXLaser(player.Position, Vector.Zero, math.random(40,50))
+							techlaser.Position = pos + Vector(math.random(-30, 30), math.random(-30, 30))
+                            techlaser.Timeout = 1
+                            InutilLib.UpdateRepLaserSize(techlaser, 2*scale, false)
+							--techlaser.Size = techlaser.Size + math.random(1,3)
+                            techlaser.DisableFollowParent = true
+                            techlaser.CollisionDamage = player.Damage * 0.25
+                        end
                     end
-                    if data.canFear then
-                        ent:AddFear(EntityRef(player), 45)
+                end)
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_MYSTERIOUS_LIQUID) then
+            local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_GREEN, pos, Vector(0,0), player, 0, 0):ToEffect()
+            InutilLib.RevelSetCreepData(puddle)
+            InutilLib.RevelUpdateCreepSize(puddle, math.random(1,2), true)
+        end
+        if data.canJacobsLadder then
+            local ents = Isaac.FindInRadius(pos, 75, EntityPartition.ENEMY)
+            for _, ent in pairs(ents) do
+                if ent:IsVulnerableEnemy() and not ent:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+                    local laser = EntityLaser.ShootAngle(10, pos, math.ceil((ent.Position - pos):GetAngleDegrees()), 5, Vector.Zero, player)
+                    laser:AddTearFlags(TearFlags.TEAR_JACOBS)
+                    laser:SetMaxDistance(ent.Position:Distance(pos))
+                    laser.Parent = player
+                    laser.Target = ent
+                    laser.CollisionDamage = player.Damage * 0.5
+                    if data.state == 5 then
+                        InutilLib.UpdateRepLaserSize(laser, 20, false)
                     end
-                    if data.canFreeze then
-                        ent:AddFreeze(EntityRef(player), 30)
-                    end
-                    if data.canMidas then
-                        ent:AddMidasFreeze(EntityRef(player), 120)
+                    break
+                end
+            end
+        end
+        if data.canHaemolacsomething and special then
+            if data.state ~= 5 then
+                --i saw this in samael, dont kill me, its such a cool way to pop the thing
+                local tear = player:FireTear(pos, Vector.Zero, false, true, false)
+                tear.Height = 0
+                tear:ClearTearFlags(TearFlags.TEAR_QUADSPLIT | TearFlags.TEAR_SPLIT | TearFlags.TEAR_BONE | TearFlags.TEAR_EXPLOSIVE)
+                tear:Die()
+            else
+                for i = 0, 360 - 360/4, 360/4 do
+                    --i saw this in samael, dont kill me, its such a cool way to pop the thing
+                    local tear = player:FireTear(pos + Vector(45,0):Rotated(i+45), Vector.Zero, false, true, false)
+                    tear.Height = 0
+                    tear:ClearTearFlags(TearFlags.TEAR_QUADSPLIT | TearFlags.TEAR_SPLIT | TearFlags.TEAR_BONE | TearFlags.TEAR_EXPLOSIVE)
+                    tear:Die()
+                end
+            end
+        end
+        if data.canRock and special and data.state ~= 1 then
+            if data.state ~= 5 then
+                for i = 0, math.random(1,2) do
+                    local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, pos, Vector.Zero, player):ToEffect()
+                    crack.LifeSpan = 5;
+                    crack.Timeout = 5
+                    crack.Rotation = math.random(1,360)
+                end
+            end
+        end
+        local ents = Isaac.FindInRadius(pos, 95, EntityPartition.ENEMY)
+        for i, ent in pairs(Isaac.FindByType(EntityType.ENTITY_EFFECT, -1, -1)) do
+            if ent.Position:Distance(pos) <= 95 and  yandereWaifu.GetEntityData(ent).IsGlorykill then
+                table.insert(ents, ent)
+            end
+        end
+        for _, ent in pairs(ents) do
+            local dmg = 1
+            local additDistance = 0
+            if isValidHit(ent, radisu) then
+                --crystal gain
+                if not playerdata.CantGiveCrystal then 
+                    if not playerdata.HitForCrystal then
+                        playerdata.HitForCrystal = true 
+                    elseif playerdata.HitForCrystal and (crystalGainFrame + 15 < ILIB.game:GetFrameCount()) then
+                        playerdata.HitForCrystal = false
+                        if not playerdata.RageCrystal then
+                            playerdata.RageCrystal = 1 
+                        elseif playerdata.RageCrystal < playerdata.PersistentPlayerData.MaxRageCrystal then
+                            local multiplier = 1
+                            if playerdata.TaintedRageTick and playerdata.TaintedRageTick > 0 then multiplier = 2 end
+                            playerdata.RageCrystal =  playerdata.RageCrystal + 1*multiplier
+                            if playerdata.RageCrystal >= playerdata.PersistentPlayerData.MaxRageCrystal then playerdata.RageCrystal = playerdata.PersistentPlayerData.MaxRageCrystal end
+                        end
+                        crystalGainFrame = ILIB.game:GetFrameCount()
                     end
                 end
+
+                ent:TakeDamage((damage) * dmg, 0, EntityRef(player), 1)
+                did_hit = true
+
+                --poison synergies
+                if data.canPoison then
+                    ent:AddPoison(EntityRef(player), 30, 3)
+                end
+                if data.canFear then
+                    ent:AddFear(EntityRef(player), 45)
+                end
+                if data.canFreeze then
+                   ent:AddFreeze(EntityRef(player), 30)
+                end
+                if data.canMidas then
+                    ent:AddMidasFreeze(EntityRef(player), 120)
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_LIGHT) and math.random(1,5) + player.Luck >= 10 then
+                    for i = 0, 360 - 360/4, 360/4 do
+                        local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ent.Position+ Vector(35,0):Rotated(i), Vector(0,0), player) 
+                        crack.CollisionDamage = player.Damage 
+                    end
+                    if data.state == 5 then
+                       for i = 0, 360 - 360/4, 360/4 do
+                            local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ent.Position+ Vector(70,0):Rotated(i+45), Vector(0,0), player) 
+                            crack.CollisionDamage = player.Damage/2
+                        end
+                    end
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_SINUS_INFECTION) and math.random(0,10) + player.Luck >= 10 then
+                    local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BOOGER, 1, ent.Position + Vector(3,0):Rotated(math.random(0,360)), Vector(0,0), player):ToTear()
+					tear.Size = math.random(1,20)/10
+					tear:AddTearFlags(player.TearFlags)
+					tear:AddTearFlags(TearFlags.TEAR_BOOGER)
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_EXPLOSIVO) and math.random(0,10) + player.Luck >= 10 then
+                    local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.EXPLOSIVO, 1, ent.Position + Vector(3,0):Rotated(math.random(0,360)), Vector(0,0), player):ToTear()
+					tear.Size = math.random(1,20)/10
+					tear:AddTearFlags(player.TearFlags)
+					tear:AddTearFlags(TearFlags.TEAR_STICKY)
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_MUCORMYCOSIS) and math.random(0,10) + player.Luck >= 8 then
+                    local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.SPORE, 1, ent.Position + Vector(3,0):Rotated(math.random(0,360)), Vector(0,0), player):ToTear()
+					tear.Size = math.random(1,20)/10
+					tear:AddTearFlags(player.TearFlags)
+					tear:AddTearFlags(TearFlags.TEAR_SPORE)
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_LITTLE_HORN) and math.random(1,5) == 5 then
+                    local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 1, ent.Position + Vector(3,0):Rotated(math.random(0,360)), Vector(0,0), player):ToTear()
+					tear.Size = math.random(1,20)/10
+					tear:AddTearFlags(player.TearFlags)
+					tear:AddTearFlags(TearFlags.TEAR_HORN)
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND) then
+                    ent:AddBurn(EntityRef(player), 60, Damage)
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_CRICKETS_BODY) and not player:HasCollectible(CollectibleType.COLLECTIBLE_PARASITE) and special then
+                    local rng = math.random(-30,30)
+                    local dividend = 4
+                    if data.state == 5 then dividend = 8 end
+                    for i = 0, 360-360/dividend, 360/dividend do
+                        local tear = player:FireTear( ent.Position + (eff.Position - ent.Position):Resized(ent.Size + 10), Vector(65,0):Rotated(rng + i):Resized(player.ShotSpeed*3), false, false, false):ToTear()
+                        tear:ChangeVariant(RebekahCurse.ENTITY_METALTEAR)
+                        tear.FallingAcceleration = 1.5
+                        make_child(tear, damage)
+                    end
+                end
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_PARASITE) and special then
+                    for i = 0, 360-360/2, 360/2 do
+                        local tear = player:FireTear( ent.Position + (eff.Position - ent.Position):Resized(ent.Size + 10)--[[:Rotated(i+data.Angle+90)]], Vector(75,0):Rotated(i+data.Angle+90):Resized(player.ShotSpeed*10), false, false, false):ToTear()
+                        tear:ChangeVariant(RebekahCurse.ENTITY_METALTEAR)
+                        --make_child(tear, damage)
+                        tear:ClearTearFlags(TearFlags.TEAR_SPLIT)
+                    end
+                end
+                if data.canGodhead and data.state == 4 and special then
+                    yandereWaifu.GetEntityData(ent).isCursedGodheadSlam = 45
+                    if not yandereWaifu.GetEntityData(ent).CursedGodheadSlamTier then
+                        yandereWaifu.GetEntityData(ent).CursedGodheadSlamTier = 1 
+                    else
+                        yandereWaifu.GetEntityData(ent).CursedGodheadSlamTier = yandereWaifu.GetEntityData(ent).CursedGodheadSlamTier + 1 
+                    end
+                    yandereWaifu.GetEntityData(ent).lastGodheadSlammedPlayer = player
+                end
+                if data.canPop and not yandereWaifu.GetEntityData(ent).IsGlorykill then
+                    if data.state < 4 then
+                        ent.Velocity = (ent.Position - pos):Resized(50)
+                        ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
+                        yandereWaifu.GetEntityData(ent).isSnooked = 15
+                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+                    elseif data.state == 4 then
+                        ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
+                        if not yandereWaifu.GetEntityData(ent).isSlamSnooked then
+                            yandereWaifu.GetEntityData(ent).isSlamSnooked = 5
+                            yandereWaifu.GetEntityData(ent).SlamSnookStrength = 15
+                        else
+                            yandereWaifu.GetEntityData(ent).SlamSnookStrength = yandereWaifu.GetEntityData(ent).SlamSnookStrength + 15
+                            yandereWaifu.GetEntityData(ent).SnookVelocity = (ent.Position - pos):Resized(yandereWaifu.GetEntityData(ent).SlamSnookStrength)
+                        end
+                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+                    elseif data.state == 5 then
+                        ent.Velocity = (ent.Position - pos):Resized(65)
+                        ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
+                        yandereWaifu.GetEntityData(ent).isHeavySnooked = 45
+                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+                    end
+                end
+                if player:HasWeaponType(WeaponType.WEAPON_BOMBS) and not yandereWaifu.GetEntityData(ent).IsGlorykill and data.state <= 3 then
+                    if data.state == 3 then
+                        ent.Velocity = (ent.Position - player.Position):Resized(40)
+                    else
+                        ent.Velocity = (ent.Position - player.Position):Resized(30)
+                    end
+                    if ent:ToBomb() then
+                        ent:ToBomb():SetExplosionCountdown(60)
+                        yandereWaifu.GetEntityData(ent).SensitiveBombs = true
+                        yandereWaifu.GetEntityData(ent).SensitiveBombsNoColor = true
+                    end
+                end
+                if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) and not yandereWaifu.GetEntityData(ent).IsGlorykill then
+                    ent.Velocity = (ent.Position - player.Position):Resized(10)
+                    if data.state == 4 then
+                        ent.Velocity = (ent.Position - player.Position):Resized(25)
+                    end
+                end
+            
             end
             if player:HasCollectible(CollectibleType.COLLECTIBLE_LOST_CONTACT) then
                 if ent:ToProjectile() then
                     ent:Kill()
                 end
             end
+            if ent.Type == 1000 and yandereWaifu.GetEntityData(ent).IsGlorykill then
+                if not playerdata.HitCount then playerdata.HitCount = 0 end
+                playerdata.HitCount = playerdata.HitCount + 1
+                ent:SetColor(Color(1,0,0,1,0,0,0), 7, 1)
+                ILIB.game:ShakeScreen(5)
+
+                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_WILD_SWING, 1, 0, false, 0.7 );
+
+                local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, ent.Position, Vector.FromAngle((player.Position - ent.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
+				yandereWaifu.GetEntityData(heart).Parent = player
+				yandereWaifu.GetEntityData(heart).maxHealth = math.ceil(15)
+            end
         end
         for x = math.ceil(radisu/40)*-1, math.ceil(radisu/40) do
             for y = math.ceil(radisu/40)*-1, math.ceil(radisu/40) do
                 local grid = ILIB.room:GetGridEntityFromPos(Vector(pos.X+40*x, pos.Y+40*y))
-                if grid and (--[[grid:ToRock() or ]]grid:ToPoop() or grid:ToTNT()) then
-                    if InutilLib.GetGridsInRadius(pos, grid.Position, radisu) then
+                if grid and (( grid:ToRock() and (data.canRock or (player:HasCollectible(CollectibleType.COLLECTIBLE_SULFURIC_ACID) and math.random(1,4) == 4)) ) or grid:ToPoop() or grid:ToTNT()) then
+                    if (player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) and InutilLib.CuccoLaserCollisionToGrid(eff, data.Angle, player.TearRange * 15, grid, 5)) or (not player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) and InutilLib.GetGridsInRadius(pos, grid.Position, radisu)) then
                         grid:Destroy()
                     end
                 end
@@ -596,15 +1109,179 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end
         return did_hit
     end
+    local function explosion(pos)
+        return Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, pos, Vector(0,0), player):ToBomb()
+    end
+
+    local function slam(position, scale, child)
+
+        local pos = position or (eff.Position)+ (Vector(32,0):Rotated(data.Angle))
+        local size = scale or 1
+        --stun and crystals
+        local radisu = 60*size --95*size
+        local isChild = child or false
+
+        local function slam_effect(pos)
+            if player:HasWeaponType(WeaponType.WEAPON_LASER) then
+                for i = 0, 360 - 360/4, 360/4 do
+                    local techlaser = player:FireTechLaser(pos, 0,  Vector.FromAngle(i+45), false, true)
+                    InutilLib.UpdateRepLaserSize(techlaser, 10*size, false)
+                    techlaser.DisableFollowParent = true
+                    techlaser.MaxDistance = 90*size
+                    techlaser.CollisionDamage = player.Damage * 0.8
+                end
+            elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
+                for i = 0, 360 - 360/2, 360/2 do
+                    local techlaser = player:FireTechXLaser(player.Position, Vector(25,0):Rotated(i), math.random(40,50))
+                    techlaser.Position = pos + Vector(math.random(-30, 30), math.random(-30, 30))
+                    techlaser.Timeout = 1
+                    InutilLib.UpdateRepLaserSize(techlaser, 8, false)
+                    --techlaser.Size = techlaser.Size + math.random(1,3)
+                    techlaser.DisableFollowParent = true
+                    techlaser.CollisionDamage = player.Damage * 0.25
+                end
+            elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+                local bomb = explosion(pos)
+                bomb:SetExplosionCountdown(0)
+                yandereWaifu.GetEntityData(bomb).NoHarm = true
+                bomb.ExplosionDamage = player.Damage
+            elseif player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+                local bomb = explosion(pos)
+                yandereWaifu.GetEntityData(bomb).NoHarm = true
+                bomb.ExplosionDamage = player.Damage*1.5 + data.storedKineticEnergy
+                bomb:SetExplosionCountdown(0)
+
+                data.storedKineticEnergy = 0 --reset
+            else
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT, pos, Vector.Zero, ent)
+                yandereWaifu.GetEntityData(poof).Parent = ent
+                poof:GetSprite().Scale = Vector(1*size, 1*size)
+                local color
+                if data.canPoison then
+                    color = Color( 1, 1, 1, 1, 0, 215, 0 );
+                elseif data.canFear then
+                    color = Color( 0.4, 0, 1, 1, 0, 0, 0 );
+                else
+                    color = Color( 1, 1, 1, 1, 0, 155, 155 );
+                end
+
+                if color then
+                    poof:GetSprite().Color = color
+                end
+            end
+        end
+
+        cut(radisu, pos, (player.Damage)*2)
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_ZERO) then
+            local dot = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDTECHZERODOT, 0, pos, Vector.Zero, player):ToEffect()
+            yandereWaifu.GetEntityData(dot).Player = player
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND) and math.random(1,4) == 4 then
+            Isaac.Explode(pos, player, player.Damage * 0.7)
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) then
+            local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_GREEN, pos, Vector(0,0), player, 0, 0):ToEffect()
+            InutilLib.RevelSetCreepData(puddle)
+            InutilLib.RevelUpdateCreepSize(puddle, math.random(14,15), true)
+            local bomb = explosion(pos)
+            bomb:SetExplosionCountdown(0)
+            yandereWaifu.GetEntityData(bomb).NoHarm = true
+            bomb.RadiusMultiplier = 1.5
+        end
+         --counts how many enemies were interacted
+        local addendEnemy = 0
+        for i, ent in pairs (Isaac.GetRoomEntities()) do
+            if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
+                local dmg = 2
+                local additDistance = 0
+                if ent.Position:Distance(pos) <= radisu + ent.Size + additDistance then
+                    ent:AddFreeze(EntityRef(player), 30)
+                    if math.random(1,3) == 3 and data.repeatSlam == 0 and not isChild then
+                        if not playerdata.RageCrystal then
+                            playerdata.RageCrystal = 1 
+                        elseif playerdata.RageCrystal < playerdata.PersistentPlayerData.MaxRageCrystal then
+                            local multiplier = 1
+                            if playerdata.TaintedRageTick and playerdata.TaintedRageTick > 0 then multiplier = 2 end
+                            playerdata.RageCrystal =  playerdata.RageCrystal + 1*multiplier
+                        if playerdata.RageCrystal >= playerdata.PersistentPlayerData.MaxRageCrystal then playerdata.RageCrystal = playerdata.PersistentPlayerData.MaxRageCrystal end
+                        end
+                    end
+                    data.did_hit = true
+                    ent.Velocity = (ent.Velocity + (Vector(10,0))):Rotated(data.Angle):Resized(3)
+                    if not isChild then
+                        InutilLib.SetTimer(0+addendEnemy*5, function()
+                            slam_effect(ent.Position)
+                        end)
+                        addendEnemy = addendEnemy + 1
+                    end
+                end
+            end
+        end
+        if isChild then
+            slam_effect(pos)
+        end
+        local pitch = 0
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
+            pitch = 0.4
+        end
+        if data.did_hit then
+            cut(90*size --[[125*size]], pos, (player.Damage), false)
+            InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_SLAM, 1, 0, false, (math.random(9,11)/10) - pitch);
+        else
+            InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 1.2 - pitch );
+        end
+        local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
+        poof:GetSprite().Scale = Vector(1*size, 1*size)
+        ILIB.game:ShakeScreen(6)
+    end
+
+    local function magnetize(pos, radisu, multiplier)
+        local addendEnemy = 0
+        local mult = multiplier or 10
+        for i, ent in pairs (Isaac.GetRoomEntities()) do
+             if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
+                local additDistance = 0
+                if ent.Position:Distance(pos) <= (radisu*3) + ent.Size + additDistance then
+                    ent.Velocity = ent.Velocity + (pos - ent.Position):Resized(mult)
+                end
+            end
+        end
+    end
+
 
     if data.state == 0 then
-        if player:GetFireDirection() == -1 then
+        eff.RenderZOffset = -1
+    else
+        eff.RenderZOffset = 1
+    end
+    if data.state == 0 or data.state == -1 then
+        sprite.PlaybackSpeed = 1 --set to default
+        --if player:GetFireDirection() == -1 then
+        if data.Temp then
             eff:Remove()
-            yandereWaifu.GetEntityData(player).taintedWeapon = nil
+        else
             yandereWaifu.GetEntityData(player).CantTaintedSkill = false
             yandereWaifu.GetEntityData(player).CantGiveCrystal = false
         end
+        if not InutilLib.IsPlayingMultiple(sprite, "Idle", "Idle2") then
+            if data.willFlip then
+                sprite:Play("Idle2")
+            else
+                sprite:Play("Idle")
+            end
+
+            if data.state == 0 then
+                eff.SpriteRotation = (player.Position-eff.Position):GetAngleDegrees()
+  
+                --eff.SpriteRotation = (player.Position-eff.Position):Rotated(90):GetAngleDegrees()
+            end
+        end
+            --[[eff:Remove()
+            yandereWaifu.GetEntityData(player).taintedWeapon = nil]]
+        --end
     elseif data.state == 1 then --swinging
+        local radius = 65 --90
+        local pos = (eff.Position)+ (Vector(30,0):Rotated(data.Angle))
         if InutilLib.IsFinishedMultiple(sprite, "Swing", "Swing2") then
             data.state = 0
         end
@@ -616,13 +1293,41 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             end
             sprite.Rotation = data.Angle
         end
-        if sprite:GetFrame() == 2 then
+        if sprite:GetFrame() == 3 and player:HasCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR) then
+            magnetize(pos, radius)
+        elseif sprite:GetFrame() == 2 then
             local pitch = 1
             if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
                 pitch = 0.7
             end
-            cut(90, (eff.Position)+ (Vector(30,0):Rotated(data.Angle)), player.Damage*0.7)
+            if isSoy then
+               -- stab(90, (eff.Position)+ (Vector(40,0):Rotated(data.Angle)), player.Damage)
+                sprite.PlaybackSpeed = 10
+           -- else
+            end
+            local did_hit = cut(radius, pos, player.Damage*0.7)
             InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, pitch )
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_ZERO) then
+                local dot = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDTECHZERODOT, 0, pos, Vector.Zero, player):ToEffect()
+                yandereWaifu.GetEntityData(dot).Player = player
+            end
+            --if dr fetus
+            --[[if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+                player:FireBomb(eff.Position, (Vector(40,0):Rotated(data.Angle):Resized(player.ShotSpeed*4)), player)
+            end]]
+            if data.canGodhead then
+                local aura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDGODHEADAURA, 0, pos, Vector.Zero, player):ToEffect()
+                yandereWaifu.GetEntityData(aura).Player = player
+                yandereWaifu.GetEntityData(aura).GivenPos = pos
+            end
+            if did_hit then
+                if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+                    local bomb = explosion(pos)
+                    yandereWaifu.GetEntityData(bomb).NoHarm = true
+                    bomb.ExplosionDamage = player.Damage
+                    bomb:SetExplosionCountdown(0)
+                end
+            end
         end
     elseif data.state == 2 then --flying
         if not sprite:IsPlaying("Fly") then
@@ -644,16 +1349,54 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end
     elseif data.state == 3 then --wild swing
         local pos = (eff.Position)+ (Vector(32,0):Rotated(data.Angle))
-        local radisu = 110
+        local radisu = 75 --110
         if sprite:IsFinished("Cut") then
             data.state = 0
+            return
         end
         if not sprite:IsPlaying("Cut") then
             sprite:Play("Cut")
             sprite.Rotation = data.Angle
         end
-        if sprite:GetFrame() >= 4 and sprite:GetFrame() <= 6 then
-            data.did_hit = cut(radisu, pos, (player.Damage)*1.5+math.floor((player.Damage*(numofShots-1))/4))
+        if sprite:GetFrame() <= 3 then
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR) then
+                magnetize(pos, radisu, 4)
+            end
+            if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+                if playerdata.TaintedEnemyTarget then
+                    InutilLib.MoveDirectlyTowardsTarget(player, playerdata.TaintedEnemyTarget, 8, 0.8)
+                    if not data.storedKineticEnergy then data.storedKineticEnergy = 0 end
+                   -- player.Velocity = playerdata.TaintedEnemyTarget
+
+                   if playerdata.TaintedEnemyTarget.Position:Distance(player.Position) > playerdata.TaintedEnemyTarget.Size + 45 then
+                        sprite:SetFrame(1)
+                        data.storedKineticEnergy = data.storedKineticEnergy + 4
+
+                        if eff.FrameCount % 3 == 0 then
+                            InutilLib.spawnEpicRocket(player, player.Position, true, 10)
+                        end
+                    else
+                        player.Velocity = Vector.Zero
+                    end
+                end
+            end
+        elseif sprite:GetFrame() >= 4 and sprite:GetFrame() <= 6 then
+            local special = false
+            if sprite:GetFrame() == 5 then special = true end --special interactions must happen once
+            data.did_hit = cut(radisu, pos, (player.Damage)*0.7+math.floor((player.Damage*(numofShots-1))/4), special)
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) then
+                local gas = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, pos, Vector(0,0), player):ToEffect()
+                gas.Timeout = 150
+            end
+            if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+                local bomb = explosion(pos)
+                yandereWaifu.GetEntityData(bomb).NoHarm = true
+                bomb.ExplosionDamage = player.Damage + data.storedKineticEnergy
+                bomb:SetExplosionCountdown(0)
+
+                data.storedKineticEnergy = 0 --reset
+            end
+
             --yandereWaifu.GetEntityData(player).invincibleTime = 15
             if sprite:GetFrame() == 4 then
                 if not playerdata.RageCrystal then
@@ -671,12 +1414,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             pitch = 0.7
         end
         if sprite:GetFrame() == 5 then
-            local addendEnemy = 0
             if data.did_hit then
+                local addendEnemy = 0
                 for i, ent in pairs (Isaac.GetRoomEntities()) do
                     if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
                         local additDistance = 0
-                        if ent.Position:Distance(pos) <= radisu + additDistance then
+                        if ent.Position:Distance(pos) <= radisu + ent.Size + additDistance then
                             data.did_hit = true
                             ent.Velocity = (ent.Velocity + (Vector(10,0))):Rotated(data.Angle):Resized(3)
                             InutilLib.SetTimer(0+addendEnemy*5, function()
@@ -691,94 +1434,95 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             else
                 InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, pitch );
             end
-        end
-    elseif data.state == 4 then --slam
-        if sprite:IsFinished("Slam") then
-            if data.repeatSlam <= 0 then
-                data.state = 0
-            else
-                data.repeatSlam = data.repeatSlam - 1
-                sprite:Play("Slam", true)
-                sprite.PlaybackSpeed = 1.5
+            --if dr fetus
+            --[[if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+                player:FireBomb(eff.Position, (Vector(40,0):Rotated(data.Angle):Resized(player.ShotSpeed*10)), player)
+            end]]
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_ZERO) then
+                local dot = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDTECHZERODOT, 0, pos, Vector.Zero, player):ToEffect()
+                yandereWaifu.GetEntityData(dot).Player = player
+            end
+            if data.canGodhead then
+                local aura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDGODHEADAURA, 0, pos, Vector.Zero, player):ToEffect()
+                yandereWaifu.GetEntityData(aura).Player = player
+                yandereWaifu.GetEntityData(aura).GivenPos = pos
             end
         end
-        if not sprite:IsPlaying("Slam") then
-            sprite:Play("Slam")
+    elseif data.state == 4 then --slam
+        local pos = (eff.Position)+ (Vector(32,0):Rotated(data.Angle))
+        local function playSlam()
             if not player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
                 sprite.Rotation = data.Angle
+                sprite:Play("Slam", true)
             else
-                if (data.Angle > 0 and (data.Angle <= 90 + 25 and data.Angle >= 90 - 25)) then
+                if (data.Angle > 0 and (data.Angle <= 90 - 25 and data.Angle >= 90 + 25)) then
                     --down
+                    sprite:Play("SlamOld", true)
                 elseif (data.Angle < 0 and (data.Angle >= -90 + 25 and data.Angle <= -90 - 25)) then
                     --up
+                    sprite:Play("SlamOld", true)
                 else
-                    sprite:Play("Slam")
+                    sprite.Rotation = 0
+                    sprite:Play("Slam", true)
+                    if (data.Angle < 0 and data.Angle >= -90) or (data.Angle > 0 and data.Angle <= 90)  then
+                        sprite.FlipX = false
+                    elseif (data.Angle < -90 and data.Angle >= -180) or (data.Angle > 90 and data.Angle <= 180) then
+                        sprite.FlipX = true
+                    end
                     --side
                 end
             end
+        end
+        if sprite:IsFinished("Slam") or sprite:IsFinished("SlamOld") then
+            if data.repeatSlam <= 0 then
+                sprite.FlipX = false -- reset
+                data.state = 0
+                return
+            else
+                data.repeatSlam = data.repeatSlam - 1
+                playSlam()
+                sprite.PlaybackSpeed = 1.5
+                return
+            end
+        end
+        if not sprite:IsPlaying("Slam") and not sprite:IsPlaying("SlamOld") then
+            playSlam()
             data.repeatSlam = numofShots-1
         end
-        if sprite:GetFrame() == 4 then
-            local pos =(eff.Position)+ (Vector(32,0):Rotated(data.Angle))
-            cut(75, pos, (player.Damage)*2)
-            --stun and crystals
-            local radisu = 75
-            --counts how many enemies were interacted
-            local addendEnemy = 0
-            for i, ent in pairs (Isaac.GetRoomEntities()) do
-                if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
-                    local dmg = 2
-                    local additDistance = 0
-                    if ent.Position:Distance(pos) <= radisu + additDistance then
-                        ent:AddFreeze(EntityRef(player), 30)
-                        if math.random(1,3) == 3 and data.repeatSlam == 0 then
-                            if not playerdata.RageCrystal then
-                                playerdata.RageCrystal = 1 
-                            elseif playerdata.RageCrystal < playerdata.PersistentPlayerData.MaxRageCrystal then
-                                local multiplier = 1
-                                if playerdata.TaintedRageTick and playerdata.TaintedRageTick > 0 then multiplier = 2 end
-                                playerdata.RageCrystal =  playerdata.RageCrystal + 1*multiplier
-                                if playerdata.RageCrystal >= playerdata.PersistentPlayerData.MaxRageCrystal then playerdata.RageCrystal = playerdata.PersistentPlayerData.MaxRageCrystal end
-                            end
-                        end
-                        data.did_hit = true
-                        ent.Velocity = (ent.Velocity + (Vector(10,0))):Rotated(data.Angle):Resized(3)
-                        InutilLib.SetTimer(0+addendEnemy*5, function()
-                            local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT, ent.Position, Vector.Zero, ent)
-                            yandereWaifu.GetEntityData(poof).Parent = ent
-                            if data.canPoison then
-                                poof:GetSprite().Color = Color( 1, 1, 1, 1, 0, 215, 0 );
-                            elseif data.canFear then
-                                poof:GetSprite().Color = Color( 0.4, 0, 1, 1, 0, 0, 0 );
-                            else
-                                poof:GetSprite().Color = Color( 1, 1, 1, 1, 0, 155, 155 );
-                            end
-                        end)
-                        addendEnemy = addendEnemy + 1
+        if sprite:GetFrame() <= 3 then
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR) then
+                magnetize(pos, 110, 4)
+            end
+            if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+                if playerdata.TaintedEnemyTarget then
+                    if not data.storedKineticEnergy then data.storedKineticEnergy = 0 end
+                    InutilLib.MoveDirectlyTowardsTarget(player, playerdata.TaintedEnemyTarget, 6, 0.8)
+                   -- player.Velocity = playerdata.TaintedEnemyTarget
+
+                   if playerdata.TaintedEnemyTarget.Position:Distance(player.Position) > playerdata.TaintedEnemyTarget.Size + 45 then
+                        data.storedKineticEnergy = data.storedKineticEnergy + 2
+                    else
+                        player.Velocity = Vector.Zero
                     end
                 end
             end
-            if data.did_hit then
-                cut(125, pos, (player.Damage))
-            else
-                return
-            end
-            --yandereWaifu.GetEntityData(player).invincibleTime = 15
-            --player.Velocity = (player.Velocity + (Vector(10,0))):Rotated(data.Angle-180):Resized(2)
-            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
-            ILIB.game:ShakeScreen(6)
-            local pitch = 0
-            if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
-                pitch = 0.4
-            end
-            if data.did_hit then
-                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_SLAM, 1, 0, false, (math.random(9,11)/10) - pitch);
-            else
-                InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 1.2 - pitch );
+        elseif sprite:GetFrame() == 4 then
+            slam(pos)
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_CRICKETS_BODY) then
+                InutilLib.SetTimer( 30, function()
+                    --local rng = math.random(-30,30)
+                    --for i = 0, 360-360/4, 360/4 do
+                        --local new_pos = pos + (Vector(75,0):Rotated(rng + i))
+                        --local tear = player:FireTear( pos,  Vector(75,0):Rotated(rng + i):Resized(player.ShotSpeed*10), false, false, false):ToTear()
+                        --tear:ChangeVariant(RebekahCurse.ENTITY_METALTEAR)
+                        --slam(new_pos, 0.7, true)
+                    --    print(i)
+                    --end
+                end)
             end
         end
     elseif data.state == 5 then --heavy strike
-        local pos =(eff.Position)+ (Vector(38,0):Rotated(data.Angle))
+        local pos =(eff.Position)+ (Vector(48,0):Rotated(data.Angle))
         if sprite:IsFinished("Slice") then
             data.state = 0
         end
@@ -787,36 +1531,141 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             sprite.Rotation = data.Angle
         end
         if sprite:GetFrame() >= 4 and sprite:GetFrame() <= 6 then
-            data.did_hit = cut(180, pos, (player.Damage)*3.5+math.floor((player.Damage*(numofShots-1))/4))
+            local special = false
+            if sprite:GetFrame() == 5 then special = true end --special interactions must happen once
+            data.did_hit = cut(180, pos, (player.Damage)*3.5+math.floor((player.Damage*(numofShots-1))/4), special)
             --stun
             local radisu = 60
             for i, ent in pairs (Isaac.GetRoomEntities()) do
                 if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
                     local dmg = 2
                     local additDistance = 0
-                    if ent.Position:Distance(pos) <= radisu + additDistance then
+                    if ent.Position:Distance(pos) <= radisu + ent.Size + additDistance then
                         ent:AddConfusion(EntityRef(player), 30)
-                        if sprite:GetFrame() == 5 then
-                            local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE, ent.Position, Vector.Zero, ent)
-                            yandereWaifu.GetEntityData(poof).Parent = ent
-                            poof:GetSprite().Scale = 1+0.1*(numofShots-1)
-                        end
                     end
                 end
             end
         end
-        if sprite:GetFrame() == 4 then
+        if sprite:GetFrame() <= 3 and player:HasCollectible(CollectibleType.COLLECTIBLE_STRANGE_ATTRACTOR) then
+            magnetize(pos, 330)
+        elseif sprite:GetFrame() == 4 then
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND) then
+                Isaac.Explode(pos, player, player.Damage * 1)
+            end
             local pitch = 0
             if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
                 pitch = 0.4
             end
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) then
+                for i = 0, 360 - 360/8, 360/8 do
+                    local gas = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.SMOKE_CLOUD, 0, pos + Vector(75,0):Rotated(i), Vector(0,0), player):ToEffect()
+                    gas.Timeout = 300
+                end
+                for i = 0, math.random(4,5) do
+                    local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_GREEN, pos + Vector(math.random(-50,50),math.random(-50,50)), Vector(0,0), player, 0, 0):ToEffect()
+                    InutilLib.RevelSetCreepData(puddle)
+                    InutilLib.RevelUpdateCreepSize(puddle, math.random(14,15), true)
+                end
+                local bomb = explosion(pos)
+                yandereWaifu.GetEntityData(bomb).NoHarm = true
+                bomb:SetExplosionCountdown(0)
+                bomb.RadiusMultiplier = 2
+               
+                bomb.ExplosionDamage = player.Damage
+            end
+            if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+                for i = 0, 360 - 360/4, 360/4 do
+                    for j = 0, 4, 1 do
+                        InutilLib.SetTimer( j * 5, function()
+                            InutilLib.spawnEpicRocket(player, pos + Vector((40*j),0):Rotated(i), true, 10)
+                        end)
+                    end
+                end
+            end
+            if data.canRock then
+                local eff = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SHOCKWAVE, 0, pos, Vector.Zero, player):ToEffect()
+				eff.Parent = player
+				eff:SetRadii(0, 80)
+				eff:SetTimeout(35)
+            end
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_TECHNOLOGY_ZERO) then
+                for i = 0, 360 - 360/4, 360/4 do
+                    local dot = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDTECHZERODOT, 0, pos + Vector(46,0):Rotated(i), Vector.Zero, player):ToEffect()
+                    yandereWaifu.GetEntityData(dot).Player = player
+                end
+            end
+            if data.canGodhead then
+                for i = 0, math.random(16,20) do
+                    InutilLib.SetTimer( i * 15, function()
+                        local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ILIB.room:FindFreeTilePosition(pos+ Vector(math.random(-150,150),math.random(-150,150)), 2), Vector(0,0), player) 
+                        crack.CollisionDamage = player.Damage 
+                    end)
+                end
+                for i, ent in pairs (Isaac.GetRoomEntities()) do
+                    if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
+                        local dmg = 2
+                        local additDistance = 0
+                        if ent.Position:Distance(pos) <= 300 + ent.Size + additDistance then
+                            ent:AddBurn(EntityRef(player), 150, 2)
+                            ent:TakeDamage((player.Damage/2), 0, EntityRef(player), 1)
+                            ILIB.game:ShakeScreen(10)
+                            InutilLib.SetTimer( i * 3, function()
+                                local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ent.Position, Vector(0,0), player) 
+                                crack.CollisionDamage = player.Damage
+                            end)
+                        end
+                    end
+                end
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE, pos, Vector.Zero, ent)
+                yandereWaifu.GetEntityData(poof).Parent = eff
+                InutilLib.SFX:Play(SoundEffect.SOUND_HOLY, 1.2, 0, false, 1.2);
+            end
             --yandereWaifu.GetEntityData(player).invincibleTime = 20
             player.Velocity = (player.Velocity + (Vector(10,0))):Rotated(data.Angle-180):Resized(5)
-            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
+            if player:HasWeaponType(WeaponType.WEAPON_LASER) then
+                for i = 0, 360 - 360/4, 360/4 do
+                    local techlaser = player:FireTechLaser(pos, 0,  Vector.FromAngle(i), false, true)
+                    InutilLib.UpdateRepLaserSize(techlaser, 20, false)
+                    techlaser.DisableFollowParent = true
+                    techlaser.MaxDistance = 350
+                    techlaser.CollisionDamage = player.Damage * 2
+                    techlaser.Timeout = 15*numofShots
+                end
+            elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
+                for  i = 0, math.random(5,7) do
+                    InutilLib.SetTimer( i * 45, function()
+                        local techlaser = player:FireTechXLaser(player.Position, Vector.Zero, math.random(20,70))
+                        techlaser.Position = pos
+                        techlaser.Timeout = 1
+                        InutilLib.UpdateRepLaserSize(techlaser, 15, false)
+                        --techlaser.Size = techlaser.Size + math.random(1,3)
+                        techlaser.DisableFollowParent = true
+                        techlaser.CollisionDamage = player.Damage * 0.25
+                    end)
+                end
+            elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+                local bomb = explosion(pos)
+                bomb:SetExplosionCountdown(0)
+                yandereWaifu.GetEntityData(bomb).NoHarm = true
+                bomb.ExplosionDamage = player.Damage
+                for i = 0, 360 - 360/4, 360/4 do
+                    for j = 0, 40, 10 do
+                        local bomb = explosion(pos + Vector((40+j)*bomb.RadiusMultiplier,0):Rotated(i))
+                        bomb:SetExplosionCountdown(0)
+                        bomb.GridCollisionClass = GridCollisionClass.COLLISION_NONE
+                        yandereWaifu.GetEntityData(bomb).NoHarm = true
+                    end
+                end
+            else
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE, pos, Vector.Zero, eff)
+                yandereWaifu.GetEntityData(poof).Parent = ent
+                poof:GetSprite().Scale = Vector(1+0.1*(numofShots-1), 1+0.1*(numofShots-1))
+                Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
+            end
             ILIB.game:ShakeScreen(8)
             ILIB.game:MakeShockwave(eff.Position, 0.075+0.01*(numofShots-1), 0.025, 10)
             if data.did_hit then
-                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_HEAVY_STRIKE, 1, 0, false, math.random(9,11)/10 - pitch  );
+                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_HEAVY_STRIKE, 1, 0, false, math.random(9,11)/10 - pitch );
              else
                 InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 1 - pitch);
              end
@@ -830,7 +1679,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
         local player = tr.SpawnerEntity:ToPlayer()
         local sprite = tr:GetSprite()
         if tr.FrameCount == 1 then
-            sprite:Load("gfx/effects/tainted/cursed/weapon.anm2", true)
+            --sprite:Load("gfx/effects/tainted/cursed/weapon.anm2", true)
+            changeCursedRebekahGfx(player, tr)
             sprite:LoadGraphics()
             sprite:Play("Fly", true)
             tr.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE;
@@ -840,26 +1690,53 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
                     local dmg = 2
                     local additDistance = 0
                     if ent.Position:Distance((tr.Position)) <= 75 + additDistance then
-                        ent:TakeDamage((player.Damage/5) * dmg, 0, EntityRef(player), 1)
+                        if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+                            local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, tr.Position, Vector(0,0), player):ToBomb()
+                            bomb:SetExplosionCountdown(0)
+                            yandereWaifu.GetEntityData(bomb).NoHarm = true
+                            bomb.ExplosionDamage = player.Damage
+                        else
+                            ent:TakeDamage((player.Damage/5) * dmg, 0, EntityRef(player), 1)
+                        end
+                        if data.state == 1 then data.state = 2 end
+                    end
+                elseif ent.Type == 4 then
+                    if ent.Position:Distance((tr.Position)) <= 75 then
+                        ent.Position = tr.Position
                     end
                 end
             end
-            if tr.FrameCount > 15 then
-                 tr.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS;
-            end
             tr.Height = -8
-            if tr:CollidesWithGrid() then
-                local sword = player:FireTear( player.Position,  (tr.Position - player.Position):Resized(9+player.ShotSpeed):Rotated(180), false, false, false):ToTear()
+            if data.state == 1 then
+                if tr.FrameCount > 15 then
+                  tr.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS;
+                  data.state = 2
+                end
+               if tr:CollidesWithGrid() then
+                    local sword = player:FireTear( player.Position,  (tr.Position - player.Position):Resized(9+player.ShotSpeed):Rotated(180), false, false, false):ToTear()
                 -- local sword = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, player.Position, Vector(0,20):Rotated(data.taintedCursedDir-90), player):ToTear()
-                sword:AddTearFlags(TearFlags.TEAR_BOOMERANG | TearFlags.TEAR_PIERCING)
-                yandereWaifu.GetEntityData(sword).IsCursedSword = true
-                sword.Position = tr.Position
-                tr:Remove()
-                ILIB.game:ShakeScreen(5)
+                    sword:AddTearFlags(TearFlags.TEAR_BOOMERANG)
+                    yandereWaifu.GetEntityData(sword).IsCursedSword = true
+                    yandereWaifu.GetEntityData(sword).state = 2
+                    sword.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
+                     sword.Position = tr.Position
+                    tr:Remove()
+                    ILIB.game:ShakeScreen(5)
+                end
+                if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) and tr.FrameCount % 5 == 0 then
+                    InutilLib.spawnEpicRocket(player, tr.Position, false, 10)
+                end
+            else
+                tr.Velocity =  (tr.Position - player.Position):Resized(9+player.ShotSpeed):Rotated(180)
             end
         end
-        if player.Position:Distance(tr.Position) < 45 and tr.FrameCount > 3 then
+        if player.Position:Distance(tr.Position) < 30 and tr.FrameCount > 9 and data.state == 2 then
+            data.IsRemovedSafely = true
             tr:Remove()
+            yandereWaifu.GetEntityData(player).CanShoot = true
+            yandereWaifu.GetEntityData(player).CantTaintedSkill = false
+            yandereWaifu.GetEntityData(player).CantGiveCrystal = false
+            yandereWaifu.GetEntityData(player).taintedWeapon.Visible = true
         end
     end
 end)
@@ -870,10 +1747,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
     if tr.SpawnerEntity then
         local player = tr.SpawnerEntity:ToPlayer()
         local sprite = tr:GetSprite()
-        if data.IsCursedSword then
-            yandereWaifu.GetEntityData(player).CanShoot = true
-            yandereWaifu.GetEntityData(player).CantTaintedSkill = false
-            yandereWaifu.GetEntityData(player).CantGiveCrystal = false
+        --if tr.TearFlags == tr.TearFlags | TearFlags.TEAR_POP then return end
+        if data.IsCursedSword and not data.IsRemovedSafely then
+            local sword = player:FireTear( tr.Position,  (tr.Position - player.Position):Resized(9+player.ShotSpeed), false, false, false):ToTear()
+            sword:AddTearFlags(TearFlags.TEAR_BOOMERANG)
+            yandereWaifu.GetEntityData(sword).IsCursedSword = true
+            yandereWaifu.GetEntityData(sword).state = 2
+            yandereWaifu.GetEntityData(sword).taintedWeapon = data.taintedWeapon
+            sword.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE;
+            sword.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
         end
     end
 end, EntityType.ENTITY_TEAR)
@@ -904,3 +1786,198 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	
 end, RebekahCurse.ENTITY_SWORDOFHOPEEFFECT)
+
+function yandereWaifu:CursedRebekahTearRender(tr, _)
+	if tr.Variant == RebekahCurse.ENTITY_METALTEAR then
+		local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
+		local size = InutilLib.GetTearSizeTypeII(scale, flags)
+		InutilLib.UpdateRegularTearAnimation(player, tr, data, flags, size, "Speen");
+		--InutilLib.UpdateDynamicTearAnimation(player, tr, data, flags, "Rotate", "", size)
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.CursedRebekahTearRender)
+
+function yandereWaifu:CursedRebekahTearUpdate(tr)
+	local data = yandereWaifu.GetEntityData(tr)
+	local player = tr.Parent
+	tr = tr:ToTear()
+	if tr.Variant == RebekahCurse.ENTITY_METALTEAR then
+		local chosenNumofBarrage =  math.random( 2, 4 );
+		for i = 1, chosenNumofBarrage do
+			local eff = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, 35, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(2), tr, 0, 0):ToTear()
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, yandereWaifu.CursedRebekahTearUpdate, EntityType.ENTITY_TEAR)
+
+
+-- Following the player
+--[[
+mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_, fam)
+    local player = fam.Player
+    local roomCenter = GetExpectedCenterPos(game:GetRoom())
+    
+    fam:FollowPosition((roomCenter - player.Position) + roomCenter)
+end, familiar)]]
+
+
+--stat cache for each mode
+function yandereWaifu:TRebekahcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
+    local data = yandereWaifu.GetEntityData(player)
+    if yandereWaifu.IsTaintedRebekah(player) then -- Especially here!
+        --special interactions
+        --isaac's tears, the d6, fate, maggy's bow, transcedence, divorce papers, polaroid and negative, isaac's head
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_POP) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay + 8
+            end
+        end
+        if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 12
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_ISAACS_TEARS) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 2
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_D6) then
+            if cacheF == CacheFlag.CACHE_SPEED then
+                player.MoveSpeed = player.MoveSpeed + 0.20
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_FATE) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 2
+            end
+        end	
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_MAGGYS_BOW) then
+            if cacheF == CacheFlag.CACHE_DAMAGE then
+                player.Damage = player.Damage + 1.77
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_WHORE_OF_BABYLON) then
+            if cacheF == CacheFlag.CACHE_DAMAGE then
+                player.Damage = player.Damage + 1.77
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS) then
+            if cacheF == CacheFlag.CACHE_DAMAGE then
+                player.Damage = player.Damage + 1.77
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_MOMS_KNIFE) then
+            if cacheF == CacheFlag.CACHE_SPEED then
+                player.MoveSpeed = player.MoveSpeed + 0.20
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_TRANSCENDENCE) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 2
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_DIVORCE_PAPERS) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 1
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_POLAROID) then 
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 1
+                --player.Damage = player.Damage + 1.77
+            end
+        end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_NEGATIVE) then
+            if cacheF == CacheFlag.CACHE_FIREDELAY then
+                player.MaxFireDelay = player.MaxFireDelay - 1
+                --player.Damage = player.Damage + 1.77
+            end
+        end
+    end
+    
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.TRebekahcacheregister)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local player = yandereWaifu.GetEntityData(eff).Player
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	if eff.FrameCount == 1 then
+        sprite:Play("Idle", true)
+        sprite.Offset = Vector(0,-5)
+    end
+    if eff.FrameCount == 120 then
+        sprite:Play("Disappear", true)
+    end
+	if sprite:IsFinished("Disappear") then
+        eff:Remove()
+    end
+    if not data.SameTZNum then data.SameTZNum = 0 end --sets this to 0 in default
+	if data.Laser ~= nil then --if the laser data has been already set
+        local TechLaser = data.Laser
+        if yandereWaifu.GetEntityData(TechLaser).HasConnect then
+            TechLaser:SetTimeout(2)
+            local dist, angle = ((eff.Position - data.DistHasDefined.Position):Length()), (eff.Position - data.DistHasDefined.Position):GetAngleDegrees()
+            TechLaser.Position = eff.Position
+            TechLaser.Angle = angle
+            TechLaser:SetMaxDistance(dist)
+        else
+            TechLaser:Remove()
+            data.Laser = nil
+        end
+	else --elseif not
+		data.DistHasDefined = nil --force it to nil
+		data.closestProj = 99506742
+		for j, projOther in pairs (Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDTECHZERODOT, -1, false, false)) do --loop in checking if there is others
+			if projOther.Index ~= eff.Index and yandereWaifu.GetEntityData(projOther).SameTZNum == data.SameTZNum then --the second condition is important!
+				if (projOther.FrameCount <= eff.FrameCount) and (projOther.Parent == eff.Parent) then
+					--if (projOther.SpawnerType == eff.SpawnerType and projOther.SpawnerVariant == eff.SpawnerVariant) then
+					local savedDist = (projOther.Position - eff.Position):Length()
+					if savedDist < data.closestProj and savedDist < 300 then
+						data.closestProj = savedDist
+						data.DistHasDefined = projOther
+					end
+				end
+			end
+		end
+		if data.DistHasDefined ~= nil and data.Laser == nil then --if the laser isn't nil then
+			local LaserAngleNeeded = InutilLib.ObjToTargetAngle(data.DistHasDefined, eff, true)
+			local laser = EntityLaser.ShootAngle(2, data.DistHasDefined.Position, LaserAngleNeeded, 3, Vector(0,-20), data.DistHasDefined)
+			laser:SetColor(Color(0,1,1,1,0,0,0),9999999,99,false,false)
+            --laser:AddTearFlags(TearFlags.TEAR_JACOBS)
+			laser:SetMaxDistance(data.closestProj)
+			yandereWaifu.GetEntityData(laser).IsTechZero = true
+			yandereWaifu.GetEntityData(laser).HasConnect = data.DistHasDefined
+            laser.CollisionDamage = player.Damage * 0.5
+			data.Laser = laser
+		end
+    end
+end, RebekahCurse.ENTITY_CURSEDTECHZERODOT)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local player = yandereWaifu.GetEntityData(eff).Player
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+    local tier = data.Tier or 0
+    eff.Position = data.GivenPos
+    eff.RenderZOffset = 100
+	if eff.FrameCount == 1 then
+        sprite:Play("Appear", true)
+    end
+    if sprite:IsFinished("Appear") then
+        sprite:Play("Glow", true)
+    end
+    if sprite:IsFinished("Disappear") then
+        eff:Remove()
+    end
+    if eff.FrameCount == 15 then
+        sprite:Play("Disappear", true)
+    end
+    local ents = Isaac.FindInRadius(eff.Position, 95, EntityPartition.ENEMY)
+    for _, ent in pairs(ents) do
+        if eff.FrameCount % 5 == 0 then
+            ent:TakeDamage(2+(tier*2), 0, EntityRef(player), 1)
+        end
+    end
+end, RebekahCurse.ENTITY_CURSEDGODHEADAURA)

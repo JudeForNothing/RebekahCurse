@@ -1,11 +1,15 @@
 local json = require("json")
+
+local cached_saved_data
 function yandereWaifu.GetMenuSaveData()
 	local data
-	local savedata = yandereWaifu.GetSaveData().menudata
-    if not savedata then
+    if not cached_saved_data then
+        cached_saved_data = RebekahLocalSavedata.menudata
+    end
+    if not cached_saved_data then
 		data = {}
 	else
-		data = savedata
+		data = cached_saved_data
     end
     return data
 end
@@ -71,6 +75,26 @@ function MenuProvider.GetMenuKeybindSetting()
     return yandereWaifu.GetMenuSaveData().MenuKeybind
 end
 
+
+function MenuProvider.GetMenuHintSetting()
+    return yandereWaifu.GetMenuSaveData().MenuHint
+end
+
+
+
+function MenuProvider.SaveMenuHintSetting(var)
+    yandereWaifu.GetMenuSaveData().MenuHint = var
+end
+
+function MenuProvider.GetMenuBuzzerSetting()
+    return yandereWaifu.GetMenuSaveData().MenuBuzzer
+end
+
+function MenuProvider.SaveMenuBuzzerSetting(var)
+    yandereWaifu.GetMenuSaveData().MenuBuzzer = var
+end
+
+
 function MenuProvider.SaveMenuKeybindSetting(var)
     yandereWaifu.GetMenuSaveData().MenuKeybind = var
 end
@@ -126,7 +150,7 @@ local completionCharacterSets = {
 
 -- Sorry I ALSO need these here too for the note rendering!
 local function getScreenBottomRight()
-    return game:GetRoom():GetRenderSurfaceTopLeft() * 2 + Vector(442,286)
+    return Game():GetRoom():GetRenderSurfaceTopLeft() * 2 + Vector(442,286)
 end
 
 local function getScreenCenterPosition()
@@ -134,13 +158,7 @@ local function getScreenCenterPosition()
 end
 
 ----
-local dssmod = yandereWaifu.DSS_MOD
-local mod = yandereWaifu
-
-local function biendUnlocked()
-    --return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked(true)
-    return false
-end
+--local dssmod = yandereWaifu.DSS_MOD
 
 local achievementGroups = {
     {
@@ -163,13 +181,12 @@ local achievementGroups = {
         Tag = "SadRebekah",
         Icon = "sadrebekah",
         DisplayIf = rebekahUnlocked
-    },
+    },]]
     {
         Name = "challenge",
         Tag = "Challenge",
         Icon = "challenge"
     },
-    ]]
     {
         Name = "everything",
         Icon = "everything",
@@ -662,6 +679,19 @@ local rebekahdirectory = {
                 end,
                 tooltip = {strset = {'progress should', 'be saved...', 'stop being a', 'casual!'}}
             },]]
+            {
+                str = 'have rebekah items',
+                choices = {'no', 'yes'},
+                variable = 'enableItems',
+                setting = 2,
+                load = function()
+                    return RebekahLocalSavedata.Config.itemsEnabled and 2 or 1
+                end,
+                store = function(var)
+                    RebekahLocalSavedata.Config.itemsEnabled = var == 2
+                end,
+                tooltip = {strset = {'disable', 'all rebekah', 'items for', 'some reason'}}
+            },
         }
     },
 
@@ -834,16 +864,17 @@ local rebekahdirectory = {
         title = 'credits',
         fsize = 1,
         buttons = {
-			{str = 'main contributer team', fsize = 2},
+            {str = 'current team', fsize = 2},
+            {strpair = {{str = 'judeinutil'}, {str = 'coder'}}},
+			{strpair = {{str = ''}, {str = 'spriter'}}, nosel = true},
+			{strpair = {{str = ''}, {str = 'concept artist'}}, nosel = true},
+            {strpair = {{str = 'aegis vanilla'}, {str = 'main concept artist'}}},
+			{str = 'old contributer team', fsize = 2},
 			{str = '', nosel = true},
             {strpair = {{str = 'kakaodcat', color = 3}, {str = 'main ab+ dev'}}},
-			{strpair = {{str = 'aegis vanilla'}, {str = 'main concept artist'}}},
 			{strpair = {{str = 'goki_dev', color = 3}, {str = 'extra code'}}},
 			{strpair = {{str = 'lambchop'}, {str = 'coder'}}},
 			{strpair = {{str = ''}, {str = 'spriter'}}, nosel = true},
-			{strpair = {{str = 'judeinutil'}, {str = 'coder'}}},
-			{strpair = {{str = ''}, {str = 'spriter'}}, nosel = true},
-			{strpair = {{str = ''}, {str = 'concept artist'}}, nosel = true},
 			{strpair = {{str = 'mayonez'}, {str = 'music'}}},
 			{strpair = {{str = ''}, {str = 'sound design'}}, nosel = true},
 			{strpair = {{str = 'shuckster'}, {str = 'quality assurance'}}},
@@ -857,12 +888,15 @@ local rebekahdirectory = {
 			{strpair = {{str = 'zer0', color = 3}, {str = 'spriter'}}},
 			{strpair = {{str = 'susuke', color = 3}, {str = 'spriter'}}},
 			{strpair = {{str = 'scroto', color = 3}, {str = 'spriter'}}},
-			{strpair = {{str = 'kruntical', color = 2}, {str = 'spriter'}}},
+			--[[{strpair = {{str = 'kruntical', color = 2}, {str = 'spriter'}}},]] --bad weirdo
 			{str = '', nosel = true},
             {str = 'mod contributers', fsize = 2},
-            {strpair = {{str = 'skulgan', color = 2}, {str = 'made peewee!'}}},
+            {strpair = {{str = 'lost', color = 2}, {str = 'made the grey sisters!'}}},
+            {strpair = {{str = 'mr burns', color = 2}, {str = 'tainted rebekah sounds'}}},
+            --[[{strpair = {{str = 'skulgan', color = 2}, {str = 'made peewee!'}}},]] --taken out of this mod
 			{str = 'voice actors', fsize = 2},
-			{strpair = {{str = 'rebekah'}, {str = 'may'}}},
+			{strpair = {{str = 'ab+ rebekah'}, {str = 'may'}}},
+            {strpair = {{str = 'rebekah'}, {str = 'plupa'}}},
 			{strpair = {{str = 'knights of rebekah'}, {str = 'kakaodcat'}}},
 			{strpair = {{str = 'pill narrator'}, {str = 'frithian'}}},
 			{strpair = {{str = 'free sounds'}, {str = 'soundbible'}}},
@@ -898,6 +932,8 @@ local rebekahdirectory = {
 			{strpair = {{str = '_kilburn', color = 3}, {str = 'code for hearts'}}},
 			{strpair = {{str = 'tem', color = 3}, {str = 'code for players'}}},
 			{strpair = {{str = 'sentinel', color = 3}, {str = 'code help'}}},
+            {strpair = {{str = 'xalum', color = 3}, {str = 'code help'}}},
+            {strpair = {{str = 'aevilok', color = 3}, {str = 'innate item script'}}},
 			{strpair = {{str = 'sanio', color = 3}, {str = 'code for mega mush'}}},
 			{strpair = {{str = 'dumpy', color = 3}, {str = 'code help'}}},
 			{strpair = {{str = 'warhamm2000', color = 3}, {str = 'code help'}}},
@@ -907,23 +943,24 @@ local rebekahdirectory = {
             {strpair = {{str = 'sgjd01', color = 3}, {str = 'code reference'}}},
             {strpair = {{str = 'tainted treasures', color = 3}, {str = 'code reference'}}},
             {strpair = {{str = 'fiend folio', color = 3}, {str = 'code reference'}}},
+            {str = 'gorange'},
 			{str = '', nosel = true},
 			{str = 'and especially you!', fsize = 3},
             {str = '', nosel = true}
         },
-        tooltip = {strset = {'epic credits', 'for epic', 'people!'}}
+        --tooltip = {strset = {'epic credits', 'for epic', 'people!'}}
     },
     rebekahaunlocks = {
         title = "rebekah unlocks",
         fsize = 2,
         buttons = {
             {str = "", nosel = true},
-            {str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
+            --{str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
             {str = "", nosel = true},
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "", fsize = 1, nosel = true},
             --{insertUnlockTag = "RebekahB"},
-            {str = "", nosel = true},
+            --[[{str = "", nosel = true},
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "personalities", fsize = 3, dest = "rebekahapersonalityunlocks"},
             {str = "-----------------", fsize = 3, nosel = true},
@@ -934,7 +971,16 @@ local rebekahdirectory = {
             {str = "", nosel = true},
             {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = true end},
             {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
-            {str = "", nosel = true},
+            {str = "", nosel = true},]]
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
+            {str = "-----------------", fsize = 3},
         }
     },
     rebekahacompletion = {

@@ -14,6 +14,8 @@
 	</sound>	
 	<sound name="RebekahDie">
 		<sample weight="1" path="reb_death.wav" />
+		<sample weight="1" path="reb_death2.wav" />
+		<sample weight="1" path="reb_death3.wav" />
 	</sound>
 	
 	<sound name="Ground Crack">
@@ -99,6 +101,10 @@
 		<sample weight="1" path="evil/evil_summon_apostate.wav" />
 	</sound>
 	
+	<sound name="Immortal Jingle">
+		<sample weight="1" path="eternal/immortal_intervention.wav" />
+	</sound>
+
 	<sound name="Eternal Jingle">
 		<sample weight="1" path="eternal/jingle.wav" />
 	</sound>
@@ -417,6 +423,74 @@
 		<sample weight="1" path="hound/chab_death_2.wav" />
 	</sound>
 
+	<sound name="Prospector Shoot">
+		<sample weight="1" path="prospector/shoot/shoot 1.wav" />
+		<sample weight="1" path="prospector/shoot/shoot 2.wav" />
+		<sample weight="1" path="prospector/shoot/shoot 3.wav" />
+		<sample weight="1" path="prospector/shoot/shoot 4.wav" />
+	</sound>
+
+	<sound name="Prospector Laugh">
+		<sample weight="1" path="prospector/laugh/laugh 1.wav" />
+		<sample weight="1" path="prospector/laugh/laugh 2.wav" />
+		<sample weight="1" path="prospector/laugh/laugh 3.wav" />
+		<sample weight="1" path="prospector/laugh/laugh 4.wav" />
+	</sound>
+
+	<sound name="Prospector Grunt">
+		<sample weight="1" path="prospector/grunt/grunt 1.wav" />
+		<sample weight="1" path="prospector/grunt/grunt 2.wav" />
+		<sample weight="1" path="prospector/grunt/grunt 3.wav" />
+		<sample weight="1" path="prospector/grunt/grunt 4.wav" />
+	</sound>
+
+	<sound name="Prospector Yeee-hoo">
+		<sample weight="1" path="prospector/yeee-hoo/yeee-hoo 1.wav" />
+		<sample weight="1" path="prospector/yeee-hoo/yeee-hoo 2.wav" />
+		<sample weight="1" path="prospector/yeee-hoo/yeee-hoo 3.wav" />
+	</sound>
+
+	<sound name="Prospector Going Up">
+		<sample weight="1" path="prospector/going up/going up 1.wav" />
+		<sample weight="1" path="prospector/going up/going up 2.wav" />
+		<sample weight="1" path="prospector/going up/going up 3.wav" />
+	</sound>
+
+	<sound name="Prospector Sentry Down">
+		<sample weight="1" path="prospector/sentry down/sentry down 1.wav" />
+		<sample weight="1" path="prospector/sentry down/sentry down 2.wav" />
+		<sample weight="1" path="prospector/sentry down/sentry down 3.wav" />
+		<sample weight="1" path="prospector/sentry down/sentry down 4.wav" />
+	</sound>
+
+	<sound name="Prospector Death">
+		<sample weight="1" path="prospector/death/death 1.wav" />
+		<sample weight="1" path="prospector/death/death 2.wav" />
+		<sample weight="1" path="prospector/death/death 3.wav" />
+	</sound>
+
+	<sound name="Prospector Shotgun">
+		<sample weight="1" path="prospector/bumgineer_shotgun.wav" />
+	</sound>
+
+	<sound name="Prospector Wrench">
+		<sample weight="1" path="prospector/wrench_hit.wav" />
+		<sample weight="1" path="prospector/wrench_hit2.wav" />
+	</sound>
+
+	<sound name="Nincompoop Pant">
+		<sample weight="1" path="nincompoop/nincompoop_pant.wav" />
+	</sound>
+	<sound name="Nincompoop Spit">
+		<sample weight="1" path="nincompoop/nincompoop_spit.wav" />
+	</sound>
+	<sound name="Nincompoop Whistle">
+		<sample weight="1" path="nincompoop/nincompoop_whistle.wav" />
+	</sound>
+
+	<sound name="Roland Ahh">
+		<sample weight="1" path="rolandahh.wav" />
+	</sound>
 	<sound name="Cursed Slam">
 		<sample weight="1" path="tainted/slam.wav" />
 	</sound>
@@ -431,5 +505,9 @@
 
 	<sound name="Cursed Rage">
 		<sample weight="1" path="tainted/rage.wav" />
+	</sound>
+
+	<sound name="Cursed Pop">
+		<sample weight="1" path="tainted/pop.wav" />
 	</sound>
 </sounds>

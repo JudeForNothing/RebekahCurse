@@ -1,23 +1,68 @@
 
 -------LOVE ROOM----------
 
+function yandereWaifu.RebekahItemPools(_, hasstarted) --Init
+	if not hasstarted then
+		yandereWaifu.RebekahGenerateItemPools()
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.RebekahItemPools)
+
+function yandereWaifu.GetItemInPool(pool)
+	--[[for i, v in ipairs(pool) do
+		local rng = math.random(1,5)
+		if rng == 5 and not v.IsNotAvailable then
+			v.IsNotAvailable = true
+			return v
+		end
+	end]]
+	if #pool > 0 then
+		local index = math.random( #pool )
+		--print(index)
+		return pool[index], index
+	else
+		return nil
+	end
+end
 
 function yandereWaifu.RerollToLoveRoomPool(pickup)
-	local index = math.random(0,#yandereWaifu.LoveRoomPool)
-	local items = yandereWaifu.LoveRoomPool[index]
-	local subtype = items.item
+	--local index = math.random(0,#yandereWaifu.LoveRoomPool)
+	local items = nil
+	local attempts = 0
+	local index
+	while (not items) and attempts < 5 do
+		print("I love everything")
+		items, index = yandereWaifu.GetItemInPool(RebekahLocalSavedata.Data.newLoveRoomPool)
+		attempts = attempts + 1
+	end
+
+	for i, v in ipairs(RebekahLocalSavedata.Data.newLoveRoomPool) do
+		print(v.item)
+	end
+
+	local subtype
+	if not items then
+		subtype = CollectibleType.COLLECTIBLE_BREAKFAST --time to breakfast
+	else
+		subtype = items.item
+		--items.IsNotAvailable = true
+		table.remove(RebekahLocalSavedata.Data.newLoveRoomPool, index)
+		--print(index)
+	end
+
 	pickup = pickup:ToPickup()
-	print(#yandereWaifu.LoveRoomPool)
+	--[[print(#yandereWaifu.LoveRoomPool)
 	print(subtype)
 	print(pickup.Type)
+	]]
 	local isShop = pickup:IsShopItem()
 	pickup = pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, subtype, true, true, false)
-	items.Weight = items.Weight - items.DecreaseBy
+	--items.Weight = items.Weight - items.DecreaseBy
 	--if isShop then pickup.Price = 15 end
-	if items.Weight <= items.RemoveOn then
+	--if items.Weight <= items.RemoveOn then
 	--	table.remove(yandereWaifu.LoveRoomPool, index)
 	--	print("remove")
-	end
+	--end
 	--print(#yandereWaifu.LoveRoomPool)
 	--local newColl = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, yandereWaifu.LoveRoomPool[math.random(1,#yandereWaifu.LoveRoomPool)], position, Vector.Zero, ent)
 end

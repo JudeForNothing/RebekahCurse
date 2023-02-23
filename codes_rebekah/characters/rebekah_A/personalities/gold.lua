@@ -354,9 +354,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if eff.FrameCount == 1 then
 		local wall = InutilLib.ClosestHorizontalWall(eff)
 		if wall == Direction.RIGHT then
-			data.savedVelocity = Vector(-10,0) --needed for the velocity it goes + detection what grid is in front
+			data.savedVelocity = Vector(-5,0) --needed for the velocity it goes + detection what grid is in front
 		elseif wall == Direction.LEFT then
-			data.savedVelocity = Vector(10,0)
+			data.savedVelocity = Vector(5,0)
 		end
 		eff:GetSprite():Play("ChargingFadeIn", true)
 	end
@@ -1113,6 +1113,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	local player = fam.Player
 	local data = yandereWaifu.GetEntityData(fam)
 	
+	if fam.SubType == 25 then return end
+
 	if spr:IsFinished("Spawn") then
 		spr:Play("Idle", true)
 	end
@@ -2136,9 +2138,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			end
 		end
 		--InutilLib.SetTimer( spr:GetFrame()*2, function()
+		if ILIB.game:GetFrameCount() % 3 == 0 then
 			local pos = fam.Position
 			local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, pos, Vector(0,0), player) 
 			crack.CollisionDamage = 40
+		end
 		--end)
 		if fam:CollidesWithGrid() then spr:Play("Idle", true) end
 	elseif spr:IsFinished("Charging") then
@@ -2844,7 +2848,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		InutilLib.MoveOrbitAroundTargetType1(fam, player, 7, 0.9, 3, 0)	
 	end
 	if fam.SubType == 5 then
-		InutilLib.MoveDiagonalTypeI(fam, 15, false, true)
+		InutilLib.MoveDiagonalTypeI(fam, 8, false, true)
 	end
 	if fam.SubType == 1 then
 		InutilLib.MoveOrbitAroundTargetType1(fam, player, 3, 0.9, 5, 0)	

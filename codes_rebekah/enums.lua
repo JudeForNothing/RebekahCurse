@@ -9,6 +9,9 @@ RebekahCurseTrinkets = {
 	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
 	TRINKET_REBEKAHSKEY = Isaac.GetTrinketIdByName("Rebekah's Key"),
 	TRINKET_ISAACSLOCKS = Isaac.GetTrinketIdByName("Isaac's Locks"),
+	TRINKET_MOMSBLESSING = Isaac.GetTrinketIdByName("Mom's Blessing"),
+	TRINKET_JOHNANDROMANS = Isaac.GetTrinketIdByName("John and Romans"),
+	TRINKET_CANNEDLAUGHTER = Isaac.GetTrinketIdByName("Canned Laughter"),
 }
 
 RebekahCurseItems = {
@@ -88,12 +91,27 @@ RebekahCurseItems = {
 	COLLECTIBLE_HAPHEPHOBICBOMBS = Isaac.GetItemIdByName("Haphephobic Bombs"),
 	COLLECTIBLE_JUMPYDUMPTY = Isaac.GetItemIdByName("Jumpy Dumpty"),
 	COLLECTIBLE_PENCILSHARPENER = Isaac.GetItemIdByName("Pencil Sharpener"),
+	COLLECTIBLE_NARCOLEPSY = Isaac.GetItemIdByName("Narcolepsy"),
+	COLLECTIBLE_APPRECIATIONCAKE = Isaac.GetItemIdByName("Appreciation Cake"),
+	COLLECTIBLE_JELLYDONUT = Isaac.GetItemIdByName("Jelly Donut"),
+	COLLECTIBLE_SPIKEDPARTYPUNCH = Isaac.GetItemIdByName("Spiked Party Punch"),
+	COLLECTIBLE_BOBATEA = Isaac.GetItemIdByName("Boba Tea"),
+	COLLECTIBLE_CHEESYPIZZA = Isaac.GetItemIdByName("Cheesy Pizza"),
+	COLLECTIBLE_BURGER = Isaac.GetItemIdByName("Bur-ger"),
+	COLLECTIBLE_FENRIRSEYE = Isaac.GetItemIdByName("Fenrir's Eyes"),
+	COLLECTIBLE_FENRIRSTOOTH = Isaac.GetItemIdByName("Fenrir's Tooth"),
+	COLLECTIBLE_FENRIRSHEAD = Isaac.GetItemIdByName("Fenrir's Head"),
+	COLLECTIBLE_FENRIRSPAW = Isaac.GetItemIdByName("Fenrir's Paw"),
+	COLLECTIBLE_FENRIRSLEASH = Isaac.GetItemIdByName("Fenrir's Leash"),
+	COLLECTIBLE_HEARTACHES = Isaac.GetItemIdByName("Heartaches..."),
+	COLLECTIBLE_SILPHIUM = Isaac.GetItemIdByName("Silphium"),
+	COLLECTIBLE_GIDDYUP = Isaac.GetItemIdByName("Giddy up!"),
 
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
 	
 	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
 
-	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Tainted Rebekah Item")
+	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Sword of Hope")
 }
 
 RebekahCurseCards = {
@@ -113,6 +131,13 @@ RebekahCurseCards = {
 	CARD_CURSED_EASTEREGG = Isaac.GetCardIdByName("cursedegg"),
 	CARD_BLESSED_EASTEREGG = Isaac.GetCardIdByName("blessedegg"),
 	CARD_GOLDEN_EASTEREGG = Isaac.GetCardIdByName("goldenegg"),
+
+	CARD_WORDSOFAFFIRMATION = Isaac.GetCardIdByName("affirmation"),
+	CARD_GIFTGIVING = Isaac.GetCardIdByName("giftgiving"),
+	CARD_ACTOFSERVICE = Isaac.GetCardIdByName("actofservice"),
+	CARD_QUALITYTIME = Isaac.GetCardIdByName("qualitytime"),
+	CARD_PHYSICALTOUCH = Isaac.GetCardIdByName("physicaltouch"),
+
 }
 
 RebekahCurse = {
@@ -139,8 +164,11 @@ RebekahCurse = {
 	ENTITY_GRAVEBABY = Isaac.GetEntityVariantByName("Grave Baby"),
 	ENTITY_BUNBUN_FAMILIAR = Isaac.GetEntityVariantByName("Bun Bun (Familiar)"),
 	ENTITY_RABBET_FAMILIAR = Isaac.GetEntityVariantByName("Rabbet (Familiar)"),
+
+	ENTITY_CARDIAC = Isaac.GetEntityVariantByName("Cardiac Armor"),
 	
 	ENTITY_SINGINGTEAR = Isaac.GetEntityVariantByName("Singing Tear"),
+	ENTITY_METALTEAR = Isaac.GetEntityVariantByName("Metal Tear"),
 	
 	--others
 	ENTITY_ARCANE_CIRCLE = Isaac.GetEntityVariantByName("Arcane Circle"),
@@ -241,6 +269,7 @@ RebekahCurse = {
 	ENTITY_LOVELOVEPARTICLE = Isaac.GetEntityVariantByName("Love Love Particle"),
 	ENTITY_HEARTGULP = Isaac.GetEntityVariantByName("Heart Gulp"),
 	ENTITY_REBEKAHENTITYWEAPON = Isaac.GetEntityVariantByName("Hugs N Roses (Weapon)"),
+	ENTITY_DEBORAHENTITYWEAPON = Isaac.GetEntityVariantByName("Deborah's Revolver (Weapon)"),
 	ENTITY_PERSONALITYPOOF = Isaac.GetEntityVariantByName("Personality Poof Effect"),
 	ENTITY_REBEKAH_DUST = Isaac.GetEntityVariantByName("Rebekah Dust Effect"),
 	
@@ -258,10 +287,22 @@ RebekahCurse = {
 	
 	ENTITY_BODYDYSMORPHIAAURA = Isaac.GetEntityVariantByName("Body Dysmorphia Aura"),
 
+	ENTITY_WRATHCRYSTALFRAGMENT = Isaac.GetEntityVariantByName("Wrath Crystal Fragment"),
+
 	ENTITY_REBEKAHCURSEDWEAPON = Isaac.GetEntityVariantByName("Rebekah Cursed Weapon"),
 	ENTITY_TAINTEDCURSEDASHTARGET = Isaac.GetEntityVariantByName("Tainted Curse Dash Target"),
 	ENTITY_TAINTEDCURSEENEMYTARGET = Isaac.GetEntityVariantByName("Tainted Curse Enemy Target"),
 	ENTITY_SWORDOFHOPEEFFECT = Isaac.GetEntityVariantByName("Sword of Hope Effect"),
+
+	ENTITY_CURSEDTECHZERODOT = Isaac.GetEntityVariantByName("Cursed Tech Zero Dot"),
+	ENTITY_CURSEDGODHEADAURA = Isaac.GetEntityVariantByName("Cursed Godhead Aura"),
+
+	ENTITY_AFFIRMATIONHEART = Isaac.GetEntityVariantByName("Affirmation Heart"),
+
+	ENTITY_TAPIOCATEAR = Isaac.GetEntityVariantByName("Tapioca Tear"),
+
+	ENTITY_HOUSE_BACKDROP = Isaac.GetEntityVariantByName("Phantasm House"),
+	ENTITY_HOUSE_BACKDROP_REPLACE = Isaac.GetEntityVariantByName("Phantasm House (replace)"),
 
 	TECHNICAL_REB = Isaac.GetPlayerTypeByName("Technical Rebekah"),
 	REB = Isaac.GetPlayerTypeByName("Rebekah"),
@@ -278,7 +319,8 @@ RebekahCurse = {
 	SADREBEKAH = Isaac.GetPlayerTypeByName("Technical B Rebekah", true),
 	REB_CURSED = Isaac.GetPlayerTypeByName("Cursed Rebekah", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
-	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false)
+	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false),
+	DEBORAH = Isaac.GetPlayerTypeByName("Deborah", false),
 }
 
 RebekahCurseSounds = {
@@ -316,6 +358,7 @@ RebekahCurseSounds = {
 	SOUND_EVILSUMMONAPOSTATE = Isaac.GetSoundIdByName("Evil Spawn"),
 	
 	SOUND_ETERNALJINGLE = Isaac.GetSoundIdByName("Eternal Jingle"),
+	SOUND_IMMORTALJINGLE = Isaac.GetSoundIdByName("Immortal Jingle"),
 	
 	SOUND_CHRISTIAN_CHANT = Isaac.GetSoundIdByName("Christian Chant"),
 	SOUND_CHRISTIAN_OVERTAKE = Isaac.GetSoundIdByName("Christian Overtake"),
@@ -419,16 +462,34 @@ RebekahCurseSounds = {
 	SOUND_HOUND_SPAWN = Isaac.GetSoundIdByName("Hound Spawn"),
 	SOUND_HOUND_DEATH = Isaac.GetSoundIdByName("Hound Death"),
 
+	SOUND_PROSPECTOR_GRUNT = Isaac.GetSoundIdByName("Prospector Grunt"),
+	SOUND_PROSPECTOR_SHOOT = Isaac.GetSoundIdByName("Prospector Shoot"),
+	SOUND_PROSPECTOR_LAUGH = Isaac.GetSoundIdByName("Prospector Laugh"),
+	SOUND_PROSPECTOR_YEEE_HOO = Isaac.GetSoundIdByName("Prospector Yeee-hoo"),
+	SOUND_PROSPECTOR_GOING_UP = Isaac.GetSoundIdByName("Prospector Going Up"),
+	SOUND_PROSPECTOR_SENTRY_DOWN = Isaac.GetSoundIdByName("Prospector Sentry Down"),
+	SOUND_PROSPECTOR_DEATH = Isaac.GetSoundIdByName("Prospector Death"),
+	SOUND_PROSPECTOR_SHOTGUN = Isaac.GetSoundIdByName("Prospector Shotgun"),
+	SOUND_PROSPECTOR_WRENCH = Isaac.GetSoundIdByName("Prospector Wrench"),
+
+	SOUND_NINCOMPOOP_PANT = Isaac.GetSoundIdByName("Nincompoop Pant"),
+	SOUND_NINCOMPOOP_SPIT = Isaac.GetSoundIdByName("Nincompoop Spit"),
+	SOUND_NINCOMPOOP_WHISTLE = Isaac.GetSoundIdByName("Nincompoop Whistle"),
+
+	SOUND_ROLANDAHH = Isaac.GetSoundIdByName("Roland Ahh"),
+
 	SOUND_CURSED_SLAM = Isaac.GetSoundIdByName("Cursed Slam"),
 	SOUND_CURSED_HEAVY_STRIKE = Isaac.GetSoundIdByName("Cursed Heavy Strike"),
 	SOUND_CURSED_WILD_SWING = Isaac.GetSoundIdByName("Cursed Wild Swing"),
 	SOUND_CURSED_RAGE = Isaac.GetSoundIdByName("Cursed Rage"),
+	SOUND_CURSED_POP = Isaac.GetSoundIdByName("Cursed Pop"),
 }
 
 RebekahCurseMusic = {
 	MUSIC_HEARTROOM = Isaac.GetMusicIdByName("Calm Before the Storm"),
 	MUSIC_BACKROOMS = Isaac.GetMusicIdByName("Backrooms"),
 	MUSIC_BACKROOMSBOSS = Isaac.GetMusicIdByName("Moist"),
+	MUSIC_TICKTOCK = Isaac.GetMusicIdByName("Tick Tock"),
 }
 
 RebekahCurseEnemies = {
@@ -446,6 +507,11 @@ RebekahCurseEnemies = {
 	ENTITY_THEPROSPECTOR = Isaac.GetEntityVariantByName("The Prospector"),
 	ENTITY_SENTRYROCKETTARGET = Isaac.GetEntityVariantByName("Sentry Rocket Target"),
 	ENTITY_SENTRYROCKETNUKE = Isaac.GetEntityVariantByName("Sentry Rocket Rocket"),
+
+	ENTITY_ENYO = Isaac.GetEntityVariantByName("Enyo"),
+	ENTITY_DEINO = Isaac.GetEntityVariantByName("Deino"),
+	ENTITY_PEMPHREDO = Isaac.GetEntityVariantByName("Pemphredo"),
+	ENTITY_GREYSISTEREYE = Isaac.GetEntityVariantByName("Grey Eye"),
 
 	ENTITY_REBEKAH_ENEMY = Isaac.GetEntityTypeByName("Rebekah Entities"),
 	ENTITY_REDTATO = Isaac.GetEntityVariantByName("Red Tato"),
@@ -477,6 +543,15 @@ RebekahCurseEnemies = {
 	ENTITY_FRUITFLY = Isaac.GetEntityVariantByName("Fruit Fly"),
 }
 
+RebekahCursePills = {
+	GOOSEBUMPS = Isaac.GetPillEffectByName("Goosebumps!"),
+	ENDORPHIN = Isaac.GetPillEffectByName("Endorphin"),
+	LAUGHTERSTHEBESTMEDICINE = Isaac.GetPillEffectByName("Laughter's the best medicine"),
+	HEMORRHAGE = Isaac.GetPillEffectByName("Hemorrhage"),
+	OVULATION = Isaac.GetPillEffectByName("Ovulation"),
+	PROGESTIN = Isaac.GetPillEffectByName("Progestin"),
+}
+
 RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_GENERIC_DUST = 0,
 	ENTITY_REBEKAH_GENERIC_DUST_FRONT = 1,
@@ -497,7 +572,15 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_CURSED_SLAM_DEFAULT = 31,
 	ENTITY_REBEKAH_CURSED_HEAVY_STRIKE = 32,
 	ENTITY_REBEKAH_CURSED_WILD_SWING = 33,
-	ENTITY_REBEKAH_SLAM_HAND_THING = 34
+	ENTITY_REBEKAH_SLAM_HAND_THING = 34,
+	ENTITY_REBEKAH_RAGE_CIRCLE = 35,
+	ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE = 36
+}
+
+RebekahCurseChallenges ={
+	TheTrueFamilyGuy = Isaac.GetChallengeIdByName("[CaB] The True Family Guy"),
+	DID = Isaac.GetChallengeIdByName("[CaB] D.I.D."),
+	EasterHunt = Isaac.GetChallengeIdByName("[CaB] Easter Hunt"),
 }
 
 local wasFromTaintedLocked = false
@@ -554,6 +637,9 @@ RebekahCurseCostumes = {
 
 	BodyDysmorphia = Isaac.GetCostumeIdByPath("gfx/characters/body_dysmorphia.anm2"),
 	WickedWeaves = Isaac.GetCostumeIdByPath("gfx/characters/wickedweaves.anm2"),
+
+	DeborahBody = Isaac.GetCostumeIdByPath("gfx/characters/oldermaidbody.anm2"),
+	FenrirsEye = Isaac.GetCostumeIdByPath("gfx/characters/fenrirs_eye.anm2"),
 }
 
 
@@ -774,6 +860,8 @@ local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, R
 local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ROTTEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
+
+local REBECCA_CURSED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_CURSED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 if StageAPI and StageAPI.Loaded then
     StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_RED, 
 	{

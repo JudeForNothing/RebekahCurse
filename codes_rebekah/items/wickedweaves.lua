@@ -144,7 +144,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			ILIB.game:MakeShockwave(eff.Position, 0.055, 0.025, 10)
 			for i, ent in pairs (Isaac.GetRoomEntities()) do
 				if (ent:IsEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
-					if ent.Position:Distance(eff.Position) <= radisu then
+					if ent.Position:Distance(eff.Position) <= radisu + ent.Size then
 						ent:TakeDamage(player.Damage, 0, EntityRef(player), 1)
 							
 						ILIB.game:ShakeScreen(5)
@@ -180,7 +180,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				local radisu = 70
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if (ent:IsEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
-						if ent.Position:Distance(eff.Position) <= radisu then
+						if ent.Position:Distance(eff.Position) <= radisu + ent.Size then
 							ent:TakeDamage(player.Damage*4, 0, EntityRef(player), 1)
 								
 							ILIB.game:ShakeScreen(10)

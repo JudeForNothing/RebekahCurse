@@ -920,6 +920,13 @@ function yandereWaifu:RebekahNewRoom()
 			if data.currentMode == REBECCA_MODE.BoneHearts and data.IsLeftover then
 				player.Visible = false
 			end
+			if not player:IsCoopGhost() then
+				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player, false, false )
+			else
+				player:GetSprite():ReplaceSpritesheet(0, "gfx/characters/ghost_rebekah.png")
+				player:GetSprite():ReplaceSpritesheet(1, "gfx/characters/ghost_rebekah.png")
+				player:GetSprite():LoadGraphics()
+			end
 		end
 	end
 end
@@ -1316,9 +1323,9 @@ function yandereWaifu:customMovesInput()
 			
 			--charge pocket item after ready
 
-			if playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) < InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges and yandereWaifu.HasCollectibleGuns(player) then --could need attendance later, this can be optimized
+			--[[if playerdata.specialActiveAtkCooldown and playerdata.specialActiveAtkCooldown == 0 and player:GetActiveCharge(ActiveSlot.SLOT_POCKET) < InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges and yandereWaifu.HasCollectibleGuns(player) then --could need attendance later, this can be optimized
 				InutilLib.RefundActiveCharge(player, 0, true, true)
-			end
+			end]]
 			if playerdata.specialCooldown == 1 then --1 is already close to 0 without being 0 so eh
 				local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
 				charge.SpriteOffset = Vector(0,-40)
@@ -1463,7 +1470,8 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 	local player = damage:ToPlayer();
 	local data = yandereWaifu.GetEntityData(player)
-
+	if damageSource.Entity and yandereWaifu.GetEntityData(damageSource.Entity).NoHarm then return false end
+	
 	if yandereWaifu.IsNormalRebekah(player) then
 		if yandereWaifu.GetEntityData(player).invincibleTime > 0 then
 

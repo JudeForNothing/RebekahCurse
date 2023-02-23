@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="10/4/2022 8:52:38 AM" Version="29" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="2/12/2023 11:11:10 PM" Version="30" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="nincompoop.png" Id="0"/>
@@ -8,7 +8,9 @@
 			<Layer Name="poop" Id="0" SpritesheetId="0"/>
 		</Layers>
 		<Nulls/>
-		<Events/>
+		<Events>
+			<Event Name="Pant" Id="0"/>
+		</Events>
 	</Content>
 	<Animations DefaultAnimation="Idle">
 		<Animation Name="Idle" FrameNum="52" Loop="true">
@@ -169,7 +171,11 @@
 				</LayerAnimation>
 			</LayerAnimations>
 			<NullAnimations/>
-			<Triggers/>
+			<Triggers>
+				<Trigger EventId="0" AtFrame="15"/>
+				<Trigger EventId="0" AtFrame="40"/>
+				<Trigger EventId="0" AtFrame="64"/>
+			</Triggers>
 		</Animation>
 		<Animation Name="ShortDash" FrameNum="17" Loop="false">
 			<RootAnimation>

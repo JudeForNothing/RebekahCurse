@@ -32,8 +32,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					else
 						data.State = 2
 					end
+					InutilLib.SFX:Stop( RebekahCurseSounds.SOUND_NINCOMPOOP_WHISTLE);
 				elseif not spr:IsPlaying("Whistle") then
 					spr:Play("Whistle", true)
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_WHISTLE, 1, 0, false, 1.4);
 				end
 			elseif data.State == 2 then
 				if spr:IsFinished("Shoot") or spr:IsFinished("SmileShoot") then
@@ -55,6 +57,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								end
 							end)
 						end
+						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_SPIT, 1, 0, false, 1.3);
 					end
 				elseif spr:IsPlaying("SmileShoot") then
 					if spr:GetFrame() == 22 then
@@ -64,11 +67,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								proj.Scale = 1.5
 							--end
 						end
+						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_SPIT, 1, 0, false, 1.3);
 					elseif spr:GetFrame() == 27 then
 						for i = -30, 30, 30 do
 							local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, ((player.Position - ent.Position):Rotated(i)):Resized(10))
 							proj.Scale = 1.5
 						end
+						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_SPIT, 1, 0, false, 1.3);
 					end
 				end
 				local angle = (player.Position - ent.Position):GetAngleDegrees()
@@ -113,6 +118,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("DashBeautiful", true)
 					data.DashTimes = 0
 					data.OriginalDash = (player.Position - ent.Position)
+					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_SPIT, 1, 0, false, 1);
 				elseif spr:IsPlaying("DashBeautiful") then
 					if spr:GetFrame() < 10 then
 						if ent.FrameCount % 5 == 0 then
@@ -140,6 +146,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			elseif data.State == 5 then --tired
 				if spr:IsFinished("Tired") then
 					data.State = 0
+					--InutilLib.SFX:Stop( RebekahCurseSounds.SOUND_NINCOMPOOP_PANT);
+				elseif spr:IsEventTriggered("Pant") then
+					--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_PANT, 1, 0, false, 1);
 				elseif not spr:IsPlaying("Tired") then
 					spr:Play("Tired", true)
 				end
@@ -199,6 +208,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								proj:AddProjectileFlags(ProjectileFlags.SMART)
 							end)
 						end
+						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_NINCOMPOOP_SPIT, 1, 0, false, 1.3);
 					end
 				end
 				ent:GetSprite().FlipX = false

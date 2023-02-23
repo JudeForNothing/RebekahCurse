@@ -58,7 +58,7 @@
 	<!-- <passive id="18" name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/> -->
 	<passive id="18" name="Wicked Weaves" description="Double tap or hold to dance!" gfx="collectibles_wicked_weaves.png" cache="firedelay damage" quality="3" craftquality="3"/>
 	<passive id="21" name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="collectibles_rebekahs_favorite.png" quality="3" craftquality="3"/>
-	
+
 	<active id="34" name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3" craftquality="3"/>
 	
 	<passive id="28" name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3" hidden="true" craftquality="-1"/>
@@ -86,5 +86,23 @@
 	<passive id="56" name="Haphephobic Bombs" description="Fragile to touch, careful!" gfx="collectibles_haphephobic_bombs.png" quality="2" bombs="7" craftquality="2"/>
 	<active id="57" name="Jumpy Dumpty" description="Boing, boing, boom!" gfx="collectibles_jumpydumpty.png" maxcharges="3" quality="2" craftquality="2"/>
 	<passive id="58" name="Pencil Sharpener" description="Don't stick your finger in there!" gfx="collectibles_pencil_sharpener.png" quality="2" craftquality="2"/>
-	<active id="8" name="Tainted Rebekah Item" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" hidden="true" tags="quest" craftquality="-1"/>
+	<passive id="59" name="Narcolepsy" description="Zzzzz" gfx="collectibles_narcolepsy.png" quality="3" craftquality="3"/>
+	<trinket name="Mom's Blessing" description="Gifts from Mom above" gfx="collectibles_moms_blessing.png" />
+	<active id="8" name="Sword of Hope" description="Tear into your last piece of hope" gfx="collectibles_sword_of_hope.png" hidden="true" tags="quest" craftquality="-1"/>
+	<trinket name="John and Romans" description="The road to salvation to deity" gfx="collectibles_john_and_romans.png" />
+	<passive id="59" name="Appreciation Cake" description="Thank you for sticking around!" gfx="collectibles_appreciation_cake.png" cache="speed range damage firedelay luck" maxhearts="2" hearts="2" quality="4" craftquality="3"/>
+	<passive id="59" name="Cheesy Pizza" description="Cheesy strings attached!" gfx="collectibles_cheesy_pizza.png" quality="3" craftquality="2"/>
+	<passive id="59" name="Jelly Donut" description="These jelly filled donuts are great!" gfx="collectibles_jelly_filled_donut.png" soulhearts="2" quality="1" craftquality="1"/>
+	<passive id="59" name="Spiked Party Punch" description="Cheers to all I love!" gfx="collectibles_spiked_punch.png" quality="1" craftquality="1"/>
+	<passive id="59" name="Boba Tea" description="Delicious milk and... eyes?" gfx="collectibles_bobatea.png" soulhearts="2" quality="2" craftquality="2"/>
+	<passive id="59" name="Bur-ger" description="Chicken chicken chicken chicken" gfx="collectibles_bur-ger.png" quality="2" craftquality="2"/>
+	<passive id="59" name="Fenrir's Eyes" description="Frozen with fear" gfx="collectibles_fenrirseyes.png" quality="3" craftquality="3"/>
+	<active id="59" name="Fenrir's Paw" description="Embrace the bitter end" gfx="collectibles_fenrirspaw.png" quality="3" craftquality="3"/>
+	<passive id="59" name="Fenrir's Head" description="Crit up" gfx="collectibles_fenrirshead.png" quality="3" craftquality="3"/>
+	<passive id="59" name="Fenrir's Tooth" description="DMG up + The faintest howl can be heard..." gfx="collectibles_fenrirstooth.png" quality="3" craftquality="3"/>
+	<active id="59" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirs_eyes.png" quality="3" craftquality="3" maxcharges="6"/>
+	<trinket name="Canned Laughter" description="The laughs of dead people" gfx="collectibles_canned_laughter.png" />
+	<passive id="59" name="Heartaches..." description="It's just a burning... something..." gfx="collectibles_heartaches.png" quality="3" craftquality="3"/>
+	<passive id="59" name="Silphium" description="Love in and out your veins" gfx="collectibles_silphium.png" quality="3" craftquality="3"/>
+	<active id="59" name="Giddy up!" description="Temporary raw strength, time tick tocks" gfx="collectibles_giddyup.png" quality="3" craftquality="3" maxcharges="12"/>
 </items>

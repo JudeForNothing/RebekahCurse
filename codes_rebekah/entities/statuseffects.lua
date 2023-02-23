@@ -3,6 +3,8 @@ statusEffects:Load("gfx/ui/rebekahstatuseffects.anm2", true);
 
 local greenLaughterColor = Color(0, 1, 0, 1, 0, 0, 0)
 local purpleDrunkColor = Color(0.5, 0, 0.7, 1, 0, 0, 0)
+local brownNoBabiesColor = Color(1, 0.5, 0, 1, 0, 0, 0)
+
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = data.PlayerStruck
@@ -34,6 +36,109 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
         end
 	end
+
+	--no babies
+	if data.IsMenopaused then
+		if not ILIB.game:IsPaused() then
+            data.IsMenopaused = data.IsMenopaused - 1
+            if data.IsMenopaused <= 0 then
+                data.IsMenopaused = nil
+            end
+        end
+	end
+
+	--intimidated
+	if data.isIntimidated then
+		if not ILIB.game:IsPaused() then
+            data.isIntimidated = data.isIntimidated - 1
+            if data.isIntimidated <= 0 then
+                data.isIntimidated = nil
+				ent:ClearEntityFlags(EntityFlag.FLAG_ICE)
+            end
+        end
+		ent.Velocity = ent.Velocity * 0.5
+		if not ent:HasEntityFlags(EntityFlag.FLAG_ICE) then
+			ent:AddEntityFlags(EntityFlag.FLAG_ICE)
+		end
+	end
+
+	--cheese
+	if data.IsCheesed then
+        if not ILIB.game:IsPaused() then
+            data.IsCheesed = data.IsCheesed - 1
+            if data.IsCheesed <= 0 then
+                data.IsCheesed = nil
+            end
+        end
+		if ent:IsDead() then -- on death
+			for i, entenmies in pairs(Isaac.GetRoomEntities()) do --affect others
+				if entenmies:IsEnemy() and entenmies:IsVulnerableEnemy() then
+					if yandereWaifu.GetEntityData(entenmies).IsCheesed then
+						entenmies:TakeDamage(player.Damage, 0, EntityRef(ent), 1)
+					end
+				end
+			end
+		end
+    end
+
+	--tainted rebekah stuff
+	if data.isSnooked then
+		if not ILIB.game:IsPaused() then
+            data.isSnooked = data.isSnooked - 1
+            if data.isSnooked <= 0 then
+                data.isSnooked = nil
+			end
+		end
+	end
+	if data.isSlamSnooked then
+		if not ILIB.game:IsPaused() then
+            data.isSlamSnooked = data.isSlamSnooked - 1
+            if data.isSlamSnooked <= 0 then
+                data.isSlamSnooked = nil
+				ent.Velocity = yandereWaifu.GetEntityData(ent).SnookVelocity
+				InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+			end
+		end
+	end
+	if data.isHeavySnooked then
+		if not ILIB.game:IsPaused() then
+            data.isHeavySnooked = data.isHeavySnooked - 1
+            if data.isHeavySnooked <= 0 then
+                data.isHeavySnooked = nil
+			end
+		end
+	end
+
+	if data.isCursedGodheadSlam then
+		if not ILIB.game:IsPaused() then
+            data.isCursedGodheadSlam = data.isCursedGodheadSlam - 1
+			if data.CursedGodheadSlamTier and data.CursedGodheadSlamTier >= 3 then
+				local aura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDGODHEADAURA, 0, ent.Position, Vector.Zero, player):ToEffect()
+				yandereWaifu.GetEntityData(aura).Player = data.lastGodheadSlammedPlayer
+				yandereWaifu.GetEntityData(aura).GivenPos = ent.Position
+				yandereWaifu.GetEntityData(aura).Tier = data.CursedGodheadSlamTier
+				data.CursedGodheadSlamTier = nil
+				data.isCursedGodheadSlam = nil
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, 15, 0, ent.Position, Vector.Zero, player):ToEffect()
+				poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/poof_old.png")
+				poof:GetSprite():LoadGraphics()
+				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahPoofParticleType.Gold );
+				InutilLib.SFX:Play(SoundEffect.SOUND_GLASS_BREAK, 1, 0, false, 1);
+			elseif data.isCursedGodheadSlam <= 0 then
+				local aura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDGODHEADAURA, 0, ent.Position, Vector.Zero, player):ToEffect()
+                yandereWaifu.GetEntityData(aura).Player = data.lastGodheadSlammedPlayer
+                yandereWaifu.GetEntityData(aura).GivenPos = ent.Position
+				yandereWaifu.GetEntityData(aura).Tier = data.CursedGodheadSlamTier
+				data.CursedGodheadSlamTier = nil
+				data.isCursedGodheadSlam = nil
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, 15, 0, ent.Position, Vector.Zero, player):ToEffect()
+				poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/poof_old.png")
+				poof:GetSprite():LoadGraphics()
+				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahPoofParticleType.Gold );
+				InutilLib.SFX:Play(SoundEffect.SOUND_GLASS_BREAK, 1, 0, false, 1);
+			end
+		end
+	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
@@ -63,6 +168,62 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 		data.drunkRenderFrame = data.drunkRenderFrame + 1
 		if data.drunkRenderFrame >= 11 then data.drunkRenderFrame = 0 end
 	end
+
+	--menopaused
+	if data.IsMenopaused then
+		ent:SetColor(brownNoBabiesColor, 2, 5, true, true)
+		if not data.menopausedRenderFrame then data.menopausedRenderFrame = 0 end
+		local loc = Isaac.WorldToScreen(ent.Position)
+		statusEffects:SetOverlayRenderPriority(true)
+		statusEffects:SetFrame("Menopaused", data.menopausedRenderFrame)
+		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
+		data.menopausedRenderFrame = data.menopausedRenderFrame + 1
+		if data.menopausedRenderFrame >= 7 then data.menopausedRenderFrame = 0 end
+	end
+
+	if data.isIntimidated then
+		
+	end
+
+	if data.IsCheesed then
+		local data = InutilLib.GetILIBData(ent)
+		if not data.Init then                                             
+			data.spr = Sprite()                                                 
+			data.spr:Load("gfx/effects/items/cheese_string.anm2", true) 
+			data.spr:SetFrame("Chain", 1)
+			data.Init = true                                    
+		end          
+		InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(data.Player.Position), Isaac.WorldToScreen(fentam.Position), 16, nil, 8, true)
+	end
+
+	if data.isSlamSnooked then
+		local endpoint = Isaac.WorldToScreen(ent.Position + data.SnookVelocity*1.2)
+		if not data.Init then       
+			data.spr = Sprite()                                                 
+			data.spr:Load("gfx/effects/items/futurediary/blue_target.anm2", true) 
+			data.spr:Play("Line", true)
+				
+			data.sprChild = Sprite()                                                 
+			data.sprChild:Load("gfx/effects/items/futurediary/blue_target.anm2", true) 
+			--if ent.Size <= 18 then
+				data.sprChild:Play("Point", true)
+			--[[else
+				data.sprChild:Play("Target", true)
+			end]]
+			data.Init = true          
+		end 
+		InutilLib.DeadDrawRotatedTilingSprite(data.spr, Isaac.WorldToScreen(ent.Position), endpoint, 16, nil, 8, true)
+		if data.SnookVelocity:Length() >= 1 then
+			data.sprChild:Render(endpoint, Vector.Zero, Vector.Zero)
+			--if ent.Size <= 18 then
+				data.sprChild.Rotation = (data.SnookVelocity):GetAngleDegrees()
+			--end
+		end
+	end
+	if data.CursedGodheadSlamTier then
+		local color = 0.2 * data.CursedGodheadSlamTier
+		ent:SetColor(Color(1, 1, 1-color, 1, 0, 0, 0), 2, 5, true, true)
+	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_UPDATE, function(_, proj)
@@ -73,6 +234,60 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_UPDATE, function(_, pro
 			if spawnerData.IsLaughing then
 				proj:Remove()
 			end
+		end
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
+	local data = yandereWaifu.GetEntityData(ent)
+	if ent.SpawnerEntity then
+		local spawnerData = yandereWaifu.GetEntityData(ent.SpawnerEntity)
+		if ent.SpawnerEntity and ent.FrameCount == 1 then
+			if spawnerData.IsMenopaused then
+				ent:Remove()
+				local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, ent.Position, Vector(0,0), player, 0, 0):ToEffect()
+				InutilLib.RevelSetCreepData(puddle)
+				InutilLib.RevelUpdateCreepSize(puddle, math.random(5,7), true)
+			end
+		end
+	end
+	if data.isSnooked and ent:CollidesWithGrid() then
+		ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+		data.isSnooked = nil
+	end
+	if data.isSlamSnooked and ent:CollidesWithGrid() then
+		ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+		data.isSnooked = nil
+	end
+	if data.isHeavySnooked then
+		ent.Velocity = ent.Velocity * 1
+		if ent:CollidesWithGrid() then
+			ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+			ent.Velocity = ent.Velocity * 1.1
+		end
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, coll, low)
+	local data = yandereWaifu.GetEntityData(ent)
+	if coll:IsEnemy() then
+		if data.isSnooked or data.isSlamSnooked then
+			ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+			coll:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+			coll.Velocity = (coll.Position - ent.Position):Resized(25)
+			yandereWaifu.GetEntityData(coll).isSnooked = 15
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+		end
+
+		if data.isHeavySnooked then
+			ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+			coll:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
+			coll.Velocity = (coll.Position - ent.Position):Resized(35)
+			yandereWaifu.GetEntityData(coll).isSnooked = 15
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 		end
 	end
 end)

@@ -7,7 +7,8 @@ local lockedTrinkets = {}
 local lockedCards = {}
 
 local playerToCompletionManagerName = {
-	[RebekahCurse.TECHNICAL_REB] = "Rebekah",
+	[RebekahCurse.TECHNICAL_REB] = "Technical Rebekah",
+	[RebekahCurse.SADREBEKAH] = "Technical B Rebekah",
 }
 
 local Achievement = StageAPI.Class("Achievement")
@@ -297,7 +298,7 @@ end)
 function yandereWaifu.TryUnlockCompletionAchievements()
 	for _, achievement in ipairs(yandereWaifu.ACHIEVEMENT_ORDERED) do
 		if achievement.CompletionMark and not achievement:IsUnlocked() then
-			if mod.IsCompletionMarkUnlocked(achievement.CompletionMark.PlayerName, achievement.CompletionMark.Mark) then
+			if yandereWaifu.IsCompletionMarkUnlocked(achievement.CompletionMark.PlayerName, achievement.CompletionMark.Mark) then
 				achievement:Unlock(true)
 			end
 		end
@@ -376,7 +377,7 @@ yandereWaifu.AchievementTrackerTrinkets = {
 	BlackSackUnlocked		= Isaac.GetTrinketIdByName("BLACK_SACK_TRACKER"),
 }
 
-if Encyclopedia then
+--[[if Encyclopedia then
 	for _, id in pairs(yandereWaifu.AchievementTrackerTrinkets) do
 		Encyclopedia.AddTrinket({
 			Class = "Fiend Folio",
@@ -386,7 +387,7 @@ if Encyclopedia then
 			ModName = "Fiend Folio",
 		})
 	end
-end
+end]]
 
 local achievementTrackerIds = {}
 for name, id in pairs(yandereWaifu.AchievementTrackerTrinkets) do
@@ -417,7 +418,7 @@ function yandereWaifu.RemoveLockedCollectiblesFromPool()
 		end
 	end
 
-	if not yandereWaifu.ItemsEnabled then
+	if not RebekahLocalSavedata.Config.itemsEnabled then
 		for _, id in pairs(RebekahCurseItems) do
 			pool:RemoveCollectible(id)
 		end
@@ -436,7 +437,7 @@ function yandereWaifu.RemoveLockedTrinketsFromPool()
 		pool:RemoveTrinket(id)
 	end
 
-	if not yandereWaifu.ItemsEnabled then
+	if not RebekahLocalSavedata.Config.itemsEnabled then
 		for _, id in pairs(RebekahCurseTrinkets) do
 			pool:RemoveTrinket(id)
 		end
@@ -451,7 +452,7 @@ end
 local antiRecursion
 
 mod:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRune, forceRune)
-	if (mod.IsCardLocked(card) or yandereWaifu.NoCardNaturalSpawn(card)) and not antiRecursion then
+	if (yandereWaifu.IsCardLocked(card) or yandereWaifu.NoCardNaturalSpawn(card)) and not antiRecursion then
 		antiRecursion = true
 
 		local itempool = game:GetItemPool()
@@ -461,7 +462,7 @@ mod:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRun
 		repeat
 			i = i + 1
 			new = itempool:GetCard(rng:GetSeed() + i, canSuit, canRune, forceRune)
-		until not (mod.IsCardLocked(new) or yandereWaifu.NoCardNaturalSpawn(new))
+		until not (yandereWaifu.IsCardLocked(new) or yandereWaifu.NoCardNaturalSpawn(new))
 
 		antiRecursion = false
 
@@ -470,7 +471,7 @@ mod:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRun
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_GET_TRINKET, function(_, trinket, rng)
-	if (achievementTrackerIds[trinket] or yandereWaifu.IsTrinketLocked(trinket) or (not yandereWaifu.ItemsEnabled and yandereWaifu.TrinketsByID[trinket])) and not antiRecursion then
+	if (achievementTrackerIds[trinket] or yandereWaifu.IsTrinketLocked(trinket) or (not RebekahLocalSavedata.Config.itemsEnabled and yandereWaifu.TrinketsByID[trinket])) and not antiRecursion then
 		antiRecursion = true
 
 		yandereWaifu.RemoveLockedTrinketsFromPool()
@@ -499,8 +500,10 @@ function yandereWaifu.AchievementsPostGameStart()
 	yandereWaifu.InitAchievementTrackers()
 	yandereWaifu.RemoveLockedFromPools()
 
-	yandereWaifu.TryLockBiendInHome()
+	--yandereWaifu.TryLockBiendInHome()
 end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.AchievementsPostGameStart)
 
 function yandereWaifu.GetAchievementSetUnlockCount(set)
 	local count = 0
@@ -542,6 +545,50 @@ end
 ------------------------------------------
 -- RANDOM UNLOCK CONDITIONS START HERE! --
 ------------------------------------------
+
+--i stole this from FF, ill clear it soon
+-- every other challenge!
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, collider)
+	if collider:ToPlayer() then
+		if ILIB.game.Challenge == mod.challenges.theRealJon then
+			if not yandereWaifu.ACHIEVEMENT.SPARE_RIBS:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.SPARE_RIBS:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.dirtyBubble then
+			if not yandereWaifu.ACHIEVEMENT.PETRIFIED_GEL:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.PETRIFIED_GEL:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.frogMode then
+			if not yandereWaifu.ACHIEVEMENT.SLIPPYS_ORGANS:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.SLIPPYS_ORGANS:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.handsOn then
+			if not yandereWaifu.ACHIEVEMENT.RED_HAND:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.RED_HAND:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.isaacRebuilt then
+			if not yandereWaifu.ACHIEVEMENT.DEIMOS:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.DEIMOS:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.brickByBrick then
+			if not yandereWaifu.ACHIEVEMENT.BRICK_SEPARATOR:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.BRICK_SEPARATOR:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.towerOffense then
+			if not yandereWaifu.ACHIEVEMENT.LAWN_DARTS:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.LAWN_DARTS:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.chinaShop then
+			if not mod.ACHIEVEMENT.CHINAS_BELONGINGS:IsUnlocked(true) then
+				mod.ACHIEVEMENT.CHINAS_BELONGINGS:Unlock()
+			end
+		elseif game.Challenge == mod.challenges.theGauntlet then
+			if not mod.ACHIEVEMENT.GAUNTLET_BEATEN:IsUnlocked(true) then
+				mod.ACHIEVEMENT.GAUNTLET_BEATEN:Unlock()
+			end
+		end
+	end
+end, PickupVariant.PICKUP_TROPHY)
 
 
 -- Unlocks based on sets of unlocks
@@ -919,49 +966,6 @@ mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, collid
 		end
 	end
 end, 960) -- Golden Medallion
-
--- every other challenge!
-mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, collider)
-	if collider:ToPlayer() then
-		if game.Challenge == mod.challenges.theRealJon then
-			if not yandereWaifu.ACHIEVEMENT.SPARE_RIBS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.SPARE_RIBS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.dirtyBubble then
-			if not yandereWaifu.ACHIEVEMENT.PETRIFIED_GEL:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.PETRIFIED_GEL:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.frogMode then
-			if not yandereWaifu.ACHIEVEMENT.SLIPPYS_ORGANS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.SLIPPYS_ORGANS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.handsOn then
-			if not yandereWaifu.ACHIEVEMENT.RED_HAND:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.RED_HAND:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.isaacRebuilt then
-			if not yandereWaifu.ACHIEVEMENT.DEIMOS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.DEIMOS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.brickByBrick then
-			if not yandereWaifu.ACHIEVEMENT.BRICK_SEPARATOR:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.BRICK_SEPARATOR:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.towerOffense then
-			if not yandereWaifu.ACHIEVEMENT.LAWN_DARTS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.LAWN_DARTS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.chinaShop then
-			if not mod.ACHIEVEMENT.CHINAS_BELONGINGS:IsUnlocked(true) then
-				mod.ACHIEVEMENT.CHINAS_BELONGINGS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.theGauntlet then
-			if not mod.ACHIEVEMENT.GAUNTLET_BEATEN:IsUnlocked(true) then
-				mod.ACHIEVEMENT.GAUNTLET_BEATEN:Unlock()
-			end
-		end
-	end
-end, PickupVariant.PICKUP_TROPHY)
 
 -- Biend
 mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()

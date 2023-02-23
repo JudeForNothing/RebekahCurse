@@ -123,7 +123,9 @@ local data = yandereWaifu.GetEntityData(player)
 		end
 	elseif data.currentMode == REBECCA_MODE.RottenHearts then
 		if cacheF == CacheFlag.CACHE_FIREDELAY then
-			player.MaxFireDelay = player.MaxFireDelay - 2
+			if player.MaxFireDelay >= 4 then
+				player.MaxFireDelay = player.MaxFireDelay - 1
+			end
 		end
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed - 0.10

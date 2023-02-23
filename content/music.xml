@@ -5,4 +5,7 @@
 	<track name="Backrooms" path="Backrooms.ogg" loop="true" />
 	<!-- Backrooms Boss Music -->
 	<track name="Moist" path="Moist.ogg" loop="true" />
+
+	<!-- Giddy up music -->
+	<track name="Tick Tock" path="ticktockloop.ogg" layer="ticktock_layer.ogg" loop="true" />
 </music>

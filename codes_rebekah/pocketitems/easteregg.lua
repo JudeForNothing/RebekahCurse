@@ -4,8 +4,6 @@ local function ReloadForgottenB(player)
 	local SoulHeartsInit = player:GetSoulHearts()
 	--player:GetSprite():Load("001.000_player.anm2", true)
 	player:ChangePlayerType(player:GetPlayerType())
-	print(SoulHeartsInit)
-	print(player:GetSoulHearts())
 	if SoulHeartsInit < player:GetSoulHearts() then
 		local deduction = player:GetSoulHearts() - SoulHeartsInit
 		player:AddSoulHearts(-deduction)
@@ -122,7 +120,7 @@ local function UseRandomSeedEffect(player)
 		if not OldChallenge then 
 			InutilLib.DumpySetCanShoot(player, false)
 		end
-		if yandereWaifu.IsNormalRebekah(player) then
+		if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah(player) then
 			yandereWaifu.RebekahRefreshCostume(player)
 		end
 	end
@@ -141,10 +139,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		
 		data.PersistentPlayerData.EasterEggDecreaseTick = data.PersistentPlayerData.EasterEggDecreaseTick - 1
 		
-		print(data.PersistentPlayerData.EasterEggDecreaseTick)
 		if data.PersistentPlayerData.EasterEggDecreaseTick <= 0 then --clear seed effect
 			ILIB.game:GetSeeds():RemoveSeedEffect(data.PersistentPlayerData.EasterEggSeeds)
-			print(playerType)
 			if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
 				player = player:GetOtherTwin()
 				local OldChallenge = player:CanShoot()
@@ -166,7 +162,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				if not OldChallenge then 
 					InutilLib.DumpySetCanShoot(player, false)
 				end
-				if yandereWaifu.IsNormalRebekah(player) then
+				if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah(player) then
 					yandereWaifu.RebekahRefreshCostume(player)
 				end
 			end
@@ -224,7 +220,7 @@ function yandereWaifu:EasterEggsInit(hasstarted) --Init
 				if not OldChallenge then 
 					InutilLib.DumpySetCanShoot(player, false)
 				end
-				if yandereWaifu.IsNormalRebekah(player) then
+				if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah(player) then
 					yandereWaifu.RebekahRefreshCostume(player)
 				end
 			end

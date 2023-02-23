@@ -244,6 +244,7 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 	elseif playerType == RebekahCurse.SADREBEKAH and playerCount ~= 1 then --this is a bainaid solution, since theres no coop selection screen for her
 		yandereWaifu:ShowTaintedRebekahCoopMenu(player)
 		
+		yandereWaifu.ApplyCostumes( data.currentMode, player );
 		--[[player:ChangePlayerType(RebekahCurse.REB_RED)
 		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
 			player.Visible = false
@@ -259,7 +260,7 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 		data.bonestackMeterFadeStartFrame = 0;
 		
 		RebeccaInit(player)
-		--yandereWaifu.ApplyCostumes( data.currentMode, player );
+		yandereWaifu.ApplyCostumes( data.currentMode, player );
 
 		if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
 		--yandereWaifu:ShowCoopMenu(player)]]

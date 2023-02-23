@@ -53,13 +53,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_,  kn)
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
     local data = yandereWaifu.GetEntityData(kn)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
-		if not data.OriginalDamage or data.OriginalDamage ~= player.Damage then
-            data.OriginalDamage = kn.CollisionDamage
-        else
-            if data.OriginalDamage then
-                kn.CollisionDamage = data.OriginalDamage + (kn.Velocity:Length())/4
+    if player then 
+        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+            if not data.OriginalDamage or data.OriginalDamage ~= player.Damage then
+                data.OriginalDamage = kn.CollisionDamage
+            else
+                if data.OriginalDamage then
+                    kn.CollisionDamage = data.OriginalDamage + (kn.Velocity:Length())/4
+                end
             end
         end
-	end
+    end
 end);

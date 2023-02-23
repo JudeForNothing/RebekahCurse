@@ -7,7 +7,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if not data.Player then
 	--	Isaac.DebugString("fool")
 	end
-    local roomClampSize = math.max( data.Player.Size, 20 );
+    local roomClampSize = math.max( data.Player.Size or 10, 20 );
 	local controller = data.Player.ControllerIndex
 	if not data.gravityData then data.gravityData = {} end
 	local gravityData = data.gravityData

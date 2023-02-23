@@ -1,24 +1,39 @@
-local dash = require("codes_rebekah.characters.rebekah_B.dash")
+--local dash = require("codes_rebekah.characters.rebekah_B.dash")
 local cache = require("codes_rebekah.characters.rebekah_B.cache")
 
 local healthbar = Sprite();
 healthbar:Load("gfx/ui/tainted_rebekah_healthbar.anm2", true);
 
+local isTRebPresent = false
+local isDevilDealAvailable = false
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
+	if not new then
+		isTRebPresent = false
+    end
+end)
 
 function TaintedRebeccaInit(player)
-
+	local mode 
 	local data = yandereWaifu.GetEntityData(player)
 	data.PersistentPlayerData.TaintedHealth = 50
     data.PersistentPlayerData.MaxTaintedHealth = 50
-	data.PersistentPlayerData.MaxRageCrystal = 3
+	data.PersistentPlayerData.MaxRageCrystal = 2
 	data.RageCrystal = 0
 
-	data.DASH_TAINTED_DOUBLE_TAP = InutilLib.DoubleTap:New();
+	--data.DASH_TAINTED_DOUBLE_TAP = InutilLib.DoubleTap:New();
 
 	data.specialCooldown = 0 --cooldown special
 
-	yandereWaifu.ApplyCostumes(REBECCA_MODE.CursedCurse, player , false, false)
+	if player:GetPlayerType() ==  RebekahCurse.REB_CURSED then
+		mode = REBECCA_MODE.CursedCurse
+	end
 
+	yandereWaifu.ApplyCostumes(mode, player , false, false)
+
+	isTRebPresent = true
+
+	data.currentMode = mode
 	-- start the meters invisible
 	data.moveMeterFadeStartFrame = -20;
 	data.TaintedTearDelay = 0 --special thing i cant be bothered but to remake
@@ -123,26 +138,26 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.TaintedReb
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
 	function()
-		local hasTaintedReb = false
 		local num_players = Game():GetNumPlayers()
 		for i=0,(num_players-1) do
 			local player = Isaac.GetPlayer(i)
 			if not yandereWaifu.IsTaintedRebekah(player) then return end
 			local data = yandereWaifu.GetEntityData(player)
-			data.DASH_TAINTED_DOUBLE_TAP:Reset();
+			--data.DASH_TAINTED_DOUBLE_TAP:Reset();
 			player:AddSoulHearts(2)
 
-			if data.IsDashActive then data.IsDashActive = false end --stop any active dashes
+			data.lastMode = data.currentMode
+
+			--if data.IsDashActive then data.IsDashActive = false end --stop any active dashes
 			data.IsUninteractible = false 
-			hasTaintedReb = true
-		end
-		if hasTaintedReb then
-			for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, 100, -1, false, false)) do
-				pickup = pickup:ToPickup()
-				--is devil deals
-				print(pickup.Price)
+			isTRebPresent = true
+
+			if player:GetExtraLives() > 0 and data.PersistentPlayerData.MaxTaintedHealth <= 0 and data.PersistentPlayerData.TaintedHealth <= 0 then
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth+ 50
+				data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth+ 50
 			end
 		end
+		isDevilDealAvailable = false
 	end
 )
 
@@ -153,14 +168,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--print(player:GetPlayerType())
 	
 	if yandereWaifu.IsTaintedRebekah(player) then
-
-		--test fly
+		local iframes = 15
+		if player:GetDamageCooldown() > iframes then
+			player:ResetDamageCooldown()
+			player:SetMinDamageCooldown(iframes)
+		  end
 		if data.TaintedRageTick then
 			if data.TaintedRageTick > 0 then data.TaintedRageTick = data.TaintedRageTick - 1 end
-		end
-		if data.TaintedRageTick and data.TaintedRageTick == 1 then
-			print("stopped")
-			Isaac.Spawn( EntityType.ENTITY_FLY, 0, 0, player.Position,  Vector(0,0), player );
 		end
 
 		yandereWaifu.HandleTaintedRebHeart(player)
@@ -184,15 +198,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		end
 		
 		--dash skill
-		local keyboardKey=nil
+		--[[local keyboardKey=nil
 		local controllerKey=0
 		local disenableDashByKey = false
 		local controller = player.ControllerIndex;
-		--[[if ModConfigMenu then
-			keyboardKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Keyboard Binding"]
-			controllerKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Controller Binding"]
-			disenableDashByKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Alternative Key Enable"]
-		end]]
 		keyboardKey = RebekahLocalSavedata.Config.rebekahdashkey
 		controllerKey = RebekahLocalSavedata.Config.rebekahdashkey
 		disenableDashByKey = RebekahLocalSavedata.Config.disablerebekahdash
@@ -222,7 +231,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				--	data.DASH_TAINTED_DOUBLE_TAP = nil
 				--end
 			end
-		end
+		end]]
 		
 		if data.IsParalysed then 
 			if not data.ParalysedCooldown then data.ParalysedCooldown = 200 end
@@ -235,14 +244,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		end
 
 		--targetting system
-		local target = InutilLib.GetClosestGenericEnemy(player, 140)
+		local target = InutilLib.GetClosestGenericEnemy(player, 160)
+		--incase glory kill is nearby
+		local dist = 100
+		local closestDist = 999999
+		for i, e in pairs(Isaac.GetRoomEntities()) do
+			if e.Type == 1000 and yandereWaifu.GetEntityData(e).IsGlorykill then
+				local minDist = dist or 100
+				if (player.Position - e.Position):Length() < 160 + e.Size then
+					if (player.Position - e.Position):Length() < closestDist + e.Size then
+						closestDist = (player.Position - e.Position):Length()
+						target = e
+					end
+				end
+			end
+		end
 		if target then
 			if data.TaintedEnemyTarget then
 				if data.TaintedEnemyTarget and data.TaintedEnemyTarget:IsDead() then
 					data.TaintedEnemyTarget = nil
 					return
 				end
-				if target.Position:Distance(player.Position) <= data.TaintedEnemyTarget.Position:Distance(player.Position) then
+				if target.Position:Distance(player.Position) - target.Size <= data.TaintedEnemyTarget.Position:Distance(player.Position) - data.TaintedEnemyTarget.Size then
 					--remove old target
 					yandereWaifu.GetEntityData(data.TaintedEnemyTarget).Target:Remove()
 					--add new target
@@ -264,6 +287,87 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 			data.TaintedEnemyTarget = nil
 		end
+
+		--glorykill 
+		if data.IsGlorykillMode then
+			if not data.TAINTEDREBSKILL_MENU.open then
+				data.TAINTEDREBSKILL_MENU:ToggleMenu(true)
+			end
+			data.RageCrystal = data.PersistentPlayerData.MaxRageCrystal
+		end
+
+		local willDie = false
+		--devil deal stuff
+		if data.PersistentPlayerData.currentQueuedDevilItem then
+            local pickup = data.PersistentPlayerData.currentQueuedDevilItem
+            local heartCost = 25
+			local heartSoulCost = 15
+            if pickup.Price == -1 then
+                --1 Red
+                if heartCost >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - heartCost
+            elseif pickup.Price == -2 then
+                --2 Red
+				if heartCost*2 >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - heartCost*2
+            elseif pickup.Price == -3 then
+                --3 soul
+                if heartSoulCost*3 >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - heartSoulCost*3
+            elseif pickup.Price == -4 then
+                --1 Red, 2 Soul
+				if heartCost + (heartSoulCost*2) >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - (heartCost  + (heartSoulCost*2))
+            elseif pickup.Price == -7 then
+                --1 Soul
+                if heartSoulCost >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - heartSoulCost
+            elseif pickup.Price == -8 then
+                --2 Souls
+                if heartSoulCost*2 >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - heartSoulCost*2
+            elseif pickup.Price == -9 then
+                --1 Red, 1 Soul
+                if heartCost + (heartSoulCost) >= data.PersistentPlayerData.MaxTaintedHealth then
+					willDie = true
+				end
+				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth - (heartCost  + (heartSoulCost))
+            else
+                return true
+            end
+            data.PersistentPlayerData.currentQueuedDevilItem = nil
+        end
+
+		--extra health stuff
+		local hp, maxhp = data.PersistentPlayerData.TaintedHealth, data.PersistentPlayerData.MaxTaintedHealth
+        if hp < 1 then
+            player:Kill()
+        end
+		if willDie then
+            player:Kill()
+        end
+
+		if data.PersistentPlayerData.MaxTaintedHealth < data.PersistentPlayerData.TaintedHealth then
+			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.MaxTaintedHealth
+		end
+
+		--if crystal fragments has reached more than 3
+		if data.PersistentPlayerData.WrathFragmentCount and data.PersistentPlayerData.WrathFragmentCount >= 3 then
+			data.PersistentPlayerData.MaxRageCrystal = data.PersistentPlayerData.MaxRageCrystal + math.floor(data.PersistentPlayerData.WrathFragmentCount/3)
+			data.PersistentPlayerData.WrathFragmentCount = data.PersistentPlayerData.WrathFragmentCount % 3
+		end
 	end
 end)
 
@@ -279,9 +383,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		end
 		if yandereWaifu.IsTaintedRebekah(player) then
 			
-			if player:GetMovementInput() and yandereWaifu.GetEntityData(player).DASH_TAINTED_DOUBLE_TAP_READY then
+			--[[if player:GetMovementInput() and yandereWaifu.GetEntityData(player).DASH_TAINTED_DOUBLE_TAP_READY then
 				yandereWaifu.GetEntityData(player).DASH_TAINTED_DOUBLE_TAP:Update( player:GetMovementInput() , player );
-			end
+			end]]
 
 			if not data.invincibleTime then data.invincibleTime = 0 end --invincible time
 			if data.invincibleTime > 0 then data.invincibleTime = data.invincibleTime - 1 end --frames on counting down how much time you can be invincible
@@ -293,16 +397,18 @@ end);
 
 --Handle base health
 function yandereWaifu.HandleTaintedRebHeart(player)
-	local data = yandereWaifu.GetEntityData(player)
 
+	local data = yandereWaifu.GetEntityData(player)
 	if not yandereWaifu.IsTaintedRebekah(player) then return end
-	if player:GetHearts() > 0 then
-		data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth + (player:GetHearts()*25)
-		player:GetHearts(-player:GetHearts())
+	if player:GetHearts() > 1 then
+		local neededHearts = 0-player:GetHearts()+1
+		data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth + math.abs(neededHearts*25)
+		player:AddHearts(neededHearts)
 	end
-	if player:GetMaxHearts() > 0 then
-		data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth + (player:GetMaxHearts()*25)
-		player:AddMaxHearts(-player:GetMaxHearts()--[[+2]])
+	if player:GetMaxHearts() > 6 then
+		local neededHearts = player:GetMaxHearts()-6
+		data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth + (neededHearts*25)
+		player:AddMaxHearts(-neededHearts--[[+2]])
 	end
 	if player:GetBoneHearts() > 0 then
 		player:AddBoneHearts(-player:GetBoneHearts())
@@ -318,7 +424,35 @@ function yandereWaifu.HandleTaintedRebHeart(player)
 	--[[else
 		player:AddSoulHearts(2)]]
 	end
+	--add increment incase
+	if player:GetMaxHearts() < 6 then
+		local neededHearts = 6-player:GetMaxHearts()
+		player:AddMaxHearts(neededHearts)
+	end
+
+	--correct health
+	if data.PersistentPlayerData.TaintedHealth >= data.PersistentPlayerData.MaxTaintedHealth then
+		data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.MaxTaintedHealth
+	end
 end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, coll, bool)
+	if coll:ToPlayer() then
+		local player = coll:ToPlayer()
+		local entityData = yandereWaifu.GetEntityData(player);
+		if yandereWaifu.IsTaintedRebekah(player) then
+			if pickup.Variant == PickupVariant.PICKUP_HEART then
+				return false
+			elseif pickup.Variant == RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT and not pickup.Touched and yandereWaifu.IsTaintedRebekah(player) then
+				if not entityData.PersistentPlayerData.WrathFragmentCount then entityData.PersistentPlayerData.WrathFragmentCount = 0 end
+				entityData.PersistentPlayerData.WrathFragmentCount = entityData.PersistentPlayerData.WrathFragmentCount + 1
+				InutilLib.PickupPickup(pickup)
+				pickup.Touched = true
+				return true
+			end
+		end
+	end
+end)
 
 
 --Take damage logic 
@@ -328,41 +462,58 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	if player and yandereWaifu.IsTaintedRebekah(player) then
 
 		if data.invincibleTime and data.invincibleTime > 0 then return false end
-
+		local takenDmg = 0
         if damageFlag & DamageFlag.DAMAGE_SPIKES > 0 and math.random(1,2) == 2 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 5
+			takenDmg = 5
 		elseif (damageFlag & DamageFlag.DAMAGE_TNT > 0 or damageFlag & DamageFlag.DAMAGE_EXPLOSION > 0) and not damage:ToPlayer():HasCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC) then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 50
+			takenDmg = 50
 		elseif damageFlag & DamageFlag.DAMAGE_CRUSH > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 25
+			takenDmg = 25
 		elseif damageFlag & DamageFlag.DAMAGE_FIRE > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 10
+			takenDmg = 10
 		elseif damageFlag & DamageFlag.DAMAGE_LASER > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 10
+			takenDmg = 10
 		elseif damageFlag & DamageFlag.DAMAGE_PITFALL > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 25
+			takenDmg = 25
 		elseif damageFlag & DamageFlag.DAMAGE_POOP > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 5
+			takenDmg = 5
 		elseif damageFlag & DamageFlag.DAMAGE_RED_HEARTS > 0 then
-			data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 10
+			takenDmg = 10
 		else
 			damageSource = damageSource.Entity
 			if damageSource then
-				if damageSource:IsEnemy() then
+
+				if damageSource.Type == 9 then
+					takenDmg = 10
+				elseif damageSource:IsEnemy() then
 					if damageSource:IsBoss() then
-						data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 2
+						takenDmg = 2
 					else
-						data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 5
+						takenDmg = 5
 					end
-				elseif damageSource.Entity and damageSource.Entity.Type == 10 then
-					data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 5
+
+					if damageSource:ToNPC():IsChampion() then
+						takenDmg = takenDmg*2
+					end
 				end
 			else
-				data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - 5
+				takenDmg = 5
 			end
 		end
 
-		local hp = data.PersistentPlayerData.TaintedHealth
+		if not player:HasCollectible(CollectibleType.COLLECTIBLE_WAFER) then
+			if ILIB.game:IsGreedMode() then
+				if ILIB.level:GetAbsoluteStage() >= LevelStage.STAGE5_GREED then
+					takenDmg = takenDmg * 2
+				end
+			else
+				if ILIB.level:GetAbsoluteStage() >= LevelStage.STAGE4_1 then
+					takenDmg = takenDmg * 2
+				end
+			end
+		end
+		data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - takenDmg
+		local hp, maxhp = data.PersistentPlayerData.TaintedHealth, data.PersistentPlayerData.MaxTaintedHealth
 
         healthbar.Color = Color(1,0,0,1,0,0,0)
         InutilLib.SetTimer(15, function()
@@ -371,8 +522,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
         if hp < 1 then
             player:Kill()
         end
+		if maxhp < 1 then
+            player:Kill()
+        end
 		if (hp % 10) == 0 then
-            player:AddSoulHearts(amount)
+            player:AddSoulHearts(amount*2) --i had to multiply this because custom heart api is making this hard
+			player:ResetDamageCooldown()
+			player:SetMinDamageCooldown(5)
+			--player:TakeDamage( 1, DamageFlag.DAMAGE_NOKILL, EntityRef(damageSource), 2);
             return true
         else
             return false
@@ -386,6 +543,9 @@ end, EntityType.ENTITY_PLAYER)
 		eff:TakeDamage(1, 0, EntityRef(coll), 1)
 	end
 end)]]
+
+local font = Font()
+font:Load("font/pftempestasevencondensed.fnt")
 
 function yandereWaifu.taintedheartReserveRenderLogic(player, id)
 	local data = yandereWaifu.GetEntityData(player)
@@ -409,13 +569,51 @@ function yandereWaifu.taintedheartReserveRenderLogic(player, id)
 		local gameFrame = ILIB.game:GetFrameCount();
 		--if yandereWaifu.IsNormalRebekah(player) then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
-				local percent = (data.PersistentPlayerData.TaintedHealth/data.PersistentPlayerData.MaxTaintedHealth)*100
-                healthbar:SetFrame("Bar", math.ceil(percent) or 0)
+				if data.PersistentPlayerData.MaxTaintedHealth > 0 then
+					local percent = (data.PersistentPlayerData.TaintedHealth/data.PersistentPlayerData.MaxTaintedHealth)*100
+					healthbar:SetFrame("Bar", math.ceil(percent) or 0)
+					--heartReserve:RenderLayer(1, (position), Vector(0,0), Vector(0,0))
+				else
+					healthbar:SetFrame("Bar", 0)
+				end
 				healthbar:Render((position + (Options.HUDOffset * Vector(20, 12))), Vector(0,0), Vector(0,0))
 				healthbar.Color = Color(1,1,1,1,0,0,0)
-				--heartReserve:RenderLayer(1, (position), Vector(0,0), Vector(0,0))
+				if player:GetExtraLives() > 0 then
+					local text = "x" .. tostring(player:GetExtraLives())
+					--Isaac.RenderText(tostring(text),position.X, position.Y+15, 1 ,1 ,1 ,1 )
+					font:DrawString(text,position.X, position.Y+10,KColor(1,1,1,1,0,0,0),0,true)
+				end
 			end
 		--end
+
+		if isDevilDealAvailable then
+			print("hefef")
+			local text = math.floor(data.PersistentPlayerData.MaxTaintedHealth)
+			local rng = math.random(1,10)
+			if rng == 10 then
+				data.eyecolor = KColor(0,0,0,1,0,0,0)
+			else
+				if math.random(1,30) == 30 then
+					data.eyecolor = KColor(1,1,1,1,0,0,0)
+				else
+					data.eyecolor = KColor(1,0,0,1,0,0,0)
+				end
+			end
+			if player.FrameCount % 15 == 0 then
+				data.eyerenderx = math.random(10,12)/10
+				data.eyerendery = math.random(10,12)/10
+				data.eyeoffset = math.random(1,3)
+			end
+			if not data.eyerenderx then
+				data.eyerenderx = math.random(10,12)/10
+				data.eyerendery = math.random(10,12)/10
+				data.eyeoffset = math.random(1,3)
+			end
+			--Isaac.RenderText(tostring(text),Isaac.WorldToScreen(npc.Position).X-7,  Isaac.WorldToScreen(npc.Position).Y-15, 1 ,1 ,1 ,1 )
+			local f = Font() -- init font object
+			f:Load("font/pftempestasevencondensed.fnt") -- load a font into the font object
+			f:DrawStringScaled (text,position.X+35-data.eyeoffset,position.Y+5-data.eyeoffset, data.eyerenderx, data.eyerendery, data.eyecolor,0,true)
+		end
 	end
 end
 
@@ -471,7 +669,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, _)
 end);
 
 --crystal gaining menu
-yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 	if not damageSource.Entity then return true end
 	local player 
 
@@ -498,7 +696,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			end
 		end
     end
-end)
+end)]]
 
 
 --tainted rebekah skill menu basics
@@ -529,9 +727,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 						--end
 						data.selectedTaintedRebSkill = false
 						if data.CantTaintedSkill then return end
-						if data.TAINTEDREBSKILL_MENU.chargecooldown[value] <= 0 then
-							if data.TAINTEDREBSKILL_MENU.options[value].price <= data.RageCrystal then
+						if data.TAINTEDREBSKILL_MENU.chargecooldown[value] <= 0 or data.IsGlorykillMode then
+							if data.TAINTEDREBSKILL_MENU.options[value].price <= data.RageCrystal or  data.IsGlorykillMode then
 								local success = false
+								if not data.taintedWeapon then
+									yandereWaifu.SpawnCursedKnife(player)
+								end
 								if value == 0 and data.TaintedEnemyTarget and not data.TaintedEnemyTarget:IsDead() then
 									success = true
 									local IsLokiHornsTriggered = false
@@ -549,7 +750,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 											if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) and lhorns == 0 then --sets the wiz angles
 												direction = (direction + wizAng)
 											end
-											yandereWaifu.SpawnCursedKnife(player, 3, direction)
+											yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 3, direction)
 
 											if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
 												break -- just makes sure it doesnt duplicate
@@ -563,16 +764,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 									end
 								elseif value == 1 and data.TaintedEnemyTarget and not data.TaintedEnemyTarget:IsDead() then
 									success = true
-									yandereWaifu.SpawnCursedKnife(player, 4, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
+									yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 4, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
 								elseif value == 2 and data.TaintedEnemyTarget and not data.TaintedEnemyTarget:IsDead() then
 									success = true
-									yandereWaifu.SpawnCursedKnife(player, 5, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
+									yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 5, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
 								elseif value == 3 then
 									success = true
 									InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_RAGE, 0.8, 0, false, 1 );
 									data.TaintedRageTick = 210
+									local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_RAGE_CIRCLE, player.Position, Vector.Zero, player)
+									yandereWaifu.GetEntityData(poof).Parent = player
+									player:SetColor(Color(1,0,0,1,0,0,0), data.TaintedRageTick, 2, false, true)
 								end
-								if success then
+								if success and not data.IsGlorykillMode then
 									data.TAINTEDREBSKILL_MENU:ChargeSkill(value)
 									data.RageCrystal = data.RageCrystal - data.TAINTEDREBSKILL_MENU.options[value].price
 								end
@@ -625,3 +829,78 @@ function yandereWaifu:useRebekahTaintedQ(collItem, rng, player)
 	--data.refreshDysmorphiaChoiceFrame = cyclePerFrame
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRebekahTaintedQ, RebekahCurseItems.COLLECTIBLE_TAINTEDQ );
+
+function yandereWaifu:useReroll2(collItem, rng, player)
+	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	--	local player = Isaac.GetPlayer(p)
+		if yandereWaifu.IsTaintedRebekah(player) then
+			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
+			--player:AddNullCostume(NerdyGlasses)
+		end
+	--end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useReroll2, CollectibleType.COLLECTIBLE_D4)
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useReroll2, CollectibleType.COLLECTIBLE_D100)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_RENDER, function(_, pickup)
+	local sprite = pickup:GetSprite();
+	local data = yandereWaifu.GetEntityData(pickup);
+
+	local function price()
+		local heartCost = 25
+		local heartSoulCost = 15
+		local word = 0
+		if pickup.Price == -1 then
+			--1 Red
+			word = heartCost
+		elseif pickup.Price == -2 then
+			--2 Red
+			word = heartCost*2
+		elseif pickup.Price == -3 then
+			--3 soul
+			word = heartSoulCost*3
+		elseif pickup.Price == -4 then
+			--1 Red, 2 Soul
+			word = (heartCost  + (heartSoulCost*2))
+		elseif pickup.Price == -7 then
+			--1 Soul
+			word = heartSoulCost
+		elseif pickup.Price == -8 then
+			--2 Souls
+			word = heartSoulCost*2
+		elseif pickup.Price == -9 then
+			--1 Red, 1 Soul
+			word = (heartCost  + (heartSoulCost))
+		end
+		return word
+	end
+	
+	if pickup.Price < 0 and isTRebPresent then
+		isDevilDealAvailable = true
+		local text = math.floor(price())
+		local rng = math.random(1,10)
+		if rng == 10 then
+			data.eyecolor = KColor(0,0,0,1,0,0,0)
+		else
+			if math.random(1,30) == 30 then
+				data.eyecolor = KColor(1,1,1,1,0,0,0)
+			else
+				data.eyecolor = KColor(1,0,0,1,0,0,0)
+			end
+		end
+		if pickup.FrameCount % 15 == 0 then
+			data.eyerenderx = math.random(6,12)/10
+			data.eyerendery = math.random(8,12)/10
+			data.eyeoffset = math.random(-5,5)
+		end
+		if not data.eyerenderx then
+			data.eyerenderx = math.random(6,12)/10
+			data.eyerendery = math.random(8,12)/10
+			data.eyeoffset = math.random(-5,5)
+		end
+		--Isaac.RenderText(tostring(text),Isaac.WorldToScreen(npc.Position).X-7,  Isaac.WorldToScreen(npc.Position).Y-15, 1 ,1 ,1 ,1 )
+		local f = Font() -- init font object
+		f:Load("font/pftempestasevencondensed.fnt") -- load a font into the font object
+		f:DrawStringScaled (text,Isaac.WorldToScreen(pickup.Position).X-16-data.eyeoffset,Isaac.WorldToScreen(pickup.Position).Y+5-data.eyeoffset, data.eyerenderx, data.eyerendery, data.eyecolor,0,true)
+	end
+end)

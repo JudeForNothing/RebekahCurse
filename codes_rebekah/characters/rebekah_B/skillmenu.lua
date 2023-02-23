@@ -180,7 +180,7 @@ function yandereWaifu.TaintedSkillMenu:Update( vector, position, player )
                 self.menuHud[i]:LoadGraphics()
                 local chargecooldown = (self.chargecooldown[i])
 				--cant do a skill or insufficient crystals
-				if yandereWaifu.GetEntityData(player).CantTaintedSkill or self.options[i].price > yandereWaifu.GetEntityData(player).RageCrystal then
+				if (yandereWaifu.GetEntityData(player).CantTaintedSkill or self.options[i].price > yandereWaifu.GetEntityData(player).RageCrystal) and not yandereWaifu.GetEntityData(player).IsGlorykillMode then
 					self.menuHud[i]:SetFrame("Menu", 100)
 				else
 					if chargecooldown <= 0 then

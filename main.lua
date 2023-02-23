@@ -24,16 +24,21 @@ yandereWaifuCodes = {
 		enums = require('codes_rebekah.unlocks.enums'),
 		system = require('codes_rebekah.unlocks.unlocksystem'),
 		completionmarks = {
-			rebekah_a = require('codes_rebekah.unlocks.completionmarks.rebekah_a'),
+			rebekah_a = require('codes_rebekah.unlocks.unlock code.completionmarks.rebekah_a'),
+			personalities_a = require('codes_rebekah.unlocks.unlock code.personalities_a'),
 		}
-	},
+	}
+}
+yandereWaifuMenuCodes = {
 	dss = {
-		dsstutorials = require('codes_rebekah.dss.dsstutorials'),
-		completion_manager = require('codes_rebekah.dss.completion_manager'),
-		deadseascrolls = require('codes_rebekah.dss.deadseascrolls'),
-		deadachievementviewer = require('codes_rebekah.dss.dss_achievementviewer'),
+		deadseascrolls = include('codes_rebekah.dss.deadseascrolls'),
+		dsstutorials = include('codes_rebekah.dss.dsstutorials'),
+		completion_manager = include('codes_rebekah.dss.completion_manager'),
+		deadachievementviewer = include('codes_rebekah.dss.dss_achievementviewer'),
 	},
 	minimenu = require('codes_rebekah.minimenu'),
+}
+yandereWaifuIngameContentCode = {
 	--config = require('codes_rebekah.config'),
 	characters = {
 		rebekahA = {
@@ -59,8 +64,11 @@ yandereWaifuCodes = {
 			characterselect = require('codes_rebekah.characters.rebekah_B.characterselect'),
 			characterselectcoop = require('codes_rebekah.characters.rebekah_B.characterselectcoop'),
 			basic = require('codes_rebekah.characters.rebekah_B.basic'),
+
+			glorykill = require('codes_rebekah.characters.rebekah_B.glorykill'),
 			cursed = require('codes_rebekah.characters.rebekah_B.cursed'),
 		},
+		deborahA = require('codes_rebekah.characters.deborah_A.basic'),
 		isaacC = require('codes_rebekah.characters.isaac_C.basic'),
 	},
 	entities = {
@@ -89,10 +97,14 @@ yandereWaifuCodes = {
 			theprospector = require('codes_rebekah.entities.bosses.prospector'),
 			nincompoop = require('codes_rebekah.entities.bosses.nincompoop'),
 			poltygeist = require('codes_rebekah.entities.bosses.poltygeist'),
-		}
+			greysisters = require('codes_rebekah.entities.bosses.greysisters'),
+		},
+		metaentity = require('codes_rebekah.entities.metaentity'),
 	},
 	pocketitems = {
 		egg = require('codes_rebekah.pocketitems.easteregg'),
+		pills = require('codes_rebekah.pocketitems.pills'),
+		language = require('codes_rebekah.pocketitems.lovelangauge'),
 	},
 	items = {
 		glowinghourglass = require('codes_rebekah.items.vanilla.glowinghourglass'),
@@ -127,6 +139,7 @@ yandereWaifuCodes = {
 		wickedweaves = require('codes_rebekah.items.wickedweaves'),
 		unrequitedlove = require('codes_rebekah.items.unrequitedlove'),
 		rebekahsfavorite = require('codes_rebekah.items.rebekahsfavorite'),
+		momsblessing = require('codes_rebekah.items.momsblessing'),
 		
 		isaacslocks = require('codes_rebekah.items.isaacslocks'),
 		
@@ -153,6 +166,22 @@ yandereWaifuCodes = {
 		haphephobicbombs = require('codes_rebekah.items.haphephobicbombs'),
 		jumpydumpty = require('codes_rebekah.items.jumpydumpty'),
 		pencilsharpener = require('codes_rebekah.items.pencilsharpener'),
+		narcolepsy = require('codes_rebekah.items.narcolepsy'),
+		johnandromans = require('codes_rebekah.items.johnandromans'),
+		appreciationcake = require('codes_rebekah.items.appreciationcake'),
+		spikedpartypunch = require('codes_rebekah.items.spikedpartypunch'),
+		burger = require('codes_rebekah.items.burger'),
+		bobatea = require('codes_rebekah.items.bobatea'),
+		cannedlaughter = require('codes_rebekah.items.cannedlaughter'),
+
+		fenrirseye = require('codes_rebekah.items.fenrirseyes'),
+		fenrirspaw = require('codes_rebekah.items.fenrirspaw'),
+		fenrirshead = require('codes_rebekah.items.fenrirshead'),
+		fenrirstooth = require('codes_rebekah.items.fenrirstooth'),
+
+		heartaches = require('codes_rebekah.items.heartaches'),
+		silphium = require('codes_rebekah.items.silphium'),
+		giddyup = require('codes_rebekah.items.giddyup'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),
@@ -168,7 +197,14 @@ yandereWaifuCodes = {
 			},
 		rebekahsroom = require('codes_rebekah.floors.rebekahsbedroom'),
 		liminal = require('codes_rebekah.floors.backrooms'),
+		phantasm = require('codes_rebekah.floors.phantasm'),
+		phantasmhouse = require('codes_rebekah.floors.phantasm.house'),
 		undercrofts = require('codes_rebekah.floors.undercrofts')
+	},
+	challenges = { 
+		thetruefamilyguy = require('codes_rebekah.challenge.thetruefamilyguy'),
+		did = require('codes_rebekah.challenge.did'),
+		easterhunt = require('codes_rebekah.challenge.easterhunt'),
 	},
 	descriptions = require('codes_rebekah.dss.descriptions'),
 	commands = require('codes_rebekah.commands')

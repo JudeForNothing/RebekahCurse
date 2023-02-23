@@ -2,7 +2,7 @@ function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck 
 	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
 	--	local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if yandereWaifu.IsNormalRebekah(player) then
+		if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah(player) then
 			data.currentMode = data.lastMode
 			data.heartReserveFill = data.lastHeartReserve
 			data.heartStocks = data.lastStockReserve

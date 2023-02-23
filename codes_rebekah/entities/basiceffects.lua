@@ -146,6 +146,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 155, 0, 155 );
 			eff.RenderZOffset = 100;
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_RAGE_CIRCLE then
+			sprite:Load("gfx/effects/tainted/cursed/rage_circle.anm2", true)
+			sprite:Play("Slam", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 155, 0, 155 );
+			eff.RenderZOffset = 100;
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE then
+			sprite:Load("gfx/effects/tainted/cursed/godhead_heavy_strike.anm2", true)
+			sprite:Play("Slam", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+			eff.RenderZOffset = 100;
+			ILIB.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
 		end
 	end
 	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Poof") or sprite:IsFinished("Crash") or sprite:IsFinished("Shield") or sprite:IsFinished("Slam") then
@@ -199,7 +210,7 @@ end, RebekahCurse.ENTITY_REBEKAH_DUST);
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite()
 	local data = yandereWaifu.GetEntityData(eff)
-	
+	local playerdata = yandereWaifu.GetEntityData(data.Parent)
 	--sprite:LoadGraphics()
 	if eff.FrameCount == 1 then
 		sprite:Play("Fly",1);
@@ -217,7 +228,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 	end
 	if sprite:IsFinished("Splash") then
-		yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
+		if eff.SubType == 0 then
+			yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
+		else
+			playerdata.PersistentPlayerData.TaintedHealth = playerdata.PersistentPlayerData.TaintedHealth + data.maxHealth
+		end
 		data.trail:Remove()
 		eff:Remove()
 	end

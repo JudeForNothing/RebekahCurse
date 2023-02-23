@@ -24,6 +24,8 @@
 	
 	<costume anm2path="weddedstockings.anm2" type="none" priority="170" isFlying="true" hasSkinAlt="false"/>
 	
+	<costume anm2path="oldermaidbody.anm2" type="none" priority="999" isFlying="false" hasSkinAlt="true"/>
+
 	<costume anm2path="love_power.anm2" type="none"/>
 	<costume anm2path="great_pheonix.anm2" priority="27" type="none"/>
 	<costume anm2path="lunchbox.anm2" priority="22" type="none"/>
@@ -50,4 +52,5 @@
 	<costume anm2path="wickedweaves.anm2" priority="100" type="none"/>
 
 	<costume anm2path="body_dysmorphia.anm2" type="none" priority="200" hasSkinAlt="true"/>
+	<costume anm2path="fenrirs_eye.anm2" priority="22" type="none" forceBodyColor="true" overwriteColor="true" skinColor="3"/>
 </costumes>

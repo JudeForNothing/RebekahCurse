@@ -22,6 +22,16 @@
 	<entity anm2path="none.anm2" id="1000" name="FloorEffect" variant="9002" collisionRadius="0" numGridCollisionPoints="0">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+    <entity anm2path="none.anm2" id="1000" name="LegacyStageAPIShading" variant="12539" collisionRadius="0" numGridCollisionPoints="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="backdrop/phantasms/house.anm2" id="1000" name="Phantasm House" variant="170040" collisionRadius="0" numGridCollisionPoints="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="backdrop/phantasms/house.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="998" name="Phantasm House (replace)" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="85">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
+
 	
 	<!--Red heart-->
 	<entity anm2path="effects/red/orbital_target.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Orbital Target" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="78251026">
@@ -314,6 +324,12 @@
 	<entity anm2path="characters/customcharacter.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Extra Character Anim Helper" numGridCollisionPoints="0" shadowSize="16" stageHP="0" variant="42914" portrait="160" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
+
+
+    <!--Deborah-->
+    <entity anm2path="effects/deborah/gun.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="1000" name="Deborah's Revolver (Weapon)" numGridCollisionPoints="1" shadowSize="0" stageHP="0" variant="7251514" subtype="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	
 	<entity anm2path="effects/puff.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="100" collisionRadius="13" friction="1" id="1000" name="Personality Poof Effect" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="821272" portrait="160" >
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
@@ -508,6 +524,22 @@
 	<entity anm2path="items/pick ups/eggs/golden_egg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Golden Surprise Egg" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="134">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+
+    <entity anm2path="items/pick ups/cards/love_language.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Words of affirmation" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="135">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="items/pick ups/cards/love_language.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Gift giving" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="136">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="items/pick ups/cards/love_language.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Act of service" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="137">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="items/pick ups/cards/love_language.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Quality time" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="138">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="items/pick ups/cards/love_language.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Physical touch" numGridCollisionPoints="24" shadowSize="16" stageHP="0" variant="300" subtype="139">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 	
 	<entity anm2path="items/slots/rebekahs_bed.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="200" collisionRadius="30" collisionRadiusYMulti="1.6" friction="1" id="5" name="Rebekah's Bed" numGridCollisionPoints="24" shadowSize="0" stageHP="0" variant="380" subtype="177">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
@@ -521,6 +553,10 @@
     </entity>
 	<entity anm2path="grid/rebekahsroom/rebekahs_carpet.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="1" collisionRadius="0" friction="1" id="999" name="Rebekah&apos;s Carpet (Entity Replace)" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="74" subtype="177">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0"/>
+    </entity>
+
+    <entity anm2path="familiar/cardiacshield.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="14" friction="1" id="3" name="Cardiac Armor" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="17795205">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 
 	<!--Enemy related material-->
@@ -644,8 +680,20 @@
 	<entity anm2path="effects/sentry_rockets.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Sentry Rocket Rocket" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="143956">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="23" stageHP="5" variant="223">
+	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="15" stageHP="5" variant="223">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="bosses/normal/enyo.anm2" baseHP="660" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="38" friction="1" id="600" name="Enyo" numGridCollisionPoints="18" shadowSize="24" stageHP="50" variant="228" tags="nodelirium">
+        <gibs amount="1" blood="1" bone="0" eye="2" gut="0" large="1" poop="0" />
+    </entity>
+    <entity anm2path="bosses/normal/deino.anm2" baseHP="660" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Deino" numGridCollisionPoints="6" shadowSize="24" stageHP="50" variant="229" tags="nodelirium">
+        <gibs amount="1" blood="1" bone="0" eye="2" gut="0" large="1" poop="0" />
+    </entity>
+    <entity anm2path="bosses/normal/pemphredo.anm2" baseHP="660" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="600" name="Pemphredo" numGridCollisionPoints="6" shadowSize="24" stageHP="50" variant="230" tags="nodelirium">
+        <gibs amount="1" blood="1" bone="0" eye="2" gut="0" large="1" poop="0" />
+    </entity>
+    <entity anm2path="bosses/normal/grey_eye.anm2" baseHP="0" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="4" friction="1" id="600" name="Grey Eye" numGridCollisionPoints="6" shadowSize="2" stageHP="0" variant="229" subtype="10" tags="nodelirium">
+        <gibs amount="1" blood="1" bone="0" eye="2" gut="0" large="1" poop="0" />
     </entity>
 
     <!--Undercrofts-->
@@ -706,4 +754,24 @@
     <entity anm2path="effects/tainted/cursed/hope.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Sword of Hope Effect" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046432">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+    <entity anm2path="effects/tainted/cursed/metal tear.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Metal Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62686">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="tears_tapioca.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="8" collisionRadius="8" friction="1" id="2" name="Tapioca Tear" numGridCollisionPoints="8" shadowSize="8" stageHP="0" variant="62677">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/tainted/cursed/tech dot.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Cursed Tech Zero Dot" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046433">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/tainted/cursed/godhead_aura.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Cursed Godhead Aura" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046432">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="items/pick ups/wrath_crystal.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="12" friction="1" id="5" name="Wrath Crystal Fragment" numGridCollisionPoints="24" shadowSize="4" stageHP="0" variant="1770" subtype="0">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/giant_heart.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Affirmation Heart" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046433">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
 </entities>

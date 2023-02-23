@@ -22,7 +22,8 @@ RebekahLocalSavedata = {
 		disablerebekahdash = true,
 		rebekahdashkey = Keyboard.KEY_LEFT_CONTROL,
 		narratorvolume = 5,
-		disableAchievements = false
+		disableAchievements = false,
+		itemsEnabled = false
 	},
 	CurrentRebeccaUnlocks = nil
 }
@@ -444,9 +445,12 @@ function yandereWaifu.Save()
 	local saveData = RecapRebekahData()
 	Isaac.SaveModData(yandereWaifu, REB_JSON.encode( saveData ) );
 end
-
+local cached_data
 function yandereWaifu.GetSaveData()
-	local data = REB_JSON.decode(yandereWaifu:LoadData());
+	if not cached_data then
+		cached_data =  REB_JSON.decode(yandereWaifu:LoadData());
+	end
+	local data = cached_data
     if data ~= nil then
         --if Isaac.HasModData(yandereWaifu) then
             return data
@@ -458,7 +462,6 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
 	if hasGameStarted then
-		print("New level")
 		yandereWaifu.Save()
 	end
 end)

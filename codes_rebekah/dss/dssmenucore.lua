@@ -810,6 +810,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local root = tab.root or getScreenCenterPosition()
         local pos = tab.pos or Vector(0, 0)
         local dssmenu = DeadSeaScrollsMenu
+        tbl = tbl or dssmenu.OpenedMenu
         local uispr = tbl.MenuSprites or dssmenu.GetDefaultMenuSprites()
         local font = uispr.Font
         local menuspr = uispr.Symbols
@@ -1913,6 +1914,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         end
     end
 
+    local eidHidden = false
     function dssmod.openMenu(tbl, openedFromNothing)
         if not openedFromNothing then
             tbl.DirectoryKey.SkipOpenAnimation = true
@@ -1923,6 +1925,13 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         tbl.Exiting = nil
 
         dssmod.reloadButtons(tbl)
+
+        if EID then
+            if EID.isHidden then
+                eidHidden = true
+                EID.isHidden = true
+            end
+        end
     end
 
     function dssmod.closeMenu(tbl, fullClose, noAnimate)
@@ -1951,6 +1960,13 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
 
             MenuProvider.SaveSaveData()
         end
+
+        if eidHidden then
+            eidHidden = false
+            if EID then
+                EID.isHidden = false
+            end
+        end
     end
 
     local hintFont = Font()
@@ -1964,6 +1980,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local isOpen = dssmenu.IsOpen()
         if isCore or isOpen then
             dssmod.getInput(0)
+            
         end
 
         local level = game:GetLevel()
@@ -1976,6 +1993,7 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             local text2 = "(this hint can be turned off in the menu's settings!)"
             hintFont:DrawStringScaled(text2, (Isaac.GetScreenWidth() / 2) - (hintFont:GetStringWidth(text2) / 4), Isaac.GetScreenHeight() - 26, 0.5, 0.5, KColor(1, 191 / 255, 0, 0.6), 0)
         end
+
 
         if not isCore and dssmenu and openToggle ~= isOpen then -- If not in control of certain settings, be sure to store them!
             openToggle = isOpen
@@ -2552,12 +2570,13 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
         local dssdirectory = {
             main = {
                 title = 'dead sea scrolls',
-                buttons = {
-                    { str = 'resume game', action = 'resume' },
-                    { str = 'menu settings', dest = 'menusettings' },
-                    dssmod.changelogsButton
-                },
+                buttons = {}, -- constructed in ReconstructMenus()
                 tooltip = dssmod.menuOpenToolTip
+            },
+            othermenus = {
+                title = 'other mods',
+                buttons = {},
+                tooltip = dssmod.menuOpenToolTip,
             },
             menusettings = {
                 title = 'menu settings',
@@ -2816,26 +2835,52 @@ return function(DSSModName, DSSCoreVersion, MenuProvider)
             end
         end
 
-        function dssmenu.AddMenu(name, tbl)
-            tbl.Name = name
-            if not dssmenu.Menus[name] then
-                dssmenu.MenuCount = (dssmenu.MenuCount or 0) + 1
+        function dssmenu.ReconstructMenus()
+            dssdirectory.main.buttons = {
+                { str = 'resume game', action = 'resume' },
+                { str = 'menu settings', dest = 'menusettings' },
+                dssmod.changelogsButton,
+            }
 
-                if name ~= "Menu" then
-                    dssdirectory.main.buttons[#dssdirectory.main.buttons + 1] = { str = string.lower(name), action = "openmenu", menu = name }
+            dssdirectory.othermenus.buttons = {}
+
+            local hasNonSubMenu
+            local menuCount = 0
+            local submenuCount = 0
+            for k, v in pairs(dssmenu.Menus) do
+                menuCount = menuCount + 1
+                if v.UseSubMenu then
+                    submenuCount = submenuCount + 1
+                elseif k ~= "Menu" then
+                    hasNonSubMenu = true
                 end
             end
 
-            dssmenu.Menus[name] = tbl
-        end
+            dssmenu.MenuCount = menuCount
 
-        if dssmenu.Menus then
             for k, v in pairs(dssmenu.Menus) do
                 if k ~= "Menu" then
-                    dssdirectory.main.buttons[#dssdirectory.main.buttons + 1] = { str = string.lower(k), action = "openmenu", menu = k }
+                    local menubutton = { str = string.lower(k), action = "openmenu", menu = k }
+                    if v.UseSubMenu and submenuCount > 1 then
+                        table.insert(dssdirectory.othermenus.buttons, menubutton)
+                    else
+                        table.insert(dssdirectory.main.buttons, menubutton)
+                    end
                 end
             end
+
+            if submenuCount > 1 and hasNonSubMenu then
+                table.insert(dssdirectory.main.buttons, { str = 'other mods', dest = 'othermenus'})
+            end
         end
+
+        function dssmenu.AddMenu(name, tbl)
+            tbl.Name = name
+            dssmenu.Menus[name] = tbl
+            dssmenu.ReconstructMenus()
+        end
+
+        dssmenu.ReconstructMenus()
 
         local openCalledRecently
         function dssmenu.OpenMenu(name)

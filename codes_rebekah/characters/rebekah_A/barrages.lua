@@ -1426,6 +1426,7 @@ function yandereWaifu.SetImmortalRebekahBarrage(player, data, direction)
 			yandereWaifu.GetEntityData(customBody).Player = player
 			yandereWaifu.GetEntityData(customBody).SummonImmortalBackup = true
 			data.isPlayingCustomAnim = true
+			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1.3)
 		end
 	end
 end

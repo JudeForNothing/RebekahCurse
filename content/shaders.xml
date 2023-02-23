@@ -165,5 +165,68 @@
             }
         ]]></fragment>
     </shader>
+
+    <shader name="ZaWarudo">
+		<parameters>
+			<param name="DistortionScale" type="float"/>
+			<param name="DistortionOn" type="float"/>
+		</parameters>
+		<vertex><![CDATA[
+			attribute vec3 Position;
+			attribute vec4 Color;
+			attribute vec2 TexCoord;
+			attribute vec4 RenderData;
+			attribute float Scale;
+			attribute float DistortionScale;
+			attribute float DistortionOn;
+			attribute vec2 DistortionSourcePos;
+			varying vec4 Color0;
+			varying vec2 TexCoord0;
+			varying lowp vec4 RenderDataOut;
+			varying float ScaleOut;
+			varying float DistortionScaleOut;
+			varying float DistortionOnOut;
+			varying vec2 DistortionSourcePosOut;
+			uniform mat4 Transform;
+
+			void main(void)
+			{
+				RenderDataOut = RenderData;
+				ScaleOut = Scale;
+				Color0 = Color;
+				TexCoord0 = TexCoord;
+				DistortionScaleOut = DistortionScale;
+				DistortionOnOut = DistortionOn;
+				DistortionSourcePosOut = DistortionSourcePos;
+				gl_Position = Transform * vec4(Position.xyz, 1.0);
+			}
+		]]></vertex>
+		<fragment><![CDATA[
+			varying lowp vec4 Color0;
+			varying mediump vec2 TexCoord0;
+			varying lowp vec4 RenderDataOut;
+			varying lowp float ScaleOut;
+			varying lowp float DistortionScaleOut;
+			varying lowp float DistortionOnOut;
+			varying mediump vec2 DistortionSourcePosOut;
+			uniform sampler2D Texture0;
+
+			void main(void)
+			{
+				float strength2 = DistortionScaleOut;
+				vec4 col = texture2D(Texture0, TexCoord0);
+				vec3 col1 = col.rgb;
+				vec3 col2 = vec3(1.)-col.rgb;
+				vec3 fcol = vec3(mix(col1.r, col2.r, strength2),
+					mix(col1.g, col2.g, strength2),
+					mix(col1.b, col2.b, strength2));
+				vec3 mcol = vec3(mix(fcol.r, (fcol.r+fcol.g+fcol.b)/3., DistortionOnOut),
+					mix(fcol.g, (fcol.r+fcol.g+fcol.b)/3., DistortionOnOut),
+					mix(fcol.b, (fcol.r+fcol.g+fcol.b)/3., DistortionOnOut));
+				col.rgb = mcol;
+				gl_FragColor = Color0 * col;
+			}
+		]]></fragment>
+	</shader>
 </shaders>
 

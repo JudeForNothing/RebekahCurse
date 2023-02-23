@@ -120,20 +120,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
                 end
             elseif data.State == 1 then
-                if ent.FrameCount % 15 == 0 and math.random(1,2) == 2 then
-                    if math.random(1,2) == 2 then
+                if ent.FrameCount % 15 == 0 and math.random(1,4) == 4 then
+                    if math.random(1,4) == 4 then
                         data.State = 4
                     else
-                        if ent.Position.Y < player.Position.Y then
+                        if ent.Position.Y < player.Position.Y and math.random(1,2) == 2 then
                             data.State = 3
                         else
                             data.State = 2
-                           end
+                        end
                     end
 				elseif not spr:IsPlaying("Idle") then
 					spr:Play("Idle", true)
                 else
-                    InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 3, 0.9, 30, 5, 15)
+                    --if ent.FrameCount % 30 == 0 then
+                    InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 2, 0.7, 85)
+                    --end
+                    --ent.Velocity = ent.Velocity * 0.9
 				end
             elseif data.State == 2 then
                 if spr:IsFinished("Shoot") then
@@ -142,14 +145,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("Shoot", true)
                 else
                     ent.Velocity = ent.Velocity * 0.9
-                    if spr:GetFrame() == 24 then
-                        for i = -40, 40, 20 do
-                            local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((player.Position - ent.Position):Rotated(i)):Resized(9))
-                            proj.Scale = 1.1
-                            --proj:AddProjectileFlags(ProjectileFlags.GHOST)
-                            --proj.Color = Color(1,1,1,1,0,0,0)
-                            --proj:SetColor(Color(1,1,1,1,0,0,0), 9999999, 100, false, false)
-                            proj.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
+                    if spr:GetFrame() == 30 then
+                        for int = 0, math.random(10,14) do
+                            InutilLib.SetTimer( int*8, function()
+                                --for i = -40, 40, 20 do
+                                for i = -40, 40, 40 do
+                                    local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((player.Position - ent.Position):Rotated(i+math.random(-7,7))):Resized(9))
+                                    proj.Scale = 1.1
+                                    --proj:AddProjectileFlags(ProjectileFlags.GHOST)
+                                    --proj.Color = Color(1,1,1,1,0,0,0)
+                                    --proj:SetColor(Color(1,1,1,1,0,0,0), 9999999, 100, false, false)
+                                    proj.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
+                                end
+                            end)
                         end
                     end
 				end

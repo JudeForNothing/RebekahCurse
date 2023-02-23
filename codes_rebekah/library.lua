@@ -1,6 +1,7 @@
 
 RebekahCurseGlobalData = {
-	EASTER_EGG_NO_MORPH_FRAME = 0
+	EASTER_EGG_NO_MORPH_FRAME = 0,
+	MOMS_BLESSING_NO_MORPH_FRAME = 0
 }
 
 
@@ -268,6 +269,7 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 			player:GetSprite():Load('gfx/rebekahsfluidhairforrotten.anm2',false)
 		elseif mode == REBECCA_MODE.CursedCurse then --placeholder for tainted
 			player:GetSprite():Load('gfx/rebekahsfluidhairforcursed.anm2',false)
+			print("AHSBDYIWBFWFF")
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 		end
@@ -313,6 +315,8 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 		end
 	elseif playerType == RebekahCurse.WISHFUL_ISAAC then
 		hairpath='gfx/characters/costumes/character_wishfulhair.png'
+	elseif playerType == RebekahCurse.DEBORAH then
+		hairpath='gfx/characters/costumes/character_deborahsfunkyhair.png'
 	end
 	local config=Isaac.GetItemConfig():GetNullItem(7)
 	player:GetSprite():ReplaceSpritesheet(15,hairpath)		--loading the hairstyle for layer 15
@@ -1150,3 +1154,148 @@ function yandereWaifu.PlayAllRottenGuns(player, mode)
 		yandereWaifu.GetEntityData(v).Shoot = true
 	end
 end
+
+--inspired from ff's ash thing
+--[[
+function yandereWaifu.SpawnGunpowder(npc, pos, timeout, burntime, distance)
+	local dust = Isaac.Spawn(1000, 45, 17701, pos, Vector(0,0), npc):ToEffect()
+	dustash.SpawnerEntity = npc
+	local sprite = dust:GetSprite()
+	local data = yandereWaifu.GetEntityData(dust)
+	timeout = timeout or 30
+
+	sprite:Load("gfx/effects/t_reb_dust_creep.anm2",true)
+	local rand = math.random(6)
+	sprite:Play("SmallBlood0" .. rand,true)
+	dust:SetTimeout(timeout)
+	data.burntime = burntime
+	dust:Update()
+end
+
+function yandereWaifu.FindClosestUnlitTRebPowder(pos, npc)
+	local target = nil
+	local radius = 99999999
+	for index,entity in ipairs(Isaac.GetRoomEntities()) do
+		local data = yandereWaifu.GetEntityData(entity)
+		if entity.Type == 1000 then
+			if entity.Variant == 26 then
+				if entity.SubType == 7001 then
+					if not entity:GetData().flaming then
+						local distance = pos:Distance(entity.Position)
+						if distance < radius then
+							radius = distance
+							target = entity
+						end
+					end
+				end
+			end
+		end
+	end
+	return target
+end]]
+
+function yandereWaifu.SpawnDeborahGun(player, direction)
+	local data = yandereWaifu.GetEntityData(player)
+	if not data.DeborahGun or (data.DeborahGun and data.DeborahGun:IsDead()) then
+		data.DeborahGun = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEBORAHENTITYWEAPON, 0, player.Position,  Vector.Zero, player):ToEffect()
+		yandereWaifu.GetEntityData(data.DeborahGun).parent = player
+		yandereWaifu.GetEntityData(data.DeborahGun).direction = direction
+	end
+end
+
+
+function yandereWaifu.ShootDeborahGun(player, weapon, state, angle, flip)
+    local state = state or 1
+    local angle = angle or player:GetShootingInput():GetAngleDegrees()
+    local data = yandereWaifu.GetEntityData(player)
+    local willFlip = flip or false
+    local weapon = weapon or data.DeborahGun
+	if not (weapon) then return end
+
+	yandereWaifu.GetEntityData(weapon).state = state
+	yandereWaifu.GetEntityData(weapon).direction = angle
+	yandereWaifu.GetEntityData(weapon).willFlip = willFlip
+	yandereWaifu.GetEntityData(weapon).Shoot = true
+
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
+		angle = player:GetAimDirection():GetAngleDegrees()
+	end
+
+	InutilLib.SFX:Play(SoundEffect.SOUND_GFUEL_GUNSHOT, 1, 0, false, 1 );
+	local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, weapon.Position, Vector.FromAngle(angle):Resized(20), player):ToTear()
+	yandereWaifu.GetEntityData(tear).DeborahBullet = true
+	tear:GetSprite():Load("gfx/effects/deborah/bullet tear.anm2", true)
+	--tear.Visible = false
+end
+
+--from FF, i didnt want to take that
+function yandereWaifu.FFcanAffordPickup(player, pickup)
+	local playerType = player:GetPlayerType()
+	if pickup.Price > 0 then
+		return player:GetNumCoins() >= pickup.Price
+	elseif playerType == PlayerType.PLAYER_THELOST or playerType == PlayerType.PLAYER_THELOST_B then
+		return true
+	elseif pickup.Price == -1 then
+		--1 Red
+		return math.ceil(player:GetMaxHearts() / 2) + player:GetBoneHearts() >= 1
+	elseif pickup.Price == -2 then
+		--2 Red
+		return math.ceil(player:GetMaxHearts() / 2) + player:GetBoneHearts() >= 1
+	elseif pickup.Price == -3 then
+		--3 soul
+		return math.ceil(player:GetSoulHearts() / 2) >= 1
+	elseif pickup.Price == -4 then
+		--1 Red, 2 Soul
+		return math.ceil(player:GetMaxHearts() / 2) + player:GetBoneHearts() >= 1
+	elseif pickup.Price == -7 then
+		--1 Soul
+		return math.ceil(player:GetSoulHearts() / 2) >= 1
+	elseif pickup.Price == -8 then
+		--2 Souls
+		return math.ceil(player:GetSoulHearts() / 2) >= 1
+	elseif pickup.Price == -9 then
+		--1 Red, 1 Soul
+		return math.ceil(player:GetMaxHearts() / 2) + player:GetBoneHearts() >= 1
+	else
+		return true
+	end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, collider, low)
+	local collectibleConfig = Isaac.GetItemConfig():GetCollectible(pickup.SubType)
+	local isActive = nil
+	if collectibleConfig then
+		isActive = collectibleConfig.Type == ItemType.ITEM_ACTIVE
+	end
+
+	if collider.Type == EntityType.ENTITY_PLAYER and
+	   collider.Variant == 0
+	then
+		local player = collider:ToPlayer()
+		if player:GetPlayerType() == PlayerType.PLAYER_THESOUL_B and player:GetOtherTwin() ~= nil then
+			player = player:GetOtherTwin()
+		end
+		local data = yandereWaifu.GetEntityData(player).PersistentPlayerData
+
+		if player:CanPickupItem() and
+		   player:IsExtraAnimationFinished() and
+		   player.ItemHoldCooldown <= 0 and
+		   not player:IsCoopGhost() and
+		   (collider.Parent == nil or (data and player:GetPlayerType() == PlayerType.PLAYER_KEEPER and not isActive)) and --Strawman
+		   player:GetPlayerType() ~= PlayerType.PLAYER_CAIN_B and
+		   pickup.SubType ~= 0 and
+		   pickup.Wait <= 0 and
+		   not pickup.Touched --[[and
+		   TrackedItems.Callbacks.Collect[pickup.SubType] ~= nil]]
+		then
+			if yandereWaifu.FFcanAffordPickup(player, pickup) then
+				if data ~= nil then
+					data.currentQueuedItem = pickup.SubType
+				end
+				if pickup.Price < 0 then -- if devil deal
+					data.currentQueuedDevilItem = pickup
+				end
+			end
+		end
+	end
+end, PickupVariant.PICKUP_COLLECTIBLE)

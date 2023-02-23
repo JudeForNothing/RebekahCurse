@@ -10,6 +10,7 @@ local function IsRealDamage(flags)
 end
 
 local function spawnTwins(player)
+	print("spawnTwins")
 	local data = yandereWaifu.GetEntityData(player)
 	data.redTwin = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, InutilLib.PSEUDO_CLONE, player.Position, Vector(0, 0), player):ToFamiliar()
 	data.redTwin:GetData().DontRender = true
@@ -179,10 +180,12 @@ local function handleBlueAndRedBabiesVisual(_, familiar, offset)
 			blueTwinSprite:SetFrame(sprite:GetAnimation(), sprite:GetFrame())
 			blueTwinSprite:SetOverlayFrame(sprite:GetOverlayAnimation(), sprite:GetOverlayFrame())
 			blueTwinSprite:Render(render_pos)
+			blueTwinSprite.Color = Color(1,1,1,0.5)
 		elseif data.isredTwin then
 			redTwinSprite:SetFrame(sprite:GetAnimation(), sprite:GetFrame())
 			redTwinSprite:SetOverlayFrame(sprite:GetOverlayAnimation(), sprite:GetOverlayFrame())
 			redTwinSprite:Render(render_pos)
+			redTwinSprite.Color = Color(1,1,1,0.5)
 		end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, handleBlueAndRedBabiesVisual, FamiliarVariant.BLOOD_BABY)

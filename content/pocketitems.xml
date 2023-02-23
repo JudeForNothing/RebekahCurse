@@ -1,4 +1,5 @@
 <pocketitems>
+	<!-- Easter Eggs -->
 	<card type="object" pickup="120" description="Hatch a surprise" name="Surprise Egg" hud="redegg" mimiccharge="4"/>
 	<card type="object" pickup="121" description="Hatch a surprise" name="Aqua Surprise Egg" hud="aquaegg" mimiccharge="4"/>
 	<card type="object" pickup="122" description="Hatch a surprise" name="Yellow Surprise Egg" hud="yellowegg" mimiccharge="4"/>
@@ -15,4 +16,21 @@
 	<card type="object" pickup="132" description="Hatch a bad surprise" name="Cursed Surprise Egg" hud="cursedegg" mimiccharge="4"/>
 	<card type="object" pickup="133" description="Hatch a good surprise" name="Blessed Surprise Egg" hud="blessedegg" mimiccharge="12"/>
 	<card type="object" pickup="134" description="Hatch a lot of surprises" name="Golden Surprise Egg" hud="goldenegg" mimiccharge="8"/>
+
+	<!-- Cards -->
+	<card name="Words of Affirmation" pickup="135" description="May your words bring love" hud="affirmation" mimiccharge="3"/>
+	<card name="Gift Giving" pickup="136" description="May your gifts present love" hud="giftgiving" mimiccharge="3"/>
+	<card name="Act of Service" pickup="137" description="May your service honor love" hud="actofservice" mimiccharge="3"/>
+	<card name="Quality Time" pickup="138" description="May your presence remind of love" hud="qualitytime" mimiccharge="3"/>
+	<card name="Physical Touch" pickup="139" description="May you feel love" hud="physicaltouch" mimiccharge="3"/>
+
+	<!-- Pills -->
+	<pilleffect name="Goosebumps!" class="1+" mimiccharge="6" /> <!-- room fear -->
+	<pilleffect name="Endorphin" class="2+" mimiccharge="8" /> <!-- hard hat effect for whole floor -->
+	<pilleffect name="Laughter's the best medicine" class="2+" mimiccharge="6" /> <!-- room laugh -->
+	<pilleffect name="Hemorrhage" class="2+" mimiccharge="6" />  <!-- 4-7 hearts to clots -->
+	<pilleffect name="Ovulation" class="0" mimiccharge="5" /> <!-- spawns a surprise egg -->
+	<pilleffect name="Progestin" class="2+" mimiccharge="8" /> <!-- stops enemies from giving "birth" to other enemies -->
+
+	<!-- <pilleffect name="Cyanide!" description="Cure with a pill!" class="1" mimiccharge="6" /> -->
 </pocketitems>

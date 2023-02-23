@@ -21,7 +21,7 @@ function yandereWaifu.SharpenerFireTearBurst(player, dir, pos)
 		direction = player:GetAimDirection()
 	end
 	for i = -45, 45, 15 do
-		local tear = player:FireTear(pos, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(8), true, false, false, (player), 1)
+		local tear = player:FireTear(pos, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(player.ShotSpeed*10), true, false, false, (player), 1)
 		tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 		tear:ChangeVariant(TearVariant.CUPID_BLUE)
 	end

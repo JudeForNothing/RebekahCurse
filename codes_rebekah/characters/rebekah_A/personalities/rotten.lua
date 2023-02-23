@@ -99,7 +99,7 @@ function yandereWaifu.RebekahRottenBarrage(player, direction)
 		end
 	else]]
 	local pos
-	if data.RebHead then pos = data.RebHead.Position else pos = player.Position end
+	if data.RebHead and not data.RebHead:IsDead() then pos = data.RebHead.Position else pos = player.Position end
 	local subtype = 0
 	if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then subtype = 1 end
 	if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then subtype = 2 end
@@ -544,7 +544,7 @@ end)
 function yandereWaifu:onFamiliarRottenFlyInit(fam)
 	if #Isaac.FindByType(fam.Type, 62690, -1) + #Isaac.FindByType(3, 43, -1) > 64 --[[blue fly]] and fam.Variant == 62690 then fam:Remove() end
 	local player = fam.Player:ToPlayer()
-    fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.5
+    fam.CollisionDamage = 1
 	if fam.SubType == 1 then
 		fam:GetSprite():Load("gfx/effects/rotten/fly_orbital_pooter.anm2", true)
 		fam:GetSprite():LoadGraphics()
@@ -574,7 +574,7 @@ function yandereWaifu:onFamiliarRottenFlyInit(fam)
 		fam:GetSprite():Load("gfx/effects/rotten/fly_orbital_big.anm2", true)
 		fam:GetSprite():LoadGraphics()
 		fam:GetSprite():Play("Idle", true)
-		fam.CollisionDamage = fam.CollisionDamage + player.Damage
+		fam.CollisionDamage = 2
 	end
 	 fam:AddToOrbit(2)
 end
@@ -750,7 +750,7 @@ end, EffectVariant.BRIMSTONE_SWIRL);
 
 function yandereWaifu:onFamiliarRottenFlyHeadInit(fam)
 	local player = fam.Player:ToPlayer()
-    fam.CollisionDamage = fam.CollisionDamage + player.Damage/1.2
+    fam.CollisionDamage = 3.5
 	fam.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
 	
 	if fam.SubType == 1 then
@@ -894,7 +894,7 @@ end, RebekahCurse.ENTITY_ROTTENFLYBALL);
 function yandereWaifu:onFamiliarRottenFlyTearInit(fam)
 	local player = fam.Player:ToPlayer()
 	local data = yandereWaifu.GetEntityData(fam)
-    fam.CollisionDamage = fam.CollisionDamage + player.Damage/3
+    fam.CollisionDamage = 2
 	if fam.SubType == 1 then
 		fam:GetSprite():Load("gfx/effects/rotten/fly_seeker_bomb.anm2", true)
 		fam:GetSprite():LoadGraphics()
@@ -920,14 +920,14 @@ function yandereWaifu:onFamiliarRottenFlyTearInit(fam)
 		fam:GetSprite():LoadGraphics()
 		fam:GetSprite():Play("Fly", true)
 		data.Health = 20
-		fam.CollisionDamage = fam.CollisionDamage + player.Damage/2
+		fam.CollisionDamage = 3
 	end
 	if fam.SubType == 6 then
 		fam:GetSprite():Load("gfx/effects/rotten/fly_seeker_sword.anm2", true)
 		fam:GetSprite():LoadGraphics()
 		fam:GetSprite():Play("Fly", true)
 		data.Health = 20
-		fam.CollisionDamage = fam.CollisionDamage + player.Damage/2
+		fam.CollisionDamage = 3
 	end
 	if fam.SubType == 7 then
 		fam:GetSprite():Load("gfx/effects/rotten/fly_seeker_c_section.anm2", true)
@@ -984,7 +984,7 @@ function yandereWaifu.rottenFlyTearColl(_, fam, collider, low)
 					local techlaser = fam.Player:FireTechLaser(fam.Position, 0, Vector.FromAngle(math.random(1,360)), false, true)
 					techlaser.OneHit = true;
 					techlaser.DisableFollowParent = true
-					techlaser.CollisionDamage = fam.Player.Damage/3
+					techlaser.CollisionDamage = 1.5
 					techlaser:SetHomingType(1)
 				end
 			end

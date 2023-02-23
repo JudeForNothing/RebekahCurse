@@ -1,5 +1,6 @@
 
 function yandereWaifu.RebekahImmortalBarrage(player, direction)
+	InutilLib.SFX:Play(RebekahCurseSounds.SOUND_IMMORTALJINGLE, 1, 0, false, 1)
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	local prism = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_IMMORTAL_PRISM, 0, player.Position, Vector(0,0), player)
 end

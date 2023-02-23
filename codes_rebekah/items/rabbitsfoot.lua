@@ -27,3 +27,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 		end
 	end
 end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+	if RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME > 0 and game:GetFrameCount() > RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME + 1 then --set frame back to zero
+		RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME = 0
+	end
+end)

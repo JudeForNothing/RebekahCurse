@@ -82,18 +82,21 @@ function yandereWaifu.meterLogic(player)
 					end
 				end
 				--bone stack
-				if data.BoneStacks then
-					if data.BoneStacks > 0 then
-						if data.BoneStacks <= 5 then
-							bonestackMeter:SetFrame("Charging", data.BoneStacks );
-							--bonestackMeter = gameFrame;
+
+				if not yandereWaifu.IsTaintedRebekah(player) then
+					if data.BoneStacks then
+						if data.BoneStacks > 0 then
+							if data.BoneStacks <= 5 then
+								bonestackMeter:SetFrame("Charging", data.BoneStacks );
+								--bonestackMeter = gameFrame;
+							else
+								bonestackMeter:SetFrame("Charging", 5 );
+								--data.bonestackMeterFadeStartFrame = gameFrame;
+							end
 						else
-							bonestackMeter:SetFrame("Charging", 5 );
-							--data.bonestackMeterFadeStartFrame = gameFrame;
-						end
-					else
-						if not bonestackMeter:IsPlaying("Fade") then
-							bonestackMeter:SetFrame("Fade", gameFrame - data.bonestackMeterFadeStartFrame);
+							if not bonestackMeter:IsPlaying("Fade") then
+								bonestackMeter:SetFrame("Fade", gameFrame - data.bonestackMeterFadeStartFrame);
+							end
 						end
 					end
 				end

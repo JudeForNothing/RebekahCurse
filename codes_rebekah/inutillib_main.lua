@@ -54,6 +54,7 @@ ILIB = {
 	roomEffects = {}
 }
 
+
 --Special called vars
 do
 	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
@@ -76,9 +77,15 @@ do
 	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
 		ILIB.level = ILIB.game:GetLevel()
 	end)
-	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_, room)
 		ILIB.room = ILIB.game:GetRoom()
 		ILIB.currentCharge = ILIB.player:GetActiveCharge() --purpose fo discharging in "empty" rooms
+
+		if ILIB.room:GetBackdropType() ~= BackdropType.DUNGEON_BEAST then 
+			InutilLib.ChangeShading("_default")
+		end
+		print("loadfirst")
+		Isaac.RunCallback("POST_SHADING_INIT", room)
 	end)
 
 	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function() --jumpstart ILIB variables (cause the normal ones don't run on startup.
@@ -712,6 +719,10 @@ function Oscilate(Num, Range, Object, Invert) --eg. 0, 15, data, false
 end
 
 
+function InutilLib.Lerp(vec1, vec2, percent)
+    return vec1 * (1 - percent) + vec2 * percent
+end
+
 function InutilLib.AngleDifference( targetAngle, startingAngle )
     return math.atan( math.sin( targetAngle - startingAngle ), math.cos( targetAngle - startingAngle ) );
 end
@@ -750,6 +761,22 @@ function InutilLib.DirToVec(dir)
 		result = Vector(0,0)
 	end
 	return result
+end
+
+--from : http://lua-users.org/wiki/CopyTable
+function InutilLib.Deepcopy(orig)
+    local orig_type = type(orig)
+    local copy
+    if orig_type == 'table' then
+        copy = {}
+        for orig_key, orig_value in next, orig, nil do
+            copy[InutilLib.Deepcopy(orig_key)] = InutilLib.Deepcopy(orig_value)
+        end
+        setmetatable(copy, InutilLib.Deepcopy(getmetatable(orig)))
+    else -- number, string, boolean, etc
+        copy = orig
+    end
+    return copy
 end
 
 --Save/Load Functions and Codes --
@@ -796,8 +823,8 @@ function InutilLib.GetClosestGenericEnemy(obj, dist, blacklist, checkLine, mode,
 			if blacklist then
 				if e.Type ~= blacklist then
 					local minDist = dist or 100
-					if (obj.Position - e.Position):Length() < minDist then
-						if (obj.Position - e.Position):Length() < closestDist then
+					if (obj.Position - e.Position):Length() < minDist + e.Size then
+						if (obj.Position - e.Position):Length() < closestDist + e.Size then
 							closestDist = (obj.Position - e.Position):Length()
 							returnV = e
 						end
@@ -805,12 +832,12 @@ function InutilLib.GetClosestGenericEnemy(obj, dist, blacklist, checkLine, mode,
 				end
 			else
 				local minDist = dist or 100
-				if (obj.Position - e.Position):Length() < minDist then
-					if (obj.Position - e.Position):Length() < closestDist then
+				if (obj.Position - e.Position):Length() < minDist + e.Size then
+					if (obj.Position - e.Position):Length() < closestDist + e.Size then
 						local path
 						local pass = true
 						if pathfindable then
-							path = InutilLib.GenerateAStarPath(obj, e)
+							path = InutilLib.GenerateAStarPath(obj.Position, e.Position)
 						end
 						if not path and pathfindable then --literally only declines pass if its pathfinding to begin with
 							pass = false
@@ -901,6 +928,12 @@ function InutilLib.ClosestHorizontalWall(npc)
 	--	return Direction.DOWN
     end
 end
+
+--i saw it at modding server
+function InutilLib.GetExpectedCenterPos(room)
+    return ILIB.room:IsLShapedRoom() and Vector(580, 420) or ILIB.room:GetCenterPos()
+end
+
 -----------------------------------------------
 --assigning each player object to its "owner"--
 -----------------------------------------------
@@ -1161,25 +1194,27 @@ function InutilLib.AnimWalkFrame(ent, boo, hori, vert, opUp, opHori2, NE, NW, SE
 	return angle
 end
 
-function InutilLib.FlipXByVec(ent, invert) --invert exists just in case some guy did his sprite the other way and it's making the sprite go backwards each time
-		local angle = (ent.Velocity):GetAngleDegrees()
-		if angle >= -90 and angle <= 90 then -- Left
-			if invert == true then result = true else result = false end
-		elseif angle >= 90 or angle <= -90 then -- Right
-			if invert == true then result = false else result = true end
-		end
-			ent:GetSprite().FlipX = result
-		return result
-end
-
-
-function InutilLib.FlipXByTarget(ent, target, invert) --invert exists just in case some guy did his sprite the other way and it's making the sprite go backwards each time
-	local angle = (ent.Position - target.Position):GetAngleDegrees()
+function InutilLib.WillFlip(angle, invert)
+	local result
 	if angle >= -90 and angle <= 90 then -- Left
 		if invert == true then result = true else result = false end
 	elseif angle >= 90 or angle <= -90 then -- Right
 		if invert == true then result = false else result = true end
 	end
+	return result
+end
+
+function InutilLib.FlipXByVec(ent, invert) --invert exists just in case some guy did his sprite the other way and it's making the sprite go backwards each time
+	local angle = (ent.Velocity):GetAngleDegrees()
+	local result = InutilLib.WillFlip(angle, invert)
+		ent:GetSprite().FlipX = result
+	return result
+end
+
+
+function InutilLib.FlipXByTarget(ent, target, invert) --invert exists just in case some guy did his sprite the other way and it's making the sprite go backwards each time
+	local angle = (ent.Position - target.Position):GetAngleDegrees()
+	local result = InutilLib.WillFlip(angle, invert)
 		ent:GetSprite().FlipX = result
 	return result
 end
@@ -1422,6 +1457,23 @@ function InutilLib.GetRoomGrids()
 	end
 	return returnT
 end
+
+function InutilLib.GetClosestGrid(obj, dist, type)
+	local closestDist = 177013 --saved Dist to check who is the closest enemy
+	local returnV
+	for j, grid in pairs (InutilLib.GetRoomGrids()) do
+		--local data = InutilLib.GetILIBData(grid);
+		local minDist = dist or 100
+		if (obj.Position - grid.Position):Length() < minDist then
+			if (obj.Position - grid.Position):Length() < closestDist and (grid.State ~= 2 and grid.State ~= 1000) and grid:GetType() == type then
+				closestDist = (obj.Position - grid.Position):Length()
+				returnV = grid
+			end
+		end
+	end
+	return returnV
+end
+
 
 function InutilLib.GetRoomGridCount()
 	local returnT = 0
@@ -3352,7 +3404,7 @@ local function explodepsuedoClones(_, ent)
 		
 	end
 
-	ILIB.speaker:Play(SoundEffect.SOUND_BLACK_POOF)
+	SFXManager():Play(SoundEffect.SOUND_BLACK_POOF)
 	ILIB.game:ShakeScreen(15)
 end
 InutilLib:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, explodepsuedoClones, EntityType.ENTITY_PLAYER)
@@ -3421,6 +3473,7 @@ InutilLib:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam)--, var, s
 	end
 end, FamiliarVariant.INCUBUS)
 
+--this is legacy
 function InutilLib.UpdateLaserSize(laser, size, withMultiplier)
 	--if withMultiplier == nil then withMultiplier = true end
 	local data = InutilLib.GetILIBData(laser)
@@ -3428,6 +3481,15 @@ function InutilLib.UpdateLaserSize(laser, size, withMultiplier)
 	data.size = size
 	--data.withMultiplier = withMultiplier
 end
+
+function InutilLib.UpdateRepLaserSize(laser, size, withMultiplier)
+	--if withMultiplier == nil then withMultiplier = true end
+	local data = InutilLib.GetILIBData(laser)
+	data.isInutilLibModified = true
+	data.size = size
+	--data.withMultiplier = withMultiplier
+end
+
 
 InutilLib:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_, lz)
 	local data = InutilLib.GetILIBData(lz)
@@ -3446,6 +3508,29 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_, lz)
 		lz:Update()
 		--end
 		data.isSchoolbagModified = false --some reason you need to set this because other lasers get affected
+	end
+	if data.isInutilLibModified == true then --lil dumpy, thanks SO MUCH MAN
+		local scale = data.size
+		--for k,v in pairs(Isaac.FindByType(7)) do
+		if not data.withMultiplier then
+			lz.Size = scale
+		else
+			lz.Size = 16 * scale
+			--lz:GetSprite().Scale=Vector(scale,scale)
+		end
+
+		--lz:Update()
+		if lz.Size < 6 then
+			lz:GetSprite():Play("Laser0", true)
+		elseif lz.Size <= 11 then
+			lz:GetSprite():Play("Laser1", true)
+		elseif lz.Size <= 20 then
+			lz:GetSprite():Play("Laser2", true)
+		else
+			lz:GetSprite():Play("Laser3", true)
+		end
+		--end
+		data.isInutilLibModified = false --some reason you need to set this because other lasers get affected
 	end
 end)
 
@@ -3466,6 +3551,23 @@ function InutilLib.CuccoLaserCollision(laser, angle, length, target, lineWidth)
     local absY = eVec.Y < 0 and eVec.Y * -1 or eVec.Y
     
     if (eVec.X >= 0 and eVec.X <= length) and absY <= target.Size + lineWidth then
+        return true
+    else
+        return false
+    end
+end
+
+function InutilLib.CuccoLaserCollisionToGrid(laser, angle, length, target, lineWidth)
+    --= It's recommended to pass these 2 attributes to save a big chunk of performance.
+    angle = angle or (laser.Angle % 360)
+    length = length or (laser.EndPoint - laser.Position):Length()
+	lineWidth = lineWidth or 1
+	
+    --= Check if the laser collided with an enemy.
+    local eVec = (target.Position - laser.Position):Rotated(-angle)
+    local absY = eVec.Y < 0 and eVec.Y * -1 or eVec.Y
+    
+    if (eVec.X >= 0 and eVec.X <= length) and absY <= 40 + lineWidth then
         return true
     else
         return false
@@ -3591,6 +3693,28 @@ function InutilLib.RevelUpdateCreepSize(creep, size, shouldChangeAnim)
         creep.Size = size
     end
 end
+
+--Fire rockets
+--inspired from epic fetus synergies mod
+function InutilLib.spawnEpicRocket(player, pos, friendly, delay)
+	local del = delay or 10
+	local rocket = Isaac.Spawn(1000, 31, 0, pos, Vector.Zero, player):ToEffect()
+	rocket:SetTimeout(del)
+	rocket:Update()
+	if friendly then
+		InutilLib.GetILIBData(rocket).NoHarm = true
+	end
+	return rocket
+end
+
+InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
+	local player = damage:ToPlayer();
+	if player then
+		local data = InutilLib.GetILIBData(player)
+		if damageSource.Entity and InutilLib.GetILIBData(damageSource.Entity).NoHarm then return false end
+	end
+end)
+
 -----------------------
 -- DOUBLE TAP SYSTEM --
 -----------------------
@@ -3721,12 +3845,46 @@ function InutilLib.GetMaxCollectibleID()
     return id
 end
 
+-- from aevilok
+function InutilLib.AddInnateItem(player, collectibleID)
+    local itemWisp = player:AddItemWisp(collectibleID, Vector(-100,-100), true)
+    itemWisp:RemoveFromOrbit()
+    itemWisp.Velocity = Vector(-100,-100)
+    itemWisp:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+	local data = InutilLib.GetILIBData(itemWisp)
+	data.IsInnate = true
+    itemWisp.Visible = false
+    itemWisp.CollisionDamage = 0
+	itemWisp.Parent = player
+    return itemWisp
+end
+
+function InutilLib.RemoveInnateItem(player, collectibleId)
+    local itemWisps = Isaac.FindByType(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ITEM_WISP, collectibleId)
+    if #itemWisps > 0 then
+        for i = 1, #itemWisps do
+			local data = InutilLib.GetILIBData(itemWisps[i])
+			if GetPtrHash(itemWisps[i].Parent) == GetPtrHash(player) then
+				if (itemWisps[i].Velocity.X == -100 and itemWisps[i].Velocity.Y == -100) then
+					itemWisps[i].Visible = false
+					itemWisps[i]:Kill()
+					break
+				end
+            end
+        end
+    end
+end
+
 --function to see if the collectible count has been changed the last frame, if so true, if not false
 function InutilLib.HasCollectiblesUpdated(player)
 	local result
 	local data = InutilLib.GetILIBData( player )
 	local collectibleCount = player:GetCollectibleCount();
-	if collectibleCount ~= (data.collectibleCount or 0) then
+	if not data.collectibleCount then 
+		data.collectibleCount = collectibleCount;
+		result = true
+	end
+	if collectibleCount ~= data.collectibleCount then
 		data.collectibleCount = collectibleCount;
 		result = true
 	else 
@@ -4091,6 +4249,89 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 		end
 	end
 end)
+
+
+--stage api code
+InutilLib.LegacyShading = {
+    T = EntityType.ENTITY_EFFECT,
+    V = 12539,
+	--S = 9002
+}
+
+--legacy stageapi code i copied
+
+    local shadingDefaultOffset = Vector(-80,-80)
+    local shadingIhOffset = Vector(-80,-160)
+    local shadingIvOffset = Vector(-240,-80)
+    function InutilLib.ChangeShading(name, prefix)
+		local room = ILIB.room
+        prefix = prefix or "legacy stageapi/shading/shading"
+        local shading = Isaac.FindByType(InutilLib.LegacyShading.T, InutilLib.LegacyShading.V, -1, false, false)
+        for _, e in ipairs(shading) do
+            e:Remove()
+        end
+
+        local shadingEntity = Isaac.Spawn(InutilLib.LegacyShading.T, InutilLib.LegacyShading.V, 0, Vector.Zero, Vector.Zero, nil)
+        local roomShape = room:GetRoomShape()
+
+        local topLeft = room:GetTopLeftPos()
+        local renderPos = topLeft + shadingDefaultOffset
+        local sheet
+
+        if roomShape == RoomShape.ROOMSHAPE_1x1 then sheet = ""
+        elseif roomShape == RoomShape.ROOMSHAPE_1x2 then sheet = "_1x2"
+        elseif roomShape == RoomShape.ROOMSHAPE_2x1 then sheet = "_2x1"
+        elseif roomShape == RoomShape.ROOMSHAPE_2x2 then sheet = "_2x2"
+        elseif roomShape == RoomShape.ROOMSHAPE_IH then
+            sheet = "_ih"
+            renderPos = topLeft + shadingIhOffset
+        elseif roomShape == RoomShape.ROOMSHAPE_IIH then
+            sheet = "_iih"
+            renderPos = topLeft + shadingIhOffset
+        elseif roomShape == RoomShape.ROOMSHAPE_IV then
+            sheet = "_iv"
+            renderPos = topLeft + shadingIvOffset
+        elseif roomShape == RoomShape.ROOMSHAPE_IIV then
+            sheet = "_iiv"
+            renderPos = topLeft + shadingIvOffset
+        elseif roomShape == RoomShape.ROOMSHAPE_LBL then sheet = "_lbl"
+        elseif roomShape == RoomShape.ROOMSHAPE_LBR then sheet = "_lbr"
+        elseif roomShape == RoomShape.ROOMSHAPE_LTL then sheet = "_ltl"
+        elseif roomShape == RoomShape.ROOMSHAPE_LTR then sheet = "_ltr"
+        end
+
+        sheet = prefix .. sheet .. name .. ".png"
+
+        --[[
+        local sprite = shadingEntity:GetSprite()
+        sprite:Load("stageapi/Shading.anm2", false)
+        sprite:ReplaceSpritesheet(0, sheet)
+        sprite:LoadGraphics()
+        sprite:Play("Default", true)]]
+
+        shadingEntity:GetData().Sheet = sheet
+        shadingEntity.Position = renderPos
+        shadingEntity:AddEntityFlags(EntityFlag.FLAG_DONT_OVERWRITE)
+    end
+
+    local shadingSprite = Sprite()
+    shadingSprite:Load("legacy stageapi/Shading.anm2", false)
+    shadingSprite:Play("Default", true)
+    local lastUsedShadingSpritesheet
+    InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_, eff)
+        --StageAPI.CallCallbacks("PRE_SHADING_RENDER", false, eff)
+
+        local sheet = eff:GetData().Sheet
+        if sheet and sheet ~= lastUsedShadingSpritesheet then
+            shadingSprite:ReplaceSpritesheet(0, sheet)
+            shadingSprite:LoadGraphics()
+            lastUsedShadingSpritesheet = sheet
+        end
+
+        shadingSprite:Render(Isaac.WorldToScreen(eff.Position), zeroVector, zeroVector)
+       -- StageAPI.CallCallbacks("POST_SHADING_RENDER", false, eff)
+    end, InutilLib.LegacyShading.V)
+
 
 local queueDamageSound = false;
 local wasPlayerDead = false;

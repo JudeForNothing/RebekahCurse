@@ -136,17 +136,64 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			InutilLib.SFX:Play(allVocalSounds[soundIdx], 1, 0, false, 1)
 			InutilLib.SFX:Stop(SoundEffect.SOUND_SIREN_SING)
 		end
+		local function stop(vec)
+			local x, y = vec.X, vec.Y
+			local x2, y2 = player:GetMovementInput().X, player:GetMovementInput().Y
+			local soundIdx = 0
+			if x == 0 and y == -1 then --up
+				soundIdx = 12
+			elseif x == 1 and y == -1 then --up right
+				soundIdx = 14
+			elseif x == 1 and y == 0 then --right
+				soundIdx = 16
+			elseif x == 1 and y == 1 then --down right
+				soundIdx = 17
+			elseif x == 0 and y == 1 then --down
+				soundIdx = 19
+			elseif x == -1 and y == 1 then --down left
+				soundIdx = 21
+			elseif x == -1 and y == 0 then --left
+				soundIdx = 23
+			elseif x == -1 and y == -1 then --left up
+				soundIdx = 24
+			end
+			if x2 == 1 then --sharp
+				soundIdx = soundIdx + 1
+			elseif x2 == -1 then --flat
+				soundIdx = soundIdx - 1
+			end
+
+			if y2 == -1 then --higher octave
+				soundIdx = soundIdx + 12
+			elseif y2 == 1 then --lower octave
+				soundIdx = soundIdx - 12
+			end
+
+			--correction
+			if soundIdx < 0 then 
+				soundIdx = 0
+				elseif soundIdx > 35 then
+				soundIdx = 35
+			end
+			InutilLib.SFX:Stop(allVocalSounds[soundIdx], 1, 0, false, 1)
+		end
 		--singing logic
 		if not data.SingingFrameCount then data.SingingFrameCount = 0 end
-		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) and not data.IsSinging then
+		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) --[[and not data.IsSinging]] then
 			if data.SingingFrameCount < leniency then 
 				data.SingingFrameCount = data.SingingFrameCount + 1
 				--leniency logic
 				if not data.SingingVector then
 					data.SingingVector = player:GetShootingInput()
+					play(data.SingingVector)
+					print("siren")
 				--if either of x or y is 0, still give the player a chance to change the note
-				elseif data.SingingVector.X == 0 or data.SingingVector.Y == 0 then
+				elseif not data.Leniency and (data.SingingVector.X == 0 or data.SingingVector.Y == 0) then
+					stop(data.SingingVector)
 					data.SingingVector = player:GetShootingInput()
+					play(data.SingingVector)
+					print("hogn")
+					data.Leniency = true
 				end
 			--[[elseif data.SingingFrameCount >= leniency then
 				data.IsSinging = true
@@ -156,17 +203,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			if data.SingingFrameCount == 5 then
 				InutilLib.SFX:Play(SoundEffect.SOUND_SIREN_SING, 0.7, 0, false, 1.2)
 			end
-		elseif (player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0) and data.IsSinging then
+		elseif (player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0) --[[and data.IsSinging]] then
 			--[[for i, sound in pairs(allVocalSounds) do
 				InutilLib.SFX:Stop(sound)]]
-			data.IsSinging = false
+			--data.IsSinging = false
 			data.SingingFrameCount = 0
 			data.SingingVector = nil
-		elseif (player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0) and not data.IsSinging and data.SingingFrameCount > 0 and data.lovesickTick < 45 then
+			data.Leniency = false
+		--[[elseif (player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0) and not data.IsSinging and data.SingingFrameCount > 0 and data.lovesickTick < 45 then
 			play(data.SingingVector)
+			print("ss")
 			data.SingingFrameCount = 0
 
-			data.SingingVector = nil
+			data.SingingVector = nil]]
 		end
 		if player:GetFireDirection() == -1 then --if not firing
 			if data.lovesickTick and data.lovesickDir then
@@ -560,12 +609,12 @@ function yandereWaifu.lovesickUI(player)
 			uiReserve:SetOverlayRenderPriority(true)
 		
 			if tick > 0 then
-				if tick < 30 then
-					local FramePercentResult = math.floor((tick/30)*100)
+				if tick < 45 then
+					local FramePercentResult = math.floor((tick/45)*100)
 					uiReserve:SetFrame("Charging", FramePercentResult)
 					data.lovesickBarFade = gameFrame
 					data.FinishedlovesickUICharge = false
-				elseif tick >= 30 then
+				elseif tick >= 45 then
 					if not data.FinishedlovesickUICharge then
 						uiReserve:SetFrame("StartCharged",gameFrame - data.lovesickBarFade)
 						if uiReserve:GetFrame() == 11 then

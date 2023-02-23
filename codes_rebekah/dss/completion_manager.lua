@@ -142,6 +142,8 @@ end
 function yandereWaifu.GetCompletionNoteLayerDataFromPlayerType(playerType)
 	for key, dataset in pairs(RebekahLocalSavedata.CompletionMarks) do
 		print(playertype_cache[key])
+		print(playerType)
+		print("HELP")
 		if playertype_cache[key] == playerType then
 			return {
 				[noteLayer.DELI] 	= dataset.deli + (dataset.istainted and 3 or 0),
@@ -313,6 +315,7 @@ function yandereWaifu.RemoveLockedTrinkets()
 end
 
 function CheckOnCompletionFunctions(playerKey, unlockKey, newValue, skipAll)
+	print("outfitsness")
 	if unlocksHolder[playerKey] and unlocksHolder[playerKey][unlockKey] then
 		if unlockKey ~= "All" and RebekahLocalSavedata.CompletionMarks[playerKey][associationToValueMap[unlockKey]] < associationTestValue[unlockKey] and newValue >= associationTestValue[unlockKey] then
 			if unlocksHolder[playerKey][unlockKey] then
@@ -365,8 +368,163 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_TRINKET, function(_, trinket, rng)
 	end
 end)
 
+
+
 yandereWaifu:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, function()
-	if --[[yandereWaifu.CanRunUnlockAchievements()]] true then
+	if yandereWaifu.CanRunUnlockAchievements() then
+		local room = game:GetRoom()
+		local roomtype = room:GetType()
+
+		local value = DifficultyToCompletionMap[game.Difficulty]
+		local check
+
+		for _, data in pairs(RebekahLocalSavedata.CompletionMarks) do
+			if playertype_cache[data.lookupstr] == Isaac.GetPlayer():GetPlayerType() then
+				check = data
+				break
+			elseif (yandereWaifu.IsNormalRebekah(Isaac.GetPlayer(playertype_cache[data.lookupstr]))) then
+				--for _, data2 in pairs(RebekahLocalSavedata.CompletionMarks) do
+					if playertype_cache[data.lookupstr] == RebekahCurse.TECHNICAL_REB then
+						check = data
+						break
+					end
+				--end
+			elseif (yandereWaifu.IsTaintedRebekah(Isaac.GetPlayer(playertype_cache[data.lookupstr]))) then
+				--for _, data2 in pairs(RebekahLocalSavedata.CompletionMarks) do
+					if playertype_cache[data.lookupstr] == RebekahCurse.SADREBEKAH then
+						check = data
+						break
+					end
+				--end
+			end
+		end
+
+		if check then
+			if roomtype == RoomType.ROOM_BOSS then
+				local boss = room:GetBossID()
+
+				local playerKey = check.lookupstr
+				local taintedCompletion = check.istainted
+
+				if game:GetLevel():GetStage() == LevelStage.STAGE7 then -- Void
+
+					if boss == BossID.DELIRIUM then
+						if value > check.deli then
+							CheckOnCompletionFunctions(playerKey, "Delirium", value, taintedCompletion)
+						end
+
+						check.deli = math.max(check.deli, value)
+					end
+				else
+					if boss == BossID.HEART or boss == BossID.IT_LIVES or boss == BossID.MAUS_HEART then
+						if value > check.heart and not taintedCompletion then
+							CheckOnCompletionFunctions(playerKey, "Heart", value)
+						end
+
+						check.heart = math.max(check.heart, value)
+					elseif boss == BossID.ISAAC then
+						local wasQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+
+						if value > check.isaac and not taintedCompletion then
+							CheckOnCompletionFunctions(playerKey, "Isaac", value)
+						end
+
+						check.isaac = math.max(check.isaac, value)
+						local isQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+						if isQuartetAchieved and not wasQuartetAchieved then
+							unlocksHolder[playerKey].Quartet[3]()
+						end
+					elseif boss == BossID.BLUE_BABY then
+						local wasQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+
+						if value > check.bbaby and not taintedCompletion then
+							CheckOnCompletionFunctions(playerKey, "BlueBaby", value)
+						end
+
+						check.bbaby = math.max(check.bbaby, value)
+						local isQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+						if isQuartetAchieved and not wasQuartetAchieved then
+							unlocksHolder[playerKey].Quartet[3]()
+						end
+					elseif boss == BossID.SATAN then
+						local wasQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+
+						if value > check.satan and not taintedCompletion then
+							CheckOnCompletionFunctions(playerKey, "Satan", value)
+						end
+
+						check.satan = math.max(check.satan, value)
+						local isQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+						if isQuartetAchieved and not wasQuartetAchieved then
+							unlocksHolder[playerKey].Quartet[3]()
+						end
+					elseif boss == BossID.LAMB then
+						local wasQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+
+						if value > check.lamb and not taintedCompletion then
+							CheckOnCompletionFunctions(playerKey, "Lamb", value)
+						end
+
+						check.lamb = math.max(check.lamb, value)
+						local isQuartetAchieved = taintedCompletion and HasPlayerAchievedQuartet(playerKey)
+						if isQuartetAchieved and not wasQuartetAchieved then
+							unlocksHolder[playerKey].Quartet[3]()
+						end
+					elseif boss == BossID.HUSH then
+						local wasDuetAchieved = taintedCompletion and HasPlayerAchievedDuet(playerKey)
+
+						if value > check.hush and not taintedCompletion then
+							CheckOnCompletionFunctions(playerKey, "Hush", value)
+						end
+
+						check.hush = math.max(check.hush, value)
+						local isDuetAchieved = taintedCompletion and HasPlayerAchievedDuet(playerKey)
+						if isDuetAchieved and not wasDuetAchieved then
+							unlocksHolder[playerKey].Duet[3]()
+						end
+					elseif boss == BossID.MEGA_SATAN then
+						if value > check.mega then
+							CheckOnCompletionFunctions(playerKey, "MegaSatan", value, taintedCompletion)
+						end
+
+						check.mega = math.max(check.mega, value)
+					elseif boss == BossID.GREED or boss == BossID.GREEDIER then
+						if value > check.greed then
+							if not check.istainted then
+								CheckOnCompletionFunctions(playerKey, "Greed", value)
+							end
+							CheckOnCompletionFunctions(playerKey, "Greedier", value, taintedCompletion)
+						end
+
+						check.greed = math.max(check.greed, value)
+					elseif boss == BossID.MOTHER then
+						if value > check.mother then
+							CheckOnCompletionFunctions(playerKey, "Mother", value, taintedCompletion)
+						end
+
+						check.mother = math.max(check.mother, value)
+					end
+				end
+			elseif roomtype == RoomType.ROOM_BOSSRUSH then
+				local wasDuetAchieved = check.istainted and HasPlayerAchievedDuet(check.lookupstr)
+
+				if value > check.rush and not check.istainted then
+					CheckOnCompletionFunctions(check.lookupstr, "BossRush", value)
+				end
+
+				check.rush = math.max(check.rush, value)
+				local isDuetAchieved = check.istainted and HasPlayerAchievedDuet(check.lookupstr)
+				if isDuetAchieved and not wasDuetAchieved then
+					unlocksHolder[playerKey].Duet[3]()
+				end
+			end
+		end
+	end
+end)
+
+--[[
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, function()
+	if yandereWaifu.CanRunUnlockAchievements() true then
 		local room = game:GetRoom()
 		local roomtype = room:GetType()
 
@@ -514,7 +672,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, function()
 			end
 		end
 	end
-end)
+end)]]
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, function(_, npc)
 	if npc.Variant == 0 and yandereWaifu.CanRunUnlockAchievements() then -- The Beast

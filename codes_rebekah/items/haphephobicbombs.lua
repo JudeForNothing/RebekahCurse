@@ -23,7 +23,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_,  bb)
 		local player = bb.SpawnerEntity:ToPlayer()
         local pldata = yandereWaifu.GetEntityData(player)
         --bb:AddFear(EntityRef(player), 30)
-        if bb.FrameCount % 7 == 0 then
+        if bb.FrameCount % 7 == 0 and not data.SensitiveBombsNoColor then
             bb:SetColor(Color(0.5, 0, 1, 1, 0, 0, 0), 5, 1, false, false)
         end
 

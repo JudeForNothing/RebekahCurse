@@ -29,15 +29,15 @@ yandereWaifu.ACHIEVEMENT = {
 	},
 	{
 		ID = "REBEKAH_ETERNAL",
-		Note = "achievement_evil_personality",
+		Note = "achievement_eternal_personality",
 		Name = "rebekah the kind",
 		Tags = {"Rebekah Character"},
 		--NoInsertTags = {"Rebekah Character"},
-		Tooltip = {"unlock by", "completing an", "eternal heart", "in one floor"}
+		Tooltip = {"unlock by", "becoming an", "angel as", "any rebekah"}
 	},
 	{
 		ID = "REBEKAH_IMMORTAL",
-		Note = "achievement_evil_personality",
+		Note = "achievement_immortal_personality",
 		Name = "rebekah the guardian",
 		Tags = {"Rebekah Character"},
 		--NoInsertTags = {"Rebekah Character"},
@@ -45,7 +45,7 @@ yandereWaifu.ACHIEVEMENT = {
 	},
 	{
 		ID = "REBEKAH_GOLD",
-		Note = "achievement_evil_personality",
+		Note = "achievement_gold_personality",
 		Name = "rebekah the royal",
 		Tags = {"Rebekah Character"},
 		--NoInsertTags = {"Rebekah Character"},
@@ -53,15 +53,15 @@ yandereWaifu.ACHIEVEMENT = {
 	},
 	{
 		ID = "REBEKAH_BONE",
-		Note = "achievement_evil_personality",
+		Note = "achievement_bone_personality",
 		Name = "rebekah the weird",
 		Tags = {"Rebekah Character"},
 		--NoInsertTags = {"Rebekah Character"},
-		Tooltip = {"unlock by", "having", "3 bone hearts", "as rebekah"}
+		Tooltip = {"unlock by", "holding 3", "bone hearts", "as rebekah"}
 	},
 	{
 		ID = "REBEKAH_ROTTEN",
-		Note = "achievement_evil_personality",
+		Note = "achievement_rotten_personality",
 		Name = "rebekah the crazy",
 		Tags = {"Rebekah Character"},
 		--NoInsertTags = {"Rebekah Character"},
@@ -73,13 +73,14 @@ yandereWaifu.ACHIEVEMENT = {
 		Name = "rebekah the aware",
 		Tags = {"Rebekah Character"},
 		--NoInsertTags = {"Rebekah Character"},
-		Tooltip = {"unlock by", "holding", "3 rotten hearts", "as rebekah"}
+		Tooltip = {"unlock by", "holding", "6 rotten hearts", "as rebekah"}
 	},
 
     --Normal Rebekah Unlocks
     {
 		ID = "TIGHT_HAIRTIE",
 		Note = "achievement_tight_hairtie",
+		Name = "tight hairtie",
         Item = RebekahCurseItems.COLLECTIBLE_TIGHTHAIRTIE,
 		Tooltip = {"beat", "mom", "as any rebekah"},
 		Tags = {"Rebekah", "Character"}
@@ -96,6 +97,7 @@ yandereWaifu.ACHIEVEMENT = {
     {
 		ID = "MIRACULOUS_WOMB",
 		Note = "achievement_miraculous_womb",
+		Name = "miraculous womb",
 		Item = RebekahCurseItems.COLLECTIBLE_MIRACULOUSWOMB,
 		Tooltip = {"beat", "mom's heart", "on hard", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Heart"},
@@ -104,6 +106,7 @@ yandereWaifu.ACHIEVEMENT = {
     {
 		ID = "CURSED_SPOON",
 		Note = "achievement_cursed_spoon",
+		Name = "cursed spoon",
 		Item = RebekahCurseItems.COLLECTIBLE_CURSEDSPOON,
 		Tooltip = {"beat", "satan", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Satan"},
@@ -112,14 +115,33 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "DICE_OF_FATE",
 		Note = "achievement_dice_of_fate",
+		Name = "dice of fate",
 		Item = RebekahCurseItems.COLLECTIBLE_DICEOFFATE,
 		Tooltip = {"beat", "isaac", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Isaac"},
 		Tags = {"Rebekah", "Character"}
 	},
 	{
+		ID = "REBEKAHS_ROOM",
+		Note = "achievement_rebekahs_room",
+		Name = "rebekah's room",
+		Tooltip = {"beat", "mega satan", "as any rebekah"},
+		CompletionMark = {RebekahCurse.TECHNICAL_REB, "MegaSatan"},
+		Tags = {"Rebekah", "Character"}
+	},
+	{
+		ID = "REBEKAHS_KEY",
+		Note = "achievement_rebekahs_key",
+		Name = "rebekah's key",
+		Item = RebekahCurseTrinkets.TRINKET_REBEKAHSKEY,
+		Tooltip = {"beat", "mega satan", "as any rebekah"},
+		CompletionMark = {RebekahCurse.TECHNICAL_REB, "MegaSatan"},
+		Tags = {"Rebekah", "Character"}
+	},
+	{
 		ID = "ISAACS_LOCKS",
 		Note = "achievement_isaacs_locks",
+		Name = "isaac's room",
 		Trinket = RebekahCurseTrinkets.TRINKET_ISAACSLOCKS,
 		Tooltip = {"beat", "???", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "BlueBaby"},
@@ -128,6 +150,7 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "ETERNAL_BOND",
 		Note = "achievement_eternal_bond",
+		Name = "eternal bond",
 		Item = RebekahCurseItems.COLLECTIBLE_ETERNALBOND,
 		Tooltip = {"beat", "satan", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Lamb"},
@@ -136,6 +159,7 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "LOVE_POWER",
 		Note = "achievement_love_power",
+		Name = "love = power",
 		Item = RebekahCurseItems.COLLECTIBLE_POWERLOVE,
 		Tooltip = {"beat", "ultra greed", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Greed"},
@@ -144,6 +168,7 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "REBEKAHS_CAMERA",
 		Note = "achievement_rebekahs_camera",
+		Name = "rebekah's camera",
 		Item = RebekahCurseItems.COLLECTIBLE_REBEKAHSCAMERA,
 		Tooltip = {"beat", "ultra greedier", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Greedier"},
@@ -152,6 +177,7 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "TYPICAL_ROMCOM",
 		Note = "achievement_typical_romcom",
+		Name = "typical rom com",
 		Item = RebekahCurseItems.COLLECTIBLE_ROMCOM,
 		Tooltip = {"beat", "hush", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Hush"},
@@ -160,12 +186,51 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "WIKEPIDIA",
 		Note = "achievement_wikepidia",
+		Name = "wikipedia",
 		Item = RebekahCurseItems.COLLECTIBLE_WIKEPIDIA,
 		Tooltip = {"beat", "delirium", "as any rebekah"},
 		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Delirium"},
 		Tags = {"Rebekah", "Character"}
 	},
+	{
+		ID = "MOMS_BLESSING",
+		Note = "achievement_moms_blessing",
+		Name = "mom's blessing",
+		Item = RebekahCurseTrinkets.TRINKET_MOMSBLESSING,
+		Tooltip = {"beat", "mother", "as any rebekah"},
+		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Mother"},
+		Tags = {"Rebekah", "Character"}
+	},
+	{
+		ID = "TWIN_VISION",
+		Note = "achievement_twin_vision",
+		Name = "twin vision",
+		Item = RebekahCurseItems.COLLECTIBLE_TWINVISION,
+		Tooltip = {"beat", "beast", "as any rebekah"},
+		CompletionMark = {RebekahCurse.TECHNICAL_REB, "Beast"},
+		Tags = {"Rebekah", "Character"}
+	},
+	{
+		ID = "UNREQUITED_LOVE",
+		Note = "achievement_unrequited_love",
+		Name = "unrequited love",
+		Tooltip = {"do all basic", "rebekah unlocks"},
+		Tags = {"Rebekah", "Character"}
+	},
 	
+	-- Challenge Unlocks
+	{
+		ID = "TRUE_FAMILY_GUY",
+		Note = "true_family_guy",
+		Name = "true family guy",
+		Item = {
+			RebekahCurseItems.COLLECTIBLE_TWINVISION,
+		},
+		Tooltip = {"complete", "true family", "guy"},
+		ViewerTooltip = {"complete true family guy"},
+		Tags = {"Challenge"},
+		Challenge = true,
+	},
 
 	--[[{
 		ID = "FIEND",
