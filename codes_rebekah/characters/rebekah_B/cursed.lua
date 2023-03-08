@@ -1,6 +1,5 @@
 local crystalGainFrame = 0
 
---deprecated
 local function ThrowCursedSword(player, notSpecial)
     local data = yandereWaifu.GetEntityData(player)
     local sword = player:FireTear( player.Position,  Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(4+player.ShotSpeed*10), false, false, false):ToTear()
@@ -9,7 +8,20 @@ local function ThrowCursedSword(player, notSpecial)
     sword.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
     yandereWaifu.GetEntityData(sword).IsCursedSword = true
     yandereWaifu.GetEntityData(sword).state = 1
-
+    if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+        sword.Velocity = sword.Velocity * 1.4
+        sword:AddTearFlags(TearFlags.TEAR_PIERCING)
+    end
+    if player:HasWeaponType(WeaponType.WEAPON_FETUS) then
+        local tear = player:FireTear( player.Position, Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(4+player.ShotSpeed*10), false, false, false):ToTear()
+        tear:ChangeVariant(50)
+        tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+        if math.random(1,4) == 4 then
+            yandereWaifu.GetEntityData(tear).IsEsauFetus = true
+        else
+            yandereWaifu.GetEntityData(tear).IsJacobFetus = true
+        end
+    end
     if not notSpecial then
         data.CantGiveCrystal = true
         data.CantTaintedSkill = true
@@ -653,46 +665,48 @@ end
 
 local function changeCursedRebekahGfx(player, eff)
     local data = yandereWaifu.GetEntityData(eff)
-    data.IsLightLoaded = nil
-    data.IsPolyLoaded = nil
-    data.IsEmojiLoaded = nil
-    data.IsTechLoaded = nil
-    data.IsTerraLoaded = nil
-    data.IsIPECACLoaded = nil
-    data.IsGodheadLoaded = nil
-    data.IsDrFetusLoaded = nil
+    data.IsGfxLoaded = nil
     eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon.anm2", true)
     eff:SetColor(Color(1,1,1,1,0,0,0), 7, 1)
-    if ((player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X)) and not data.IsTechLoaded) then
+    if ((player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X)) and not data.IsGfxLoaded) then
         eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_tech.anm2", true)
-        data.IsTechLoaded = true
-    elseif ((player:HasWeaponType(WeaponType.WEAPON_BOMBS)) and not data.IsTechLoaded) then
+        data.IsGfxLoaded = true
+    elseif ((player:HasWeaponType(WeaponType.WEAPON_FETUS)) and not data.IsGfxLoaded) then
+        eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_csection.anm2", true)
+        data.IsGfxLoaded = true
+    elseif ((player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE)) and not data.IsGfxLoaded) then
+        eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_brimstone.anm2", true)
+        data.IsGfxLoaded = true
+    elseif ((player:HasWeaponType(WeaponType.WEAPON_BOMBS)) and not data.IsGfxLoaded) then
         eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_drfetus.anm2", true)
-        data.IsDrFetusLoaded = true
+        data.IsGfxLoaded = true
+    elseif ((player:HasWeaponType(WeaponType.WEAPON_ROCKETS)) and not data.IsGfxLoaded) then
+        eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_epic.anm2", true)
+        data.IsGfxLoaded = true
     else
-        if (player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK))and not data.IsLightLoaded then
+        if (player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK)) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_soy.anm2", true)
-            data.IsLightLoaded = true
+            data.IsGfxLoaded = true
         end
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) and not data.IsPolyLoaded then
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_big.anm2", true)
-            data.IsPolyLoaded = true
+            data.IsGfxLoaded = true
         end
-        if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) and not data.IsEmojiLoaded then
+        if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_emoji.anm2", true)
-            data.IsEmojiLoaded = true
+            data.IsGfxLoaded = true
         end
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_TERRA) and not data.IsTerraLoaded then
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_TERRA) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_terra.anm2", true)
-            data.IsTerraLoaded = true
+            data.IsGfxLoaded = true
         end
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) and not data.IsIPECACLoaded then
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_ipecac.anm2", true)
-            data.IsIPECACLoaded = true
+            data.IsGfxLoaded = true
         end
-        if player:HasCollectible(CollectibleType.COLLECTIBLE_GODHEAD) and not data.IsGodheadLoaded then
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_GODHEAD) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_godhead.anm2", true)
-            data.IsIPECACLoaded = true
+            data.IsGfxLoaded = true
         end
     end
     if player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND) then
@@ -969,6 +983,31 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 if data.canMidas then
                     ent:AddMidasFreeze(EntityRef(player), 120)
                 end
+                if player:HasWeaponType(WeaponType.WEAPON_FETUS) then
+                    if data.state == 4 then
+                        player.Velocity =  ((pos - player.Position):Resized(18+ent.Size))
+                        --player.Position = ent.Position + (pos - player.Position):Resized(15+ent.Size)
+                        yandereWaifu.GetEntityData(player).MakingTaintedIncision = 75
+                        yandereWaifu.GetEntityData(player).invincibleTime = yandereWaifu.GetEntityData(player).MakingTaintedIncision + 35
+                    elseif data.state == 5 then
+                        for i = 0, 360 - 360/4, 360/4 do
+                            local tear = player:FireTear( ent.Position, Vector.FromAngle(i):Resized(20), false, false, false):ToTear()
+							tear:ChangeVariant(50)
+							tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL
+                            if math.random(1,4) == 4 then
+                                yandereWaifu.GetEntityData(tear).IsEsauFetus = true
+                            else
+                                yandereWaifu.GetEntityData(tear).IsJacobFetus = true
+                            end
+                        end
+                    end
+                end
+                if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) and data.state == 3 then
+                    ent:AddEntityFlags(EntityFlag.FLAG_BRIMSTONE_MARKED)
+                end
+                if player:HasWeaponType(WeaponType.WEAPON_FETUS) and data.state == 3 then
+                    ent:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
+                end
                 if player:HasCollectible(CollectibleType.COLLECTIBLE_HOLY_LIGHT) and math.random(1,5) + player.Luck >= 10 then
                     for i = 0, 360 - 360/4, 360/4 do
                         local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ent.Position+ Vector(35,0):Rotated(i), Vector(0,0), player) 
@@ -1140,6 +1179,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                     techlaser.DisableFollowParent = true
                     techlaser.CollisionDamage = player.Damage * 0.25
                 end
+            elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+                local variation = math.random(-180,180)
+                for i = 0, 360 - 360/2, 360/2 do
+                    local brim = player:FireBrimstone( Vector.FromAngle(i+variation)):ToLaser();
+                    brim.DisableFollowParent = true
+                    brim.MaxDistance = 35*size
+                    brim.Timeout = 7
+                    --InutilLib.UpdateBrimstoneDamage(brim, 2)
+                    brim.Position = pos
+                end
             elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
                 local bomb = explosion(pos)
                 bomb:SetExplosionCountdown(0)
@@ -1300,6 +1349,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
                 pitch = 0.7
             end
+            if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+                local brim = player:FireBrimstone( Vector.FromAngle(data.Angle)):ToLaser();
+                brim.DisableFollowParent = true
+                brim.MaxDistance = 90
+                brim.CollisionDamage = player.Damage * 0.8
+                brim.Position = pos
+            end
             if isSoy then
                -- stab(90, (eff.Position)+ (Vector(40,0):Rotated(data.Angle)), player.Damage)
                 sprite.PlaybackSpeed = 10
@@ -1365,6 +1421,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
                 if playerdata.TaintedEnemyTarget then
                     InutilLib.MoveDirectlyTowardsTarget(player, playerdata.TaintedEnemyTarget, 8, 0.8)
+                    if sprite:GetFrame() == 0 then
+                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH, 1, 0, false, 1 );
+                    end
                     if not data.storedKineticEnergy then data.storedKineticEnergy = 0 end
                    -- player.Velocity = playerdata.TaintedEnemyTarget
 
@@ -1395,6 +1454,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 bomb:SetExplosionCountdown(0)
 
                 data.storedKineticEnergy = 0 --reset
+
+                InutilLib.SFX:Stop(RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH);
             end
 
             --yandereWaifu.GetEntityData(player).invincibleTime = 15
@@ -1497,6 +1558,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 if playerdata.TaintedEnemyTarget then
                     if not data.storedKineticEnergy then data.storedKineticEnergy = 0 end
                     InutilLib.MoveDirectlyTowardsTarget(player, playerdata.TaintedEnemyTarget, 6, 0.8)
+                    if sprite:GetFrame() == 0 then
+                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH, 1, 0, false, 1 );
+                    end
                    -- player.Velocity = playerdata.TaintedEnemyTarget
 
                    if playerdata.TaintedEnemyTarget.Position:Distance(player.Position) > playerdata.TaintedEnemyTarget.Size + 45 then
@@ -1520,6 +1584,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                     --end
                 end)
             end
+            InutilLib.SFX:Stop(RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH);
         end
     elseif data.state == 5 then --heavy strike
         local pos =(eff.Position)+ (Vector(48,0):Rotated(data.Angle))
@@ -1581,6 +1646,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                         end)
                     end
                 end
+            end
+            if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+                local beam = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DARKBEAMINTHESKY, 0, pos, Vector(0,0), player):ToEffect()
+                yandereWaifu.GetEntityData(beam).IsCursedBeastBeam = true
+                yandereWaifu.GetEntityData(beam).Player = player
             end
             if data.canRock then
                 local eff = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.SHOCKWAVE, 0, pos, Vector.Zero, player):ToEffect()
@@ -1698,12 +1768,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
                         else
                             ent:TakeDamage((player.Damage/5) * dmg, 0, EntityRef(player), 1)
                         end
-                        if data.state == 1 then data.state = 2 end
+                        if data.state == 1 and not tr:HasTearFlags(TearFlags.TEAR_PIERCING) then data.state = 2 end
                     end
-                elseif ent.Type == 4 then
+                --[[elseif ent.Type == 4 then
                     if ent.Position:Distance((tr.Position)) <= 75 then
                         ent.Position = tr.Position
-                    end
+                    end]]
                 end
             end
             tr.Height = -8
@@ -1725,6 +1795,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
                 end
                 if player:HasWeaponType(WeaponType.WEAPON_ROCKETS) and tr.FrameCount % 5 == 0 then
                     InutilLib.spawnEpicRocket(player, tr.Position, false, 10)
+                end
+                if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+                    if tr.FrameCount == 2 then
+                        local brim = player:FireBrimstone( Vector.FromAngle((tr.Velocity):GetAngleDegrees() + 180):Resized(2)):ToLaser();
+                        brim.Parent = tr
+                        brim.MaxDistance = 150
+                        brim.Timeout = 7
+                        --InutilLib.UpdateBrimstoneDamage(brim, 2)
+                    end
                 end
             else
                 tr.Velocity =  (tr.Position - player.Position):Resized(9+player.ShotSpeed):Rotated(180)
@@ -1981,3 +2060,32 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end
     end
 end, RebekahCurse.ENTITY_CURSEDGODHEADAURA)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	local player = yandereWaifu.GetEntityData(eff).Player
+	local sprite = eff:GetSprite();
+	local data = yandereWaifu.GetEntityData(eff)
+	
+    if data.IsCursedBeastBeam then
+        if eff.FrameCount == 1 then
+            sprite:Load("gfx/effects/tainted/cursed/darkbeaminthesky_beast.anm2", true)
+            sprite:Play("Start", true) --normal attack
+            InutilLib.SFX:Play(SoundEffect.SOUND_BEAST_LASER, 1, 0, false, 1)
+        elseif sprite:IsFinished("Start") then
+            sprite:Play("Loop", true)
+        elseif eff.FrameCount < 120 and not sprite:IsPlaying("Start") then
+            ILIB.game:ShakeScreen(5)
+            for i, v in pairs (Isaac.FindInRadius(eff.Position, 750, EntityPartition.ENEMY)) do
+                if v:IsVulnerableEnemy() then
+                    if v.Position:Distance(eff.Position) < v.Size + eff.Size + 160 then
+                        v:TakeDamage(player.Damage, 0, EntityRef(eff), 1)
+                    end
+                end
+            end
+        elseif eff.FrameCount == 120 then
+            sprite:Play("End", true);
+        elseif sprite:IsFinished("End") then
+            eff:Remove();
+        end
+    end
+end, RebekahCurse.ENTITY_DARKBEAMINTHESKY);

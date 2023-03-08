@@ -954,7 +954,7 @@ function yandereWaifu:RedPersonalityTearUpdate(tr)
 			if e then
 				InutilLib.MoveDirectlyTowardsTarget(tr, e, 2+math.random(1,5)/10, 0.85)
 			end
-			tr.Velocity = tr.Velocity * (0.85+math.random(1,5)/10)
+			tr.Velocity = tr.Velocity * (0.55+(math.random(1,5)/10))
 		end
 		if tr.FrameCount <= 150 and data.IsEsauFetus then
 			tr.Height = -12
@@ -962,7 +962,7 @@ function yandereWaifu:RedPersonalityTearUpdate(tr)
 			if e then
 				InutilLib.MoveDirectlyTowardsTarget(tr, e, 1+math.random(1,5)/10, 0.85)
 			end
-			tr.Velocity = tr.Velocity * (0.85+math.random(1,5)/10)
+			tr.Velocity = tr.Velocity * (0.55+(math.random(1,5)/10))
 		end
 	end
 end

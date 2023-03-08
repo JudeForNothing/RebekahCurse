@@ -269,7 +269,6 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 			player:GetSprite():Load('gfx/rebekahsfluidhairforrotten.anm2',false)
 		elseif mode == REBECCA_MODE.CursedCurse then --placeholder for tainted
 			player:GetSprite():Load('gfx/rebekahsfluidhairforcursed.anm2',false)
-			print("AHSBDYIWBFWFF")
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
 		end
@@ -299,6 +298,7 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	player:GetSprite():ReplaceSpritesheet(4,skinpath)
 	player:GetSprite():ReplaceSpritesheet(1,skinpath)
 	local hairpath='gfx/characters/costumes/rebekah_hair/character_'..tostring(hair)..'.png'
+
 	if yandereWaifu.IsNormalRebekah(player) then
 		if mode == REBECCA_MODE.SoulHearts then --special interacts
 			if yandereWaifu.GetEntityData(player).SoulBuff then
@@ -969,6 +969,16 @@ function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)
 	return newpickup
 end
 
+function yandereWaifu.SpawnCoinPiece(spawnPosition, player, shop)
+	local rng 
+	local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_COINPIECE, 177, spawnPosition, Vector(0,0), player):ToPickup()
+	if shop then
+		newpickup.Price = 1
+	end
+	newpickup.ShopItemId = -1
+	return newpickup
+end
+
 function yandereWaifu.optionsCheck(pickup)
     if pickup.OptionsPickupIndex > 0 then
         for _, entity in pairs(Isaac.FindByType(5, -1, -1)) do
@@ -1204,7 +1214,7 @@ function yandereWaifu.SpawnDeborahGun(player, direction)
 end
 
 
-function yandereWaifu.ShootDeborahGun(player, weapon, state, angle, flip)
+function yandereWaifu.ShootDeborahGun(player, weapon, state, angle, flip, damage)
     local state = state or 1
     local angle = angle or player:GetShootingInput():GetAngleDegrees()
     local data = yandereWaifu.GetEntityData(player)
@@ -1222,9 +1232,11 @@ function yandereWaifu.ShootDeborahGun(player, weapon, state, angle, flip)
 	end
 
 	InutilLib.SFX:Play(SoundEffect.SOUND_GFUEL_GUNSHOT, 1, 0, false, 1 );
-	local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, weapon.Position, Vector.FromAngle(angle):Resized(20), player):ToTear()
+	local tear = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, weapon.Position, Vector.FromAngle(angle):Resized(40), player):ToTear()
 	yandereWaifu.GetEntityData(tear).DeborahBullet = true
 	tear:GetSprite():Load("gfx/effects/deborah/bullet tear.anm2", true)
+	tear.CollisionDamage = damage or 3.5
+	tear.Scale = tear.Scale * 1.3
 	--tear.Visible = false
 end
 

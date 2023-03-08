@@ -5,6 +5,7 @@ function yandereWaifu:UseWordsofAffirmation(card, player, flags)
 	local rng = math.random(1,10)
 	
 	local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_AFFIRMATIONHEART, 0, player.Position, InutilLib.DirToVec(player:GetMovementDirection()):Resized(8), player):ToFamiliar();
+	InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SPRING_SOUND, 1, 0, false, 1 );
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseWordsofAffirmation, RebekahCurseCards.CARD_WORDSOFAFFIRMATION);
@@ -386,6 +387,9 @@ function yandereWaifu:UseQualityTime(card, player, flags)
 	print(freezeFrame)]]
 	--freeze code
 	freezezawarudo()
+	InutilLib.SFX:Play( RebekahCurseSounds.SOUND_QUALITY_TIME_IN, 1, 0, false, 1 );
+
+	ILIB.game:MakeShockwave(player.Position, 0.85, 0.025, 10)
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseQualityTime, RebekahCurseCards.CARD_QUALITYTIME);
@@ -505,6 +509,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				end
 			end
 		end
+		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_QUALITY_TIME_OUT, 1, 0, false, 1 );
 	end
 	--[[
 	local player = Isaac.GetPlayer(0)-- get player data

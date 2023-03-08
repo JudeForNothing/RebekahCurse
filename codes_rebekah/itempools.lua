@@ -31,13 +31,11 @@ function yandereWaifu.RerollToLoveRoomPool(pickup)
 	local attempts = 0
 	local index
 	while (not items) and attempts < 5 do
-		print("I love everything")
 		items, index = yandereWaifu.GetItemInPool(RebekahLocalSavedata.Data.newLoveRoomPool)
 		attempts = attempts + 1
 	end
 
 	for i, v in ipairs(RebekahLocalSavedata.Data.newLoveRoomPool) do
-		print(v.item)
 	end
 
 	local subtype

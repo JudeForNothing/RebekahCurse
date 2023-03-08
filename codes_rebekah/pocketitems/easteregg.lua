@@ -314,10 +314,11 @@ function yandereWaifu:UseEasterEgg2(card, player, flags)
 end
 
 function yandereWaifu:UseCursedEgg(card, player, flags) 
+	local index = math.random(10,20)
 	if math.random(1,3) == 3 then
 		for i = 0, 2 do
-			local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player ):ToPickup();
-			item.OptionsPickupIndex = 10
+			local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil ):ToPickup();
+			item.OptionsPickupIndex = index
 		end
 	else
 		ApplyRandomCurse(player)
@@ -325,7 +326,7 @@ function yandereWaifu:UseCursedEgg(card, player, flags)
 end
 
 function yandereWaifu:UseBlessedEgg(card, player, flags) 
-	Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+	Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil );
 end
 
 local goldentbl = {

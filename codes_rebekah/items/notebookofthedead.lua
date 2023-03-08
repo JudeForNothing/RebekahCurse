@@ -1,4 +1,4 @@
-function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
+function yandereWaifu:useNotebookOfDead(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
 	if data.lastActiveUsedFrameCount then
 		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
@@ -13,7 +13,7 @@ function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 	InutilLib.ToggleShowActive(player, true)
 end
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useNotebookOfDead, RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD )
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);

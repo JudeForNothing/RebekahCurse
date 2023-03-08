@@ -488,6 +488,26 @@
 		<sample weight="1" path="nincompoop/nincompoop_whistle.wav" />
 	</sound>
 
+	<sound name="Poltygeist Spit">
+		<sample weight="1" path="poltygeist/spit.wav" />
+	</sound>
+	<sound name="Poltygeist Throw">
+		<sample weight="1" path="poltygeist/throw.wav" />
+	</sound>
+	<sound name="Poltygeist Tongue">
+		<sample weight="1" path="poltygeist/tongue.wav" />
+	</sound>
+	<sound name="Poltygeist Taunt">
+		<sample weight="1" path="poltygeist/taunt.wav" />
+	</sound>
+	<sound name="Poltygeist Taunty">
+		<sample weight="1" path="poltygeist/taunty.wav" />
+	</sound>
+	<sound name="Poltygeist Death">
+		<sample weight="1" path="poltygeist/death.wav" />
+	</sound>
+
+
 	<sound name="Roland Ahh">
 		<sample weight="1" path="rolandahh.wav" />
 	</sound>
@@ -509,5 +529,18 @@
 
 	<sound name="Cursed Pop">
 		<sample weight="1" path="tainted/pop.wav" />
+	</sound>
+	<sound name="Cursed Rocket Launch">
+		<sample weight="1" path="tainted/rocket_launch.wav" />
+	</sound>
+
+	<sound name="Spring Sound">
+		<sample weight="1" path="card/spring_sound.wav" />
+	</sound>
+	<sound name="Quality Time In">
+		<sample weight="1" path="card/quality_time_in.wav" />
+	</sound>
+	<sound name="Quality Time Out">
+		<sample weight="1" path="card/quality_time_out.wav" />
 	</sound>
 </sounds>

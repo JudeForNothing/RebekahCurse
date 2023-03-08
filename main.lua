@@ -1,4 +1,5 @@
 -- Welcome to my crappy code
+--inutilLibVersion = 2
 
 yandereWaifu = RegisterMod("Rebekah", 1)
 
@@ -6,7 +7,10 @@ yandereWaifu = RegisterMod("Rebekah", 1)
 
 -- Require up those extra modules
 
-inutillib_main = require('codes_rebekah.inutillib_main')
+--if not globalInutilLibVersion or inutilLibVersion > globalInutilLibVersion then
+	inutillib_main = require('codes_rebekah.inutillib_main')
+--	globalInutilLibVersion = inutilLibVersion
+--end
 
 yandereWaifuCodes = {
 	init = nil,
@@ -144,6 +148,8 @@ yandereWaifuIngameContentCode = {
 		isaacslocks = require('codes_rebekah.items.isaacslocks'),
 		
 		wishfulthinking = require('codes_rebekah.items.tainted.wishful_thinking'),
+		rebekahsscrapbook = require('codes_rebekah.items.rebekahsscrapbook'),
+
 		abeautifulgrave = require('codes_rebekah.items.abeautifulgrave'),
 		tighthairtie = require('codes_rebekah.items.tighthairtie'),
 		basketofeggs = require('codes_rebekah.items.basketofeggs'),
@@ -172,16 +178,23 @@ yandereWaifuIngameContentCode = {
 		spikedpartypunch = require('codes_rebekah.items.spikedpartypunch'),
 		burger = require('codes_rebekah.items.burger'),
 		bobatea = require('codes_rebekah.items.bobatea'),
+		cheesypizza = require('codes_rebekah.items.cheesypizza'),
 		cannedlaughter = require('codes_rebekah.items.cannedlaughter'),
 
 		fenrirseye = require('codes_rebekah.items.fenrirseyes'),
 		fenrirspaw = require('codes_rebekah.items.fenrirspaw'),
 		fenrirshead = require('codes_rebekah.items.fenrirshead'),
 		fenrirstooth = require('codes_rebekah.items.fenrirstooth'),
+		fenrirsleash = require('codes_rebekah.items.fenrirsleash'),
 
 		heartaches = require('codes_rebekah.items.heartaches'),
 		silphium = require('codes_rebekah.items.silphium'),
 		giddyup = require('codes_rebekah.items.giddyup'),
+
+		platformcotta = require('codes_rebekah.items.platformcotta'),
+		noscope = require('codes_rebekah.items.noscope'),
+		milkwine = require('codes_rebekah.items.milkwine'),
+		underpay = require('codes_rebekah.items.underpay'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),

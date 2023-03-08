@@ -100,9 +100,16 @@
 	<active id="59" name="Fenrir's Paw" description="Embrace the bitter end" gfx="collectibles_fenrirspaw.png" quality="3" craftquality="3"/>
 	<passive id="59" name="Fenrir's Head" description="Crit up" gfx="collectibles_fenrirshead.png" quality="3" craftquality="3"/>
 	<passive id="59" name="Fenrir's Tooth" description="DMG up + The faintest howl can be heard..." gfx="collectibles_fenrirstooth.png" quality="3" craftquality="3"/>
-	<active id="59" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirs_eyes.png" quality="3" craftquality="3" maxcharges="6"/>
+	<familiar id="59" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirsleash.png" quality="3" craftquality="3"/>
 	<trinket name="Canned Laughter" description="The laughs of dead people" gfx="collectibles_canned_laughter.png" />
 	<passive id="59" name="Heartaches..." description="It's just a burning... something..." gfx="collectibles_heartaches.png" quality="3" craftquality="3"/>
 	<passive id="59" name="Silphium" description="Love in and out your veins" gfx="collectibles_silphium.png" quality="3" craftquality="3"/>
 	<active id="59" name="Giddy up!" description="Temporary raw strength, time tick tocks" gfx="collectibles_giddyup.png" quality="3" craftquality="3" maxcharges="12"/>
+
+	<active id="59" name="Rebekah's Scrapbook" description="Hold on, this looks familiar..." gfx="collectibles_book_rebekahs_diary.png" quality="3" craftquality="3" maxcharges="4"/>
+
+	<trinket name="No Scope!" description="Hit 'em without looking!" gfx="collectibles_noscope.png" />
+	<passive id="59" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="3" craftquality="3"/>
+	<passive id="55" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="4" craftquality="3"/>
+	<passive id="59" name="Platform Cotta" description="The ones above, the ones below, and the ones who fall..." gfx="collectibles_platform_cotta.png" quality="2" craftquality="2"/>
 </items>

@@ -109,7 +109,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		if not sprite:IsOverlayPlaying("Head5") then
 			if data.HeadType == 1 then sprite:PlayOverlay("Head", false) else sprite:PlayOverlay("Head"..data.HeadType, false) end
 		end]]
-
+        InutilLib.FlipXByVec(ent, false) 
+        local pickup = InutilLib.GetClosestPickup(ent, 400, -1, -1)
+        if pickup and (pickup.SubType == 1 or pickup.SubType == 2 or pickup.SubType == 5 or pickup.SubType == 9 or pickup.SubType == 10) then
+            if (pickup.Position-ent.Position):Length() < 40 and not pickup.Touched then
+                local picked = InutilLib.PickupPickup(pickup)
+            end
+        end
         if not data.Init then
 			data.State = 0
             spr:Play("Idle", true)
@@ -124,9 +130,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     end
                 end
             elseif data.State == 1 then
-                --[[if math.random(1,4) == 4 and ent.FrameCount % 15 == 0 then
-                    data.State = 2
-                else]]
+                local pickup = InutilLib.GetClosestPickup(ent, 400, 10, -1)
+                if --[[math.random(1,4) == 4 and ent.FrameCount % 15 == 0 and]] pickup then
+                    data.State = 3
+                else
                     if not data.path then
                         data.path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
                     else
@@ -154,8 +161,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         end
                         ent.Velocity = Vector.Zero
                     end
-                --end
-                InutilLib.FlipXByVec(ent, false) 
+                end
             elseif data.State == 2 then
                 if spr:IsFinished("Attack") then
                     data.State = 1
@@ -190,7 +196,38 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         end
                     end
                 end
-                InutilLib.FlipXByVec(ent, false) 
+            elseif data.State == 3 then
+                local pickup = InutilLib.GetClosestPickup(ent, 400, 10, -1)
+                if pickup then
+                    if not data.path then
+                        data.path = InutilLib.GenerateAStarPath(ent.Position, pickup.Position)
+                    else
+                        if ent.FrameCount % 15 == 0 then
+                            data.path = InutilLib.GenerateAStarPath(ent.Position, pickup.Position)
+                        end
+                    end
+                    if data.path then
+                        if not spr:IsPlaying("Walk") then
+                            spr:Play("Walk", true)
+                        else
+                            if spr:GetFrame() == 8 then
+                                if not ILIB.room:CheckLine(ent.Position, pickup.Position, 0, 0) then
+                                    InutilLib.FollowPath(ent, pickup, data.path, 16, 0.9)
+                                else
+                                    InutilLib.MoveDirectlyTowardsTarget(ent, pickup, 16, 0.9)
+                                end
+                            elseif spr:GetFrame() == 15 then
+                                ent.Velocity = Vector.Zero
+                                data.State = 1
+                            end
+                        end
+                    else
+                        if not spr:IsPlaying("IdleAttack") then
+                            spr:Play("IdleAttack", true)
+                        end
+                        ent.Velocity = Vector.Zero
+                    end
+                end
             end
 		end
         ent.Velocity = ent.Velocity * 0.8
@@ -317,8 +354,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     end
                 end
             elseif data.State == 3 then 
-                print(player:ToPlayer():GetShootingInput().X)
-                print(player:ToPlayer():GetShootingInput().Y)
                 if not spr:IsPlaying("Stay") then
                     spr:Play("Stay", true)
                 else
@@ -349,6 +384,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     spr:Play("Move", true)
                 end
                 InutilLib.MoveRandomlyTypeI(ent, data.SpawnPoint, 1.2, 0.9, 15, 0, 15)
+                --local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(11))
                 if ent.FrameCount % 45 == 0 and math.random(1,4) == 4  then
                     data.State = 1 
                 end
@@ -361,7 +397,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 else
                     if spr:GetFrame() == 7 then
                         for i = 0, 360, 360/16 do
-                             local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position,  Vector(0,7):Rotated(i))
+                             local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, Vector(0,7):Rotated(i))
                              proj.Scale = 0.4
                         end
                     end

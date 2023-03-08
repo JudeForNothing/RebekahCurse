@@ -12,6 +12,7 @@ RebekahCurseTrinkets = {
 	TRINKET_MOMSBLESSING = Isaac.GetTrinketIdByName("Mom's Blessing"),
 	TRINKET_JOHNANDROMANS = Isaac.GetTrinketIdByName("John and Romans"),
 	TRINKET_CANNEDLAUGHTER = Isaac.GetTrinketIdByName("Canned Laughter"),
+	TRINKET_NOSCOPE = Isaac.GetTrinketIdByName("No Scope!"),
 }
 
 RebekahCurseItems = {
@@ -107,8 +108,13 @@ RebekahCurseItems = {
 	COLLECTIBLE_SILPHIUM = Isaac.GetItemIdByName("Silphium"),
 	COLLECTIBLE_GIDDYUP = Isaac.GetItemIdByName("Giddy up!"),
 
+	COLLECTIBLE_UNDERPAY = Isaac.GetItemIdByName("Underpay"),
+	COLLECTIBLE_PLATFORMCOTTA = Isaac.GetItemIdByName("Platform Cotta"),
+	COLLECTIBLE_MILKWINE = Isaac.GetItemIdByName("Milk Wine"),
+
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
 	
+	COLLECTIBLE_REBEKAHSSCRAPBOOK = Isaac.GetItemIdByName("Rebekah's Scrapbook"),
 	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
 
 	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Sword of Hope")
@@ -166,6 +172,7 @@ RebekahCurse = {
 	ENTITY_RABBET_FAMILIAR = Isaac.GetEntityVariantByName("Rabbet (Familiar)"),
 
 	ENTITY_CARDIAC = Isaac.GetEntityVariantByName("Cardiac Armor"),
+	ENTITY_FENRIR = Isaac.GetEntityVariantByName("Fenrir"),
 	
 	ENTITY_SINGINGTEAR = Isaac.GetEntityVariantByName("Singing Tear"),
 	ENTITY_METALTEAR = Isaac.GetEntityVariantByName("Metal Tear"),
@@ -298,8 +305,10 @@ RebekahCurse = {
 	ENTITY_CURSEDGODHEADAURA = Isaac.GetEntityVariantByName("Cursed Godhead Aura"),
 
 	ENTITY_AFFIRMATIONHEART = Isaac.GetEntityVariantByName("Affirmation Heart"),
+	ENTITY_COINPIECE = Isaac.GetEntityVariantByName("Coin Piece"),
 
 	ENTITY_TAPIOCATEAR = Isaac.GetEntityVariantByName("Tapioca Tear"),
+	ENTITY_PLATFORMCAKE = Isaac.GetEntityVariantByName("Platform Cake"),
 
 	ENTITY_HOUSE_BACKDROP = Isaac.GetEntityVariantByName("Phantasm House"),
 	ENTITY_HOUSE_BACKDROP_REPLACE = Isaac.GetEntityVariantByName("Phantasm House (replace)"),
@@ -476,6 +485,13 @@ RebekahCurseSounds = {
 	SOUND_NINCOMPOOP_SPIT = Isaac.GetSoundIdByName("Nincompoop Spit"),
 	SOUND_NINCOMPOOP_WHISTLE = Isaac.GetSoundIdByName("Nincompoop Whistle"),
 
+	SOUND_POLTYGEIST_SPIT = Isaac.GetSoundIdByName("Poltygeist Spit"),
+	SOUND_POLTYGEIST_THROW = Isaac.GetSoundIdByName("Poltygeist Throw"),
+	SOUND_POLTYGEIST_TONGUE = Isaac.GetSoundIdByName("Poltygeist Tongue"),
+	SOUND_POLTYGEIST_TAUNT = Isaac.GetSoundIdByName("Poltygeist Taunt"),
+	SOUND_POLTYGEIST_TAUNTY = Isaac.GetSoundIdByName("Poltygeist Taunty"),
+	SOUND_POLTYGEIST_DEATH = Isaac.GetSoundIdByName("Poltygeist Death"),
+
 	SOUND_ROLANDAHH = Isaac.GetSoundIdByName("Roland Ahh"),
 
 	SOUND_CURSED_SLAM = Isaac.GetSoundIdByName("Cursed Slam"),
@@ -483,6 +499,11 @@ RebekahCurseSounds = {
 	SOUND_CURSED_WILD_SWING = Isaac.GetSoundIdByName("Cursed Wild Swing"),
 	SOUND_CURSED_RAGE = Isaac.GetSoundIdByName("Cursed Rage"),
 	SOUND_CURSED_POP = Isaac.GetSoundIdByName("Cursed Pop"),
+	SOUND_CURSED_ROCKET_LAUNCH = Isaac.GetSoundIdByName("Cursed Rocket Launch"),
+
+	SOUND_SPRING_SOUND = Isaac.GetSoundIdByName("Spring Sound"),
+	SOUND_QUALITY_TIME_IN = Isaac.GetSoundIdByName("Quality Time In"),
+	SOUND_QUALITY_TIME_OUT = Isaac.GetSoundIdByName("Quality Time Out"),
 }
 
 RebekahCurseMusic = {

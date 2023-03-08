@@ -429,9 +429,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if damage.SubType == 1 then
 			return false
 		end
-		print(damageSource.Entity.Type)
-		print(damageSource.Entity.Variant)
-		print(damageSource.Entity.SubType)
 		if damageSource.Entity.Type == 4 and damageSource.Entity.Variant == 177013 and damageSource.Entity.SubType == 177 then
 			return false
 		end

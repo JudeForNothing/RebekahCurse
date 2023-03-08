@@ -291,3 +291,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, col
 		end
 	end
 end)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, ent)
+	local data = yandereWaifu.GetEntityData(ent)
+	
+	if data.MakingTaintedIncision then
+		if not ILIB.game:IsPaused() then
+            data.MakingTaintedIncision = data.MakingTaintedIncision - 1
+            if data.MakingTaintedIncision <= 0 then
+				data.MakingTaintedIncision = nil
+            end
+        end
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PLAYER_COLLISION, function(_, player, coll, low)
+	local data = yandereWaifu.GetEntityData(player)
+	
+	if data.MakingTaintedIncision then
+		return false
+	end
+end)

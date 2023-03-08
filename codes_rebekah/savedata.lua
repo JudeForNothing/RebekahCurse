@@ -1,5 +1,16 @@
 local hasGameStarted = false -- i cant believe im doing this LOL
 
+function yandereWaifu:PlayerDataInit(hasstarted) --Init
+	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		--Isaac.DebugString(player)
+		if not hasstarted then
+			local data = yandereWaifu.GetEntityData(player)
+			data.PersistentPlayerData = {}
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.PlayerDataInit)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)

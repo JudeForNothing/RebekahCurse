@@ -1,5 +1,5 @@
 
-function DeborahInit(player)
+function yandereWaifu.DeborahInit(player)
 	local mode 
 	local data = yandereWaifu.GetEntityData(player)
 	player:AddNullCostume(RebekahCurseCostumes.DeborahBody);
@@ -7,7 +7,7 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	if player:GetPlayerType() ==  RebekahCurse.DEBORAH then
-        DeborahInit(player)
+        yandereWaifu.DeborahInit(player)
     end
 end)
 
@@ -31,7 +31,9 @@ function yandereWaifu:DeborahBulletTearUpdate(tr, _)
 	local data = yandereWaifu.GetEntityData(tr)
 	if data.DeborahBullet then
 		tr:GetSprite().Rotation = tr.Velocity:GetAngleDegrees()
+        tr.SpriteScale = Vector(2, 1)
 		if tr.FrameCount == 1 then
+            data.trail = InutilLib.SpawnTrail(tr, Color(1,1,1,1), _, Vector(1,22))
 			local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
 			local size = InutilLib.GetTearSizeTypeI(scale, flags)
 			InutilLib.UpdateRegularTearAnimation(player, tr, data, flags, size, "RegularTear");
@@ -42,6 +44,37 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.DeborahBulletTearUpdate)
 
 
+local gunChamber = Sprite();
+gunChamber:Load("gfx/ui/ui_gun_reserve.anm2", true);
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
+    if player:GetPlayerType() == RebekahCurse.DEBORAH then
+        local data = yandereWaifu.GetEntityData(player)
+        gunChamber:SetFrame("Idle", 0)
+        local playerLocation = Isaac.WorldToScreen(player.Position)
+        gunChamber:Render((playerLocation + Vector(0,-65)), Vector(0,0), Vector(0,0))
+
+        for i = 1, 6 do
+            gunChamber:ReplaceSpritesheet(i, "gfx/ui/bullet/none.png")
+        end
+        for i, v in pairs (data.DeborahGunClip) do
+            gunChamber:ReplaceSpritesheet(i, v.gfx or "gfx/ui/bullet/none.png")
+        end
+        gunChamber:LoadGraphics()
+        gunChamber.Color = Color(1,1,1,data.gunChamberTransFrame or 0.5)
+    end
+end);
+
+
+
+function yandereWaifu.FillBullet(player)
+    local data = yandereWaifu.GetEntityData(player)
+    if not data.DeborahGunClip then
+        data.DeborahGunClip = {}
+    end
+    table.insert(data.DeborahGunClip, {name = "normal", gfx = "gfx/ui/bullet/base.png", damage = player.Damage})
+end
+
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local data = yandereWaifu.GetEntityData(player)
@@ -51,11 +84,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
         data.DeborahGun = nil
     end
 	if player:GetPlayerType() == RebekahCurse.DEBORAH then
+        
         local numofShots = 1
         local tearIntervalPenalty = 0
-        
+
+        --gun storage thing
+        if not data.DeborahGunClip then
+            data.DeborahGunClip = {}
+        end
         --neptunus synergy
-        if not data.NeptunusTRebCount then data.NeptunusTRebCount = 0 end
+        if not data.NeptunusDeborahCount then data.NeptunusDeborahCount = 0 end
         if player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
             --curAng = -25
             numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) * 3
@@ -77,7 +115,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             numofShots = numofShots + player:GetCollectibleNum(TaintedCollectibles.SPIDER_FREAK) * 5
         end
 
-        numofShots = numofShots + math.min(data.NeptunusTRebCount)
+        numofShots = numofShots + math.min(data.NeptunusDeborahCount)
 
         --[[reimplement tear delay
         if data.TaintedTearDelay then
@@ -121,9 +159,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
         --when shoot
 		if data.HasPressed and player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0 then
 			data.HasPressed = false
+            if player.FrameCount % 3 == 0 then
+                if data.gunChamberTransFrame and data.gunChamberTransFrame > 0 then
+                    data.gunChamberTransFrame =  data.gunChamberTransFrame - 0.2
+                elseif not data.gunChamberTransFrame then
+                    data.gunChamberTransFrame = 0.5
+                end
+            end
 		end
-        if not data.HasPressed and (Input.IsActionPressed(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTUP, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTDOWN, player.ControllerIndex)) then
+        if player:GetShootingInput().X == 0 and player:GetShootingInput().Y == 0 then
+            if player.FrameCount % 3 == 0 then
+                if data.gunChamberTransFrame and data.gunChamberTransFrame > 0 then
+                    data.gunChamberTransFrame = data.gunChamberTransFrame - 0.2
+                elseif not data.gunChamberTransFrame then
+                    data.gunChamberTransFrame = 0.5
+                end
+            end
+		end
+        --shot speed interval
+        if not data.shotSpeedInterval then data.shotSpeedInterval = player.ShotSpeed end --tells how long it takes before to reload the next bullet
+			
+        if data.shotSpeedInterval > 0 then
+		    data.shotSpeedInterval = data.shotSpeedInterval - 1
+        end
+
+        local canShoot = data.shotSpeedInterval and TableLength(data.DeborahGunClip) > 0 and data.CanShoot and (Input.IsActionPressed(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTUP, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTDOWN, player.ControllerIndex))
+        if not data.HasPressed and canShoot then
 			data.HasPressed = true
+            data.shotSpeedInterval = player.ShotSpeed
             if not data.DeborahGun or data.DeborahGun:IsDead() then
                 yandereWaifu.SpawnDeborahGun(player)
             end
@@ -176,7 +239,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                                 direction = direction + math.random(-20,20)
                             end
                             if isOriginal then
-                                yandereWaifu.ShootDeborahGun(player, data.DeborahGun, 1, direction, flip)
+                                yandereWaifu.ShootDeborahGun(player, data.DeborahGun, 1, direction, flip, data.DeborahGunClip[1].damage)
                             else
                                 --yandereWaifu.SpawnAndSwingCursedKnife(player, 1, direction, flip)
                             end
@@ -203,9 +266,45 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 
             --reset MaxFireDelay
             --data.TaintedTearDelay = math.floor(player.MaxFireDelay*1.5)
+            table.remove(data.DeborahGunClip, 1)
+            gunChamber:LoadGraphics()
+            data.gunChamberTransFrame = 1
+        elseif TableLength(data.DeborahGunClip) <= 0 and data.CanShoot then
+            data.CanShoot = false
+        end
+        if TableLength(data.DeborahGunClip) < 6 and not data.CanShoot then
+            if not data.reloadInterval then 
+                if ILIB.room:IsClear() then
+                    data.reloadInterval = player.MaxFireDelay /2
+                else
+                    data.reloadInterval = player.MaxFireDelay 
+                end --tells how long it takes before to reload the next bullet
+            end
+			
+            if data.reloadInterval > 0 then
+			    data.reloadInterval = data.reloadInterval - 1
+            else
+               -- InutilLib.SetTimer( i*60, function()
+                yandereWaifu.FillBullet(player)
+               data.reloadInterval = player.MaxFireDelay
+            end
+            data.gunChamberTransFrame = 1
+        elseif TableLength(data.DeborahGunClip) >= 6 and not data.CanShoot then
+            data.CanShoot = true
         end
     end
 end)
+
+function yandereWaifu:DeborahregisterCache(player, cacheF) --The thing the checks and updates the game, i guess?
+	local data = yandereWaifu.GetEntityData(player)
+	if player:GetPlayerType() == RebekahCurse.DEBORAH then -- Especially here!
+		if cacheF == CacheFlag.CACHE_DAMAGE then
+			player.Damage = player.Damage * 1.5
+		end
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.DeborahregisterCache)
+
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local player = yandereWaifu.GetEntityData(eff).parent

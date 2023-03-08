@@ -18,6 +18,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_,  tr)
 end);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
+    if not lz.SpawnerEntity then return end
 	local player = lz.SpawnerEntity:ToPlayer()
     if player then
         local pldata = yandereWaifu.GetEntityData(player)

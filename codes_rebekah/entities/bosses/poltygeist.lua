@@ -106,12 +106,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 			data.State = 0
             ent.Position = ent.Position + Vector(230,0)
+            InutilLib.SFX:Play(RebekahCurseSounds.SOUND_POLTYGEIST_TAUNT, 1, 0, false, 1);
 		else
             if data.State == 0 then
-                if spr:GetFrame() < 30 then
+                if spr:GetFrame() < 15 then
                     ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 		        	ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
-                    ent.Velocity = (ILIB.room:GetCenterPos() - ent.Position):Resized(10)
+                    ent.Velocity = (ILIB.room:GetCenterPos() - ent.Position):Resized(20)
                 else
                     ent.Velocity = ent.Velocity * 0.8
                 end
@@ -121,7 +122,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 end
             elseif data.State == 1 then
                 if ent.FrameCount % 15 == 0 and math.random(1,4) == 4 then
-                    if math.random(1,4) == 4 then
+                    print(ent.MaxHitPoints/2)
+                    print(ent.HitPoints)
+                    if math.random(1,4) == 4 and ent.HitPoints < ent.MaxHitPoints/2 then
                         data.State = 4
                     else
                         if ent.Position.Y < player.Position.Y and math.random(1,2) == 2 then
@@ -145,19 +148,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("Shoot", true)
                 else
                     ent.Velocity = ent.Velocity * 0.9
-                    if spr:GetFrame() == 30 then
+                    if spr:GetFrame() == 30 --[[and spr:GetFrame() % 5 == 0]] then
+                        --if spr:GetFrame() == 30 then
+                            InutilLib.SFX:Play(RebekahCurseSounds.SOUND_POLTYGEIST_SPIT, 1, 0, false, 1);
+                        --end
                         for int = 0, math.random(10,14) do
-                            InutilLib.SetTimer( int*8, function()
+                           -- InutilLib.SetTimer( int*8, function()
                                 --for i = -40, 40, 20 do
-                                for i = -40, 40, 40 do
-                                    local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((player.Position - ent.Position):Rotated(i+math.random(-7,7))):Resized(9))
-                                    proj.Scale = 1.1
-                                    --proj:AddProjectileFlags(ProjectileFlags.GHOST)
+                               -- for i = -40, 40, 40 do
+                                    local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((player.Position - ent.Position):Rotated(math.random(-15,15))):Resized(math.random(4,16)))
+                                    proj.Scale = math.random(11,14)/10
+                                    proj.Height = -56
+                                    proj.FallingSpeed = 3
+                                    proj:AddProjectileFlags(ProjectileFlags.GHOST)
+                                    InutilLib.MakeProjectileLob(proj, 1.5, math.random(6,10))
                                     --proj.Color = Color(1,1,1,1,0,0,0)
                                     --proj:SetColor(Color(1,1,1,1,0,0,0), 9999999, 100, false, false)
                                     proj.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
-                                end
-                            end)
+                               -- end
+                           -- end)
                         end
                     end
 				end
@@ -179,6 +188,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         yandereWaifu.GetEntityData(tongue).PermanentAngle = 90
                         yandereWaifu.GetEntityData(tongue).Parent = ent
                         tongue.RenderZOffset = 100
+                        InutilLib.SFX:Play(RebekahCurseSounds.SOUND_POLTYGEIST_TONGUE, 1, 0, false, 1);
                         for i = -40, 40, 20 do
                             if i ~= 0 then
                                 local proj = InutilLib.FireGenericProjAttack(ent, 4, 1, ent.Position, ((Vector(0,10)):Rotated(i)):Resized(9))
@@ -196,9 +206,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					data.State = 5
 				elseif not spr:IsPlaying("Leave") then
 					spr:Play("Leave", true)
+                    InutilLib.SFX:Play(RebekahCurseSounds.SOUND_POLTYGEIST_TAUNT, 1, 0, false, 1);
                 else
                     if spr:GetFrame() > 10 then
-                        ent.Velocity = (ent.Velocity - Vector(10,0)):Resized(11) * 0.9
+                        ent.Velocity = (ent.Velocity - Vector(10,0)):Resized(22) * 0.9
                         ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_NONE
                     else
                         ent.Velocity = ent.Velocity * 0.8
@@ -246,6 +257,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					data.State = 1
 				elseif not spr:IsPlaying("Toss") then
 					spr:Play("Toss", true)
+                    InutilLib.SFX:Play(RebekahCurseSounds.SOUND_POLTYGEIST_THROW, 1, 0, false, 1);
                 else
                     if spr:GetFrame() == 20 then
                         local sub = 0
@@ -254,6 +266,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         proj.FallingSpeed = (24)*-1;
                         proj.FallingAccel = 1;
                         proj.Height = -50
+                    elseif spr:GetFrame() == 35 then
+                        InutilLib.SFX:Play(RebekahCurseSounds.SOUND_POLTYGEIST_TAUNTY, 1, 0, false, 1);
                     else
                         ent.Velocity = ent.Velocity * 0.8
                     end
@@ -268,6 +282,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
         end
 	end
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
+	local spr = ent:GetSprite()
+	local data = yandereWaifu.GetEntityData(ent)
+	local player = ent:GetPlayerTarget()
+	if ent.Variant == RebekahCurseEnemies.ENTITY_POLTYGEIST and ent.SubType == 0 then
+		if spr:IsPlaying("Death") and spr:GetFrame() == 1 then
+			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_POLTYGEIST_DEATH, 1, 0, false, 1);
+		end
+	end
+end,RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)

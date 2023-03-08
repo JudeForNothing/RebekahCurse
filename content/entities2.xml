@@ -558,6 +558,9 @@
     <entity anm2path="familiar/cardiacshield.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="14" friction="1" id="3" name="Cardiac Armor" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="17795205">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
+    <entity anm2path="familiar/fenrir.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="14" friction="1" id="3" name="Fenrir" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="17795206">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
 
 	<!--Enemy related material-->
 
@@ -771,6 +774,13 @@
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
     <entity anm2path="effects/giant_heart.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Affirmation Heart" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046433">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+    <entity anm2path="effects/items/platform_cake.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Platform Cake" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="3046434">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+     <entity anm2path="items/pick ups/coin_piece.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="6" friction="1" id="5" name="Coin Piece" numGridCollisionPoints="24" shadowSize="4" stageHP="0" variant="21" subtype="177">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 

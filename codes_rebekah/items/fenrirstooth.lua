@@ -36,7 +36,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing 
 			--check room
 			for i, v in pairs(rooms) do
 				if ILIB.level:GetRoomByIdx(v, -1).SafeGridIndex == ILIB.level:GetCurrentRoomDesc().SafeGridIndex then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(SoundEffect.SOUND_DOG_HOWELL, 1, 0, false, 0.8)
 				end
 			end
 			--if ILIB.level:GetCurrentRoomDesc().Data.Type == RoomType.ROOM_ULTRASECRET then

@@ -13,23 +13,29 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
     end
 end)
 
+function yandereWaifu.AddTaintedBossHealth(player, num)
+	local data = yandereWaifu.GetEntityData(player)
+	data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth + num
+end
+
 function TaintedRebeccaInit(player)
+	Isaac.DebugString("start")
 	local mode 
 	local data = yandereWaifu.GetEntityData(player)
 	data.PersistentPlayerData.TaintedHealth = 50
     data.PersistentPlayerData.MaxTaintedHealth = 50
 	data.PersistentPlayerData.MaxRageCrystal = 2
+	data.lastNum = 50
 	data.RageCrystal = 0
 
 	--data.DASH_TAINTED_DOUBLE_TAP = InutilLib.DoubleTap:New();
 
 	data.specialCooldown = 0 --cooldown special
 
-	if player:GetPlayerType() ==  RebekahCurse.REB_CURSED then
+	if player:GetPlayerType() == RebekahCurse.REB_CURSED then
 		mode = REBECCA_MODE.CursedCurse
 	end
-
-	yandereWaifu.ApplyCostumes(mode, player , false, false)
+	yandereWaifu.ApplyCostumes(mode, player, false, true)
 
 	isTRebPresent = true
 
@@ -50,6 +56,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	if yandereWaifu.IsTaintedRebekah(player) then
         TaintedRebeccaInit(player)
+		Isaac.DebugString("START MOFO")
     end
 end)
 
@@ -66,9 +73,9 @@ function yandereWaifu:TaintedRebekahcacheregister(player, cacheF) --The thing th
 	end
 	if yandereWaifu.IsTaintedRebekah(player) then -- Especially here!
 
-		--[[if ILIB.room:GetFrameCount() < 1 then
+		if ILIB.room:GetFrameCount() < 1 then
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
-		end]]
+		end
 
 		cache.SetTaintedRebekahBaseStats(cacheF, player)
 
@@ -154,7 +161,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
 
 			if player:GetExtraLives() > 0 and data.PersistentPlayerData.MaxTaintedHealth <= 0 and data.PersistentPlayerData.TaintedHealth <= 0 then
 				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth+ 50
-				data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth+ 50
+				yandereWaifu.AddTaintedBossHealth(player, 50)
 			end
 		end
 		isDevilDealAvailable = false
@@ -168,6 +175,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--print(player:GetPlayerType())
 	
 	if yandereWaifu.IsTaintedRebekah(player) then
+		--print("LAB")
+		--print(data.PersistentPlayerData.TaintedHealth)
+		--print(data.PersistentPlayerData.MaxTaintedHealth)
 		local iframes = 15
 		if player:GetDamageCooldown() > iframes then
 			player:ResetDamageCooldown()
@@ -354,9 +364,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		local hp, maxhp = data.PersistentPlayerData.TaintedHealth, data.PersistentPlayerData.MaxTaintedHealth
         if hp < 1 then
             player:Kill()
+			Isaac.DebugString("END MOFO")
+			print("WHAT")
         end
 		if willDie then
             player:Kill()
+			Isaac.DebugString("END 2 MOFO")
         end
 
 		if data.PersistentPlayerData.MaxTaintedHealth < data.PersistentPlayerData.TaintedHealth then
@@ -402,7 +415,7 @@ function yandereWaifu.HandleTaintedRebHeart(player)
 	if not yandereWaifu.IsTaintedRebekah(player) then return end
 	if player:GetHearts() > 1 then
 		local neededHearts = 0-player:GetHearts()+1
-		data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth + math.abs(neededHearts*25)
+		data.PersistentPlayerData.TaintedHealth = yandereWaifu.AddTaintedBossHealth(player, data.PersistentPlayerData.TaintedHealth + math.abs(neededHearts*25))
 		player:AddHearts(neededHearts)
 	end
 	if player:GetMaxHearts() > 6 then
@@ -512,7 +525,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				end
 			end
 		end
-		data.PersistentPlayerData.TaintedHealth = data.PersistentPlayerData.TaintedHealth - takenDmg
+		yandereWaifu.AddTaintedBossHealth(player, -takenDmg)
 		local hp, maxhp = data.PersistentPlayerData.TaintedHealth, data.PersistentPlayerData.MaxTaintedHealth
 
         healthbar.Color = Color(1,0,0,1,0,0,0)

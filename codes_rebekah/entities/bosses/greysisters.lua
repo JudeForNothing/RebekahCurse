@@ -242,11 +242,24 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         ent.Velocity = Vector.Zero
                         ILIB.game:ShakeScreen(5)
 
-                        for i = 0, math.random(15,25) do
+                        for i = 0, 360 - 360/16, 360/16 do
+                            local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, Vector.FromAngle(i):Resized(12))
+                            proj.Scale = 0.9
+                            proj:AddProjectileFlags(ProjectileFlags.CURVE_LEFT)
+                            proj.FallingAccel = 0.3
+                        end
+                        for i = 0, 360 - 360/8, 360/8 do
+                            local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, Vector.FromAngle(i):Resized(11))
+                            proj.Scale = 1.4
+                            proj:AddProjectileFlags(ProjectileFlags.CURVE_RIGHT)
+                            proj.FallingSpeed = 0.3
+                        end
+
+                        --[[for i = 0, math.random(15,25) do
                             local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (data.storedVelocity):Resized(math.random(5,10)):Rotated(math.random(-75,75)+180))
                             proj.Scale = math.random(9,12)/10
                             InutilLib.MakeProjectileLob(proj, 1.5, math.random(7,10) )
-                        end
+                        end]]
                     elseif not InutilLib.IsPlayingMultiple(spr, "Flying", "Crash") then
                         local pos = InutilLib.WillFlip(data.Dir:GetAngleDegrees(), false) 
                         if pos then
@@ -259,6 +272,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         data.storedVelocity = ent.Velocity
                         local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (ent.Velocity):Resized(3):Rotated(math.random(-15,15)+180))
                         proj.Scale = 1.3
+                        proj:AddProjectileFlags(ProjectileFlags.BURST)
                     end
                 elseif data.State == 4 then
                     if spr:IsFinished("Throw") then

@@ -649,7 +649,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 end, RebekahCurse.ENTITY_LABAN_STOMP);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local player = Isaac.GetPlayer(0)
 	local controller = player.ControllerIndex
 	local sprite = eff:GetSprite()
@@ -674,7 +674,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	elseif sprite:IsFinished("End") then
 		eff:Remove();
 	end
-end, RebekahCurse.ENTITY_DARKBEAMINTHESKY);
+end, RebekahCurse.ENTITY_DARKBEAMINTHESKY);]]
 
 --evilorb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
