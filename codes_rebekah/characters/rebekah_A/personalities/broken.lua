@@ -93,7 +93,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local roomClampSize = math.max( player.Size, 20 );
 
 	eff.RenderZOffset = -1000
-	eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize)
+	eff.Position = InutilLib.room:GetClampedPosition(eff.Position, roomClampSize)
 	if data.Attached and data.Attached:Exists() then
 		eff.Velocity = player:GetShootingInput()*5
 		data.Attached.Velocity = eff.Velocity
@@ -117,7 +117,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		data.Attached:AddFreeze(EntityRef(player), 3)
 		if sprite:IsOverlayFinished("Bar") then
-			ILIB.game:RerollEnemy(data.Attached)
+			InutilLib.game:RerollEnemy(data.Attached)
 			eff:Remove()
 			player:UseActiveItem(CollectibleType.COLLECTIBLE_DATAMINER, true, false, false, false, -1)
 			data.Attached:AddFreeze(EntityRef(player), 120)

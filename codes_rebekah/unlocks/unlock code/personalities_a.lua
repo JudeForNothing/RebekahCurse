@@ -1,13 +1,13 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, function()
 	local isRebekahThere = false
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if yandereWaifu.IsNormalRebekah(player) then
 			isRebekahThere = true
 		end
 	end
-	local room = ILIB.game:GetRoom()
-	if room:GetType() == RoomType.ROOM_BOSS and ILIB.game:GetLevel():GetStage() ~= LevelStage.STAGE7 then --the aloof
+	local room = InutilLib.game:GetRoom()
+	if room:GetType() == RoomType.ROOM_BOSS and InutilLib.game:GetLevel():GetStage() ~= LevelStage.STAGE7 then --the aloof
 		local boss = room:GetBossID()
 		if boss == 6 or boss == 89 then -- Mom / Maus Mom
             if not yandereWaifu.ACHIEVEMENT.REBEKAH_SOUL:IsUnlocked() and isRebekahThere then
@@ -56,7 +56,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		local data = yandereWaifu.GetEntityData(player)
 

@@ -2,7 +2,7 @@ local dash = {}
 
 --double tap local dash function
 function dash.CursedRebekahDoubleTapDash(vector, playerTapping)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
 		if GetPtrHash( playerTapping ) == GetPtrHash( player) then

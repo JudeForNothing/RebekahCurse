@@ -109,7 +109,11 @@
 	<active id="59" name="Rebekah's Scrapbook" description="Hold on, this looks familiar..." gfx="collectibles_book_rebekahs_diary.png" quality="3" craftquality="3" maxcharges="4"/>
 
 	<trinket name="No Scope!" description="Hit 'em without looking!" gfx="collectibles_noscope.png" />
-	<passive id="59" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="3" craftquality="3"/>
-	<passive id="55" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="4" craftquality="3"/>
+	<passive id="59" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="2" craftquality="2"/>
+	<passive id="55" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="2" craftquality="2"/>
 	<passive id="59" name="Platform Cotta" description="The ones above, the ones below, and the ones who fall..." gfx="collectibles_platform_cotta.png" quality="2" craftquality="2"/>
+	<familiar id="59" name="Jacob's Tears" description="Collected tears, just like his father!" gfx="collectibles_jacobstears.png" quality="1" craftquality="1"/>
+	<passive id="55" name="Silent Treatment" description="Less says more" gfx="collectibles_silenttreatment.png" quality="3" craftquality="3"/>
+
+	<passive id="59" name="Full Fat Milk" description="High quality milk > high quanity milk" gfx="collectibles_fullfatmilk.png" quality="2" craftquality="2"/>
 </items>

@@ -49,8 +49,8 @@ function yandereWaifu:useSacrifialAltar(collItem, rng, player, flags, slot)
     end
     if hasFamiliar then
         SFXManager():Play( 241, 1, 0, false, 1 )
-        print(ILIB.game:GetDarknessModifier())
-        ILIB.game:Darken(1, 300)
+        print(InutilLib.game:GetDarknessModifier())
+        InutilLib.game:Darken(1, 300)
         player:RemoveCollectible(collItem, false, slot, true)
     end
 end

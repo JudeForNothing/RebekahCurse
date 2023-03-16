@@ -68,7 +68,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		--print(damageSource.Entity.SpawnerEntity.Type)
 		local data = yandereWaifu.GetEntityData(damage)
 		local function SpawnFinger(player)
-			local room = ILIB.game:GetRoom()
+			local room = InutilLib.game:GetRoom()
 
 			if amount > damage.HitPoints then
 				local finger = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_FINGER_CLICKER, 0, damage.Position, Vector(0,0), damage)

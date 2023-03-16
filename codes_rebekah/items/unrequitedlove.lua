@@ -26,13 +26,13 @@ function yandereWaifu:useUnLove(collItem, rng, player)
 	local data = yandereWaifu.GetEntityData(player)
 	--hopefully will cancel out if you use something like car battery, i hate car battery lol
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 	InutilLib.ToggleShowActive(player, false)
 	return {
@@ -105,7 +105,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					InutilLib.RefundActiveCharge(player, 300,  false, true)
 					data.Attached:AddEntityFlags(EntityFlag.FLAG_BLEED_OUT)
 					if data.Attached:CollidesWithGrid() then
-						ILIB.game:ShakeScreen(10)
+						InutilLib.game:ShakeScreen(10)
 						data.Attached:TakeDamage(player.Damage + (1 * data.Attached.Velocity:Length()/3), 0, EntityRef(eff), 1)
 						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1.4 );
 					end

@@ -32,7 +32,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, proj)
     if proj.Variant == RebekahCurseEnemies.ENTITY_GIANTGRIDPROJECTILE then
         proj = proj:ToProjectile()
         InutilLib.SFX:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 1.5, proj.SubType, false, 0.6);
-        ILIB.game:ShakeScreen(5)
+        InutilLib.game:ShakeScreen(5)
         Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BIG_SPLASH, 0, proj.Position, Vector(0,0), nil)
         Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurseEnemies.ENTITY_GIANTGRIDBREAK, proj.Variant, proj.Position, Vector(0,0), proj)
         if proj.SubType == 1 then
@@ -43,9 +43,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, proj)
             InutilLib.SFX:Play(SoundEffect.SOUND_METAL_BLOCKBREAK, 1.5, proj.SubType, false, 1.2);
             if InutilLib.GetRoomGridCount() < 9 then
                 for i = 0, math.random(1,2) do
-                    InutilLib.SetTimer( i*15, function() --ILIB.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
-                        yandereWaifu.SpawnRockSomewhere(ILIB.room:FindFreeTilePosition (Isaac.GetRandomPosition(), 5))
-                        ILIB.game:ShakeScreen(5)
+                    InutilLib.SetTimer( i*15, function() --InutilLib.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
+                        yandereWaifu.SpawnRockSomewhere(InutilLib.room:FindFreeTilePosition (Isaac.GetRandomPosition(), 5))
+                        InutilLib.game:ShakeScreen(5)
                         InutilLib.SFX:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 1.5, proj.SubType, false, 0.6);
                     end)
                 end
@@ -53,9 +53,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, proj)
         else
             if InutilLib.GetRoomGridCount() < 9 then
                 for i = 0, math.random(4,5) do
-                    InutilLib.SetTimer( i*20, function() --ILIB.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
-                        yandereWaifu.SpawnRockSomewhere(ILIB.room:FindFreeTilePosition (Isaac.GetRandomPosition(), 5))
-                        ILIB.game:ShakeScreen(5)
+                    InutilLib.SetTimer( i*20, function() --InutilLib.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
+                        yandereWaifu.SpawnRockSomewhere(InutilLib.room:FindFreeTilePosition (Isaac.GetRandomPosition(), 5))
+                        InutilLib.game:ShakeScreen(5)
                         InutilLib.SFX:Play(SoundEffect.SOUND_ROCK_CRUMBLE, 1.5, proj.SubType, false, 0.6);
                     end)
                 end
@@ -63,7 +63,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, proj)
         end
         --water splash tears
         for i = 0, math.random(18,28) do
-            InutilLib.SetTimer( i*2, function() --ILIB.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
+            InutilLib.SetTimer( i*2, function() --InutilLib.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(), 3, true, false)
                 local proj = InutilLib.FireGenericProjAttack(proj, ProjectileVariant.PROJECTILE_TEAR, 1, proj.Position, ((Vector(0,10))):Rotated(math.random(1,360)):Resized(4))
                 proj.FallingSpeed = (36)*-1;
                 proj.FallingAccel = 1;
@@ -94,7 +94,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
 	local invert = true
 	if data.path == nil then data.path = ent.Pathfinder end
 	if ent.Variant == RebekahCurseEnemies.ENTITY_POLTYGEIST then
@@ -112,7 +112,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 if spr:GetFrame() < 15 then
                     ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 		        	ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
-                    ent.Velocity = (ILIB.room:GetCenterPos() - ent.Position):Resized(20)
+                    ent.Velocity = (InutilLib.room:GetCenterPos() - ent.Position):Resized(20)
                 else
                     ent.Velocity = ent.Velocity * 0.8
                 end
@@ -137,7 +137,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("Idle", true)
                 else
                     --if ent.FrameCount % 30 == 0 then
-                    InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 2, 0.7, 85)
+                    InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 2, 0.7, 85)
                     --end
                     --ent.Velocity = ent.Velocity * 0.9
 				end
@@ -230,7 +230,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         spr:LoadGraphics();
                     end
                     --rightwall teleport
-                    ent.Position = Vector(math.abs(ILIB.room:GetBottomRightPos().X--[[-ent.Position.X]]),ILIB.room:GetCenterPos().Y) + Vector(0,10)
+                    ent.Position = Vector(math.abs(InutilLib.room:GetBottomRightPos().X--[[-ent.Position.X]]),InutilLib.room:GetCenterPos().Y) + Vector(0,10)
                 else
                     if spr:GetFrame() < 12 then
                         ent.Velocity = (ent.Velocity - Vector(10,0)):Resized(6) * 0.9
@@ -245,7 +245,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				elseif not spr:IsPlaying("IdleRock") then
 					spr:Play("IdleRock", true)
                 else
-                    InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 3, 0.9, 30, 5, 15)
+                    InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 3, 0.9, 30, 5, 15)
 				end
             elseif data.State == 7 then --throwing a rock
                 if spr:IsFinished("Toss") then

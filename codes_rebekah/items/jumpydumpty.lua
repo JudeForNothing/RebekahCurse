@@ -1,13 +1,13 @@
 function yandereWaifu:useJumpydumpty(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 
 	InutilLib.ToggleShowActive(player, false)

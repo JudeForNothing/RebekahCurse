@@ -19,7 +19,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			ent.Velocity = (ent.Velocity:Rotated(180)):Resized(6)
 		end]]
 		if data.State == 1 then --phase one idle
-			InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 0.5, 0.8, 30, 5, 15)
+			InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 0.5, 0.8, 30, 5, 15)
 			local hasDemonBabs = 0
 			local hasBombs = 0
 			local hasElectroBabs = 0

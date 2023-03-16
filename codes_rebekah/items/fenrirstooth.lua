@@ -1,6 +1,6 @@
 local function GetUSR()
-	for i = ILIB.level:GetRooms().Size, 0, -1 do
-		local roomdesc = ILIB.level:GetRooms():Get(i-1)
+	for i = InutilLib.level:GetRooms().Size, 0, -1 do
+		local roomdesc = InutilLib.level:GetRooms():Get(i-1)
 		if roomdesc and roomdesc.Data.Type == RoomType.ROOM_ULTRASECRET --[[and roomdesc.Data.Subtype ~= 34]] then
 			return roomdesc
 		end
@@ -8,7 +8,7 @@ local function GetUSR()
 end
 
 local function GetRoomsNeighborsIdx(index)
-	local level = ILIB.game:GetLevel()
+	local level = InutilLib.game:GetLevel()
 	local tbl = {}
 
 	for _, shift in pairs({1, -1, 13, -13}) do
@@ -21,7 +21,7 @@ local function GetRoomsNeighborsIdx(index)
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing the checks and updates the game, i guess?
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSTOOTH) then
@@ -35,11 +35,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing 
 
 			--check room
 			for i, v in pairs(rooms) do
-				if ILIB.level:GetRoomByIdx(v, -1).SafeGridIndex == ILIB.level:GetCurrentRoomDesc().SafeGridIndex then
+				if InutilLib.level:GetRoomByIdx(v, -1).SafeGridIndex == InutilLib.level:GetCurrentRoomDesc().SafeGridIndex then
 					InutilLib.SFX:Play(SoundEffect.SOUND_DOG_HOWELL, 1, 0, false, 0.8)
 				end
 			end
-			--if ILIB.level:GetCurrentRoomDesc().Data.Type == RoomType.ROOM_ULTRASECRET then
+			--if InutilLib.level:GetCurrentRoomDesc().Data.Type == RoomType.ROOM_ULTRASECRET then
 		end
 	end
 end)

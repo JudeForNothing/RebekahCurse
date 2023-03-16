@@ -13,28 +13,28 @@ end
 local function SpawnRandomReward(player)
 	local rng = math.random(1,10)
 	if rng == 1 then
-		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 	elseif rng == 2 then
 		for i = 1, math.random(3,8) do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 3 then
 		for i = 1, math.random(3,5) do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 4 then
 		for i = 1, math.random(3,5) do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 5 then
 		for i = 1, 3 do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 6 then
-		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_ETERNALCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_ETERNALCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 	elseif rng == 7 then
 		for i = 1, 3 do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 8 then
 		local rng2 = math.random(1,3)
@@ -59,10 +59,10 @@ local function SpawnRandomReward(player)
 		end
 	elseif rng == 9 then
 		for i = 1, 3 do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 10 then
-		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_MEGACHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_MEGACHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 	end
 end
 
@@ -91,15 +91,15 @@ local seedtbl = {
 
 local function UseRandomSeedEffect(player)
 	for k, v in ipairs(seedtbl) do
-		ILIB.game:GetSeeds():RemoveSeedEffect(v.seed)
+		InutilLib.game:GetSeeds():RemoveSeedEffect(v.seed)
 	end
 	local OldChallenge = player:CanShoot()
 	local playerType = player:GetPlayerType()
 	if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
 		player = player:GetOtherTwin()
 		local rng = math.random(0,19)
-		ILIB.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
-		ILIB.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
+		InutilLib.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
+		InutilLib.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
 		ReloadForgottenB(player)
 		if math.random(1,2) == 2 then
 			InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
@@ -109,8 +109,8 @@ local function UseRandomSeedEffect(player)
 	else
 		player:ChangePlayerType(playerType)
 		local rng = math.random(0,19)
-		ILIB.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
-		ILIB.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
+		InutilLib.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
+		InutilLib.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
 		player:ChangePlayerType(playerType)
 		if math.random(1,2) == 2 then
 			InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
@@ -140,7 +140,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		data.PersistentPlayerData.EasterEggDecreaseTick = data.PersistentPlayerData.EasterEggDecreaseTick - 1
 		
 		if data.PersistentPlayerData.EasterEggDecreaseTick <= 0 then --clear seed effect
-			ILIB.game:GetSeeds():RemoveSeedEffect(data.PersistentPlayerData.EasterEggSeeds)
+			InutilLib.game:GetSeeds():RemoveSeedEffect(data.PersistentPlayerData.EasterEggSeeds)
 			if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
 				player = player:GetOtherTwin()
 				local OldChallenge = player:CanShoot()
@@ -176,14 +176,14 @@ end)
 local chance = 1/4
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
 	local rng = pickup:GetDropRNG()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_RABBITSFOOT) or REBEKAHMODE_EXPERIMENTAL.easter then
 			if isEaster and player:HasTrinket(RebekahCurseTrinkets.TRINKET_RABBITSFOOT) then chance = 1/2 end
 			--pickup.Wait = 10;
 			local validPickup = (pickup.Variant == PickupVariant.PICKUP_COIN or pickup.Variant == PickupVariant.PICKUP_KEY or pickup.Variant == PickupVariant.PICKUP_BOMB or pickup.Variant == PickupVariant.PICKUP_CHEST or pickup.Variant == PickupVariant.PICKUP_PILL)
-			if rng:RandomFloat() <= (chance) and validPickup and ILIB.room:IsFirstVisit() and not pickup.Parent then
+			if rng:RandomFloat() <= (chance) and validPickup and InutilLib.room:IsFirstVisit() and not pickup.Parent then
 				local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
 				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
 				newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
@@ -194,10 +194,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
 end)
 function yandereWaifu:EasterEggsInit(hasstarted) --Init
 	for i, v in ipairs (seedtbl) do
-		ILIB.game:GetSeeds():RemoveSeedEffect(v.seed)
+		InutilLib.game:GetSeeds():RemoveSeedEffect(v.seed)
 	end
 	if hasAnyEasterEggSeedEffectActive then
-		for i=0, ILIB.game:GetNumPlayers()-1 do
+		for i=0, InutilLib.game:GetNumPlayers()-1 do
 			local player = Isaac.GetPlayer(i)
 			local playerType = player:GetPlayerType()
 			if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
@@ -247,15 +247,15 @@ local enemytbl = {
 
 local function UseRandomAmbush(level)
 	for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
-		currentLevelIDX = ILIB.level:GetCurrentRoomDesc().GridIndex
+		local door = InutilLib.game:GetRoom():GetDoor(i)
+		currentLevelIDX = InutilLib.level:GetCurrentRoomDesc().GridIndex
 		local rng = math.random(0,10)
 		if door then
-			Isaac.Spawn( enemytbl[rng].type, enemytbl[rng].variant, enemytbl[rng].subtype, ILIB.room:FindFreePickupSpawnPosition(door.Position, 1), Vector(0,0), nil );
+			Isaac.Spawn( enemytbl[rng].type, enemytbl[rng].variant, enemytbl[rng].subtype, InutilLib.room:FindFreePickupSpawnPosition(door.Position, 1), Vector(0,0), nil );
 			if door:IsOpen() then
 				door:Bar()
 			end
-			ILIB.room:SetClear(false)
+			InutilLib.room:SetClear(false)
 		end
 	end
 end
@@ -273,11 +273,11 @@ local cursetbl = {
 local function ApplyRandomCurse(pl)
 	local rng = math.random(1,6)
 	if yandereWaifu.GetEntityData(pl).EasterCurse then
-		ILIB.level:RemoveCurses(yandereWaifu.GetEntityData(pl).EasterCurse)
+		InutilLib.level:RemoveCurses(yandereWaifu.GetEntityData(pl).EasterCurse)
 	end
 	 yandereWaifu.GetEntityData(pl).EasterCurse = cursetbl[rng].curse
-	 ILIB.game:GetHUD():ShowItemText(cursetbl[rng].name)
-	 ILIB.level:AddCurse(yandereWaifu.GetEntityData(pl).EasterCurse)
+	 InutilLib.game:GetHUD():ShowItemText(cursetbl[rng].name)
+	 InutilLib.level:AddCurse(yandereWaifu.GetEntityData(pl).EasterCurse)
 	 InutilLib.SFX:Play( cursetbl[rng].sound, 1, 0, false, 0.9 );
 end
 
@@ -317,7 +317,7 @@ function yandereWaifu:UseCursedEgg(card, player, flags)
 	local index = math.random(10,20)
 	if math.random(1,3) == 3 then
 		for i = 0, 2 do
-			local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil ):ToPickup();
+			local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil ):ToPickup();
 			item.OptionsPickupIndex = index
 		end
 	else
@@ -326,7 +326,7 @@ function yandereWaifu:UseCursedEgg(card, player, flags)
 end
 
 function yandereWaifu:UseBlessedEgg(card, player, flags) 
-	Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil );
+	Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil );
 end
 
 local goldentbl = {
@@ -356,17 +356,17 @@ end
 function yandereWaifu:EggResetGameInit(hasstarted) --Init
 	if not hasstarted then
 		for k, v in ipairs(seedtbl) do
-			ILIB.game:GetSeeds():RemoveSeedEffect(v.seed)
+			InutilLib.game:GetSeeds():RemoveSeedEffect(v.seed)
 		end
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.EggResetGameInit)
 
 function yandereWaifu:EggAddCurses(curse) --Init
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local pl = Isaac.GetPlayer(i)
 		if yandereWaifu.GetEntityData(pl).EasterCurse then
-			ILIB.level:AddCurse(yandereWaifu.GetEntityData(pl).EasterCurse)
+			InutilLib.level:AddCurse(yandereWaifu.GetEntityData(pl).EasterCurse)
 		end
 	end
 end
@@ -406,11 +406,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, yandereWaifu.useVurpOnEasterE
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 	local chance = 1/16
 	local rng = pickup:GetDropRNG()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		local validPickup = (pickup.Variant == PickupVariant.PICKUP_PILL)
-		if validPickup and ILIB.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
+		if validPickup and InutilLib.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
 		and (pickup:GetSprite():IsPlaying("Appear") or pickup:GetSprite():IsPlaying("AppearFast")) and pickup:GetSprite():GetFrame() == 1 and not pickup.SpawnerEntity then
 			--pickup.Wait = 10;
 			if rng:RandomFloat() <= (chance) and validPickup then

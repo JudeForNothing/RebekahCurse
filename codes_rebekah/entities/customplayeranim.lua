@@ -160,7 +160,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					end
 				end
 				speaker:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
-				ILIB.game:ShakeScreen(10);
+				InutilLib.game:ShakeScreen(10);
 			else
 				gravityData.ZOffsetVector = gravityData.ZOffsetVector - Vector(0,-(gravityData.AccelAddFloat*2))
 				gravityData.ZOffsetFloat = gravityData.ZOffsetFloat - (gravityData.AccelAddFloat*2)
@@ -298,7 +298,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:Remove()
 			local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_SLAMDUST, 0, data.Player.Position, Vector(0,0), data.Player);
 			speaker:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
-			ILIB.game:ShakeScreen(10);
+			InutilLib.game:ShakeScreen(10);
 			yandereWaifu.GetEntityData(data.Player).invincibleTime = BALANCE.BONE_HEARTS_DASH_INVINCIBILITY_FRAMES;
 			--print(tostring(yandereWaifu.GetEntityData(data.Player).invincibleTime))
 			--pound!
@@ -393,7 +393,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			for i = 1, chosenNumofBarrage do
 				data.Player.Velocity = data.Player.Velocity * 0.8; --slow him down
 				--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-				local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 0, data.Player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+				local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, 0, data.Player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 				InutilLib.MakeTearLob(tear, -9, 9 )
 				tear:GetSprite():ReplaceSpritesheet(0, "gfx/tears_ecto.png")
 				tear:GetSprite():LoadGraphics()
@@ -652,7 +652,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				yandereWaifu.GetEntityData(data.Player).LastGridCollisionClass = nil
 				yandereWaifu.RebekahCanShoot(data.Player, true)
 			end
-			ILIB.game:ShakeScreen(10)
+			InutilLib.game:ShakeScreen(10)
 		elseif sprite:IsFinished("DashEnd") then
 			eff:Remove()
 		end
@@ -723,7 +723,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						end
 						ent.Position = yandereWaifu.GetBlueMirror().Position
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
-						ILIB.game:ShakeScreen(5)
+						InutilLib.game:ShakeScreen(5)
 						addEffectByChance()
 						if ent.Type == 1 then
 							ent:ToPlayer():AnimateTeleport(false)
@@ -735,7 +735,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						end
 						ent.Position = yandereWaifu.GetOrangeMirror().Position
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
-						ILIB.game:ShakeScreen(5)
+						InutilLib.game:ShakeScreen(5)
 						addEffectByChance()
 						if ent.Type == 1 then
 							ent:ToPlayer():AnimateTeleport(false)
@@ -766,28 +766,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 							speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 0.7 );
 						end
 					end
-					ILIB.game:ShakeScreen(5)
+					InutilLib.game:ShakeScreen(5)
 				end
 				if ent.Position:Distance(eff.Position) < eff.Size + ent.Size + 55 and ( not yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown or yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown <= 0) then
 					if data.IsOrange and yandereWaifu.GetBlueMirror() then
-						ent.Position = ILIB.room:FindFreePickupSpawnPosition(yandereWaifu.GetBlueMirror().Position, 10 )
+						ent.Position = InutilLib.room:FindFreePickupSpawnPosition(yandereWaifu.GetBlueMirror().Position, 10 )
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
 						convertpickup(ent)
 						if ent.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 							yandereWaifu.ClearLastMirror(true)
 							yandereWaifu.ClearLastMirror(false)
 						end
-						ILIB.game:ShakeScreen(5)
+						InutilLib.game:ShakeScreen(5)
 						speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 1.1 );
 					elseif data.IsBlue and yandereWaifu.GetOrangeMirror() then
-						ent.Position = ILIB.room:FindFreePickupSpawnPosition(yandereWaifu.GetOrangeMirror().Position, 10 )
+						ent.Position = InutilLib.room:FindFreePickupSpawnPosition(yandereWaifu.GetOrangeMirror().Position, 10 )
 						yandereWaifu.GetEntityData(ent).MirrorBrokenCooldown = 30
 						convertpickup(ent)
 						if ent.Variant == PickupVariant.PICKUP_COLLECTIBLE then
 							yandereWaifu.ClearLastMirror(true)
 							yandereWaifu.ClearLastMirror(false)
 						end
-						ILIB.game:ShakeScreen(5)
+						InutilLib.game:ShakeScreen(5)
 						speaker:Play( SoundEffect.SOUND_DOGMA_JACOBS_DOT, 1, 0, false, 1.1 );
 					end
 				end
@@ -847,7 +847,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						--print(grid)
 						if math.random(1,3) == 3 and grid and not grid.State == 2 then
 							if grid:GetType() == 2 or grid:GetType() == 14 then
-								local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
+								local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, InutilLib.game:GetRoom():FindFreePickupSpawnPosition(grid.Position, 1), Vector(0,0), nil) --body effect
 								grid:Destroy()
 							end
 						end
@@ -1094,7 +1094,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(player).NoBoneSlamActive = true
 			player.Position = eff.Position
 			
-			ILIB.game:ShakeScreen(5)
+			InutilLib.game:ShakeScreen(5)
 			--crackwaves
 			for i = 0, 360-360/4, 360/4 do
 				local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 0, player.Position, Vector.FromAngle(i), player):ToEffect()

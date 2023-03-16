@@ -369,7 +369,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 					pos = ludoTear.Position
 				end
 				if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
-					ILIB.game:Darken(1, 90)
+					InutilLib.game:Darken(1, 90)
 					local didtrigger = false
 					if player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE) < 2 then
 						player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
@@ -434,7 +434,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 							--knife sucks
 							if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 								ludoTear.Velocity = ludoTear.Velocity * 0.7
-								local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+								local kn = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, ludoTear.Position, Vector.FromAngle(i + data.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 								kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 								kn.CollisionDamage = player.Damage * numofShots;
 								kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE);
@@ -830,7 +830,7 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 	function yandereWaifu.FireSoulKnife(pos, dir)
 		local knife = player:FireTear( pos, dir, false, false, false):ToTear()
 		knife.Position = pos
-		----local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+		----local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 		knife.TearFlags = knife.TearFlags | TearFlags.TEAR_PIERCING;
 		--knife.CollisionDamage = player.Damage * 4;
 		knife:ChangeVariant(RebekahCurse.ENTITY_HAUNTEDKNIFE);

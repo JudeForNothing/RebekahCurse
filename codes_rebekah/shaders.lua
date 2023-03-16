@@ -7,7 +7,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, function(_, shaderNa
 		--end
 		local param = { 
 			colored = 12.0,
-			pulse = math.floor(ILIB.game:GetFrameCount()%15)*1.0,
+			pulse = math.floor(InutilLib.game:GetFrameCount()%15)*1.0,
 			shaderActive = isActive
 		}
 		return param

@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	
 	--laughing
 	if data.IsLaughing then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.IsLaughing = data.IsLaughing - 1
             if data.IsLaughing <= 0 then
                 data.IsLaughing = nil
@@ -21,7 +21,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 
     --drunk
 	if data.IsDrunk then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.IsDrunk = data.IsDrunk - 1
             ent.Target = InutilLib.GetClosestGenericEnemy(ent, 700)
             --print(ent.Target.Type)
@@ -39,7 +39,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 
 	--no babies
 	if data.IsMenopaused then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.IsMenopaused = data.IsMenopaused - 1
             if data.IsMenopaused <= 0 then
                 data.IsMenopaused = nil
@@ -49,7 +49,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 
 	--intimidated
 	if data.isIntimidated then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.isIntimidated = data.isIntimidated - 1
             if data.isIntimidated <= 0 then
                 data.isIntimidated = nil
@@ -64,7 +64,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 
 	--cheese
 	if data.IsCheesed then
-        if not ILIB.game:IsPaused() then
+        if not InutilLib.game:IsPaused() then
             data.IsCheesed = data.IsCheesed - 1
             if data.IsCheesed <= 0 then
                 data.IsCheesed = nil
@@ -83,7 +83,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 
 	--tainted rebekah stuff
 	if data.isSnooked then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.isSnooked = data.isSnooked - 1
             if data.isSnooked <= 0 then
                 data.isSnooked = nil
@@ -91,7 +91,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 	if data.isSlamSnooked then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.isSlamSnooked = data.isSlamSnooked - 1
             if data.isSlamSnooked <= 0 then
                 data.isSlamSnooked = nil
@@ -101,7 +101,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 	if data.isHeavySnooked then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.isHeavySnooked = data.isHeavySnooked - 1
             if data.isHeavySnooked <= 0 then
                 data.isHeavySnooked = nil
@@ -110,7 +110,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	end
 
 	if data.isCursedGodheadSlam then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.isCursedGodheadSlam = data.isCursedGodheadSlam - 1
 			if data.CursedGodheadSlamTier and data.CursedGodheadSlamTier >= 3 then
 				local aura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDGODHEADAURA, 0, ent.Position, Vector.Zero, player):ToEffect()
@@ -136,6 +136,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				poof:GetSprite():LoadGraphics()
 				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahPoofParticleType.Gold );
 				InutilLib.SFX:Play(SoundEffect.SOUND_GLASS_BREAK, 1, 0, false, 1);
+			end
+		end
+	end
+	if data.CursedEpicFetusTargeted then
+		if not InutilLib.game:IsPaused() then
+			data.CursedEpicFetusTargeted = data.CursedEpicFetusTargeted - 1
+			if data.CursedEpicFetusTargeted == 0 then
+				InutilLib.spawnEpicRocket(player, ent.Position, true, 10)
+				data.CursedEpicFetusTargeted = nil
+			end
+		end
+	end
+	if data.IsSilenced then
+		if not InutilLib.game:IsPaused() then
+			data.IsSilenced = data.IsSilenced - 1
+			if data.IsSilenced == 0 then
+				data.IsSilenced = nil
 			end
 		end
 	end
@@ -181,8 +198,32 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 		if data.menopausedRenderFrame >= 7 then data.menopausedRenderFrame = 0 end
 	end
 
+	--silenced
+	if data.IsSilenced then
+		ent:SetColor(Color(0.5, 0.5, 0.5, 1), 2, 5, true, true)
+		if not data.IsSilenceRenderFramed then data.IsSilenceRenderFramed = 0 end
+		local loc = Isaac.WorldToScreen(ent.Position)
+		statusEffects:SetOverlayRenderPriority(true)
+		statusEffects:SetFrame("Silenced", data.IsSilenceRenderFramed)
+		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
+		data.IsSilenceRenderFramed = data.IsSilenceRenderFramed + 1
+		if data.IsSilenceRenderFramed >= 23 then data.IsSilenceRenderFramed = 0 end
+	end
+
 	if data.isIntimidated then
 		
+	end
+
+	--epic fetus thing
+	if data.CursedEpicFetusTargeted then
+		ent:SetColor(brownNoBabiesColor, 2, 5, true, true)
+		if not data.EpicFetusRenderFrame then data.EpicFetusRenderFrame = 0 end
+		local loc = Isaac.WorldToScreen(ent.Position)
+		statusEffects:SetOverlayRenderPriority(true)
+		statusEffects:SetFrame("NukeTarget", data.EpicFetusRenderFrame)
+		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
+		data.EpicFetusRenderFrame = data.EpicFetusRenderFrame + 1
+		if data.EpicFetusRenderFrame >= 7 then data.EpicFetusRenderFrame = 0 end
 	end
 
 	if data.IsCheesed then
@@ -224,6 +265,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 		local color = 0.2 * data.CursedGodheadSlamTier
 		ent:SetColor(Color(1, 1, 1-color, 1, 0, 0, 0), 2, 5, true, true)
 	end
+	
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_UPDATE, function(_, proj)
@@ -231,7 +273,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_UPDATE, function(_, pro
 	if proj.SpawnerEntity then
 		local spawnerData = yandereWaifu.GetEntityData(proj.SpawnerEntity)
 		if proj.SpawnerEntity and proj.FrameCount == 1 then
-			if spawnerData.IsLaughing then
+			if spawnerData.IsLaughing or spawnerData.IsSilenced then
 				proj:Remove()
 			end
 		end
@@ -245,9 +287,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		if ent.SpawnerEntity and ent.FrameCount == 1 then
 			if spawnerData.IsMenopaused then
 				ent:Remove()
-				local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, ent.Position, Vector(0,0), player, 0, 0):ToEffect()
+				local puddle = InutilLib.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, ent.Position, Vector(0,0), player, 0, 0):ToEffect()
 				InutilLib.RevelSetCreepData(puddle)
 				InutilLib.RevelUpdateCreepSize(puddle, math.random(5,7), true)
+			end
+			if spawnerData.IsSilenced then
+				ent:Remove()
 			end
 		end
 	end
@@ -297,7 +342,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	
 	if data.MakingTaintedIncision then
-		if not ILIB.game:IsPaused() then
+		if not InutilLib.game:IsPaused() then
             data.MakingTaintedIncision = data.MakingTaintedIncision - 1
             if data.MakingTaintedIncision <= 0 then
 				data.MakingTaintedIncision = nil

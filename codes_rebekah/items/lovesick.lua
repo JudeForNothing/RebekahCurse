@@ -391,7 +391,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 end, RebekahCurse.ENTITY_LOVESICK_SLASH);
 
---[[InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
 		local data = yandereWaifu.GetEntityData(damage)
 		damage = damage:ToPlayer()
@@ -591,7 +591,7 @@ end);]]
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and Options.ChargeBars then
 			yandereWaifu.lovesickUI(player)
@@ -602,8 +602,8 @@ end);
 
 function yandereWaifu.lovesickUI(player)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
-		local gameFrame = ILIB.game:GetFrameCount();
+		local room = InutilLib.game:GetRoom()
+		local gameFrame = InutilLib.game:GetFrameCount();
 		local tick = data.lovesickTick
 		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
 			uiReserve:SetOverlayRenderPriority(true)

@@ -162,7 +162,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 						player.Velocity = player.Velocity * 0.8; --slow him down
 							local tear = player:FireTear( ludoTear.Position, Vector.FromAngle(i + direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(4,6)), false, false, false):ToTear()
 							tear.Position = ludoTear.Position
-							--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+							--local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 							tear.Scale = math.random() * 0.7 + 0.7;
 							tear.FallingSpeed = -9 + math.random() * 2;
 							tear.FallingAcceleration = 0.5;
@@ -385,7 +385,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 							for j = 1, math.random(4,6) do
 								local tear = player:FireTear( player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10)):Resized(math.random(12,15)), false, false, false):ToTear()
 								tear.Position = player.Position
-								--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+								--local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 								tear.Scale = math.random() * 0.7
 								tear.CollisionDamage = player.Damage * 0.5 * extraTearDmg;
 							end
@@ -413,7 +413,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 						local tear = player:FireTear( player.Position, Vector.FromAngle(direction:GetAngleDegrees() + 180 - math.random(-45,45)):Resized(math.random(3,15)), false, false, false):ToTear()
 						tear.Position = player.Position
 						tear:ChangeVariant(TearVariant.BLOOD)
-						--local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+						--local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 						tear.Scale = math.random() * 0.7 + 0.7;
 						tear.FallingSpeed = -9 + math.random() * 2;
 						tear.FallingAcceleration = 0.5;
@@ -424,9 +424,9 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 							tear:GetSprite():Play("Small01", true)
 						end
 					end
-					ILIB.game:ShakeScreen(20);
+					InutilLib.game:ShakeScreen(20);
 					--blood pain
-					local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, player.Position, Vector(0,0), player, 0, 0):ToEffect()
+					local puddle = InutilLib.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, player.Position, Vector(0,0), player, 0, 0):ToEffect()
 					InutilLib.RevelSetCreepData(puddle)
 					InutilLib.RevelUpdateCreepSize(puddle, math.random(12,17), true)
 					--puddle.Scale = math.random(5,7)
@@ -812,7 +812,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if movementDirection:Length() < 0.05 then
 			eff.Velocity = Vector.Zero
 		else
-			eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize);
+			eff.Position = InutilLib.room:GetClampedPosition(eff.Position, roomClampSize);
 			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 		end
 		
@@ -851,7 +851,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff) -
 end, RebekahCurse.ENTITY_GHOSTTARGET);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
@@ -869,7 +869,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			megumin.Visible = false
 			megumin.RadiusMultiplier = 1.6 --my favorite part
 			megumin.ExplosionDamage = player.Damage*5
-			ILIB.room:MamaMegaExplosion(megumin.Position)
+			InutilLib.room:MamaMegaExplosion(megumin.Position)
 			for i, ent in pairs(Isaac.GetRoomEntities()) do
 				if ent:IsEnemy() and not ent:IsVulnerableEnemy() then
 					ent:AddPoison(EntityRef(eff), 5, player.Damage*17)
@@ -905,7 +905,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_GHOSTMISSILE)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
@@ -1090,7 +1090,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		end
 	end)
 	
-	InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
+	yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 		if lz.SpawnerEntity then
 			local player = lz.SpawnerEntity:ToPlayer()
 			if player then
@@ -1112,7 +1112,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		end
 	end)
 
-	InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
+	yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 		local player = bb.SpawnerEntity:ToPlayer()
 		local pldata = yandereWaifu.GetEntityData(player)
 		if player then
@@ -1157,7 +1157,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		end
 	end, EffectVariant.TARGET);
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+	yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 		local player = kn.SpawnerEntity:ToPlayer()
 		local pldata = yandereWaifu.GetEntityData(player)
@@ -1197,7 +1197,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if sprite:IsEventTriggered("Hurt") then
 				InutilLib.SFX:Play(SoundEffect.SOUND_SWORD_SPIN, 0.5, 0, false, 1)
 				InutilLib.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.5, 0, false, 1)
-				ILIB.game:ShakeScreen(5)
+				InutilLib.game:ShakeScreen(5)
 				for i, e in pairs(Isaac.GetRoomEntities()) do
 					if e:IsActiveEnemy() and e:IsVulnerableEnemy() then
 						if (eff.Position - e.Position):Length() < 80 then

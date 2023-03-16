@@ -102,7 +102,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	end
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 
-InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	if damage.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then
 
 		if --[[((damageFlag & DamageFlag.DAMAGE_LASER)~= 0 or (damageFlag & DamageFlag.DAMAGE_EXPLOSION)~= 0  or (damageFlag & DamageFlag.DAMAGE_CLONES)~= 0 ) and]] damageSource.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then

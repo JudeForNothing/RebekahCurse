@@ -1,5 +1,5 @@
 function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck btw
-	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	--for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 	--	local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah(player) then

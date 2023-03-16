@@ -11,13 +11,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.MirrorR
 --stuff to check how much boss room you cleared
 function yandereWaifu.TrySpawnMirror()
 	--print(game:GetLevel():GetCurrentRoomDesc().GridIndex)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsNormalRebekah(player)  then
-			local room = ILIB.game:GetRoom()
-			local level = ILIB.game:GetLevel()
+			local room = InutilLib.game:GetRoom()
+			local level = InutilLib.game:GetLevel()
 			-- if we're in a boss room and the room is clear
-			local isGreed = ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREED or ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
+			local isGreed = InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREED or InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
 			if (room:GetType() == RoomType.ROOM_BOSS or (isGreed and level:GetCurrentRoomDesc().GridIndex--[[GetCurrentRoomIndex()]] == 110 --[[room:GetType() == RoomType.ROOM_SHOP]])) and room:IsClear() then
 				local add = false
 		
@@ -48,8 +48,8 @@ function yandereWaifu.HandleMirrorData()
 	if not RebekahLocalSavedata.Data.mirrorRoomData then return end
 	--if mirrorRoomData then
 		for i, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-			local room = ILIB.game:GetRoom()
-			local level = ILIB.game:GetLevel()
+			local room = InutilLib.game:GetRoom()
+			local level = InutilLib.game:GetLevel()
 			if not RebekahLocalSavedata.Data.mirrorRoomData[i] then RebekahLocalSavedata.Data.mirrorRoomData[i] = {} end
 			RebekahLocalSavedata.Data.mirrorRoomData[i][1] = level:GetCurrentRoomDesc().GridIndex
 			RebekahLocalSavedata.Data.mirrorRoomData[i][2] = room:GetGridIndex(mir.Position)
@@ -63,9 +63,9 @@ function yandereWaifu.InsertMirrorData()
 	if not RebekahLocalSavedata.Data.mirrorRoomData then return end
 	for i, something in pairs(RebekahLocalSavedata.Data.mirrorRoomData) do 
 		--if it has, then insert
-		if RebekahLocalSavedata.Data.mirrorRoomData[i][1] == ILIB.level:GetCurrentRoomDesc().GridIndex then
+		if RebekahLocalSavedata.Data.mirrorRoomData[i][1] == InutilLib.level:GetCurrentRoomDesc().GridIndex then
 			for m, mir in pairs (Isaac.FindByType(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, -1, false, false)) do
-				if ILIB.room:GetGridIndex(mir.Position) == RebekahLocalSavedata.Data.mirrorRoomData[i][2] then
+				if InutilLib.room:GetGridIndex(mir.Position) == RebekahLocalSavedata.Data.mirrorRoomData[i][2] then
 				--	print("scar")
 					yandereWaifu.GetEntityData(mir).Use = RebekahLocalSavedata.Data.mirrorRoomData[i][3]
 				--	print(mirrorRoomData[i][3])
@@ -97,7 +97,7 @@ function yandereWaifu.MirrorMechanic(player)
 			ShowBroken = true
 	}
 	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		
@@ -144,7 +144,7 @@ function yandereWaifu.MirrorMechanic(player)
 		end
 	end
 	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		
@@ -176,7 +176,7 @@ function yandereWaifu.MirrorMechanic(player)
 						local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_ARCANE_CIRCLE, 0, player.Position, Vector(0,0), player );
 						mirdata.Circle = arcane
 					end
-					if not mirdata.Use then mirdata.Use = getRebekahsPresent end --ILIB.game:GetNumPlayers() end
+					if not mirdata.Use then mirdata.Use = getRebekahsPresent end --InutilLib.game:GetNumPlayers() end
 					if not mirdata.Init then mirdata.Init = true end
 				end
 				if mir.GridCollisionClass ~= 0 --[[mir.Position:Distance(mirdata.FirstPos) > 30]] then
@@ -415,7 +415,7 @@ function yandereWaifu.MirrorMechanic(player)
 											player:RemoveCollectible(CollectibleType.COLLECTIBLE_ISAACS_HEART)
 											player.Velocity = Vector(0,0)
 											mirdata.Circle:GetSprite():Play("FadeOut",true)
-											ILIB.game:Darken(5,1200)
+											InutilLib.game:Darken(5,1200)
 											InutilLib.AnimateGiantbook(nil, nil, "Marry", "gfx/ui/giantbook/giantbook_marriage.anm2", true, true)
 										end
 									end

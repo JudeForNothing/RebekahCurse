@@ -12,7 +12,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local data = yandereWaifu.GetEntityData(eff)
 		
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
-			direction = player:GetAimDirection()
+			--direction = player:GetAimDirection()
 		end
 		
 		if eff.FrameCount == 1 then
@@ -284,7 +284,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 end, RebekahCurse.ENTITY_BONESTAND);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
+	--for i,player in ipairs(InutilLib.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -363,7 +363,7 @@ end, RebekahCurse.ENTITY_BONEPUNCH)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
+	--for i,player in ipairs(InutilLib.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -505,7 +505,7 @@ end, RebekahCurse.ENTITY_BONESPEAR)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	eff.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
-	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
+	--for i,player in ipairs(InutilLib.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -547,7 +547,7 @@ end, RebekahCurse.ENTITY_LUDOBONE)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
+	--for i,player in ipairs(InutilLib.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -578,7 +578,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			end
 			Isaac.Explode(eff.Position, player, 10)
-			ILIB.game:ShakeScreen(5)
+			InutilLib.game:ShakeScreen(5)
 			for i = 0, 360 - 360/8, 360/8 do
 				local tears = Isaac.Spawn(EntityType.ENTITY_TEAR, TearVariant.BONE, 0, eff.Position, Vector(0,-8):Rotated(i), player):ToTear()
 			end
@@ -593,10 +593,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--end
 end, RebekahCurse.ENTITY_EPICBONE)
 
-InutilLib:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, function(_,  fam)
 	local data = yandereWaifu.GetEntityData(fam)
 	if fam.SubType == 0 then
-		--if ILIB.game:GetFrameCount() % 10 == 0 then
+		--if InutilLib.game:GetFrameCount() % 10 == 0 then
 			--InutilLib.CreateGenericPathfinder(fam)
 			--if data.target then
 			--	InutilLib.GenerateAStarPath(fam.Position, data.target.Position, true)
@@ -809,7 +809,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			if data.BloodyMouthCount > 0 then
 				data.BloodyMouthCount = data.BloodyMouthCount - 1
 				if fam.FrameCount % 5 == 0 then
-					local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, fam.Position, Vector(0,0), player, 0, 0):ToEffect()
+					local puddle = InutilLib.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, fam.Position, Vector(0,0), player, 0, 0):ToEffect()
 					InutilLib.RevelSetCreepData(puddle)
 					InutilLib.RevelUpdateCreepSize(puddle, math.random(1,2), true)
 				end
@@ -926,7 +926,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					data.target = nil
 				end
 			else
-				if ILIB.game:GetFrameCount() % 3 == 0 then
+				if InutilLib.game:GetFrameCount() % 3 == 0 then
 					data.toPlayerpath = InutilLib.GenerateAStarPath(fam.Position, player.Position)
 				end
 				if data.toPlayerpath then
@@ -1071,8 +1071,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			end
 			if data.Dashing then
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-					print(ILIB.room:GetGridIndex((fam.Position)+ (data.DashVector*50)))
-					local grid = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex((fam.Position)+ (data.DashVector*50))) --grids around that Rebecca stepped on
+					print(InutilLib.room:GetGridIndex((fam.Position)+ (data.DashVector*50)))
+					local grid = InutilLib.room:GetGridEntity(InutilLib.room:GetGridIndex((fam.Position)+ (data.DashVector*50))) --grids around that Rebecca stepped on
 					if grid ~= nil then 
 						--print( grid:GetType())
 						--if grid:GetType() == GridEntityType.GRID_TNT or grid:GetType() == GridEntityType.GRID_POOP then
@@ -1314,15 +1314,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				doorPosCheck = fam.Position - Vector(0,-25)
 			end
 			if fam:CollidesWithGrid() then
-				--for i = 0, (ILIB.room:GetGridSize()) do
-					local gent = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex(doorPosCheck))
+				--for i = 0, (InutilLib.room:GetGridSize()) do
+					local gent = InutilLib.room:GetGridEntity(InutilLib.room:GetGridIndex(doorPosCheck))
 					if gent then
 						if gent.Desc.Type == GridEntityType.GRID_DOOR then
 							--Isaac.DebugString(gent.Desc.Type)
 							local Door = gent:ToDoor()
 							if (fam.Position - Door.Position):Length() <= 35 then
 								--Isaac.DebugString(1)
-								if ILIB.room:IsClear() then
+								if InutilLib.room:IsClear() then
 									Door:TryUnlock(player)
 								end
 								--Isaac.DebugString(2)

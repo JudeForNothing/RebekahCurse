@@ -45,10 +45,10 @@ end)
 
 function yandereWaifu:PsoriasisNewRoom()	
 	yandereWaifu.InsertMirrorData()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PSORAISIS) then
 			if data.MaxPsoriasisHealth > data.PsoriasisHealth then
 				data.PsoriasisHealth = data.PsoriasisHealth + 1

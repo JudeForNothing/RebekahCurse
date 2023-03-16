@@ -56,50 +56,50 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, eff)
 
         if data.HitCount then
             if data.HitCount >= 10 and not data.Bleed then
-                ILIB.room:EmitBloodFromWalls(2, 10)
-                ILIB.game:ShakeScreen(1)
+                InutilLib.room:EmitBloodFromWalls(2, 10)
+                InutilLib.game:ShakeScreen(1)
                 data.Bleed = true
                 eff:BloodExplode()
             elseif data.HitCount >= 20 and not data.Bleed2 then
-                ILIB.room:EmitBloodFromWalls(2, 10)
-                ILIB.game:ShakeScreen(2)
+                InutilLib.room:EmitBloodFromWalls(2, 10)
+                InutilLib.game:ShakeScreen(2)
                 data.Bleed2 = true
                 eff:BloodExplode()
             elseif data.HitCount >= 30 and not data.Bleed3 then
-                ILIB.room:EmitBloodFromWalls(4, 10)
-                ILIB.game:ShakeScreen(2)
+                InutilLib.room:EmitBloodFromWalls(4, 10)
+                InutilLib.game:ShakeScreen(2)
                 data.Bleed3 = true
                 eff:BloodExplode()
             elseif data.HitCount >= 40 and not data.Bleed4 then
-                ILIB.room:EmitBloodFromWalls(4, 10)
-                ILIB.game:ShakeScreen(2)
+                InutilLib.room:EmitBloodFromWalls(4, 10)
+                InutilLib.game:ShakeScreen(2)
                 data.Bleed4 = true
                 eff:BloodExplode()
             elseif data.HitCount >= 50 and not data.Bleed5 then
-                ILIB.room:EmitBloodFromWalls(8, 20)
-                ILIB.game:ShakeScreen(5)
+                InutilLib.room:EmitBloodFromWalls(8, 20)
+                InutilLib.game:ShakeScreen(5)
                 data.Bleed5 = true
                 eff:BloodExplode()
             elseif data.HitCount >= 60 and not data.Bleed6 then
-                ILIB.room:EmitBloodFromWalls(8, 20)
-                ILIB.game:ShakeScreen(5)
+                InutilLib.room:EmitBloodFromWalls(8, 20)
+                InutilLib.game:ShakeScreen(5)
                 data.Bleed6 = true
             elseif data.HitCount >= 70 and not data.Bleed7 then
-                ILIB.room:EmitBloodFromWalls(10, 30)
-                ILIB.game:ShakeScreen(5)
+                InutilLib.room:EmitBloodFromWalls(10, 30)
+                InutilLib.game:ShakeScreen(5)
                 data.Bleed7 = true
             elseif data.HitCount >= 80 and not data.Bleed8 then
-                ILIB.room:EmitBloodFromWalls(10, 40)
-                ILIB.game:ShakeScreen(5)
+                InutilLib.room:EmitBloodFromWalls(10, 40)
+                InutilLib.game:ShakeScreen(5)
                 data.Bleed8 = true
             elseif data.HitCount >= 90 and not data.Bleed9 then
-                ILIB.room:EmitBloodFromWalls(10, 50)
-                ILIB.game:ShakeScreen(5)
+                InutilLib.room:EmitBloodFromWalls(10, 50)
+                InutilLib.game:ShakeScreen(5)
                 data.Bleed9 = true
             elseif data.HitCount >= 100 and not data.BleedUltimate then
-                ILIB.room:EmitBloodFromWalls(10, 50)
-                ILIB.game:ShakeScreen(5)
-                ILIB.game:MakeShockwave(eff.Position, 0.095, 0.025, 10)
+                InutilLib.room:EmitBloodFromWalls(10, 50)
+                InutilLib.game:ShakeScreen(5)
+                InutilLib.game:MakeShockwave(eff.Position, 0.095, 0.025, 10)
                 data.BleedUltimate = true
                 eff:BloodExplode()
             end

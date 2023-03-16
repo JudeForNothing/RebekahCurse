@@ -2,7 +2,7 @@ local dash = {}
 
 --double tap local dash function
 function dash.RebekahDoubleTapDash(vector, playerTapping)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
 		if GetPtrHash( playerTapping ) == GetPtrHash( player) then
@@ -69,7 +69,7 @@ function dash.RebekahDoubleTapDash(vector, playerTapping)
 					effect.Timeout=15
 					effect:GetSprite():ReplaceSpritesheet(0, "gfx/effects/immortal/angled_mantle.png")
 					effect:GetSprite():LoadGraphics()
-					--ILIB.speaker:Play(568,1.0)
+					--InutilLib.speaker:Play(568,1.0)
 					playerdata.specialCooldown = REBEKAH_BALANCE.IMMORTAL_HEARTS_DASH_COOLDOWN - trinketBonus;
 				end
 				playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown

@@ -42,16 +42,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 end)
 
 
-InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
 		local data = yandereWaifu.GetEntityData(damage)
 		if not data.hasSnap and not data.isSnappedTired then
 			damage = damage:ToPlayer()
-			ILIB.game:ShowHallucination(15, 0)
+			InutilLib.game:ShowHallucination(15, 0)
 			InutilLib.SetTimer( 60, function()
 				local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SNAP_EFFECT, 0, damage.Position, Vector(0,0), damage)
 				damage:AnimateSad()
-				ILIB.game:ShakeScreen(5)
+				InutilLib.game:ShakeScreen(5)
 			end)
 			damage:AddNullCostume(RebekahCurseCostumes.SnappedCos)
 			damage:TryRemoveNullCostume(RebekahCurseCostumes.UnsnappedCos)
@@ -82,7 +82,7 @@ InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amoun
 end)
 
 function yandereWaifu:SnappedTiredNewRoom()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then

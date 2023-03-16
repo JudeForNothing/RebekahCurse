@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
 		if player then --(damageSource.Type == 1 or (damageSource.Entity or damageSource.Entity.SpawnerType == 1)) then
 			local playerType = player:GetPlayerType()
-			local room = ILIB.game:GetRoom()
+			local room = InutilLib.game:GetRoom()
 			if yandereWaifu.IsNormalRebekah(player) and not yandereWaifu.GetEntityData(player).IsAttackActive then
 				if (REBEKAHMODE_EXPERIMENTAL.lovelove or player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT)) and dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN then
 					local maxHealth = damage.MaxHitPoints

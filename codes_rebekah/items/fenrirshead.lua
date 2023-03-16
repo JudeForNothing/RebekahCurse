@@ -18,7 +18,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damag
                 local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING, ent.Position, Vector.Zero, ent)
                 yandereWaifu.GetEntityData(poof).Parent = ent
                 InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_WILD_SWING, 1, 0, false, 0.6 );
-                ILIB.game:ShakeScreen(10)
+                InutilLib.game:ShakeScreen(10)
             end
         end
 		if confirm and dmgFlag & DamageFlag.DAMAGE_FIRE == 0 then

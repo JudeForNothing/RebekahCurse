@@ -44,7 +44,7 @@ end
 
 local function ReplaceCurseDoorstoMirrors()
 	local flatfile = false
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:HasTrinket(TrinketType.TRINKET_FLAT_FILE) then
 			flatfile = true
@@ -52,7 +52,7 @@ local function ReplaceCurseDoorstoMirrors()
 		end
 	end
     for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
+		local door = InutilLib.game:GetRoom():GetDoor(i)
 		if door and (door:IsRoomType(RoomType.ROOM_CURSE)) then --vardata 1 is when curse room has no spike --[[or newRoom:GetType("Love Curse Room")]]) then
 			--StageAPI.ChangeDoorSprite(door, RebekahsRoomCurseGfx)
 			--StageAPI.ChangeDoor(door, RebekahsRoomCurseGrid, false)
@@ -69,8 +69,8 @@ end
 StageAPI.AddCallback("RebekahCurse", "PRE_STAGEAPI_NEW_ROOM_GENERATION", 0, function(currentRoom, justGenerated, currentListIndex)
 	if yandereWaifu.WillSpawnLoveRoom() then
 		ReplaceCurseDoorstoMirrors()
-		if (ILIB.room:GetType() == RoomType.ROOM_CURSE) and not currentRoom --[[and ILIB.room:IsFirstVisit()]] then
-			local testRoom = StageAPI.LevelRoom("Love Curse Room", LiminalRoomList, ILIB.room:GetSpawnSeed(), ILIB.room:GetRoomShape(), ILIB.room.Type, nil, nil, nil, nil, nil, StageAPI.GetCurrentRoomID())
+		if (InutilLib.room:GetType() == RoomType.ROOM_CURSE) and not currentRoom --[[and InutilLib.room:IsFirstVisit()]] then
+			local testRoom = StageAPI.LevelRoom("Love Curse Room", LiminalRoomList, InutilLib.room:GetSpawnSeed(), InutilLib.room:GetRoomShape(), InutilLib.room.Type, nil, nil, nil, nil, nil, StageAPI.GetCurrentRoomID())
 			MusicManager():Play(RebekahCurseMusic.MUSIC_HEARTROOM, 0.1)
 			MusicManager():Queue(RebekahCurseMusic.MUSIC_HEARTROOM)
 			MusicManager():UpdateVolume()
@@ -91,7 +91,7 @@ end)
 
 StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --POST_ROOM_INIT
 	local flatfile = false
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:HasTrinket(TrinketType.TRINKET_FLAT_FILE) then
 			flatfile = true
@@ -104,7 +104,7 @@ StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --PO
         newRoom:SetTypeOverride("Love Room")
 		newRoom.Data.RoomGfx = RebekahsRoomCurseGfx
 		for i = 0, 7 do
-			local door = ILIB.game:GetRoom():GetDoor(i)
+			local door = InutilLib.game:GetRoom():GetDoor(i)
 			if door and (door:IsRoomType(RoomType.ROOM_CURSE)) then --vardata 1 is when curse room has no spike --[[or newRoom:GetType("Love Curse Room")]]) then
 				--StageAPI.ChangeDoorSprite(door, RebekahsRoomCurseGfx)
 				--StageAPI.ChangeDoor(door, RebekahsRoomCurseGrid, false)
@@ -129,7 +129,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	replacesong = false
 
 	--[[for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
+		local door = InutilLib.game:GetRoom():GetDoor(i)
 		if door then
 		print("apol")
 		print(door.State)

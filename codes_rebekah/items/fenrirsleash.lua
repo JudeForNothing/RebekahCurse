@@ -64,7 +64,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 							yandereWaifu.GetEntityData(ent).IsWeakenedByEnchiridion = 90
 						end
 					end
-					ILIB.game:MakeShockwave(fam.Position, 0.035, 0.025, 10)
+					InutilLib.game:MakeShockwave(fam.Position, 0.035, 0.025, 10)
 				end
 			end
 		end

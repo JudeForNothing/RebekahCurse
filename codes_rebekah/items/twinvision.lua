@@ -56,10 +56,10 @@ local function spawnTwins(player)
 	end]]
 end
 function yandereWaifu:TwinVisionNewFloor()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if not (data.isredTwin or data.isblueTwin) and not (data.redTwin or data.blueTwin) then
 			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) then
 				spawnTwins(player)
@@ -70,10 +70,10 @@ function yandereWaifu:TwinVisionNewFloor()
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.TwinVisionNewFloor)
 function yandereWaifu:TwinVisionNewRoom()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if not (data.redTwin or data.blueTwin) and data.PersistentPlayerData.SpawnTwins then
 			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) then
 				spawnTwins(player)
@@ -84,7 +84,7 @@ end
 --yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.TwinVisionNewRoom)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		if entityData.isredTwin or entityData.isblueTwin then
@@ -127,7 +127,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
 		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
 	end]]
-	if ILIB.room:IsClear() then
+	if InutilLib.room:IsClear() then
 		if data.PersistentPlayerData and data.PersistentPlayerData.SpawnTwins then
 			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
 				data.redTwin:Die()
@@ -137,7 +137,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 		end
 	end
-	if not ILIB.room:IsClear() and data.PersistentPlayerData.SpawnTwins and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and not (data.redTwin and data.blueTwin) then
+	if not InutilLib.room:IsClear() and data.PersistentPlayerData.SpawnTwins and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and not (data.redTwin and data.blueTwin) then
 		spawnTwins(player)
 	end
 end)
@@ -170,7 +170,7 @@ local function handleBlueAndRedBabiesVisual(_, familiar, offset)
 	familiar:GetSprite().Color = Color(0, 0, 0, 0)
 
 	local render_pos = familiar.Position + Vector(0,5)
-	if ILIB.room:IsMirrorWorld() then --Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
+	if InutilLib.room:IsMirrorWorld() then --Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
 		--render_pos = Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
 		player.FlipX = (not player.FlipX)
 	end

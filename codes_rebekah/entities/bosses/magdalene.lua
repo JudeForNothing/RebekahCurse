@@ -50,7 +50,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		
 		if data.State == 1 then --phase one idle
-			--InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
+			--InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
 			local path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
 		
 			--if (ent.Position - player.Position):Length() > 300 then
@@ -225,7 +225,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		
 		if data.State == 17 then --phase two idle
 			Isaac.DebugString("7")
-			--InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
+			--InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
 		
 			--if (ent.Position - player.Position):Length() > 300 then
 			--if path then

@@ -33,12 +33,12 @@ function yandereWaifu:useimDie(collItem, rng, player, flag, slot)
 		data.selectedImDieWire = false
 	end
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 	
 	local wires = {
@@ -258,9 +258,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				if not player:HasCollectible(CollectibleType.COLLECTIBLE_HOST_HAT) or not player:HasCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC) then
 					player:TakeDamage(1 + playerdata.PersistentPlayerData.Successes, 0, EntityRef(fam), 0)
 				end
-				ILIB.room:MamaMegaExplosion(fam.Position)
+				InutilLib.room:MamaMegaExplosion(fam.Position)
 			else
-				local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1),  Vector.Zero, nil):ToPickup();
+				local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 1),  Vector.Zero, nil):ToPickup();
 			end
 			player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_PRIMARY)
 			player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_SECONDARY)
@@ -273,46 +273,46 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if spr:IsPlaying("Reward") then
 		if spr:IsEventTriggered("PickupThrow") then
-			--local itemPool = ILIB.game:GetItemPool()
-			--local randomItem = itemPool:GetCollectible(ItemPoolType.POOL_GOLDEN_CHEST, true, ILIB.game:GetSeeds():GetStartSeed(), CollectibleType.COLLECTIBLE_NULL)
-			--local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, randomItem, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil)
-			local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil):ToPickup()
+			--local itemPool = InutilLib.game:GetItemPool()
+			--local randomItem = itemPool:GetCollectible(ItemPoolType.POOL_GOLDEN_CHEST, true, InutilLib.game:GetSeeds():GetStartSeed(), CollectibleType.COLLECTIBLE_NULL)
+			--local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, randomItem, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil)
+			local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil):ToPickup()
 			item:TryOpenChest(player)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
 				player:AddWisp(RebekahCurseItems.COLLECTIBLE_OHIMDIE, player.Position, false, false)
 			end
-			--[[if ILIB.room:IsClear() then
+			--[[if InutilLib.room:IsClear() then
 				local hasItems = false
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if ent.Type == 5 and ent.Variant == 100 then
 						if math.random(1,4) == 4 then
-							local bomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, ent.SubType, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToBomb();
+							local bomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, ent.SubType, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToBomb();
 						else
 							local rng = math.random(1,3)
 							if rng == 1 then
-								local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_SOUL, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
+								local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_SOUL, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
 							elseif rng == 2 then
-								local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
+								local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
 							elseif rng == 3 then
-								local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_GOLDEN, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
+								local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_GOLDEN, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
 							end
 						end
 						hasItems = true
 					elseif ent.Type == 5 and not ent.Variant == 100 then
 						local rng = math.random(1,3)
 						if rng == 1 then
-							local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
+							local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF_SOUL, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
 						elseif rng == 2 then
-							local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLENDED, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
+							local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLENDED, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
 						elseif rng == 3 then
-							local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN, ILIB.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
+							local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1),  Vector.Zero, nil):ToPickup();
 						end
 						hasItems = true
 					end
 				end
 				if not hasItems then
 					for i = 1, 5 do
-						local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil) --body effect
+						local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil) --body effect
 					end
 				end
 			else

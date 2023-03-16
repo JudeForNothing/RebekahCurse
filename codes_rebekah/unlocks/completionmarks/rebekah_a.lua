@@ -63,16 +63,16 @@ local roomWasCleared = false
 --boss rush
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 
-	local room = ILIB.game:GetRoom()
-	local roomIsClear = ILIB.room:IsClear()
+	local room = InutilLib.game:GetRoom()
+	local roomIsClear = InutilLib.room:IsClear()
 	
-	local currentStage = ILIB.game:GetLevel():GetStage()
-	local roomType = ILIB.room:GetType()
+	local currentStage = InutilLib.game:GetLevel():GetStage()
+	local roomType = InutilLib.room:GetType()
 	
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if yandereWaifu.IsNormalRebekah(player) then
-			if ILIB.game:IsGreedMode() then
+			if InutilLib.game:IsGreedMode() then
 				if not ultraGreedWasDefeated then
 					if currentStage == LevelStage.STAGE7_GREED then
 						if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS and room:IsCurrentRoomLastBoss() then
@@ -80,7 +80,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 								yandereWaifu.ACHIEVEMENT.LOVE_POWER:Unlock()
 								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_love_power.png", nil, true, 60)
 							end
-							if ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then 
+							if InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then 
 								if not yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:IsUnlocked() then --greedier
 									yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:Unlock()
 
@@ -115,7 +115,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	local currentStage = game:GetLevel():GetStage()
 	local roomType = room:GetType()
 	
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if yandereWaifu:IsNormalRebekah() and CurrentRebeccaUnlocks and readyToUnlock then
 			
@@ -234,7 +234,7 @@ end)
 
 --item pool unlockables!
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	local itemPool = ILIB.game:GetItemPool()
+	local itemPool = InutilLib.game:GetItemPool()
 	if CurrentRebeccaUnlocks then
 		if not yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then --boss rush
 			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LUNCHBOX)

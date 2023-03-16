@@ -8,12 +8,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local playerdata = yandereWaifu.GetEntityData(player)
 		
 		if eff.FrameCount % 15 == 0 then
-			ILIB.game:MakeShockwave(eff.Position, 0.035, 0.025, 10)
+			InutilLib.game:MakeShockwave(eff.Position, 0.035, 0.025, 10)
 		end
 		if eff.FrameCount == 1 then
 			sprite:Play("Start", true) --normal attack
 			--eff.RenderZOffset = 10000;
-			ILIB.game:MakeShockwave(eff.Position, 0.035, 0.025, 10)
+			InutilLib.game:MakeShockwave(eff.Position, 0.035, 0.025, 10)
 		elseif sprite:IsFinished("Start") then
 			sprite:Play("Loop")
 		end
@@ -156,7 +156,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 			eff.RenderZOffset = 100;
-			ILIB.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
+			InutilLib.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_SLAM then
+			sprite:Load("gfx/effects/tainted/cursed/emoji_slam.anm2", true)
+			sprite:Play("Slam", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+			eff.RenderZOffset = 100;
+			InutilLib.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
+		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE then
+			sprite:Load("gfx/effects/tainted/cursed/emoji_cry.anm2", true)
+			sprite:Play("Cry", true) 
+			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
+			eff.RenderZOffset = 100;
+			InutilLib.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
 		end
 	end
 	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Poof") or sprite:IsFinished("Crash") or sprite:IsFinished("Shield") or sprite:IsFinished("Slam") then
@@ -176,7 +188,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
 				yandereWaifu.GetEntityData(data.Parent).BarrageIntro = true 
 			end
-			ILIB.game:ShakeScreen(10)
+			InutilLib.game:ShakeScreen(10)
 		end
 	end
 	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GOLD_FORCE_FIELD and sprite:GetFrame() < 12 then
@@ -190,7 +202,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				projdata.Subtype = oldProj.Subtype
 				projdata.Scale = oldProj.Scale
 				projdata.CollisionDamage = oldProj.CollsionDamage
-				--local newProj = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, projdata.Variant, oldProj.Position, Vector(0,0), data.Parent, 0, 0):ToProjectile();
+				--local newProj = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, projdata.Variant, oldProj.Position, Vector(0,0), data.Parent, 0, 0):ToProjectile();
 				local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, oldProj.Position, Vector(0,0), data.Parent) 
 				--newProj:AddFallingSpeed(-9 + math.random() * 2) ;
 				--newProj:AddFallingAccel(0.5);
@@ -200,6 +212,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			elseif e:IsEnemy() and eff.FrameCount % 5 == 0 then
 				if (e.Position - data.Parent.Position):Length() < 80 then
 					e:TakeDamage(data.Parent.Damage/3, 0, EntityRef(eff), 4)
+				end
+			end
+		end
+	end
+	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE then
+		if sprite:IsFinished("Crydie") then
+			eff:Remove()
+		end
+		if sprite:IsFinished("Cry") then
+			sprite:Play("Cryloop", true)
+		end
+		if eff.FrameCount == 300 then
+			sprite:Play("Crydie", true)
+		end
+		if sprite:IsPlaying("Cryloop") then
+			if data.Parent then
+				local player = data.Parent:ToPlayer()
+				if eff.FrameCount % (math.ceil(player.MaxFireDelay/10)) == 0 then --was 4?
+					local tears = player:FireTear(eff.Position, Vector.FromAngle(30*(math.random(-5,5))):Resized(10), false, false, false):ToTear()
+					tears.Position = eff.Position
+					
+					data.headFrame = data.headFrame + 1
 				end
 			end
 		end
@@ -530,7 +564,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_GROUNDCRACK, 1, 0, false, 0.9 )
 	end
 	if sprite:IsPlaying("FadeIn") then
-		ILIB.game:ShakeScreen(4)
+		InutilLib.game:ShakeScreen(4)
 	end
 	if sprite:IsFinished("FadeIn") then
 		sprite:Play("Pentagram", true)
@@ -608,7 +642,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if sprite:IsPlaying("Drop") and sprite:GetFrame() == 4 then
 		local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, 16, 2, eff.Position, Vector.Zero, eff );
 		InutilLib.SFX:Play( SoundEffect.SOUND_CHEST_DROP, 1, 0, false, 0.5 )
-		ILIB.game:ShakeScreen(10)
+		InutilLib.game:ShakeScreen(10)
 	end
 	if sprite:IsFinished("Drop") then
 		eff:Remove()

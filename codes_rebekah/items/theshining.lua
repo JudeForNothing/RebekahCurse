@@ -5,10 +5,10 @@ function yandereWaifu:usetheShining(collItem, rng, player)
 	player:AddCacheFlags(CacheFlag.CACHE_ALL);
 	player:EvaluateItems()
 	for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
-		currentLevelIDX = ILIB.level:GetCurrentRoomDesc().GridIndex
+		local door = InutilLib.game:GetRoom():GetDoor(i)
+		currentLevelIDX = InutilLib.level:GetCurrentRoomDesc().GridIndex
 		if door then
-			local puddle = ILIB.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, door.Position, Vector(0,0), player, 0, 0):ToEffect()
+			local puddle = InutilLib.game:Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, door.Position, Vector(0,0), player, 0, 0):ToEffect()
 			InutilLib.RevelSetCreepData(puddle)
 			InutilLib.RevelUpdateCreepSize(puddle, math.random(12,19), true)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
@@ -20,7 +20,7 @@ function yandereWaifu:usetheShining(collItem, rng, player)
 			local limit = math.random(7,15)
 			for j = 0, limit do
 				InutilLib.SetTimer( j*30, function()
-					if door and currentLevelIDX == ILIB.level:GetCurrentRoomDesc().GridIndex then
+					if door and currentLevelIDX == InutilLib.level:GetCurrentRoomDesc().GridIndex then
 						local vector = InutilLib.DirToVec(door.Direction)
 						local tear = player:FireTear(door.Position, Vector.FromAngle(math.random(-10,10)+vector:GetAngleDegrees()+180)*(math.random(13,25)), false, false, false):ToTear()
 						InutilLib.MakeTearLob(tear, 8, 15)
@@ -43,7 +43,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usetheShining, 
 
 
 function yandereWaifu:ItsJohnnyenteringtheroom()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_THESHINING) and data.GonnaChopOffTheDoor then

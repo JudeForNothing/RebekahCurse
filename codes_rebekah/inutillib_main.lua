@@ -1,5 +1,7 @@
+local mod
+
 --the version of this helper mod script
-local currentVersion = 5
+local currentVersion = 6
 
 --remove any previous versions that may exist, piber style
 local callbacksAlreadyLoaded = nil
@@ -10,7 +12,7 @@ if InutilLib then
 	end
 	if thisVersion < currentVersion then
 		InutilLib = nil
-		ILIB = {}
+		InutilLib = {}
 		InutilLibFiles = {}
 		Isaac.DebugString("Removed older inutillib helper (version " .. thisVersion .. ")")
 	end
@@ -21,7 +23,8 @@ if InutilLib then
 end
 
 if not InutilLib then
-	InutilLib = RegisterMod("InutilLib", 1)
+	InutilLib = {}
+	mod = RegisterMod("InutilLib", 1)
 	InutilLib.Version = currentVersion
 
 	Isaac.DebugString("Loading inutillib helper version " .. InutilLib.Version)
@@ -101,22 +104,20 @@ if not InutilLib then
 	-----------------------
 	-- GENERIC LIBRARY I --
 	-----------------------
-	ILIB = {
-		player = Isaac.GetPlayer(0),
-		game = Game(),
-		roomEntities = {},
-		roomPlayers = {},
-		roomTears = {},
-		roomFamiliars = {},
-		roomBombs = {},
-		roomPickups = {},
-		roomSlots = {},
-		roomLasers = {},
-		roomKnives = {},
-		roomProjectiles = {},
-		roomEnemies = {},
-		roomEffects = {}
-	}
+	InutilLib.player = Isaac.GetPlayer(0)
+	InutilLib.game = Game()
+	InutilLib.roomEntities = {}
+	InutilLib.roomPlayers = {}
+	InutilLib.roomTears = {}
+	InutilLib.roomFamiliars = {}
+	InutilLib.roomBombs = {}
+	InutilLib.roomPickups = {}
+	InutilLib.roomSlots = {}
+	InutilLib.roomLasers = {}
+	InutilLib.roomKnives = {}
+	InutilLib.roomProjectiles = {}
+	InutilLib.roomEnemies = {}
+	InutilLib.roomEffects = {}
 
 	function InutilLib.TestPing()
 		print("Testing! This is Version 2!")
@@ -124,85 +125,85 @@ if not InutilLib then
 
 	--Special called vars
 	do
-		InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+		mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 			local data = InutilLib.GetILIBData( damage ) 
 			if damage.Type == 1 then
-				ILIB.players = {}
-				for i=0, ILIB.game:GetNumPlayers()-1 do
-					table.insert(ILIB.players, Isaac.GetPlayer(i)) --dont use, its crap
+				InutilLib.players = {}
+				for i=0, InutilLib.game:GetNumPlayers()-1 do
+					table.insert(InutilLib.players, Isaac.GetPlayer(i)) --dont use, its crap
 				end
 			end
 		end)
 
-		InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function()
-			ILIB.player = Isaac.GetPlayer(0)
-			ILIB.players = {}
-			for i=0, ILIB.game:GetNumPlayers()-1 do
-				table.insert(ILIB.players, Isaac.GetPlayer(i)) --dont use, its crap
+		mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function()
+			InutilLib.player = Isaac.GetPlayer(0)
+			InutilLib.players = {}
+			for i=0, InutilLib.game:GetNumPlayers()-1 do
+				table.insert(InutilLib.players, Isaac.GetPlayer(i)) --dont use, its crap
 			end
 		end)
-		InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
-			ILIB.level = ILIB.game:GetLevel()
+		mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
+			InutilLib.level = InutilLib.game:GetLevel()
 		end)
-		InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_, room)
-			ILIB.room = ILIB.game:GetRoom()
-			ILIB.currentCharge = ILIB.player:GetActiveCharge() --purpose fo discharging in "empty" rooms
+		mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_, room)
+			InutilLib.room = InutilLib.game:GetRoom()
+			InutilLib.currentCharge = InutilLib.player:GetActiveCharge() --purpose fo discharging in "empty" rooms
 
-			if ILIB.room:GetBackdropType() ~= BackdropType.DUNGEON_BEAST then 
+			if InutilLib.room:GetBackdropType() ~= BackdropType.DUNGEON_BEAST then 
 				InutilLib.ChangeShading("_default")
 			end
 			Isaac.RunCallback("POST_SHADING_INIT", room)
 		end)
 
-		--[[InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function() --jumpstart ILIB variables (cause the normal ones don't run on startup.
-			ILIB.player = Isaac.GetPlayer(0)
-			ILIB.players = {}
-			for i=0, ILIB.game:GetNumPlayers()-1 do
-				table.insert(ILIB.players, Isaac.GetPlayer(i))
+		--[[mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function() --jumpstart InutilLib variables (cause the normal ones don't run on startup.
+			InutilLib.player = Isaac.GetPlayer(0)
+			InutilLib.players = {}
+			for i=0, InutilLib.game:GetNumPlayers()-1 do
+				table.insert(InutilLib.players, Isaac.GetPlayer(i))
 			end
-			ILIB.level = ILIB.game:GetLevel()
-			ILIB.room = ILIB.game:GetRoom()
+			InutilLib.level = InutilLib.game:GetLevel()
+			InutilLib.room = InutilLib.game:GetRoom()
 		end)]]
 	end
 
 	function InutilLib:OptimizedGetEntities() -- I got this from Coming Home, pls don't kill me ;-;
-		ILIB.roomEntities = Isaac.GetRoomEntities()
-		ILIB.roomPlayers = {}
-		ILIB.roomTears = {}
-		ILIB.roomFamiliars = {}
-		ILIB.roomBombs = {}
-		ILIB.roomPickups = {}
-		ILIB.roomSlots = {}
-		ILIB.roomLasers = {}
-		ILIB.roomKnives = {}
-		ILIB.roomProjectiles = {}
-		ILIB.roomEnemies = {}
-		ILIB.roomEffects = {}
-		ILIB.roomVulnurableEnemies = {}
-		for _,e in ipairs(ILIB.roomEntities) do
-			if e.Type == EntityType.ENTITY_PLAYER then table.insert(ILIB.roomPlayers, e)
-			elseif e.Type == EntityType.ENTITY_TEAR then table.insert(ILIB.roomTears, e)
-			elseif e.Type == EntityType.ENTITY_FAMILIAR then table.insert(ILIB.roomFamiliars, e)
-			elseif e.Type == EntityType.ENTITY_BOMBDROP then table.insert(ILIB.roomBombs, e)
-			elseif e.Type == EntityType.ENTITY_PICKUP then table.insert(ILIB.roomPickups, e)
-			elseif e.Type == EntityType.ENTITY_SLOT then table.insert(ILIB.roomSlots, e)
-			elseif e.Type == EntityType.ENTITY_LASER then table.insert(ILIB.roomLasers, e)
-			elseif e.Type == EntityType.ENTITY_KNIFE then table.insert(ILIB.roomKnives, e)
-			elseif e.Type == EntityType.ENTITY_PROJECTILE then table.insert(ILIB.roomProjectiles, e)
+		InutilLib.roomEntities = Isaac.GetRoomEntities()
+		InutilLib.roomPlayers = {}
+		InutilLib.roomTears = {}
+		InutilLib.roomFamiliars = {}
+		InutilLib.roomBombs = {}
+		InutilLib.roomPickups = {}
+		InutilLib.roomSlots = {}
+		InutilLib.roomLasers = {}
+		InutilLib.roomKnives = {}
+		InutilLib.roomProjectiles = {}
+		InutilLib.roomEnemies = {}
+		InutilLib.roomEffects = {}
+		InutilLib.roomVulnurableEnemies = {}
+		for _,e in ipairs(InutilLib.roomEntities) do
+			if e.Type == EntityType.ENTITY_PLAYER then table.insert(InutilLib.roomPlayers, e)
+			elseif e.Type == EntityType.ENTITY_TEAR then table.insert(InutilLib.roomTears, e)
+			elseif e.Type == EntityType.ENTITY_FAMILIAR then table.insert(InutilLib.roomFamiliars, e)
+			elseif e.Type == EntityType.ENTITY_BOMBDROP then table.insert(InutilLib.roomBombs, e)
+			elseif e.Type == EntityType.ENTITY_PICKUP then table.insert(InutilLib.roomPickups, e)
+			elseif e.Type == EntityType.ENTITY_SLOT then table.insert(InutilLib.roomSlots, e)
+			elseif e.Type == EntityType.ENTITY_LASER then table.insert(InutilLib.roomLasers, e)
+			elseif e.Type == EntityType.ENTITY_KNIFE then table.insert(InutilLib.roomKnives, e)
+			elseif e.Type == EntityType.ENTITY_PROJECTILE then table.insert(InutilLib.roomProjectiles, e)
 			elseif e:IsEnemy() then 
 				if e:IsVulnerableEnemy() and not e:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then 
-					table.insert(ILIB.roomVulnurableEnemies, e)
-					table.insert(ILIB.roomEnemies, e)
+					table.insert(InutilLib.roomVulnurableEnemies, e)
+					table.insert(InutilLib.roomEnemies, e)
 				else
-					table.insert(ILIB.roomEnemies, e)
+					table.insert(InutilLib.roomEnemies, e)
 				end
-			elseif e.Type == EntityType.ENTITY_EFFECT then table.insert(ILIB.roomEffects, e) 
+			elseif e.Type == EntityType.ENTITY_EFFECT then table.insert(InutilLib.roomEffects, e) 
 			end
 		end
 	end
 
-	--InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, InutilLib.OptimizedGetEntities)
-	--InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, InutilLib.OptimizedGetEntities)
+	--mod:AddCallback(ModCallbacks.MC_POST_RENDER, InutilLib.OptimizedGetEntities)
+	--mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, InutilLib.OptimizedGetEntities)
 	-------------------------
 	--CUSTOM CALLBACKS--
 	---------------------
@@ -210,7 +211,7 @@ if not InutilLib then
 	--The majority of this code comes from piber20 ported into Repentance
 
 	ILIBCallbacks = {
-		--use these callbacks with ILIB.AddCustomCallback(modRef, callbackID, callbackFunction, extraVar)
+		--use these callbacks with InutilLib.AddCustomCallback(modRef, callbackID, callbackFunction, extraVar)
 		--using a vanilla callback id will register the callback to modRef normally but consolidated into a single callback if you use this multiple times
 		
 		--custom callback functions that run when a mod adds a callback through InutilLibhelper's custom callback function (crazy huh?)
@@ -334,7 +335,7 @@ if not InutilLib then
 		end
 		
 		--slot callbacks
-		InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_UPDATE, function()
+		InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_UPDATE, function()
 			if ILIBCallbackData[ILIBCallbacks.MC_POST_SLOT_UPDATE] then
 				for _, slot in ipairs(Isaac.FindByType(EntityType.ENTITY_SLOT, -1, -1, false, false)) do
 					for _, callbackData in ipairs(ILIBCallbackData[ILIBCallbacks.MC_POST_SLOT_UPDATE]) do
@@ -346,7 +347,7 @@ if not InutilLib then
 			end
 		end)
 		
-		InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_RENDER, function()
+		InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_RENDER, function()
 			if ILIBCallbackData[ILIBCallbacks.MC_POST_SLOT_RENDER] then
 				for _, slot in ipairs(Isaac.FindByType(EntityType.ENTITY_SLOT, -1, -1, false, false)) do
 					for _, callbackData in ipairs(ILIBCallbackData[ILIBCallbacks.MC_POST_SLOT_RENDER]) do
@@ -409,7 +410,7 @@ if not InutilLib then
 			[ModCallbacks.MC_PRE_BOMB_COLLISION] = true
 		}
 		InutilLibCallbackModsSetUp = InutilLibCallbackModsSetUp or {}
-		InutilLib.AddCustomCallback(InutilLib, ILIBCallbacks.MC_POST_ADD_CUSTOM_CALLBACK, function(modRef, callbackID, callbackFunction, extraVar)
+		InutilLib.AddCustomCallback(mod, ILIBCallbacks.MC_POST_ADD_CUSTOM_CALLBACK, function(modRef, callbackID, callbackFunction, extraVar)
 			if not modRef.InutilLibModID then
 				modRef.InutilLibModID = #InutilLibCallbackModsSetUp+1
 				InutilLibCallbackModsSetUp[#InutilLibCallbackModsSetUp+1] = modRef
@@ -477,16 +478,16 @@ if not InutilLib then
 			-- InutilLib.SFX = SFXManager()
 		end
 		-- InutilLib.ReCacheData()
-		-- InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_RENDER, function()
+		-- InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_RENDER, function()
 			-- InutilLib.ReCacheData()
 		-- end)
-		-- InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_NEW_ROOM, function()
+		-- InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_NEW_ROOM, function()
 			-- InutilLib.ReCacheData()
 		-- end)
-		-- InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_NEW_LEVEL, function()
+		-- InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_NEW_LEVEL, function()
 			-- InutilLib.ReCacheData()
 		-- end)
-		-- InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_PLAYER_INIT, function()
+		-- InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_PLAYER_INIT, function()
 			-- InutilLib.ReCacheData()
 		-- end)
 
@@ -602,7 +603,7 @@ if not InutilLib then
 			}
 		}
 		for _, entityCallbackDataToSetUp in ipairs(entityCallbacksToSetUp) do
-			InutilLib.AddCustomCallback(InutilLib, ILIBCallbacks.MC_POST_ADD_CUSTOM_CALLBACK, function(modRef, callbackID, callbackFunction, extraVar)
+			InutilLib.AddCustomCallback(mod, ILIBCallbacks.MC_POST_ADD_CUSTOM_CALLBACK, function(modRef, callbackID, callbackFunction, extraVar)
 				if extraVar then
 					local singleCallback = entityCallbackDataToSetUp.EntityTypeCallbacks[extraVar] or entityCallbackDataToSetUp.NPCCallback
 					InutilLib.AddCustomCallback(modRef, singleCallback, callbackFunction)
@@ -615,7 +616,7 @@ if not InutilLib then
 		end
 		
 		--MC_POST_FIRST_GAME_START
-		--[[InutilLib.AddCustomCallback(InutilLib, ILIBCallbacks.MC_POST_ADD_CUSTOM_CALLBACK, function(modRef, callbackID, callbackFunction, extraVar)
+		--[[InutilLib.AddCustomCallback(mod, ILIBCallbacks.MC_POST_ADD_CUSTOM_CALLBACK, function(modRef, callbackID, callbackFunction, extraVar)
 			if not modRef.InutilLibAddedFirstGameStartCallback then
 				InutilLib.AddCustomCallback(modRef, ModCallbacks.MC_POST_GAME_STARTED, function(modRef, fromSave)
 					if not modRef.InutilLibFirstGameStartTracker then
@@ -632,9 +633,19 @@ if not InutilLib then
 			end
 			modRef.InutilLibAddedFirstGameStartCallback = true
 		end, ILIBCallbacks.MC_POST_FIRST_GAME_START)]]
-		
+	
+	mod:AddCallback(ModCallbacks.MC_POST_LASER_RENDER, function(_, lz)
+		local data = InutilLib.GetILIBData(lz)
+		if not data.LaserInit then
+			local parent = lz.Parent
+			if parent and parent.Type == EntityType.ENTITY_PLAYER then
+				data.LaserInit = true
+				Isaac.RunCallback("MC_POST_FIRE_LASER", lz)
+			end
+		end
+	end)
 
-	InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_LASER_RENDER, function(_, lz)
+	--[[InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_LASER_RENDER, function(_, lz)
 		local data = InutilLib.GetILIBData(lz)
 		if not data.LaserInit then
 			local parent = lz.Parent
@@ -648,20 +659,20 @@ if not InutilLib then
 					end
 				end
 			end
-			--[[if parent and parent.Type == EntityType.ENTITY_FAMILIAR and parent.Variant == FamiliarVariant.INCUBUS and not data.IsIncubusLaser then
-				data.IsIncubusLaser = true
-				local player = parent:ToFamiliar().Player
-
-				if player then
-					data.LaserInit = true
-					InutilLib.OnPlayerTearInit(lz, player)
-				end
-			end]]
+		end
+	end)]]
+	mod:AddCallback(ModCallbacks.MC_POST_BOMB_RENDER, function(_, bb)
+		local data = InutilLib.GetILIBData(bb)
+		if not data.BombInit then
+			local parent = bb.Parent
+			if parent and parent.Type == EntityType.ENTITY_PLAYER then
+				data.BombInit = true
+				Isaac.RunCallback("MC_POST_FIRE_BOMB", bb)
+			end
 		end
 	end)
 
-
-	InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_BOMB_RENDER, function(_, bb)
+	--[[InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_BOMB_RENDER, function(_, bb)
 		local data = InutilLib.GetILIBData(bb)
 		if not data.BombInit then
 			local parent = bb.Parent
@@ -676,7 +687,7 @@ if not InutilLib then
 				end
 			end
 		end
-	end)
+	end)]]
 
 
 	-----LIBRARY??------------
@@ -873,7 +884,7 @@ if not InutilLib then
 							end
 							if pass then --if path is possible or path is not even required
 								if checkLine then
-									if ILIB.room:CheckLine(obj.Position, e.Position, mode, GridTreshHold, ignoreWalls, ignoreCrushables) then
+									if InutilLib.room:CheckLine(obj.Position, e.Position, mode, GridTreshHold, ignoreWalls, ignoreCrushables) then
 										closestDist = (obj.Position - e.Position):Length()
 										returnV = e
 									end
@@ -893,7 +904,7 @@ if not InutilLib then
 	function InutilLib.GetClosestPlayer(obj, dist)
 		local closestDist = 177013 --saved Dist to check who is the closest enemy
 		local returnV
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local e = Isaac.GetPlayer(p)
 			if not e:IsDead() then
 				local minDist = dist or 100
@@ -925,7 +936,7 @@ if not InutilLib then
 
 	--helps detect what wall is closest to the enemy
 	function InutilLib.ClosestWall(npc)
-			local room = ILIB.room
+			local room = InutilLib.room
 			local leftWall = math.abs(room:GetTopLeftPos().X-npc.Position.X)
 			local rightWall = math.abs(room:GetBottomRightPos().X-npc.Position.X)
 			local topWall = math.abs(room:GetTopLeftPos().Y-npc.Position.Y)
@@ -942,7 +953,7 @@ if not InutilLib then
 	end
 
 	function InutilLib.ClosestHorizontalWall(npc)
-			local room = ILIB.room
+			local room = InutilLib.room
 			local leftWall = math.abs(room:GetTopLeftPos().X-npc.Position.X)
 			local rightWall = math.abs(room:GetBottomRightPos().X-npc.Position.X)
 			--local topWall = math.abs(room:GetTopLeftPos().Y-npc.Position.Y)
@@ -960,7 +971,7 @@ if not InutilLib then
 
 	--i saw it at modding server
 	function InutilLib.GetExpectedCenterPos(room)
-		return ILIB.room:IsLShapedRoom() and Vector(580, 420) or ILIB.room:GetCenterPos()
+		return InutilLib.room:IsLShapedRoom() and Vector(580, 420) or InutilLib.room:GetCenterPos()
 	end
 
 	-----------------------------------------------
@@ -969,7 +980,7 @@ if not InutilLib then
 
 	--most of the code is from Rev but i coded it in my needs--
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, function(_, bomb)
+	mod:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, function(_, bomb)
 		if bomb.SpawnerType == 1 then
 			local data = InutilLib.GetILIBData(bomb)
 			if not bomb.Parent then --applies to normally dropped bomb, not dr fetus for instance
@@ -982,7 +993,7 @@ if not InutilLib then
 
 
 	--this doesnt work
-	InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
+	mod:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
 		local data = InutilLib.GetILIBData(eff)
 		if eff.Variant == EffectVariant.TARGET then --epic fetus target
 			data.player = InutilLib.GetClosestPlayer(eff, 100)
@@ -1034,7 +1045,7 @@ if not InutilLib then
 
 	--LUDO STUFF--
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
+	mod:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
 		if tr.FrameCount == 1 then
 			local data = InutilLib.GetILIBData(tr)
 			
@@ -1056,7 +1067,7 @@ if not InutilLib then
 		end
 	end)
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_, tr)
+	mod:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_, tr)
 		if tr.FrameCount == 1 then --some reason it starts at 1
 			local data = InutilLib.GetILIBData(tr)
 			--print(tr.TearFlags)
@@ -1083,7 +1094,7 @@ if not InutilLib then
 		--print(color.R, "  ", color.G, "  ", color.B, "  ", color.A, "  ", color.GO, "  ", color.BO, "  ", color.RO)
 	end)
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+	mod:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		--kn:SetColor(Color(0,0,0,0.7,170,170,210), 999, 999)
 		if kn.Parent then
 			if (kn.Parent.Type == 3 and kn.Parent.SubType == 177) then
@@ -1148,7 +1159,7 @@ if not InutilLib then
 		return mainTarget
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, tr)
+	mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, tr)
 		if tr.FrameCount == 1 then
 			local data = InutilLib.GetILIBData(tr)
 		end
@@ -1373,7 +1384,7 @@ if not InutilLib then
 		player.FireDelay = player.MaxFireDelay
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 		local data = InutilLib.GetILIBData( player )
 		if data.LastShownItem and InutilLib.IsShowingItem(player) then
 			player.FireDelay = 15
@@ -1461,7 +1472,7 @@ if not InutilLib then
 		data.LastShownItemByTrigger = collItem
 		data.LastShownItemByTriggerBySlot = slot
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.setLastShownItem)
+	mod:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.setLastShownItem)
 
 	function InutilLib.GetLastShownItem(player)
 		local data = InutilLib.GetILIBData( player )
@@ -1481,7 +1492,7 @@ if not InutilLib then
 	function InutilLib.GetRoomGrids()
 		local returnT = {}
 		for i = 1, 1000 do
-			local grid = ILIB.room:GetGridEntity(i)
+			local grid = InutilLib.room:GetGridEntity(i)
 			table.insert(returnT, grid)
 		end
 		return returnT
@@ -1507,7 +1518,7 @@ if not InutilLib then
 	function InutilLib.GetRoomGridCount()
 		local returnT = 0
 		for i = 1, 1000 do
-			local grid = ILIB.room:GetGridEntity(i)
+			local grid = InutilLib.room:GetGridEntity(i)
 			if grid ~= nil and (grid.State ~= 0 and grid.State ~= 2) then
 				if grid:GetType() ~= GridEntityType.GRID_WALL and grid:GetType() ~= GridEntityType.GRID_DOOR then
 					returnT = returnT + 1
@@ -1535,7 +1546,7 @@ if not InutilLib then
 	end
 	--underlay effects
 	local ENTITY_ENTUNDERLAY = Isaac.GetEntityVariantByName("Underlay");
-	InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local data = InutilLib.GetILIBData( eff )
 		local sprite = eff:GetSprite();
 		if data.Parent then
@@ -1782,7 +1793,7 @@ if not InutilLib then
 	local COLLECTIBLE_MEGA_MUSH_B = Isaac.GetItemIdByName(" Mega Mush ");
 	local ENTITY_MEGAMUSHOVERLAY = Isaac.GetEntityVariantByName("MegaMushOverlay");
 
-	InutilLib:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, function(_, item, rng, player, flag, pocket)
+	mod:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, function(_, item, rng, player, flag, pocket)
 		local data = InutilLib.GetILIBData(player)
 		if data.IsMegaMush then 
 			local ispocket = false
@@ -1804,7 +1815,7 @@ if not InutilLib then
 
 	--deprecated
 	--[[
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		--local player = Isaac.GetPlayer(0);
 		local room = Game():GetRoom();
 		local data = InutilLib.GetILIBData(player)
@@ -1904,7 +1915,7 @@ if not InutilLib then
 	--[[
 	function InutilLib:RenderMegaMushOverlay() 
 		--local player = Isaac.GetPlayer(0)
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 			local psprite = player:GetSprite()
 			local data = InutilLib.GetILIBData(player)
@@ -2062,7 +2073,7 @@ if not InutilLib then
 				--end
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, InutilLib.RenderMegaMushOverlay) ]]
+	mod:AddCallback(ModCallbacks.MC_POST_RENDER, InutilLib.RenderMegaMushOverlay) ]]
 
 	--chains like begotten
 	function InutilLib.AttachChain(parent, child, anm2, anim)
@@ -2253,7 +2264,7 @@ if not InutilLib then
 		trail:Update()
 		return trail
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+	mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local data = InutilLib.GetILIBData( eff )
 		if data.CustomPos then
 			eff.Position = data.Parent.Position - data.CustomPos
@@ -2288,7 +2299,7 @@ if not InutilLib then
 				return false
 			end
 		end
-		if ILIB.room and ILIB.room:IsClear() and not roomHasDanger then
+		if InutilLib.room and InutilLib.room:IsClear() and not roomHasDanger then
 			return true
 		end
 		return true
@@ -2352,7 +2363,7 @@ if not InutilLib then
 		end
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function(_)
+	mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function(_)
 		InutilLib.UpdateTimers()
 	end)
 
@@ -2375,7 +2386,7 @@ if not InutilLib then
 	end
 
 	--genericlib1.lua's Post_update!
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		InutilLib.UpdateFrameLoop()
 		InutilLib.UpdateTimers()
 	end)
@@ -2417,7 +2428,7 @@ if not InutilLib then
 		if Round(ent.Velocity:Length(),0) > vel then --this acts like a filter; if the current velocity is higher than the supposed velocity, it makes it slow down first :D
 			ent.Velocity = ent.Velocity * 0.9
 		else
-			if ILIB.room:CheckLine(ent.Position,targetPos.Position, 0, 1, false, false) and not ent:CollidesWithGrid() then
+			if InutilLib.room:CheckLine(ent.Position,targetPos.Position, 0, 1, false, false) and not ent:CollidesWithGrid() then
 				ent.Velocity = (ent.Velocity * friction) + (targetPos.Position - ent.Position):Resized(vel/2)
 			else
 				data.path:FindGridPath(targetPos.Position, vel/2, 1, false)
@@ -2458,7 +2469,7 @@ if not InutilLib then
 	end
 
 	function GetRandomNumByGameCount()
-		local product = RNG():GetSeed() + ILIB.game:GetFrameCount()
+		local product = RNG():GetSeed() + InutilLib.game:GetFrameCount()
 		return product
 	end
 
@@ -2590,20 +2601,20 @@ if not InutilLib then
 		local tbl = {}
 		tbl.gridSet = {}
 		tbl.emptySet = {}
-		for i = 0, ILIB.room:GetGridSize()  do
-			if ILIB.room:GetGridEntity(i) then
-				--Isaac.DebugString(ILIB.room:GetGridEntity(i):GetType())
+		for i = 0, InutilLib.room:GetGridSize()  do
+			if InutilLib.room:GetGridEntity(i) then
+				--Isaac.DebugString(InutilLib.room:GetGridEntity(i):GetType())
 				--Isaac.DebugString(i)
 				--local spear = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, Game():GetRoom():GetGridEntity(i).Position, Vector.Zero, _)
-				tbl.gridSet[i] = ILIB.room:GetGridPosition(i)
+				tbl.gridSet[i] = InutilLib.room:GetGridPosition(i)
 			else
-				tbl.emptySet[i] = ILIB.room:GetGridPosition(i)
+				tbl.emptySet[i] = InutilLib.room:GetGridPosition(i)
 			end
 		end
 		return tbl
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 		local tbl = InutilLib.CreateGenericGridIndexTable()
 		for k, v in pairs(InutilLib.CreateGenericGridIndexTable().gridSet) do
 			--Isaac.DebugString(k, "  ", v)
@@ -2629,7 +2640,7 @@ if not InutilLib then
 
 
 	function InutilLib.IsGridPassable(index, ground, general, ignorePits, ignoreSpikes)
-		room = ILIB.room
+		room = InutilLib.room
 		ground = ground or true --defaultly true
 		general = general or true
 		ignorePits = ignorePits or false
@@ -2665,7 +2676,7 @@ if not InutilLib then
 			local fCost = gCost + math.abs(hCost)
 			
 			--set starting index as first index in node
-			open[ILIB.room:GetGridIndex(target)] = {ILIB.room:GetGridIndex(target), fCost, nil} --partarget is nil
+			open[InutilLib.room:GetGridIndex(target)] = {InutilLib.room:GetGridIndex(target), fCost, nil} --partarget is nil
 			
 			--Isaac.DebugString("START")
 			while TableLength(open) > 0 do
@@ -2679,17 +2690,17 @@ if not InutilLib then
 					end
 				end
 				
-				local vPos = ILIB.room:GetGridPosition(v[1])
+				local vPos = InutilLib.room:GetGridPosition(v[1])
 				
 				--if path has been found
-				if v[1] == ILIB.room:GetGridIndex(ent) then
+				if v[1] == InutilLib.room:GetGridIndex(ent) then
 					open[v[1]] = nil
 					local gCost, hCost = (target - vPos):Length(), (ent - vPos):Length() 
 					local fCost = math.abs(gCost) + math.abs(hCost)
 					closed[v[1]] = {v[1], fCost, v[3]}
 					
 					if render then
-						vPos = ILIB.room:GetGridPosition(v[1])
+						vPos = InutilLib.room:GetGridPosition(v[1])
 						Isaac.RenderText(tostring(v[3]), Isaac.WorldToScreen(vPos).X-10, Isaac.WorldToScreen(vPos).Y-5, 1 ,1 ,1 ,1 )
 					end
 					return closed
@@ -2699,8 +2710,8 @@ if not InutilLib then
 				
 				for i = 1, 4 do --code that checks each four directions
 					local angle = i-1
-					local selectedGrid = ILIB.room:GetGridIndex((vPos + Vector(0,0)) + Vector(45,0):Rotated(90*(angle))) --grids around the currtarget selected grid
-					if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid, true, true, false, ignoreSpikes)  then --and not open[ILIB.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
+					local selectedGrid = InutilLib.room:GetGridIndex((vPos + Vector(0,0)) + Vector(45,0):Rotated(90*(angle))) --grids around the currtarget selected grid
+					if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid, true, true, false, ignoreSpikes)  then --and not open[InutilLib.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
 						local gCost, hCost = (target - vPos):Length(), (ent - vPos):Length() 
 						local fCost = math.abs(gCost) + math.abs(hCost)
 						open[selectedGrid] =  {selectedGrid, fCost, v[1]}
@@ -2714,7 +2725,7 @@ if not InutilLib then
 				
 				if render then
 					Isaac.RenderText(tostring((v[3])), Isaac.WorldToScreen(vPos).X-10, Isaac.WorldToScreen(vPos).Y-5, 1 ,1 ,1 ,1 )
-					Isaac.RenderText("end", Isaac.WorldToScreen(ILIB.room:GetGridPosition(ILIB.room:GetGridIndex(ent))).X-10, Isaac.WorldToScreen(ILIB.room:GetGridPosition(ILIB.room:GetGridIndex(ent))).Y-10, 1 ,1 ,1 ,1 )
+					Isaac.RenderText("end", Isaac.WorldToScreen(InutilLib.room:GetGridPosition(InutilLib.room:GetGridIndex(ent))).X-10, Isaac.WorldToScreen(InutilLib.room:GetGridPosition(InutilLib.room:GetGridIndex(ent))).Y-10, 1 ,1 ,1 ,1 )
 				end
 			end
 			--[[while TableLength(open) > 0 do
@@ -2730,22 +2741,22 @@ if not InutilLib then
 					--Isaac.DebugString(v[1])
 				end
 					
-					vPos = ILIB.room:GetGridPosition(v[1])
+					vPos = InutilLib.room:GetGridPosition(v[1])
 					for i = 1, 4 do --code that checks each four directions
 						local angle = i-1
-						local selectedGrid = ILIB.room:GetGridIndex((vPos + Vector(0,0)) + Vector(45,0):Rotated(90*(angle))) --grids around the currtarget selected grid
+						local selectedGrid = InutilLib.room:GetGridIndex((vPos + Vector(0,0)) + Vector(45,0):Rotated(90*(angle))) --grids around the currtarget selected grid
 						--print(90*(i))
-						if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid, true, true, false, ignoreSpikes) then --and not open[ILIB.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
+						if not closed[selectedGrid] and InutilLib.IsGridPassable(selectedGrid, true, true, false, ignoreSpikes) then --and not open[InutilLib.room:GetGridIndex(selectedGrid)] then --if grid is passable and not in closed table
 							--if open[selectedGrid]  == nil then
-							--Isaac.RenderText("pizza", Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).X-10, Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).Y-2, 1 ,1 ,1 ,1 )
-							--Isaac.RenderText("0", Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).X, Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).Y, 1 ,1 ,1 ,1 )
+							--Isaac.RenderText("pizza", Isaac.WorldToScreen(InutilLib.room:GetGridPosition(selectedGrid)).X-10, Isaac.WorldToScreen(InutilLib.room:GetGridPosition(selectedGrid)).Y-2, 1 ,1 ,1 ,1 )
+							--Isaac.RenderText("0", Isaac.WorldToScreen(InutilLib.room:GetGridPosition(selectedGrid)).X, Isaac.WorldToScreen(InutilLib.room:GetGridPosition(selectedGrid)).Y, 1 ,1 ,1 ,1 )
 							local gCost, hCost = (target - vPos):Length(), (ent - vPos):Length() 
 							local fCost = math.abs(gCost) + math.abs(hCost)
 							--table.insert(open, {selectedGrid, fCost, nil})
 							open[selectedGrid] =  {selectedGrid, fCost, nil}
 							Isaac.DebugString("searching")
 						else
-							--Isaac.RenderText("-1", Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).X, Isaac.WorldToScreen(ILIB.room:GetGridPosition(selectedGrid)).Y, 1 ,1 ,1 ,1 )
+							--Isaac.RenderText("-1", Isaac.WorldToScreen(InutilLib.room:GetGridPosition(selectedGrid)).X, Isaac.WorldToScreen(InutilLib.room:GetGridPosition(selectedGrid)).Y, 1 ,1 ,1 ,1 )
 						end
 					end
 					end
@@ -2754,7 +2765,7 @@ if not InutilLib then
 			--Isaac.DebugString("END")
 			
 			--for k, v in pairs(closed) do
-			--	vPos = ILIB.room:GetGridPosition(v[1])
+			--	vPos = InutilLib.room:GetGridPosition(v[1])
 			--	Isaac.RenderText("close", Isaac.WorldToScreen(vPos).X-10, Isaac.WorldToScreen(vPos).Y-15, 1 ,1 ,1 ,1 )
 			--end
 		else
@@ -2772,11 +2783,11 @@ if not InutilLib then
 			local data = InutilLib.GetILIBData(ent)
 			
 			--make index as the parent of the current grid you are standing at
-			if path[ILIB.room:GetGridIndex(ent.Position)] then
-				local index = path[ILIB.room:GetGridIndex(ent.Position)][3]
+			if path[InutilLib.room:GetGridIndex(ent.Position)] then
+				local index = path[InutilLib.room:GetGridIndex(ent.Position)][3]
 
 				if index then
-					local pos = ILIB.room:GetGridPosition(index)
+					local pos = InutilLib.room:GetGridPosition(index)
 					ent.Velocity = ent.Velocity * friction + (pos - ent.Position):Resized(vel)
 				end
 			end
@@ -3005,7 +3016,7 @@ if not InutilLib then
 		end
 	end
 	--[[
-	InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_FIRE_TEAR, function(_, tear)
+	InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_FIRE_TEAR, function(_, tear)
 		local data = InutilLib.GetILIBData(tear)
 		if not data.TearInit then
 			if tear.SpawnerType == 1 then
@@ -3032,7 +3043,7 @@ if not InutilLib then
 		end
 	end
 
-	InutilLib.AddCustomCallback(InutilLib, ModCallbacks.MC_POST_TEAR_RENDER, function(_, tear)
+	InutilLib.AddCustomCallback(mod, ModCallbacks.MC_POST_TEAR_RENDER, function(_, tear)
 		local data = InutilLib.GetILIBData(tear)
 		if not data.TearInit then
 			local parent = tear.Parent
@@ -3136,7 +3147,7 @@ if not InutilLib then
 	-- 0 - stationary
 	-- 1 - launching
 	-- 2 - retracting
-	InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+	mod:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		local data = InutilLib.GetILIBData(kn)
 		if kn.FrameCount == 1 then
 			data.state = -1
@@ -3176,13 +3187,13 @@ if not InutilLib then
 
 	-- Can be used for other things other than knifes in the future, dont worry
 	function InutilLib:NewRoom()
-		for i,kn in ipairs(ILIB.roomKnives) do
+		for i,kn in ipairs(InutilLib.roomKnives) do
 			if InutilLib.GetILIBData(kn).customBehavour == true then
 				kn:Remove()
 			end
 		end
 	end
-	InutilLib:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, InutilLib.NewRoom)
+	mod:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, InutilLib.NewRoom)
 
 	--im_tem credits
 	function InutilLib:SpawnCustomStrawman(PlayerType, Player, Parented)
@@ -3190,7 +3201,7 @@ if not InutilLib then
 		PlayerType=PlayerType or 0
 		Player = Player or Isaac.GetPlayer(0)
 		ControllerIndex=Player.ControllerIndex or 0
-		local LastPlayerIndex=ILIB.game:GetNumPlayers()-1
+		local LastPlayerIndex=InutilLib.game:GetNumPlayers()-1
 		if LastPlayerIndex>=63 then return nil else
 			Isaac.ExecuteCommand('addplayer '..PlayerType..' '..ControllerIndex)	--spawn the dude
 			local Strawman=Isaac.GetPlayer(LastPlayerIndex+1)
@@ -3204,7 +3215,7 @@ if not InutilLib then
 
 	function InutilLib:GetKnifePlayer() --independent knife player manager
 		local knifeHelper = nil
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 			if InutilLib.GetILIBData(player).Knife then
 				knifeHelper = player
@@ -3238,7 +3249,7 @@ if not InutilLib then
 		return given
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam)
+	mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam)
 		local data = InutilLib.GetILIBData(fam)
 		if fam.SubType == 177 then
 			fam:GetSprite():ReplaceSpritesheet(0, "gfx/invis_incubus.png")
@@ -3250,7 +3261,7 @@ if not InutilLib then
 	end, FamiliarVariant.INCUBUS)
 
 	--currently having too much knives makes it panic and not die
-	InutilLib:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)	
+	mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)	
 		local data = InutilLib.GetILIBData(fam)
 		
 		local function RemoveParent()
@@ -3289,7 +3300,7 @@ if not InutilLib then
 
 	---- Custom Plyaer Knife Helper Stuff ----
 	do
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,  pl)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,  pl)
 		local data = InutilLib.GetILIBData(pl)
 		if data.Knife then
 			pl.Position = Isaac.GetPlayer(0).Position
@@ -3323,10 +3334,10 @@ if not InutilLib then
 			end
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_INPUT_ACTION , InutilLib.KnifeHelperInput)
+	mod:AddCallback(ModCallbacks.MC_INPUT_ACTION , InutilLib.KnifeHelperInput)
 
 	--stop pickup
-	InutilLib:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, pl)
+	mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, pl)
 		if pl and pl.Type == EntityType.ENTITY_PLAYER then
 			pl:ToPlayer()
 			local data = InutilLib.GetILIBData(pl)
@@ -3367,7 +3378,7 @@ if not InutilLib then
 			
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, updatepesudoClones)]]
+	mod:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, updatepesudoClones)]]
 
 	--this might be the update multiplier?
 	--[[function InutilLib.spawnpseudoClones(_, player)
@@ -3393,7 +3404,7 @@ if not InutilLib then
 				--end
 			end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, InutilLib.spawnpseudoClones)]]
+	mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, InutilLib.spawnpseudoClones)]]
 
 	local function initpesudoClone(_, familiar)
 		if familiar.SubType == InutilLib.PSEUDO_CLONE then
@@ -3403,7 +3414,7 @@ if not InutilLib then
 			end
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, initpesudoClone, FamiliarVariant.BLOOD_BABY)
+	mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, initpesudoClone, FamiliarVariant.BLOOD_BABY)
 
 	local function updatepesudoClone(_, familiar)
 		if familiar.SubType == InutilLib.PSEUDO_CLONE then
@@ -3419,7 +3430,7 @@ if not InutilLib then
 			--familiar.Velocity = player.Velocity * 2.55
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, updatepesudoClone, FamiliarVariant.BLOOD_BABY)
+	mod:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, updatepesudoClone, FamiliarVariant.BLOOD_BABY)
 
 	local skip = nil
 	local function handlepseudocloneDamage(_, ent, amount, flags, source, countdown)
@@ -3448,7 +3459,7 @@ if not InutilLib then
 			return false
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, handlepseudocloneDamage)
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, handlepseudocloneDamage)
 
 	--local shadowSprite = Sprite()
 	--shadowSprite:Load("gfx/characters/corrupted_judas_1.anm2", true)
@@ -3462,7 +3473,7 @@ if not InutilLib then
 		local shadowOpacity = originalShadowOpacity+(math.random()-0.5)*0.5 * (originalShadowOpacity/0.7)
 		shadowSprite.Color = Color(0, 0, 0, shadowOpacity)]]
 		local render_pos = familiar.Position + Vector(0,5)
-		if ILIB.room:IsMirrorWorld() then --Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
+		if InutilLib.room:IsMirrorWorld() then --Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
 			--render_pos = Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
 			player.FlipX = (not player.FlipX)
 		end
@@ -3479,7 +3490,7 @@ if not InutilLib then
 			--shadowSprite:SetOverlayFrame(sprite:GetOverlayAnimation(), sprite:GetOverlayFrame())
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, handlepesudocloneVisual, FamiliarVariant.BLOOD_BABY)
+	mod:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, handlepesudocloneVisual, FamiliarVariant.BLOOD_BABY)
 
 	local function explodepsuedoClones(_, ent)
 		local player = ent:ToPlayer()
@@ -3495,9 +3506,9 @@ if not InutilLib then
 		end
 
 		SFXManager():Play(SoundEffect.SOUND_BLACK_POOF)
-		ILIB.game:ShakeScreen(15)
+		InutilLib.game:ShakeScreen(15)
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, explodepsuedoClones, EntityType.ENTITY_PLAYER)
+	mod:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, explodepsuedoClones, EntityType.ENTITY_PLAYER)
 
 	local function handleTearVisual(_, tear)
 		if not tear.SpawnerEntity then return end
@@ -3508,7 +3519,7 @@ if not InutilLib then
 		tear.Scale = tear.Scale * 1.0666666666
 		tear:GetData().TRJShaded = true
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, handleTearVisual)
+	mod:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, handleTearVisual)
 
 	local function handleLaserVisual(_, laser)
 		if not laser.SpawnerEntity then return end
@@ -3519,7 +3530,7 @@ if not InutilLib then
 		laser.Radius = laser.Radius * 1.33333333
 		laser:GetData().TRJShaded = true
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_LASER_RENDER, handleLaserVisual)
+	mod:AddCallback(ModCallbacks.MC_POST_LASER_RENDER, handleLaserVisual)
 
 	local function handleKnifeVisual(_, knife)
 		if not knife.SpawnerEntity then return end
@@ -3527,9 +3538,9 @@ if not InutilLib then
 		--knife.Color = Color(0, 0, 0, knife.SpawnerEntity:ToFamiliar().Player:GetData()["JUDAS_DESCENT_DAMAGE_MULTIPLIER"])
 		knife.SpriteScale = Vector(1, 1)
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, handleKnifeVisual)
+	mod:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, handleKnifeVisual)
 
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 		if damage.Variant == FamiliarVariant.BLOOD_BABY and damage.SubType == InutilLib.PSEUDO_CLONE then
 			return false
 		end
@@ -3537,10 +3548,10 @@ if not InutilLib then
 
 
 	--yare yare, i hate this work around but i have to remove the smoke spawn without removing flag appear, as flag appear seems to break the knives
-	InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)--, var, subt, pos, vel, spawner, seed)
+	mod:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)--, var, subt, pos, vel, spawner, seed)
 		--print(eff,"  ",var,"  ",subt, "  ", spawner)
 		if eff.Variant == 15  then
-			for i, e in ipairs(ILIB.roomFamiliars) do
+			for i, e in ipairs(InutilLib.roomFamiliars) do
 				if e.Variant == 80 and e.SubType == 177 then
 					if eff.Position:Distance(e.Position) <= 50 then
 						eff:Remove()
@@ -3549,7 +3560,7 @@ if not InutilLib then
 			end
 		end
 	end)
-	InutilLib:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam)--, var, subt, pos, vel, spawner, seed)
+	mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, function(_,  fam)--, var, subt, pos, vel, spawner, seed)
 		--print(eff,"  ",var,"  ",subt, "  ", spawner)
 		if fam.SubType == 177 then
 			for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -3587,7 +3598,7 @@ if not InutilLib then
 	end
 
 
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 		local data = InutilLib.GetILIBData( damage ) 
 		local laser
 		if damageSource.Type == 7 then
@@ -3603,7 +3614,7 @@ if not InutilLib then
 	end)
 
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_, lz)
+	mod:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_, lz)
 		local data = InutilLib.GetILIBData(lz)
 
 		if lz.FrameCount == 0 then data.isSchoolbagModified = false end
@@ -3716,7 +3727,7 @@ if not InutilLib then
 
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
+	mod:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 		local data = InutilLib.GetILIBData( bb )
 		if data.LobInit then
 			local gravityData = data.gravityData
@@ -3822,7 +3833,7 @@ if not InutilLib then
 		return rocket
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 		local player = damage:ToPlayer();
 		if player then
 			local data = InutilLib.GetILIBData(player)
@@ -3935,7 +3946,7 @@ if not InutilLib then
 	-------------------------
 	local JSON = require("json")
 	local playerIndexCount = 0
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
 		--Isaac.DebugString(player:GetName())
 		InutilLib.GetILIBData( player ).PlayerIndex = playerIndexCount
 		playerIndexCount = playerIndexCount + 1
@@ -4064,7 +4075,7 @@ if not InutilLib then
 		--end
 		local tbl = InutilLib.GetCollectibleList(player)
 		local playerIdx = InutilLib.GetPlayerIndex(player)
-		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		--for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			for i = 1, maxNum do
 				--if i ~= (43 or 59 or 61 or 235 or 263) then
 					--print("demondice lets gooo")
@@ -4138,8 +4149,8 @@ if not InutilLib then
 	function InutilLib:useRerollToClearItemList(collItem, rng, player)
 			InutilLib.ClearCollectibleList(player)
 		end
-		InutilLib:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.useRerollToClearItemList, CollectibleType.COLLECTIBLE_D4)
-		InutilLib:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.useRerollToClearItemList, CollectibleType.COLLECTIBLE_D100)
+		mod:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.useRerollToClearItemList, CollectibleType.COLLECTIBLE_D4)
+		mod:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.useRerollToClearItemList, CollectibleType.COLLECTIBLE_D100)
 
 	function InutilLib.ClearSpecificCollectibleData(player, coll)
 		for k, v in pairs(collList) do
@@ -4187,8 +4198,8 @@ if not InutilLib then
 	end
 
 	local updateCollectibleList = false
-	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-		for i=0, ILIB.game:GetNumPlayers()-1 do
+	mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+		for i=0, InutilLib.game:GetNumPlayers()-1 do
 			local player = Isaac.GetPlayer(i)
 			local data = InutilLib.GetILIBData(player)
 			if updateCollectibleList then
@@ -4201,7 +4212,7 @@ if not InutilLib then
 	function InutilLib:useGlowHourglass(collItem, rng, player) --glowsquids suck btw
 		--[[print("brug")
 		if InutilLib.Data then
-			for i=0, ILIB.game:GetNumPlayers()-1 do
+			for i=0, InutilLib.game:GetNumPlayers()-1 do
 				local player = Isaac.GetPlayer(i)
 				local data = InutilLib.GetILIBData(player)
 				print(InutilLib.Data.CollectibleList[InutilLib.GetPlayerIndex(player)])
@@ -4218,7 +4229,7 @@ if not InutilLib then
 		--InutilLib.RefreshCollectibleList(player)
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.useGlowHourglass, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS)
+	mod:AddCallback(ModCallbacks.MC_USE_ITEM, InutilLib.useGlowHourglass, CollectibleType.COLLECTIBLE_GLOWING_HOUR_GLASS)
 
 	---------------------------------
 	-- CUSTOMIZABLE PLAYERS SYSTEM --
@@ -4338,7 +4349,7 @@ if not InutilLib then
 		end
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 		if not InutilLib.game:IsGreedMode() and InutilLib.level:GetCurrentRoomIndex() == InutilLib.level:GetStartingRoomIndex() and InutilLib.level:GetStage() == 1 then
 			
 			local playerType = Isaac.GetPlayer(0):GetPlayerType()
@@ -4377,7 +4388,7 @@ if not InutilLib then
 		local shadingIhOffset = Vector(-80,-160)
 		local shadingIvOffset = Vector(-240,-80)
 		function InutilLib.ChangeShading(name, prefix)
-			local room = ILIB.room
+			local room = InutilLib.room
 			prefix = prefix or "legacy stageapi/shading/shading"
 			local shading = Isaac.FindByType(InutilLib.LegacyShading.T, InutilLib.LegacyShading.V, -1, false, false)
 			for _, e in ipairs(shading) do
@@ -4431,7 +4442,7 @@ if not InutilLib then
 		shadingSprite:Load("legacy stageapi/Shading.anm2", false)
 		shadingSprite:Play("Default", true)
 		local lastUsedShadingSpritesheet
-		InutilLib:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_, eff)
+		mod:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_, eff)
 			--StageAPI.CallCallbacks("PRE_SHADING_RENDER", false, eff)
 
 			local sheet = eff:GetData().Sheet
@@ -4449,7 +4460,7 @@ if not InutilLib then
 	local queueDamageSound = false;
 	local wasPlayerDead = false;
 
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 		local playerInfo 
 		local playerType = damage:ToPlayer():GetPlayerType()
 		if InutilLib.ListOfRegPlayers[playerType] then playerInfo = InutilLib.ListOfRegPlayers[playerType] end
@@ -4462,9 +4473,9 @@ if not InutilLib then
 		
 	end, EntityType.ENTITY_PLAYER)
 	--custom hurt sounds
-	InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+	mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		local speaker = SFXManager();
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 			local playerInfo 
 			local playerType = player:GetPlayerType()
@@ -4497,7 +4508,7 @@ if not InutilLib then
 	end);
 
 	--Charactercustom.lua's Post_update!
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		if InutilLib.HasCollectiblesUpdated(player) == true then
 			--InutilLib.SetFrameLoop( 4, function()
 				InutilLib.RefreshCollectibleList(player)
@@ -4506,7 +4517,7 @@ if not InutilLib then
 		end
 	end)
 
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
 		if e.Type == 1 then
 			if e:ToPlayer():GetPlayerType() == PlayerType.PLAYER_EDEN_B then
 				InutilLib.RefreshCollectibleList(player)
@@ -4572,7 +4583,7 @@ if not InutilLib then
 		return shouldRenderAchievement, currentSprite
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
+	mod:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		if Isaac.GetFrameCount() % 2 == 0 then
 			achievementUI:Update()
 			if achievementUI:IsFinished("Appear") then
@@ -4588,7 +4599,7 @@ if not InutilLib then
 			if achievementUI:IsFinished("Dissapear") then
 		shouldRenderAchievement = false
 
-			for p = 0, ILIB.game:GetNumPlayers() - 1 do
+			for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 				local player = Isaac.GetPlayer(p)
 				player:GetData().prevAchCharge = nil
 				end
@@ -4600,7 +4611,7 @@ if not InutilLib then
 	end
 
 	if shouldRenderAchievement then
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 		local data =  player:GetData()
 		data.prevAchCharge = data.prevAchCharge or player:GetActiveCharge()
@@ -4621,13 +4632,13 @@ if not InutilLib then
 	end
 	end)
 
-	InutilLib:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, function()
+	mod:AddCallback(ModCallbacks.MC_PRE_USE_ITEM, function()
 	if shouldRenderAchievement then
 		return true
 	end
 	end)
 
-	InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
+	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
 	if e.Type == 1 and shouldRenderAchievement then
 		return false
 	end
@@ -4709,19 +4720,19 @@ if not InutilLib then
 		end
 		
 		if hideHUD then
-			ILIB.game:GetSeeds():AddSeedEffect(SeedEffect.SEED_NO_HUD)
+			InutilLib.game:GetSeeds():AddSeedEffect(SeedEffect.SEED_NO_HUD)
 			isHideHud = true
 		end
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
+	mod:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		if Isaac.GetFrameCount() % 2 == 0 then
 			giantbookUI:Update()
 			if giantbookUI:IsFinished(giantbookAnimation) then
 				shouldRenderGiantbook = false
 				if isHideHud then
 					isHideHud = false
-					ILIB.game:GetSeeds():RemoveSeedEffect(SeedEffect.SEED_NO_HUD)
+					InutilLib.game:GetSeeds():RemoveSeedEffect(SeedEffect.SEED_NO_HUD)
 				end
 			end
 		end
@@ -4782,7 +4793,7 @@ if not InutilLib then
 		return pickup
 	end
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
+	mod:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 		local data = InutilLib.GetILIBData(pickup);
 		if data and data.KillAfter then
 			if (pickup:GetSprite():IsFinished("Open") or pickup:GetSprite():IsFinished("Opened") or pickup:GetSprite():IsFinished("Collect")) then
@@ -4843,7 +4854,7 @@ if not InutilLib then
 	InutilLib.Data = {}
 
 	function InutilLib:Init(hasstarted) --Init
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 			--Isaac.DebugString(player)
 			if not hasstarted then
@@ -4856,10 +4867,10 @@ if not InutilLib then
 			end
 		end
 	end
-	InutilLib:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, InutilLib.Init)
+	mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, InutilLib.Init)
 
 	-- Load Moddata
-	InutilLib:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
+	mod:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_, player)
 		--Isaac.DebugString(player:GetName())
 		if Isaac.HasModData(InutilLib) then
 			--local data = JSON.decode(Isaac.LoadModData(InutilLib));
@@ -4874,15 +4885,15 @@ if not InutilLib then
 	end
 	--Save Moddata
 
-	InutilLib:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
+	mod:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
 		save()
 	end)
-	InutilLib:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function(_, boo)
+	mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function(_, boo)
 		if boo then
 			save()
 		end
 	end)
-	InutilLib:AddCallback(ModCallbacks.MC_POST_GAME_END, function(_, boo)
+	mod:AddCallback(ModCallbacks.MC_POST_GAME_END, function(_, boo)
 		save()
 	end)
 
@@ -4894,3 +4905,5 @@ if not InutilLib then
 
 
 end
+
+return InutilLib

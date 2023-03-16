@@ -46,7 +46,8 @@ end);
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_,  tr)
 	if tr.Variant == RebekahCurse.ENTITY_TAPIOCATEAR then
 		local puddle = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_RED, 0, tr.Position, Vector.Zero, tr):ToTear()
-        InutilLib.RevelSetCreepData(puddle)
+        if not puddle then return end
+		InutilLib.RevelSetCreepData(puddle)
 		InutilLib.RevelUpdateCreepSize(puddle, 0.2, true)
         puddle:SetColor(Color(1,1,1,1,255,255,255), 999999,999999)
     end

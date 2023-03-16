@@ -78,7 +78,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 		if spr:IsPlaying("Hop") then
 			if spr:IsEventTriggered("Jump") then
-				InutilLib.MoveRandomlyTypeI(fam, ILIB.room:GetRandomPosition(3), 5, 0.9, 30, 30, 90)
+				InutilLib.MoveRandomlyTypeI(fam, InutilLib.room:GetRandomPosition(3), 5, 0.9, 30, 30, 90)
 			elseif spr:IsEventTriggered("Land") then
 				fam.Velocity = Vector.Zero
 				InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
@@ -138,7 +138,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				data.Collidable = true
 				local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 2, fam.Position, Vector(0,0), player );
 				InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.8)
-				ILIB.game:ShakeScreen(5)
+				InutilLib.game:ShakeScreen(5)
 			end
 			if spr:IsFinished("JumpDown") then
 				spr:Play("Roar", true)
@@ -156,7 +156,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 								yandereWaifu.GetEntityData(v).IsSmashed = true
 								--v:Remove()
 								if math.random(1,2) == 2 then
-									local egg = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_RABBET_FAMILIAR, 0, ILIB.room:GetRandomPosition(5), Vector.Zero, nil)
+									local egg = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_RABBET_FAMILIAR, 0, InutilLib.room:GetRandomPosition(5), Vector.Zero, nil)
 								end
 							end)]]
 						elseif v:IsEnemy() then
@@ -338,7 +338,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,eff)
 		if data.BreakFrame then
 			spr:SetFrame("Break", math.floor(data.BreakFrame/5))
 		end
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 			if player.Position:Distance(eff.Position) <= 20 then
 				if not data.BreakFrame then
@@ -379,17 +379,17 @@ function yandereWaifu:EggshellWalkNewRoom()
 	end
 	oopsie = false
 	spawnedRabbet = false
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_EGGSHELLWALK) and not room:IsClear() then
 		local num = math.random(3,5)
 			if room:GetRoomShape() == RoomShape.ROOMSHAPE_1x1 or room:GetRoomShape() == RoomShape.ROOMSHAPE_IH or room:GetRoomShape() == RoomShape.ROOMSHAPE_IV or room:GetRoomShape() == RoomShape.ROOMSHAPE_IIV or room:GetRoomShape() == RoomShape.ROOMSHAPE_IIH then
 				num = math.random(3,4)
 			end
 			for i = 0, num do
-				local egg = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EGGSHELLS, 0, ILIB.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(),3) + Vector(math.random(-15,15),math.random(-15,15)), Vector.Zero, player)
+				local egg = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EGGSHELLS, 0, InutilLib.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(),3) + Vector(math.random(-15,15),math.random(-15,15)), Vector.Zero, player)
 				yandereWaifu.GetEntityData(egg).Player = player
 			end
 		end

@@ -5,7 +5,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
-	local room = ILIB.room
+	local room = InutilLib.room
 	for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 		if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
 			if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
@@ -18,7 +18,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	for i = 1, chosenNumofBarrage do
 		player.Velocity = player.Velocity * 0.8; --slow him down
 		--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-		local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.ROCK, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+		local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.ROCK, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 		tear.Scale = math.random(2,12)/10;
 		tear.FallingSpeed = -9 + math.random() * 2 ;
 		tear.FallingAcceleration = 0.5;
@@ -43,7 +43,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 		end
 	end
 	
-	ILIB.game:MakeShockwave(player.Position, 0.065, 0.025, 10)
+	InutilLib.game:MakeShockwave(player.Position, 0.065, 0.025, 10)
 
 	Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, player.Position, Vector(0,0), player)
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 14, player.Position, Vector.Zero, player):ToEffect()
@@ -350,7 +350,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.onFamiliarN
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff)
-	local room = ILIB.game:GetRoom()
+	local room = InutilLib.game:GetRoom()
 	if eff.FrameCount == 1 then
 		local wall = InutilLib.ClosestHorizontalWall(eff)
 		if wall == Direction.RIGHT then
@@ -389,7 +389,7 @@ end, RebekahCurse.ENTITY_CHRISTIANNEDEXTRA );
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff)
-	local room = ILIB.game:GetRoom()
+	local room = InutilLib.game:GetRoom()
 	local spr = eff:GetSprite()
 	if eff.FrameCount == 1 then
 		if eff.SubType == 0 then
@@ -424,7 +424,7 @@ function yandereWaifu.nedCollision(_, fam, collider, low)
 		else
 			fam:Die()
 			if math.random(1,3) == 3 then
-				ILIB.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+				InutilLib.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
 			end
 		end
 	elseif collider:IsEnemy() and fam.FrameCount % 3 == 0 and fam.FrameCount <= 15 then
@@ -444,7 +444,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 		data.Health = 3
 	end
 	
-	for i, e in pairs(ILIB.roomProjectiles) do
+	for i, e in pairs(InutilLib.roomProjectiles) do
 		if (e.Position - fam.Position):LengthSquared() <= 25 ^ 2 then
 			if not spr:IsPlaying("Move") then
 				spr:Play("Move", true)
@@ -458,7 +458,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 	--if ned is too far from player
 	if not spr:IsPlaying("Shoot") or not spr:IsPlaying("Move") or not spr:IsPlaying("Idle") then
 		if (player.Position - fam.Position):Length() > 50 and math.random(1,5) > 2 then
-			if ILIB.game:GetFrameCount() % 7 == 0 then
+			if InutilLib.game:GetFrameCount() % 7 == 0 then
 				spr:Play("Move", true)
 				fam.Velocity = fam.Velocity + Vector.FromAngle(((player.Position - fam.Position)):GetAngleDegrees()+math.random(-10,10)):Resized(15)
 			end
@@ -529,7 +529,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				--InutilLib.UpdateLaserSize(beam, 0.5)
 				InutilLib.AddHomingIfBabyBender(player, beam)
 			elseif fam.SubType == 5 then
-				local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
+				local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
 				tear.CollisionDamage = 1.5
 				tear.Scale = 0.5
 				tear:AddTearFlags(TearFlags.FLAG_PIERCING)
@@ -627,7 +627,7 @@ function yandereWaifu.ned2Collision(_, fam, collider, low)
 		else
 			fam:Die()
 			if math.random(1,3) == 3 then
-				ILIB.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+				InutilLib.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
 			end
 		end
 	end
@@ -872,12 +872,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 				--	fam:Die()
 				--	if math.random(1,3) == 3 then
 				--		if rng < 11 then
-				--			ILIB.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
+				--			InutilLib.game:Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, fam.Position, fam.Velocity/5, Parent, HeartSubType.HEART_HALF_SOUL, 0)
 				--		end
 				--	end
 				--end
 				--if (e.Position - fam.Position):Length() < 75 then
-					if ILIB.game:GetFrameCount() % 30 == 0 then
+					if InutilLib.game:GetFrameCount() % 30 == 0 then
 						local Mrng = math.random(1,3)
 						spr:Play("Move", true)
 						if Mrng == 1 then
@@ -892,7 +892,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 	--end
 	
 	if (player.Position - fam.Position):Length() > 120 then
-		if ILIB.game:GetFrameCount() % 7 == 0 then
+		if InutilLib.game:GetFrameCount() % 7 == 0 then
 			fam.Velocity = fam.Velocity + (player.Position - fam.Position)*0.125*0.6
 		end
 	end
@@ -913,7 +913,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 			end
 			local chosenNumofBarrage =  math.random( 3, 6 );
 			for i = 1, chosenNumofBarrage do
-				local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 20, fam.Position, Vector.FromAngle( math.random() * 360 ):Resized(BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), fam.Player, 0, 0):ToTear()
+				local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, 20, fam.Position, Vector.FromAngle( math.random() * 360 ):Resized(BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), fam.Player, 0, 0):ToTear()
 				tear.Scale = math.random() * 0.7 + 0.7;
 				tear.FallingSpeed = -9 + math.random() * 2 ;
 				tear.FallingAcceleration = 0.5;
@@ -933,7 +933,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 				end
 			end
 		end
-		if ILIB.game:GetFrameCount() % 30 == 0 then
+		if InutilLib.game:GetFrameCount() % 30 == 0 then
 			if data.target then -- every one second
 				--doesnt make you stay too close
 				if (fam.Position - data.target.Position):Length() > 50 then
@@ -958,7 +958,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						slashAngle = 0
 					end
 					if fam.SubType == 0 then
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
 						tear.CollisionDamage = 1.5
 						InutilLib.AddHomingIfBabyBender(player, tear)
 						tear:AddTearFlags(TearFlags.FLAG_PIERCING)
@@ -1009,12 +1009,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						--beam.Radius = 15
 						--beam:Update()
 					elseif fam.SubType == 5 then
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
 						tear.CollisionDamage = 2
 						tear.Scale = 2.5
 						tear:AddTearFlags(TearFlags.FLAG_PIERCING)
 						InutilLib.AddHomingIfBabyBender(player, tear)
-						local tear2 = ILIB.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear2 = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
 						tear2.CollisionDamage = 5
 						InutilLib.AddHomingIfBabyBender(player, tear)
 					elseif fam.SubType == 6 then
@@ -1125,13 +1125,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	end
 	
 	if fam.SubType == 4 then
-		if ILIB.game:GetRoom():GetFrameCount() == 1 and ILIB.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
+		if InutilLib.game:GetRoom():GetFrameCount() == 1 and InutilLib.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
 			spr:Play("DeusVult",true)
 			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 		end
 	elseif fam.SubType == 0 or fam.SubType == 1 then
 		--reading Bible mechanic
-		if ILIB.game:GetRoom():GetFrameCount() == 1 and ILIB.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
+		if InutilLib.game:GetRoom():GetFrameCount() == 1 and InutilLib.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 					spr:Play("DeusVult",true)
@@ -1268,7 +1268,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				spr:Play("Vomit", true)
 			end
 		else
-		--if ILIB.game:GetFrameCount() % 120 == 0 then -- every one second
+		--if InutilLib.game:GetFrameCount() % 120 == 0 then -- every one second
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e.Type ~= EntityType.ENTITY_PLAYER then
 					if e:IsActiveEnemy() then
@@ -1398,7 +1398,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					--kn.Size = 1
 					--kn.SpriteScale = Vector(1, 1)
 					--kn.CollisionDamage = 0.9
-					--local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, fam.Position, Vector.FromAngle(fam.Velocity:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+					--local kn = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, fam.Position, Vector.FromAngle(fam.Velocity:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 					local kn = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle(fam.Velocity:GetAngleDegrees()):Resized(20), 1)
 					kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 					kn.CollisionDamage = 1.5 + data.IncreasedBuff - damageNerf --[[+ fam.Player:GetNumCoins()/8]] + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS)
@@ -1424,7 +1424,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 					end
 				end
 			end
-			local room = ILIB.game:GetRoom()
+			local room = InutilLib.game:GetRoom()
 			--local setAngle = (fam.Velocity):GetAngleDegrees()
 			if data.savedVelocity then
 				fam.Velocity = fam.Velocity * 0.75 + data.savedVelocity
@@ -1474,16 +1474,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			end
 		elseif fam.SubType == 5 then -- stuff
 			if spr:GetFrame() >= 20 and fam.FrameCount % 3 == 0 then
-				local room = ILIB.game:GetRoom()
+				local room = InutilLib.game:GetRoom()
 				local x, y
-				local lowestY, highestY = Round(math.abs(ILIB.room:GetTopLeftPos().Y),0), Round(math.abs(ILIB.room:GetBottomRightPos().Y),0)
+				local lowestY, highestY = Round(math.abs(InutilLib.room:GetTopLeftPos().Y),0), Round(math.abs(InutilLib.room:GetBottomRightPos().Y),0)
 				if InutilLib.ClosestHorizontalWall(fam) == Direction.LEFT then
-					x = Round(math.abs(ILIB.room:GetTopLeftPos().X), 0) - 50
+					x = Round(math.abs(InutilLib.room:GetTopLeftPos().X), 0) - 50
 				else
-					x = Round(math.abs(ILIB.room:GetBottomRightPos().X), 0) + 50
+					x = Round(math.abs(InutilLib.room:GetBottomRightPos().X), 0) + 50
 				end
-				--print(Round(math.abs(ILIB.room:GetBottomRightPos().Y),0))
-				--print(Round(math.abs(ILIB.room:GetTopLeftPos().Y),0))
+				--print(Round(math.abs(InutilLib.room:GetBottomRightPos().Y),0))
+				--print(Round(math.abs(InutilLib.room:GetTopLeftPos().Y),0))
 				local y1, y2 = Round(math.abs(fam.Position.Y - 50),0), Round(math.abs(fam.Position.Y + 50),0)--the ys that the randomizer will pick from
 				if y1 <= lowestY then y1 = lowestY end
 				if y2 <= highestY then y2 = highestY end
@@ -1777,7 +1777,7 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 		--flip sprite
 		InutilLib.FlipXByVec(fam, false)
 		--stuck code
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		local checkingVector = (room:GetGridEntity(room:GetGridIndex(fam.Position + data.savedVelocity)))
 		if checkingVector and (checkingVector:GetType() == GridEntityType.GRID_WALL or checkingVector:GetType() == GridEntityType.GRID_DOOR) then 
 			spr:Play("Flyingn't", true)
@@ -1831,7 +1831,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	end
 	
 	--refresh spear
-	if ILIB.game:GetRoom():GetFrameCount() == 1 then
+	if InutilLib.game:GetRoom():GetFrameCount() == 1 then
 		spr:Play("Idle", true) --force have spear
 	end
 	
@@ -2138,7 +2138,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			end
 		end
 		--InutilLib.SetTimer( spr:GetFrame()*2, function()
-		if ILIB.game:GetFrameCount() % 3 == 0 then
+		if InutilLib.game:GetFrameCount() % 3 == 0 then
 			local pos = fam.Position
 			local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, pos, Vector(0,0), player) 
 			crack.CollisionDamage = 40
@@ -2406,7 +2406,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif fam.SubType == 2 then
 			spr:Play("Appear1", true)
 			fam.Position = Isaac.GetRandomPosition()
-			ILIB.game:ShakeScreen(10)
+			InutilLib.game:ShakeScreen(10)
 		else
 			spr:Play("Spin", true)
 		end
@@ -2581,7 +2581,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				spr:Play("Appear1", true)
 			end
 			fam.Position = Isaac.GetRandomPosition()
-			ILIB.game:ShakeScreen(10)
+			InutilLib.game:ShakeScreen(10)
 			InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 		end
 	elseif spr:IsPlaying("Detonate") then
@@ -3070,7 +3070,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		--blocking code
 		--print(tostring(data.TimesBlocked))
 		--if data.TimesBlocked and data.TimesBlocked >= 10 then --slam code
-		--if not ILIB.game:GetRoom():IsClear() then
+		--if not InutilLib.game:GetRoom():IsClear() then
 		--	if fam.FrameCount % 270 == 0 then
 		--		spr:Play("CMASlamAWTTJam")
 		--		data.TimesBlocked = 0
@@ -3130,7 +3130,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					end
 				end
 			end
-			ILIB.game:ShakeScreen(5);
+			InutilLib.game:ShakeScreen(5);
 			InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 			yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Gold );
 		end
@@ -3142,7 +3142,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 end, RebekahCurse.ENTITY_DEFENDINGNED);
 
 function yandereWaifu:LevelUpNeds()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local canUpgrade = false
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
@@ -3150,7 +3150,7 @@ function yandereWaifu:LevelUpNeds()
 	--		break
 		end
 		
-	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	--for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 	--	local player = Isaac.GetPlayer(p)
 		if canUpgrade then
 			local potentialKnights = {
@@ -3197,7 +3197,7 @@ function yandereWaifu:LevelUpNeds()
 				if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 					if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL then
 						local squire = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.SubType, ned.Position, Vector(0,0), ned);
-						--local squire = ILIB.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
+						--local squire = InutilLib.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_SQUIRENED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
 						ned:Remove()
 					elseif ned.Variant == RebekahCurse.ENTITY_SQUIRENED then
 						for s = 0, 50 do
@@ -3229,7 +3229,7 @@ function yandereWaifu:LevelUpNeds()
 									break
 								elseif --[[rng >= 7 and rng <= 10]] not AvailableKnights[ned.SubType][1] then
 									local christian =  Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_CHRISTIANNED, ned.SubType, ned.Position, Vector(0,0), ned.Player):ToFamiliar();
-									--local christian = ILIB.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_CHRISTIANNED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
+									--local christian = InutilLib.game:Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_CHRISTIANNED, ned.Position, Vector( 0, 0 ), ned, 0, 0);
 									AvailableKnights[ned.SubType][1] = true
 									christian:AddToFollowers()
 									ned:Remove()

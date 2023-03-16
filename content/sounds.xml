@@ -533,6 +533,12 @@
 	<sound name="Cursed Rocket Launch">
 		<sample weight="1" path="tainted/rocket_launch.wav" />
 	</sound>
+	<sound name="Cursed Beep">
+		<sample weight="1" path="tainted/beep.wav" />
+	</sound>
+	<sound name="Cursed Beep Dead">
+		<sample weight="1" path="tainted/beep_dead.wav" />
+	</sound>
 
 	<sound name="Spring Sound">
 		<sample weight="1" path="card/spring_sound.wav" />

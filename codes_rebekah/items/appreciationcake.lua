@@ -46,11 +46,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
 		local spr = tr:GetSprite()
 		if pldata.lastARPCFrameCount then
-			if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+			if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 				return
 			end
 			
-			pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 			
 			if not pldata.ARPCFireCount then
 				pldata.ARPCFireCount = 1
@@ -67,12 +67,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 				yandereWaifu.CakeFireTearBurst(player)
 			end
 		else
-			pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 		end
 	end
 end);
 
-InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
+yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 	if lz.SpawnerEntity then
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
@@ -81,11 +81,11 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
 					if pldata.lastARPCFrameCount then
-						if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+						if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 							return
 						end
 						
-						pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 						
 						if not pldata.ARPCFireCount then
 							pldata.ARPCFireCount = 1
@@ -106,7 +106,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 							end
 						end
 					else
-						pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 					end
 				end
 			end
@@ -124,11 +124,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 				if parent and parent.Type == EntityType.ENTITY_PLAYER then
 					local spr = lz:GetSprite()
 					if pldata.lastARPCFrameCount then
-						if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+						if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 							return
 						end
 						
-						pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 						
 						if not pldata.ARPCFireCount then
 							pldata.ARPCFireCount = 1
@@ -149,7 +149,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 							end
 						--end
 					else
-						pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 					end
 				end
 			end
@@ -157,18 +157,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 	end
 end);
 
-InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
+yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 			local spr = bb:GetSprite()
 			if pldata.lastARPCFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+				if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 					return
 				end
 				
-				pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.ARPCFireCount then
 					pldata.ARPCFireCount = 1
@@ -183,7 +183,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, funct
 					bb:AddTearFlags(TearFlags.TEAR_BURN)
 				end
 			else
-				pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 			end
 		end
 	end
@@ -198,11 +198,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.lastARPCFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+				if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 					return
 				end
 				
-				pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.ARPCFireCount then
 					pldata.ARPCFireCount = 1
@@ -216,13 +216,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 					yandereWaifu.CakeFireTearBurst(player)
 				end
 			else
-				pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 			end
 		end
 	end
 end, EffectVariant.TARGET);
 
-InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
@@ -231,11 +231,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end
 			if pldata.lastARPCFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount and pldata.NoActiveKnife then
+				if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount and pldata.NoActiveKnife then
 					return
 				end
 				
-				pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.ARPCFireCount then
 					pldata.ARPCFireCount = 1
@@ -249,7 +249,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 					yandereWaifu.CakeFireTearBurst(player)
 				end
 			else
-				pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 			end
 			local data = InutilLib.GetILIBData(kn)
 			if kn.FrameCount == 1 then
@@ -276,11 +276,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		elseif player:HasWeaponType(WeaponType.WEAPON_BONE) then
 			if not pldata.DontGreatPheonixTick and InutilLib.IsFinishedMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2") then
 				if pldata.lastARPCFrameCount then
-					if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+					if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 						return
 					end
 					
-					pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 					
 					if not pldata.ARPCFireCount then
 						pldata.ARPCFireCount = 1
@@ -297,7 +297,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						yandereWaifu.CakeFireTearBurst(player)
 					end
 				else
-					pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 				end
 				pldata.DontGreatPheonixTick = true
 			elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
@@ -306,11 +306,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then
 			if --[[not pldata.DontGreatPheonixTick]] spr:GetFrame() == 1 and InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
 				if pldata.lastARPCFrameCount then
-					if ILIB.game:GetFrameCount() == pldata.lastARPCFrameCount then
+					if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
 						return
 					end
 					
-					pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 					
 					if not pldata.ARPCFireCount then
 						pldata.ARPCFireCount = 1
@@ -327,7 +327,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						yandereWaifu.CakeFireTearBurst(player)
 					end
 				else
-					pldata.lastARPCFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastARPCFrameCount = InutilLib.game:GetFrameCount()
 				end
 			--	pldata.DontGreatPheonixTick = true
 			--elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then

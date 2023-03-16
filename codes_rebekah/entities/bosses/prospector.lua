@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
 	if ent.Variant == RebekahCurseEnemies.ENTITY_THEPROSPECTOR then
 		if ent.SubType == 1 then
 			local engi 
@@ -388,7 +388,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
 		Isaac.Explode(ent.Position, ent, 15)
 		for i = 0, math.random(5,7) do
 			InutilLib.SetTimer( 7 * i, function()
-				local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
+				local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
 				tear.Scale = math.random(12,16)/10;
 				tear.Height = -520;
 				tear.FallingAccel = 1.3;

@@ -52,7 +52,7 @@ function yandereWaifu.SpawnSilphiumHeart(player, subtype)
 end
 
 function yandereWaifu:SpawnSilphiumHearts() --Maggy WIP
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
         local player = Isaac.GetPlayer(i)
         local data = yandereWaifu.GetEntityData(player)
 		--if flag == CacheFlag.CACHE_FAMILIARS then

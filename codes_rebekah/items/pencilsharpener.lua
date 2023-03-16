@@ -16,12 +16,14 @@ end)
 
 function yandereWaifu.SharpenerFireTearBurst(player, dir, pos)
 	local direction = dir or InutilLib.DirToVec(player:GetFireDirection())
+	print(direction)
 	local position = pos or player.Position
+	print(position)
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
 		direction = player:GetAimDirection()
 	end
 	for i = -45, 45, 15 do
-		local tear = player:FireTear(pos, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(player.ShotSpeed*10), true, false, false, (player), 1)
+		local tear = player:FireTear(position, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(player.ShotSpeed*10), true, false, false, (player), 1)
 		tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 		tear:ChangeVariant(TearVariant.CUPID_BLUE)
 	end
@@ -35,11 +37,11 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, fun
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = tr:GetSprite()
 		if pldata.lastPSRPFrameCount then
-			if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+			if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 				return
 			end
 			
-			pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 			
 			if not pldata.PSRPFireCount then
 				pldata.PSRPFireCount = 1
@@ -49,10 +51,12 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, fun
 			
 			if pldata.PSRPFireCount > PencilSharpenerCount then
 				pldata.PSRPFireCount = 0
+				print(pldata.PSRPFireCount)
+				print(pldata.lastPSRPFrameCount)
 				yandereWaifu.SharpenerFireTearBurst(player, player:GetLastDirection())
 			end
 		else
-			pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 		end
 	end
 end)
@@ -65,11 +69,11 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_INCUBUS_TEAR, fu
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = tr:GetSprite()
 		if pldata.lastPSRPFrameCount then
-			if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+			if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 				return
 			end
 			
-			pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 			
 			if not pldata.PSRPFireCount then
 				pldata.PSRPFireCount = 1
@@ -83,7 +87,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_INCUBUS_TEAR, fu
 				yandereWaifu.SharpenerFireTearBurst(player, player:GetLastDirection(), fam.Position)
 			end
 		else
-			pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 		end
 	end
 end)
@@ -95,11 +99,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = tr:GetSprite()
 		if pldata.lastPSRPFrameCount then
-			if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+			if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 				return
 			end
 			
-			pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 			
 			if not pldata.PSRPFireCount then
 				pldata.PSRPFireCount = 1
@@ -112,12 +116,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 				yandereWaifu.SharpenerFireTearBurst(player)
 			end
 		else
-			pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 		end
 	end
 end);]]
 
-InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
+yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 	if lz.SpawnerEntity then
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
@@ -126,11 +130,11 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
 					if pldata.lastPSRPFrameCount then
-						if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+						if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 							return
 						end
 						
-						pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 						
 						if not pldata.PSRPFireCount then
 							pldata.PSRPFireCount = 1
@@ -147,7 +151,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 							end
 						end
 					else
-						pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 					end
 				end
 			end
@@ -165,11 +169,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 				if parent and parent.Type == EntityType.ENTITY_PLAYER then
 					local spr = lz:GetSprite()
 					if pldata.lastPSRPFrameCount then
-						if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+						if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 							return
 						end
 						
-						pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 						
 						if not pldata.PSRPFireCount then
 							pldata.PSRPFireCount = 1
@@ -183,10 +187,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 							if pldata.PSRPFireCount > PencilSharpenerCount then
 								pldata.PSRPFireCount = 0
 								yandereWaifu.SharpenerFireTearBurst(player)
+								print("TEST")
 							end
 						--end
 					else
-						pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 					end
 				end
 			end
@@ -194,18 +199,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 	end
 end);
 
-InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
+yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 			local spr = bb:GetSprite()
 			if pldata.lastPSRPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+				if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 					return
 				end
 				
-				pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.PSRPFireCount then
 					pldata.PSRPFireCount = 1
@@ -219,7 +224,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, funct
 					yandereWaifu.SharpenerFireTearBurst(player)
 				end
 			else
-				pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 			end
 		end
 	end
@@ -234,11 +239,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.lastPSRPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+				if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 					return
 				end
 				
-				pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.PSRPFireCount then
 					pldata.PSRPFireCount = 1
@@ -252,13 +257,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 					yandereWaifu.SharpenerFireTearBurst(player)
 				end
 			else
-				pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 			end
 		end
 	end
 end, EffectVariant.TARGET);
 
-InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
@@ -267,11 +272,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end
 			if pldata.lastPSRPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount and pldata.NoActiveKnife then
+				if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount and pldata.NoActiveKnife then
 					return
 				end
 				
-				pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.PSRPFireCount then
 					pldata.PSRPFireCount = 1
@@ -285,7 +290,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 					yandereWaifu.SharpenerFireTearBurst(player)
 				end
 			else
-				pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 			end
 			local data = InutilLib.GetILIBData(kn)
 			if kn.FrameCount == 1 then
@@ -312,11 +317,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		elseif player:HasWeaponType(WeaponType.WEAPON_BONE) then
 			if not pldata.DontGreatPheonixTick and InutilLib.IsFinishedMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2") then
 				if pldata.lastPSRPFrameCount then
-					if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+					if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 						return
 					end
 					
-					pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 					
 					if not pldata.PSRPFireCount then
 						pldata.PSRPFireCount = 1
@@ -329,7 +334,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						yandereWaifu.SharpenerFireTearBurst(player)
 					end
 				else
-					pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 				end
 				pldata.DontGreatPheonixTick = true
 			elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
@@ -338,11 +343,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then
 			if --[[not pldata.DontGreatPheonixTick]] spr:GetFrame() == 1 and InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
 				if pldata.lastPSRPFrameCount then
-					if ILIB.game:GetFrameCount() == pldata.lastPSRPFrameCount then
+					if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 						return
 					end
 					
-					pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 					
 					if not pldata.PSRPFireCount then
 						pldata.PSRPFireCount = 1
@@ -355,7 +360,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						yandereWaifu.SharpenerFireTearBurst(player)
 					end
 				else
-					pldata.lastPSRPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 				end
 			--	pldata.DontGreatPheonixTick = true
 			--elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then

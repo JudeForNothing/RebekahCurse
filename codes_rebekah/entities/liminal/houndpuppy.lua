@@ -8,7 +8,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			data.State = 0
 		else
 			--press pressure plates under it
-			--[[local grid = ILIB.room:GetGridEntityFromPos(ent.Position)
+			--[[local grid = InutilLib.room:GetGridEntityFromPos(ent.Position)
 			if grid then
 				if grid:ToPressurePlate() then
 					if grid.State == 0 then
@@ -28,21 +28,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			local function checkOpportunityToDash()
 				if math.random(1,2) == 2 and ent.FrameCount % 3 == 0 then
-					if InutilLib.CuccoLaserCollision(ent, 0, 700, player) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					if InutilLib.CuccoLaserCollision(ent, 0, 700, player) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("Move Hori", true)
 						spr.FlipX = false
 						data.DashDir = Vector(8,0)
-					elseif InutilLib.CuccoLaserCollision(ent, 90, 700, player) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					elseif InutilLib.CuccoLaserCollision(ent, 90, 700, player) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("Move Down", true)
 						data.DashDir = Vector(0,8)
-					elseif InutilLib.CuccoLaserCollision(ent, 180, 700, player) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					elseif InutilLib.CuccoLaserCollision(ent, 180, 700, player) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("Move Hori", true)
 						spr.FlipX = true
 						data.DashDir = Vector(-8,0)
-					elseif InutilLib.CuccoLaserCollision(ent, 270, 700, player) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					elseif InutilLib.CuccoLaserCollision(ent, 270, 700, player) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("Move Up", true)
 						data.DashDir = Vector(0,-8)

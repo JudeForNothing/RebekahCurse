@@ -114,7 +114,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 				if InutilLib.CuccoLaserCollision(eff, data.PermanentAngle, 240, ent, 20) then
 				--if ent.Position:Distance((eff.Position)+ (Vector(50,0):Rotated(data.PermanentAngle))) <= 90 then
-					ent:TakeDamage(player.Damage/1.5 +1*ILIB.level:GetStage(), 0, EntityRef(eff), 1)
+					ent:TakeDamage(player.Damage/1.5 +1*InutilLib.level:GetStage(), 0, EntityRef(eff), 1)
 				end
 			end
 		end
@@ -138,7 +138,7 @@ end, RebekahCurse.ENTITY_HAIRWHIP)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEDELUXE) and Options.ChargeBars then
 			yandereWaifu.loveDeluxeUI(player)
@@ -149,8 +149,8 @@ end);
 
 function yandereWaifu.loveDeluxeUI(player)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
-		local gameFrame = ILIB.game:GetFrameCount();
+		local room = InutilLib.game:GetRoom()
+		local gameFrame = InutilLib.game:GetFrameCount();
 		local tick = data.loveDeluxeTick
 		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
 			uiReserve:SetOverlayRenderPriority(true)

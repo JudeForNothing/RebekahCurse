@@ -1,6 +1,6 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
 	if not new then
-        local challenge = ILIB.game.Challenge == RebekahCurseChallenges.DID
+        local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.DID
         if challenge then
             local player = Isaac.GetPlayer(0)
             local data = yandereWaifu.GetEntityData(player)
@@ -27,9 +27,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
 end)
 
 function yandereWaifu:DIDChallengeNewLevel()
-	local challenge = ILIB.game.Challenge == RebekahCurseChallenges.DID
-    if challenge and ILIB.level:GetStage() > 1 then
-        for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.DID
+    if challenge and InutilLib.level:GetStage() > 1 then
+        for p = 0, InutilLib.game:GetNumPlayers() - 1 do
             local player = Isaac.GetPlayer(p)
             yandereWaifu.ChangeMode( player, math.random(1,9), false, false);
         end

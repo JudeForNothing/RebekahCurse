@@ -1,13 +1,13 @@
 function yandereWaifu:useEnchiridion(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 	for i, ent in pairs (Isaac.GetRoomEntities()) do
 		if ent:IsEnemy() and ent:IsVulnerableEnemy() and not ent:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
@@ -32,10 +32,10 @@ end
 yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useEnchiridion, RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION )
 
 function yandereWaifu:useEnchiridionNewRoom()	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION) then
 			player:TryRemoveNullCostume (RebekahCurseCostumes.AdventureTime)
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then

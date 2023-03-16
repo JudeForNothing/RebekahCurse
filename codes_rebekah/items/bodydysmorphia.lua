@@ -7,13 +7,13 @@ function yandereWaifu:useBodyDysmorphia(collItem, rng, player, flag, slot)
 	local data = yandereWaifu.GetEntityData(player)
 	
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 	if not usedBodyDysmorphia then
 		InutilLib.AnimateGiantbook("gfx/ui/giantbook/giantbook_bodydysmorphia.png", nil, "Shake", _, true)
@@ -85,7 +85,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 			local closestEnemy = InutilLib.GetClosestGenericEnemy(player, 10 + data.PersistentPlayerData.DysmorphiaUses*30)
 			if closestEnemy and player.FrameCount % 30 == 0 then
 				data.BDAddFearFrames = 20
-				ILIB.game:ShakeScreen(5)
+				InutilLib.game:ShakeScreen(5)
 				SFXManager():Play( SoundEffect.SOUND_SCARED_WHIMPER, 5, 0, false, 0.8 );
 			end
 			data.BDDidRemoveCostume = false

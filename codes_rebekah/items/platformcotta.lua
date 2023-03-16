@@ -1,8 +1,8 @@
 function isPlatformValid()
-    local second = ILIB.game.TimeCounter/30
+    local second = InutilLib.game.TimeCounter/30
     local minute = second/60
-    local stage = ILIB.level:GetStage()
-    local stageType = ILIB.level:GetStageType()
+    local stage = InutilLib.level:GetStage()
+    local stageType = InutilLib.level:GetStageType()
     if RebekahLocalSavedata.Data.HasPlatformItemsTaken then
         return false
     end
@@ -14,7 +14,7 @@ end
 
 
 function spawnPlatform(pos, player)
-    local platform = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PLATFORMCAKE, 0, ILIB.room:GetCenterPos(),  Vector(0,0), ent );
+    local platform = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PLATFORMCAKE, 0, InutilLib.room:GetCenterPos(),  Vector(0,0), ent );
     platform:GetSprite():Play("Missing", true)
     local data = yandereWaifu.GetEntityData(platform)
     if isPlatformValid() then
@@ -28,47 +28,47 @@ function generateItems(pos)
     for i = 0, math.random(7,9) do
         local rng = math.random(1,9)
         if rng == 1 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 2 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 3 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 4 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 5 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 6 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 7 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 8 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
 			--item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
         elseif rng == 9 then
-            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, ILIB.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
+            local item = Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, InutilLib.room:FindFreePickupSpawnPosition(pos, 1), Vector(0,0), player ):ToPickup();
             --item.OptionsPickupIndex = 117
             yandereWaifu.GetEntityData(item).PlatformItem = true
             table.insert(tbl, {type = item.Type, variant = item.Variant, subtype = item.SubType})
@@ -89,13 +89,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, old)
 end)
 
 function GeneratePlatformRoom(isRoom)
-    for p = 0, ILIB.game:GetNumPlayers() - 1 do
+    for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PLATFORMCOTTA) and InutilLib.level:GetCurrentRoomIndex() == InutilLib.level:GetStartingRoomIndex() then
-            local plat = spawnPlatform(ILIB.room:GetCenterPos(), player)
-            if ILIB.room:IsFirstVisit() then 
+            local plat = spawnPlatform(InutilLib.room:GetCenterPos(), player)
+            if InutilLib.room:IsFirstVisit() then 
                 RebekahLocalSavedata.Data.HasPlatformItemsTaken = false
                 isspawningPlatform = true
             end
@@ -111,7 +111,7 @@ function GeneratePlatformRoom(isRoom)
                         print("c")
                         for i, v in pairs (RebekahLocalSavedata.Data.HasPlatformItems) do
                             print("BELLS")
-                            local item = Isaac.Spawn( v.type, v.variant, v.subtype, ILIB.room:FindFreePickupSpawnPosition(plat.Position, 1), Vector(0,0), nil ):ToPickup();
+                            local item = Isaac.Spawn( v.type, v.variant, v.subtype, InutilLib.room:FindFreePickupSpawnPosition(plat.Position, 1), Vector(0,0), nil ):ToPickup();
                             --item.OptionsPickupIndex = 117
                             yandereWaifu.GetEntityData(item).PlatformItem = true
                         end
@@ -130,13 +130,13 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.PlatformCo
 
 function yandereWaifu:PlatformCottaNewLevel()
     if isspawningPlatform then
-        for p = 0, ILIB.game:GetNumPlayers() - 1 do
+        for p = 0, InutilLib.game:GetNumPlayers() - 1 do
             local player = Isaac.GetPlayer(p)
-            player.Position = ILIB.room:FindFreeTilePosition(ILIB.room:GetGridPosition(62), 3)
+            player.Position = InutilLib.room:FindFreeTilePosition(InutilLib.room:GetGridPosition(62), 3)
         end
         if isPlatformValid() then
             for i = 0, math.random(0,1) do
-                local bum = Isaac.Spawn( RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BUMBAB, 0, ILIB.room:FindFreePickupSpawnPosition(ILIB.room:GetGridPosition(72), 1),  Vector(0,0), nil );
+                local bum = Isaac.Spawn( RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BUMBAB, 0, InutilLib.room:FindFreePickupSpawnPosition(InutilLib.room:GetGridPosition(72), 1),  Vector(0,0), nil );
             end
        end
     end
@@ -146,7 +146,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.PlatformC
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
-	local room =  ILIB.room
+	local room =  InutilLib.room
 	local data = yandereWaifu.GetEntityData(eff)
     eff.RenderZOffset = -100000
     if isPlatformValid() then
@@ -197,7 +197,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         sprite:Play("Idle", true)
     end
     if data.Missing then
-        for p = 0, ILIB.game:GetNumPlayers() - 1 do
+        for p = 0, InutilLib.game:GetNumPlayers() - 1 do
             local player = Isaac.GetPlayer(p)
             if player.Position:Distance(eff.Position) < 75 and not (player:GetSprite():IsPlaying("FallIn") or player:GetSprite():IsPlaying("JumpOut") or player:GetSprite():IsPlaying("HoleDeath")) and player:GetDamageCooldown() <= 0 then
                 player:AnimatePitfallIn()

@@ -450,7 +450,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			data.RottenFlyTable = {} 
 			
 			--reassign when quitting out of game
-			for i, v in ipairs(ILIB.roomEntities) do
+			for i, v in ipairs(InutilLib.roomEntities) do
 				if v.Type == 3 and v.Variant == RebekahCurse.ENTITY_ROTTENFLY then
 					if GetPtrHash(v:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
 						table.insert(data.RottenFlyTable, v)

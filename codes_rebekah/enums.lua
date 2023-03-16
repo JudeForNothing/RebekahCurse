@@ -108,9 +108,13 @@ RebekahCurseItems = {
 	COLLECTIBLE_SILPHIUM = Isaac.GetItemIdByName("Silphium"),
 	COLLECTIBLE_GIDDYUP = Isaac.GetItemIdByName("Giddy up!"),
 
+	COLLECTIBLE_JACOBSTEARS = Isaac.GetItemIdByName("Jacob's Tears"),
 	COLLECTIBLE_UNDERPAY = Isaac.GetItemIdByName("Underpay"),
 	COLLECTIBLE_PLATFORMCOTTA = Isaac.GetItemIdByName("Platform Cotta"),
 	COLLECTIBLE_MILKWINE = Isaac.GetItemIdByName("Milk Wine"),
+	COLLECTIBLE_SILENTTREATMENT = Isaac.GetItemIdByName("Silent Treatment"),
+
+	COLLECTIBLE_FULLFATMILK = Isaac.GetItemIdByName("Full Fat Milk"),
 
 	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
 	
@@ -173,6 +177,7 @@ RebekahCurse = {
 
 	ENTITY_CARDIAC = Isaac.GetEntityVariantByName("Cardiac Armor"),
 	ENTITY_FENRIR = Isaac.GetEntityVariantByName("Fenrir"),
+	ENTITY_JACOBSTEARS = Isaac.GetEntityVariantByName("Jacob's Tears"),
 	
 	ENTITY_SINGINGTEAR = Isaac.GetEntityVariantByName("Singing Tear"),
 	ENTITY_METALTEAR = Isaac.GetEntityVariantByName("Metal Tear"),
@@ -183,6 +188,8 @@ RebekahCurse = {
 	ENTITY_BROKEN_GLASSES = Isaac.GetEntityVariantByName("Broken Glasses"),
 	ENTITY_REBEKAH_ENTITY_REPLACE = Isaac.GetEntityVariantByName("Rebekah Entity Replace"),
 	ENTITY_REBEKAHS_CARPET_REPLACE = Isaac.GetEntityVariantByName("Rebekah&apos;s Carpet (Rebekah Entity Replace)"),
+	ENTITY_LABAN_DUDE = Isaac.GetEntityVariantByName("Laban"),
+	ENTITY_LABAN_DUDE_REPLACE = Isaac.GetEntityVariantByName("Laban (Entity Replace)"),
 	
 	--red heart mode
 	ENTITY_ORBITALTARGET = Isaac.GetEntityVariantByName("Orbital Target"),
@@ -327,7 +334,7 @@ RebekahCurse = {
 	
 	SADREBEKAH = Isaac.GetPlayerTypeByName("Technical B Rebekah", true),
 	REB_CURSED = Isaac.GetPlayerTypeByName("Cursed Rebekah", true),
-	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("IsaacC", false),
+	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("Wishful Isaac", false),
 	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false),
 	DEBORAH = Isaac.GetPlayerTypeByName("Deborah", false),
 }
@@ -500,6 +507,8 @@ RebekahCurseSounds = {
 	SOUND_CURSED_RAGE = Isaac.GetSoundIdByName("Cursed Rage"),
 	SOUND_CURSED_POP = Isaac.GetSoundIdByName("Cursed Pop"),
 	SOUND_CURSED_ROCKET_LAUNCH = Isaac.GetSoundIdByName("Cursed Rocket Launch"),
+	SOUND_CURSED_BEEP = Isaac.GetSoundIdByName("Cursed Beep"),
+	SOUND_CURSED_BEEP_DEAD = Isaac.GetSoundIdByName("Cursed Beep Dead"),
 
 	SOUND_SPRING_SOUND = Isaac.GetSoundIdByName("Spring Sound"),
 	SOUND_QUALITY_TIME_IN = Isaac.GetSoundIdByName("Quality Time In"),
@@ -562,6 +571,8 @@ RebekahCurseEnemies = {
 	ENTITY_LONGITS = Isaac.GetEntityVariantByName("Longits"),
 	ENTITY_LOAFERING = Isaac.GetEntityVariantByName("Loafering"),
 	ENTITY_FRUITFLY = Isaac.GetEntityVariantByName("Fruit Fly"),
+	--academy
+	ENTITY_EVALUATOR = Isaac.GetEntityVariantByName("Evaluator"),
 }
 
 RebekahCursePills = {
@@ -595,7 +606,10 @@ RebekahCurseDustEffects = {
 	ENTITY_REBEKAH_CURSED_WILD_SWING = 33,
 	ENTITY_REBEKAH_SLAM_HAND_THING = 34,
 	ENTITY_REBEKAH_RAGE_CIRCLE = 35,
-	ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE = 36
+	ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE = 36,
+	ENTITY_REBEKAH_CURSED_EMOJI_SLAM = 37,
+	ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE = 38,
+	
 }
 
 RebekahCurseChallenges ={
@@ -741,7 +755,12 @@ REBECCA_MODE = {
 	RottenHearts = 7,
 	BrokenHearts = 8,
 	ImmortalHearts = 9,
+	IllusionHearts = 10,
+	SunHearts = 11,
 	BrideRedHearts = 12,
+	BlendedHearts = 13,
+	ScaredRedHearts = 14,
+	TwinRedHearts = 15,
 
 	CursedCurse = 30
 }

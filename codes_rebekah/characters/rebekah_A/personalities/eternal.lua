@@ -219,7 +219,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --et
 	-- print(brideProtectorAngle)
 	fam:AddEntityFlags(EntityFlag.FLAG_SLIPPERY_PHYSICS)
 	
-	local grid = ILIB.room:GetGridEntity(ILIB.room:GetGridIndex(fam.Position)) --top grid destroy
+	local grid = InutilLib.room:GetGridEntity(InutilLib.room:GetGridIndex(fam.Position)) --top grid destroy
 	if grid ~= nil and grid.State ~= 2 then
 		grid:Destroy()
 		if grid:GetType() == GridEntityType.GRID_ROCK or grid:GetType() == GridEntityType.GRID_POOP then
@@ -808,7 +808,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_EPICFIRETARGET)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
+	--for i,player in ipairs(InutilLib.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player
@@ -889,7 +889,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.EternalFamiliarCheck)
 	
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	--for i,player in ipairs(ILIB.game:GetNumPlayers()-1) do
+	--for i,player in ipairs(InutilLib.game:GetNumPlayers()-1) do
 		local sprite = eff:GetSprite()
 		local data = yandereWaifu.GetEntityData(eff)
 		local player = data.Player

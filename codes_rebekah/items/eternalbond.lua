@@ -40,7 +40,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 	local spr = iss:GetSprite()
 	local data = yandereWaifu.GetEntityData(iss)
 	local player = iss.Player
-	local room = ILIB.game:GetRoom()
+	local room = InutilLib.game:GetRoom()
 	if iss.Variant == RebekahCurse.ENTITY_TINYBECCA then
 		--bffs! synergy
 		local extraDmg = 0

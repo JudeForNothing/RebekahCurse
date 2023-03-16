@@ -25,7 +25,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_INIT, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
     if ent.Variant == RebekahCurseEnemies.ENTITY_DEINO and ent.SubType == 10 then
         ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
     end
@@ -36,7 +36,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
 
     if ent.SubType == 10 and ent.Variant == RebekahCurseEnemies.ENTITY_GREYSISTEREYE then 
     else
@@ -211,10 +211,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     elseif spr:IsPlaying("StartupEye") then
                         local x
                         if InutilLib.ClosestHorizontalWall(ent) == Direction.LEFT then
-                            x = Round(math.abs(ILIB.room:GetTopLeftPos().X), 0) + 50
+                            x = Round(math.abs(InutilLib.room:GetTopLeftPos().X), 0) + 50
                             spr.FlipX = true
                         else
-                            x = Round(math.abs(ILIB.room:GetBottomRightPos().X), 0) - 50
+                            x = Round(math.abs(InutilLib.room:GetBottomRightPos().X), 0) - 50
                         end
                         local pos = Vector(x, player.Position.Y)
                         ent.Velocity = (ent.Velocity * 0.01) + ((pos - ent.Position)*0.05)
@@ -240,7 +240,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     elseif ent:CollidesWithGrid() then
                         spr:Play("Crash", true)
                         ent.Velocity = Vector.Zero
-                        ILIB.game:ShakeScreen(5)
+                        InutilLib.game:ShakeScreen(5)
 
                         for i = 0, 360 - 360/16, 360/16 do
                             local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, Vector.FromAngle(i):Resized(12))

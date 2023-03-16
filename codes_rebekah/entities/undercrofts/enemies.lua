@@ -1,3 +1,4 @@
+local isPlayerDmg = false
 
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
@@ -50,7 +51,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     ent:Morph(ent.Type, ent.Variant, 0, ent:GetChampionColorIdx())
                 end
                 if data.path then
-                    if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+                    if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
                         InutilLib.FollowPath(ent, player, data.path, 0.5, 0.9)
                     else
                         InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.5, 0.9)
@@ -146,7 +147,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                             spr:Play("Walk", true)
                         else
                             if spr:GetFrame() == 8 then
-                                if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+                                if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
                                     InutilLib.FollowPath(ent, player, data.path, 16, 0.9)
                                 else
                                     InutilLib.MoveDirectlyTowardsTarget(ent, player, 16, 0.9)
@@ -211,7 +212,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                             spr:Play("Walk", true)
                         else
                             if spr:GetFrame() == 8 then
-                                if not ILIB.room:CheckLine(ent.Position, pickup.Position, 0, 0) then
+                                if not InutilLib.room:CheckLine(ent.Position, pickup.Position, 0, 0) then
                                     InutilLib.FollowPath(ent, pickup, data.path, 16, 0.9)
                                 else
                                     InutilLib.MoveDirectlyTowardsTarget(ent, pickup, 16, 0.9)
@@ -286,7 +287,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     if not spr:IsPlaying("Walk") then
                         spr:Play("Walk", true)
                     else
-                        if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+                        if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
                             InutilLib.FollowPath(ent, player, data.path, 1.5, 0.9)
                         else
                             InutilLib.MoveDirectlyTowardsTarget(ent, player, 1.5, 0.9)
@@ -426,6 +427,65 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
         end
         InutilLib.FlipXByVec(ent, false)
+    elseif ent.Variant == RebekahCurseEnemies.ENTITY_EVALUATOR then
+        if not data.Init then
+            data.Init = true
+            spr:Play("Idle", true)
+            data.FlipX = false
+            data.State = 0
+        else
+            if data.State == 0 then
+                if InutilLib.room:IsClear() then
+                    data.State = 1
+                    data.RoomTimeScore = InutilLib.room:GetFrameCount()/30
+                end
+                InutilLib.FlipXByTarget(ent, player, false)
+            else
+                if spr:IsFinished("Evaluate") then
+                    ent:Remove()
+                elseif not spr:IsPlaying("Evaluate") then
+                    spr:Play("Evaluate", true)
+                else
+                    if spr:GetFrame() == 40 then
+                        local score = 0
+                        if data.RoomTimeScore >= 30 then
+                            score = score + 1
+                        end
+                        if isPlayerDmg then
+                            score = score + 1
+                        end
+                        spr:SetOverlayFrame("Score", score)
+
+                        if score == 0 then
+                            Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                        elseif score == 1 then
+                            local rng = math.random(1,3)
+                            if rng == 1 then
+                                Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,  ent.Position,  Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                            elseif rng == 2 then
+                                Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0,  ent.Position,  Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                            elseif rng == 3 then
+                                Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0,  ent.Position,  Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                            end
+                        elseif score == 2 then
+                            local rng = math.random(1,3)
+                            if rng == 1 then
+                                Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,  ent.Position,  Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                            elseif rng == 2 then
+                                Isaac.Spawn( EntityType.ENTITY_SPIDER, 0, 0,  ent.Position,  Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                            elseif rng == 3 then
+                                Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0,  ent.Position,  Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player );
+                            end
+                        end
+                    end
+                    if spr:GetFrame() == 54 then
+                        spr:RemoveOverlay()
+                    end
+                end
+                spr.FlipX = false
+            end
+            ent.Velocity = ent.Velocity * 0.7
+        end
     end
 	
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
@@ -446,3 +506,14 @@ function yandereWaifu:FistEffectUpdate(eff)
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, yandereWaifu.FistEffectUpdate, RebekahCurseEnemies.ENTITY_BUMBAB_PUNCH)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damage, flags, source, countdown)
+    if ent:ToPlayer() then
+        if flags & DamageFlag.DAMAGE_FAKE ~= DamageFlag.DAMAGE_FAKE then
+            isPlayerDmg = true
+        end
+    end
+end)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+    isPlayerDmg = false
+end)

@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		else
 			local path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
 			if path then
-				if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+				if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
 					InutilLib.FollowPath(ent, player, path, 1.2, 0.9)
 				else
 					InutilLib.MoveDirectlyTowardsTarget(ent, player, 1.2, 0.9)

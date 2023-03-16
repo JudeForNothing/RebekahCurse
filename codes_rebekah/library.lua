@@ -10,7 +10,7 @@ RebekahCurseGlobalData = {
 
 function yandereWaifu.DoExtraBarrages(player, mode)
 	local data = yandereWaifu.GetEntityData(player)
-	local game = ILIB.game
+	local game = InutilLib.game
 	if mode == 1 then
 		InutilLib.SetFrameLoop(40,function()
 			if not data.BarFrames then data.BarFrames = 0 end
@@ -235,7 +235,7 @@ function yandereWaifu.GetPlayerBlackHearts(player) -- Kilburn's code thingy that
 end
 --barragetears, so I don't use FireTear, it can get broken
 function yandereWaifu.FireKeeperTear(Position, Velocity, TearVariant, Parent, Color)
-    ILIB.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
+    InutilLib.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
     for i, entity in pairs(Isaac.GetRoomEntities()) do
         if entity.Type == EntityType.ENTITY_TEAR then
             entity = entity:ToTear()
@@ -245,7 +245,7 @@ function yandereWaifu.FireKeeperTear(Position, Velocity, TearVariant, Parent, Co
 end
 
 function yandereWaifu.FireBarrageTear(Position, Velocity, TearVariant, Parent, Color)
-    local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
+    local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, TearVariant, Position, Velocity, Parent, 0, 0)
 	
 	return tear
 end
@@ -388,7 +388,7 @@ function yandereWaifu.SpawnEctoplasm( position, velocity, size, parent, dontupda
 end
 
 function yandereWaifu:GetClosestWallPos(wall, player)
-	local room = ILIB.room
+	local room = InutilLib.room
 	local pos = Vector.Zero
 	if wall == Direction.DOWN then
 		pos = Vector(player.Position.X, room:GetBottomRightPos().Y+60)
@@ -400,61 +400,61 @@ function yandereWaifu:GetClosestWallPos(wall, player)
 		pos = Vector(room:GetTopLeftPos().X-60, player.Position.Y)
 	end
 	if room:IsLShapedRoom() then
-		--[[print((ILIB.room:GetDoorSlotPosition(0) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(1) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(2) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(3) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(4) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(5) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(6) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(7) - player.Position):Length())
+		--[[print((InutilLib.room:GetDoorSlotPosition(0) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(1) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(2) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(3) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(4) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(5) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(6) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(7) - player.Position):Length())
 		print("end")]]
-		local leftWall = math.abs(ILIB.room:GetTopLeftPos().X-player.Position.X)
-		local rightWall = math.abs(ILIB.room:GetBottomRightPos().X-player.Position.X)
-		local topWall = math.abs(ILIB.room:GetTopLeftPos().Y-player.Position.Y)
-		local bottomWall = math.abs(ILIB.room:GetBottomRightPos().Y-player.Position.Y)
+		local leftWall = math.abs(InutilLib.room:GetTopLeftPos().X-player.Position.X)
+		local rightWall = math.abs(InutilLib.room:GetBottomRightPos().X-player.Position.X)
+		local topWall = math.abs(InutilLib.room:GetTopLeftPos().Y-player.Position.Y)
+		local bottomWall = math.abs(InutilLib.room:GetBottomRightPos().Y-player.Position.Y)
 		local shape = room:GetRoomShape()
 		if shape == RoomShape.ROOMSHAPE_LTL then
-			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(1).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(0).X - player.Position.X)
+			local topLwall = math.abs(InutilLib.room:GetDoorSlotPosition(1).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(0).X - player.Position.X)
 
 			if (wall == Direction.LEFT or wall == Direction.DOWN) and (topLwall <= sideLwall and leftWall <= 500 and topLwall <= topWall) then
-				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(1).Y-60)
+				pos = Vector(player.Position.X, InutilLib.room:GetDoorSlotPosition(1).Y-60)
 				wall = Direction.UP
 			elseif wall == Direction.UP and (sideLwall <= topLwall and sideLwall <= leftWall and sideLwall <= topWall) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(0).X-60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(0).X-60, player.Position.Y)
 				wall = Direction.LEFT
 			end
 		elseif shape == RoomShape.ROOMSHAPE_LTR then
-			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(5).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(2).X - player.Position.X)
+			local topLwall = math.abs(InutilLib.room:GetDoorSlotPosition(5).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(2).X - player.Position.X)
 
 			if (wall == Direction.RIGHT or wall == Direction.DOWN) and (topLwall <= sideLwall and rightWall <= 500 and topLwall <= topWall) then
-				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(5).Y-60)
+				pos = Vector(player.Position.X, InutilLib.room:GetDoorSlotPosition(5).Y-60)
 				wall = Direction.UP
 			elseif wall == Direction.UP and (sideLwall <= topLwall and sideLwall <= rightWall and sideLwall <= topWall) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(2).X+60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(2).X+60, player.Position.Y)
 				wall = Direction.RIGHT
 			end
 		elseif shape == RoomShape.ROOMSHAPE_LBL then
-			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(3).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(4).X - player.Position.X)
+			local topLwall = math.abs(InutilLib.room:GetDoorSlotPosition(3).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(4).X - player.Position.X)
 			if (wall == Direction.LEFT or wall == Direction.UP) and (topLwall <= sideLwall and leftWall <= 500 and topLwall <= topWall) then
-				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(3).Y+60)
+				pos = Vector(player.Position.X, InutilLib.room:GetDoorSlotPosition(3).Y+60)
 				wall = Direction.DOWN
 			elseif wall == Direction.DOWN and (sideLwall <= topLwall and sideLwall <= leftWall and sideLwall <= topWall) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(4).X-60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(4).X-60, player.Position.Y)
 				wall = Direction.LEFT
 			end
 		elseif shape == RoomShape.ROOMSHAPE_LBR then
-			local topLwall = math.abs(ILIB.room:GetDoorSlotPosition(7).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(6).X - player.Position.X)
+			local topLwall = math.abs(InutilLib.room:GetDoorSlotPosition(7).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(6).X - player.Position.X)
 
 			if (wall == Direction.RIGHT or wall == Direction.UP) and (topLwall <= sideLwall and rightWall <= 500 and topLwall <= topWall) then
-				pos = Vector(player.Position.X, ILIB.room:GetDoorSlotPosition(7).Y+60)
+				pos = Vector(player.Position.X, InutilLib.room:GetDoorSlotPosition(7).Y+60)
 				wall = Direction.DOWN
 			elseif wall == Direction.DOWN and (sideLwall <= topLwall and sideLwall <= rightWall and sideLwall <= topWall) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(6).X+60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(6).X+60, player.Position.Y)
 				wall = Direction.RIGHT
 			end
 		end
@@ -464,7 +464,7 @@ end
 
 
 function yandereWaifu:GetClosestHorizontalWallPos(wall, player)
-	local room = ILIB.room
+	local room = InutilLib.room
 	local pos = Vector.Zero
 	if wall == Direction.DOWN then
 		pos = Vector(player.Position.X, room:GetBottomRightPos().Y+60)
@@ -476,47 +476,47 @@ function yandereWaifu:GetClosestHorizontalWallPos(wall, player)
 		pos = Vector(room:GetTopLeftPos().X-60, player.Position.Y)
 	end
 	if room:IsLShapedRoom() then
-		--[[print((ILIB.room:GetDoorSlotPosition(0) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(1) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(2) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(3) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(4) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(5) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(6) - player.Position):Length())
-		print((ILIB.room:GetDoorSlotPosition(7) - player.Position):Length())
+		--[[print((InutilLib.room:GetDoorSlotPosition(0) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(1) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(2) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(3) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(4) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(5) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(6) - player.Position):Length())
+		print((InutilLib.room:GetDoorSlotPosition(7) - player.Position):Length())
 		print("end")]]
-		local leftWall = math.abs(ILIB.room:GetTopLeftPos().X-player.Position.X)
-		local rightWall = math.abs(ILIB.room:GetBottomRightPos().X-player.Position.X)
-		local topWall = math.abs(ILIB.room:GetTopLeftPos().Y-player.Position.Y)
-		local bottomWall = math.abs(ILIB.room:GetBottomRightPos().Y-player.Position.Y)
+		local leftWall = math.abs(InutilLib.room:GetTopLeftPos().X-player.Position.X)
+		local rightWall = math.abs(InutilLib.room:GetBottomRightPos().X-player.Position.X)
+		local topWall = math.abs(InutilLib.room:GetTopLeftPos().Y-player.Position.Y)
+		local bottomWall = math.abs(InutilLib.room:GetBottomRightPos().Y-player.Position.Y)
 		local shape = room:GetRoomShape()
 		
 		if shape == RoomShape.ROOMSHAPE_LTL then
-			local topLwall = (ILIB.room:GetDoorSlotPosition(1).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(0).X - player.Position.X)
+			local topLwall = (InutilLib.room:GetDoorSlotPosition(1).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(0).X - player.Position.X)
 			if (wall == Direction.RIGHT) and (topLwall > 0 and sideLwall <= 275) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(1).X+60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(1).X+60, player.Position.Y)
 				wall = Direction.LEFT
 			end
 		elseif shape == RoomShape.ROOMSHAPE_LTR then
-			local topLwall = (ILIB.room:GetDoorSlotPosition(5).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(2).X - player.Position.X)
+			local topLwall = (InutilLib.room:GetDoorSlotPosition(5).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(2).X - player.Position.X)
 			if (wall == Direction.LEFT) and (topLwall > 0 and sideLwall <= 275) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(5).X+60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(5).X+60, player.Position.Y)
 				wall = Direction.RIGHT
 			end
 		elseif shape == RoomShape.ROOMSHAPE_LBL then
-			local topLwall = (ILIB.room:GetDoorSlotPosition(3).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(4).X - player.Position.X)
+			local topLwall = (InutilLib.room:GetDoorSlotPosition(3).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(4).X - player.Position.X)
 			if (wall == Direction.RIGHT) and (topLwall < 0 and sideLwall <= 275) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(3).X+60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(3).X+60, player.Position.Y)
 				wall = Direction.LEFT
 			end
 		elseif shape == RoomShape.ROOMSHAPE_LBR then
-			local topLwall = (ILIB.room:GetDoorSlotPosition(7).Y - player.Position.Y)
-			local sideLwall = math.abs(ILIB.room:GetDoorSlotPosition(6).X - player.Position.X)
+			local topLwall = (InutilLib.room:GetDoorSlotPosition(7).Y - player.Position.Y)
+			local sideLwall = math.abs(InutilLib.room:GetDoorSlotPosition(6).X - player.Position.X)
 			if (wall == Direction.LEFT) and (topLwall < 0 and sideLwall <= 275) then
-				pos = Vector(ILIB.room:GetDoorSlotPosition(7).X+60, player.Position.Y)
+				pos = Vector(InutilLib.room:GetDoorSlotPosition(7).X+60, player.Position.Y)
 				wall = Direction.RIGHT
 			end
 		end
@@ -923,7 +923,7 @@ function yandereWaifu.ThrowDarkKnife(player, position, vel)
 	else
 		local knife = player:FireTear( position, vel, false, false, false):ToTear()
 		knife.Position = position
-		----local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+		----local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 		knife.TearFlags = knife.TearFlags | TearFlags.TEAR_PIERCING --| TearFlags.TEAR_WIGGLE;
 		--knife.CollisionDamage = player.Damage * 4;
 		knife:ChangeVariant(RebekahCurse.ENTITY_DARKKNIFE);
@@ -1034,11 +1034,11 @@ end
 function yandereWaifu:shouldDeHook()
 
 	local reqs = {
-		(ILIB.room:GetType() == RoomType.ROOM_BOSS and not ILIB.room:IsClear() and ILIB.room:GetFrameCount() < 1),
+		(InutilLib.room:GetType() == RoomType.ROOM_BOSS and not InutilLib.room:IsClear() and InutilLib.room:GetFrameCount() < 1),
 		not Options.FoundHUD,
-		not ILIB.game:GetHUD():IsVisible(),
-		ILIB.game:GetRoom():GetType() == RoomType.ROOM_DUNGEON and ILIB.level:GetAbsoluteStage() == LevelStage.STAGE8, --beast fight
-		ILIB.game:GetSeeds():HasSeedEffect(SeedEffect.SEED_NO_HUD),
+		not InutilLib.game:GetHUD():IsVisible(),
+		InutilLib.game:GetRoom():GetType() == RoomType.ROOM_DUNGEON and InutilLib.level:GetAbsoluteStage() == LevelStage.STAGE8, --beast fight
+		InutilLib.game:GetSeeds():HasSeedEffect(SeedEffect.SEED_NO_HUD),
 		-- Game():IsGreedMode() //The chance should still display on Greed Mode even if its 0 for consistency with the rest of the HUD.
 	}
 
@@ -1305,7 +1305,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 					data.currentQueuedItem = pickup.SubType
 				end
 				if pickup.Price < 0 then -- if devil deal
-					data.currentQueuedDevilItem = pickup
+					data.currentQueuedDevilItemPrice = InutilLib.Deepcopy(pickup.Price)
+					print("start")
+					print(data.currentQueuedDevilItemPrice)
 				end
 			end
 		end

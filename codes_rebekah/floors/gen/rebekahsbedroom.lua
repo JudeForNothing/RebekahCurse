@@ -16,10 +16,10 @@ function yandereWaifu.WillSpawnLoveRoom()
 end
 
 function yandereWaifu.OnEnterCurseRoom()
-	local room = ILIB.game:GetRoom()
-	local level = ILIB.game:GetLevel()
+	local room = InutilLib.game:GetRoom()
+	local level = InutilLib.game:GetLevel()
 	-- if we're in a curse room and the room is new
-	local isGreed = ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREED or ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
+	local isGreed = InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREED or InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
 	if (room:GetType() == RoomType.ROOM_CURSE and room:IsFirstVisit()) and StageAPI.GetCurrentRoomType() ~= "Love Room"  then
 
 		local add = false

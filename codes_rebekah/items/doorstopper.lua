@@ -1,13 +1,13 @@
 function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 
 	InutilLib.ToggleShowActive(player, false)
@@ -105,7 +105,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end 
 	
 	local function Pickup()
-		for i=0, ILIB.game:GetNumPlayers()-1 do
+		for i=0, InutilLib.game:GetNumPlayers()-1 do
 			local pl = Isaac.GetPlayer(i)
 			if GetPtrHash(pl) == GetPtrHash(player) then
 				if pl.Position:Distance(eff.Position) <= 40 then 
@@ -137,7 +137,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if sprite:IsEventTriggered("Floor") then
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 2, eff.Position, Vector(0,0), player );
 			InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1);
-			ILIB.game:ShakeScreen(5)
+			InutilLib.game:ShakeScreen(5)
 			eff.Velocity = Vector.Zero
 			for i, ent in pairs (Isaac.GetRoomEntities()) do
 				if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then

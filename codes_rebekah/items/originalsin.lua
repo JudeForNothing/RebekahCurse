@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			eff:GetSprite():ReplaceSpritesheet(0,'gfx/effects/items/originalsin_mantle_break.png')
 			eff:GetSprite():LoadGraphics()
 			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_ORIGINALSIN_SHATTER, 1, 0, false, 1 );
-			ILIB.game:ShakeScreen(5)
+			InutilLib.game:ShakeScreen(5)
 			return false
 		end
 	end
@@ -32,10 +32,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 end)
 
 function yandereWaifu:OriginalSinNewFloor()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if data.PersistentPlayerData.IsHurt then
 			data.PersistentPlayerData.IsHurt = false
 			player:AddNullCostume(RebekahCurseCostumes.OriginalSin)

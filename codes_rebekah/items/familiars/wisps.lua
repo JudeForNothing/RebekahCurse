@@ -15,7 +15,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.rebekahIt
 function yandereWaifu:rebekahItemWispCollision(wisp, coll, low)
 	--[[if wisp.Player and wisp.SubType == RebekahCurseItems.COLLECTIBLE_OHIMDIE and wisp.HitPoints <= 1 then
         if not coll:IsEnemy() then return end
-		local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(wisp.Position, 1), Vector(0,0), nil):ToPickup()
+		local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(wisp.Position, 1), Vector(0,0), nil):ToPickup()
 		item:TryOpenChest(player)
         item:Remove()
         Isaac.Explode(wisp.Position, wisp, 40)
@@ -29,7 +29,7 @@ function yandereWaifu:rebekahItemWispDamage(wisp, damage, damageFlags, coll, dam
         wisp = wisp:ToFamiliar()
         if wisp and wisp.Player and wisp.SubType == RebekahCurseItems.COLLECTIBLE_OHIMDIE and wisp.HitPoints <= 1 then
 
-            local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(wisp.Position, 1), Vector(0,0), nil):ToPickup()
+            local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(wisp.Position, 1), Vector(0,0), nil):ToPickup()
             item:TryOpenChest(wisp.Player)
             item:Remove()
             Isaac.Explode(wisp.Position, wisp, 40)

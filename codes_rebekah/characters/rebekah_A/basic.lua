@@ -94,9 +94,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--print(player:GetPlayerType())
 	--print(RebekahCurse.SADREBEKAH)
 	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not isTaintedUnlocked then 
-		if ILIB.game:GetFrameCount() > 1 then
+		if InutilLib.game:GetFrameCount() > 1 then
 			--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
-			--[[if ILIB.game:GetFrameCount() >= 1 then
+			--[[if InutilLib.game:GetFrameCount() >= 1 then
 				print("fel")
 			end]]
 			
@@ -385,9 +385,9 @@ function yandereWaifu.barrageAndSP(player)
 			if player.FrameCount % 3 == 0 then
 				for i = 1, math.random(2,4) do
 					if math.random(1,3) == 3 then
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 1, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, 1, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
 					else
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.shiftyBeam.Angle + math.random(-5,5)):Resized(math.random(10,25)), player, 0, 0):ToTear()
 						tear:GetSprite():Load("gfx/009.005_corn projectile.anm2", true)
 						tear:GetSprite():Play("Small01", true)
 					end
@@ -493,7 +493,7 @@ function yandereWaifu.barrageAndSP(player)
 		player:EvaluateItems()
 	end
 	
-	if data.currentMode == REBECCA_MODE.EvilHearts and ILIB.game:GetFrameCount() >= 1 then	 --weird bug happens
+	if data.currentMode == REBECCA_MODE.EvilHearts and InutilLib.game:GetFrameCount() >= 1 then	 --weird bug happens
 		--[[if player:GetHearts() <= 0 then
 			if player:GetMovementInput():Length() < 1 and not data.OpenedMaw then
 				local maw = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_DARKMAW, 0, player.Position, player.Velocity, player) --feather attack
@@ -663,7 +663,7 @@ end
 
 --[[function yandereWaifu:RenderMegaMushOverlay() 
 	--local player = Isaac.GetPlayer(0)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsNormalRebekah(player) then
 			local psprite = player:GetSprite()
@@ -733,7 +733,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.RenderMegaMus
 
 --pickup shizz, because i dont want you to ghost around and pick up random things
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		if yandereWaifu.IsNormalRebekah(player) and not entityData.currentMode == REBECCA_MODE.SoulHearts then
@@ -746,15 +746,15 @@ end)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerType = player:GetPlayerType()
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		
 		if yandereWaifu.IsNormalRebekah(player)  then
 			if ent.Type == EntityType.ENTITY_ISAAC or (ent.Type == EntityType.ENTITY_SATAN and not didKillSatan ) then -- isaac heart spawn
-				if ILIB.game:GetLevel():GetStage() == 10 then
+				if InutilLib.game:GetLevel():GetStage() == 10 then
 					didKillSatan = true
 					--local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(97), 1);
 					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, 100, CollectibleType.COLLECTIBLE_ISAACS_HEART, spawnPosition, Vector(0,0), player)
@@ -778,13 +778,13 @@ end)
 
 function yandereWaifu:RebekahNewRoom()	
 	yandereWaifu.InsertMirrorData()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if yandereWaifu.IsNormalRebekah(player) then
 			--[[spawn main room mirror
-			if ILIB.game:GetLevel():GetStartingRoomIndex() == ILIB.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() and ILIB.level:GetStage() == LevelStage.STAGE1_1 and (ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and ILIB.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B) then
+			if InutilLib.game:GetLevel():GetStartingRoomIndex() == InutilLib.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() and InutilLib.level:GetStage() == LevelStage.STAGE1_1 and (InutilLib.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and InutilLib.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B) then
 				local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(19), 1);
 				local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, spawnPosition, Vector(0,0), player);
 				yandereWaifu.GetEntityData(mir).Init = false
@@ -947,7 +947,7 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 		if yandereWaifu.IsNormalRebekah(player) then -- Especially here!
 			--if data.UpdateHair then
 			--	print("tuck")
-			if ILIB.room:GetFrameCount() < 1 then
+			if InutilLib.room:GetFrameCount() < 1 then
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 			end
 			--	data.UpdateHair = false
@@ -1038,7 +1038,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.Rebekahcac
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	Isaac.DebugString("b")
 	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not isTaintedUnlocked then 
-		if ILIB.game:GetFrameCount() > 1 then
+		if InutilLib.game:GetFrameCount() > 1 then
 			--print("fellow")
 			InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			--print("fellow")
@@ -1092,7 +1092,7 @@ end)
 
 local function Init(force)
 	if force == true then
-		for i=0, ILIB.game:GetNumPlayers()-1 do
+		for i=0, InutilLib.game:GetNumPlayers()-1 do
 			local player = Isaac.GetPlayer(i)
 			--Isaac.DebugString("1")
 			hasInit = true;
@@ -1120,7 +1120,7 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 	IsaacPresent = false
 	JacobPresent = false
 	
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if yandereWaifu.IsNormalRebekah(player) then
 			if wasFromTaintedLocked then 
@@ -1156,7 +1156,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.Rebecca
 -- composite of all callbacks to ensure proper callback order
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:GetPlayerType() == 0 then
 			IsaacPresent = true
@@ -1229,7 +1229,7 @@ end);
 
 	-- re-add the appropriate costume when the player rerolls (with d4 or d100)
 	function yandereWaifu:useReroll(collItem, rng, player)
-		--for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		--for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		--	local player = Isaac.GetPlayer(p)
 			if yandereWaifu.IsNormalRebekah(player) then
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
@@ -1257,13 +1257,13 @@ function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 	end
 
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 
 	if (not data.IsAttackActive and yandereWaifu.IsNormalRebekah(player)) and ispocket then
@@ -1295,7 +1295,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon
 
 --custom actions code
 function yandereWaifu:customMovesInput()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsNormalRebekah(player) then
 			local playerdata = yandereWaifu.GetEntityData(player);
@@ -1430,7 +1430,7 @@ function yandereWaifu:customMovesInput()
 end
 
 function yandereWaifu:ExtraStompCooldown()
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		local controller = player.ControllerIndex;
@@ -1488,7 +1488,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if data.mainGlitch then
 			if not data.tankAmount then data.tankAmount = 0 end
 			if data.tankAmount >= 50 then 
-				ILIB.game:ShakeScreen(5);
+				InutilLib.game:ShakeScreen(5);
 				InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 				damage:Kill()
 			else
@@ -1524,7 +1524,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		end
 		
 		if data.IsParryInvul then
-			ILIB.game:ShakeScreen(5);
+			InutilLib.game:ShakeScreen(5);
 			InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSUP_AMPLIFIED, 0.7, 0, false, 0.5 );
 			return false
 		end

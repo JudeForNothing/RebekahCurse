@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_BURGER) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_BURGER) then
 		--player:AddNullCostume(RebekahCurseCostumes.CandyWeddingRing)
-		local seed = ILIB.room:GetSpawnSeed()
+		local seed = InutilLib.room:GetSpawnSeed()
 		if math.ceil(seed % 3) == 0 then
 			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_EVES_BIRD_FOOT, player.Position,  Vector(0,0), player ):ToPickup();
 		elseif math.ceil(seed % 3) == 1 then

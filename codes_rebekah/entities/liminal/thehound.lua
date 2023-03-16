@@ -10,7 +10,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
 		else
 			--press pressure plates under it
-			local grid = ILIB.room:GetGridEntityFromPos(ent.Position)
+			local grid = InutilLib.room:GetGridEntityFromPos(ent.Position)
 			if grid then
 				if grid:ToPressurePlate() then
 					if grid.State == 0 then
@@ -24,18 +24,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			local function checkOpportunityToDash()
 				if math.random(1,2) == 2 and ent.FrameCount % 3 == 0 then
-					if InutilLib.CuccoLaserCollision(ent, 0, 700, player, 30) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					if InutilLib.CuccoLaserCollision(ent, 0, 700, player, 30) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("StartDashHori", true)
 						spr.FlipX = false
-					elseif InutilLib.CuccoLaserCollision(ent, 90, 700, player, 30) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					elseif InutilLib.CuccoLaserCollision(ent, 90, 700, player, 30) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("StartDashFront", true)
-					elseif InutilLib.CuccoLaserCollision(ent, 180, 700, player, 30) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					elseif InutilLib.CuccoLaserCollision(ent, 180, 700, player, 30) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("StartDashHori", true)
 						spr.FlipX = true
-					elseif InutilLib.CuccoLaserCollision(ent, 270, 700, player, 30) and ILIB.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+					elseif InutilLib.CuccoLaserCollision(ent, 270, 700, player, 30) and InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
 						data.State = 3
 						spr:Play("StartDashBack", true)
 					end
@@ -45,7 +45,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				if spr:IsFinished("Spawn") then
 					data.State = 1
 				end
-				ILIB.game:ShakeScreen(5)
+				InutilLib.game:ShakeScreen(5)
 			elseif data.State == 1 then --idle
 				if ent.Velocity:Length() > 1 then
 					data.State = 2
@@ -93,7 +93,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				ent.Velocity = ent.Velocity * 0.6
 			elseif data.State == 4 then --the actual dash
 				if ent:CollidesWithGrid() then
-					ILIB.game:ShakeScreen(5)
+					InutilLib.game:ShakeScreen(5)
 					data.State = 5
 				end
 				ent.Velocity = data.DashDir * 2.5
@@ -107,7 +107,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				end
 				for x = math.ceil(radius/40)*-1, math.ceil(radius/40) do
 					for y = math.ceil(radius/40)*-1, math.ceil(radius/40) do
-						local grid = ILIB.room:GetGridEntityFromPos(Vector(ent.Position.X+40*x, ent.Position.Y+40*y))
+						local grid = InutilLib.room:GetGridEntityFromPos(Vector(ent.Position.X+40*x, ent.Position.Y+40*y))
 						if grid and (grid:ToRock() or grid:ToPoop() or grid:ToTNT()) then
 							if InutilLib.GetGridsInRadius(ent.Position, grid.Position, radius) then
 								grid:Destroy()
@@ -160,7 +160,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	end
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 
-InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	if damage.Variant == RebekahCurseEnemies.ENTITY_THE_HOUND and yandereWaifu.GetEntityData(damage).IsInvincible then
 		return false
 	end

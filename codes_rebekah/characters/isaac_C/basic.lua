@@ -3,7 +3,7 @@ function yandereWaifu:IsaacCregisterCache(player, cacheF) --The thing the checks
 	if player:GetPlayerType() == RebekahCurse.WISHFUL_ISAAC then -- Especially here!
 		--if data.UpdateHair then
 		--	print("tuck")
-		if ILIB.room:GetFrameCount() < 1 then
+		if InutilLib.room:GetFrameCount() < 1 then
 			yandereWaifu.ApplyCostumes( _, player , true, false)
 		end
 		--	data.UpdateHair = false

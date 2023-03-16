@@ -41,7 +41,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			if v:IsEnemy() and v:IsActiveEnemy() then
 				local vdata = yandereWaifu.GetEntityData(v)
 				if not vdata.EyesOfDeadAge then 
-					vdata.EyesOfDeadAge = math.random(1,200000+20*v.MaxHitPoints/10) - ILIB.room:GetFrameCount()*10
+					vdata.EyesOfDeadAge = math.random(1,200000+20*v.MaxHitPoints/10) - InutilLib.room:GetFrameCount()*10
 					vdata.EyesOfDeadPlayer = player
 				end
 			end
@@ -65,7 +65,7 @@ end)
 
 function yandereWaifu:EyeoftheDeadNewLevel()
 	local room = Game():GetRoom();
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		if data.EyesOfDeadDamage then
@@ -83,7 +83,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		local data = yandereWaifu.GetEntityData(damage)
 		local function GrantDmg(player)
 			player = player:ToPlayer()
-			local room = ILIB.game:GetRoom()
+			local room = InutilLib.game:GetRoom()
 			if amount > damage.HitPoints and player.Damage < yandereWaifu.GetEntityData(player).PersistentPlayerData.EyeDeadDamage * 1.5 then
 				if not yandereWaifu.GetEntityData(player).EyesOfDeadDamage then
 					yandereWaifu.GetEntityData(player).EyesOfDeadDamage = (yandereWaifu.GetEntityData(damage).EyesOfDeadAge/350000)*(1+player.Damage/10)

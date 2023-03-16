@@ -44,7 +44,7 @@
           nameimage="name_rebekah.png" 
           portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
           
-	<player name="IsaacC" birthright="???" skin="character_wishful_isaac.png" hp="6" keys="0"
+	<player name="Wishful Isaac" birthright="???" skin="character_wishful_isaac.png" hp="6" keys="0"
           nameimage="playername_01_isaac.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7"/>
 	
@@ -62,5 +62,9 @@
 
    <player name="Deborah" birthright="Dual wielding" skin="character_deborah.png" hp="4" keys="0" canShoot="false"
           nameimage="name_rebekah.png" 
+          portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="deborah"/>
+
+          <player name="Deborah"  bSkinParent="Deborah" birthright="???" skin="character_deborah.png" hp="2" keys="3"
+          nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="deborah"/>
 </players>

@@ -13,7 +13,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
 function()
-    local num_players = ILIB.game:GetNumPlayers()
+    local num_players = InutilLib.game:GetNumPlayers()
     for i=0,(num_players-1) do
         local player = Isaac.GetPlayer(i)
         local data = yandereWaifu.GetEntityData(player)
@@ -274,7 +274,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
         end
         if TableLength(data.DeborahGunClip) < 6 and not data.CanShoot then
             if not data.reloadInterval then 
-                if ILIB.room:IsClear() then
+                if InutilLib.room:IsClear() then
                     data.reloadInterval = player.MaxFireDelay /2
                 else
                     data.reloadInterval = player.MaxFireDelay 
@@ -299,7 +299,7 @@ function yandereWaifu:DeborahregisterCache(player, cacheF) --The thing the check
 	local data = yandereWaifu.GetEntityData(player)
 	if player:GetPlayerType() == RebekahCurse.DEBORAH then -- Especially here!
 		if cacheF == CacheFlag.CACHE_DAMAGE then
-			player.Damage = player.Damage * 1.5
+			player.Damage = player.Damage * 2.2
 		end
 	end
 end

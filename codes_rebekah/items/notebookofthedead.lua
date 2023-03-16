@@ -1,13 +1,13 @@
 function yandereWaifu:useNotebookOfDead(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 	InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SCRIBBLING, 1, 0, false, 1.5)
 	InutilLib.ToggleShowActive(player, true)
@@ -57,7 +57,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		eff.Velocity = Vector.Zero
 		ClampToL()
 	else
-		eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize);
+		eff.Position = InutilLib.room:GetClampedPosition(eff.Position, roomClampSize);
 		eff.Velocity = --[[(eff.Velocity * 0.8) +]] movementDirection:Resized( 18 );
 		data.target = nil
 	end
@@ -94,7 +94,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				yandereWaifu.GetEntityData(laser).IsDark = 1
 				player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, 1)
 				data.target:Kill()
-				ILIB.game:ShakeScreen(10)
+				InutilLib.game:ShakeScreen(10)
 			end
 			--Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALNUKE, 0, eff.Position, Vector.FromAngle(1*math.random(1,360))*(math.random(2,4)), player) --heart effect
 			eff:Remove()
@@ -124,7 +124,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			laser.Timeout = 90
 			yandereWaifu.GetEntityData(laser).IsDark = 1
 			data.player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, 1)
-			ILIB.game:ShakeScreen(10)
+			InutilLib.game:ShakeScreen(10)
 		end
 	end
 end)

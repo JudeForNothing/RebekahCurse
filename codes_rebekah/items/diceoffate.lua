@@ -5,7 +5,7 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 		data.justSpawned = false
 		local validPickup = (pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE)
 		if validPickup and not pickup.SpawnerEntity then
-			yandereWaifu.RerollToLoveRoomPool(pickup)
+			yandereWaifu.RerollToRebekahPool(pickup)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
 				local wisp = player:AddWisp(RebekahCurseItems.COLLECTIBLE_DICEOFFATE, player.Position, false, false)
 				wisp.Position = pickup.Position

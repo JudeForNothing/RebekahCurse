@@ -24,13 +24,13 @@ function yandereWaifu:useGiddyUp(collItem, rng, player)
 	local data = yandereWaifu.GetEntityData(player)
 
 	if data.lastActiveUsedFrameCount then
-		if ILIB.game:GetFrameCount() == data.lastActiveUsedFrameCount then
+		if InutilLib.game:GetFrameCount() == data.lastActiveUsedFrameCount then
 			return
 		end
 						
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	else
-		data.lastActiveUsedFrameCount = ILIB.game:GetFrameCount()
+		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
 
 	spawnBody(player)
@@ -124,7 +124,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 					dust:GetSprite().PlaybackSpeed = 0.3
 					dust.Timeout = 6
 					dust.LifeSpan = 6
-					ILIB.game:ShakeScreen(10)
+					InutilLib.game:ShakeScreen(10)
 					InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.8);
 				end
 			else

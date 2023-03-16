@@ -103,7 +103,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 								data.currentIndex = nil
 								isDiffused = true
 								for i = 1, 13 do
-									local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil) --body effect
+									local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil) --body effect
 								end
 								player:SetActiveCharge(0, ActiveSlot.SLOT_PRIMARY)
 								player:SetActiveCharge(0, ActiveSlot.SLOT_SECONDARY)

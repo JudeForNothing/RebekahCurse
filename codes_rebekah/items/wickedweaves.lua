@@ -12,7 +12,7 @@ uiArmReserve:LoadGraphics()
 local armCooldown = 300
 local footCooldown = 60
 local function DoubleTapWWPunch(vector, playerTapping)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
 		if GetPtrHash( playerTapping ) == GetPtrHash( player) then
@@ -65,7 +65,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) then
 		local wall = InutilLib.ClosestWall(player)
 		local fist
-		local room = ILIB.room
+		local room = InutilLib.room
 		local footReleased = false
 		for i, ent in pairs (Isaac.GetRoomEntities()) do
 			if ent.Type == EntityType.ENTITY_EFFECT and ent.Variant == RebekahCurse.ENTITY_WICKEDLIMB then
@@ -141,13 +141,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_WICKEDWEAVES, 10, 0, false, 1)
 		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() >= 3 and sprite:GetFrame() <= 6 then
 			local radisu = 70
-			ILIB.game:MakeShockwave(eff.Position, 0.055, 0.025, 10)
+			InutilLib.game:MakeShockwave(eff.Position, 0.055, 0.025, 10)
 			for i, ent in pairs (Isaac.GetRoomEntities()) do
 				if (ent:IsEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 					if ent.Position:Distance(eff.Position) <= radisu + ent.Size then
 						ent:TakeDamage(player.Damage, 0, EntityRef(player), 1)
 							
-						ILIB.game:ShakeScreen(5)
+						InutilLib.game:ShakeScreen(5)
 						ent.Velocity = (ent.Position - eff.Position):Rotated(data.Angle):Resized(50)
 						ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
 					end
@@ -155,7 +155,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 			for x = math.ceil(radisu/40)*-1, math.ceil(radisu/40) do
 				for y = math.ceil(radisu/40)*-1, math.ceil(radisu/40) do
-					local grid = ILIB.room:GetGridEntityFromPos(Vector(eff.Position.X+40*x, eff.Position.Y+40*y))
+					local grid = InutilLib.room:GetGridEntityFromPos(Vector(eff.Position.X+40*x, eff.Position.Y+40*y))
 					if grid and (grid:ToRock() or grid:ToPoop() or grid:ToTNT()) then
 						if InutilLib.GetGridsInRadius(eff.Position, grid.Position, radisu) then
 							grid:Destroy()
@@ -175,21 +175,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_WICKEDWEAVES, 10, 0, false, 1)
 		elseif sprite:IsPlaying("Stomp") then
 			if sprite:GetFrame() == 6 then
-				ILIB.game:ShakeScreen(5)
-				ILIB.game:MakeShockwave(eff.Position, 0.055, 0.025, 10)
+				InutilLib.game:ShakeScreen(5)
+				InutilLib.game:MakeShockwave(eff.Position, 0.055, 0.025, 10)
 				local radisu = 70
 				for i, ent in pairs (Isaac.GetRoomEntities()) do
 					if (ent:IsEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
 						if ent.Position:Distance(eff.Position) <= radisu + ent.Size then
 							ent:TakeDamage(player.Damage*4, 0, EntityRef(player), 1)
 								
-							ILIB.game:ShakeScreen(10)
+							InutilLib.game:ShakeScreen(10)
 						end
 					end
 				end
 				for x = math.ceil(radisu/40)*-1, math.ceil(radisu/40) do
 					for y = math.ceil(radisu/40)*-1, math.ceil(radisu/40) do
-						local grid = ILIB.room:GetGridEntityFromPos(Vector(eff.Position.X+40*x, eff.Position.Y+40*y))
+						local grid = InutilLib.room:GetGridEntityFromPos(Vector(eff.Position.X+40*x, eff.Position.Y+40*y))
 						if grid and (grid:ToRock() or grid:ToPoop() or grid:ToTNT()) then
 							if InutilLib.GetGridsInRadius(eff.Position, grid.Position, radisu) then
 								grid:Destroy()
@@ -204,10 +204,10 @@ end, RebekahCurse.ENTITY_WICKEDLIMB)
 
 
 function yandereWaifu:ForWickedWeavesNewRoom()	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) and data.WW_ATTACK_DOUBLE_TAP then
 			data.WW_ATTACK_DOUBLE_TAP:Reset();
 		end
@@ -231,7 +231,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) and Options.ChargeBars then
 			yandereWaifu.wickedWeavesUi(player)
@@ -242,8 +242,8 @@ end);
 
 function yandereWaifu.wickedWeavesUi(player)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
-		local gameFrame = ILIB.game:GetFrameCount();
+		local room = InutilLib.game:GetRoom()
+		local gameFrame = InutilLib.game:GetFrameCount();
 		local tick = data.WWFootCooldown
 		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
 			uiFootReserve:SetOverlayRenderPriority(true)

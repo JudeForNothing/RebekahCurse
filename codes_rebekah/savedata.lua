@@ -1,13 +1,13 @@
 local hasGameStarted = false -- i cant believe im doing this LOL
 
 function yandereWaifu:PlayerDataInit(hasstarted) --Init
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		--Isaac.DebugString(player)
-		if not hasstarted then
+		--[[if not hasstarted then
 			local data = yandereWaifu.GetEntityData(player)
 			data.PersistentPlayerData = {}
-		end
+		end]]
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.PlayerDataInit)
@@ -102,16 +102,16 @@ local roomWasCleared = false
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 
-	local room = ILIB.game:GetRoom()
+	local room = InutilLib.game:GetRoom()
 	local roomIsClear = room:IsClear()
 	
-	local currentStage = ILIB.game:GetLevel():GetStage()
+	local currentStage = InutilLib.game:GetLevel():GetStage()
 	local roomType = room:GetType()
 	
-	for i,player in ipairs(ILIB.players) do
+	for i,player in ipairs(InutilLib.players) do
 		if player:GetPlayerType() == Reb and RebekahLocalSavedata.CurrentRebeccaUnlocks and readyToUnlock then
 			
-			if ILIB.game:IsGreedMode() then
+			if InutilLib.game:IsGreedMode() then
 				if not ultraGreedWasDefeated then
 					if currentStage == LevelStage.STAGE7_GREED then
 						if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS and room:IsCurrentRoomLastBoss() then
@@ -120,7 +120,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 
 								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_love_power.png", nil, true)
 							end
-							if ILIB.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then --ier
+							if InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then --ier
 								if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK then
 									RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK = true
 
@@ -144,8 +144,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				
 				--do other unlocks if the other methods didnt work
 				if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS then
-					local currentStageType = ILIB.game:GetLevel():GetStageType()
-					local curses =	ILIB.game:GetLevel():GetCurses()
+					local currentStageType = InutilLib.game:GetLevel():GetStageType()
+					local curses =	InutilLib.game:GetLevel():GetCurses()
 					
 					if currentStage == 8 or (currentStage == 7 and curses & LevelCurse.CURSE_OF_LABYRINTH ~= 0 and room:IsCurrentRoomLastBoss()) then --womb 2
 						if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then
@@ -226,7 +226,7 @@ end)
 
 --item pool unlockables!
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	local itemPool = ILIB.game:GetItemPool()
+	local itemPool = InutilLib.game:GetItemPool()
 	if RebekahLocalSavedata.CurrentRebeccaUnlocks then
 		if not RebekahLocalSavedata.CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX then --boss rush
 			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LUNCHBOX)
@@ -282,7 +282,7 @@ end)]]
 			end
 		end
 	else
-			for p = 0, ILIB.game:GetNumPlayers() - 1 do
+			for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 				local player = Isaac.GetPlayer(p)
 				if player:GetPlayerType() == Reb then
 					if yandereWaifu.GetEntityData(player).currentMode then
@@ -320,7 +320,7 @@ local function RecapRebekahData()
 
 	saveData.NedHealth = {} -- first ned
 	local players = {}
-	for i ,player in pairs(ILIB.players) do
+	for i ,player in pairs(InutilLib.players) do
 		if yandereWaifu.IsNormalRebekah(player) then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
@@ -400,7 +400,7 @@ function yandereWaifu.LoadPlayerSaveData()
 	local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 	if data ~= nil then
 		if data.currentMode ~= nil then 
-			for p,player in pairs(ILIB.players) do
+			for p,player in pairs(InutilLib.players) do
 				print("bruh")
 				if yandereWaifu.IsNormalRebekah(player) then
 					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[p]
@@ -418,7 +418,7 @@ function yandereWaifu.LoadPlayerSaveData()
 			end
 		end
 		if data.NedHealth then
-			for i,player in pairs(ILIB.players) do
+			for i,player in pairs(InutilLib.players) do
 				for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 					if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL or ned.Variant == RebekahCurse.ENTITY_SQUIRENED then 
 						local name = tonumber(ned.Variant..ned.SubType)

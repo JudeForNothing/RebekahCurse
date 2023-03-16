@@ -28,11 +28,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
 		local spr = tr:GetSprite()
 		if pldata.lastGPFrameCount then
-			if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+			if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 				return
 			end
 			
-			pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 			
 			if not pldata.GPFireCount then
 				pldata.GPFireCount = 1
@@ -49,12 +49,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 				SpawnFlies(player, amount)
 			end
 		else
-			pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+			pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 		end
 	end
 end);
 
-InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, function(_, lz)
+yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 	if lz.SpawnerEntity then
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
@@ -63,11 +63,11 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
 					if pldata.lastGPFrameCount then
-						if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+						if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 							return
 						end
 						
-						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 						
 						if not pldata.GPFireCount then
 							pldata.GPFireCount = 1
@@ -88,7 +88,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_LASER, func
 							end
 						end
 					else
-						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 					end
 				end
 			end
@@ -106,11 +106,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 				if parent and parent.Type == EntityType.ENTITY_PLAYER then
 					local spr = lz:GetSprite()
 					if pldata.lastGPFrameCount then
-						if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+						if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 							return
 						end
 						
-						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 						
 						if not pldata.GPFireCount then
 							pldata.GPFireCount = 1
@@ -131,7 +131,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 							end
 						--end
 					else
-						pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+						pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 					end
 				end
 			end
@@ -139,18 +139,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 	end
 end);
 
-InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, function(_, bb)
+yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 			local spr = bb:GetSprite()
 			if pldata.lastGPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+				if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 					return
 				end
 				
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.GPFireCount then
 					pldata.GPFireCount = 1
@@ -164,7 +164,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_FIRE_BOMB, funct
 					SpawnFlies(player, 4)
 				end
 			else
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 			end
 		end
 	end
@@ -179,11 +179,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.lastGPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+				if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 					return
 				end
 				
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.GPFireCount then
 					pldata.GPFireCount = 1
@@ -197,13 +197,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 					SpawnFlies(player)
 				end
 			else
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 			end
 		end
 	end
 end, EffectVariant.TARGET);
 
-InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
@@ -212,11 +212,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end
 			if pldata.lastGPFrameCount then
-				if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount and pldata.NoActiveKnife then
+				if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount and pldata.NoActiveKnife then
 					return
 				end
 				
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 				
 				if not pldata.GPFireCount then
 					pldata.GPFireCount = 1
@@ -230,7 +230,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 					SpawnFlies(player)
 				end
 			else
-				pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 			end
 			local data = InutilLib.GetILIBData(kn)
 			if kn.FrameCount == 1 then
@@ -257,11 +257,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		elseif player:HasWeaponType(WeaponType.WEAPON_BONE) then
 			if not pldata.DontGreatPheonixTick and InutilLib.IsFinishedMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2") then
 				if pldata.lastGPFrameCount then
-					if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+					if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 						return
 					end
 					
-					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 					
 					if not pldata.GPFireCount then
 						pldata.GPFireCount = 1
@@ -278,7 +278,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						SpawnFlies(player, amount)
 					end
 				else
-					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 				end
 				pldata.DontGreatPheonixTick = true
 			elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
@@ -287,11 +287,11 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 		elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then
 			if --[[not pldata.DontGreatPheonixTick]] spr:GetFrame() == 1 and InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then
 				if pldata.lastGPFrameCount then
-					if ILIB.game:GetFrameCount() == pldata.lastGPFrameCount then
+					if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
 						return
 					end
 					
-					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 					
 					if not pldata.GPFireCount then
 						pldata.GPFireCount = 1
@@ -308,7 +308,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						SpawnFlies(player, amount)
 					end
 				else
-					pldata.lastGPFrameCount = ILIB.game:GetFrameCount()
+					pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
 				end
 			--	pldata.DontGreatPheonixTick = true
 			--elseif InutilLib.IsPlayingMultiple(spr, "Swing", "Swing2", "SwingDown", "SwingDown2", "AttackRight", "AttackLeft", "AttackDown", "AttackUp") then

@@ -2,11 +2,11 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PROJECTILE_UPDATE, function(_, proj)
 	local data = yandereWaifu.GetEntityData(proj)
 	if data.Bloodbend1 and proj.FrameCount == 1 then
-		--print(ILIB.room:GetGridEntity(ILIB.room:GetGridIndex((proj.Position +Vector(0,40):Rotated(data.BloodbendAngle - 90)))))
+		--print(InutilLib.room:GetGridEntity(InutilLib.room:GetGridIndex((proj.Position +Vector(0,40):Rotated(data.BloodbendAngle - 90)))))
 		proj.Scale = 1.7
 		proj.FallingSpeed = (10)*-1;
 		proj.FallingAccel = 1;
-		if ILIB.room:GetGridEntity(ILIB.room:GetGridIndex((proj.Position +Vector(0,40):Rotated(data.BloodbendAngle - 90)))) == nil then
+		if InutilLib.room:GetGridEntity(InutilLib.room:GetGridIndex((proj.Position +Vector(0,40):Rotated(data.BloodbendAngle - 90)))) == nil then
 			local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_RED, 0, proj.Position + (Vector(0,40):Rotated(data.BloodbendAngle - 90)), Vector(0,0), nil)
 			local proje = InutilLib.FireGenericProjAttack(proj, 0, 1, proj.Position + (Vector(0,40):Rotated(data.BloodbendAngle - 90)), Vector.Zero)
 			yandereWaifu.GetEntityData(proje).Bloodbend1 = true
@@ -76,7 +76,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				spr:Play("1Transition", true)
 			end
 			if data.State == 1 then --phase one idle
-				--InutilLib.MoveRandomlyTypeI(ent, ILIB.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
+				--InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
 				--local path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
 			
 				
@@ -222,8 +222,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				ent.Velocity = ent.Velocity * 0.8
 			end
 			if data.State == 4 then
-				--print((ent.Position - ILIB.room:GetCenterPos()):Length())
-				if math.floor((ent.Position - ILIB.room:GetCenterPos()):Length()) <= 4 then
+				--print((ent.Position - InutilLib.room:GetCenterPos()):Length())
+				if math.floor((ent.Position - InutilLib.room:GetCenterPos()):Length()) <= 4 then
 					if spr:IsPlaying("1Special") then
 						if spr:GetFrame() == 30 then
 							local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVESUMMONCIRCLE, math.random(0,3), ent.Position, Vector(0,0), nil)
@@ -240,7 +240,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end
 				else
 					InutilLib.AnimShootFrame(ent, false, ent.Velocity, "1WalkRight", "1WalkFront", "1WalkBack", "1WalkLeft")
-					ent.Velocity = ent.Velocity + (ILIB.room:GetCenterPos()-ent.Position):Resized(2)
+					ent.Velocity = ent.Velocity + (InutilLib.room:GetCenterPos()-ent.Position):Resized(2)
 					ent.Velocity = ent.Velocity * 0.8
 				end
 			end
@@ -295,7 +295,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						data.State = 1
 						data.DashRage = nil
 						data.LastPosition = nil
-						ILIB.game:ShakeScreen(8)
+						InutilLib.game:ShakeScreen(8)
 						for i = 0, 360 - 360/16, 360/16 do
 							local proj2 = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(10,0)):Resized(10):Rotated(i)):ToProjectile()
 							proj2.Scale = 1.1
@@ -328,7 +328,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
 
 
-InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	if damage.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and damage.Variant == RebekahCurseEnemies.ENTITY_EVE_BOSS then
 		local data = yandereWaifu.GetEntityData(damage)
 		if data.BlockAllDmg then
@@ -367,12 +367,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,eff)
 			elseif eff.SubType == 1 then
 				for i = 1, 5 do
 					InutilLib.SetTimer( i*3, function()
-						local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, ILIB.room:GetRandomPosition(2), Vector(0,0), eff) 
+						local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 0, InutilLib.room:GetRandomPosition(2), Vector(0,0), eff) 
 					end)
 				end
 			elseif eff.SubType == 2 then
 				for i = 1, 3 do
-					local splat = Isaac.Spawn(EntityType.ENTITY_BEGOTTEN, 0, 0, ILIB.room:GetRandomPosition(2) , Vector(0,0), nil)
+					local splat = Isaac.Spawn(EntityType.ENTITY_BEGOTTEN, 0, 0, InutilLib.room:GetRandomPosition(2) , Vector(0,0), nil)
 					splat:AddEntityFlags(EntityFlag.FLAG_AMBUSH)
 					splat.HitPoints = 20
 					splat.MaxHitPoints = 20

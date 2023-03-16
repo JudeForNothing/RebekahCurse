@@ -78,7 +78,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			fam.Velocity = Vector.Zero
 			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
 			data.lastDir = nil
-			ILIB.game:Darken(2, 35)
+			InutilLib.game:Darken(2, 35)
 		end
 	elseif data.State == 2 then
 		if spr:IsFinished("Grab") then

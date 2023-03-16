@@ -52,11 +52,11 @@ function yandereWaifu:usedoLoveMe(collItem, rng, player, flags, slot)
 		InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSUP , 1.2, 0, false, 1 );
 	elseif data.PersistentPlayerData.LovesMe == false then --if she does not
 		if rng == 1 then
-			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_TROLL, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
+			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_TROLL, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
 		--[[elseif rng == 2 then
-			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_SUPERTROLL, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
+			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_SUPERTROLL, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
 		elseif rng == 3 then
-			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GOLDENTROLL, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
+			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GOLDENTROLL, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
 		elseif rng == 4 then
 			player:UseCard(Card.CARD_TOWER, 0)]]
 		end
@@ -106,9 +106,9 @@ function yandereWaifu:usedoLoveMe2(collItem, rng, player, flags, slot)
 		InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSUP , 1.2, 0, false, 1.2 );
 	elseif data.PersistentPlayerData.LovesMe == false then --if she does not
 		if rng == 1 then
-			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_SUPERTROLL, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
+			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_SUPERTROLL, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
 		elseif rng == 2 then
-			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GOLDENTROLL, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
+			local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GOLDENTROLL, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), nil)
 		end
 		data.PersistentPlayerData.LovesMe = true
 		local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
@@ -135,28 +135,28 @@ end
 local function SpawnRandomReward(player)
 	local rng = math.random(1,10)
 	if rng == 1 then
-		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_CHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 	elseif rng == 2 then
 		for i = 1, math.random(3,8) do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0,InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 3 then
 		for i = 1, math.random(3,5) do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 4 then
 		for i = 1, math.random(3,5) do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 5 then
 		for i = 1, 3 do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_PILL, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 6 then
-		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_ETERNALCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_ETERNALCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 	elseif rng == 7 then
 		for i = 1, 3 do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 8 then
 		local rng2 = math.random(1,3)
@@ -176,10 +176,10 @@ local function SpawnRandomReward(player)
 		end
 	elseif rng == 9 then
 		for i = 1, 3 do
-			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_REDCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 		end
 	elseif rng == 10 then
-		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_MEGACHEST, 0, ILIB.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
+		Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_MEGACHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 	end
 end
 

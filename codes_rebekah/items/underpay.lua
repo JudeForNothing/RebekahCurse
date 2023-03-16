@@ -14,12 +14,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
         end
     end
 
-    for p = 0, ILIB.game:GetNumPlayers() - 1 do
+    for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		local validPickup = (pickup.Variant == PickupVariant.PICKUP_COIN)
 		if (player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNDERPAY)) then
-			if rng:RandomFloat() <= (chance) and validPickup and ILIB.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
+			if rng:RandomFloat() <= (chance) and validPickup and InutilLib.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
 		and (pickup:GetSprite():IsPlaying("Appear") or pickup:GetSprite():IsPlaying("AppearFast")) and pickup:GetSprite():GetFrame() == 1 and not pickup.SpawnerEntity then
 				if pickup.SubType == CoinSubType.COIN_NICKEL then
 					for i = 0, math.random(10,15) do

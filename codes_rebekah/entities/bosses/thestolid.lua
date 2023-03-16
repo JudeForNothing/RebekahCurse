@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
 	if data.path == nil then data.path = ent.Pathfinder end
 	if ent.Variant == RebekahCurseEnemies.ENTITY_THE_STOLID and ent.SubType == 1 then
 		if not data.State then
@@ -29,7 +29,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 				elseif spr:IsPlaying("Punch") and spr:GetFrame() == 17 then
 					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
-					ILIB.game:ShakeScreen(5)
+					InutilLib.game:ShakeScreen(5)
 					for i, v in pairs (Isaac.GetRoomEntities()) do
 						if (v.Position - ent.Position):Length() < v.Size + ent.Size + 30 then
 							if v:ToPlayer() then
@@ -130,8 +130,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						ent.HitPoints = ent.HitPoints - 100
 						spr:Play("CrashHurt", true)
 					end
-					ILIB.game:ShakeScreen(10)
-					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
+					InutilLib.game:ShakeScreen(10)
+					InutilLib.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
 					InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.6 );
 					ent.Velocity = Vector.Zero
 					--crackwaves
@@ -145,7 +145,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					local chosenNumofBarrage =  math.random( 8, 15 );
 					for i = 1, chosenNumofBarrage do
 						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
 						tear.Scale = math.random(2,12)/10;
 						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
 						tear.FallingAccel = 0.5;
@@ -154,7 +154,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					--rocks falling down randomly
 					for i = 0, math.random(5,7) do
 						InutilLib.SetTimer( 7 * i, function()
-							local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
+							local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
 							tear.Scale = math.random(12,16)/10;
 							tear.Height = -520;
 							tear.FallingAccel = 1.3;
@@ -214,7 +214,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						if not data.add then data.add = 0 end
 						if not data.projectileOffset then data.projectileOffset = math.random(-90,90) end
 						for i = 0, 360 - 360/4, 360/4  do
-							local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector(9,0):Rotated(i + data.add + data.projectileOffset), ent, 0, 0):ToProjectile()	
+							local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector(9,0):Rotated(i + data.add + data.projectileOffset), ent, 0, 0):ToProjectile()	
 							tear.Height = -30
 						end
 						data.add = data.add + 7
@@ -224,7 +224,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					elseif spr:GetFrame() == 55 then
 						ent.Velocity = Vector.Zero
 						ent.Position = ent.Position
-						ILIB.game:ShakeScreen(10)
+						InutilLib.game:ShakeScreen(10)
 					end
 				end
 			elseif data.State == 4 then
@@ -359,11 +359,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
 				elseif spr:IsPlaying("SingStationary") then
 					if spr:WasEventTriggered("Spit") then
-						ILIB.game:ShakeScreen(10)
+						InutilLib.game:ShakeScreen(10)
 					end
 				end
 				if ent.FrameCount % 15 == 0 then
-					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
+					InutilLib.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
 				end
 			elseif data.State == 10 then
 				if spr:IsFinished("Transition") then
@@ -385,7 +385,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					local chosenNumofBarrage =  math.random( 10, 18 );
 					for i = 1, chosenNumofBarrage do
 						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(10), ent, 0, 0):ToProjectile()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(10), ent, 0, 0):ToProjectile()
 						tear.Scale = math.random(2,12)/10;
 						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
 						tear.FallingAccel = 0.5;
@@ -396,7 +396,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("Transition", true)
 				elseif spr:IsPlaying("Transition") then
 					if spr:WasEventTriggered("Spit") then
-						ILIB.game:ShakeScreen(5)
+						InutilLib.game:ShakeScreen(5)
 					end
 				end
 			elseif data.State == 11 then
@@ -412,16 +412,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
 				elseif spr:IsPlaying("Sing") then
 					if spr:WasEventTriggered("Spit") then
-						ILIB.game:ShakeScreen(10)
+						InutilLib.game:ShakeScreen(10)
 					end
 				end
 				if ent.FrameCount % 15 == 0 then
-					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
+					InutilLib.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
 				end
 			elseif spr:IsPlaying("Death") then
 				if spr:GetFrame() == 36 then
-					ILIB.game:ShakeScreen(10)
-					ILIB.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
+					InutilLib.game:ShakeScreen(10)
+					InutilLib.game:MakeShockwave(ent.Position, 0.075, 0.025, 10)
 					ent.Velocity = Vector.Zero
 					--crackwaves
 					for i = 0, 360-360/4, 360/4 do
@@ -434,7 +434,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					local chosenNumofBarrage =  math.random( 8, 15 );
 					for i = 1, chosenNumofBarrage do
 						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-						local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
 						tear.Scale = math.random(2,12)/10;
 						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
 						tear.FallingAccel = 0.5;
@@ -443,7 +443,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					--rocks falling down randomly
 					for i = 0, math.random(5,7) do
 						InutilLib.SetTimer( 7 * i, function()
-							local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
+							local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
 							tear.Scale = math.random(12,16)/10;
 							tear.Height = -520;
 							tear.FallingAccel = 1.3;
@@ -454,7 +454,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			--[[local path = InutilLib.GenerateAStarPath(ent.Position, player.Position)
 			if path then
-				if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+				if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
 					InutilLib.FollowPath(ent, player, path, 1.2, 0.9)
 				else
 					InutilLib.MoveDirectlyTowardsTarget(ent, player, 1.2, 0.9)
@@ -477,7 +477,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
 	if data.path == nil then data.path = ent.Pathfinder end
 	if ent.Variant == RebekahCurseEnemies.ENTITY_OVUM_EGG then
 		if ent.FrameCount == 1 then
@@ -543,7 +543,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 		elseif eff.SubType == 2 then
 			for i = 0, 360, 360/8 do
-				local tear = ILIB.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, eff.Position, Vector.FromAngle(Vector(0,10):GetAngleDegrees() + i):Resized(8), eff, 0, 0):ToProjectile()
+				local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, eff.Position, Vector.FromAngle(Vector(0,10):GetAngleDegrees() + i):Resized(8), eff, 0, 0):ToProjectile()
 			end
 			if math.random(1,3) == 3 then
 				--local bomb = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, eff.Position, Vector.Zero, eff):ToEffect()

@@ -6,7 +6,7 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 	local totalUnlockedTypesofHearts = {}
 	local getRebekahsPresent = 0
 	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		
@@ -53,7 +53,7 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 		end]]
 	end
 	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local playerdata = yandereWaifu.GetEntityData(player);
 		
@@ -84,7 +84,7 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 						local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, ENTITY_ARCANE_CIRCLE, 0, player.Position, Vector(0,0), player );
 						mirdata.Circle = arcane
 					end
-					--if not mirdata.Use then mirdata.Use = getRebekahsPresent end --ILIB.game:GetNumPlayers() end
+					--if not mirdata.Use then mirdata.Use = getRebekahsPresent end --InutilLib.game:GetNumPlayers() end
 					if not mirdata.Init then mirdata.Init = true end
 				end
 				if mir.GridCollisionClass ~= 0 --[[mir.Position:Distance(mirdata.FirstPos) > 30]] then

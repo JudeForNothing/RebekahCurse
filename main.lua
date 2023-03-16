@@ -8,7 +8,7 @@ yandereWaifu = RegisterMod("Rebekah", 1)
 -- Require up those extra modules
 
 --if not globalInutilLibVersion or inutilLibVersion > globalInutilLibVersion then
-	inutillib_main = require('codes_rebekah.inutillib_main')
+InutilLib = require('codes_rebekah.inutillib_main')
 --	globalInutilLibVersion = inutilLibVersion
 --end
 
@@ -21,6 +21,7 @@ yandereWaifuCodes = {
 	library = require('codes_rebekah.library'),
 	itempools = {
 		loveroom = require('codes_rebekah.itempools.loveroom'),
+		thriftshop = require('codes_rebekah.itempools.thriftshop'),
 	},
 	itempool = require('codes_rebekah.itempools'),
 
@@ -102,12 +103,15 @@ yandereWaifuIngameContentCode = {
 			nincompoop = require('codes_rebekah.entities.bosses.nincompoop'),
 			poltygeist = require('codes_rebekah.entities.bosses.poltygeist'),
 			greysisters = require('codes_rebekah.entities.bosses.greysisters'),
+
+			laban = require('codes_rebekah.entities.bosses.laban'),
 		},
 		metaentity = require('codes_rebekah.entities.metaentity'),
 	},
 	pocketitems = {
 		egg = require('codes_rebekah.pocketitems.easteregg'),
 		pills = require('codes_rebekah.pocketitems.pills'),
+		cards = require('codes_rebekah.pocketitems.cards'),
 		language = require('codes_rebekah.pocketitems.lovelangauge'),
 	},
 	items = {
@@ -191,10 +195,14 @@ yandereWaifuIngameContentCode = {
 		silphium = require('codes_rebekah.items.silphium'),
 		giddyup = require('codes_rebekah.items.giddyup'),
 
+		jacobstears = require('codes_rebekah.items.jacobstears'),
 		platformcotta = require('codes_rebekah.items.platformcotta'),
 		noscope = require('codes_rebekah.items.noscope'),
 		milkwine = require('codes_rebekah.items.milkwine'),
 		underpay = require('codes_rebekah.items.underpay'),
+		silenttreatment = require('codes_rebekah.items.silenttreatment'),
+
+		fullfatmilk = require('codes_rebekah.items.fullfatmilk'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),
@@ -209,6 +217,7 @@ yandereWaifuIngameContentCode = {
 			rebekahsroom = require('codes_rebekah.floors.gen.rebekahsbedroom'),
 			},
 		rebekahsroom = require('codes_rebekah.floors.rebekahsbedroom'),
+		thriftshop = require('codes_rebekah.floors.thriftshop'),
 		liminal = require('codes_rebekah.floors.backrooms'),
 		phantasm = require('codes_rebekah.floors.phantasm'),
 		phantasmhouse = require('codes_rebekah.floors.phantasm.house'),

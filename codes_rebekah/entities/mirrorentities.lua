@@ -54,7 +54,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				end
 
 				if data.path then
-					if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+					if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
 						InutilLib.FollowPath(ent, player, data.path, 0.8, 0.9)
 					else
 						InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.8, 0.9)
@@ -131,7 +131,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		
 			if (not spr:IsPlaying("FlipX") and not spr:IsPlaying("FlipX2")) then
 				if path then
-					if not ILIB.room:CheckLine(ent.Position, player.Position, 0, 0) then
+					if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
 						InutilLib.FollowPath(ent, player, path, 1, 0.9)
 					else
 						InutilLib.MoveDirectlyTowardsTarget(ent, player, 1, 0.9)

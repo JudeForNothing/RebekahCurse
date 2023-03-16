@@ -1,11 +1,11 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 	local chance = 1/2
 	local rng = pickup:GetDropRNG()
-	local challenge = ILIB.game.Challenge == RebekahCurseChallenges.EasterHunt
+	local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.EasterHunt
     if challenge then
 		local validPickup = (pickup.Variant == PickupVariant.PICKUP_CHEST or pickup.Variant == PickupVariant.PICKUP_TAROTCARD)
 			--pickup.Wait = 10;
-		if rng:RandomFloat() <= (chance) and validPickup and ILIB.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
+		if rng:RandomFloat() <= (chance) and validPickup and InutilLib.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
 		and (pickup:GetSprite():IsPlaying("Appear") or pickup:GetSprite():IsPlaying("AppearFast")) and pickup:GetSprite():GetFrame() == 1 and not pickup.SpawnerEntity then
 			local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
 			--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()

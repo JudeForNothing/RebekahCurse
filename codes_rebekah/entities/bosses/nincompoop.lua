@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	local room = ILIB.room
+	local room = InutilLib.room
 	local invert = true
 	if data.path == nil then data.path = ent.Pathfinder end
 	if ent.Variant == RebekahCurseEnemies.ENTITY_NINCOMPOOP then
@@ -171,7 +171,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							InutilLib.MoveDirectlyTowardsTarget(ent, player, 11, 0.9)
 							local fly = Isaac.Spawn(EntityType.ENTITY_DIP, 0, 0, ent.Position, Vector(0,0), ent):ToNPC()
 							fly:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
-							ILIB.game:Fart(ent.Position, 100, ent, 1, 0)
+							InutilLib.game:Fart(ent.Position, 100, ent, 1, 0)
 							--[[local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CREEP_SLIPPERY_BROWN, 0, ent.Position, Vector(0,0), ent):ToEffect();
 							creep.Scale = 1.5
 							creep.SpriteScale = Vector(1.5, 1.5)

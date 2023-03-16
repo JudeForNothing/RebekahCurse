@@ -61,12 +61,12 @@ function yandereWaifu:RemoveServantNed()
 			ned:Remove()
 		end
 	end
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory then
 			InutilLib.SetTimer( i * 5, function()
 				for i, v in pairs(yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory) do
-					Isaac.Spawn(v.Type, v.Variant, v.SubType, ILIB.game:GetRoom():FindFreePickupSpawnPosition(player.Position, 5), Vector.Zero, player);
+					Isaac.Spawn(v.Type, v.Variant, v.SubType, InutilLib.game:GetRoom():FindFreePickupSpawnPosition(player.Position, 5), Vector.Zero, player);
 					v = nil
 				end
 			end)
@@ -107,7 +107,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	local damageNerf = 0
 
 	--reading Bible mechanic
-	if ILIB.game:GetRoom():GetFrameCount() == 1 and ILIB.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
+	if InutilLib.game:GetRoom():GetFrameCount() == 1 and InutilLib.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
 		for i, e in pairs(Isaac.GetRoomEntities()) do
 			if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 				spr:Play("DeusVult",true)
@@ -181,11 +181,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		if secret and secret:ToDoor() and not secret:ToDoor():IsOpen() and (secret:ToDoor():IsRoomType(RoomType.ROOM_SECRET) or secret:ToDoor():IsRoomType(RoomType.ROOM_SUPERSECRET)) then
 			tinted = secret
 		end
-		if yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory and ILIB.room:IsClear() then
+		if yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory and InutilLib.room:IsClear() then
 			if player.Position:Distance(fam.Position) < 30 then
 				for i, v in pairs(yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory) do
 					InutilLib.SetTimer( i * 5, function()
-						Isaac.Spawn(v.Type, v.Variant, v.SubType, ILIB.game:GetRoom():FindFreePickupSpawnPosition(player.Position, 5), Vector.Zero, player);
+						Isaac.Spawn(v.Type, v.Variant, v.SubType, InutilLib.game:GetRoom():FindFreePickupSpawnPosition(player.Position, 5), Vector.Zero, player);
 						v = nil
 					end)
 				end
@@ -193,7 +193,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				fam.Velocity = fam.Velocity * 0.8 + ((player.Position - fam.Position):Resized(3))
 			end
-		elseif pickup and ILIB.room:IsClear() then
+		elseif pickup and InutilLib.room:IsClear() then
 			if pickup.Position:Distance(fam.Position) < 30 then
 				if not yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory then yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory = {} end
 				table.insert(yandereWaifu.GetEntityData(player).PersistentPlayerData.ServantNedInventory, {Type = pickup.Type, Variant = pickup.Variant, SubType = pickup.SubType})
@@ -202,7 +202,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				fam.Velocity = fam.Velocity * 0.8 + ((pickup.Position - fam.Position):Resized(3))
 			end
-		elseif poop and ILIB.room:IsClear() then
+		elseif poop and InutilLib.room:IsClear() then
 			if poop.Position:Distance(fam.Position) < 30 then
 				if not data.hasDroppedBomb then
 					--local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, fam.Position, Vector.Zero, player);
@@ -213,7 +213,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				fam.Velocity = fam.Velocity * 0.8 + ((poop.Position - fam.Position):Resized(3))
 			end
-		elseif cobweb and ILIB.room:IsClear() then
+		elseif cobweb and InutilLib.room:IsClear() then
 			if cobweb.Position:Distance(fam.Position) < 30 then
 				if not data.hasDroppedBomb then
 					--local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, fam.Position, Vector.Zero, player);
@@ -224,7 +224,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				fam.Velocity = fam.Velocity * 0.8 + ((cobweb.Position - fam.Position):Resized(3))
 			end
-		elseif tinted and ILIB.room:IsClear() then
+		elseif tinted and InutilLib.room:IsClear() then
 			if tinted.Position:Distance(fam.Position) < 30 then
 				if not data.hasDroppedBomb then
 					--local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, fam.Position, Vector.Zero, player);
@@ -313,7 +313,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					end
 				end
 			end
-			local room = ILIB.game:GetRoom()
+			local room = InutilLib.game:GetRoom()
 			--local setAngle = (fam.Velocity):GetAngleDegrees()
 			if data.savedVelocity then
 				fam.Velocity = fam.Velocity * 0.75 + data.savedVelocity
@@ -389,7 +389,7 @@ function yandereWaifu:UseQualityTime(card, player, flags)
 	freezezawarudo()
 	InutilLib.SFX:Play( RebekahCurseSounds.SOUND_QUALITY_TIME_IN, 1, 0, false, 1 );
 
-	ILIB.game:MakeShockwave(player.Position, 0.85, 0.025, 10)
+	InutilLib.game:MakeShockwave(player.Position, 0.85, 0.025, 10)
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseQualityTime, RebekahCurseCards.CARD_QUALITYTIME);

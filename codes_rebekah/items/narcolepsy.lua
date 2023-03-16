@@ -62,7 +62,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			player:AddNullCostume(RebekahCurseCostumes.BasketOfEggs)
 		end]]
 		if not data.SleepyCount then data.SleepyCount = math.random(120,240) end
-		if not ILIB.room:IsClear() then
+		if not InutilLib.room:IsClear() then
 			if data.SleepyCount == 0 and not data.IsDreamCharacter then
 				local animName = sprite:GetFilename()
 
@@ -95,7 +95,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	end
 end)
 
-InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
 	if e.Type == 1 then
 		local player = e:ToPlayer()
 		local data = yandereWaifu.GetEntityData(player)
@@ -108,10 +108,10 @@ InutilLib:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, e)
 end)
 
 function yandereWaifu:NarcolepsyNewRoom()	
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
+		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NARCOLEPSY) then
 			yandereWaifu.WakeUp(player)
 		end		

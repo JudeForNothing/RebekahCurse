@@ -1,7 +1,7 @@
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
 	if not new then
-        local challenge = ILIB.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
+        local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
         if challenge then
             InutilLib:SpawnCustomStrawman(RebekahCurse.REB_RED, Isaac.GetPlayer(0), true)
             InutilLib:SpawnCustomStrawman(19, Isaac.GetPlayer(0), true) --jacob
@@ -11,7 +11,7 @@ end)
 
 --nerf cache
 --[[function yandereWaifu:TFGPlayerCache(player, cacheF)
-    local challenge = ILIB.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
+    local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
     if challenge then
         if cacheF == CacheFlag.CACHE_DAMAGE then
             player.Damage = player.Damage / 2
@@ -22,19 +22,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.TFGPlayerC
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, player, amount, damageFlag, damageSource, damageCountdownFrames)
-    local challenge = ILIB.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
+    local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
     if challenge then
         player = player:ToPlayer()
         local hearts = player:GetHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
         if hearts - amount <= 0 then --kil all
-            for i=0, ILIB.game:GetNumPlayers()-1 do
+            for i=0, InutilLib.game:GetNumPlayers()-1 do
                 InutilLib.SetTimer( i * 30, function()
                     local others = Isaac.GetPlayer(i)
                     others:Die()
                 end)
             end
         else
-            for i=0, ILIB.game:GetNumPlayers()-1 do
+            for i=0, InutilLib.game:GetNumPlayers()-1 do
                 local others = Isaac.GetPlayer(i)
                 others:ResetDamageCooldown()
             end
@@ -43,9 +43,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, player, am
 end, EntityType.ENTITY_PLAYER)
 
 function yandereWaifu.familycollision(_, player)
-    local challenge = ILIB.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
+    local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.TheTrueFamilyGuy
     if challenge then
-        for i=0, ILIB.game:GetNumPlayers()-1 do
+        for i=0, InutilLib.game:GetNumPlayers()-1 do
             local collider = Isaac.GetPlayer(i)
             if collider.Type == EntityType.ENTITY_PLAYER then
                 if player.Position:Distance(collider.Position) < 15 then

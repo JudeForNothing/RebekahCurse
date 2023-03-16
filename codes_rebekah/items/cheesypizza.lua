@@ -10,6 +10,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 end);
 
 function yandereWaifu:CheesyPizzaTearRender(tr, _)
+    if not tr.SpawnerEntity then return end
     local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
     local isValidPizza = data.IsCheesyPizza or (tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CHEESYPIZZA))
 	if isValidPizza and tr.FrameCount <= 1 then
@@ -34,6 +35,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.CheesyPizzaTearRender)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_,  tr)
+    if not tr.SpawnerEntity then return end
     local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
 	local data = yandereWaifu.GetEntityData(tr)

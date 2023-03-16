@@ -24,7 +24,7 @@ local SteamOverlays = {
     end
 end)]]
 
-InutilLib:AddCallback("POST_SHADING_INIT", function(_, room)
+yandereWaifu:AddCallback("POST_SHADING_INIT", function(_, room)
     if yandereWaifu.STAGE.Phantasm:IsStage() then
         InutilLib.ChangeShading("_none")
         print("loadsecond")
@@ -142,11 +142,11 @@ PhantasmTwo.IsSecondStage = true
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 	if yandereWaifu.STAGE.Phantasm:IsStage() then
 		for i = 0, 7 do
-			local door = ILIB.game:GetRoom():GetDoor(i)
+			local door = InutilLib.game:GetRoom():GetDoor(i)
 			if door then
 				if door.TargetRoomType == RoomType.ROOM_SECRET_EXIT then
-					ILIB.room:RemoveDoor(i)
-					ILIB.room:TrySpawnSpecialQuestDoor(true)
+					InutilLib.room:RemoveDoor(i)
+					InutilLib.room:TrySpawnSpecialQuestDoor(true)
 					break
 				end
 			end

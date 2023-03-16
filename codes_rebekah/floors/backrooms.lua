@@ -127,12 +127,12 @@ LiminalTwo.IsSecondStage = true
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 	if yandereWaifu.STAGE.Liminal:IsStage() then
 		for i = 0, 7 do
-			local door = ILIB.game:GetRoom():GetDoor(i)
+			local door = InutilLib.game:GetRoom():GetDoor(i)
 			if door then
 				if door.TargetRoomType ~= RoomType.ROOM_DEFAULT and door.TargetRoomType ~= RoomType.ROOM_BOSS 
                 and door.TargetRoomType ~= RoomType.ROOM_MINIBOSS then
-					ILIB.room:RemoveDoor(i)
-					--ILIB.room:TrySpawnSpecialQuestDoor(true)
+					InutilLib.room:RemoveDoor(i)
+					--InutilLib.room:TrySpawnSpecialQuestDoor(true)
 					break
 				end
 			end
@@ -145,7 +145,7 @@ function yandereWaifu.GenerateQualityFourItem(pool)
     local seed = RNG():SetSeed(Game():GetSeeds():GetStartSeed(), 25)
     local returnValue
     while run do
-        local poolItem = ILIB.game:GetItemPool():GetCollectible(pool, true, seed)
+        local poolItem = InutilLib.game:GetItemPool():GetCollectible(pool, true, seed)
         if InutilLib.config:GetCollectible(poolItem).Quality >= 3 then
             run = false
             returnValue = poolItem
@@ -172,12 +172,12 @@ function yandereWaifu.GenerateStartingRoomItems()
     backRoomsItemsSpawned = {}
     local seed = RNG():SetSeed(Game():GetSeeds():GetStartSeed(), 25)
     local secretPool = yandereWaifu.GenerateQualityFourItem(ItemPoolType.POOL_SECRET)
-    backRoomsItemsSpawned[0] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, secretPool, ILIB.room:GetGridPosition(50), Vector.Zero, nil):ToPickup()
+    backRoomsItemsSpawned[0] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, secretPool, InutilLib.room:GetGridPosition(50), Vector.Zero, nil):ToPickup()
     local ultrasecretPool = yandereWaifu.GenerateQualityFourItem(ItemPoolType.POOL_ULTRA_SECRET)
-    backRoomsItemsSpawned[1] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, ultrasecretPool, ILIB.room:GetGridPosition(54), Vector.Zero, nil):ToPickup()
+    backRoomsItemsSpawned[1] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, ultrasecretPool, InutilLib.room:GetGridPosition(54), Vector.Zero, nil):ToPickup()
 
-    backRoomsItemsSpawned[2] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, extraPools[math.random(0,6)], ILIB.room:GetGridPosition(80), Vector.Zero, nil):ToPickup()
-    backRoomsItemsSpawned[3] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, extraPools[math.random(0,6)], ILIB.room:GetGridPosition(84), Vector.Zero, nil):ToPickup()
+    backRoomsItemsSpawned[2] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, extraPools[math.random(0,6)], InutilLib.room:GetGridPosition(80), Vector.Zero, nil):ToPickup()
+    backRoomsItemsSpawned[3] = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, extraPools[math.random(0,6)], InutilLib.room:GetGridPosition(84), Vector.Zero, nil):ToPickup()
     for i, v in pairs (backRoomsItemsSpawned) do
         v.OptionsPickupIndex = 29
     end
@@ -186,7 +186,7 @@ end
 --setting the backroom floors
 StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --POST_ROOM_INIT
     if yandereWaifu.STAGE.Liminal:IsStage() then
-        if StageAPI.InStartingRoom() and ILIB.room:IsFirstVisit() then
+        if StageAPI.InStartingRoom() and InutilLib.room:IsFirstVisit() then
             newRoom:SetTypeOverride("Starting Room")
             yandereWaifu.GenerateStartingRoomItems()
             hasTakenItems = false
@@ -201,9 +201,9 @@ function yandereWaifu.SpawnHoundFromDoor(noappear)
     local noappear = noappear or false
     local dist = 999999
     local chosenDoor
-     local currentRoomIndex = ILIB.level:GetCurrentRoomDesc().GridIndex
+     local currentRoomIndex = InutilLib.level:GetCurrentRoomDesc().GridIndex
 	for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
+		local door = InutilLib.game:GetRoom():GetDoor(i)
 		if door then
 			if dist > door.Position:Distance(Isaac.GetPlayer(0).Position) then --this is assuming everyone is together anyway 
                 dist = door.Position:Distance(Isaac.GetPlayer(0).Position)
@@ -214,10 +214,10 @@ function yandereWaifu.SpawnHoundFromDoor(noappear)
     if chosenDoor then
         InutilLib.SetTimer( 120,function()
            local savedRoomIndex = currentRoomIndex
-           if savedRoomIndex == ILIB.level:GetCurrentRoomDesc().GridIndex then
+           if savedRoomIndex == InutilLib.level:GetCurrentRoomDesc().GridIndex then
                 local houndCount = #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, -1, false, false)
 		        if houndCount <= 0 then
-                    local spawn = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, 0, ILIB.room:FindFreePickupSpawnPosition(chosenDoor.Position, 1), Vector(0,0), nil):ToNPC()
+                    local spawn = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, 0, InutilLib.room:FindFreePickupSpawnPosition(chosenDoor.Position, 1), Vector(0,0), nil):ToNPC()
                    
                     if noappear then
                         spawn:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
@@ -234,18 +234,18 @@ end
 
 local function KeepDoorsLocked()
     for i = 0, 7 do
-		local door = ILIB.game:GetRoom():GetDoor(i)
+		local door = InutilLib.game:GetRoom():GetDoor(i)
 		if door then
 			if door:IsOpen() then
 				door:Bar()
 			end
-			--ILIB.room:SetClear(false)
+			--InutilLib.room:SetClear(false)
         end
 	end
 end
 
 --item checking if the items are still in the backrooms starting room
-InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
     if yandereWaifu.STAGE.Liminal:IsStage() and StageAPI.InStartingRoom() then
         if not hasTakenItems then
             KeepDoorsLocked()
@@ -258,9 +258,9 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
             end
         end
     end
-    if ILIB.room:GetType() ~= RoomType.ROOM_BOSS then
+    if InutilLib.room:GetType() ~= RoomType.ROOM_BOSS then
         if yandereWaifu.STAGE.Liminal:IsStage() then
-            for p = 0, ILIB.game:GetNumPlayers() - 1 do
+            for p = 0, InutilLib.game:GetNumPlayers() - 1 do
                 local player = Isaac.GetPlayer(p):ToPlayer()
                 --player:AddCurseMistEffect(true)
                 player:AddFear(EntityRef(player), 5)
@@ -270,10 +270,10 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 end)
 
 --softlock from other things so you cant do stuff while in the backrooms
-InutilLib:AddCallback(ModCallbacks.MC_INPUT_ACTION, function(_, entity, hook, action)
+yandereWaifu:AddCallback(ModCallbacks.MC_INPUT_ACTION, function(_, entity, hook, action)
     if hook == InputHook.IS_ACTION_TRIGGERED and yandereWaifu.STAGE.Liminal:IsStage() and not hasTakenItems and (action == ButtonAction.ACTION_ITEM or action == ButtonAction.ACTION_BOMB or action == ButtonAction.ACTION_PILLCARD) then
        -- InutilLib.SFX:Play(SoundEffect.SOUND_METAL_DOOR_CLOSE, 1, 0, false, 1)
-        --ILIB.game:GetHUD():ShowItemText("Pick an item","It doesn't work for now...")
+        --InutilLib.game:GetHUD():ShowItemText("Pick an item","It doesn't work for now...")
         return false
     end
 end)
@@ -303,11 +303,11 @@ yandereWaifu.NincompoopStageAPIRooms = {
 --escaping the backrooms
 StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 1, function(newRoom) 
     if yandereWaifu.STAGE.Liminal:IsStage() and newRoom.RoomType == RoomType.ROOM_BOSS then
-        StageAPI.SpawnCustomTrapdoor(ILIB.room:GetGridPosition(97), {NormalStage = true, Stage = 4, StageType = StageAPI.StageTypes[StageAPI.Random(1, 3, StageAPI.StageRNG)]}, "gfx/grid/liminal/exit_trapdoor.anm2", 32, false)
-        --[[for p = 0, ILIB.game:GetNumPlayers() - 1 do
+        StageAPI.SpawnCustomTrapdoor(InutilLib.room:GetGridPosition(97), {NormalStage = true, Stage = 4, StageType = StageAPI.StageTypes[StageAPI.Random(1, 3, StageAPI.StageRNG)]}, "gfx/grid/liminal/exit_trapdoor.anm2", 32, false)
+        --[[for p = 0, InutilLib.game:GetNumPlayers() - 1 do
             local player = Isaac.GetPlayer(p)
             player:RemoveCurseMistEffect()
         end]]
-        StageAPI.SpawnCustomTrapdoor(ILIB.room:GetGridPosition(37), {NormalStage = true, Stage = 4, StageType = StageAPI.StageTypes[StageAPI.Random(4, #StageAPI.StageTypes, StageAPI.StageRNG)]}, "gfx/grid/trapdoor_mines.anm2", 32, false)
+        StageAPI.SpawnCustomTrapdoor(InutilLib.room:GetGridPosition(37), {NormalStage = true, Stage = 4, StageType = StageAPI.StageTypes[StageAPI.Random(4, #StageAPI.StageTypes, StageAPI.StageRNG)]}, "gfx/grid/trapdoor_mines.anm2", 32, false)
     end
 end)

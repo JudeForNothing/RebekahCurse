@@ -324,7 +324,7 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 							isFetus = 18
 						end
 						if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-							local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(addedbarrageangle2.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+							local kn = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(addedbarrageangle2.addedbarrageangle + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 							kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 							kn.CollisionDamage = player.Damage * 2;
 							kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
@@ -354,7 +354,7 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 							isFetus = 18
 						end
 						if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
-							local kn = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
+							local kn = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(data.addedbarrageangle2 + direction:GetAngleDegrees()):Resized(20), player, 0, 0):ToTear()
 							kn.TearFlags = kn.TearFlags | TearFlags.TEAR_PIERCING;
 							kn.CollisionDamage = player.Damage * 2;
 							kn:ChangeVariant(RebekahCurse.ENTITY_REDKNIFE)
@@ -663,7 +663,7 @@ end
 
 --heart bomb effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
-	--for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	--for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 	if yandereWaifu.GetEntityData(bb).IsByAFanGirl then
 		local player = bb.SpawnerEntity:ToPlayer()
 		local controller = player.ControllerIndex;
@@ -786,7 +786,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if movementDirection:Length() < 0.05 then
 			eff.Velocity = Vector.Zero
 		else
-			eff.Position = ILIB.room:GetClampedPosition(eff.Position, roomClampSize);
+			eff.Position = InutilLib.room:GetClampedPosition(eff.Position, roomClampSize);
 			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 		end
 		
@@ -819,7 +819,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if yandereWaifu.GetEntityData(player).barrageNumofShots > 1 then
 				for i = 1, yandereWaifu.GetEntityData(player).barrageNumofShots do
 					InutilLib.SetTimer( i*30, function()
-						Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALNUKE, 1, eff.Position,( Vector(0,1):Resized(math.random(8,12))):Rotated(math.random(0,360)), player) --ILIB.room:FindFreeTilePosition( ILIB.room:GetClampedPosition((Vector.FromAngle(1*math.random(1,360))+ eff.Position*(math.random(20,50))), roomClampSize ), 0)
+						Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ORBITALNUKE, 1, eff.Position,( Vector(0,1):Resized(math.random(8,12))):Rotated(math.random(0,360)), player) --InutilLib.room:FindFreeTilePosition( InutilLib.room:GetClampedPosition((Vector.FromAngle(1*math.random(1,360))+ eff.Position*(math.random(20,50))), roomClampSize ), 0)
 					end)
 				end
 			end
@@ -850,7 +850,7 @@ end, RebekahCurse.ENTITY_ORBITALTARGET);
 
 --kim jun- i mean, rebeccas rockets
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()
@@ -1040,7 +1040,7 @@ local LightSaberTable = {
 
 --slash effect
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		local controller = player.ControllerIndex
 		local sprite = eff:GetSprite()

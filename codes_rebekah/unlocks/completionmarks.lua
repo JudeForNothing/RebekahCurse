@@ -69,7 +69,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 	local currentStage = game:GetLevel():GetStage()
 	local roomType = room:GetType()
 	
-	for i=0, ILIB.game:GetNumPlayers()-1 do
+	for i=0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
 		if player:GetPlayerType() == Reb and CurrentRebeccaUnlocks and readyToUnlock then
 			

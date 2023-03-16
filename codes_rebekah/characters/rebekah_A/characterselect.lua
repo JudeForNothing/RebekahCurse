@@ -152,11 +152,11 @@ function yandereWaifu.AnimateIsaacMenu(currentPlayer, sound, doPause, time)
 	currentPlayerSelected=currentPlayer
 end
 
-function InutilLib.GetShowingAchievement()
+function yandereWaifu.GetShowingAchievement()
 	return shouldRenderAchievement, currentSprite
 end
 
-InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 	if Isaac.GetFrameCount() % 2 == 0 then
 		menuUI:Update()
 		if menuUI:IsFinished("Appear") then
@@ -172,7 +172,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 		if menuUI:IsFinished("Dissapear") then
       shouldRenderAchievement = false
 
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 			local player = Isaac.GetPlayer(p)
 			player:GetData().prevAchCharge = nil
 			end
@@ -184,7 +184,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
     end
 
   if shouldRenderAchievement then
-		for p = 0, ILIB.game:GetNumPlayers() - 1 do
+		for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
       	local data =  player:GetData()
      	 data.prevAchCharge = data.prevAchCharge or player:GetActiveCharge()
@@ -198,7 +198,7 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 
       	if (Input.IsActionTriggered(ButtonAction.ACTION_MENUCONFIRM, player.ControllerIndex) or
             Input.IsActionTriggered(ButtonAction.ACTION_MENUBACK, player.ControllerIndex)) and
-            not InutilLib.IsAnimated(menuUI, "Dissapear") and not menuUI:IsPlaying("Appear") and not ILIB.game:IsPaused() then
+            not InutilLib.IsAnimated(menuUI, "Dissapear") and not menuUI:IsPlaying("Appear") and not InutilLib.game:IsPaused() then
 				if yandereWaifu.ListOfRegUnlockedPersonalities[currentPlayerId].name == "Tutorial" then return end
 				yandereWaifu.SelectRebekahPersonality(currentPlayerSelected, menuUI)
 			elseif not hasSelectedPersonality then
@@ -226,13 +226,13 @@ InutilLib:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 end)
 
 function yandereWaifu:ShowPersonalityBook()
-	ILIB.game:GetHUD():SetVisible(false)
+	InutilLib.game:GetHUD():SetVisible(false)
 	yandereWaifu.AnimateIsaacMenu(yandereWaifu.ListOfRegUnlockedPersonalities[1], SoundEffect.SOUND_PAPER_IN, false, 900)
 	currentPlayerId = 1
 end
 
 function yandereWaifu:onTechnicalCharacterInit(player)
-	local playerCount = ILIB.game:GetNumPlayers()
+	local playerCount = InutilLib.game:GetNumPlayers()
 	local playerType = player:GetPlayerType()
 	local data = yandereWaifu.GetEntityData(player)
 	if playerType == RebekahCurse.TECHNICAL_REB 

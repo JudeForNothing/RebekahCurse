@@ -287,7 +287,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
-	for p = 0, ILIB.game:GetNumPlayers() - 1 do
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts and Options.ChargeBars then
 			yandereWaifu.evilOrbUI(player)
@@ -300,8 +300,8 @@ uiReserve:Load("gfx/ui/ui_evilorb_reserve.anm2", true);
 
 function yandereWaifu.evilOrbUI(player)
 		local data = yandereWaifu.GetEntityData(player)
-		local room = ILIB.game:GetRoom()
-		local gameFrame = ILIB.game:GetFrameCount();
+		local room = InutilLib.game:GetRoom()
+		local gameFrame = InutilLib.game:GetFrameCount();
 		local tick = data.evilOrbTick
 		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
 			uiReserve:SetOverlayRenderPriority(true)
@@ -630,7 +630,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--speaker:Play(SoundEffect.SOUND_MAW_OF_VOID, 1, 0, false, 1)
 		else
 			if sprite:IsEventTriggered("Stomp") then
-				ILIB.game:ShakeScreen(10)
+				InutilLib.game:ShakeScreen(10)
 				InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.5);
 				local entities = Isaac.GetRoomEntities()
 				for i = 1, #entities do
@@ -875,7 +875,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if entenmies:IsEnemy() and entenmies:IsVulnerableEnemy() --[[and not entenmies:IsEffect() and not entenmies:IsInvulnurable()]] then
 			--print(eff.FrameCount % (5 + player.MaxFireDelay/5))
 			if math.random(1,5) == 5 and entenmies.Position:Distance(eff.Position) < 200 and eff.FrameCount % math.ceil(5 + player.MaxFireDelay/5) == (0) and data.Tier > 1 then
-				if ILIB.room:CheckLine(entenmies.Position, eff.Position, 3, 0) then
+				if InutilLib.room:CheckLine(entenmies.Position, eff.Position, 3, 0) then
 					--turret code
 					local tear = player:FireTear( eff.Position, (entenmies.Position - eff.Position):Resized(18), false, false, false):ToTear()
 					tear.Position = eff.Position
@@ -1175,7 +1175,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		local dust = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, eff.Position, Vector(0,0), eff)
 		dust.SpriteScale = Vector(0.5, 0.5)
 		dust:SetColor(Color(0,0,0,1,1,0,1),9999999,99,false,false)
-		ILIB.game:ShakeScreen(1)
+		InutilLib.game:ShakeScreen(1)
 	end
 	
 	if (data.HitPoints <= 0 and not sprite:IsPlaying("Die")) then
@@ -1346,7 +1346,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				--yandereWaifu.GetEntityData(knife).IsEvil = true
 				local knife = player:FireTear( eff.Position, Vector.FromAngle(i):Resized(18), false, false, false):ToTear()
 				knife.Position =  eff.Position
-				----local tear = ILIB.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
+				----local tear = InutilLib.game:Spawn(EntityType.ENTITY_TEAR, 0, player.Position, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), player, 0, 0):ToTear()
 				knife.TearFlags = knife.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_WIGGLE;
 				--knife.CollisionDamage = player.Damage * 4;
 				knife:ChangeVariant(RebekahCurse.ENTITY_DARKKNIFE);
@@ -1437,7 +1437,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damag
 			local player = dmgSource.Entity:ToPlayer()
 			--local player = dmgSource.Entity.SpawnerEntity:ToPlayer()
 			local playerType = player:GetPlayerType()
-			local room = ILIB.game:GetRoom()
+			local room = InutilLib.game:GetRoom()
 			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then
 				if (ent.HitPoints - damage) > 0 and ent.MaxHitPoints >=1800 then
 					if dmgFlag == DamageFlag.DAMAGE_LASER and ent.FrameCount % 60 == 0 then
