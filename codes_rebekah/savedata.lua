@@ -378,10 +378,12 @@ end
 
 REB_JSON = require("json");
 
-function yandereWaifu.LoadSaveData()
-	local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
-	if data ~= nil then
-
+function yandereWaifu.LoadSaveData(IsContinued)
+	IsContinued = IsContinued or false
+	--if data ~= nil then
+	--if not yandereWaifu:HasData() then
+	if Isaac.HasModData(yandereWaifu) then
+		local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 		--this is being called a lot if theres a lot of players, I feel like i should change this
 		if data.bossRoomsCleared ~= nil then RebekahLocalSavedata.bossRoomsCleared = data.bossRoomsCleared end
 		if data.curseRoomsEntered ~= nil then RebekahLocalSavedata.curseRoomsEntered = data.curseRoomsEntered end 
@@ -397,8 +399,10 @@ function yandereWaifu.LoadSaveData()
 end
 
 function yandereWaifu.LoadPlayerSaveData()
-	local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
-	if data ~= nil then
+	--if data ~= nil then
+	--if not yandereWaifu:HasData() then
+	if Isaac.HasModData(yandereWaifu) then
+		local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 		if data.currentMode ~= nil then 
 			for p,player in pairs(InutilLib.players) do
 				print("bruh")
@@ -445,7 +449,7 @@ yandereWaifu.LoadSaveData()
 -- Load Moddata
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinued)
 	--print("1")
-	yandereWaifu.LoadSaveData()
+	yandereWaifu.LoadSaveData(IsContinued)
 	yandereWaifu.LoadPlayerSaveData()
 	hasGameStarted = true
 end)
@@ -458,11 +462,12 @@ function yandereWaifu.Save()
 end
 local cached_data
 function yandereWaifu.GetSaveData()
-	if not cached_data then
+	if not cached_data and Isaac.HasModData(yandereWaifu) then--not yandereWaifu:HasData() then
 		cached_data =  REB_JSON.decode(yandereWaifu:LoadData());
 	end
 	local data = cached_data
-    if data ~= nil then
+	if yandereWaifu:HasData() then
+   -- if data ~= nil then
         --if Isaac.HasModData(yandereWaifu) then
             return data
         --end
