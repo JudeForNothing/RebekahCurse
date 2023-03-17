@@ -960,7 +960,7 @@ local rebekahdirectory = {
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "", fsize = 1, nosel = true},
             --{insertUnlockTag = "RebekahB"},
-            --[[{str = "", nosel = true},
+            {str = "", nosel = true},
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "personalities", fsize = 3, dest = "rebekahapersonalityunlocks"},
             {str = "-----------------", fsize = 3, nosel = true},
@@ -971,7 +971,7 @@ local rebekahdirectory = {
             {str = "", nosel = true},
             {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = true end},
             {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
-            {str = "", nosel = true},]]
+            {str = "", nosel = true},
             {str = "-----------------", fsize = 3},
             {str = "-----------------", fsize = 3},
             {str = "-----------------", fsize = 3},
