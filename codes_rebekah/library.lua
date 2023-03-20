@@ -616,8 +616,10 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 			player:ChangePlayerType(RebekahCurse.REB_ROTTEN)
 		elseif mode == REBECCA_MODE.BrokenHearts then
 			player:ChangePlayerType(RebekahCurse.REB_BROKEN)
-			elseif mode == REBECCA_MODE.ImmortalHearts then
+		elseif mode == REBECCA_MODE.ImmortalHearts then
 			player:ChangePlayerType(RebekahCurse.REB_IMMORTAL)
+		else
+			player:ChangePlayerType(RebekahCurse.REB_RED)
 		end
 	end
 	

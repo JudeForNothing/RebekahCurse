@@ -259,28 +259,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		end
 
 		--targetting system
-		local target = InutilLib.GetClosestGenericEnemy(player, 160)
+		local posStart = player
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
+			posStart = data.taintedWeapon
+		end
+
+		local target = InutilLib.GetClosestGenericEnemy(posStart, 160)
 		--incase glory kill is nearby
 		local dist = 100
 		local closestDist = 999999
 		for i, e in pairs(Isaac.GetRoomEntities()) do
 			if e.Type == 1000 and yandereWaifu.GetEntityData(e).IsGlorykill then
 				local minDist = dist or 100
-				if (player.Position - e.Position):Length() < 160 + e.Size then
-					if (player.Position - e.Position):Length() < closestDist + e.Size then
-						closestDist = (player.Position - e.Position):Length()
+				if (posStart.Position - e.Position):Length() < 160 + e.Size then
+					if (posStart.Position - e.Position):Length() < closestDist + e.Size then
+						closestDist = (posStart.Position - e.Position):Length()
 						target = e
 					end
 				end
 			end
 		end
+
 		if target then
 			if data.TaintedEnemyTarget then
 				if data.TaintedEnemyTarget and data.TaintedEnemyTarget:IsDead() then
 					data.TaintedEnemyTarget = nil
 					return
 				end
-				if target.Position:Distance(player.Position) - target.Size <= data.TaintedEnemyTarget.Position:Distance(player.Position) - data.TaintedEnemyTarget.Size then
+				if target.Position:Distance(posStart.Position) - target.Size <= data.TaintedEnemyTarget.Position:Distance(posStart.Position) - data.TaintedEnemyTarget.Size then
 					--remove old target
 					yandereWaifu.GetEntityData(data.TaintedEnemyTarget).Target:Remove()
 					--add new target
@@ -468,6 +474,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 				entityData.PersistentPlayerData.WrathFragmentCount = entityData.PersistentPlayerData.WrathFragmentCount + 1
 				InutilLib.PickupPickup(pickup)
 				pickup.Touched = true
+				entityData.WrathFragmentRenderFrame = 1
 				return true
 			end
 		end
@@ -639,6 +646,9 @@ end
 local rageCrystalIndicator = Sprite();
 rageCrystalIndicator:Load("gfx/ui/rage_crystal_counter.anm2", true);
 
+local rageCrystalCollection = Sprite();
+rageCrystalCollection:Load("gfx/ui/rage_crystal_collection.anm2", true);
+
 function yandereWaifu.RageCrystalRenderLogic(player)
 
 	local data = yandereWaifu.GetEntityData(player)
@@ -658,6 +668,18 @@ function yandereWaifu.RageCrystalRenderLogic(player)
 				--if not InutilLib.IsInMirroredFloor(player) then
 				rageCrystalIndicator:Render(playerLocation + Vector(0, 5), Vector(0,0), Vector(0,0));
 				--end
+
+				if data.WrathFragmentRenderFrame then --for special cooldown for bone heart
+					rageCrystalCollection:SetFrame("Collection", data.PersistentPlayerData.WrathFragmentCount)
+					rageCrystalCollection:Render(playerLocation - Vector(0, 35), Vector(0,0), Vector(0,0));
+					rageCrystalCollection.Color = Color(1,1,1,data.WrathFragmentRenderFrame,0,0,0)
+					if player.FrameCount % 30 == 0 then
+						data.WrathFragmentRenderFrame = data.WrathFragmentRenderFrame - 0.1
+					end
+					if data.WrathFragmentRenderFrame <= 0 then
+						data.WrathFragmentRenderFrame = nil
+					end
+				end
 			end
 		end
 end

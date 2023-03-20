@@ -795,7 +795,7 @@ function yandereWaifu:RebekahNewRoom()
 			if not yandereWaifu.HasCollectibleGuns(player) then
 				yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
 			end
-			data.DASH_DOUBLE_TAP:Reset();
+			if data.DASH_DOUBLE_TAP then data.DASH_DOUBLE_TAP:Reset(); end
 			data.ATTACK_DOUBLE_TAP:Reset();
 			--neded for soul heart and bone heart movement lol
 			--if this was tampered to being with

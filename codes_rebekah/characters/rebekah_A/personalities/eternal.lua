@@ -1021,7 +1021,7 @@ function yandereWaifu.FlamethrowerLogic(player)
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
 		extraTears = extraTears + 3
 	end
-	if player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
+	if TaintedTreasures and player:HasCollectible(TaintedCollectibles.SPIDER_FREAK) then
 		extraTears = extraTears + 5
 	end
 

@@ -1,5 +1,17 @@
 local crystalGainFrame = 0
 
+local uiHoldCharge = Sprite();
+uiHoldCharge:Load("gfx/chargebar.anm2", true);
+uiHoldCharge:LoadGraphics()
+
+local neptunusColor = Color(1,1,1,1)
+neptunusColor:SetColorize(0.0, 1.5, 2.5, 1)
+
+local uiNeptunusCharge = Sprite();
+uiNeptunusCharge:Load("gfx/chargebar.anm2", true);
+uiNeptunusCharge:LoadGraphics()
+uiNeptunusCharge.Color = neptunusColor
+
 local function ThrowCursedSword(player, notSpecial)
     local data = yandereWaifu.GetEntityData(player)
     local sword
@@ -245,6 +257,11 @@ function yandereWaifu.SpawnAndSwingCursedKnife(player, state, angle, flip, pos)
     taintedWeapon:SetColor(Color(0.5,0.5,0.5,1,0,0,0),99999999,1,false,false)
 
     yandereWaifu.SwingCursedKnife(player, taintedWeapon, state, angle, flip)
+
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_ANTI_GRAVITY) and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
+        yandereWaifu.GetEntityData(taintedWeapon).IsAntigravity = true
+        yandereWaifu.GetEntityData(taintedWeapon).MovementIndependent = true
+    end
     return taintedWeapon
 end
 
@@ -410,8 +427,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
         numofShots = numofShots + math.min(data.NeptunusTRebCount)
 
         --if menu open, slow down
-        if data.TAINTEDREBSKILL_MENU and data.TAINTEDREBSKILL_MENU.open then
-            player.Velocity = player.Velocity * 0.7
+        if data.TAINTEDREBSKILL_MENU and data.TAINTEDREBSKILL_MENU.open and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
+            player.Velocity = player.Velocity * 0.8
             if data.taintedWeaponIdle then 
                 data.taintedWeaponIdle:Remove()
                 data.taintedWeaponIdle = nil
@@ -426,7 +443,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             end
         end
          --pre charging code
-         if player:GetFireDirection() == -1 then --if not firing
+         if player:GetFireDirection() == -1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then --if not firing
 			if data.taintedCursedTick then
 				if data.taintedCursedTick >= 30 then
                     --TeleportToClosestEnemy(player)
@@ -448,8 +465,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 end
 			end
 			data.taintedCursedTick = 0
-            if player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and data.NeptunusTRebCount < 10 then
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and data.NeptunusTRebCount < 10 and player.FrameCount % 1*player.MaxFireDelay == 0 then
                 data.NeptunusTRebCount = data.NeptunusTRebCount + 0.1
+            elseif not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) then
+                data.NeptunusTRebCount = nil
             end
 		else
             --if data.IsCursedCharging then return end
@@ -544,7 +563,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                                 direction = direction + math.random(-20,20)
                             end
                             if isOriginal then
-                                yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 1, direction, flip)
+                                if not player:HasCollectible(CollectibleType.COLLECTIBLE_ANTI_GRAVITY) then
+                                    yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 1, direction, flip)
+                                else
+                                    local sword = yandereWaifu.SpawnAndSwingCursedKnife(player, 1, direction, flip)
+                                    --yandereWaifu.GetEntityData(sword).IsAntigravity = true
+                                end
                             else
                                 yandereWaifu.SpawnAndSwingCursedKnife(player, 1, direction, flip)
                             end
@@ -801,8 +825,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             data.TechZeroSpots = {}
         end
     end]]
-
-    if player and data.state ~= 2 and not data.MovementIndependent then
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then
+        if not playerdata.TAINTEDREBSKILL_MENU or (playerdata.TAINTEDREBSKILL_MENU and not playerdata.TAINTEDREBSKILL_MENU.open) then
+            eff.Velocity = player:GetShootingInput():Resized(player.ShotSpeed*10)
+            --[[print(data.state)
+            if data.state == 0 then
+                yandereWaifu.SwingCursedKnife(player, eff, 1, math.random(1,360), false)
+                print(data.state)
+            end]]
+        else
+            eff.Velocity = Vector.Zero
+        end
+    elseif player and ((data.state ~= 2 and not data.MovementIndependent)) then
         --eff.Position = player.Position
         local lerpVal = 0.6
         --[[if data.state == -1 then
@@ -813,6 +847,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             eff.Velocity = InutilLib.Lerp(eff.Velocity,(player.Position + (eff.Position):Rotated(data.Angle):Resized(2))-eff.Position, lerpVal)
         elseif data.Angle then
             eff.Velocity = InutilLib.Lerp(eff.Velocity,(player.Position + (eff.Position):Rotated(data.Angle):Resized(4))-eff.Position, lerpVal)
+        end
+    end
+
+    if data.IsAntigravity then 
+        sprite.PlaybackSpeed = 0.0002
+        local angle = player:GetShootingInput()
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
+            angle = player:GetAimDirection()
+        end
+        if angle.X == 0 and angle.Y == 0 then
+            sprite.PlaybackSpeed = 1
+            data.IsAntigravity = false
         end
     end
 
@@ -2271,3 +2317,105 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_,  eff)
         end
     end
 end, RebekahCurse.ENTITY_EXTRACHARANIMHELPER);
+
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
+	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		if yandereWaifu.IsTaintedRebekah(player) and Options.ChargeBars then
+			yandereWaifu.throwingSwordUi(player)
+            yandereWaifu.neptunusTRebUi(player)
+		end
+	end
+end);
+
+
+local swordThrowCooldown = 30
+function yandereWaifu.throwingSwordUi(player)
+		local data = yandereWaifu.GetEntityData(player)
+		local room = InutilLib.game:GetRoom()
+		local gameFrame = InutilLib.game:GetFrameCount();
+		local tick = data.taintedCursedTick
+		if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
+			uiHoldCharge:SetOverlayRenderPriority(true)
+		
+			if tick > 0 then
+				if tick < swordThrowCooldown then
+					local FramePercentResult = math.floor((tick/swordThrowCooldown)*100)
+					uiHoldCharge:SetFrame("Charging", FramePercentResult)
+					data.cursedSwordThrowBarFade = gameFrame
+					data.FinishedThrowingSwordUICharge = false
+				elseif tick >= swordThrowCooldown then
+					if not data.FinishedThrowingSwordUICharge then
+						uiHoldCharge:SetFrame("StartCharged",gameFrame - data.cursedSwordThrowBarFade)
+						if uiHoldCharge:GetFrame() == 11 then
+							data.cursedSwordThrowBarFade = gameFrame
+							data.FinishedThrowingSwordUICharge = true
+						end
+					elseif data.FinishedThrowingSwordUICharge then
+						if uiHoldCharge:GetFrame() == 5 then
+							data.cursedSwordThrowBarFade = gameFrame
+						end
+						uiHoldCharge:SetFrame("Charged",gameFrame - data.cursedSwordThrowBarFade)
+					end
+				end
+			else
+				if not uiHoldCharge:IsPlaying("Disappear") and data.cursedSwordThrowBarFade then
+					uiHoldCharge:SetFrame("Disappear",gameFrame - data.cursedSwordThrowBarFade);
+				end
+			end
+	
+				local playerLocation = Isaac.WorldToScreen(player.Position)
+				--print(InutilLib.IsInMirroredFloor(player))
+				if not InutilLib.IsInMirroredFloor(player) then
+					uiHoldCharge:Render(playerLocation + Vector(-20, 15), Vector(0,0), Vector(0,0));
+				end
+			end
+	--end
+end
+
+local NeptunusTRebCooldown = 10
+function yandereWaifu.neptunusTRebUi(player)
+    local data = yandereWaifu.GetEntityData(player)
+    local room = InutilLib.game:GetRoom()
+    local gameFrame = InutilLib.game:GetFrameCount();
+    local tick = data.NeptunusTRebCount
+    if player.Visible and not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) and tick then
+        uiNeptunusCharge:SetOverlayRenderPriority(true)
+    
+        if tick > 0 then
+            if tick < NeptunusTRebCooldown then
+                local FramePercentResult = math.floor((tick/NeptunusTRebCooldown)*100)
+                uiNeptunusCharge:SetFrame("Charging", FramePercentResult)
+                data.neptunusTRebBarFade = gameFrame
+                data.FinishedNeptunusTRebUICharge = false
+            elseif tick >= NeptunusTRebCooldown then
+                if not data.FinishedNeptunusTRebUICharge then
+                    uiNeptunusCharge:SetFrame("StartCharged",gameFrame - data.neptunusTRebBarFade)
+                    if uiNeptunusCharge:GetFrame() == 11 then
+                        data.neptunusTRebBarFade = gameFrame
+                        data.FinishedNeptunusTRebUICharge = true
+                    end
+                elseif data.FinishedNeptunusTRebUICharge then
+                    if uiNeptunusCharge:GetFrame() == 5 then
+                        data.neptunusTRebBarFade = gameFrame
+                    end
+                    uiNeptunusCharge:SetFrame("Charged",gameFrame - data.neptunusTRebBarFade)
+                end
+            end
+        else
+            if not uiNeptunusCharge:IsPlaying("Disappear") and data.neptunusTRebBarFade then
+                uiNeptunusCharge:SetFrame("Disappear",gameFrame - data.neptunusTRebBarFade);
+            end
+        end
+
+            local playerLocation = Isaac.WorldToScreen(player.Position)
+            --print(InutilLib.IsInMirroredFloor(player))
+            if not InutilLib.IsInMirroredFloor(player) then
+                uiNeptunusCharge:Render(playerLocation + Vector(-20, -15), Vector(0,0), Vector(0,0));
+            end
+        end
+--end
+end

@@ -305,7 +305,7 @@ end)]]
 
 local function RecapRebekahData()
 	local saveData = {}
-	--saveData.menudata = {}
+	saveData.menudata = {}
 	
 	saveData.currentMode = {};
 	saveData.heartFillReserve = {};
@@ -444,7 +444,7 @@ function yandereWaifu.LoadPlayerSaveData()
 	end
 end
 
-yandereWaifu.LoadSaveData()
+yandereWaifu.LoadSaveData(false)
 
 -- Load Moddata
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinued)

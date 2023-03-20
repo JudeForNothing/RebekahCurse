@@ -156,7 +156,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, eff)
             combo:SetFrame("Count", data.HitCount)
 
             local loc = Isaac.WorldToScreen(eff.Position + Vector(-10, -10) + Vector(math.random(-2, 2), math.random(-2, 2)))
-			combo:Render(loc + Vector(0, -50), Vector(0,0), Vector(0,0));
+			combo:Render(loc + Vector(-5, -50), Vector(0,0), Vector(0,0));
         end
 	end
 end)

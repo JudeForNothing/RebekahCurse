@@ -2,6 +2,7 @@ local dash = {}
 
 --double tap local dash function
 function dash.RebekahDoubleTapDash(vector, playerTapping)
+	print(#StageAPI.TransitionNightmares)
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		--print(GetPtrHash( playerTapping), "     vector!", GetPtrHash( player))
@@ -75,7 +76,9 @@ function dash.RebekahDoubleTapDash(vector, playerTapping)
 				playerdata.specialMaxCooldown = playerdata.specialCooldown --gain the max amount dash cooldown
 				-- update the dash double tap cooldown based on Rebecca's mode specific cooldown
 			end
-			playerdata.DASH_DOUBLE_TAP.cooldown = playerdata.specialCooldown;
+			if playerdata.DASH_DOUBLE_TAP then
+				playerdata.DASH_DOUBLE_TAP.cooldown = playerdata.specialCooldown;
+			end
 		end
 	end
 end

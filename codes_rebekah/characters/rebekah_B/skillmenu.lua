@@ -139,10 +139,15 @@ function yandereWaifu.TaintedSkillMenu:Update( vector, position, player )
 		end
 		local availableDir = 0
 		if self.options then --display options
-
+			
             for i = 0, 3, 1 do
-                self.menuHud[i]:ReplaceSpritesheet(2, "gfx/ui/none.png")
-                self.menuHud[i]:Render(self.menuAnchor+Vector(20,0):Rotated(90*i), Vector(0,0), Vector(0,0));
+				if InutilLib.room:IsMirrorWorld() then
+					self.menuHud[i]:ReplaceSpritesheet(2, "gfx/ui/none.png")
+					self.menuHud[i]:Render(self.menuAnchor-Vector(20,0):Rotated((90*i)*-1), Vector(0,0), Vector(0,0));
+				else
+					self.menuHud[i]:ReplaceSpritesheet(2, "gfx/ui/none.png")
+					self.menuHud[i]:Render(self.menuAnchor+Vector(20,0):Rotated(90*i), Vector(0,0), Vector(0,0));
+				end
             end
 
 			--refresh in case
@@ -152,6 +157,10 @@ function yandereWaifu.TaintedSkillMenu:Update( vector, position, player )
 			for i, v in pairs (self.options) do
 
                 local icon = v.sprite or "gfx/ui/minimenu_icon_default.png"
+
+				if InutilLib.room:IsMirrorWorld() then
+					self.lastVector = self.lastVector*-1
+				end
 
                 self.menuHud[i]:ReplaceSpritesheet(1, icon);
 				if i == 0 then

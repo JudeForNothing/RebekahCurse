@@ -1,7 +1,9 @@
 local mod
 
 --the version of this helper mod script
-local currentVersion = 6
+local currentVersion = 7
+
+Isaac.DebugString("TESTING MY BALLSACK")
 
 --remove any previous versions that may exist, piber style
 local callbacksAlreadyLoaded = nil
@@ -12,7 +14,6 @@ if InutilLib then
 	end
 	if thisVersion < currentVersion then
 		InutilLib = nil
-		InutilLib = {}
 		InutilLibFiles = {}
 		Isaac.DebugString("Removed older inutillib helper (version " .. thisVersion .. ")")
 	end
@@ -1350,7 +1351,7 @@ if not InutilLib then
 	end
 
 	function InutilLib.IsShowingItem(player)
-	return InutilLib.MultiAnimOnCheck(player:GetSprite(), "LiftItem", "PickupWalkDown", "PickupWalkUp", "PickupWalkLeft", "PickupWalkRight")
+	return InutilLib.MultiAnimOnCheck(player:GetSprite(), "UseItem", "PlayerPickupSparkle", "LiftItem", "PickupWalkDown", "PickupWalkUp", "PickupWalkLeft", "PickupWalkRight")
 	end
 
 	--Show active until active button is pressed again
@@ -4459,6 +4460,20 @@ if not InutilLib then
 
 	local queueDamageSound = false;
 	local wasPlayerDead = false;
+	
+	local nowClear = false
+
+	mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_)
+		nowClear = InutilLib.room:IsClear()
+		print(nowClear)
+	end)
+	
+	mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+		if not nowClear and InutilLib.room:IsClear() then
+			Isaac.RunCallback("MC_POST_CLEAR_ROOM", InutilLib.room)
+			nowClear = true
+		end
+	end)
 
 	mod:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 		local playerInfo 

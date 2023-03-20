@@ -642,8 +642,8 @@ local rebekahdirectory = {
 			{
                 str = 'dash key',
                 keybind = true,
-                variable = 'DashKeybind',
                 setting = -1,
+                variable = 'DashKeybind',
                 load = function()
                     return  RebekahLocalSavedata.Config.rebekahdashkey or -1
                 end,

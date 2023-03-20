@@ -1,9 +1,12 @@
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
-	if not new then
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, continue)
+	if not continue then
         local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.DID
         if challenge then
             local player = Isaac.GetPlayer(0)
             local data = yandereWaifu.GetEntityData(player)
+			--print("WWWWW")
+			--print(RebekahCurse.REB_RED)
+			--Isaac.ExecuteCommand("restart "..RebekahCurse.REB_RED)
             player:ChangePlayerType(RebekahCurse.REB_RED)
             if player.FrameCount <= 2 then --trying to make it visually pleasing when she spawns in
 				player.Visible = false
@@ -26,14 +29,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
     end
 end)
 
-function yandereWaifu:DIDChallengeNewLevel()
+--function yandereWaifu:DIDChallengeNewRoom()
+yandereWaifu:AddCallback("MC_POST_CLEAR_ROOM", function(_, room)
+--StageAPI.AddCallback("RebekahCurse", "POST_ROOM_CLEAR", 2, function()
+	print("CLEARRRRRRRRR")
 	local challenge = InutilLib.game.Challenge == RebekahCurseChallenges.DID
-    if challenge and InutilLib.level:GetStage() > 1 then
+    if challenge --[[and InutilLib.level:GetStage() > 1]] then
         for p = 0, InutilLib.game:GetNumPlayers() - 1 do
             local player = Isaac.GetPlayer(p)
-            yandereWaifu.ChangeMode( player, math.random(1,9), false, false);
+            yandereWaifu.ChangeMode( player, math.random(0,8), false, false);
         end
     end
-end
+end)
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.DIDChallengeNewLevel)
+--yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.DIDChallengeNewRoom)

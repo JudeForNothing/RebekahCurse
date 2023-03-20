@@ -75,6 +75,8 @@ yandereWaifuIngameContentCode = {
 		},
 		deborahA = require('codes_rebekah.characters.deborah_A.basic'),
 		isaacC = require('codes_rebekah.characters.isaac_C.basic'),
+
+		nightmares = require('codes_rebekah.characters.nightmares'),
 	},
 	entities = {
 		basiceffects = require('codes_rebekah.entities.basiceffects'),
@@ -201,6 +203,7 @@ yandereWaifuIngameContentCode = {
 		milkwine = require('codes_rebekah.items.milkwine'),
 		underpay = require('codes_rebekah.items.underpay'),
 		silenttreatment = require('codes_rebekah.items.silenttreatment'),
+		deborahsdeadeye = require('codes_rebekah.items.deborahsdeadeye'),
 
 		fullfatmilk = require('codes_rebekah.items.fullfatmilk'),
 	},

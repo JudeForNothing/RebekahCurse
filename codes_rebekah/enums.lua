@@ -113,6 +113,7 @@ RebekahCurseItems = {
 	COLLECTIBLE_PLATFORMCOTTA = Isaac.GetItemIdByName("Platform Cotta"),
 	COLLECTIBLE_MILKWINE = Isaac.GetItemIdByName("Milk Wine"),
 	COLLECTIBLE_SILENTTREATMENT = Isaac.GetItemIdByName("Silent Treatment"),
+	COLLECTIBLE_DEBORAHSDEADEYE = Isaac.GetItemIdByName("Deborah's Dead Eye"),
 
 	COLLECTIBLE_FULLFATMILK = Isaac.GetItemIdByName("Full Fat Milk"),
 
@@ -316,6 +317,7 @@ RebekahCurse = {
 
 	ENTITY_TAPIOCATEAR = Isaac.GetEntityVariantByName("Tapioca Tear"),
 	ENTITY_PLATFORMCAKE = Isaac.GetEntityVariantByName("Platform Cake"),
+	ENTITY_DEBORAHDEADEYETARGET = Isaac.GetEntityVariantByName("Deborah Dead Eye Target"),
 
 	ENTITY_HOUSE_BACKDROP = Isaac.GetEntityVariantByName("Phantasm House"),
 	ENTITY_HOUSE_BACKDROP_REPLACE = Isaac.GetEntityVariantByName("Phantasm House (replace)"),
@@ -778,6 +780,8 @@ RebeccaModeNames = {
 	[REBECCA_MODE.ImmortalHearts] =  "immortal",
 	[REBECCA_MODE.BrideRedHearts] = "bride", --BridalHair
 
+	[REBECCA_MODE.ScaredRedHearts] = "red", --InnocentHair,
+
 	[REBECCA_MODE.CursedCurse] =  "cursed",
 }
 
@@ -794,6 +798,8 @@ RebeccaModeCostumes = {
 	[REBECCA_MODE.BrokenHearts] =  "fourthwallhair",
 	[REBECCA_MODE.ImmortalHearts] =  "heyheyhair",
 	[REBECCA_MODE.BrideRedHearts] = "bridalhair", --BridalHair
+
+	[REBECCA_MODE.ScaredRedHearts] = "emergenthair", --InnocentHair,
 
 	[REBECCA_MODE.CursedCurse] = "haunted_hairstyle" --BridalHair
 }
@@ -895,11 +901,11 @@ local REBECCA_SOUL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_SOUL, Rebek
 local REBECCA_EVIL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_EVIL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_GOLD_INFO = InutilLib.Players:New({}, RebekahCurse.REB_GOLD, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_ETERNAL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ETERNAL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_ETERNAL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BONE, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_BONE_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BONE, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ROTTEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
+--local REBECCA_SCARED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
 local REBECCA_CURSED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_CURSED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 if StageAPI and StageAPI.Loaded then

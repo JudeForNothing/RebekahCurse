@@ -31,7 +31,7 @@ if StageAPI and StageAPI.Loaded then
 
 RebekahThriftShopDoor = StageAPI.CustomDoor(
     "ThriftShopDoor", 
-    nil, 
+    "gfx/grid/thriftshop/door.anm2", 
     "Open", "Close", 
     "Opened", "Closed",
     false,
@@ -41,7 +41,7 @@ RebekahThriftShopDoor = StageAPI.CustomDoor(
 
 RebekahThriftShopDoorInside = StageAPI.CustomDoor(
     "ThriftShopDoorInside", 
-    nil, 
+    "gfx/grid/thriftshop/door.anm2", 
     "Open", "Close", 
     "Opened", "Closed",
     false,
@@ -50,8 +50,8 @@ RebekahThriftShopDoorInside = StageAPI.CustomDoor(
 )
 
 
-StageAPI.CustomStateDoor("ThriftShopDoor", nil, StageAPI.BaseDoorStates.Locked)
-StageAPI.CustomStateDoor("ThriftShopDoorInside", nil, StageAPI.BaseDoorStates.Default)
+StageAPI.CustomStateDoor("ThriftShopDoor", "gfx/grid/thriftshop/door.anm2", StageAPI.BaseDoorStates.Locked)
+StageAPI.CustomStateDoor("ThriftShopDoorInside", "gfx/grid/thriftshop/door.anm2", StageAPI.BaseDoorStates.Default)
 
 yandereWaifu.ThriftShop = {}
 
