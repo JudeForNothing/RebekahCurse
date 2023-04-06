@@ -3,7 +3,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, function(_, effect, player, f
 	local holdingHorsePill = pillColour & PillColor.PILL_GIANT_FLAG > 0
     --if PillColor.PILL_GIANT_FLAG
     print(holdingHorsePill)
-    if effect == RebekahCursePills.GOOSEBUMPS then
+    if effect == RebekahCurse.Pills.GOOSEBUMPS then
         local multiplier = 1
         if holdingHorsePill then multiplier = 2 end
         for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, function(_, effect, player, f
 				e:AddFear(EntityRef(player), 90*multiplier)
 			end
 		end
-    elseif effect == RebekahCursePills.LAUGHTERSTHEBESTMEDICINE then
+    elseif effect == RebekahCurse.Pills.LAUGHTERSTHEBESTMEDICINE then
         local multiplier = 1
         if holdingHorsePill then multiplier = 2 end
         for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -19,10 +19,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, function(_, effect, player, f
 				yandereWaifu.GetEntityData(e).IsLaughing = 90*multiplier
 			end
 		end
-        SFXManager():Play( RebekahCurseSounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
-    elseif effect == RebekahCursePills.ENDORPHIN then
+        SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
+    elseif effect == RebekahCurse.Pills.ENDORPHIN then
         
-    elseif effect == RebekahCursePills.HEMORRHAGE then
+    elseif effect == RebekahCurse.Pills.HEMORRHAGE then
         local extra = 1
         if holdingHorsePill then extra = 2 end
 
@@ -46,14 +46,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, function(_, effect, player, f
                 player:AddHearts(2)
 			end
         end
-    elseif effect == RebekahCursePills.OVULATION then
+    elseif effect == RebekahCurse.Pills.OVULATION then
         local extra = 0
         if holdingHorsePill then extra = 1 end
         for i = 0, 0+extra do
             yandereWaifu.SpawnEasterEgg(player.Position, player)
             SFXManager():Play(SoundEffect.SOUND_PLOP, 1, 0, false, 1 );
         end
-    elseif effect == RebekahCursePills.PROGESTIN then
+    elseif effect == RebekahCurse.Pills.PROGESTIN then
         local multiplier = 1
         if holdingHorsePill then multiplier = 2 end
         for i, e in pairs(Isaac.GetRoomEntities()) do

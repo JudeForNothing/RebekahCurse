@@ -5,7 +5,7 @@ local JacobPresent = false
 
 
 local hasInit = false;
---local currentMode = REBECCA_MODE.RedHearts;
+--local currentMode = RebekahCurse.REBECCA_MODE.RedHearts;
 
 local didKillSatan = false
 
@@ -22,7 +22,7 @@ local function SetupRebekahData(player, mode) --sets up basic attributes for Reb
 	if mode then data.currentMode = mode else data.currentMode = nil end
 	--player:AddNullCostume(NerdyGlasses)
 	
-	--data.currentMode = REBECCA_MODE.RedHearts
+	--data.currentMode = RebekahCurse.REBECCA_MODE.RedHearts
 	--player:AddCacheFlags (CacheFlag.CACHE_ALL);
 	--player:EvaluateItems();
 	
@@ -30,6 +30,11 @@ local function SetupRebekahData(player, mode) --sets up basic attributes for Reb
 	data.heartReserveFill = 0
 	data.heartReserveMaxFill = 0 
 	data.heartStocks = 0
+	data.heartStocksMax = 0
+
+	print("HOLD UP")
+	print(data.heartStocks)
+	print(data.heartStocksMax)
 	
 	data.DASH_DOUBLE_TAP:Reset();
 end
@@ -39,29 +44,29 @@ function RebeccaInit(player)
 	JacobPresent = false
 	
 	local data = yandereWaifu.GetEntityData(player)
-	player:AddHearts(-REBEKAH_BALANCE.INIT_REMOVE_HEARTS);
+	player:AddHearts(-RebekahCurse.REBEKAH_BALANCE.INIT_REMOVE_HEARTS);
 	--heart reserve
 	SetupRebekahData(player)
 	
-	local mode = REBECCA_MODE.RedHearts
+	local mode = RebekahCurse.REBECCA_MODE.RedHearts
 	if player:GetPlayerType() ==  RebekahCurse.REB_RED then
-		mode = REBECCA_MODE.RedHearts
+		mode = RebekahCurse.REBECCA_MODE.RedHearts
 	elseif player:GetPlayerType() == RebekahCurse.REB_SOUL then
-		mode = REBECCA_MODE.SoulHearts 
+		mode = RebekahCurse.REBECCA_MODE.SoulHearts 
 	elseif player:GetPlayerType() == RebekahCurse.REB_GOLD then
-		mode = REBECCA_MODE.GoldHearts
+		mode = RebekahCurse.REBECCA_MODE.GoldHearts
 	elseif player:GetPlayerType() == RebekahCurse.REB_EVIL then
-		mode = REBECCA_MODE.EvilHearts
+		mode = RebekahCurse.REBECCA_MODE.EvilHearts
 	elseif player:GetPlayerType() == RebekahCurse.REB_ETERNAL then
-		mode = REBECCA_MODE.EternalHearts
+		mode = RebekahCurse.REBECCA_MODE.EternalHearts
 	elseif player:GetPlayerType() == RebekahCurse.REB_BONE then
-		mode = REBECCA_MODE.BoneHearts
+		mode = RebekahCurse.REBECCA_MODE.BoneHearts
 	elseif player:GetPlayerType() == RebekahCurse.REB_ROTTEN then
-		mode = REBECCA_MODE.RottenHearts 
+		mode = RebekahCurse.REBECCA_MODE.RottenHearts 
 	elseif player:GetPlayerType() == RebekahCurse.REB_BROKEN then
-		mode = REBECCA_MODE.BrokenHearts
+		mode = RebekahCurse.REBECCA_MODE.BrokenHearts
 	elseif player:GetPlayerType() == RebekahCurse.REB_IMMORTAL then
-		mode = REBECCA_MODE.ImmortalHearts
+		mode = RebekahCurse.REBECCA_MODE.ImmortalHearts
 	end
 	yandereWaifu.ChangeMode( player, mode, true, _, true);
 	yandereWaifu.AddRandomHeart(player)
@@ -78,7 +83,15 @@ function RebeccaInit(player)
 	--for other characters who comes in but not on game_start
 	if Game():GetRoom():GetFrameCount() > 1 and not hasPocket then
 		yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
-		--player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_LOVECANNON)
+		--player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
+	end
+
+	--setting max heartStocks
+	if not data.heartStocksMax then data.heartStocksMax = 1 end
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+		data.heartStocksMax = 3
+	else
+		data.heartStocksMax = 1
 	end
 	
 	player.Visible = true
@@ -106,7 +119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			if player.FrameCount <= 2 then --trying to make it visually pleasing when she spawns in
 				player.Visible = false
 			end
-			yandereWaifu.ChangeMode( player, REBECCA_MODE.RedHearts, true );
+			yandereWaifu.ChangeMode( player, RebekahCurse.REBECCA_MODE.RedHearts, true );
 			
 			--personalized doubletap classes
 			data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
@@ -218,7 +231,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		--attack skill
 		local hasCollectible = yandereWaifu.HasCollectibleGuns(player)
 		if hasCollectible then
-			local didUseGun = yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurseItems.COLLECTIBLE_LOVECANNON, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
+			local didUseGun = yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.Items.COLLECTIBLE_LOVECANNON, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.Items.COLLECTIBLE_APOSTATE, RebekahCurse.Items.COLLECTIBLE_MAINLUA, RebekahCurse.Items.COLLECTIBLE_PSALM45, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.Items.COLLECTIBLE_FANG, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
 			if didUseGun then
 				local vector = InutilLib.DirToVec(player:GetFireDirection())
 				local playerdata = yandereWaifu.GetEntityData(player);
@@ -227,31 +240,31 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				--cooldown
 				if not player:IsExtraAnimationFinished() and not (playerdata.IsUninteractible) then
 					--if --[[OPTIONS.HOLD_DROP_FOR_SPECIAL_ATTACK == false or Input.IsActionPressed(ButtonAction.ACTION_DROP, controller)]] playerdata.isReadyForSpecialAttack then
-					if (yandereWaifu.getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive) then --[[ and (yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrokenHearts and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts))]] --[[or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts or (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and ((not data.noHead) or (data.noHead and yandereWaifu.getReserveStocks(player) >= 1)))]] --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
-						if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --if red 
+					if (yandereWaifu.getReserveStocks(player) >= 1 and playerdata.NoBoneSlamActive) then --[[ and (yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.BrokenHearts and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.RottenHearts))]] --[[or (yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts or (yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts and ((not data.noHead) or (data.noHead and yandereWaifu.getReserveStocks(player) >= 1)))]] --((player:GetSoulHearts() >= 2 and player:GetHearts() > 0) or player:GetHearts() > 2) and playerdata.NoBoneSlamActive then
+						if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RedHearts then --if red 
 							playerdata.specialActiveAtkCooldown = 500;
 							playerdata.invincibleTime = 10;
 							playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then --if blue 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then --if blue 
 							playerdata.specialActiveAtkCooldown = 120;
 							playerdata.soulcountdownFrames = 0;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then --if yellow 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.GoldHearts then --if yellow 
 							playerdata.specialActiveAtkCooldown = 5;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then --if black 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EvilHearts then --if black 
 							playerdata.specialActiveAtkCooldown = 90;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then --if eternal 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EternalHearts then --if eternal 
 							playerdata.specialActiveAtkCooldown = 1200;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BoneHearts then --if bone 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BoneHearts then --if bone 
 							playerdata.specialActiveAtkCooldown = 900;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then --if rotten 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts then --if rotten 
 							playerdata.specialActiveAtkCooldown = 60;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then --if broken 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then --if broken 
 							playerdata.specialActiveAtkCooldown = 160;
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then --if bred 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrideRedHearts then --if bred 
 							playerdata.specialActiveAtkCooldown = 80;
 							playerdata.invincibleTime = 10;
 							playerdata.redcountdownFrames = 0;  --just in case, it kinda breaks occasionally, so that's weird
-						elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.ImmortalHearts then --if immortal 
+						elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.ImmortalHearts then --if immortal 
 							playerdata.specialActiveAtkCooldown = 160;
 						end
 						playerdata.specialAttackVector = Vector( vector.X, vector.Y );
@@ -307,7 +320,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		local hasCollectibles = yandereWaifu.HasCollectibleGuns(player)
 		
 		if hasCollectibles then
-			local hasUsedGuns = yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurseItems.COLLECTIBLE_LOVECANNON, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
+			local hasUsedGuns = yandereWaifu.HasCollectibleConfirmedUseMultiple(player, RebekahCurse.Items.COLLECTIBLE_LOVECANNON, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.Items.COLLECTIBLE_APOSTATE, RebekahCurse.Items.COLLECTIBLE_MAINLUA, RebekahCurse.Items.COLLECTIBLE_PSALM45, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.Items.COLLECTIBLE_FANG, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
 			
 			
 			if hasUsedGuns then
@@ -316,9 +329,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				local psprite = player:GetSprite()
 				local controller = player.ControllerIndex;
 				playerdata.specialAttackVector = Vector( vector.X, vector.Y );
-				if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE ) then
+				if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE ) then
 					yandereWaifu.DoExtraBarrages(player, 5)
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_APOSTATE ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_APOSTATE ) then
 					local didtrigger = false
 					if player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE) < 2 then
 						player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+2)
@@ -333,23 +346,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 					if didtrigger then
 						player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+2)
 					end
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_PSALM45 ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_PSALM45 ) then
 					local ned = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_NED_NORMAL, 0, player.Position, Vector( 0, 0 ), player):ToFamiliar();
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL ) then
 					local angle = vector:GetAngleDegrees()
 					local beam = EntityLaser.ShootAngle(5, player.Position, angle, 10, Vector(0,10), player):ToLaser()
 					if not yandereWaifu.GetEntityData(beam).IsLvlOneBeam then yandereWaifu.GetEntityData(beam).IsLvlOneBeam = true end
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_FANG ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_FANG ) then
 					for i = 1, 4 do --extra carrion worm thingies when extra tears!!
 						local leech = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_BONEJOCKEY, 10, player.Position, Vector(0,0), player)
 						yandereWaifu.GetEntityData(leech).ParentLeech = player
 					end
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH ) then
 					local ball = Isaac.Spawn( EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_ROTTENFLYBALL, 0, player.Position, vector, player):ToFamiliar();
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_MAINLUA ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_MAINLUA ) then
 					Isaac.Explode(player.Position, player, 500)
 					player:TakeDamage(2, 0, EntityRef(player), 1)
-				elseif InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING ) then
+				elseif InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING ) then
 					
 				else
 					yandereWaifu.DoExtraBarrages(player, 1)
@@ -397,26 +410,28 @@ function yandereWaifu.barrageAndSP(player)
 			data.shiftyBeam = nil
 		end
 	end
-	if data.currentMode == REBECCA_MODE.SoulHearts then
+	if data.currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 		if data.isPlayingCustomAnim2 then
 			--if not data.soulspitframecount then data.soulspitframecount = 0 end
 			if data.soulspitframecount == 5 then
 				data.BarrageIntro = true
 			elseif data.soulspitframecount == 45 then
-				player:TryRemoveNullCostume(RebekahCurseCostumes.RebekahSpitsOut)
+				player:TryRemoveNullCostume(RebekahCurse.Costumes.RebekahSpitsOut)
 				data.isPlayingCustomAnim2 = false
 				data.isPlayingCustomAnim = false
 			end
 			data.soulspitframecount = data.soulspitframecount + 1
 		end
 	end
-	if data.currentMode == REBECCA_MODE.RedHearts or data.currentMode == REBECCA_MODE.BoneHearts then
+	if data.currentMode == RebekahCurse.REBECCA_MODE.RedHearts or data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts or
+	data.currentMode == RebekahCurse.REBECCA_MODE.ScaredRedHearts or data.currentMode == RebekahCurse.REBECCA_MODE.TwinRedHearts 
+	or data.currentMode == RebekahCurse.REBECCA_MODE.BlendedHearts  or data.currentMode == RebekahCurse.REBECCA_MODE.HalfRedHearts then
 		if data.IsDashActive then --movement code
-			local heartType = RebekahHeartParticleType.Red
-			if data.currentMode == REBECCA_MODE.RedHearts then
-				heartType = RebekahHeartParticleType.Red
+			local heartType = RebekahCurse.RebekahHeartParticleType.Red
+			if data.currentMode == RebekahCurse.REBECCA_MODE.RedHearts then
+				heartType = RebekahCurse.RebekahHeartParticleType.Red
 			else
-				heartType = RebekahHeartParticleType.Black
+				heartType = RebekahCurse.RebekahHeartParticleType.Black
 			end
 			
 			
@@ -425,7 +440,7 @@ function yandereWaifu.barrageAndSP(player)
 			
 			if data.countdownFrames < 0 then
 				--if data.boneSuccessDash then
-				if data.currentMode == REBECCA_MODE.BoneHearts then 
+				if data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts then 
 					if data.BoneStacks < 5 then data.BoneStacks = data.BoneStacks + 1 end
 				end
 				--	print(data.BoneStacks)
@@ -436,12 +451,12 @@ function yandereWaifu.barrageAndSP(player)
 			end
 			if Isaac.GetFrameCount() % 3 == 0 then
 			AddRebekahDashEffect(player)
-			--if not data.currentMode == REBECCA_MODE.EvilHearts then
+			--if not data.currentMode == RebekahCurse.REBECCA_MODE.EvilHearts then
 				yandereWaifu.SpawnHeartParticles( 1, 3, player.Position, player.Velocity:Rotated(180+math.random(-5,5)):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, heartType );
 			end
 			
 		end
-		if data.currentMode == REBECCA_MODE.BoneHearts then
+		if data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts then
 			if (data.LudoBone == nil or data.LudoBone:IsDead()) and data.IsAttackActive then
 				--ludostuff
 				local ludoTear
@@ -479,7 +494,7 @@ function yandereWaifu.barrageAndSP(player)
 		data.LastBonestackFrame = player.FrameCount + 45
 	end
 	
-	if data.currentMode == REBECCA_MODE.EternalHearts then	
+	if data.currentMode == RebekahCurse.REBECCA_MODE.EternalHearts then	
 		yandereWaifu.FlamethrowerLogic(player)
 		--ludo stuff
 		if player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) and not data.EternalLudo then
@@ -487,13 +502,13 @@ function yandereWaifu.barrageAndSP(player)
 			player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 			player:EvaluateItems()
 		end
-	elseif data.currentMode ~= REBECCA_MODE.EternalHearts and data.EternalLudo then	
+	elseif data.currentMode ~= RebekahCurse.REBECCA_MODE.EternalHearts and data.EternalLudo then	
 		data.EternalLudo = false
 		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 		player:EvaluateItems()
 	end
 	
-	if data.currentMode == REBECCA_MODE.EvilHearts and InutilLib.game:GetFrameCount() >= 1 then	 --weird bug happens
+	if data.currentMode == RebekahCurse.REBECCA_MODE.EvilHearts and InutilLib.game:GetFrameCount() >= 1 then	 --weird bug happens
 		--[[if player:GetHearts() <= 0 then
 			if player:GetMovementInput():Length() < 1 and not data.OpenedMaw then
 				local maw = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_DARKMAW, 0, player.Position, player.Velocity, player) --feather attack
@@ -526,7 +541,7 @@ function yandereWaifu.barrageAndSP(player)
 		end]]
 	end
 
-	if data.currentMode == REBECCA_MODE.BrokenHearts then --decrement of tankAmount
+	if data.currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then --decrement of tankAmount
 		if data.tankAmount then
 			if data.tankAmount >= 1 then 
 				if player.FrameCount % 100 == 0 then
@@ -541,7 +556,7 @@ function yandereWaifu.barrageAndSP(player)
 			player:EvaluateItems()
 		end
 		
-		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 			if yandereWaifu.GetEntityData(player).BrokenBuff then
 				yandereWaifu.GetEntityData(player).BrokenBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -563,24 +578,24 @@ function yandereWaifu.barrageAndSP(player)
 		end
 		local mode
 		if not data.currentActiveBarrageMode then
-			if player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_LOVECANNON  then
-				data.currentActiveBarrageMode = REBECCA_MODE.RedHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE then
-				data.currentActiveBarrageMode = REBECCA_MODE.SoulHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_APOSTATE then
-				data.currentActiveBarrageMode = REBECCA_MODE.EvilHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_PSALM45 then
-				data.currentActiveBarrageMode = REBECCA_MODE.GoldHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL then
-				data.currentActiveBarrageMode = REBECCA_MODE.EternalHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_FANG then
-				data.currentActiveBarrageMode = REBECCA_MODE.BoneHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH then
-				data.currentActiveBarrageMode = REBECCA_MODE.RottenHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_MAINLUA then
-				data.currentActiveBarrageMode = REBECCA_MODE.BrokenHearts
-			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurseItems.COLLECTIBLE_COMFORTERSWING then
-				data.currentActiveBarrageMode = REBECCA_MODE.ImmortalHearts
+			if player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_LOVECANNON  then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.RedHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.SoulHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_APOSTATE then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.EvilHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_PSALM45 then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.GoldHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.EternalHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_FANG then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.BoneHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.RottenHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_MAINLUA then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.BrokenHearts
+			elseif player:IsHoldingItem() and InutilLib.GetLastShownItem(player) == RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING then
+				data.currentActiveBarrageMode = RebekahCurse.REBECCA_MODE.ImmortalHearts
 			end
 		end
 		yandereWaifu.DoRebeccaBarrage(player, data.currentActiveBarrageMode, data.specialAttackVector)
@@ -599,7 +614,7 @@ end
 function yandereWaifu.RenderUnderlay(player) 
 	--local player = Isaac.GetPlayer(0)
 	local psprite = player:GetSprite()
-	if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrideRedHearts then	
+	if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrideRedHearts then	
 		--local s = Sprite()
 		--s:Load("gfx/weddingveil.anm2", true)
 		--s:Update()
@@ -736,7 +751,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
-		if yandereWaifu.IsNormalRebekah(player) and not entityData.currentMode == REBECCA_MODE.SoulHearts then
+		if yandereWaifu.IsNormalRebekah(player) and not entityData.currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 			if ( entityData.invincibleTime or 0 ) > 0 then
 				pickup.Wait = 10;
 			end
@@ -761,7 +776,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 				end
 			end
 			local maxHealth = ent.MaxHitPoints
-			if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax and not ent:IsInvincible() and modes ~= REBECCA_MODE.BoneHearts and not (data.IsLeftover)--[[(ent.Variant == EntityType.ENTITY_STONEY)]] then
+			if yandereWaifu.getReserveStocks(player) < yandereWaifu.GetEntityData(player).heartStocksMax and not ent:IsInvincible() and modes ~= RebekahCurse.REBECCA_MODE.BoneHearts and not (data.IsLeftover)--[[(ent.Variant == EntityType.ENTITY_STONEY)]] then
 				for i = 1, math.ceil(maxHealth/50) do
 					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 0, ent.Position, Vector.FromAngle((player.Position - ent.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
 					yandereWaifu.GetEntityData(heart).Parent = player
@@ -800,7 +815,8 @@ function yandereWaifu:RebekahNewRoom()
 			--neded for soul heart and bone heart movement lol
 			--if this was tampered to being with
 			if data.IsUninteractible then 
-				if data.currentMode == REBECCA_MODE.SoulHearts or data.currentMode == REBECCA_MODE.EvilHearts then
+				if data.currentMode == RebekahCurse.REBECCA_MODE.SoulHearts or data.currentMode == RebekahCurse.REBECCA_MODE.EvilHearts 
+				or data.currentMode == RebekahCurse.REBECCA_MODE.BlendedHearts or data.currentMode == RebekahCurse.REBECCA_MODE.HalfSoulHearts then
 					yandereWaifu.RebekahCanShoot(player, true)
 				end
 				data.IsUninteractible = false 
@@ -888,10 +904,9 @@ function yandereWaifu:RebekahNewRoom()
 				end
 			end
 			if data.debug7 then
-				Isaac.ExecuteCommand("debug 7")
 				data.debug7 = false
 			end
-			if data.currentMode == REBECCA_MODE.RottenHearts then
+			if data.currentMode == RebekahCurse.REBECCA_MODE.RottenHearts then
 				data.RottenHiveTable = {}
 				for i, entity in pairs(Isaac.GetRoomEntities()) do
 					if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == RebekahCurse.ENTITY_ROTTENFLYBALL then
@@ -909,15 +924,15 @@ function yandereWaifu:RebekahNewRoom()
 				--become depressed again
 				yandereWaifu.ApplyCostumes( data.currentMode, player , false, false)
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-				player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+				player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 				InutilLib.SetTimer( 10*3, function()
-					player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 				end)
 			end
 			if data.ImmortalPrismProp then
 				data.ImmortalPrismProp:Remove()
 			end
-			if data.currentMode == REBECCA_MODE.BoneHearts and data.IsLeftover then
+			if data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts and data.IsLeftover then
 				player.Visible = false
 			end
 			if not player:IsCoopGhost() then
@@ -936,9 +951,9 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.RebekahNew
 function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 		local data = yandereWaifu.GetEntityData(player)
 		local num, num2, num3
-		if data.currentMode == REBECCA_MODE.BrideRedHearts and yandereWaifu.IsNormalRebekah(player) then num1 = 1 else num1 = 0 end
-		--if data.currentMode == REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
-		--if data.currentMode == REBECCA_MODE.BoneHearts and yandereWaifu.IsNormalRebekah(player) then num3 = 1 else num3 = 0 end
+		if data.currentMode == RebekahCurse.REBECCA_MODE.BrideRedHearts and yandereWaifu.IsNormalRebekah(player) then num1 = 1 else num1 = 0 end
+		--if data.currentMode == RebekahCurse.REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
+		--if data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts and yandereWaifu.IsNormalRebekah(player) then num3 = 1 else num3 = 0 end
 		if cacheF == CacheFlag.CACHE_FAMILIARS then
 			player:CheckFamiliar(RebekahCurse.ENTITY_LABAN, num1, RNG())
 			--player:CheckFamiliar(RebekahCurse.ENTITY_MORNINGSTAR, num2, RNG())
@@ -952,7 +967,7 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 			end
 			--	data.UpdateHair = false
 			--end
-			if (data.currentMode == REBECCA_MODE.RedHearts or data.currentMode == REBECCA_MODE.SoulHearts) then
+			if (data.currentMode == RebekahCurse.REBECCA_MODE.RedHearts or data.currentMode == RebekahCurse.REBECCA_MODE.SoulHearts) then
 				--bonus luck when shooting a barrage
 				if cacheF == CacheFlag.CACHE_LUCK then
 					if yandereWaifu.GetEntityData(player).LuckBuff then
@@ -1048,7 +1063,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 			if player:GetFrameCount() <= 2 then --trying to make it visually pleasing when she spawns in
 				player.Visible = false
 			end
-			RebekahCurse.ChangeMode( player, REBECCA_MODE.RedHearts, true );
+			RebekahCurse.ChangeMode( player, RebekahCurse.REBECCA_MODE.RedHearts, true );
 				
 			--personalized doubletap classes
 			data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
@@ -1109,7 +1124,7 @@ local function Init(force)
 			--set for player 1
 			if not yandereWaifu.HasCollectibleGuns(player) then
 				yandereWaifu:SetRebekahPocketActiveItem( player, mode )
-				--player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_LOVECANNON)
+				--player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 			end
 		end
@@ -1170,18 +1185,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 			--	yandereWaifu.Save()
 			--	lastSaveTime = Game():GetFrameCount();
 			--end
-			if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
+			if yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.BrideRedHearts then
 				yandereWaifu.TrySpawnMirror();
 			end
 			--yandereWaifu.RenderMegaMushOverlay(player)
 			
 			if IsaacPresent and not yandereWaifu.GetEntityData(player).IsaacPresent then
-				player:AddNullCostume(RebekahCurseCostumes.IsaacOverdose)
+				player:AddNullCostume(RebekahCurse.Costumes.IsaacOverdose)
 				yandereWaifu.GetEntityData(player).IsaacPresent = true
 			end
 			
 			if JacobPresent and not yandereWaifu.GetEntityData(player).JacobPresent then
-				player:AddNullCostume(RebekahCurseCostumes.JacobEsauGlad)
+				player:AddNullCostume(RebekahCurse.Costumes.JacobEsauGlad)
 				yandereWaifu.GetEntityData(player).JacobPresent = true
 			end
 			
@@ -1219,7 +1234,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 			InutilLib.UpdateTimers();
 			
 		end
-		--[[if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND) then
+		--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND) then
 			yandereWaifu.AddTinyCharacters(player)
 		else
 		--	yandereWaifu.RemoveTinyCharacters(player)
@@ -1273,7 +1288,7 @@ function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 		InutilLib.ToggleShowActive(player, false, ispocket)
 	end
 	
-	--[[if collItem == RebekahCurseItems.COLLECTIBLE_MAINLUA then
+	--[[if collItem == RebekahCurse.Items.COLLECTIBLE_MAINLUA then
 		--special parry thing
 		local tilde = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
 		yandereWaifu.GetEntityData(tilde).Player = player
@@ -1283,15 +1298,15 @@ function yandereWaifu:usePocketCannon(collItem, rng, player, flags, slot)
 		tilde.RenderZOffset = 100;
 	end]]
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_LOVECANNON );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_APOSTATE );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_PSALM45 );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_FANG );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_MAINLUA );
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_LOVECANNON );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_APOSTATE );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_PSALM45 );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_FANG );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_MAINLUA );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usePocketCannon, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING);
 
 --custom actions code
 function yandereWaifu:customMovesInput()
@@ -1300,7 +1315,6 @@ function yandereWaifu:customMovesInput()
 		if yandereWaifu.IsNormalRebekah(player) then
 			local playerdata = yandereWaifu.GetEntityData(player);
 			local controller = player.ControllerIndex;
-			
 			if not playerdata.specialSwitchCooldown then playerdata.specialSwitchCooldown = 0 end --cooldown for click switch detection
 			if not playerdata.specialCooldown then playerdata.specialCooldown = 0 end --cooldown special
 			if not playerdata.specialActiveAtkCooldown then playerdata.specialActiveAtkCooldown = 0 end  --atk cooldown special
@@ -1313,13 +1327,6 @@ function yandereWaifu:customMovesInput()
 			
 			if not playerdata.isReadyForSpecialAttack then playerdata.isReadyForSpecialAttack = false end
 			--print(playerdata.invincibleTime)
-			--setting max heartStocks
-			if not playerdata.heartStocksMax then playerdata.heartStocksMax = 1 end
-			if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-				playerdata.heartStocksMax = 3
-			else
-				playerdata.heartStocksMax = 1
-			end
 			
 			--charge pocket item after ready
 
@@ -1331,7 +1338,7 @@ function yandereWaifu:customMovesInput()
 				charge.SpriteOffset = Vector(0,-40)
 				charge:GetSprite():ReplaceSpritesheet(0, "gfx/effects/move_effect_filled.png");
 				charge:GetSprite():LoadGraphics();
-				if playerdata.currentMode ~= REBECCA_MODE.BoneHearts or playerdata.BoneStacks == 5 then
+				if playerdata.currentMode ~= RebekahCurse.REBECCA_MODE.BoneHearts or playerdata.BoneStacks == 5 then
 					InutilLib.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.3, 0, false, 1.2 );
 				end
 			end
@@ -1343,15 +1350,15 @@ function yandereWaifu:customMovesInput()
 				InutilLib.SFX:Play( SoundEffect.SOUND_MIRROR_EXIT , 1.2, 0, false, 0.4 );
 			end
 			
-			local isLoveCannon = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_LOVECANNON
-			local isWizoobsTongue = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE
-			local isApostate = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_APOSTATE
-			local isPsalm45 = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_PSALM45
-			local isBarachielsPetal = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL
-			local isFang = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_FANG
-			local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH
-			local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_MAINLUA
-			local isComfortersWing = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_COMFORTERSWING
+			local isLoveCannon = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_LOVECANNON
+			local isWizoobsTongue = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE
+			local isApostate = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_APOSTATE
+			local isPsalm45 = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_PSALM45
+			local isBarachielsPetal = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL
+			local isFang = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_FANG
+			local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH
+			local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_MAINLUA
+			local isComfortersWing = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING
 			--special beam thing
 			--print(InutilLib.GetShowingActive(player))
 			if playerdata.isReadyForSpecialAttack == false and (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isBeelzebubsBreath or isMainLua or isComfortersWing) and yandereWaifu.getReserveStocks(player) >= 1 then
@@ -1359,42 +1366,42 @@ function yandereWaifu:customMovesInput()
 				local arcane = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
 				yandereWaifu.GetEntityData(arcane).parent = player
 				InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
-				if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+				if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 					for i = 0, 6 do
 						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/soul/special_beam.png")
 					end
-				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then
+				elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EvilHearts then
 					for i = 0, 6 do
 						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/evil/special_beam.png")
 					end
-				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then
+				elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EternalHearts then
 					for i = 0, 6 do
 						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/eternal/special_beam.png")
 					end
-				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
+				elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.GoldHearts then
 					for i = 0, 6 do
 						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/gold/special_beam.png")
 					end
-				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+				elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts then
 					for i = 0, 6 do
 						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/rotten/special_beam.png")
 					end
-				elseif yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+				elseif yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 					for i = 0, 6 do
 						arcane:GetSprite():ReplaceSpritesheet(i, "gfx/effects/broken/special_beam.png")
 					end
 				end
 				arcane:GetSprite():LoadGraphics()
 			else
-				local isLoveCannon = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_LOVECANNON
-				local isWizoobsTongue = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE
-				local isApostate = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_APOSTATE
-				local isPsalm45 = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_PSALM45
-				local isBarachielsPetal = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL
-				local isFang = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_FANG
-				local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH
-				local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_MAINLUA
-				local isComfortersWing = InutilLib.GetShowingActive(player) == RebekahCurseItems.COLLECTIBLE_COMFORTERSWING
+				local isLoveCannon = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_LOVECANNON
+				local isWizoobsTongue = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE
+				local isApostate = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_APOSTATE
+				local isPsalm45 = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_PSALM45
+				local isBarachielsPetal = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL
+				local isFang = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_FANG
+				local isBeelzebubsBreath = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH
+				local isMainLua = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_MAINLUA
+				local isComfortersWing = InutilLib.GetShowingActive(player) == RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING
 				if playerdata.isReadyForSpecialAttack and not (isLoveCannon or isWizoobsTongue or isApostate or isPsalm45 or isBarachielsPetal or isFang or isComfortersWing or isBeelzebubsBreath or isMainLua) then
 					playerdata.isReadyForSpecialAttack = false
 				end
@@ -1519,6 +1526,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			end
 		end
 		
+
+		  
 		if data.IsLeftover then
 			return false
 		end
@@ -1542,3 +1551,37 @@ function yandereWaifu:MiniIsaacReplaceSpritesheet(fam)
 	sprite:LoadGraphics()
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, yandereWaifu.MiniIsaacReplaceSpritesheet, FamiliarVariant.MINISAAC)
+
+
+--health stuff
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
+	local data = yandereWaifu.GetEntityData(player)
+	local hearts = InutilLib.GetAllMajorHearts(player) + player:GetBoneHearts()*2
+	local pos = (math.ceil(player:GetSoulHearts() / 2) + player:GetBoneHearts())-1
+	if hearts > 12 and yandereWaifu.IsNormalRebekah(player) then
+		if player:IsBoneHeart(pos) then
+			player:AddBoneHearts(-1)
+		else
+			if player:GetMaxHearts() > 12 then
+				player:AddMaxHearts(-1)
+				--[[if not data.PersistentPlayerData.heartReserveMaxFillPieces then 
+					data.PersistentPlayerData.heartReserveMaxFillPieces = 1 
+				else
+					data.PersistentPlayerData.heartReserveMaxFillPieces = data.PersistentPlayerData.heartReserveMaxFillPieces + 1
+				end
+				print(data.PersistentPlayerData.heartReserveMaxFillPieces)
+				if data.PersistentPlayerData.heartReserveMaxFillPieces > 1 then]]
+				data.heartStocksMax = data.heartStocksMax + 1 
+				--[[	data.PersistentPlayerData.heartReserveMaxFillPieces = 0
+				end]]
+				local gulp = Isaac.Spawn( EntityType.ENTITY_EFFECT,  RebekahCurse.ENTITY_HEARTGULP, 0, player.Position, Vector(0,0), player );
+				yandereWaifu.GetEntityData(gulp).Parent = player
+				gulp.SpriteOffset = Vector(0,-20)
+				gulp.RenderZOffset = 10000
+				InutilLib.SFX:Play( SoundEffect.SOUND_VAMP_GULP , 1.3, 0, false, 1 );
+			else
+				player:AddSoulHearts(-1)
+			end
+		end
+	end
+end)

@@ -7,13 +7,13 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 		if validPickup and not pickup.SpawnerEntity then
 			yandereWaifu.RerollToRebekahPool(pickup)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
-				local wisp = player:AddWisp(RebekahCurseItems.COLLECTIBLE_DICEOFFATE, player.Position, false, false)
+				local wisp = player:AddWisp(RebekahCurse.Items.COLLECTIBLE_DICEOFFATE, player.Position, false, false)
 				wisp.Position = pickup.Position
 			end
 			local newColl = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF01, 0, pickup.Position, Vector.Zero, ent)
 		end
 	end
-	player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_DICEOFFATE)
+	player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_DICEOFFATE)
 	--[[local hearts = player:GetMaxHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
 	local addEternal, addGolden = false, 0
 	if player:GetPlayerType() ~= PlayerType.PLAYER_KEEPER then
@@ -117,4 +117,4 @@ function yandereWaifu:useDiceOfFate(collItem, rng, player)
 	
 	return true]]
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useDiceOfFate, RebekahCurseItems.COLLECTIBLE_DICEOFFATE );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useDiceOfFate, RebekahCurse.Items.COLLECTIBLE_DICEOFFATE );

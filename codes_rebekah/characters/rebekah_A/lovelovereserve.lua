@@ -21,8 +21,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 						local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 0, damage.Position, Vector.FromAngle((player.Position - damage.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), damage)
 						yandereWaifu.GetEntityData(heart).Parent = player
 						yandereWaifu.GetEntityData(heart).maxHealth = player.Damage/10
-						
-						print(yandereWaifu.getReserveFill(player))
 					end
 				end
 			end
@@ -36,7 +34,7 @@ end
 
 function yandereWaifu.addReserveStocks(player, number)
 	yandereWaifu.GetEntityData(player).heartStocks = yandereWaifu.GetEntityData(player).heartStocks + number
-	--print("add")
+	print("add")
 	--print(yandereWaifu.getReserveStocks(player))
 	
 end

@@ -119,8 +119,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.JacobGlassI
 function yandereWaifu:JacobGlassCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_JACOBSTEARS) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_JACOBSTEARS, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_JACOBSTEARS) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_JACOBSTEARS))
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_JACOBSTEARS) then
+			player:CheckFamiliar(RebekahCurse.ENTITY_JACOBSTEARS, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_JACOBSTEARS) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurse.Items.COLLECTIBLE_JACOBSTEARS))
 		end
 	end
 end

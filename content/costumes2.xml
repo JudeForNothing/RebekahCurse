@@ -26,9 +26,9 @@
 	
 	<costume anm2path="oldermaidbody.anm2" type="none" priority="999" isFlying="false" hasSkinAlt="true"/>
 
-	<costume anm2path="love_power.anm2" type="none"/>
-	<costume anm2path="great_pheonix.anm2" priority="27" type="none"/>
-	<costume anm2path="lunchbox.anm2" priority="22" type="none"/>
+	<costume anm2path="love_power.anm2" type="passive" id="59"/>
+	<costume anm2path="great_pheonix.anm2" priority="27" type="passive" id="17"/>
+	<costume anm2path="lunchbox.anm2" priority="22" type="passive" id="9"/>
 	<costume anm2path="cursedmaw.anm2" priority="27" type="none"/>
 	<costume anm2path="lovesick.anm2" priority="22" type="none" hasSkinAlt="true"/>
 	<costume anm2path="lovesick_banshee.anm2" skinColor="1" type="none" overwriteColor="true" priority="200" forceBodyColor="true"/>
@@ -40,7 +40,7 @@
 	<costume anm2path="tighthairtie.anm2" priority="100" type="none"/>
 	<costume anm2path="hornface.anm2" type="none"/>
 	<costume anm2path="basket_of_eggs.anm2" type="none"/>
-	<costume anm2path="candyweddingring.anm2" type="none"/>
+	<costume anm2path="candyweddingring.anm2" type="passive" id="16"/>
 	
 	<costume anm2path="oversizedsweater.anm2" type="none" priority="300"/>
 	<costume anm2path="techhz.anm2" type="none" priority="20"/>
@@ -52,5 +52,14 @@
 	<costume anm2path="wickedweaves.anm2" priority="100" type="none"/>
 
 	<costume anm2path="body_dysmorphia.anm2" type="none" priority="200" hasSkinAlt="true"/>
+
+	<costume anm2path="komicant.anm2" type="none" priority="300" hasSkinAlt="true"/>
 	<costume anm2path="fenrirs_eye.anm2" priority="22" type="none" forceBodyColor="true" overwriteColor="true" skinColor="3"/>
+
+	<costume anm2path="silent_treatment.anm2" type="passive" id="55"/>
+
+	<costume anm2path="halfface.anm2" type="none" priority="300"/>
+	<costume anm2path="halfsoulface.anm2" type="none" priority="300"/>
+	<costume anm2path="blendedidle.anm2" type="none" priority="300"/>
+	<costume anm2path="blendedsillyme.anm2" type="none" priority="300"/>
 </costumes>

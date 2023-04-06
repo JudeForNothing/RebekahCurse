@@ -91,7 +91,7 @@ function yandereWaifu.DoExtraBarrages(player, mode)
 		for i = 1, chosenNumofBarrage do
 			player.Velocity = player.Velocity * 0.8; --slow him down
 			--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-			local tear = game:Spawn( EntityType.ENTITY_TEAR, 20, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+			local tear = game:Spawn( EntityType.ENTITY_TEAR, 20, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 			tear.Scale = math.random() * 0.7 + 0.7;
 			tear.FallingSpeed = -9 + math.random() * 2 ;
 			tear.FallingAcceleration = 0.5;
@@ -255,19 +255,19 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	if poof == nil then poof = true end
 	reloadanm2=reloadanm2 or true
 	if reloadanm2 then
-		if mode == REBECCA_MODE.SoulHearts then --special interacts
+		if mode == RebekahCurse.REBECCA_MODE.SoulHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforsoul.anm2',false)
-		elseif mode == REBECCA_MODE.EvilHearts then --special interacts
+		elseif mode == RebekahCurse.REBECCA_MODE.EvilHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforevil.anm2',false)
-		elseif mode == REBECCA_MODE.EternalHearts then --special interacts
+		elseif mode == RebekahCurse.REBECCA_MODE.EternalHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforeternal.anm2',false)
-		elseif mode == REBECCA_MODE.GoldHearts then --special interacts
+		elseif mode == RebekahCurse.REBECCA_MODE.GoldHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforgold.anm2',false)
-		elseif mode == REBECCA_MODE.BoneHearts then --special interacts
+		elseif mode == RebekahCurse.REBECCA_MODE.BoneHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforbone.anm2',false)
-		elseif mode == REBECCA_MODE.RottenHearts then --special interacts
+		elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforrotten.anm2',false)
-		elseif mode == REBECCA_MODE.CursedCurse then --placeholder for tainted
+		elseif mode == RebekahCurse.REBECCA_MODE.CursedCurse then --placeholder for tainted
 			player:GetSprite():Load('gfx/rebekahsfluidhairforcursed.anm2',false)
 		else
 			player:GetSprite():Load('gfx/rebekahsfluidhair.anm2',false)
@@ -275,10 +275,10 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	end
 	local player = player or Isaac.GetPlayer(0);
 	local playerType = player:GetPlayerType()
-	local hair = RebeccaModeCostumes[mode] --reminder to iplement eternal heart wing sprite
-	player:TryRemoveNullCostume(RebekahCurseCostumes.RebeccasFate);
-	player:TryRemoveNullCostume(RebekahCurseCostumes.GlitchEffect);
-	local name = RebeccaModeNames[mode]
+	local hair = RebekahCurse.RebeccaModeCostumes[mode] --reminder to iplement eternal heart wing sprite
+	player:TryRemoveNullCostume(RebekahCurse.Costumes.RebeccasFate);
+	player:TryRemoveNullCostume(RebekahCurse.Costumes.GlitchEffect);
+	local name = RebekahCurse.RebeccaModeNames[mode]
 	local skincolor = ""
 	if player:GetHeadColor() == SkinColor.SKIN_WHITE then
 		skincolor = "_white"
@@ -300,18 +300,18 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	local hairpath='gfx/characters/costumes/rebekah_hair/character_'..tostring(hair)..'.png'
 
 	if yandereWaifu.IsNormalRebekah(player) then
-		if mode == REBECCA_MODE.SoulHearts then --special interacts
+		if mode == RebekahCurse.REBECCA_MODE.SoulHearts then --special interacts
 			if yandereWaifu.GetEntityData(player).SoulBuff then
 				hairpath='gfx/characters/costumes/rebekah_hair/character_wizoobopenhair.png'
 			end
-		elseif mode == REBECCA_MODE.EternalHearts then
-			player:AddNullCostume(RebekahCurseCostumes.RebeccasFate);
-		elseif mode == REBECCA_MODE.RottenHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.EternalHearts then
+			player:AddNullCostume(RebekahCurse.Costumes.RebeccasFate);
+		elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then
 			if yandereWaifu.GetEntityData(player).extraHeadsPresent then 
 				hairpath='gfx/characters/costumes/rebekah_hair/character_crazyhair_skinless.png'
 			end
-		elseif mode == REBECCA_MODE.BrokenHearts then
-			player:AddNullCostume(RebekahCurseCostumes.GlitchEffect)
+		elseif mode == RebekahCurse.REBECCA_MODE.BrokenHearts then
+			player:AddNullCostume(RebekahCurse.Costumes.GlitchEffect)
 		end
 	elseif playerType == RebekahCurse.WISHFUL_ISAAC then
 		hairpath='gfx/characters/costumes/character_wishfulhair.png'
@@ -347,7 +347,7 @@ function yandereWaifu.SpawnParticles( type, variant, subvariant, amount, positio
 end
 
 function yandereWaifu.SpawnHeartParticles( minimum, maximum, position, velocity, spawner, heartType )
-	local particles = yandereWaifu.SpawnParticles( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HEARTPARTICLE, 0, math.random( minimum, maximum ), position, velocity, spawner, RebekahHeartParticleSpriteByType[heartType] );
+	local particles = yandereWaifu.SpawnParticles( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HEARTPARTICLE, 0, math.random( minimum, maximum ), position, velocity, spawner, RebekahCurse.RebekahHeartParticleSpriteByType[heartType] );
 	for i,particle in ipairs(particles) do
 		local size = math.random(1,3);
 		local data = yandereWaifu.GetEntityData( particle );
@@ -361,13 +361,13 @@ function yandereWaifu.SpawnHeartParticles( minimum, maximum, position, velocity,
 end
 
 function yandereWaifu.SpawnPoofParticle( position, velocity, spawner, poofType )
-	local particles = yandereWaifu.SpawnParticles( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HEARTPOOF, 0, 1, position, velocity, spawner, RebekahPoofParticleSpriteByType[poofType] );
+	local particles = yandereWaifu.SpawnParticles( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HEARTPOOF, 0, 1, position, velocity, spawner, RebekahCurse.RebekahPoofParticleSpriteByType[poofType] );
 	return particles[1];
 end
 
 -- spawn poof based on spawner velocity
 function yandereWaifu.SpawnDashPoofParticle( position, velocity, spawner, poofType )
-	local particles = yandereWaifu.SpawnParticles( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HEARTPOOF, 0, 1, position, velocity, spawner, RebekahPoofParticleSpriteByType[poofType] );
+	local particles = yandereWaifu.SpawnParticles( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_HEARTPOOF, 0, 1, position, velocity, spawner, RebekahCurse.RebekahPoofParticleSpriteByType[poofType] );
 	local poof = particles[1];
 	local poofSprite = poof:GetSprite();
 	poofSprite.Scale = Vector( 0.6, 0.6 );
@@ -525,24 +525,34 @@ function yandereWaifu:GetClosestHorizontalWallPos(wall, player)
 end
 
 function yandereWaifu:SetRebekahPocketActiveItem( player, mode )
-	if mode == REBECCA_MODE.RedHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_LOVECANNON)
-	elseif mode == REBECCA_MODE.SoulHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE)
-	elseif mode == REBECCA_MODE.GoldHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_PSALM45)
-	elseif mode == REBECCA_MODE.EvilHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_APOSTATE)
-	elseif mode == REBECCA_MODE.EternalHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL)
-	elseif mode == REBECCA_MODE.BoneHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_FANG)
-	elseif mode == REBECCA_MODE.RottenHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH)
-	elseif mode == REBECCA_MODE.BrokenHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_MAINLUA)
-	elseif mode == REBECCA_MODE.ImmortalHearts then
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
+	if mode == RebekahCurse.REBECCA_MODE.RedHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
+	elseif mode == RebekahCurse.REBECCA_MODE.SoulHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE)
+	elseif mode == RebekahCurse.REBECCA_MODE.GoldHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_PSALM45)
+	elseif mode == RebekahCurse.REBECCA_MODE.EvilHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_APOSTATE)
+	elseif mode == RebekahCurse.REBECCA_MODE.EternalHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL)
+	elseif mode == RebekahCurse.REBECCA_MODE.BoneHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_FANG)
+	elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH)
+	elseif mode == RebekahCurse.REBECCA_MODE.BrokenHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_MAINLUA)
+	elseif mode == RebekahCurse.REBECCA_MODE.ImmortalHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
+	elseif mode == RebekahCurse.REBECCA_MODE.ScaredRedHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
+	elseif mode == RebekahCurse.REBECCA_MODE.TwinRedHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
+	elseif mode == RebekahCurse.REBECCA_MODE.BlendedHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
+	elseif mode == RebekahCurse.REBECCA_MODE.HalfRedHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
+	elseif mode == RebekahCurse.REBECCA_MODE.HalfSoulHearts then
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE)
 	end
 end
 
@@ -551,79 +561,83 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 	data.currentMode = mode;
 	local dontchange = dontchange or false
 	if free ~= true then 
-		if mode == REBECCA_MODE.RedHearts then
+		if mode == RebekahCurse.REBECCA_MODE.RedHearts then
 			player:AddHearts(-2);
-		elseif mode == REBECCA_MODE.SoulHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.SoulHearts then
 			player:AddSoulHearts(-2);
-		elseif mode == REBECCA_MODE.GoldHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.GoldHearts then
 			player:AddGoldenHearts(-1);
-		elseif mode == REBECCA_MODE.EvilHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.EvilHearts then
 			player:RemoveBlackHeart(2);
 			player:AddSoulHearts(-2);
-		elseif mode == REBECCA_MODE.EternalHearts  then
+		elseif mode == RebekahCurse.REBECCA_MODE.EternalHearts  then
 			player:AddEternalHearts(-1);
-		elseif mode == REBECCA_MODE.BoneHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.BoneHearts then
 			player:AddBoneHearts(-1);
-		elseif mode == REBECCA_MODE.RottenHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then
 			player:AddRottenHearts(-1);
-		--elseif mode == REBECCA_MODE.BrokenHearts then --lets make life hard
+		--elseif mode == RebekahCurse.REBECCA_MODE.BrokenHearts then --lets make life hard
 		--	player:AddBrokenHearts(-1);
 		end
 	end
 	yandereWaifu.resetReserve(player)
-	if mode == REBECCA_MODE.EmptyHearts then
+	if mode == RebekahCurse.REBECCA_MODE.EmptyHearts then
 		data.heartReserveMaxFill = 5000
-	elseif mode == REBECCA_MODE.RedHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.RedHearts then
 		data.heartReserveMaxFill = 50
-	elseif mode == REBECCA_MODE.SoulHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.SoulHearts then
 		data.heartReserveMaxFill = 80
-	elseif mode == REBECCA_MODE.GoldHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.GoldHearts then
 		data.heartReserveMaxFill = 50
-	elseif mode == REBECCA_MODE.EvilHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.EvilHearts then
 		data.heartReserveMaxFill = 100
-	elseif mode == REBECCA_MODE.EternalHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.EternalHearts then
 		data.heartReserveMaxFill = 80
-	elseif mode == REBECCA_MODE.BoneHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.BoneHearts then
 		data.heartReserveMaxFill = 100
-	elseif mode == REBECCA_MODE.RottenHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then
 		data.heartReserveMaxFill = 50
-	elseif mode == REBECCA_MODE.BrokenHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 		data.heartReserveMaxFill = 50
-	elseif mode == REBECCA_MODE.ImmortalHearts then
+	elseif mode == RebekahCurse.REBECCA_MODE.ImmortalHearts then
+		data.heartReserveMaxFill = 50
+	elseif mode == RebekahCurse.REBECCA_MODE.ScaredRedHearts then
+		data.heartReserveMaxFill = 50
+	elseif mode == RebekahCurse.REBECCA_MODE.TwinRedHearts then
 		data.heartReserveMaxFill = 50
 	end
 
 	--if fanfare ~= false then
-	--	yandereWaifu.SpawnPoofParticle( player.Position + Vector( 0, 1 ), Vector( 0, 0 ), player, RebekahPoofParticleTypeByMode[ mode ] );
+	--	yandereWaifu.SpawnPoofParticle( player.Position + Vector( 0, 1 ), Vector( 0, 0 ), player, RebekahCurse.RebekahPoofParticleTypeByMode[ mode ] );
 	--end
 	
 	if not dontchange then
-		if mode == REBECCA_MODE.EmptyHearts then
+		if mode == RebekahCurse.REBECCA_MODE.EmptyHearts then
 			player:ChangePlayerType(RebekahCurse.REB)
-		elseif mode == REBECCA_MODE.RedHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.RedHearts then
 			player:ChangePlayerType(RebekahCurse.REB_RED)
-		elseif mode == REBECCA_MODE.SoulHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.SoulHearts then
 			player:ChangePlayerType(RebekahCurse.REB_SOUL)
-		elseif mode == REBECCA_MODE.GoldHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.GoldHearts then
 			player:ChangePlayerType(RebekahCurse.REB_GOLD)
-		elseif mode == REBECCA_MODE.EvilHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.EvilHearts then
 			player:ChangePlayerType(RebekahCurse.REB_EVIL)
-		elseif mode == REBECCA_MODE.EternalHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.EternalHearts then
 			player:ChangePlayerType(RebekahCurse.REB_ETERNAL)
-		elseif mode == REBECCA_MODE.BoneHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.BoneHearts then
 			player:ChangePlayerType(RebekahCurse.REB_BONE)
-		elseif mode == REBECCA_MODE.RottenHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then
 			player:ChangePlayerType(RebekahCurse.REB_ROTTEN)
-		elseif mode == REBECCA_MODE.BrokenHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 			player:ChangePlayerType(RebekahCurse.REB_BROKEN)
-		elseif mode == REBECCA_MODE.ImmortalHearts then
+		elseif mode == RebekahCurse.REBECCA_MODE.ImmortalHearts then
 			player:ChangePlayerType(RebekahCurse.REB_IMMORTAL)
 		else
 			player:ChangePlayerType(RebekahCurse.REB_RED)
 		end
 	end
 	
-	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurseItems.COLLECTIBLE_LOVECANNON, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
+	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.Items.COLLECTIBLE_LOVECANNON, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.Items.COLLECTIBLE_APOSTATE, RebekahCurse.Items.COLLECTIBLE_MAINLUA, RebekahCurse.Items.COLLECTIBLE_PSALM45, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.Items.COLLECTIBLE_FANG, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
 	--for other characters who comes in but not on game_start
 	if Game():GetRoom():GetFrameCount() > 1 and not hasPocket then
 		yandereWaifu:SetRebekahPocketActiveItem(player,mode)
@@ -638,7 +652,7 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 	--stat evaluation =3=
 	--yandereWaifu.ApplyCollectibleEffects(player);
 	
-	--[[if mode == REBECCA_MODE.EternalHearts then
+	--[[if mode == RebekahCurse.REBECCA_MODE.EternalHearts then
 		yandereWaifu.RebekahCanShoot(player, false)
 	else
 		yandereWaifu.RebekahCanShoot(player, true)
@@ -838,7 +852,7 @@ function yandereWaifu.IsTaintedRebekah(player)
 end
 
 function yandereWaifu.HasCollectibleGuns(player)
-	return yandereWaifu.HasCollectibleMultiple(player, RebekahCurseItems.COLLECTIBLE_LOVECANNON, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
+	return yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.Items.COLLECTIBLE_LOVECANNON, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.Items.COLLECTIBLE_APOSTATE, RebekahCurse.Items.COLLECTIBLE_MAINLUA, RebekahCurse.Items.COLLECTIBLE_PSALM45, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.Items.COLLECTIBLE_FANG, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
 end
 
 function yandereWaifu.HasChargeCollectibles(player)
@@ -936,22 +950,22 @@ function yandereWaifu.ThrowDarkKnife(player, position, vel)
 end
 
 local eastereggtbl = {
-		[0] = RebekahCurseCards.CARD_EASTEREGG,
-		[1] = RebekahCurseCards.CARD_AQUA_EASTEREGG,
-		[2] = RebekahCurseCards.CARD_YELLOW_EASTEREGG,
-		[3] = RebekahCurseCards.CARD_GREEN_EASTEREGG,
-		[4] = RebekahCurseCards.CARD_BLUE_EASTEREGG,
-		[5] = RebekahCurseCards.CARD_PINK_EASTEREGG,
+		[0] = RebekahCurse.Cards.CARD_EASTEREGG,
+		[1] = RebekahCurse.Cards.CARD_AQUA_EASTEREGG,
+		[2] = RebekahCurse.Cards.CARD_YELLOW_EASTEREGG,
+		[3] = RebekahCurse.Cards.CARD_GREEN_EASTEREGG,
+		[4] = RebekahCurse.Cards.CARD_BLUE_EASTEREGG,
+		[5] = RebekahCurse.Cards.CARD_PINK_EASTEREGG,
 
-		[6] = RebekahCurseCards.CARD_STRIPE_EASTEREGG,
-		[7] = RebekahCurseCards.CARD_STRIPE_AQUA_EASTEREGG,
-		[8] = RebekahCurseCards.CARD_ZIGZAG_YELLOW_EASTEREGG,
-		[9] = RebekahCurseCards.CARD_ZIGZAG_GREEN_EASTEREGG,
-		[10] = RebekahCurseCards.CARD_ZIGZAG_BLUE_EASTEREGG,
-		[11] = RebekahCurseCards.CARD_STRIPE_PINK_EASTEREGG,
-		[12] = RebekahCurseCards.CARD_CURSED_EASTEREGG,
-		[13] = RebekahCurseCards.CARD_BLESSED_EASTEREGG,
-		[14] = RebekahCurseCards.CARD_GOLDEN_EASTEREGG,
+		[6] = RebekahCurse.Cards.CARD_STRIPE_EASTEREGG,
+		[7] = RebekahCurse.Cards.CARD_STRIPE_AQUA_EASTEREGG,
+		[8] = RebekahCurse.Cards.CARD_ZIGZAG_YELLOW_EASTEREGG,
+		[9] = RebekahCurse.Cards.CARD_ZIGZAG_GREEN_EASTEREGG,
+		[10] = RebekahCurse.Cards.CARD_ZIGZAG_BLUE_EASTEREGG,
+		[11] = RebekahCurse.Cards.CARD_STRIPE_PINK_EASTEREGG,
+		[12] = RebekahCurse.Cards.CARD_CURSED_EASTEREGG,
+		[13] = RebekahCurse.Cards.CARD_BLESSED_EASTEREGG,
+		[14] = RebekahCurse.Cards.CARD_GOLDEN_EASTEREGG,
 	}
 
 function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)
@@ -1242,6 +1256,28 @@ function yandereWaifu.ShootDeborahGun(player, weapon, state, angle, flip, damage
 	--tear.Visible = false
 end
 
+function yandereWaifu:GuwahMakeAfterimage(entity)
+    local sprite = entity:GetSprite()
+
+	local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, entity.Position, Vector(0,0), entity) --body effect
+	yandereWaifu.GetEntityData(effect).Player = entity
+	yandereWaifu.GetEntityData(effect).DashEffect = true
+	yandereWaifu.GetEntityData(effect).DontFollowPlayer = true
+    local sprite2 = effect:GetSprite()
+
+    --effect:GetData().afterImage = true
+    sprite2:Load(sprite:GetFilename(), true)
+    sprite2:Play(sprite:GetAnimation())
+    sprite2:SetFrame(sprite:GetAnimation(), sprite:GetFrame())
+    sprite2.FlipX = sprite.FlipX
+    sprite2.Scale = sprite.Scale
+    effect.Color = Color(entity.Color.R, entity.Color.G, entity.Color.B, 0, entity.Color.RO, entity.Color.BO, entity.Color.GO)
+    effect:SetColor(Color(entity.Color.R, entity.Color.G, entity.Color.B, 0.5, entity.Color.RO, entity.Color.BO, entity.Color.GO), 5, 1, true, false)
+    effect.SpriteOffset = entity.SpriteOffset
+    effect.DepthOffset = -500
+    effect.Visible = true
+end
+
 --from FF, i didnt want to take that
 function yandereWaifu.FFcanAffordPickup(player, pickup)
 	local playerType = player:GetPlayerType()
@@ -1310,8 +1346,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 					data.currentQueuedDevilItemPrice = InutilLib.Deepcopy(pickup.Price)
 					print("start")
 					print(data.currentQueuedDevilItemPrice)
+				else
+					data.currentQueuedShopItem = InutilLib.Deepcopy(pickup.SubType)
+					print("start")
+					print(data.currentQueuedShopItem)
 				end
 			end
 		end
 	end
 end, PickupVariant.PICKUP_COLLECTIBLE)
+
+
+---status effects
+
+function yandereWaifu.AddSilence(ent, add)
+	if not yandereWaifu.GetEntityData(ent).IsSilenced then yandereWaifu.GetEntityData(ent).IsSilenced = 0 end
+	yandereWaifu.GetEntityData(ent).IsSilenced = yandereWaifu.GetEntityData(ent).IsSilenced + add
+end
+

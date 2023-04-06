@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	--love = power
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed + 0.2
 		end
@@ -22,8 +22,8 @@ end)
 
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
-		player:AddNullCostume(RebekahCurseCostumes.CandyWeddingRing)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
+		player:AddNullCostume(RebekahCurse.Costumes.CandyWeddingRing)
 	end
 end)]]
 
@@ -43,7 +43,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
 		local spr = tr:GetSprite()
 		if pldata.lastARPCFrameCount then
 			if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
@@ -77,7 +77,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
 				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
 					if pldata.lastARPCFrameCount then
@@ -119,7 +119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 				local parent = lz.Parent
 				if parent and parent.Type == EntityType.ENTITY_PLAYER then
 					local spr = lz:GetSprite()
@@ -160,7 +160,7 @@ end);
 yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 			local spr = bb:GetSprite()
 			if pldata.lastARPCFrameCount then
@@ -195,7 +195,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 	--print(player)
 	if player and player.Type == EntityType.ENTITY_PLAYER then
 		local pldata = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.lastARPCFrameCount then
 				if InutilLib.game:GetFrameCount() == pldata.lastARPCFrameCount then
@@ -226,7 +226,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_APPRECIATIONCAKE) then
+	if player and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
 		local spr = kn:GetSprite()
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end

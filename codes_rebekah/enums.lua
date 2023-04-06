@@ -2,155 +2,6 @@
 local game = Game(); --Calls the Game
 
 --global table that will keep all these enums in
-
-RebekahCurseTrinkets = {
-	TRINKET_RABBITSFOOT = Isaac.GetTrinketIdByName("Rabbit's Foot"),
-	TRINKET_DESTROYEDLULLABY = Isaac.GetTrinketIdByName("Destroyed Lullaby"),
-	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
-	TRINKET_REBEKAHSKEY = Isaac.GetTrinketIdByName("Rebekah's Key"),
-	TRINKET_ISAACSLOCKS = Isaac.GetTrinketIdByName("Isaac's Locks"),
-	TRINKET_MOMSBLESSING = Isaac.GetTrinketIdByName("Mom's Blessing"),
-	TRINKET_JOHNANDROMANS = Isaac.GetTrinketIdByName("John and Romans"),
-	TRINKET_CANNEDLAUGHTER = Isaac.GetTrinketIdByName("Canned Laughter"),
-	TRINKET_NOSCOPE = Isaac.GetTrinketIdByName("No Scope!"),
-}
-
-RebekahCurseItems = {
-	--items
-	COLLECTIBLE_LOVECANNON = Isaac.GetItemIdByName("Hugs N' Roses"),
-	COLLECTIBLE_WIZOOBTONGUE = Isaac.GetItemIdByName("Wizoob Tongue"),
-	COLLECTIBLE_APOSTATE = Isaac.GetItemIdByName("Apostate"),
-	COLLECTIBLE_PSALM45 = Isaac.GetItemIdByName("Psalm .45"),
-	COLLECTIBLE_BARACHIELSPETAL = Isaac.GetItemIdByName("Barachiel's Petal"),
-	COLLECTIBLE_FANG = Isaac.GetItemIdByName("Fang"),
-	COLLECTIBLE_BEELZEBUBSBREATH = Isaac.GetItemIdByName("Beelzebub's Breath"),
-	COLLECTIBLE_MAINLUA = Isaac.GetItemIdByName("main.lua"),
-	
-	COLLECTIBLE_COMFORTERSWING = Isaac.GetItemIdByName("Comforter's Wing"),
-	
-	COLLECTIBLE_CANDYWEDDINGRING = Isaac.GetItemIdByName("Candy Wedding Ring!"),
-	COLLECTIBLE_LOVEDELUXE = Isaac.GetItemIdByName("Love Deluxe"),
-	COLLECTIBLE_GREATPHEONIX = Isaac.GetItemIdByName("Great Pheonix"),
-	COLLECTIBLE_LOVEMELOVEMENOT = Isaac.GetItemIdByName("Love me, love me not"),
-	COLLECTIBLE_LOVEMELOVEMENOT2 = Isaac.GetItemIdByName(" Love me, love me not "),
-	COLLECTIBLE_LOVEMELOVEMENOT3 = Isaac.GetItemIdByName("  Love me, love me not  "),
-	COLLECTIBLE_DOORSTOPPER = Isaac.GetItemIdByName("Doorstopper"),
-	COLLECTIBLE_FINGERFINGER = Isaac.GetItemIdByName("Finger Finger"),
-	COLLECTIBLE_MORIAHDIARY = Isaac.GetItemIdByName("Moriah Diary"),
-	COLLECTIBLE_THESHINING = Isaac.GetItemIdByName("The Shining"),
-	COLLECTIBLE_OHIMDIE = Isaac.GetItemIdByName("Defuse = Rewards"),
-	
-	COLLECTIBLE_WIKEPIDIA = Isaac.GetItemIdByName("Wikepidia"),
-	COLLECTIBLE_WIKEPIDIA1 = Isaac.GetItemIdByName(" Wikepidia "),
-	COLLECTIBLE_WIKEPIDIA2 = Isaac.GetItemIdByName("  Wikepidia  "),
-	COLLECTIBLE_WIKEPIDIA3 = Isaac.GetItemIdByName("   Wikepidia   "),
-	COLLECTIBLE_WIKEPIDIA4 = Isaac.GetItemIdByName("    Wikepidia    "),
-	COLLECTIBLE_WIKEPIDIA5 = Isaac.GetItemIdByName("     Wikepidia     "),
-	COLLECTIBLE_WIKEPIDIA6 = Isaac.GetItemIdByName("      Wikepidia      "),
-	COLLECTIBLE_WIKEPIDIA7 = Isaac.GetItemIdByName("Wikepidia "),
-	COLLECTIBLE_WIKEPIDIA8 = Isaac.GetItemIdByName("Wikepidia  "),
-	COLLECTIBLE_WIKEPIDIA9 = Isaac.GetItemIdByName("Wikepidia   "),
-	COLLECTIBLE_WIKEPIDIA10 = Isaac.GetItemIdByName("Wikepidia    "),
-	COLLECTIBLE_WIKEPIDIA11 = Isaac.GetItemIdByName("Wikepidia     "),
-	COLLECTIBLE_WIKEPIDIA12 = Isaac.GetItemIdByName(" Wikepidia"),
-	COLLECTIBLE_WIKEPIDIA13 = Isaac.GetItemIdByName("  Wikepidia"),
-	COLLECTIBLE_WIKEPIDIA14 = Isaac.GetItemIdByName("   Wikepidia"),
-	COLLECTIBLE_WIKEPIDIAPASSIVE = Isaac.GetItemIdByName("Wikepidia (passive)"),
-	COLLECTIBLE_BAGOFBRISTLEBRICKS = Isaac.GetItemIdByName("Bag of Bristle Bricks"),
-	COLLECTIBLE_NUTWATER = Isaac.GetItemIdByName("Nut Water"),
-	COLLECTIBLE_TWINVISION = Isaac.GetItemIdByName("Twin Vision"),
-	
-	COLLECTIBLE_ABEAUTIFULGRAVE = Isaac.GetItemIdByName("A Beautiful Grave"),
-	COLLECTIBLE_TIGHTHAIRTIE = Isaac.GetItemIdByName("Tight Hairtie"),
-	COLLECTIBLE_BASKETOFEGGS = Isaac.GetItemIdByName("Basket of Eggs"),
-	COLLECTIBLE_EGGSHELLWALK = Isaac.GetItemIdByName("Eggshell Walk"),
-	COLLECTIBLE_OVERSIZEDSWEATER = Isaac.GetItemIdByName("Oversized Sweater"),
-	COLLECTIBLE_HEARTSANDCRAFTS = Isaac.GetItemIdByName("Hearts and Crafts"),
-	COLLECTIBLE_TECHHZ = Isaac.GetItemIdByName("Tech Hz"),
-	COLLECTIBLE_ANGELSMORNINGSTAR = Isaac.GetItemIdByName("Angel's Morningstar"),
-	COLLECTIBLE_POTATOSNACK = Isaac.GetItemIdByName("Potato Snack"),
-	COLLECTIBLE_THEENCHIRIDION = Isaac.GetItemIdByName("The Enchiridion"),
-	COLLECTIBLE_BODYDYSMORHIA = Isaac.GetItemIdByName("Body Dysmorphia"),
-	COLLECTIBLE_EYESOFTHEDEAD = Isaac.GetItemIdByName("Eyes of the Dead"),
-	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoriasis"),
-	COLLECTIBLE_NOTEBOOKOFTHEDEAD = Isaac.GetItemIdByName("Notebook of the Dead"),
-	COLLECTIBLE_WICKEDWEAVES = Isaac.GetItemIdByName("Wicked Weaves"),
-	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
-	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
-	COLLECTIBLE_MIRACULOUSWOMB = Isaac.GetItemIdByName("Miraculous Womb"),
-	COLLECTIBLE_ETERNALBOND = Isaac.GetItemIdByName("Eternal Bond"),
-	COLLECTIBLE_REBEKAHSCAMERA = Isaac.GetItemIdByName("Rebekah's Camera"),
-	COLLECTIBLE_POWERLOVE = Isaac.GetItemIdByName("Love = Power"),
-	COLLECTIBLE_CURSEDSPOON = Isaac.GetItemIdByName("Cursed Spoon"),
-	COLLECTIBLE_DICEOFFATE = Isaac.GetItemIdByName("Dice of Fate"),
-	COLLECTIBLE_LOVESICK = Isaac.GetItemIdByName("Lovesick"),
-	COLLECTIBLE_SNAP = Isaac.GetItemIdByName("Snap!"),
-	COLLECTIBLE_PATRIARCHSLIAR = Isaac.GetItemIdByName("Patriarch's Liar"),
-	COLLECTIBLE_REBEKAHSFAVORITE = Isaac.GetItemIdByName("Rebekah's Favorite"),
-	
-	COLLECTIBLE_SKIMMEDMILK = Isaac.GetItemIdByName("Skimmed Milk"),
-	COLLECTIBLE_HAPHEPHOBICBOMBS = Isaac.GetItemIdByName("Haphephobic Bombs"),
-	COLLECTIBLE_JUMPYDUMPTY = Isaac.GetItemIdByName("Jumpy Dumpty"),
-	COLLECTIBLE_PENCILSHARPENER = Isaac.GetItemIdByName("Pencil Sharpener"),
-	COLLECTIBLE_NARCOLEPSY = Isaac.GetItemIdByName("Narcolepsy"),
-	COLLECTIBLE_APPRECIATIONCAKE = Isaac.GetItemIdByName("Appreciation Cake"),
-	COLLECTIBLE_JELLYDONUT = Isaac.GetItemIdByName("Jelly Donut"),
-	COLLECTIBLE_SPIKEDPARTYPUNCH = Isaac.GetItemIdByName("Spiked Party Punch"),
-	COLLECTIBLE_BOBATEA = Isaac.GetItemIdByName("Boba Tea"),
-	COLLECTIBLE_CHEESYPIZZA = Isaac.GetItemIdByName("Cheesy Pizza"),
-	COLLECTIBLE_BURGER = Isaac.GetItemIdByName("Bur-ger"),
-	COLLECTIBLE_FENRIRSEYE = Isaac.GetItemIdByName("Fenrir's Eyes"),
-	COLLECTIBLE_FENRIRSTOOTH = Isaac.GetItemIdByName("Fenrir's Tooth"),
-	COLLECTIBLE_FENRIRSHEAD = Isaac.GetItemIdByName("Fenrir's Head"),
-	COLLECTIBLE_FENRIRSPAW = Isaac.GetItemIdByName("Fenrir's Paw"),
-	COLLECTIBLE_FENRIRSLEASH = Isaac.GetItemIdByName("Fenrir's Leash"),
-	COLLECTIBLE_HEARTACHES = Isaac.GetItemIdByName("Heartaches..."),
-	COLLECTIBLE_SILPHIUM = Isaac.GetItemIdByName("Silphium"),
-	COLLECTIBLE_GIDDYUP = Isaac.GetItemIdByName("Giddy up!"),
-
-	COLLECTIBLE_JACOBSTEARS = Isaac.GetItemIdByName("Jacob's Tears"),
-	COLLECTIBLE_UNDERPAY = Isaac.GetItemIdByName("Underpay"),
-	COLLECTIBLE_PLATFORMCOTTA = Isaac.GetItemIdByName("Platform Cotta"),
-	COLLECTIBLE_MILKWINE = Isaac.GetItemIdByName("Milk Wine"),
-	COLLECTIBLE_SILENTTREATMENT = Isaac.GetItemIdByName("Silent Treatment"),
-	COLLECTIBLE_DEBORAHSDEADEYE = Isaac.GetItemIdByName("Deborah's Dead Eye"),
-
-	COLLECTIBLE_FULLFATMILK = Isaac.GetItemIdByName("Full Fat Milk"),
-
-	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
-	
-	COLLECTIBLE_REBEKAHSSCRAPBOOK = Isaac.GetItemIdByName("Rebekah's Scrapbook"),
-	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
-
-	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Sword of Hope")
-}
-
-RebekahCurseCards = {
-	CARD_EASTEREGG = Isaac.GetCardIdByName("redegg"),
-	CARD_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquaegg"),
-	CARD_YELLOW_EASTEREGG = Isaac.GetCardIdByName("yellowegg"),
-	CARD_GREEN_EASTEREGG = Isaac.GetCardIdByName("greenegg"),
-	CARD_BLUE_EASTEREGG = Isaac.GetCardIdByName("blueegg"),
-	CARD_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkegg"),
-	CARD_STRIPE_EASTEREGG = Isaac.GetCardIdByName("redstripeegg"),
-	CARD_STRIPE_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquastripeegg"),
-	CARD_ZIGZAG_YELLOW_EASTEREGG = Isaac.GetCardIdByName("yellowzigzagegg"),
-	CARD_ZIGZAG_GREEN_EASTEREGG = Isaac.GetCardIdByName("greenzigzagegg"),
-	CARD_ZIGZAG_BLUE_EASTEREGG = Isaac.GetCardIdByName("bluezigzagegg"),
-	CARD_STRIPE_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkstripeegg"),
-	
-	CARD_CURSED_EASTEREGG = Isaac.GetCardIdByName("cursedegg"),
-	CARD_BLESSED_EASTEREGG = Isaac.GetCardIdByName("blessedegg"),
-	CARD_GOLDEN_EASTEREGG = Isaac.GetCardIdByName("goldenegg"),
-
-	CARD_WORDSOFAFFIRMATION = Isaac.GetCardIdByName("affirmation"),
-	CARD_GIFTGIVING = Isaac.GetCardIdByName("giftgiving"),
-	CARD_ACTOFSERVICE = Isaac.GetCardIdByName("actofservice"),
-	CARD_QUALITYTIME = Isaac.GetCardIdByName("qualitytime"),
-	CARD_PHYSICALTOUCH = Isaac.GetCardIdByName("physicaltouch"),
-
-}
-
 RebekahCurse = {
 -- don't potentially overwrite information in global tables, keep this local
 	
@@ -314,6 +165,7 @@ RebekahCurse = {
 
 	ENTITY_AFFIRMATIONHEART = Isaac.GetEntityVariantByName("Affirmation Heart"),
 	ENTITY_COINPIECE = Isaac.GetEntityVariantByName("Coin Piece"),
+	ENTITY_TRIPLEBOMBS = Isaac.GetEntityVariantByName("Triple Bombs"),
 
 	ENTITY_TAPIOCATEAR = Isaac.GetEntityVariantByName("Tapioca Tear"),
 	ENTITY_PLATFORMCAKE = Isaac.GetEntityVariantByName("Platform Cake"),
@@ -341,7 +193,170 @@ RebekahCurse = {
 	DEBORAH = Isaac.GetPlayerTypeByName("Deborah", false),
 }
 
-RebekahCurseSounds = {
+RebekahCurse.Trinkets = {
+	TRINKET_RABBITSFOOT = Isaac.GetTrinketIdByName("Rabbit's Foot"),
+	TRINKET_DESTROYEDLULLABY = Isaac.GetTrinketIdByName("Destroyed Lullaby"),
+	TRINKET_ORIGINALSIN = Isaac.GetTrinketIdByName("Original Sin"),
+	TRINKET_REBEKAHSKEY = Isaac.GetTrinketIdByName("Rebekah's Key"),
+	TRINKET_ISAACSLOCKS = Isaac.GetTrinketIdByName("Isaac's Locks"),
+	TRINKET_MOMSBLESSING = Isaac.GetTrinketIdByName("Mom's Blessing"),
+	TRINKET_JOHNANDROMANS = Isaac.GetTrinketIdByName("John and Romans"),
+	TRINKET_CANNEDLAUGHTER = Isaac.GetTrinketIdByName("Canned Laughter"),
+	TRINKET_NOSCOPE = Isaac.GetTrinketIdByName("No Scope!"),
+	TRINKET_DEBORAHSDEADEYE = Isaac.GetTrinketIdByName("Deborah's Dead Eye"),
+}
+
+RebekahCurse.Items = {
+	--items
+	COLLECTIBLE_LOVECANNON = Isaac.GetItemIdByName("Hugs N' Roses"),
+	COLLECTIBLE_WIZOOBTONGUE = Isaac.GetItemIdByName("Wizoob Tongue"),
+	COLLECTIBLE_APOSTATE = Isaac.GetItemIdByName("Apostate"),
+	COLLECTIBLE_PSALM45 = Isaac.GetItemIdByName("Psalm .45"),
+	COLLECTIBLE_BARACHIELSPETAL = Isaac.GetItemIdByName("Barachiel's Petal"),
+	COLLECTIBLE_FANG = Isaac.GetItemIdByName("Fang"),
+	COLLECTIBLE_BEELZEBUBSBREATH = Isaac.GetItemIdByName("Beelzebub's Breath"),
+	COLLECTIBLE_MAINLUA = Isaac.GetItemIdByName("main.lua"),
+	
+	COLLECTIBLE_COMFORTERSWING = Isaac.GetItemIdByName("Comforter's Wing"),
+	
+	COLLECTIBLE_CANDYWEDDINGRING = Isaac.GetItemIdByName("Candy Wedding Ring!"),
+	COLLECTIBLE_LOVEDELUXE = Isaac.GetItemIdByName("Love Deluxe"),
+	COLLECTIBLE_GREATPHEONIX = Isaac.GetItemIdByName("Great Pheonix"),
+	COLLECTIBLE_LOVEMELOVEMENOT = Isaac.GetItemIdByName("Love me, love me not"),
+	COLLECTIBLE_LOVEMELOVEMENOT2 = Isaac.GetItemIdByName(" Love me, love me not "),
+	COLLECTIBLE_LOVEMELOVEMENOT3 = Isaac.GetItemIdByName("  Love me, love me not  "),
+	COLLECTIBLE_DOORSTOPPER = Isaac.GetItemIdByName("Doorstopper"),
+	COLLECTIBLE_FINGERFINGER = Isaac.GetItemIdByName("Finger Finger"),
+	COLLECTIBLE_MORIAHDIARY = Isaac.GetItemIdByName("Moriah Diary"),
+	COLLECTIBLE_THESHINING = Isaac.GetItemIdByName("The Shining"),
+	COLLECTIBLE_OHIMDIE = Isaac.GetItemIdByName("Defuse = Rewards"),
+	
+	COLLECTIBLE_WIKEPIDIA = Isaac.GetItemIdByName("Wikepidia"),
+	COLLECTIBLE_WIKEPIDIA1 = Isaac.GetItemIdByName(" Wikepidia "),
+	COLLECTIBLE_WIKEPIDIA2 = Isaac.GetItemIdByName("  Wikepidia  "),
+	COLLECTIBLE_WIKEPIDIA3 = Isaac.GetItemIdByName("   Wikepidia   "),
+	COLLECTIBLE_WIKEPIDIA4 = Isaac.GetItemIdByName("    Wikepidia    "),
+	COLLECTIBLE_WIKEPIDIA5 = Isaac.GetItemIdByName("     Wikepidia     "),
+	COLLECTIBLE_WIKEPIDIA6 = Isaac.GetItemIdByName("      Wikepidia      "),
+	COLLECTIBLE_WIKEPIDIA7 = Isaac.GetItemIdByName("Wikepidia "),
+	COLLECTIBLE_WIKEPIDIA8 = Isaac.GetItemIdByName("Wikepidia  "),
+	COLLECTIBLE_WIKEPIDIA9 = Isaac.GetItemIdByName("Wikepidia   "),
+	COLLECTIBLE_WIKEPIDIA10 = Isaac.GetItemIdByName("Wikepidia    "),
+	COLLECTIBLE_WIKEPIDIA11 = Isaac.GetItemIdByName("Wikepidia     "),
+	COLLECTIBLE_WIKEPIDIA12 = Isaac.GetItemIdByName(" Wikepidia"),
+	COLLECTIBLE_WIKEPIDIA13 = Isaac.GetItemIdByName("  Wikepidia"),
+	COLLECTIBLE_WIKEPIDIA14 = Isaac.GetItemIdByName("   Wikepidia"),
+	COLLECTIBLE_WIKEPIDIAPASSIVE = Isaac.GetItemIdByName("Wikepidia (passive)"),
+	COLLECTIBLE_BAGOFBRISTLEBRICKS = Isaac.GetItemIdByName("Bag of Bristle Bricks"),
+	COLLECTIBLE_NUTWATER = Isaac.GetItemIdByName("Nut Water"),
+	COLLECTIBLE_TWINVISION = Isaac.GetItemIdByName("Twin Vision"),
+	
+	COLLECTIBLE_ABEAUTIFULGRAVE = Isaac.GetItemIdByName("A Beautiful Grave"),
+	COLLECTIBLE_TIGHTHAIRTIE = Isaac.GetItemIdByName("Tight Hairtie"),
+	COLLECTIBLE_BASKETOFEGGS = Isaac.GetItemIdByName("Basket of Eggs"),
+	COLLECTIBLE_EGGSHELLWALK = Isaac.GetItemIdByName("Eggshell Walk"),
+	COLLECTIBLE_OVERSIZEDSWEATER = Isaac.GetItemIdByName("Oversized Sweater"),
+	COLLECTIBLE_HEARTSANDCRAFTS = Isaac.GetItemIdByName("Hearts and Crafts"),
+	COLLECTIBLE_TECHHZ = Isaac.GetItemIdByName("Tech Hz"),
+	COLLECTIBLE_ANGELSMORNINGSTAR = Isaac.GetItemIdByName("Angel's Morningstar"),
+	COLLECTIBLE_POTATOSNACK = Isaac.GetItemIdByName("Potato Snack"),
+	COLLECTIBLE_THEENCHIRIDION = Isaac.GetItemIdByName("The Enchiridion"),
+	COLLECTIBLE_BODYDYSMORHIA = Isaac.GetItemIdByName("Body Dysmorphia"),
+	COLLECTIBLE_EYESOFTHEDEAD = Isaac.GetItemIdByName("Eyes of the Dead"),
+	COLLECTIBLE_PSORAISIS = Isaac.GetItemIdByName("Psoriasis"),
+	COLLECTIBLE_NOTEBOOKOFTHEDEAD = Isaac.GetItemIdByName("Notebook of the Dead"),
+	COLLECTIBLE_WICKEDWEAVES = Isaac.GetItemIdByName("Wicked Weaves"),
+	COLLECTIBLE_LUNCHBOX = Isaac.GetItemIdByName("A Lunchbox"),
+	COLLECTIBLE_ROMCOM = Isaac.GetItemIdByName("Typical Rom-Com"),
+	COLLECTIBLE_MIRACULOUSWOMB = Isaac.GetItemIdByName("Miraculous Womb"),
+	COLLECTIBLE_ETERNALBOND = Isaac.GetItemIdByName("Eternal Bond"),
+	COLLECTIBLE_REBEKAHSCAMERA = Isaac.GetItemIdByName("Rebekah's Camera"),
+	COLLECTIBLE_POWERLOVE = Isaac.GetItemIdByName("Love = Power"),
+	COLLECTIBLE_CURSEDSPOON = Isaac.GetItemIdByName("Cursed Spoon"),
+	COLLECTIBLE_DICEOFFATE = Isaac.GetItemIdByName("Dice of Fate"),
+	COLLECTIBLE_LOVESICK = Isaac.GetItemIdByName("Lovesick"),
+	COLLECTIBLE_SNAP = Isaac.GetItemIdByName("Snap!"),
+	COLLECTIBLE_PATRIARCHSLIAR = Isaac.GetItemIdByName("Patriarch's Liar"),
+	COLLECTIBLE_REBEKAHSFAVORITE = Isaac.GetItemIdByName("Rebekah's Favorite"),
+	
+	COLLECTIBLE_SKIMMEDMILK = Isaac.GetItemIdByName("Skimmed Milk"),
+	COLLECTIBLE_HAPHEPHOBICBOMBS = Isaac.GetItemIdByName("Haphephobic Bombs"),
+	COLLECTIBLE_JUMPYDUMPTY = Isaac.GetItemIdByName("Jumpy Dumpty"),
+	COLLECTIBLE_PENCILSHARPENER = Isaac.GetItemIdByName("Pencil Sharpener"),
+	COLLECTIBLE_NARCOLEPSY = Isaac.GetItemIdByName("Narcolepsy"),
+	COLLECTIBLE_APPRECIATIONCAKE = Isaac.GetItemIdByName("Appreciation Cake"),
+	COLLECTIBLE_JELLYDONUT = Isaac.GetItemIdByName("Jelly Donut"),
+	COLLECTIBLE_SPIKEDPARTYPUNCH = Isaac.GetItemIdByName("Spiked Party Punch"),
+	COLLECTIBLE_BOBATEA = Isaac.GetItemIdByName("Boba Tea"),
+	COLLECTIBLE_CHEESYPIZZA = Isaac.GetItemIdByName("Cheesy Pizza"),
+	COLLECTIBLE_BURGER = Isaac.GetItemIdByName("Bur-ger"),
+	COLLECTIBLE_FENRIRSEYE = Isaac.GetItemIdByName("Fenrir's Eyes"),
+	COLLECTIBLE_FENRIRSTOOTH = Isaac.GetItemIdByName("Fenrir's Tooth"),
+	COLLECTIBLE_FENRIRSHEAD = Isaac.GetItemIdByName("Fenrir's Head"),
+	COLLECTIBLE_FENRIRSPAW = Isaac.GetItemIdByName("Fenrir's Paw"),
+	COLLECTIBLE_FENRIRSLEASH = Isaac.GetItemIdByName("Fenrir's Leash"),
+	COLLECTIBLE_HEARTACHES = Isaac.GetItemIdByName("Heartaches..."),
+	COLLECTIBLE_SILPHIUM = Isaac.GetItemIdByName("Silphium"),
+	COLLECTIBLE_GIDDYUP = Isaac.GetItemIdByName("Giddy up!"),
+
+	COLLECTIBLE_JACOBSTEARS = Isaac.GetItemIdByName("Jacob's Tears"),
+	COLLECTIBLE_UNDERPAY = Isaac.GetItemIdByName("Underpay"),
+	COLLECTIBLE_PLATFORMCOTTA = Isaac.GetItemIdByName("Platform Cotta"),
+	COLLECTIBLE_MILKWINE = Isaac.GetItemIdByName("Milk Wine"),
+	COLLECTIBLE_SILENTTREATMENT = Isaac.GetItemIdByName("Silent Treatment"),
+	COLLECTIBLE_SILENCER = Isaac.GetItemIdByName("Silencer"),
+
+	COLLECTIBLE_FULLFATMILK = Isaac.GetItemIdByName("Full Fat Milk"),
+
+	COLLECTIBLE_UNREQUITEDLOVE = Isaac.GetItemIdByName("Unrequited Love"),
+	
+	COLLECTIBLE_REBEKAHSSCRAPBOOK = Isaac.GetItemIdByName("Rebekah's Scrapbook"),
+	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
+
+	COLLECTIBLE_SHATTEREDKEY = Isaac.GetItemIdByName("Shattered Key"),
+	COLLECTIBLE_UNSTABLECANDLE = Isaac.GetItemIdByName("Unstable Candle"),
+	COLLECTIBLE_OINKYBANK = Isaac.GetItemIdByName("Oink-y Bank"),
+	COLLECTIBLE_9BATTS = Isaac.GetItemIdByName("9 Batts"),
+	COLLECTIBLE_ARESBOX = Isaac.GetItemIdByName("Ares' Box"),
+	COLLECTIBLE_SEABATTERY = Isaac.GetItemIdByName("Sea Battery"),
+	COLLECTIBLE_VITAMINC = Isaac.GetItemIdByName("Vitamin C"),
+	COLLECTIBLE_IOU = Isaac.GetItemIdByName("I.O.U."),
+	COLLECTIBLE_SUSPICIOUSSTEW = Isaac.GetItemIdByName("Suspicious Stew"),
+	COLLECTIBLE_FOMOBOMBS = Isaac.GetItemIdByName("FOMO Bombs"),
+	
+
+	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Sword of Hope")
+}
+
+RebekahCurse.LastItem = RebekahCurse.Items.COLLECTIBLE_TAINTEDQ
+
+RebekahCurse.Cards = {
+	CARD_EASTEREGG = Isaac.GetCardIdByName("redegg"),
+	CARD_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquaegg"),
+	CARD_YELLOW_EASTEREGG = Isaac.GetCardIdByName("yellowegg"),
+	CARD_GREEN_EASTEREGG = Isaac.GetCardIdByName("greenegg"),
+	CARD_BLUE_EASTEREGG = Isaac.GetCardIdByName("blueegg"),
+	CARD_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkegg"),
+	CARD_STRIPE_EASTEREGG = Isaac.GetCardIdByName("redstripeegg"),
+	CARD_STRIPE_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquastripeegg"),
+	CARD_ZIGZAG_YELLOW_EASTEREGG = Isaac.GetCardIdByName("yellowzigzagegg"),
+	CARD_ZIGZAG_GREEN_EASTEREGG = Isaac.GetCardIdByName("greenzigzagegg"),
+	CARD_ZIGZAG_BLUE_EASTEREGG = Isaac.GetCardIdByName("bluezigzagegg"),
+	CARD_STRIPE_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkstripeegg"),
+	
+	CARD_CURSED_EASTEREGG = Isaac.GetCardIdByName("cursedegg"),
+	CARD_BLESSED_EASTEREGG = Isaac.GetCardIdByName("blessedegg"),
+	CARD_GOLDEN_EASTEREGG = Isaac.GetCardIdByName("goldenegg"),
+
+	CARD_WORDSOFAFFIRMATION = Isaac.GetCardIdByName("affirmation"),
+	CARD_GIFTGIVING = Isaac.GetCardIdByName("giftgiving"),
+	CARD_ACTOFSERVICE = Isaac.GetCardIdByName("actofservice"),
+	CARD_QUALITYTIME = Isaac.GetCardIdByName("qualitytime"),
+	CARD_PHYSICALTOUCH = Isaac.GetCardIdByName("physicaltouch"),
+
+}
+
+RebekahCurse.Sounds = {
 	SOUND_REBHURT = Isaac.GetSoundIdByName("RebekahHurt"),
 	SOUND_REBDIE = Isaac.GetSoundIdByName("RebekahDie"),
 	
@@ -493,6 +508,8 @@ RebekahCurseSounds = {
 	SOUND_NINCOMPOOP_PANT = Isaac.GetSoundIdByName("Nincompoop Pant"),
 	SOUND_NINCOMPOOP_SPIT = Isaac.GetSoundIdByName("Nincompoop Spit"),
 	SOUND_NINCOMPOOP_WHISTLE = Isaac.GetSoundIdByName("Nincompoop Whistle"),
+	SOUND_NINCOMPOOP_PASS_BY = Isaac.GetSoundIdByName("Nincompoop Pass By"),
+	SOUND_NINCOMPOOP_CHARGE = Isaac.GetSoundIdByName("Nincompoop Charge"),
 
 	SOUND_POLTYGEIST_SPIT = Isaac.GetSoundIdByName("Poltygeist Spit"),
 	SOUND_POLTYGEIST_THROW = Isaac.GetSoundIdByName("Poltygeist Throw"),
@@ -515,16 +532,22 @@ RebekahCurseSounds = {
 	SOUND_SPRING_SOUND = Isaac.GetSoundIdByName("Spring Sound"),
 	SOUND_QUALITY_TIME_IN = Isaac.GetSoundIdByName("Quality Time In"),
 	SOUND_QUALITY_TIME_OUT = Isaac.GetSoundIdByName("Quality Time Out"),
+
+	SOUND_LABAN_CLAP = Isaac.GetSoundIdByName("Laban Clap"),
+	SOUND_LABAN_WHEEZE_1 = Isaac.GetSoundIdByName("Laban Wheeze 1"),
+	SOUND_LABAN_WHEEZE_2 = Isaac.GetSoundIdByName("Laban Wheeze 2"),
+	SOUND_LABAN_LAUGH = Isaac.GetSoundIdByName("Laban Laugh"),
+	SOUND_LABAN_COUGH = Isaac.GetSoundIdByName("Laban Cough"),
 }
 
-RebekahCurseMusic = {
+RebekahCurse.Music = {
 	MUSIC_HEARTROOM = Isaac.GetMusicIdByName("Calm Before the Storm"),
 	MUSIC_BACKROOMS = Isaac.GetMusicIdByName("Backrooms"),
 	MUSIC_BACKROOMSBOSS = Isaac.GetMusicIdByName("Moist"),
 	MUSIC_TICKTOCK = Isaac.GetMusicIdByName("Tick Tock"),
 }
 
-RebekahCurseEnemies = {
+RebekahCurse.Enemies = {
 	ENTITY_FACELING = Isaac.GetEntityVariantByName("Faceling"),
 	ENTITY_HOUNDPUPPY = Isaac.GetEntityVariantByName("Hound Puppy"),
 
@@ -575,9 +598,13 @@ RebekahCurseEnemies = {
 	ENTITY_FRUITFLY = Isaac.GetEntityVariantByName("Fruit Fly"),
 	--academy
 	ENTITY_EVALUATOR = Isaac.GetEntityVariantByName("Evaluator"),
+	ENTITY_DEVOTEE = Isaac.GetEntityVariantByName("Devotee"),
+	ENTITY_GOSSIPER = Isaac.GetEntityVariantByName("Gossiper"),
+	ENTITY_FOUNDATION = Isaac.GetEntityVariantByName("Foundation"),
+	ENTITY_NPC = Isaac.GetEntityVariantByName("Npc"),
 }
 
-RebekahCursePills = {
+RebekahCurse.Pills = {
 	GOOSEBUMPS = Isaac.GetPillEffectByName("Goosebumps!"),
 	ENDORPHIN = Isaac.GetPillEffectByName("Endorphin"),
 	LAUGHTERSTHEBESTMEDICINE = Isaac.GetPillEffectByName("Laughter's the best medicine"),
@@ -586,7 +613,7 @@ RebekahCursePills = {
 	PROGESTIN = Isaac.GetPillEffectByName("Progestin"),
 }
 
-RebekahCurseDustEffects = {
+RebekahCurse.DustEffects = {
 	ENTITY_REBEKAH_GENERIC_DUST = 0,
 	ENTITY_REBEKAH_GENERIC_DUST_FRONT = 1,
 	ENTITY_REBEKAH_GENERIC_DUST_ANGLED = 2,
@@ -614,9 +641,21 @@ RebekahCurseDustEffects = {
 	
 }
 
-RebekahCurseChallenges ={
+RebekahCurse.Grids = {
+	LABAN_DUDE = StageAPI.CustomGrid("Laban", {
+		BaseType = GridEntityType.GRID_ROCKB, 
+		Anm2 = "gfx/none.anm2", 
+		Animation = "SmallIdle",
+        SpawnerEntity = {
+            Type = 656,
+            Variant = 177,
+        },
+	})
+}
+
+RebekahCurse.Challenges ={
 	TheTrueFamilyGuy = Isaac.GetChallengeIdByName("[CaB] The True Family Guy"),
-	DID = Isaac.GetChallengeIdByName("[CaB] D.I.D."),
+	IdentityCrisis = Isaac.GetChallengeIdByName("[CaB] Identity Crisis"),
 	EasterHunt = Isaac.GetChallengeIdByName("[CaB] Easter Hunt"),
 }
 
@@ -625,7 +664,7 @@ local wasFromTaintedLocked = false
 local IsaacPresent = false
 local JacobPresent = false
 
-RebekahCurseCostumes = {
+RebekahCurse.Costumes = {
 	InnocentHair = Isaac.GetCostumeIdByPath("gfx/characters/innocenthair.anm2"),
 	NerdyGlasses = Isaac.GetCostumeIdByPath("gfx/characters/nerdyglasses.anm2"),
 	WizoobHair = Isaac.GetCostumeIdByPath("gfx/characters/wizoobhair.anm2"),
@@ -643,6 +682,11 @@ RebekahCurseCostumes = {
 	BloodGush = Isaac.GetCostumeIdByPath("gfx/characters/blood_gush.anm2"),
 	HeadlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_headremove.anm2"),
 	SkinlessHead = Isaac.GetCostumeIdByPath("gfx/characters/costumes/rebekah_hair/rottenmode_skinremove.anm2"),
+
+	HalfFace = Isaac.GetCostumeIdByPath("gfx/characters/halfface.anm2"),
+	HalfSoulFace = Isaac.GetCostumeIdByPath("gfx/characters/halfsoulface.anm2"),
+	BlendedIdle = Isaac.GetCostumeIdByPath("gfx/characters/blendedidle.anm2"),
+	BlendedSillyMe = Isaac.GetCostumeIdByPath("gfx/characters/blendedsillyme.anm2"),
 
 	BridalHair = Isaac.GetCostumeIdByPath("gfx/characters/bridalhair.anm2"),
 	--BridalStockings = Isaac.GetCostumeIdByPath("gfx/characters/weddedstockings.anm2"),
@@ -677,10 +721,12 @@ RebekahCurseCostumes = {
 
 	DeborahBody = Isaac.GetCostumeIdByPath("gfx/characters/oldermaidbody.anm2"),
 	FenrirsEye = Isaac.GetCostumeIdByPath("gfx/characters/fenrirs_eye.anm2"),
+
+	KomiCant = Isaac.GetCostumeIdByPath("gfx/characters/komicant.anm2"),
 }
 
 
-REBEKAH_BALANCE = {
+RebekahCurse.REBEKAH_BALANCE = {
 	INIT_REMOVE_HEARTS = 2,
 	RED_HEARTS_DASH_SPEED = 15,
 	RED_HEARTS_DASH_INVINCIBILITY_FRAMES = 10,
@@ -721,7 +767,7 @@ REBEKAH_BALANCE = {
 	BRIDE_RED_HEARTS_DASH_SPEED = 25
 }
 
-REBEKAH_OPTIONS = {
+RebekahCurse.REBEKAH_OPTIONS = {
 	CUSTOM_DAMAGE_SOUND = true,
 	CUSTOM_DAMAGE_SOUND_ID = SoundEffect.SOUND_CUTE_GRUNT,
 	CUSTOM_DAMAGE_SOUND_PITCH = 1.4,
@@ -742,11 +788,12 @@ REBEKAH_OPTIONS = {
 	DASHKEY_BIND = Keyboard.KEY_LEFT_CONTROL,
 	VOICE_VOLUME = 5,
 	UNLOCK_ITEMS = 0,
+	MENU_INIT = 0,
 	--DashKeyboardBinding = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Keyboard Binding"],
 	--DashControllerBinding
 }
 
-REBECCA_MODE = {
+RebekahCurse.REBECCA_MODE = {
 	EmptyHearts = 0,
 	RedHearts = 1,
 	SoulHearts = 2,
@@ -763,59 +810,69 @@ REBECCA_MODE = {
 	BlendedHearts = 13,
 	ScaredRedHearts = 14,
 	TwinRedHearts = 15,
+	HalfRedHearts = 16,
+	HalfSoulHearts = 17,
 
 	CursedCurse = 30
 }
 
-RebeccaModeNames = {
-	[REBECCA_MODE.EmptyHearts] = "empty", --,
-	[REBECCA_MODE.RedHearts] = "red", --InnocentHair,
-	[REBECCA_MODE.SoulHearts] = "soul", --WizoobHair,
-	[REBECCA_MODE.GoldHearts] = "gold", --SwagHair,
-	[REBECCA_MODE.EvilHearts] = "evil", --HadFunHair,
-	[REBECCA_MODE.EternalHearts] = "eternal", --AoDHair,
-	[REBECCA_MODE.BoneHearts] =  "bone", --DeadHair,
-	[REBECCA_MODE.RottenHearts] =  "rotten",
-	[REBECCA_MODE.BrokenHearts] =  "broken",
-	[REBECCA_MODE.ImmortalHearts] =  "immortal",
-	[REBECCA_MODE.BrideRedHearts] = "bride", --BridalHair
+RebekahCurse.RebeccaModeNames = {
+	[RebekahCurse.REBECCA_MODE.EmptyHearts] = "empty", --,
+	[RebekahCurse.REBECCA_MODE.RedHearts] = "red", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.SoulHearts] = "soul", --WizoobHair,
+	[RebekahCurse.REBECCA_MODE.GoldHearts] = "gold", --SwagHair,
+	[RebekahCurse.REBECCA_MODE.EvilHearts] = "evil", --HadFunHair,
+	[RebekahCurse.REBECCA_MODE.EternalHearts] = "eternal", --AoDHair,
+	[RebekahCurse.REBECCA_MODE.BoneHearts] =  "bone", --DeadHair,
+	[RebekahCurse.REBECCA_MODE.RottenHearts] =  "rotten",
+	[RebekahCurse.REBECCA_MODE.BrokenHearts] =  "broken",
+	[RebekahCurse.REBECCA_MODE.ImmortalHearts] =  "immortal",
+	[RebekahCurse.REBECCA_MODE.BrideRedHearts] = "bride", --BridalHair
 
-	[REBECCA_MODE.ScaredRedHearts] = "red", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.ScaredRedHearts] = "red", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.TwinRedHearts] = "red", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.BlendedHearts] = "soul", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.HalfRedHearts] = "red", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.HalfSoulHearts] = "soul", --InnocentHair,
 
-	[REBECCA_MODE.CursedCurse] =  "cursed",
+	[RebekahCurse.REBECCA_MODE.CursedCurse] =  "cursed",
 }
 
 
-RebeccaModeCostumes = {
-	[REBECCA_MODE.EmptyHearts] = "innocenthair", --InnocentHair,
-	[REBECCA_MODE.RedHearts] = "emergenthair", --InnocentHair,
-	[REBECCA_MODE.SoulHearts] = "wizoobhair", --WizoobHair,
-	[REBECCA_MODE.GoldHearts] = "swaghair", --SwagHair,
-	[REBECCA_MODE.EvilHearts] = "hadfunhair", --HadFunHair,
-	[REBECCA_MODE.EternalHearts] = "angelofdeathhair", --AoDHair,
-	[REBECCA_MODE.BoneHearts] =  "deadhair", --DeadHair,
-	[REBECCA_MODE.RottenHearts] =  "crazyhair",
-	[REBECCA_MODE.BrokenHearts] =  "fourthwallhair",
-	[REBECCA_MODE.ImmortalHearts] =  "heyheyhair",
-	[REBECCA_MODE.BrideRedHearts] = "bridalhair", --BridalHair
+RebekahCurse.RebeccaModeCostumes = {
+	[RebekahCurse.REBECCA_MODE.EmptyHearts] = "innocenthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.RedHearts] = "emergenthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.SoulHearts] = "wizoobhair", --WizoobHair,
+	[RebekahCurse.REBECCA_MODE.GoldHearts] = "swaghair", --SwagHair,
+	[RebekahCurse.REBECCA_MODE.EvilHearts] = "hadfunhair", --HadFunHair,
+	[RebekahCurse.REBECCA_MODE.EternalHearts] = "angelofdeathhair", --AoDHair,
+	[RebekahCurse.REBECCA_MODE.BoneHearts] =  "deadhair", --DeadHair,
+	[RebekahCurse.REBECCA_MODE.RottenHearts] =  "crazyhair",
+	[RebekahCurse.REBECCA_MODE.BrokenHearts] =  "fourthwallhair",
+	[RebekahCurse.REBECCA_MODE.ImmortalHearts] =  "heyheyhair",
+	[RebekahCurse.REBECCA_MODE.BrideRedHearts] = "bridalhair", --BridalHair
 
-	[REBECCA_MODE.ScaredRedHearts] = "emergenthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.ScaredRedHearts] = "emergenwithnobadendingthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.TwinRedHearts] = "emergenwithnobadendingthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.BlendedHearts] = "emergentwizoobhair", --InnocentNotReallyHair,
+	[RebekahCurse.REBECCA_MODE.HalfRedHearts] = "emergenwithnobadendingthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.HalfSoulHearts] = "wizoobhair", --InnocentHair,
 
-	[REBECCA_MODE.CursedCurse] = "haunted_hairstyle" --BridalHair
+	[RebekahCurse.REBECCA_MODE.CursedCurse] = "haunted_hairstyle" --BridalHair
 }
 
-RebeccaModeEffects = {
-	[REBECCA_MODE.RedHearts] = CollectibleType.COLLECTIBLE_20_20,
-	--[REBECCA_MODE.SoulHearts] = N/A,
-	[REBECCA_MODE.GoldHearts] = CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER,
-	[REBECCA_MODE.EvilHearts] = CollectibleType.COLLECTIBLE_SERPENTS_KISS,
-	[REBECCA_MODE.EternalHearts] = CollectibleType.COLLECTIBLE_FATE,
-	[REBECCA_MODE.BoneHearts] = CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE,
+RebekahCurse.RebeccaModeEffects = {
+	[RebekahCurse.REBECCA_MODE.RedHearts] = CollectibleType.COLLECTIBLE_20_20,
+	--[RebekahCurse.REBECCA_MODE.SoulHearts] = N/A,
+	[RebekahCurse.REBECCA_MODE.GoldHearts] = CollectibleType.COLLECTIBLE_HEAD_OF_THE_KEEPER,
+	[RebekahCurse.REBECCA_MODE.EvilHearts] = CollectibleType.COLLECTIBLE_SERPENTS_KISS,
+	[RebekahCurse.REBECCA_MODE.EternalHearts] = CollectibleType.COLLECTIBLE_FATE,
+	[RebekahCurse.REBECCA_MODE.BoneHearts] = CollectibleType.COLLECTIBLE_COMPOUND_FRACTURE,
 	
-	[REBECCA_MODE.BrideRedHearts] = CollectibleType.COLLECTIBLE_20_20
+	[RebekahCurse.REBECCA_MODE.BrideRedHearts] = CollectibleType.COLLECTIBLE_20_20
 }
 
-RebekahHeartParticleType = {
+RebekahCurse.RebekahHeartParticleType = {
 	None = 0,
 	Red = 1,
 	Blue = 2,
@@ -828,28 +885,28 @@ RebekahHeartParticleType = {
 	Bone = 6
 }
 
-RebekahHeartParticleSpriteByType = {
-	[RebekahHeartParticleType.Red] = "gfx/effects/heart_red.png",
-	[RebekahHeartParticleType.Blue] = "gfx/effects/heart_blue.png",
-	[RebekahHeartParticleType.Soul] = "gfx/effects/heart_blue.png",
-	[RebekahHeartParticleType.Gold] = "gfx/effects/heart_gold.png",
-	[RebekahHeartParticleType.Black] = "gfx/effects/heart_black.png",
-	[RebekahHeartParticleType.Evil] = "gfx/effects/heart_black.png",
-	[RebekahHeartParticleType.White] = "gfx/effects/heart_eternal.png",
-	[RebekahHeartParticleType.Eternal] = "gfx/effects/heart_eternal.png",
-	[RebekahHeartParticleType.Bone] = "gfx/effects/heart_bone.png"
+RebekahCurse.RebekahHeartParticleSpriteByType = {
+	[RebekahCurse.RebekahHeartParticleType.Red] = "gfx/effects/heart_red.png",
+	[RebekahCurse.RebekahHeartParticleType.Blue] = "gfx/effects/heart_blue.png",
+	[RebekahCurse.RebekahHeartParticleType.Soul] = "gfx/effects/heart_blue.png",
+	[RebekahCurse.RebekahHeartParticleType.Gold] = "gfx/effects/heart_gold.png",
+	[RebekahCurse.RebekahHeartParticleType.Black] = "gfx/effects/heart_black.png",
+	[RebekahCurse.RebekahHeartParticleType.Evil] = "gfx/effects/heart_black.png",
+	[RebekahCurse.RebekahHeartParticleType.White] = "gfx/effects/heart_eternal.png",
+	[RebekahCurse.RebekahHeartParticleType.Eternal] = "gfx/effects/heart_eternal.png",
+	[RebekahCurse.RebekahHeartParticleType.Bone] = "gfx/effects/heart_bone.png"
 }
 
-RebekahHeartParticleTypeByMode = {
-	[REBECCA_MODE.RedHearts] = RebekahHeartParticleType.Red,
-	[REBECCA_MODE.SoulHearts] = RebekahHeartParticleType.Blue,
-	[REBECCA_MODE.GoldHearts] = RebekahHeartParticleType.Gold,
-	[REBECCA_MODE.EvilHearts] = RebekahHeartParticleType.Evil,
-	[REBECCA_MODE.EternalHearts] = RebekahHeartParticleType.Eternal,
-	[REBECCA_MODE.BoneHearts] = RebekahHeartParticleType.Bone
+RebekahCurse.RebekahHeartParticleTypeByMode = {
+	[RebekahCurse.REBECCA_MODE.RedHearts] = RebekahCurse.RebekahHeartParticleType.Red,
+	[RebekahCurse.REBECCA_MODE.SoulHearts] = RebekahCurse.RebekahHeartParticleType.Blue,
+	[RebekahCurse.REBECCA_MODE.GoldHearts] = RebekahCurse.RebekahHeartParticleType.Gold,
+	[RebekahCurse.REBECCA_MODE.EvilHearts] = RebekahCurse.RebekahHeartParticleType.Evil,
+	[RebekahCurse.REBECCA_MODE.EternalHearts] = RebekahCurse.RebekahHeartParticleType.Eternal,
+	[RebekahCurse.REBECCA_MODE.BoneHearts] = RebekahCurse.RebekahHeartParticleType.Bone
 }
 
-RebekahPoofParticleType = {
+RebekahCurse.RebekahPoofParticleType = {
 	None = 0,
 	Red = 1,
 	Blue = 2,
@@ -862,28 +919,28 @@ RebekahPoofParticleType = {
 	Bone = 6
 }
 
-RebekahPoofParticleSpriteByType = {
-	[RebekahPoofParticleType.Red] = "gfx/effects/poof_red.png",
-	[RebekahPoofParticleType.Blue] = "gfx/effects/poof_blue.png",
-	[RebekahPoofParticleType.Soul] = "gfx/effects/poof_blue.png",
-	[RebekahPoofParticleType.Gold] = "gfx/effects/poof_gold.png",
-	[RebekahPoofParticleType.Black] = "gfx/effects/poof_black.png",
-	[RebekahPoofParticleType.Evil] = "gfx/effects/poof_black.png",
-	[RebekahPoofParticleType.Eternal] = "gfx/effects/poof_eternal.png",
-	[RebekahPoofParticleType.White] = "gfx/effects/poof_eternal.png",
-	[RebekahPoofParticleType.Bone] = "gfx/effects/poof_bone.png"
+RebekahCurse.RebekahPoofParticleSpriteByType = {
+	[RebekahCurse.RebekahPoofParticleType.Red] = "gfx/effects/poof_red.png",
+	[RebekahCurse.RebekahPoofParticleType.Blue] = "gfx/effects/poof_blue.png",
+	[RebekahCurse.RebekahPoofParticleType.Soul] = "gfx/effects/poof_blue.png",
+	[RebekahCurse.RebekahPoofParticleType.Gold] = "gfx/effects/poof_gold.png",
+	[RebekahCurse.RebekahPoofParticleType.Black] = "gfx/effects/poof_black.png",
+	[RebekahCurse.RebekahPoofParticleType.Evil] = "gfx/effects/poof_black.png",
+	[RebekahCurse.RebekahPoofParticleType.Eternal] = "gfx/effects/poof_eternal.png",
+	[RebekahCurse.RebekahPoofParticleType.White] = "gfx/effects/poof_eternal.png",
+	[RebekahCurse.RebekahPoofParticleType.Bone] = "gfx/effects/poof_bone.png"
 }
 
-RebekahPoofParticleTypeByMode = {
-	[REBECCA_MODE.RedHearts] = RebekahPoofParticleType.Red,
-	[REBECCA_MODE.SoulHearts] = RebekahPoofParticleType.Blue,
-	[REBECCA_MODE.GoldHearts] = RebekahPoofParticleType.Gold,
-	[REBECCA_MODE.EvilHearts] = RebekahPoofParticleType.Evil,
-	[REBECCA_MODE.EternalHearts] = RebekahPoofParticleType.Eternal,
-	[REBECCA_MODE.BoneHearts] = RebekahPoofParticleType.Bone
+RebekahCurse.RebekahPoofParticleTypeByMode = {
+	[RebekahCurse.REBECCA_MODE.RedHearts] = RebekahCurse.RebekahPoofParticleType.Red,
+	[RebekahCurse.REBECCA_MODE.SoulHearts] = RebekahCurse.RebekahPoofParticleType.Blue,
+	[RebekahCurse.REBECCA_MODE.GoldHearts] = RebekahCurse.RebekahPoofParticleType.Gold,
+	[RebekahCurse.REBECCA_MODE.EvilHearts] = RebekahCurse.RebekahPoofParticleType.Evil,
+	[RebekahCurse.REBECCA_MODE.EternalHearts] = RebekahCurse.RebekahPoofParticleType.Eternal,
+	[RebekahCurse.REBECCA_MODE.BoneHearts] = RebekahCurse.RebekahPoofParticleType.Bone
 }
 
-RebekahMirrorHeartDrop = {
+RebekahCurse.RebekahMirrorHeartDrop = {
 	[1] = 1, --red
 	[2] = 3, --soul
 	[3] = 4, --eternal
@@ -896,18 +953,18 @@ RebekahMirrorHeartDrop = {
 --Stage
 yandereWaifu.STAGE = {}
 
-local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_SOUL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_SOUL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_EVIL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_EVIL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_GOLD_INFO = InutilLib.Players:New({}, RebekahCurse.REB_GOLD, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_ETERNAL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ETERNAL, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_BONE_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BONE, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
-local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ROTTEN, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_SOUL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_SOUL, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_EVIL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_EVIL, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_GOLD_INFO = InutilLib.Players:New({}, RebekahCurse.REB_GOLD, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_ETERNAL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ETERNAL, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_BONE_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BONE, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ROTTEN, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
---local REBECCA_SCARED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+--local REBECCA_SCARED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
-local REBECCA_CURSED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_CURSED, RebekahCurseSounds.SOUND_REBHURT, RebekahCurseSounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_CURSED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_CURSED, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 if StageAPI and StageAPI.Loaded then
     StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_RED, 
 	{

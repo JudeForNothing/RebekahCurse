@@ -1,7 +1,7 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	--love = power
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_MORIAHDIARY) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_MORIAHDIARY) then
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed + 0.2
 		end
@@ -12,7 +12,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, pl)
 	local sprite = pl:GetSprite()
 	local data = yandereWaifu.GetEntityData(pl)
 	
-	if pl:HasCollectible(RebekahCurseItems.COLLECTIBLE_MORIAHDIARY) then
+	if pl:HasCollectible(RebekahCurse.Items.COLLECTIBLE_MORIAHDIARY) then
 		for i, v in ipairs (Isaac.GetRoomEntities()) do
 			if v:IsEnemy() then
 				if (pl.Position - v.Position):Length() <= 250 then
@@ -114,7 +114,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_,  bb)
 		local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, 10, bb.Position, bb.Velocity, bb):ToEffect()
 		yandereWaifu.GetEntityData(target).Parent = bb
 		if not bb.IsFetus then
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
 		end
 		if bb.Variant == 17 then
 			bb:GetSprite().Scale = Vector(1.5,1.5)
@@ -135,7 +135,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  npc)
 			if not pos1 then
 				yandereWaifu.GetEntityData(target).Parent = npc
 			end
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
 		end
 		if (npc.Type == EntityType.ENTITY_MOM or npc.Type == EntityType.ENTITY_SATAN or npc.Type == EntityType.ENTITY_MOMS_HAND) and spr:IsPlaying("Stomp") and spr:GetFrame() == 1 then
 			ping()
@@ -189,11 +189,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  npc)
 			if (spr:IsPlaying("AttackAlt01")) and spr:GetFrame() == 0 then
 				yandereWaifu.AddGenericTracer(npc.Position + Vector(8,0), beamColor, 90, 7)
 				yandereWaifu.AddGenericTracer(npc.Position + Vector(-8,0), beamColor, 90, 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			elseif (spr:IsPlaying("AttackAlt02")) and spr:GetFrame() == 0 then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 0, 7)
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 180, 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			end
 		end
 		if (npc.Type == EntityType.ENTITY_MOM and npc.SubType == 3) then
@@ -203,48 +203,48 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  npc)
 				for i = 0, 360 - 360/4, 360/4 do
 					yandereWaifu.AddGenericTracer(npc.Position, beamColor, i, 7)
 				end
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			end
 		end
 		if (npc.Type == EntityType.ENTITY_ADVERSARY) and ( spr:GetFrame() == 0 or spr:GetFrame() == 2 or spr:GetFrame() == 4 or spr:GetFrame() == 5) then
 			if (spr:IsPlaying("Attack2Right")) then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 0 + math.random(-15,15), 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			elseif (spr:IsPlaying("Attack2Left")) then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 180 + math.random(-15,15), 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			elseif (spr:IsPlaying("Attack2Up")) then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 270 + math.random(-15,15), 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			elseif (spr:IsPlaying("Attack2Down")) then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 90 + math.random(-15,15), 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			end
 		end
 		if (npc.Type == EntityType.ENTITY_MONSTRO2) and (spr:IsPlaying("Taunt")) and spr:GetFrame() == 0 then
 			if npc.FlipX then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 0, 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			else
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 180, 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			end
 		end
 		if (npc.Type == EntityType.ENTITY_SISTERS_VIS) and spr:GetFrame() == 0 then
 			if (spr:IsPlaying("LaserStartSide")) then
 				if npc.FlipX then
 					yandereWaifu.AddGenericTracer(npc.Position, beamColor, 180, 7)
-					SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 				else
 					yandereWaifu.AddGenericTracer(npc.Position, beamColor, 0, 7)
-					SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 				end
 			elseif (spr:IsPlaying("LaserStartUp")) then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 270, 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			elseif (spr:IsPlaying("LaserStartDown")) then
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, 90, 7)
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			end
 		end
 		if (npc.Type == EntityType.ENTITY_FALLEN) then
@@ -252,28 +252,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  npc)
 				for i = 0, 360 - 360/4, 360/4 do
 					yandereWaifu.AddGenericTracer(npc.Position, beamColor, i, 7)
 				end
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 				if npc.Variant == 1 then
 					for i = 0, 360 - 360/4, 360/4 do
 						yandereWaifu.AddGenericTracer(npc.Position, Color(1,0,0.5,1), i+45, 7)
 					end
-					SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 				end
 				local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, 10, npc.Position, npc.Velocity, npc):ToEffect()
 				yandereWaifu.GetEntityData(target).Parent = npc
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
 				target:GetSprite().Scale = Vector(1.5,1.5)
 			elseif (spr:IsPlaying("Attack2Alt")) and spr:GetFrame() == 25 then
 				for i = 0, 360 - 360/4, 360/4 do
 					yandereWaifu.AddGenericTracer(npc.Position, beamColor, i, 7)
 				end
-				SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.7)
 			end
 		end
 		if (npc.Type == EntityType.ENTITY_GATE) and (spr:IsPlaying("Charging")) and spr:GetFrame() == 30  then
 			local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, 10, npc.Position, npc.Velocity, npc):ToEffect()
 			yandereWaifu.GetEntityData(target).Parent = npc
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
 			target:GetSprite().Scale = Vector(1.5,1.5)
 			for i = 0, 360 - 360/4, 360/4 do
 				yandereWaifu.AddGenericTracer(npc.Position, beamColor, i, 7)
@@ -331,7 +331,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,  npc)
 		local function ping()
 			local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, 10, npc.Position, npc.Velocity, npc):ToEffect()
 			yandereWaifu.GetEntityData(target).Parent = npc
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 0.5)
 		end
 		if (npc.Variant == EffectVariant.MOM_FOOT_STOMP) and spr:IsPlaying("Stomp") and spr:GetFrame() == 1 then
 			ping()
@@ -339,7 +339,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,  npc)
 		if (npc.Variant == 55) and spr:GetFrame() == 0 then
 			local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, 4, npc.Position, Vector.Zero, npc)
 			target:GetSprite().Color = Color(1, 0.5, 0, 1, 0, 0, 0)
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.3)
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1.3)
 		end
 	end
 end)

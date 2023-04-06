@@ -2,10 +2,10 @@ local customColor = Color(1, 0.5, 1, 1, 0, 0, 0)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--cursed spoon
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) then
-		player:AddNullCostume(RebekahCurseCostumes.CursedMawCos)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CURSEDSPOON) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_CURSEDSPOON) then
+		player:AddNullCostume(RebekahCurse.Costumes.CursedMawCos)
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and (not data.HasSpoonShadow or data.HasSpoonShadow:IsDead()) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CURSEDSPOON) and (not data.HasSpoonShadow or data.HasSpoonShadow:IsDead()) then
 		player:SetColor(customColor, 2, 5, true, true)
 	end
 end)
@@ -14,7 +14,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	local player = damage:ToPlayer();
 	local data = yandereWaifu.GetEntityData(player)
 
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and (not data.PsoriasisHealth or data.PsoriasisHealth <= 0) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CURSEDSPOON) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and (not data.PsoriasisHealth or data.PsoriasisHealth <= 0) then
 		if not data.HasSpoonShadow or data.HasSpoonShadow:IsDead() then
 			--data.LastEntityCollisionClass = player.EntityCollisionClass;
 			--data.LastGridCollisionClass = player.GridCollisionClass;

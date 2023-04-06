@@ -2,12 +2,12 @@ local generateSomeHoles = false
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NUTWATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_NUTWATER ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_NUTWATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_NUTWATER ) then
 		player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 		player:AddCacheFlags(CacheFlag.CACHE_SPEED);
 		player:EvaluateItems()
 		--print("pain")
-		player:AddNullCostume(RebekahCurseCostumes.NutWater)
+		player:AddNullCostume(RebekahCurse.Costumes.NutWater)
 		--for i = 0, 1, 1 do
 			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
 				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position,3) , player.Velocity, player)
@@ -24,7 +24,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 		--end
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NUTWATER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_NUTWATER) then
 		generateSomeHoles = true
 	else
 		generateSomeHoles = false
@@ -47,7 +47,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) 
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NUTWATER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_NUTWATER) then
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed + 0.10
 		end

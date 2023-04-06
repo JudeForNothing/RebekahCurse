@@ -758,7 +758,22 @@
         <gibs amount="6" blood="0" bone="0" eye="1" gut="1" large="0" />
         <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
     </entity>
-
+    <entity anm2path="monsters/academy/devotee.anm2" reroll="true" baseHP="75" boss="0" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="26" friction="1" id="600" name="Devotee" numGridCollisionPoints="12" shadowSize="26" stageHP="0" variant="171090" portrait="1">
+        <gibs amount="6" blood="0" bone="0" eye="1" gut="1" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
+    <entity anm2path="monsters/academy/gossiper.anm2" reroll="true" baseHP="75" boss="0" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="26" friction="1" id="600" name="Gossiper" numGridCollisionPoints="12" shadowSize="26" stageHP="0" variant="171091" portrait="1">
+        <gibs amount="6" blood="0" bone="0" eye="1" gut="1" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
+    <entity anm2path="monsters/academy/foundation.anm2" reroll="true" baseHP="305" boss="0" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="56" friction="1" id="600" name="Foundation" numGridCollisionPoints="12" shadowSize="56" stageHP="0" variant="171092" portrait="1">
+        <gibs amount="30" blood="1" bone="1" eye="1" gut="1" large="1" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
+    <entity anm2path="monsters/academy/npc.anm2" reroll="true" baseHP="80" boss="0" champion="1" collisionDamage="1" collisionMass="5" collisionRadius="18" friction="1" id="600" name="Npc" numGridCollisionPoints="12" shadowSize="14" stageHP="0" variant="171093" portrait="1">
+        <gibs amount="6" blood="0" bone="0" eye="1" gut="1" large="0" />
+        <preload-snd id="165" /> <!-- SOUND_ZOMBIE_WALKER_KID -->
+    </entity>
 
     <entity anm2path="effects/tainted/cursed/weapon.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Rebekah Cursed Weapon" numGridCollisionPoints="0" shadowSize="0" stageHP="0" variant="8284">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
@@ -799,6 +814,10 @@
     </entity>
 
      <entity anm2path="items/pick ups/coin_piece.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="6" friction="1" id="5" name="Coin Piece" numGridCollisionPoints="24" shadowSize="4" stageHP="0" variant="21" subtype="177">
+        <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
+    </entity>
+
+    <entity anm2path="items/pick ups/triple_bomb.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="3" collisionRadius="6" friction="1" id="5" name="Triple Bombs" numGridCollisionPoints="24" shadowSize="24" stageHP="0" variant="41" subtype="177">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 

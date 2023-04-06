@@ -59,10 +59,10 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--costume addition
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) then
-		player:AddNullCostume(RebekahCurseCostumes.WickedWeaves)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
+		player:AddNullCostume(RebekahCurse.Costumes.WickedWeaves)
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
 		local wall = InutilLib.ClosestWall(player)
 		local fist
 		local room = InutilLib.room
@@ -138,7 +138,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			else
 				sprite:Play("Punch")
 			end
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_WICKEDWEAVES, 10, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_WICKEDWEAVES, 10, 0, false, 1)
 		elseif InutilLib.IsPlayingMultiple(sprite, "Punch", "Punch2", "PunchDown") and sprite:GetFrame() >= 3 and sprite:GetFrame() <= 6 then
 			local radisu = 70
 			InutilLib.game:MakeShockwave(eff.Position, 0.055, 0.025, 10)
@@ -172,7 +172,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff:Remove()
 		elseif not sprite:IsPlaying("Stomp") then
 			sprite:Play("Stomp", true)
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_WICKEDWEAVES, 10, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_WICKEDWEAVES, 10, 0, false, 1)
 		elseif sprite:IsPlaying("Stomp") then
 			if sprite:GetFrame() == 6 then
 				InutilLib.game:ShakeScreen(5)
@@ -208,7 +208,7 @@ function yandereWaifu:ForWickedWeavesNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) and data.WW_ATTACK_DOUBLE_TAP then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) and data.WW_ATTACK_DOUBLE_TAP then
 			data.WW_ATTACK_DOUBLE_TAP:Reset();
 		end
 	end
@@ -217,7 +217,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.ForWickedW
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
 		if cacheF == CacheFlag.CACHE_FIREDELAY then
 			player.MaxFireDelay = player.MaxFireDelay - 5
 		end
@@ -233,7 +233,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WICKEDWEAVES) and Options.ChargeBars then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) and Options.ChargeBars then
 			yandereWaifu.wickedWeavesUi(player)
 
 		end

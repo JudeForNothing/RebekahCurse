@@ -4,7 +4,7 @@ function yandereWaifu.UpdateCurseRoomDepleteButWithRebekahsKey()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_REBEKAHSKEY) then
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_REBEKAHSKEY) then
 			hasTrinket = true
 			break
 		end

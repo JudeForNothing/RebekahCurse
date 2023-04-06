@@ -3,8 +3,8 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	--if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_REBEKAHSCAMERA) then
-		--if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_REBEKAHSCAMERA ) then
+	--if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_REBEKAHSCAMERA) then
+		--if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_REBEKAHSCAMERA ) then
 			if not data.PersistentPlayerData.savedCameraEnemies then
 				data.PersistentPlayerData.savedCameraEnemies = {}
 				for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -24,7 +24,7 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
 				end
 				data.PersistentPlayerData.savedCameraEnemies = nil
 			end
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CAMERAUSE, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CAMERAUSE, 1, 0, false, 1 );
 		--end
 	--end
 	if slot == ActiveSlot.SLOT_POCKET then
@@ -36,15 +36,15 @@ function yandereWaifu:useRebekahCamera(collItem, rng, player, _, slot)
 	InutilLib.AnimateGiantbook(nil, nil, "Shake", "gfx/ui/giantbook/giantbook_rebekahs_camera.anm2", true)
 	InutilLib.HideActiveItem(player, slot)
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRebekahCamera, RebekahCurseItems.COLLECTIBLE_REBEKAHSCAMERA );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRebekahCamera, RebekahCurse.Items.COLLECTIBLE_REBEKAHSCAMERA );
 --[[
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_REBEKAHSCAMERA) then
-		--if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_REBEKAHSCAMERA ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_REBEKAHSCAMERA) then
+		--if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_REBEKAHSCAMERA ) then
 			if not data.PersistentPlayerData.savedCameraEnemies then
 				data.PersistentPlayerData.savedCameraEnemies = {}
 				for i, e in pairs(Isaac.GetRoomEntities()) do

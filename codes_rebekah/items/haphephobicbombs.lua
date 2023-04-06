@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, function(_, bb)
 	local sprite = bb:GetSprite()
 	if bb.SpawnerType == 1 then
 		local player = bb.SpawnerEntity:ToPlayer()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_HAPHEPHOBICBOMBS) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_HAPHEPHOBICBOMBS) then
 			--update sprite--
 			if (bb.Variant > 4 or bb.Variant < 3) then
 				if bb.Variant == 0 then
@@ -31,7 +31,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_,  bb)
             if not data.hasbeenharrassedtoinduceseverepainsofphobia then
                 bb:SetExplosionCountdown(1)
                 data.hasbeenharrassedtoinduceseverepainsofphobia = true
-                SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1, 0, false, 1.2 )
+                SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1, 0, false, 1.2 )
             end
         end
     end
@@ -44,7 +44,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_BOMB_COLLISION, function(_,  bb, co
             if not data.hasbeenharrassedtoinduceseverepainsofphobia then
                  bb:SetExplosionCountdown(1)
                  data.hasbeenharrassedtoinduceseverepainsofphobia = true
-                 SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1, 0, false, 1.2 )
+                 SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1, 0, false, 1.2 )
             end
         end
     end

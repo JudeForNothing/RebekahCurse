@@ -3,7 +3,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_NOSCOPE) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_NOSCOPE) then
 		local direction = InutilLib.DirToVec(player:GetFireDirection())
 		if data.NoScopeBuff == nil then 
 			data.NoScopeBuff = false 

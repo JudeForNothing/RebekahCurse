@@ -3,8 +3,8 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 
 	--unrequited love
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			local vel = 45
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
@@ -15,7 +15,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			yandereWaifu.GetEntityData(hook).Player = player
 			InutilLib.ConsumeActiveCharge(player)
 			InutilLib.ToggleShowActive(player, false)
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 1)
 		end
 	end
 	--yandereWaifu:EctoplasmLeaking(player) 
@@ -40,7 +40,7 @@ function yandereWaifu:useUnLove(collItem, rng, player)
 	}
 
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useUnLove, RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE );
 
 --love hook effect
 
@@ -161,7 +161,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				InutilLib.RefundActiveCharge(player, 300,  false, true)
 				eff:Remove()
 			end
-			--InutilLib.SFX:Play(RebekahCurseSounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 0.5)
+			--InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_UNREQUITEDLOVECHAIN, 1, 0, false, 0.5)
 		end
 	end
 end, RebekahCurse.ENTITY_LOVEHOOK);

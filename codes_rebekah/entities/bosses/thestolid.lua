@@ -4,7 +4,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
 	if data.path == nil then data.path = ent.Pathfinder end
-	if ent.Variant == RebekahCurseEnemies.ENTITY_THE_STOLID and ent.SubType == 1 then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_THE_STOLID and ent.SubType == 1 then
 		if not data.State then
 			spr:Play("Travel", true)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
@@ -12,7 +12,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 			data.State = 0
 			data.path:SetCanCrushRocks(true)
-			--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
+			--InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
 		else
 			if data.State == 0 then
 				InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.8, 0.9)
@@ -28,7 +28,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					ent.Velocity = ent.Velocity * 0
 					InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_LITE_ROAR, 1, 0, false, 0.6 );
 				elseif spr:IsPlaying("Punch") and spr:GetFrame() == 17 then
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STOLID_APPEAR, 1, 0, false, 0.9 );
 					InutilLib.game:ShakeScreen(5)
 					for i, v in pairs (Isaac.GetRoomEntities()) do
 						if (v.Position - ent.Position):Length() < v.Size + ent.Size + 30 then
@@ -42,7 +42,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				end
 			end
 		end
-	elseif ent.Variant == RebekahCurseEnemies.ENTITY_THE_STOLID and ent.SubType == 0 then
+	elseif ent.Variant == RebekahCurse.Enemies.ENTITY_THE_STOLID and ent.SubType == 0 then
 		if not data.State then
 			--spr:Play("Idle")
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
@@ -103,11 +103,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						data.State = 3
 						ent.Velocity = ent.Velocity * 0
 						data.lastDir = nil
-					elseif #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) > 2 and math.random (1,2) then
+					elseif #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) > 2 and math.random (1,2) then
 						data.State = 11
 						ent.Velocity = ent.Velocity * 0
 						data.lastDir = nil
-					elseif #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) < 5 and entnumber < 4 then
+					elseif #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) < 5 and entnumber < 4 then
 						data.State = 4
 						ent.Velocity = ent.Velocity * 0
 						data.lastDir = nil
@@ -145,7 +145,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					local chosenNumofBarrage =  math.random( 8, 15 );
 					for i = 1, chosenNumofBarrage do
 						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
 						tear.Scale = math.random(2,12)/10;
 						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
 						tear.FallingAccel = 0.5;
@@ -236,7 +236,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				elseif spr:IsPlaying("Spit") then
 					if spr:IsEventTriggered("Spit") then
 						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_SPIT_BLOB_BARF, 1, 0, false, 0.6 );
-						local egg = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, 2, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
+						local egg = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, 2, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
 						--local egg = Isaac.Spawn(EntityType.ENTITY_BOOMFLY, 4, 0, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
 						egg:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, ent.Position, Vector(0,0), ent ):ToEffect()
@@ -256,15 +256,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						entnumber = entnumber + 1
 					end
 				end
-				if math.random(1,3) == 3 and ent.FrameCount % 15 == 0 and #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) < 3 and entnumber < 5 then
+				if math.random(1,3) == 3 and ent.FrameCount % 15 == 0 and #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) < 3 and entnumber < 5 then
 					data.State = 6
 				elseif ent.FrameCount % 30 == 0 and math.random(1,5) == 5 then
 					if math.random(1,4) == 4 and entnumber <= 5 then
-						if #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) >= 2 then
+						if #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) >= 2 then
 							data.State = 9	
 						end
 					else
-						if math.random(1,4) == 4 and #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_STOLID, 1, false, true) < 1 then
+						if math.random(1,4) == 4 and #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THE_STOLID, 1, false, true) < 1 then
 							data.State = 8
 						else
 							data.State = 7
@@ -280,7 +280,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				elseif spr:IsPlaying("SpitStationary") then
 					if spr:IsEventTriggered("Spit") then
 						InutilLib.SFX:Play( SoundEffect.SOUND_BOSS_SPIT_BLOB_BARF, 1, 0, false, 0.6 );
-						local egg = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, 1, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
+						local egg = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, 1, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
 						--local egg = Isaac.Spawn(EntityType.ENTITY_FLY_BOMB, 0, 0, ent.Position, (player.Position - ent.Position):Resized(7),  ent):ToNPC()
 						egg:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, ent.Position, Vector(0,0), ent ):ToEffect()
@@ -344,19 +344,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("PunchStationary", true)
 				elseif spr:IsPlaying("PunchStationary") then
 					if spr:IsEventTriggered("Spit") then
-						local dust = Isaac.Spawn( RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_STOLID, 1, ent.Position, Vector(0,0), ent ):ToNPC()
+						local dust = Isaac.Spawn( RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THE_STOLID, 1, ent.Position, Vector(0,0), ent ):ToNPC()
 						dust:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 					end
 				end
 			elseif data.State == 9 then
 				if spr:IsFinished("SingStationary") then
 					data.State = 5
-					for i, v in pairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) ) do
+					for i, v in pairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) ) do
 						v:Die()
 					end
 				elseif not spr:IsPlaying("SingStationary") then
 					spr:Play("SingStationary", true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
 				elseif spr:IsPlaying("SingStationary") then
 					if spr:WasEventTriggered("Spit") then
 						InutilLib.game:ShakeScreen(10)
@@ -368,10 +368,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			elseif data.State == 10 then
 				if spr:IsFinished("Transition") then
 					data.State = 0
-					for i, v in pairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) ) do
+					for i, v in pairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) ) do
 						v:Die()
 					end
-					for i, v in pairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_STOLID, 1, false, true) ) do
+					for i, v in pairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THE_STOLID, 1, false, true) ) do
 						v:Remove()
 					end
 					--crackwaves
@@ -402,14 +402,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			elseif data.State == 11 then
 				if spr:IsFinished("Sing") then
 					data.State = 0
-					for i, v in pairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_OVUM_EGG, -1, false, true) ) do
+					for i, v in pairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_OVUM_EGG, -1, false, true) ) do
 						InutilLib.SetTimer( 7 * i, function()
 							v:Die()
 						end)
 					end
 				elseif not spr:IsPlaying("Sing") then
 					spr:Play("Sing", true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STOLID_SING, 1, 0, false, 0.9 );
 				elseif spr:IsPlaying("Sing") then
 					if spr:WasEventTriggered("Spit") then
 						InutilLib.game:ShakeScreen(10)
@@ -434,7 +434,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					local chosenNumofBarrage =  math.random( 8, 15 );
 					for i = 1, chosenNumofBarrage do
 						--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
+						local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, ent.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), ent, 0, 0):ToProjectile()
 						tear.Scale = math.random(2,12)/10;
 						tear.FallingSpeed = -27 + math.random(1,5) * 2 ;
 						tear.FallingAccel = 0.5;
@@ -462,10 +462,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end]]
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and damage.Variant == RebekahCurseEnemies.ENTITY_THE_STOLID then
+	if damage.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and damage.Variant == RebekahCurse.Enemies.ENTITY_THE_STOLID then
 		local data = yandereWaifu.GetEntityData(damage)
 		if (damageSource.Type == EntityType.ENTITY_TEAR and damageSource.Variant ~= 42) and (damageFlag & DamageFlag.DAMAGE_EXPLOSION == 0) then
 			return false
@@ -479,7 +479,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
 	if data.path == nil then data.path = ent.Pathfinder end
-	if ent.Variant == RebekahCurseEnemies.ENTITY_OVUM_EGG then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_OVUM_EGG then
 		if ent.FrameCount == 1 then
 			if ent.SubType >= 1 then
 				spr:ReplaceSpritesheet(0, "gfx/bosses/normal/ovumegg_stone.png");
@@ -494,17 +494,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_OVUM_EGG then
-		local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurseEnemies.ENTITY_OVUM_EGG_EFFECT, ent.SubType, ent.Position, Vector.Zero, ent):ToEffect()
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_OVUM_EGG then
+		local effect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_OVUM_EGG_EFFECT, ent.SubType, ent.Position, Vector.Zero, ent):ToEffect()
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 
@@ -559,7 +559,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 	end
 	
-end, RebekahCurseEnemies.ENTITY_OVUM_EGG_EFFECT)
+end, RebekahCurse.Enemies.ENTITY_OVUM_EGG_EFFECT)
 
 
 if StageAPI and StageAPI.Loaded then	
@@ -571,7 +571,7 @@ if StageAPI and StageAPI.Loaded then
 			Bossname = "gfx/ui/boss/name_the_stolid.png",
 			Weight = 1,
 			Rooms = StageAPI.RoomsList("The Stolid Rooms", require("resources.luarooms.bosses.the_stolid_big")),
-			Entity =  {Type = RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurseEnemies.ENTITY_THE_STOLID},
+			Entity =  {Type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurse.Enemies.ENTITY_THE_STOLID},
 		})
 	}
 	StageAPI.AddBossToBaseFloorPool({BossID = "The Stolid"},LevelStage.STAGE2_1,StageType.STAGETYPE_REPENTANCE_B)

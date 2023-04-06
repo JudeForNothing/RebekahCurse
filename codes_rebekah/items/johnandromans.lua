@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function()
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_JOHNANDROMANS) then
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_JOHNANDROMANS) then
 			if not data.PersistentPlayerData.LostJohnRomansBuff then
 				InutilLib.RemoveInnateItem(player, CollectibleType.COLLECTIBLE_SALVATION)
 			end
@@ -17,7 +17,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	local player = damage:ToPlayer();
 	local data = yandereWaifu.GetEntityData(player)
 
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_JOHNANDROMANS) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and (not data.PsoriasisHealth or data.PsoriasisHealth <= 0) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_JOHNANDROMANS) and (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and (not data.PsoriasisHealth or data.PsoriasisHealth <= 0) then
 		if not data.PersistentPlayerData.LostJohnRomansBuff then
 			InutilLib.RemoveInnateItem(player, CollectibleType.COLLECTIBLE_SALVATION)
 			data.PersistentPlayerData.LostJohnRomansBuff = true

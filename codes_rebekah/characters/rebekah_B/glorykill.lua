@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
     local player = Isaac.GetPlayer(0)
 	local data = yandereWaifu.GetEntityData(ent)
     --print(ent.HitPoints)
-    if ent.HitPoints <= 0 then
+    --if ent.HitPoints <= 0 then
         local playerdata = yandereWaifu.GetEntityData(player)
         if player and yandereWaifu.IsTaintedRebekah(player) then
             count = 0
@@ -15,7 +15,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
                 end
             end
         end
-    end
+    --end
 end)
 
 
@@ -23,9 +23,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
     local player = Isaac.GetPlayer(0)
 	local data = yandereWaifu.GetEntityData(ent)
     --print(ent.HitPoints)
-    if ent.HitPoints <= 0 and ent:IsBoss() and player and yandereWaifu.IsTaintedRebekah(player) then
+    local HitPointLimit = ent.HitPoints <= ent.MaxHitPoints/15
+    if HitPointLimit and ent:IsBoss() and player and yandereWaifu.IsTaintedRebekah(player) then
         if count < 1 then
-            local animName = ent:GetSprite():GetFilename()
+            --[[local animName = ent:GetSprite():GetFilename()
             local animIsPlayingName = ent:GetSprite():GetAnimation()
             local animName = ent:GetSprite():GetFilename()
             local frame = ent:GetSprite():GetFrame()
@@ -39,20 +40,63 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             yandereWaifu.GetEntityData(data.glorykillBody).MaxHitPoints = ent.MaxHitPoints
             yandereWaifu.GetEntityData(data.glorykillBody).IsGlorykill = true
 
-            ent:Remove()
+            ent:Remove()]]
+            
+            
+            
+            
+            --data.isGlorykillProc = true
+            
+            
+            
+            
+            --ent.HitPoints = ent.MaxHitPoints/15
 
-            yandereWaifu.GetEntityData(player).IsGlorykillMode = true
+            --yandereWaifu.GetEntityData(player).IsGlorykillMode = true
         end
+    end
+    if not data.LastNPCFrame then data.LastNPCFrame = ent.FrameCount end
+    if data.LastNPCFrame < ent.FrameCount then
+         data.TheoreticalDmg = 0
+         data.LastNPCFrame = ent.FrameCount
     end
 end)
 
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local playerType = player:GetPlayerType()
+		local room = InutilLib.game:GetRoom()
+		local data = yandereWaifu.GetEntityData(player)
+		
+		if yandereWaifu.IsTaintedRebekah(player)  then
+			ent:BloodExplode()
+			if not ent:IsInvincible() then
+				for i = 1, math.ceil(ent.MaxHitPoints/15)  do
+					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, ent.Position, Vector.FromAngle((Vector(0,10)):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
+					yandereWaifu.GetEntityData(heart).Parent = player
+					yandereWaifu.GetEntityData(heart).maxHealth = 15
+					--print(math.ceil(maxHealth/3))
+				end
+			end
+            local crystalCount = 1
+            --[[if data.HitCount >= 30 then
+                crystalCount = 2
+            end]]
+            for i = 1, crystalCount + math.random(0,1) do
+                local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
+            end
+		end
+	end
+end)
 
+--[[
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = yandereWaifu.GetEntityData(eff);
 	local player = data.Player
 	
-	if data.IsGlorykillMode then
+	if data.isGlorykill then
 
         if data.HitCount then
             if data.HitCount >= 10 and not data.Bleed then
@@ -108,55 +152,89 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, eff)
 end)
 
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, eff)
 	local sprite = eff:GetSprite();
 	local data = yandereWaifu.GetEntityData(eff);
-	local player = data.Player
 	
-	if data.IsGlorykill then
-		if not data.Countdown then data.Countdown = 30*5 end
+	if data.isGlorykill then
+		if not data.Countdown then data.Countdown = 300 end
         data.Countdown = data.Countdown - 1
         if data.Countdown <= 0 then
             eff:Remove()
-            yandereWaifu.GetEntityData(player).IsGlorykillMode = false
-            yandereWaifu.GetEntityData(player).HitCount = 0
+            yandereWaifu.GetEntityData(data.GloryKillPlayer).IsGlorykillMode = false
+            data.HitCount = 0
 
             eff:BloodExplode()
-
-            local maxHealth = data.MaxHitPoints
 			if not eff:IsInvincible() then
-				for i = 1, math.ceil(maxHealth/150) +  yandereWaifu.GetEntityData(player).HitCount do
-					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, eff.Position, Vector.FromAngle((player.Position - eff.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), eff)
+				for i = 1, math.ceil(eff.MaxHitPoints/150) +  data.HitCount do
+					local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, eff.Position, Vector.FromAngle((data.GloryKillPlayer.Position - eff.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), eff)
 					yandereWaifu.GetEntityData(heart).Parent = player
 					yandereWaifu.GetEntityData(heart).maxHealth = 15
 					--print(math.ceil(maxHealth/3))
 				end
 			end
-            local count = 1
-            if yandereWaifu.GetEntityData(player).HitCount >= 30 then
-                count = 2
+            local crystalCount = 1
+            if data.HitCount >= 30 then
+                crystalCount = 2
             end
-            for i = 1, count do
+            for i = 1, crystalCount do
                 local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, eff.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
             end
         end
 	end
-end, RebekahCurse.ENTITY_EXTRACHARANIMHELPER)
+end)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, amount, damageFlag, damageSource, damageCountdownFrames)
+    local data = yandereWaifu.GetEntityData(ent);
+    local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
+    if ent:ToNPC() then
+        if not data.TheoreticalDmg then data.TheoreticalDmg = 0 end
+        data.TheoreticalDmg = data.TheoreticalDmg + amount
+    end
+    print("Start")
+    print(data.TheoreticalDmg)
+    if (data.isGlorykillProc or data.isGlorykill) or (ent:IsBoss() and count < 1 and ent.HitPoints <= amount + data.TheoreticalDmg and yandereWaifu.IsTaintedRebekah(player)) then
+        if data.isGlorykillProc then
+            data.isGlorykillProc = false
+            data.isGlorykill = true
+            if not data.HitCount then data.HitCount = 0 end
+            ent:AddEntityFlags(EntityFlag.FLAG_HELD)
+            ent.Target = nil
+            if player then
+                data.GloryKillPlayer = player
+                yandereWaifu.GetEntityData(player).IsGlorykillMode = true
+            end
+        else
+            if not data.HitCount then data.HitCount = 0 end
+            data.isGlorykillProc = false
+            ent.HitPoints = ent.MaxHitPoints/15
+
+            print("hits")
+        end
+        data.HitCount = data.HitCount + 1
+        return false
+    end
+end)
+
 
 local combo = Sprite();
 combo:Load("gfx/ui/combo_glorykill_counter.anm2", true);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, eff)
-	local sprite = eff:GetSprite();
-	local data = yandereWaifu.GetEntityData(eff);
-	local player = data.Player
-	
-	if data.IsGlorykillMode then
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
+	local sprite = ent:GetSprite();
+	local data = yandereWaifu.GetEntityData(ent);
+
+	if data.isGlorykill then
 		if data.HitCount then
             combo:SetFrame("Count", data.HitCount)
 
-            local loc = Isaac.WorldToScreen(eff.Position + Vector(-10, -10) + Vector(math.random(-2, 2), math.random(-2, 2)))
+            local loc = Isaac.WorldToScreen(ent.Position + Vector(-10, -10) + Vector(math.random(-2, 2), math.random(-2, 2)))
 			combo:Render(loc + Vector(-5, -50), Vector(0,0), Vector(0,0));
         end
 	end
-end)
+    if data.isGlorykillProc and ent.HitPoints <= ent.MaxHitPoints/15 then
+        ent.HitPoints = ent.MaxHitPoints/15
+        ent:Morph(ent.Type, ent.Variant, ent.SubType, ent:GetChampionColorIdx())
+    end
+end)]]

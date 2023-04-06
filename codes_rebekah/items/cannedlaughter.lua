@@ -4,9 +4,9 @@ function yandereWaifu:CannedLaughterNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_CANNEDLAUGHTER) and not room:IsClear() and math.random(1,10) >= 9 then
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_CANNEDLAUGHTER) and not room:IsClear() and math.random(1,10) >= 9 then
 			laugh = true
-			SFXManager():Play( RebekahCurseSounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
 		end
 	end
 	if laugh then

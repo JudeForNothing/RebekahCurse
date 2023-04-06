@@ -4,7 +4,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
     local data = yandereWaifu.GetEntityData(tr)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_BOBATEA) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_BOBATEA) then
 		if tr.Variant ~= RebekahCurse.ENTITY_TAPIOCATEAR and math.random(1,5) == 5 then
             tr:ChangeVariant(RebekahCurse.ENTITY_TAPIOCATEAR)
             data.IsTapiocaTear = true

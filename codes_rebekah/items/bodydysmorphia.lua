@@ -43,7 +43,7 @@ function yandereWaifu:useBodyDysmorphia(collItem, rng, player, flag, slot)
 	player:AddCacheFlags(CacheFlag.CACHE_ALL);
 	player:EvaluateItems();
 
-	player:AddNullCostume(RebekahCurseCostumes.BodyDysmorphia)
+	player:AddNullCostume(RebekahCurse.Costumes.BodyDysmorphia)
 
 	if not data.BodyDysmorphiaAura then
 		data.BodyDysmorphiaAura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BODYDYSMORPHIAAURA, 0, player.Position, Vector(0,0), player)
@@ -54,7 +54,7 @@ function yandereWaifu:useBodyDysmorphia(collItem, rng, player, flag, slot)
 	--if data.BODYDYSMORPHIA_MENU.open then
 	--end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBodyDysmorphia, RebekahCurseItems.COLLECTIBLE_BODYDYSMORHIA);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBodyDysmorphia, RebekahCurse.Items.COLLECTIBLE_BODYDYSMORHIA);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 	local data = yandereWaifu.GetEntityData(player)
@@ -95,7 +95,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 				yandereWaifu.GetEntityData(data.BodyDysmorphiaAura).SpriteScale = data.PersistentPlayerData.DysmorphiaUses
 			end
 		elseif data.PersistentPlayerData.DysmorphiaUses and data.PersistentPlayerData.DysmorphiaUses <= 0 and not data.BDDidRemoveCostume then
-			player:TryRemoveNullCostume(RebekahCurseCostumes.BodyDysmorphia)
+			player:TryRemoveNullCostume(RebekahCurse.Costumes.BodyDysmorphia)
 			data.BDDidRemoveCostume = true
 			data.BodyDysmorphiaAura:Remove()
 		end

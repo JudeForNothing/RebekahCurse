@@ -257,10 +257,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 			if yandereWaifu.GetEntityData(player).IsLeftover then
 				yandereWaifu.heartBoneReserveRenderLogic(player)
 			end
-			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts and Options.ChargeBars then
+			if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EternalHearts and Options.ChargeBars then
 				yandereWaifu.eternalBarLogic(player)
 			end
-			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and Options.ChargeBars then
+			if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and Options.ChargeBars then
 				yandereWaifu.soulTeleportBirthrightBarLogic(player)
 			end
 		end

@@ -13,9 +13,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PSORAISIS) then
-	if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_PSORAISIS ) then
-		player:AddNullCostume(RebekahCurseCostumes.Psoriasis)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PSORAISIS) then
+	if InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_PSORAISIS ) then
+		player:AddNullCostume(RebekahCurse.Costumes.Psoriasis)
 	end
 		if not data.PsoriasisHealth or (player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and player:GetName() == "Magdalene" and data.MaxPsoriasisHealth < 8) then
 			if player:GetName() == "Magdalene" then
@@ -49,7 +49,7 @@ function yandereWaifu:PsoriasisNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PSORAISIS) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PSORAISIS) then
 			if data.MaxPsoriasisHealth > data.PsoriasisHealth then
 				data.PsoriasisHealth = data.PsoriasisHealth + 1
 			end
@@ -60,7 +60,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, yandereWaifu.Ps
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	local data = yandereWaifu.GetEntityData(damage)
-	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_PSORAISIS) and IsRealDamage(damageFlag) then
+	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_PSORAISIS) and IsRealDamage(damageFlag) then
 		--if data.PsoriasisFrameCount > 0 then
 		--	data.PsoriasisFrameCount = data.PsoriasisFrameCount - 1
 		--end
@@ -86,7 +86,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_,  pl) --render stuff
 	local data = yandereWaifu.GetEntityData(pl)
-	if data.PsoriasisHealth and pl:HasCollectible(RebekahCurseItems.COLLECTIBLE_PSORAISIS) then
+	if data.PsoriasisHealth and pl:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PSORAISIS) then
 		local Sprite = Sprite()
 		Sprite:Load("gfx/ui/ui_rebekah_hearts.anm2", true)
 		for i = 0, data.MaxPsoriasisHealth/2 - 1 do

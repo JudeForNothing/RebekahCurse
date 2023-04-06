@@ -39,17 +39,17 @@ function yandereWaifu:usetheShining(collItem, rng, player, flags)
 		end
 	end
 	if flags & UseFlag.USE_NOANIM == 0 then
-        player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_THESHINING, "UseItem", "PlayerPickupSparkle")
+        player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_THESHINING, "UseItem", "PlayerPickupSparkle")
     end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usetheShining, RebekahCurseItems.COLLECTIBLE_THESHINING);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usetheShining, RebekahCurse.Items.COLLECTIBLE_THESHINING);
 
 
 function yandereWaifu:ItsJohnnyenteringtheroom()
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_THESHINING) and data.GonnaChopOffTheDoor then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_THESHINING) and data.GonnaChopOffTheDoor then
 			data.GonnaChopOffTheDoor = false
 			player:AddCacheFlags(CacheFlag.CACHE_ALL);
 			player:EvaluateItems()

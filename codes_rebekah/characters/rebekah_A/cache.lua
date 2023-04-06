@@ -1,14 +1,15 @@
 local cache = {}
 function cache.SetRebekahBaseStats(cacheF, player)
 local data = yandereWaifu.GetEntityData(player)
-	if data.currentMode == REBECCA_MODE.RedHearts then
+	if data.currentMode == RebekahCurse.REBECCA_MODE.RedHearts then
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			player.Damage = player.Damage -- 0.73 --1.73
 		end
 		if cacheF == CacheFlag.CACHE_LUCK then
 			player.Luck = player.Luck - 0.13
 		end
-	elseif data.currentMode == REBECCA_MODE.SoulHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.SoulHearts or data.currentMode == RebekahCurse.REBECCA_MODE.BlendedHearts 
+	or data.currentMode == RebekahCurse.REBECCA_MODE.HalfSoulHearts then
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			if yandereWaifu.GetEntityData(player).SoulBuff then
 				player.Damage = player.Damage * 2.5
@@ -41,7 +42,7 @@ local data = yandereWaifu.GetEntityData(player)
 			player:CheckFamiliar(FamiliarVariant.LIL_HAUNT, hauntMinions, RNG())
 			--end
 		end
-	elseif data.currentMode == REBECCA_MODE.GoldHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.GoldHearts then
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			player.Damage = player.Damage + 1.00
 		end
@@ -54,7 +55,7 @@ local data = yandereWaifu.GetEntityData(player)
 		if cacheF == CacheFlag.CACHE_LUCK then
 			player.Luck = player.Luck + 3
 		end
-	elseif data.currentMode == REBECCA_MODE.EvilHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.EvilHearts then
 		--[[if player:GetHearts() < 1 then
 			if cacheF == CacheFlag.CACHE_DAMAGE then
 				player.Damage = player.Damage / 2
@@ -82,7 +83,7 @@ local data = yandereWaifu.GetEntityData(player)
 				player.Luck = player.Luck - 1
 			end
 		--end
-	elseif data.currentMode == REBECCA_MODE.EternalHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.EternalHearts then
 		if cacheF == CacheFlag.CACHE_FIREDELAY then
 			player.MaxFireDelay = player.MaxFireDelay + 2
 		end
@@ -101,7 +102,7 @@ local data = yandereWaifu.GetEntityData(player)
 		if cacheF == CacheFlag.CACHE_TEARFLAG then
 			player.TearFlags = player.TearFlags | TearFlags.TEAR_PIERCING
 		end
-	elseif data.currentMode == REBECCA_MODE.BoneHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts then
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			player.Damage = player.Damage * 1.1
 		end
@@ -111,7 +112,7 @@ local data = yandereWaifu.GetEntityData(player)
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed + 0.30
 		end
-	elseif data.currentMode == REBECCA_MODE.BrideRedHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.BrideRedHearts then
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			player.Damage = player.Damage - 1.73
 		end
@@ -121,7 +122,7 @@ local data = yandereWaifu.GetEntityData(player)
 		if cacheF == CacheFlag.CACHE_FLYING then
 			player.CanFly = true
 		end
-	elseif data.currentMode == REBECCA_MODE.RottenHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.RottenHearts then
 		if cacheF == CacheFlag.CACHE_FIREDELAY then
 			if player.MaxFireDelay >= 4 then
 				player.MaxFireDelay = player.MaxFireDelay - 1
@@ -133,7 +134,7 @@ local data = yandereWaifu.GetEntityData(player)
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			player.Damage = player.Damage / 2
 		end
-	elseif data.currentMode == REBECCA_MODE.BrokenHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed - 0.25
 		end
@@ -156,12 +157,24 @@ local data = yandereWaifu.GetEntityData(player)
 				player.Luck = player.Luck
 			end
 		end
-	elseif data.currentMode == REBECCA_MODE.ImmortalHearts then
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.ImmortalHearts then
 		if cacheF == CacheFlag.CACHE_DAMAGE then
 			player.Damage = player.Damage - 1.50
 		end
 		if cacheF == CacheFlag.CACHE_SPEED then
 			player.MoveSpeed = player.MoveSpeed - 0.10
+		end
+	
+
+	elseif data.currentMode == RebekahCurse.REBECCA_MODE.HalfRedHearts then
+		if cacheF == CacheFlag.CACHE_DAMAGE then
+			player.Damage = player.Damage - 0.73 --1.73
+		end
+		if cacheF == CacheFlag.CACHE_LUCK then
+			player.Luck = player.Luck - 0.13
+		end
+		if cacheF == CacheFlag.CACHE_SPEED then
+			player.MoveSpeed = player.MoveSpeed + 0.15
 		end
 	end
 end

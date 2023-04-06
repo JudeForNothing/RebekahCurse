@@ -2,10 +2,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_THE_HOUND then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_THE_HOUND then
 		if not data.State then
 			spr:Play("Spawn", true)
-			SFXManager():Play( RebekahCurseSounds.SOUND_HOUND_SPAWN, 1, 0, false, 1 )
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_HOUND_SPAWN, 1, 0, false, 1 )
 			data.State = 0
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
 		else
@@ -72,23 +72,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					spr:Play("DashingHori", true)
 					spr.FlipX = false
 					data.DashDir = Vector(10,0)
-					SFXManager():Play( RebekahCurseSounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
 				elseif spr:IsFinished("StartDashHori") and spr.FlipX then
 					data.State = 4
 					spr:Play("DashingHori", true)
 					spr.FlipX = true
 					data.DashDir = Vector(-10,0)
-					SFXManager():Play( RebekahCurseSounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
 				elseif spr:IsFinished("StartDashBack") then
 					data.State = 4
 					spr:Play("DashingBack", true)
 					data.DashDir = Vector(0,-10)
-					SFXManager():Play( RebekahCurseSounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
 				elseif spr:IsFinished("StartDashFront") then
 					data.State = 4
 					spr:Play("DashingFront", true)
 					data.DashDir = Vector(0,10)
-					SFXManager():Play( RebekahCurseSounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
+					SFXManager():Play( RebekahCurse.Sounds.SOUND_HOUND_CHARGE, 1, 0, false, 1 )
 				end
 				ent.Velocity = ent.Velocity * 0.6
 			elseif data.State == 4 then --the actual dash
@@ -158,10 +158,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Variant == RebekahCurseEnemies.ENTITY_THE_HOUND and yandereWaifu.GetEntityData(damage).IsInvincible then
+	if damage.Variant == RebekahCurse.Enemies.ENTITY_THE_HOUND and yandereWaifu.GetEntityData(damage).IsInvincible then
 		return false
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

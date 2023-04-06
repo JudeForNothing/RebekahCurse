@@ -2,13 +2,13 @@
 function yandereWaifu.GoldHeartSlam(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	local room = InutilLib.room
 	for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 		if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
-			if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
+			if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
 				InutilLib.DoKnockbackTypeI(player, enemy, 0.35)
 			end
 		end
@@ -18,7 +18,7 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	for i = 1, chosenNumofBarrage do
 		player.Velocity = player.Velocity * 0.8; --slow him down
 		--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-		local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.ROCK, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+		local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.ROCK, player.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 		tear.Scale = math.random(2,12)/10;
 		tear.FallingSpeed = -9 + math.random() * 2 ;
 		tear.FallingAcceleration = 0.5;
@@ -48,10 +48,10 @@ function yandereWaifu.GoldHeartSlam(player, vector)
 	Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, player.Position, Vector(0,0), player)
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 14, player.Position, Vector.Zero, player):ToEffect()
 	yandereWaifu.GetEntityData(poof).Parent = player
-	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Gold );
-	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Gold );
-	playerdata.specialCooldown = REBEKAH_BALANCE.GOLD_HEARTS_DASH_COOLDOWN - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.GOLD_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Gold );
+	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Gold );
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 end
 
@@ -77,7 +77,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -121,7 +121,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -156,7 +156,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -170,9 +170,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -181,17 +181,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--sounds
 		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
 			end
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 	end
@@ -299,8 +299,8 @@ function yandereWaifu.RebekahGoldBarrage(player, direction)
 			end
 		end
 	end
-	yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Gold );
-	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Gold );
+	yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahCurse.RebekahPoofParticleType.Gold );
+	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Gold );
 end
 
 --lvl one ned
@@ -381,7 +381,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--local setAngle = (eff.Velocity):GetAngleDegrees()
 		elseif eff:GetSprite():IsFinished("ChargingFadeOut") then
 			eff:Remove()
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 1, 0, false, 1 );
 		end
 	end
 end, RebekahCurse.ENTITY_CHRISTIANNEDEXTRA );
@@ -740,7 +740,7 @@ function yandereWaifu:PsuedoKnifeUpdate(tr)
 		end
 		--on death
 		if tr.Height >= -7 or tr:CollidesWithGrid() then
-			yandereWaifu.SpawnPoofParticle( tr.Position, Vector(0,0), tr, RebekahPoofParticleType.Gold )
+			yandereWaifu.SpawnPoofParticle( tr.Position, Vector(0,0), tr, RebekahCurse.RebekahPoofParticleType.Gold )
 			tr:Remove()
 		end
 	end
@@ -919,8 +919,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 				tear.FallingAcceleration = 0.5;
 				tear.CollisionDamage = fam.Player.Damage;
 			end
-			yandereWaifu.SpawnPoofParticle( fam.Position, Vector(0,0), fam, RebekahPoofParticleType.Gold );
-			SpawnHeartParticles( 3, 5, fam.Position, RandomHeartParticleVelocity(), fam, RebekahHeartParticleType.Gold );
+			yandereWaifu.SpawnPoofParticle( fam.Position, Vector(0,0), fam, RebekahCurse.RebekahPoofParticleType.Gold );
+			SpawnHeartParticles( 3, 5, fam.Position, RandomHeartParticleVelocity(), fam, RebekahCurse.RebekahHeartParticleType.Gold );
 		end]]
 	if spr:IsFinished("Repel") or spr:IsFinished("Attack_Front") or spr:IsFinished("Attack_Back") or spr:IsFinished("Attack_Side") then
 		spr:Play("Idle", false)
@@ -1119,7 +1119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		spr:Play("Idle", true)
 	end
 	local damageNerf = 0
-	if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+	if yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.GoldHearts then
 		damageNerf = 1
 		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
 	end
@@ -1127,7 +1127,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 	if fam.SubType == 4 then
 		if InutilLib.game:GetRoom():GetFrameCount() == 1 and InutilLib.game:GetRoom():GetType() == RoomType.ROOM_BOSS then
 			spr:Play("DeusVult",true)
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 		end
 	elseif fam.SubType == 0 or fam.SubType == 1 then
 		--reading Bible mechanic
@@ -1135,10 +1135,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 					spr:Play("DeusVult",true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 				elseif e.Type == EntityType.ENTITY_SATAN then
 					spr:Play("ForJerusalem",true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 				end
 			end
 		end
@@ -1148,7 +1148,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		InutilLib.FlipXByVec(fam, false)
 	end
 	if spr:IsEventTriggered("Hit") then
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 2, 0, false, 1 );
 	end
 	fam.Velocity = fam.Velocity - fam.Velocity*0.25
 	if spr:IsPlaying("Idle") then
@@ -1186,14 +1186,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 						data.ChargeTo = 0
 						spr:Play("Fire", true)
 						data.target = target
-						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+						InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
 						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 					elseif ((angle >= 0 and angle <= 10) or (angle <= 0 and angle >= -10)) then 
 						spr.FlipX = false 
 						data.ChargeTo = 1
 						spr:Play("Fire", true)
 						data.target = target
-						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+						InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
 						InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 					else
 						if math.random(1,5) == 5 and fam.FrameCount % 9 == 0 then
@@ -1285,14 +1285,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 										data.ChargeTo = 0
 										spr:Play("Charge", true)
 										data.target = e
-										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
 										InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 									elseif ((angle >= 0 and angle <= 10) or (angle <= 0 and angle >= -10)) then 
 										spr.FlipX = false 
 										data.ChargeTo = 1
 										spr:Play("Charge", true)
 										data.target = e
-										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
 										InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 									end
 								end
@@ -1312,7 +1312,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		end	
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 		if fam.SubType == 1 then
@@ -1431,7 +1431,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 				local checkingVector = (room:GetGridEntity(room:GetGridIndex(fam.Position + data.savedVelocity)))
 				if checkingVector and (checkingVector:GetType() == GridEntityType.GRID_WALL or checkingVector:GetType() == GridEntityType.GRID_DOOR) then 
 					spr:Play("Charged", true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 1, 0, false, 1 );
 				end
 			end
 		end
@@ -1631,7 +1631,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 		spr:Play("Idle", true)
 	end
 	local damageNerf = 0
-	if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+	if yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.GoldHearts then
 		damageNerf = 1
 		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
 	end
@@ -1649,7 +1649,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 		InutilLib.FlipXByVec(fam, false)
 	end
 	if spr:IsEventTriggered("Hit") then
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 2, 0, false, 1 );
 	end
 	fam.Velocity = fam.Velocity - fam.Velocity*0.25
 	if spr:IsPlaying("Idle") then
@@ -1687,7 +1687,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 	
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 		spr:Play("Idle", true)
@@ -1758,7 +1758,7 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 		end
 	end
 	local damageNerf = 0
-	if yandereWaifu.GetEntityData(fam.Player).currentMode ~= REBECCA_MODE.GoldHearts then
+	if yandereWaifu.GetEntityData(fam.Player).currentMode ~= RebekahCurse.REBECCA_MODE.GoldHearts then
 		damageNerf = 1
 		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
 	end
@@ -1785,7 +1785,7 @@ function yandereWaifu:ThrownSpearUpdate(fam, _)
 			fam.Velocity = Vector( 0,0 );
 			spr.FlipX = data.willFlipX
 			
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 1, 0, false, 1 );
 		end
 		if not spr:IsPlaying("Flyingn't") then
 			if fam.FrameCount > 30 then
@@ -2039,7 +2039,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	elseif spr:IsPlaying("March") then
 		if fam.FrameCount % 3 == 0 then
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_RATTLEARMOR, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_RATTLEARMOR, 1, 0, false, 1 );
 		end
 		local spear
 		for i, e in pairs(Isaac.GetRoomEntities()) do
@@ -2064,7 +2064,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	elseif spr:IsPlaying("Scream") then
 		if spr:GetFrame() == 11 then
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SCREAMING_SCREAM, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SCREAMING_SCREAM, 1, 0, false, 1 );
 			for i, e in pairs(Isaac.GetRoomEntities()) do
 				if e:IsEnemy() then
 					e.Target = fam
@@ -2083,7 +2083,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif fam.SubType == 3 then
 			for k, enemy in pairs( Isaac.GetRoomEntities() ) do
 				if enemy:IsEnemy() --[[and not enemy:IsEffect() and not enemy:IsInvulnurable()]] then
-					if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
+					if enemy.Position:Distance( player.Position ) < enemy.Size + player.Size + RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_KNOCKBACK_RANGE then
 						InutilLib.DoKnockbackTypeI(player, enemy, 0.65)
 					end
 				end
@@ -2195,11 +2195,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 	if spr:IsFinished("Spawn") then
 		spr:Play("Idle", true)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
 	end
 	
 	local damageNerf = 0
-	if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+	if yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.GoldHearts then
 		damageNerf = 1
 		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
 	end
@@ -2295,10 +2295,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 								if (fam.Position - e.Position):Length() < 250 then
 									if math.random(1,5) == 5 then
 										spr:Play("Boo")
-										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 1 );
 									else
 										spr:Play("StartSpin", true)
-										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_GRUNT, 1, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_BARBARIAN_GRUNT, 1, 0, false, 1 );
 									end
 								end
 							end
@@ -2539,7 +2539,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	elseif spr:IsFinished("Spin") then
 		data.rot = nil
 		spr:Play("EndSpin", true)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 0.5 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_BARBARIAN_LAUGH, 1, 0, false, 0.5 );
 	--[[elseif spr:IsPlaying("EndSpin") then
 		if spr:GetFrame() >= 6 and spr:GetFrame() <= 215 then
 			fam:AddConfusion(EntityRef(fam), 2, false)
@@ -2678,7 +2678,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				if yandereWaifu.GetEntityData(e).IsTargetedByLaban then
 					InutilLib.SFX:Play( SoundEffect.SOUND_KNIFE_PULL, 0.7, 0, false, 1 );
 					yandereWaifu.GetEntityData(e).IsTargetedByLaban = false
-					yandereWaifu.SpawnPoofParticle( e.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Evil );
+					yandereWaifu.SpawnPoofParticle( e.Position, Vector( 0, 0 ), player, RebekahCurse.RebekahPoofParticleType.Evil );
 					e:TakeDamage(7.5 + data.IncreasedBuff -damageNerf + fam.Player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BFFS), 0, EntityRef(fam),10)
 				end
 			end
@@ -2821,7 +2821,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	end
 	
 	local damageNerf = 0
-	if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts then
+	if yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.GoldHearts then
 		damageNerf = 1
 		fam:SetColor(Color(0.2,0.2,0.2,1,0,0,0),2,2,false,false)
 	end
@@ -3132,7 +3132,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			end
 			InutilLib.game:ShakeScreen(5);
 			InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
-			yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Gold );
+			yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahCurse.RebekahPoofParticleType.Gold );
 		end
 		fam.Velocity = fam.Velocity * 0.9
 	end
@@ -3145,7 +3145,7 @@ function yandereWaifu:LevelUpNeds()
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local canUpgrade = false
 		local player = Isaac.GetPlayer(p)
-		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.GoldHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.GoldHearts then
 			canUpgrade = true
 	--		break
 		end

@@ -28,7 +28,7 @@ function TaintedRebeccaInit(player)
 	data.specialCooldown = 0 --cooldown special
 
 	if player:GetPlayerType() == RebekahCurse.REB_CURSED then
-		mode = REBECCA_MODE.CursedCurse
+		mode = RebekahCurse.REBECCA_MODE.CursedCurse
 		data.PersistentPlayerData.BasicTaintedHealth = 50
 		data.PersistentPlayerData.MaxTaintedHealth = 50
 		data.PersistentPlayerData.MaxRageCrystal = 2
@@ -45,10 +45,10 @@ function TaintedRebeccaInit(player)
 
 	local hasPocket = yandereWaifu.HasCollectibleGuns(player)
 	--for other characters who comes in but not on game_start
-	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurseItems.COLLECTIBLE_TAINTEDQ, RebekahCurseItems.COLLECTIBLE_WIZOOBTONGUE, RebekahCurseItems.COLLECTIBLE_APOSTATE, RebekahCurseItems.COLLECTIBLE_MAINLUA, RebekahCurseItems.COLLECTIBLE_PSALM45, RebekahCurseItems.COLLECTIBLE_BARACHIELSPETAL, RebekahCurseItems.COLLECTIBLE_FANG, RebekahCurseItems.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurseItems.COLLECTIBLE_COMFORTERSWING)
+	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.Items.COLLECTIBLE_TAINTEDQ, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.Items.COLLECTIBLE_APOSTATE, RebekahCurse.Items.COLLECTIBLE_MAINLUA, RebekahCurse.Items.COLLECTIBLE_PSALM45, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.Items.COLLECTIBLE_FANG, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
 	if --[[Game():GetRoom():GetFrameCount() > 1 and]] not hasPocket then
 		--yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
-		player:SetPocketActiveItem(RebekahCurseItems.COLLECTIBLE_TAINTEDQ)
+		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_TAINTEDQ)
 	end
 end
 
@@ -69,9 +69,9 @@ end)
 function yandereWaifu:TaintedRebekahcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	local num, num2, num3
-	if data.currentMode == REBECCA_MODE.BrideRedHearts and yandereWaifu.IsNormalRebekah(player) then num1 = 1 else num1 = 0 end
-	--if data.currentMode == REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
-	--if data.currentMode == REBECCA_MODE.BoneHearts and yandereWaifu.IsNormalRebekah(player) then num3 = 1 else num3 = 0 end
+	if data.currentMode == RebekahCurse.REBECCA_MODE.BrideRedHearts and yandereWaifu.IsNormalRebekah(player) then num1 = 1 else num1 = 0 end
+	--if data.currentMode == RebekahCurse.REBECCA_MODE.EternalHearts and yandereWaifu.IsNormalRebekah(player) then num2 = 1 else num2 = 0 end
+	--if data.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts and yandereWaifu.IsNormalRebekah(player) then num3 = 1 else num3 = 0 end
 	if cacheF == CacheFlag.CACHE_FAMILIARS then
 		player:CheckFamiliar(RebekahCurse.ENTITY_LABAN, num1, RNG())
 		--player:CheckFamiliar(RebekahCurse.ENTITY_MORNINGSTAR, num2, RNG())
@@ -811,9 +811,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 									yandereWaifu.SwingCursedKnife(player, data.taintedWeapon, 5, ((data.TaintedEnemyTarget.Position - player.Position):GetAngleDegrees()))
 								elseif value == 3 then
 									success = true
-									InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_RAGE, 0.8, 0, false, 1 );
+									InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_RAGE, 0.8, 0, false, 1 );
 									data.TaintedRageTick = 210
-									local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_RAGE_CIRCLE, player.Position, Vector.Zero, player)
+									local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_RAGE_CIRCLE, player.Position, Vector.Zero, player)
 									yandereWaifu.GetEntityData(poof).Parent = player
 									player:SetColor(Color(1,0,0,1,0,0,0), data.TaintedRageTick, 2, false, true)
 								end
@@ -869,7 +869,7 @@ function yandereWaifu:useRebekahTaintedQ(collItem, rng, player)
 	
 	--data.refreshDysmorphiaChoiceFrame = cyclePerFrame
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRebekahTaintedQ, RebekahCurseItems.COLLECTIBLE_TAINTEDQ );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRebekahTaintedQ, RebekahCurse.Items.COLLECTIBLE_TAINTEDQ );
 
 function yandereWaifu:useReroll2(collItem, rng, player)
 	--for p = 0, InutilLib.game:GetNumPlayers() - 1 do

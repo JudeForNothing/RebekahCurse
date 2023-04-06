@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_THE_SCUM then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_THE_SCUM then
 		if ent.FrameCount == 1 then
 			spr:Play("Idle")
 			ent:AddEntityFlags(EntityFlag.FLAG_PERSISTENT)
@@ -19,4 +19,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

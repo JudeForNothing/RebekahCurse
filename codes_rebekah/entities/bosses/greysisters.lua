@@ -2,7 +2,7 @@ local function getClosestEye(pos)
     local dist = 9999999999
     local ent = nil
     for i, v in pairs (Isaac.GetRoomEntities()) do
-        if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_GREYSISTEREYE and v.SubType == 10 then
+        if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurse.Enemies.ENTITY_GREYSISTEREYE and v.SubType == 10 then
             if dist > v.Position:Distance(pos) then
                 dist = v.Position:Distance(pos)
                 ent = v
@@ -13,7 +13,7 @@ local function getClosestEye(pos)
 end
 
 local function isGreySister(ent)
-    if (ent.Variant == RebekahCurseEnemies.ENTITY_ENYO or ent.Variant == RebekahCurseEnemies.ENTITY_DEINO or ent.Variant == RebekahCurseEnemies.ENTITY_PEMPHREDO) and ent.SubType ~= 10 then
+    if (ent.Variant == RebekahCurse.Enemies.ENTITY_ENYO or ent.Variant == RebekahCurse.Enemies.ENTITY_DEINO or ent.Variant == RebekahCurse.Enemies.ENTITY_PEMPHREDO) and ent.SubType ~= 10 then
         return true
     else
         return false
@@ -26,10 +26,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_INIT, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
-    if ent.Variant == RebekahCurseEnemies.ENTITY_DEINO and ent.SubType == 10 then
+    if ent.Variant == RebekahCurse.Enemies.ENTITY_DEINO and ent.SubType == 10 then
         ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
     end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
@@ -38,7 +38,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
 
-    if ent.SubType == 10 and ent.Variant == RebekahCurseEnemies.ENTITY_GREYSISTEREYE then 
+    if ent.SubType == 10 and ent.Variant == RebekahCurse.Enemies.ENTITY_GREYSISTEREYE then 
     else
         local function detectEyeorTooth()
             if ent.SubType == 10 then return end
@@ -59,7 +59,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             local dist = 9999999999
             local result = nil
             for i, v in pairs (Isaac.GetRoomEntities()) do
-                if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and isGreySister(v) and not yandereWaifu.GetEntityData(v).HasEye and not yandereWaifu.GetEntityData(v).HasTooth then
+                if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and isGreySister(v) and not yandereWaifu.GetEntityData(v).HasEye and not yandereWaifu.GetEntityData(v).HasTooth then
                     if dist > v.Position:Distance(pos) then
                         dist = v.Position:Distance(pos)
                         result = v
@@ -69,7 +69,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             print(result)
             return result
         end
-        if ent.Variant == RebekahCurseEnemies.ENTITY_ENYO then
+        if ent.Variant == RebekahCurse.Enemies.ENTITY_ENYO then
             if not data.State then
                 spr:Play("Idle")
                 data.State = 0
@@ -154,7 +154,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         spr:Play("Throw", true)
                     elseif spr:GetFrame() == 30 then
                         local pos = detectClosestEmptyHanded()
-                        local eye = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_DEINO, 10, ent.Position, (pos.Position - ent.Position):Resized(20), ent)
+                        local eye = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_DEINO, 10, ent.Position, (pos.Position - ent.Position):Resized(20), ent)
                         eye:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
                     end
                 elseif data.State == 5 then
@@ -170,7 +170,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 end
                 ent.Velocity = ent.Velocity * 0.9
             end
-        elseif ent.Variant == RebekahCurseEnemies.ENTITY_DEINO then
+        elseif ent.Variant == RebekahCurse.Enemies.ENTITY_DEINO then
             if not data.State then
                 spr:Play("Idle")
                 data.State = 0
@@ -283,7 +283,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         spr:Play("Throw", true)
                     elseif spr:GetFrame() == 30 then
                         local pos = detectClosestEmptyHanded()
-                        local eye = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_DEINO, 10, ent.Position, (pos.Position - ent.Position):Resized(20), ent)
+                        local eye = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_DEINO, 10, ent.Position, (pos.Position - ent.Position):Resized(20), ent)
                         eye:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
                     end
                 elseif data.State == 5 then
@@ -299,7 +299,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 end
                 ent.Velocity = ent.Velocity * 0.9
             end
-        elseif ent.Variant == RebekahCurseEnemies.ENTITY_PEMPHREDO then
+        elseif ent.Variant == RebekahCurse.Enemies.ENTITY_PEMPHREDO then
             if not data.State then
                 spr:Play("Idle")
                 data.State = 0
@@ -373,5 +373,5 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
         end
     end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 

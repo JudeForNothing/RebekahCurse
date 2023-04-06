@@ -18,7 +18,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
 		local validPickup = (pickup.Variant == PickupVariant.PICKUP_COIN)
-		if (player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNDERPAY)) then
+		if (player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_UNDERPAY)) then
 			if rng:RandomFloat() <= (chance) and validPickup and InutilLib.room:GetType() ~= RoomType.ROOM_BOSS and RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME == 0 
 		and (pickup:GetSprite():IsPlaying("Appear") or pickup:GetSprite():IsPlaying("AppearFast")) and pickup:GetSprite():GetFrame() == 1 and not pickup.SpawnerEntity then
 				if pickup.SubType == CoinSubType.COIN_NICKEL then
@@ -77,7 +77,7 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, player)
     hasUnderpay = false
-	--if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNDERPAY) then
+	--if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_UNDERPAY) then
 		local pickups = Isaac.FindByType(5, RebekahCurse.ENTITY_COINPIECE, 177, false, false)
         --Isaac.FindInRadius(player.Position, player.Size + 15, EntityPartition.PICKUP)
 		for _, pickup in pairs(pickups) do
@@ -90,7 +90,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, player
             end
 		end
 	--end
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_UNDERPAY) then
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_UNDERPAY) then
         hasUnderpay = true
     end
     local savedata = nil

@@ -93,7 +93,7 @@ function GeneratePlatformRoom(isRoom)
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PLATFORMCOTTA) and InutilLib.level:GetCurrentRoomIndex() == InutilLib.level:GetStartingRoomIndex() then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PLATFORMCOTTA) and InutilLib.level:GetCurrentRoomIndex() == InutilLib.level:GetStartingRoomIndex() then
             local plat = spawnPlatform(InutilLib.room:GetCenterPos(), player)
             if InutilLib.room:IsFirstVisit() then 
                 RebekahLocalSavedata.Data.HasPlatformItemsTaken = false
@@ -136,7 +136,7 @@ function yandereWaifu:PlatformCottaNewLevel()
         end
         if isPlatformValid() then
             for i = 0, math.random(0,1) do
-                local bum = Isaac.Spawn( RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BUMBAB, 0, InutilLib.room:FindFreePickupSpawnPosition(InutilLib.room:GetGridPosition(72), 1),  Vector(0,0), nil );
+                local bum = Isaac.Spawn( RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_BUMBAB, 0, InutilLib.room:FindFreePickupSpawnPosition(InutilLib.room:GetGridPosition(72), 1),  Vector(0,0), nil );
             end
        end
     end

@@ -9,19 +9,19 @@ function yandereWaifu:useNotebookOfDead(collItem, rng, player, flags, slot)
 	else
 		data.lastActiveUsedFrameCount = InutilLib.game:GetFrameCount()
 	end
-	InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SCRIBBLING, 1, 0, false, 1.5)
+	InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SCRIBBLING, 1, 0, false, 1.5)
 	InutilLib.ToggleShowActive(player, true)
 end
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useNotebookOfDead, RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useNotebookOfDead, RebekahCurse.Items.COLLECTIBLE_NOTEBOOKOFTHEDEAD )
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_NOTEBOOKOFTHEDEAD ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_NOTEBOOKOFTHEDEAD) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_NOTEBOOKOFTHEDEAD ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			--data.specialAttackVector = Vector( vector.X, vector.Y )
 			local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEATHNOTETARGET, 0, player.Position, vector:Resized(7), player );
@@ -107,7 +107,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	--[[if eff.FrameCount < 55 then
 		--player.Velocity = Vector(0,0)
-		InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, data.SoundFrame)
+		InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGELIGHT, 1, 0, false, data.SoundFrame)
 		data.SoundFrame = data.SoundFrame - 0.01
 	end]]
 end, RebekahCurse.ENTITY_DEATHNOTETARGET)

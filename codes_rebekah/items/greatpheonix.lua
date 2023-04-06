@@ -6,8 +6,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	local pldata = yandereWaifu.GetEntityData(player)
 	--items function!
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_GREATPHEONIX ) then
-		player:AddNullCostume(RebekahCurseCostumes.GreatPheonix)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX ) then
+		--player:AddNullCostume(RebekahCurse.Costumes.GreatPheonix)
 		if not pldata.GPFireCount then
 			pldata.GPFireCount = 1
 		end
@@ -25,7 +25,7 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) then
 		local spr = tr:GetSprite()
 		if pldata.lastGPFrameCount then
 			if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
@@ -59,7 +59,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) then
 				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
 					if pldata.lastGPFrameCount then
@@ -101,7 +101,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 				local parent = lz.Parent
 				if parent and parent.Type == EntityType.ENTITY_PLAYER then
 					local spr = lz:GetSprite()
@@ -142,7 +142,7 @@ end);
 yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) then
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 			local spr = bb:GetSprite()
 			if pldata.lastGPFrameCount then
@@ -176,7 +176,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 	--print(player)
 	if player and player.Type == EntityType.ENTITY_PLAYER then
 		local pldata = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.lastGPFrameCount then
 				if InutilLib.game:GetFrameCount() == pldata.lastGPFrameCount then
@@ -207,7 +207,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_GREATPHEONIX) then
+	if player and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) then
 		local spr = kn:GetSprite()
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end

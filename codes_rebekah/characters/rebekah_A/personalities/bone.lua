@@ -25,7 +25,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -52,15 +52,15 @@ function yandereWaifu.BoneHeartPunch(player, vector)
 	--yandereWaifu.GetEntityData(customBody).IsHopping = true
 	--yandereWaifu.GetEntityData(customBody).IsVaulting = true
 	--playerdata.IsVaulting = true;
-	--playerdata.vaultVelocity = vector:Resized( REBEKAH_BALANCE.BONE_HEARTS_VAULT_VELOCITY )
+	--playerdata.vaultVelocity = vector:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_VAULT_VELOCITY )
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	
-	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.BONE_HEARTS_DASH_VELOCITY );
-	yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Bone );
-	yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Bone );
+	player.Velocity = player.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_DASH_VELOCITY );
+	yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Bone );
+	yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahCurse.RebekahHeartParticleType.Bone );
 	if not data.BoneStacks then data.BoneStacks = 0 end --just in case
 	local cut, spear
 	if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
@@ -81,7 +81,7 @@ function yandereWaifu.BoneHeartPunch(player, vector)
 		end
 	end
 	if data.BoneStacks < 5 then
-		playerdata.specialCooldown = (REBEKAH_BALANCE.BONE_HEARTS_DASH_COOLDOWN) - trinketBonus;
+		playerdata.specialCooldown = (RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_DASH_COOLDOWN) - trinketBonus;
 		--local bonePos = player.Position - Vector(0,15):Rotated(player:GetMovementInput():GetAngleDegrees()) 
 		
 		if cut then
@@ -93,9 +93,9 @@ function yandereWaifu.BoneHeartPunch(player, vector)
 		end
 	else
 		if cut then cut:GetSprite():Play("PunchFull", true) end
-		playerdata.specialCooldown = (REBEKAH_BALANCE.BONE_HEARTS_MODIFIED_DASH_COOLDOWN) - trinketBonus;
+		playerdata.specialCooldown = (RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_MODIFIED_DASH_COOLDOWN) - trinketBonus;
 	end
-	playerdata.invincibleTime = REBEKAH_BALANCE.BONE_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	playerdata.IsDashActive = true;
 	--playerdata.NoBoneSlamActive = false;
 --end
@@ -1043,14 +1043,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 					data.specialMaxCooldown = 20 
 				end
 				if not data.IsDashActive and data.specialCooldown <= 0 then
-				--	if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RedHearts then --IF RED HEART MODE
+				--	if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RedHearts then --IF RED HEART MODE
 								
-						fam.Velocity = fam.Velocity + vector:Resized( REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_SPEED );
+						fam.Velocity = fam.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_SPEED );
 									
-						yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
+						yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Red );
 
-				--		playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
-				--		playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
+				--		playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
+				--		playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
 						InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_ROAR_0, 1, 0, false, 1 );
 						data.IsDashActive = true
 						
@@ -1101,7 +1101,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 						beam2.Timeout = 5
 					end
 				end
-				fam.Velocity = data.DashVector:Resized( REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_CONTINUOUS_DASH_SPEED);
+				fam.Velocity = data.DashVector:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_CONTINUOUS_DASH_SPEED);
 				if not InutilLib.IsPlayingMultiple(spr, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft") then
 					data.Angle = InutilLib.AnimShootFrame(fam, true, fam.Velocity, "ChargeRight", "ChargeDown", "ChargeUp", "ChargeLeft")
 				end
@@ -1121,7 +1121,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			if data.IsDashActive then
 				
 				if fam:CollidesWithGrid() or (fam.FrameCount == data.StopDashFrame) then
-				--if not data.DashActiveFrame then data.DashActiveFrame = REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_COOLDOWN_FRAME end
+				--if not data.DashActiveFrame then data.DashActiveFrame = RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_COOLDOWN_FRAME end
 				--print(data.DashActiveFrame)
 				--if data.DashActiveFrame > 0 then
 				--	data.DashActiveFrame = data.DashActiveFrame - 1
@@ -1472,7 +1472,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 	if tr.Variant == RebekahCurse.ENTITY_RIBTEAR then
 		local chosenNumofBarrage =  math.random( 2, 4 );
 		for i = 1, chosenNumofBarrage do
-			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.BONE, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
+			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.BONE, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
 			tear.Scale = (tr.Scale) - math.random(4,8)/10;
 			InutilLib.MakeTearLob(tear, 1.5, 9 );
@@ -1480,7 +1480,7 @@ function yandereWaifu:BoneHeartTearsUpdate(tr)
 	elseif tr.Variant == RebekahCurse.ENTITY_SKULLTEAR then
 		local chosenNumofBarrage =  math.random( 1, 3 );
 		for i = 1, chosenNumofBarrage do
-			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.TOOTH, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
+			local tear = game:Spawn( EntityType.ENTITY_TEAR, TearVariant.TOOTH, tr.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), tr, 0, 0):ToTear()
 			tear.TearFlags = tear.TearFlags | TearFlags.TEAR_BONE
 			tear.Scale = (tr.Scale/2) - math.random(1,5)/10;
 			InutilLib.MakeTearLob(tear, 1.5, 9 );
@@ -1508,7 +1508,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
     if parent.Type == EntityType.ENTITY_FAMILIAR and parent.Variant == FamiliarVariant.INCUBUS then
       player = parent:ToFamiliar().Player
     end
-    if currentMode == REBECCA_MODE.BoneHearts then
+    if currentMode == RebekahCurse.REBECCA_MODE.BoneHearts then
 		if math.random(1,2) == 2 then
 			local rng = math.random(1,10)
 			if rng > 0 and rng < 5 then
@@ -1547,7 +1547,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		player.Position = room:GetClampedPosition(eff.Position, roomClampSize);
 		player.Velocity = eff.Velocity;
 	else
-		eff.Velocity = (eff.Velocity * 0.7) + movementDirection:Resized( REBEKAH_BALANCE.BONE_HEARTS_DASH_TARGET_SPEED );
+		eff.Velocity = (eff.Velocity * 0.7) + movementDirection:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_DASH_TARGET_SPEED );
 	end]]
 	
 	--function code
@@ -1585,7 +1585,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
 			yandereWaifu.GetEntityData(customBody).BoneJumpDownFromJockey = true
 		end
-		--[[if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
+		--[[if RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
             player.Velocity = Vector( 0, 0 );
         else
             player.Velocity = eff.Velocity;
@@ -1610,7 +1610,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		yandereWaifu.GetEntityData(customBody).Player = player
 		customBody.Visible = false
 		player.Visible = false
-		yandereWaifu.SpawnHeartParticles( 1, 1, eff.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Bone );]]
+		yandereWaifu.SpawnHeartParticles( 1, 1, eff.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Bone );]]
 	end
 	--[[if eff.FrameCount < 55 then
 		player.Velocity = Vector(0,0)
@@ -1641,7 +1641,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 	local player = kn.SpawnerEntity
 	if player.Type == 1 then
 		local playerdata = yandereWaifu.GetEntityData(player)
-		if playerdata.currentMode == REBECCA_MODE.BoneHearts and playerdata.IsLeftover then
+		if playerdata.currentMode == RebekahCurse.REBECCA_MODE.BoneHearts and playerdata.IsLeftover then
 			kn:Remove()
 		end
 	end

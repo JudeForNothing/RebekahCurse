@@ -4,7 +4,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_SISTER then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_SISTER then
 
         if not data.Init then
             --if spr:IsFinished("Spawn") then
@@ -91,7 +91,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 end
             end
         end
-    elseif ent.Variant == RebekahCurseEnemies.ENTITY_BUMBAB then
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_BUMBAB then
 		--[[if not data.Init then
 			data.HeadType = math.random(1,4)
 			data.skinColor = math.random(1,2)
@@ -173,7 +173,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 else
                     if spr:GetFrame() == 20 then
                         if not data.fist then
-                            local fist = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurseEnemies.ENTITY_BUMBAB_PUNCH, 0, ent.Position, Vector(0,0), ent)
+                            local fist = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_BUMBAB_PUNCH, 0, ent.Position, Vector(0,0), ent)
                             data.fist = fist
                             yandereWaifu.GetEntityData(data.fist).fistowner = ent
                             data.fist.Visible = (false)
@@ -189,7 +189,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         local savedangle = InutilLib.ObjToTargetAngle(ent, player, true)
                         for i, entity in pairs(Isaac.GetRoomEntities()) do
                            if (entity.Type == EntityType.ENTITY_PLAYER or entity:IsEnemy()) and GetPtrHash(entity) ~= GetPtrHash(ent) then
-                                if (InutilLib.ObjToTargetAngle(ent, entity, true) > (savedangle - 25) and InutilLib.ObjToTargetAngle(ent, entity, true) < (savedangle + 25)) and entity.Position:Distance(ent.Position) < 100 then --:Rotated(EntToTargetAngle(ent, target, true))
+                                if (InutilLib.ObjToTargetAngle(ent, entity, true) > (savedangle - 25) and InutilLib.ObjToTargetAngle(ent, entity, true) < (savedangle + 25)) and entity.Position:Distance(ent.Position) < 100 then --:Rotated(ObjToTargetAngle(ent, target, true))
                                     InutilLib.DoKnockbackTypeI(ent, entity, 0.3)
                                     entity:TakeDamage(1, 0, EntityRef(ent), 1)
                                 end
@@ -232,7 +232,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
 		end
         ent.Velocity = ent.Velocity * 0.8
-    elseif ent.Variant == RebekahCurseEnemies.ENTITY_ROACH then
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_ROACH then
         if not data.Init then
             --if spr:IsFinished("Spawn") then
                 data.Init = true
@@ -314,7 +314,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
             InutilLib.FlipXByVec(ent, false) 
         end
-    elseif ent.Variant == RebekahCurseEnemies.ENTITY_LONGITS then
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_LONGITS then
 
         if not data.Init then
             if spr:IsFinished("Appear") then
@@ -367,7 +367,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
         end
         InutilLib.FlipXByVec(ent, true)
 
-    elseif ent.Variant == RebekahCurseEnemies.ENTITY_LOAFERING then
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_LOAFERING then
 
         if not data.Init then
             if spr:IsFinished("Appear") then
@@ -407,7 +407,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
             InutilLib.FlipXByVec(ent, true)
         end
-    elseif ent.Variant == RebekahCurseEnemies.ENTITY_FRUITFLY then
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_FRUITFLY then
 
         if not data.Init then
             if spr:IsFinished("Appear") then
@@ -427,7 +427,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
         end
         InutilLib.FlipXByVec(ent, false)
-    elseif ent.Variant == RebekahCurseEnemies.ENTITY_EVALUATOR then
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_EVALUATOR then
         if not data.Init then
             data.Init = true
             spr:Play("Idle", true)
@@ -486,9 +486,284 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             end
             ent.Velocity = ent.Velocity * 0.7
         end
+    
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_DEVOTEE then
+        if not data.Init then
+            data.Init = true
+            if not spr:IsPlaying("Idle") then
+            	spr:Play("Idle")
+            end
+            data.FlipX = false
+            data.State = 0
+            data.positionCaches = {}
+            ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
+            ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
+            ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+
+            local rng = ent:GetDropRNG()
+
+            if rng:RandomFloat() < 0.80 then
+                spr:ReplaceSpritesheet(1, "gfx/monsters/academy/devotee_2.png")
+            elseif rng:RandomFloat() < 0.60 then
+                spr:ReplaceSpritesheet(1, "gfx/monsters/academy/devotee_3.png")
+            elseif rng:RandomFloat() < 0.40 then
+                spr:ReplaceSpritesheet(1, "gfx/monsters/academy/devotee_4.png")
+            end
+            if rng:RandomFloat() < 0.02 then
+                spr:ReplaceSpritesheet(2, "gfx/monsters/academy/devotee_pray_hands.png")
+            end
+
+            spr:LoadGraphics()
+        else
+            local delay = 18
+            table.insert(data.positionCaches, ent.Position)
+		    if #data.positionCaches > delay and data.positionCaches[1] then table.remove(data.positionCaches, 1) end
+
+            if data.State == 0 then
+                if not spr:IsPlaying("Idle") then
+                    spr:Play("Idle", true)
+                end
+            end
+            if ent.SubType == 0 then
+                if not ent.Child then
+                    data.choochooHead = true
+                    --i got this code base from FF's ossularry
+
+                    local groupOfNuns = Isaac.FindByType(ent.Type, ent.Variant, 0)
+                    local current = ent
+
+                    repeat
+                        local closest
+                        local distance = 60
+
+                        for _, entity in pairs (groupOfNuns) do
+                            if entity.Position:Distance(current.Position) < distance and not yandereWaifu.GetEntityData(entity).choochooHead and entity.SubType == 0 then
+                                closest = entity
+                                distance = entity.Position:Distance(current.Position)
+                            end
+                        end
+
+                        if closest then
+                            current.Child = closest
+                            closest.Parent = current
+                            closest.SubType = 1
+                            current = closest
+                        end
+                    until not closest
+                end
+                InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.4, 0.9)
+            else
+                if ent.Parent then    
+                    local parentData = yandereWaifu.GetEntityData(ent.Parent)
+                    if parentData.positionCaches then
+                        local targetPos = parentData.positionCaches[1] or ent.Position
+                        local targetVelocity = (targetPos - ent.Position)
+                        local lerpVal = 0.2
+                        ent.Velocity = InutilLib.Lerp(ent.Velocity, targetVelocity, lerpVal)
+                        data.positionCaches[#data.positionCaches] = targetPos
+                    end
+    
+                    if ent.Parent:IsDead() then
+                        ent.SubType = 0
+                        data.choochooHead = true
+                        ent.Parent = nil
+                    end
+                else
+                    ent.SubType = 0
+                    data.choochooHead = true
+                    ent.Parent = nil
+                end
+            end
+        end
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_GOSSIPER then
+        if not data.Init then
+            data.Init = true
+            if not spr:IsPlaying("Idle") then
+            	spr:Play("Idle")
+            end
+            data.FlipX = false
+            data.State = 0
+            ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
+            ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
+            ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+        end
+
+        if not data.IsQueen and not data.Queen and not data.IsMinion then --init setup
+			if data.State == 0 then
+				local beeSpawn = 5
+				for i = 0, beeSpawn, 1 do
+					local minions = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_GOSSIPER, 1, ent.Position, Vector(0,0), ent)
+					local minionData = yandereWaifu.GetEntityData(minions)
+					minionData.Queen = ent
+					minionData.IsMinion = true
+				end
+				data.State = 1
+                data.IsQueen = true
+            end
+        elseif data.IsQueen then
+			if data.State == 1 then
+				if not spr:IsPlaying("Idle") then
+					spr:Play("Idle", true)
+				end
+                InutilLib.MoveDirectlyTowardsTarget(ent, player, 3, 0.9)
+				ent.Velocity = ent.Velocity * 0.6
+            end
+		elseif data.IsMinion then
+			if data.State == 0 then
+				ent.Velocity = ent.Velocity + Vector(1,0):Rotated(math.random(0,360) * 5)
+				data.State = 1
+				data.StateFrame = 0
+				data.randomNum = math.random(1,359)
+			elseif data.State == 1 then
+				if not spr:IsPlaying("Idle") then
+					spr:Play("Idle", true)
+				end
+                if data.Queen:IsDead() then
+                    local closest
+                    local distance = 350
+                    for _, entity in pairs (Isaac.FindByType( RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, ent.Variant, -1, false, false)) do
+                        if entity.Position:Distance(ent.Position) < distance and GetPtrHash(entity) ~= GetPtrHash(ent) and (entity.SubType == 1 or yandereWaifu.GetEntityData(entity).IsQueen) then
+                            closest = entity
+                            distance = entity.Position:Distance(ent.Position)
+                        end
+                    end
+
+                    if closest then
+                        yandereWaifu.GetEntityData(closest).IsQueen = true
+                        yandereWaifu.GetEntityData(closest).IsMinion = false
+                        data.Queen = closest
+                        closest.SubType = 0
+                    end
+                end
+			end
+		
+			if not data.Queen:IsDead() then --if the leading Queen isn't dead
+				--InutilLib.MoveOrbitAroundTargetType1(ent, data.Queen, 2, 0.8, 3, data.randomNum)
+                if ent.FrameCount % 5 == 0 then
+                    InutilLib.MoveDirectlyTowardsTarget(ent, data.Queen, 5, 0.7)
+                    ent.Velocity = ent.Velocity * 0.8 + (Vector.FromAngle(1*1)*(3.5)):Rotated(math.random(0,360))
+                end
+			else --else if she is
+				InutilLib.MoveDirectlyTowardsTarget(ent, player, 3, 0.7)
+			end
+            ent.Velocity = ent.Velocity * 0.95
+		end
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_FOUNDATION then
+        if not data.Init then
+            data.Init = true
+            if not spr:IsPlaying("Idle") then
+            	spr:Play("Idle")
+            end
+            data.FlipX = false
+            data.State = 0
+            data.positionCaches = {}
+            ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
+            ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
+            ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+
+            local rng = ent:GetDropRNG()
+
+            --[[if rng:RandomFloat() < 0.80 then
+                spr:ReplaceSpritesheet(1, "gfx/monsters/academy/devotee_2.png")
+            elseif rng:RandomFloat() < 0.60 then
+                spr:ReplaceSpritesheet(1, "gfx/monsters/academy/devotee_3.png")
+            elseif rng:RandomFloat() < 0.40 then
+                spr:ReplaceSpritesheet(1, "gfx/monsters/academy/devotee_4.png")
+            end
+            if rng:RandomFloat() < 0.02 then
+                spr:ReplaceSpritesheet(2, "gfx/monsters/academy/devotee_pray_hands.png")
+            end]]
+
+            spr:LoadGraphics()
+        else
+            if data.State == 0 then
+                if not spr:IsPlaying("Idle") then
+                    spr:Play("Idle", true)
+                end
+                InutilLib.MoveDirectlyTowardsTarget(ent, player, 0.1, 0.8)
+            end
+        end
+    elseif ent.Variant == RebekahCurse.Enemies.ENTITY_NPC then
+        if not data.Init then
+			data.HeadType = math.random(1,4)
+			--data.skinColor = math.random(1,2)
+			data.Init = true
+            data.State = 1
+		end
+	
+		--[[if data.skinColor == 2 then
+			sprite:ReplaceSpritesheet(0, "gfx/monsters/garden/monster_whiteskin.png")
+			sprite:ReplaceSpritesheet(1, "gfx/monsters/garden/monster_head_noob2.png")
+			sprite:LoadGraphics()
+			if data.fist then
+				data.fist:GetSprite():ReplaceSpritesheet(0, "gfx/effects/effect_noobfist2.png")
+				data.fist:GetSprite():LoadGraphics()
+			end
+		end]]
+		if not spr:IsOverlayPlaying("Head5") then
+			if data.HeadType == 1 then spr:PlayOverlay("Head", false) else spr:PlayOverlay("Head"..data.HeadType, false) end
+		end
+
+	
+		if data.path == nil then data.path = ent.Pathfinder end
+		if ent.SubType == 1 then
+            local otherpersontheywannapunchforsomereason = InutilLib.GetClosestGenericEnemy(ent, 300)
+            if otherpersontheywannapunchforsomereason then
+                player = otherpersontheywannapunchforsomereason
+            end
+        end
+		if data.State == 0 then
+			data.State = 1
+		elseif data.State == 1 then
+			if data.path:HasPathToPos(player.Position, false) then
+				data.State = 2
+			end
+		elseif data.State == 2 then
+			InutilLib.XalumMoveTowardsTarget(ent, player, 4.5, 0.9, false)
+			if ent.FrameCount % 15 == 0 and player.Position:Distance(ent.Position) <= 75 then
+				data.State = 3
+			end
+		elseif data.State == 3 then
+			if not data.fist then
+                local fist = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_BUMBAB_PUNCH, 0, ent.Position, Vector(0,0), ent)
+                data.fist = fist
+                yandereWaifu.GetEntityData(data.fist).fistowner = ent
+                data.fist.Visible = (false)
+			end
+			local fistSprite = data.fist:GetSprite()
+            if spr:IsFinished("Punch") then
+				data.fist.Visible = (false)
+				data.State = 1
+			elseif not spr:IsPlaying("Punch") then
+				spr:Play("Punch", true)
+				fistSprite.Rotation = InutilLib.ObjToTargetAngle(ent, player, true) - 90
+			elseif spr:IsEventTriggered("Punch") then
+				data.fist.Visible = (true)
+				if (fistSprite.Rotation >= -180 and fistSprite.Rotation <= 0) then	
+					fistSprite:Play("Punch2", true)
+				elseif (fistSprite.Rotation >= 0 and fistSprite.Rotation <= 180) then	
+					fistSprite:Play("Punch", true)
+				end
+			--[[elseif fistSprite:IsEventTriggered("Hit") then
+				local savedangle = fistSprite.Rotation + 90
+				for i, entity in pairs (Isaac.GetRoomEntities()) do
+					if (entity.Type == EntityType.ENTITY_PLAYER or entity:IsEnemy()) and GetPtrHash(entity) ~= GetPtrHash(ent) then
+						if InutilLib.CuccoLaserCollision(ent, savedangle, 70, player, 30) and entity.Position:Distance(ent.Position) < 100 then --:Rotated(ObjToTargetAngle(ent, target, true))
+							InutilLib.DoKnockbackTypeI(ent, entity, 0.3)
+							entity:TakeDamage(1, 0, EntityRef(ent), 1)
+                            SFXManager():Play( RebekahCurse.Sounds.SOUND_PUNCH, 1, 0, false, 1 );
+						end
+					end
+				end]]
+			end
+			ent.Velocity = ent.Velocity * 0.7
+		end
+		if data.State ~= 3 then
+			ent:AnimWalkFrame("WalkHori", "WalkVert", 0.1)
+		end
     end
 	
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 function yandereWaifu:FistEffectUpdate(eff)
 	local sprite = eff:GetSprite()
@@ -504,8 +779,20 @@ function yandereWaifu:FistEffectUpdate(eff)
 	elseif (sprite.Rotation >= -270 and sprite.Rotation <= -90) then
 		eff.RenderZOffset = -10
 	end
+    if sprite:IsEventTriggered("Hit") then
+        local savedangle = sprite.Rotation + 90
+        for i, entity in pairs (Isaac.GetRoomEntities()) do
+            if (entity.Type == EntityType.ENTITY_PLAYER or entity:IsEnemy()) and GetPtrHash(entity) ~= GetPtrHash(data.fistowner) then
+                if InutilLib.CuccoLaserCollision(eff, savedangle, 70, entity, 30) and entity.Position:Distance( entity.Position) < 100 then --:Rotated(ObjToTargetAngle(ent, target, true))
+                    InutilLib.DoKnockbackTypeI(eff, entity, 0.3)
+                    entity:TakeDamage(1, 0, EntityRef(eff), 1)
+                    SFXManager():Play( RebekahCurse.Sounds.SOUND_PUNCH, 1, 0, false, 1 );
+                end
+            end
+        end
+    end
 end
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, yandereWaifu.FistEffectUpdate, RebekahCurseEnemies.ENTITY_BUMBAB_PUNCH)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, yandereWaifu.FistEffectUpdate, RebekahCurse.Enemies.ENTITY_BUMBAB_PUNCH)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damage, flags, source, countdown)
     if ent:ToPlayer() then
@@ -517,3 +804,20 @@ end)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
     isPlayerDmg = false
 end)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, coll, low)
+	local data = yandereWaifu.GetEntityData(ent)
+    if ent.Variant == RebekahCurse.Enemies.ENTITY_DEVOTEE then
+        if coll.Type == ent.Type and coll.Variant == ent.Variant then
+            if (ent.Parent and GetPtrHash(ent.Parent) == GetPtrHash(coll)) or (ent.Child and GetPtrHash(ent.Child) == GetPtrHash(coll)) then
+                return true
+            end
+        end
+    end
+    --[[if ent.Variant == RebekahCurse.Enemies.ENTITY_GOSSIPER then
+        if coll.Type == ent.Type and coll.Variant == ent.Variant then
+            return true
+        end
+    end]]
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

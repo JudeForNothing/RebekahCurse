@@ -652,6 +652,19 @@ local rebekahdirectory = {
                 end,
                 tooltip = {strset = {'optional', 'keybind', 'to dash', 'for scrubs'}}
             },
+            {
+                str = 'rebekah init',
+                choices = {'default', 'no menu'},
+                variable = "rebekahInit",
+                setting = 2,
+                load = function()
+                    return RebekahLocalSavedata.Config.menu_init and 2 or 1
+                end,
+                store = function(var)
+                    RebekahLocalSavedata.Config.menu_init = var == 2
+                end,
+                tooltip = {strset = {'pick whether', 'have menu or', 'nott'}}
+            },
             --[[ {
                 str = 'narrator volume',
                 increment = 1, max = 10,
@@ -672,10 +685,10 @@ local rebekahdirectory = {
                 variable = "unlockItems",
                 setting = 2,
                 load = function()
-                    return REBEKAH_OPTIONS.UNLOCK_ITEMS and 2 or 1
+                    return RebekahCurse.REBEKAH_OPTIONS.UNLOCK_ITEMS and 2 or 1
                 end,
                 store = function(var)
-                    REBEKAH_OPTIONS.UNLOCK_ITEMS = var == 2
+                    RebekahCurse.REBEKAH_OPTIONS.UNLOCK_ITEMS = var == 2
                 end,
                 tooltip = {strset = {'progress should', 'be saved...', 'stop being a', 'casual!'}}
             },]]

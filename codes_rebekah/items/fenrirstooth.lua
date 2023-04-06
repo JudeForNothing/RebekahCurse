@@ -24,7 +24,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing 
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSTOOTH) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSTOOTH) then
 			local rooms = {}
 			for i, v in pairs(GetRoomsNeighborsIdx(GetUSR().SafeGridIndex)) do
 				table.insert(rooms, v)

@@ -2,7 +2,7 @@
 --wip tainted rebekah synergy
 function yandereWaifu:FullMilkCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
 		--if data.SnapDelay then
 		--	if cacheF == CacheFlag.CACHE_FIREDELAY then
 		--		player.FireDelay = player.FireDelay - data.SnapDelay
@@ -27,7 +27,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     if not data.PersistentPlayerData.FullMilkLokisHornsCount then data.PersistentPlayerData.FullMilkLokisHornsCount = 0 end
     if not data.PersistentPlayerData.FullMilkLokisHornsCount then data.PersistentPlayerData.FullMilkLokisHornsCount = 0 end
 
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then        
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then        
         if player:HasCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) then
             data.PersistentPlayerData.FullMilkTearMulti = data.PersistentPlayerData.FullMilkTearMulti + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) * 1.5
             data.PersistentPlayerData.FullMilkMutantSpiderCount = data.PersistentPlayerData.FullMilkMutantSpiderCount + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER)
@@ -93,7 +93,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 			player:EvaluateItems()
         end
-    elseif not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+    elseif not player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
         if data.PersistentPlayerData.FullMilkMutantSpiderCount > 0 then 
             for i = 1, data.PersistentPlayerData.FullMilkMutantSpiderCount do
                 player:AddCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER, 0, true)
@@ -161,7 +161,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
     if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then 
         direction = player:GetAimDirection()
     end
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
         if playerdata.AntiRecursiveFullMilk then return end
         if playerdata.FullFatTear and playerdata.FullFatTear:IsDead() then
             playerdata.FullFatTear = nil
@@ -197,7 +197,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_INIT, function(_,lz)
                 direction = player:GetAimDirection()
             end
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
                 if pldata.AntiRecursiveFullMilk then return end
 				--if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
@@ -250,7 +250,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
     if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then 
         direction = player:GetAimDirection()
     end
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
         if playerdata.AntiRecursiveFullMilk then return end
         if playerdata.FullFatTear and playerdata.FullFatTear:IsDead() then
             playerdata.FullFatTear = nil
@@ -282,7 +282,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
         if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then 
             direction = player:GetAimDirection()
         end
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.AntiRecursiveFullMilk then return end
             if pldata.FullFatTear and pldata.FullFatTear:IsDead() then
@@ -311,7 +311,7 @@ end, EffectVariant.TARGET);
     local player = rocket.SpawnerEntity:ToPlayer()
     if not player then return end
     local pldata = yandereWaifu.GetEntityData(player)
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
         if pldata.FullFatTearDmg then 
             print("orion stil sucks")
                 print(pldata.FullFatTearDmg)
@@ -328,7 +328,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damag
 		local player = source.Entity:ToPlayer()
         local pldata = yandereWaifu.GetEntityData(player)
         if not pldata.IgnoreFullMilkBrimDmg then
-            if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+            if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
                 pldata.FullFatTearDmg = pldata.FullFatTearDmg + 1
                 pldata.IgnoreFullMilkBrimDmg = true
                 ent:TakeDamage( damage + pldata.FullFatTearDmg/2, flags, EntityRef(player), 0);
@@ -353,7 +353,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damag
         local knife = source.Entity:ToKnife()
         --if rocket and source.Variant == 31 then
         local player = knife.SpawnerEntity:ToPlayer()
-        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+        if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
             local pldata = yandereWaifu.GetEntityData(player)
             if yandereWaifu.GetEntityData(knife).IsHidden then return false end
             if player and not pldata.IgnoreFullMilkBrimDmg and pldata.FullFatTearDmg then
@@ -386,7 +386,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
         end
     end
     --when charging
-	if player and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+	if player and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
 		local spr = kn:GetSprite()
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end
@@ -395,7 +395,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
                 direction = player:GetAimDirection()
             end
             local data = InutilLib.GetILIBData(kn)
-            if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FULLFATMILK) then
+            if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FULLFATMILK) then
                 if pldata.AntiRecursiveFullMilk then return end
                 if pldata.FullFatTear and pldata.FullFatTear:IsDead() then
                     pldata.FullFatTear = nil

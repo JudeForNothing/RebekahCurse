@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_,  tr)
 	local pldata = yandereWaifu.GetEntityData(player)
     local data = yandereWaifu.GetEntityData(tr)
     if player then 
-        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+        if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SKIMMEDMILK) then
             if tr.FrameCount == 1 then
                 data.OriginalDamage = tr.CollisionDamage
             else
@@ -23,7 +23,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
     if player then
         local pldata = yandereWaifu.GetEntityData(player)
         local data = yandereWaifu.GetEntityData(lz)
-        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+        if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SKIMMEDMILK) then
             if lz.FrameCount == 1 then
                 data.OriginalDamage = lz.CollisionDamage
             end
@@ -38,7 +38,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_,  bb)
         if not player then return end 
         local pldata = yandereWaifu.GetEntityData(player)
         local data = yandereWaifu.GetEntityData(bb)
-        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+        if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SKIMMEDMILK) then
             if bb.FrameCount == 1 then
                 data.OriginalDamage = bb.ExplosionDamage
             else
@@ -55,7 +55,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_,  kn)
 	local pldata = yandereWaifu.GetEntityData(player)
     local data = yandereWaifu.GetEntityData(kn)
     if player then 
-        if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SKIMMEDMILK) then
+        if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SKIMMEDMILK) then
             if not data.OriginalDamage or data.OriginalDamage ~= player.Damage then
                 data.OriginalDamage = kn.CollisionDamage
             else

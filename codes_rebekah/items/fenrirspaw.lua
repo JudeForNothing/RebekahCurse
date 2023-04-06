@@ -195,4 +195,4 @@ function yandereWaifu:useFenrirsPaw(collItem, rng, player, flag, slot)
 		CloseDoors()
 	end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useFenrirsPaw, RebekahCurseItems.COLLECTIBLE_FENRIRSPAW);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useFenrirsPaw, RebekahCurse.Items.COLLECTIBLE_FENRIRSPAW);

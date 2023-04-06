@@ -237,31 +237,18 @@ function yandereWaifu:onTechnicalCharacterInit(player)
 	local data = yandereWaifu.GetEntityData(player)
 	if playerType == RebekahCurse.TECHNICAL_REB 
 	and playerCount == 1 then
-		yandereWaifu:ShowPersonalityBook()
-		hasSelectedPersonality = false
-		savedItems = {}
+		if not RebekahLocalSavedata.Config.menu_init then
+			yandereWaifu:ShowPersonalityBook()
+			hasSelectedPersonality = false
+			savedItems = {}
+		else
+			print("WEEEWWW")
+			InutilLib.SetTimer(12, function()
+				Isaac.ExecuteCommand("restart "..RebekahCurse.REB_RED)
+			end)
+		end
 	elseif playerType == RebekahCurse.TECHNICAL_REB and playerCount ~= 1 then --this is a bainaid solution, since theres no coop selection screen for her
 		yandereWaifu:ShowRebekahCoopMenu(player)
-		
-		--[[player:ChangePlayerType(RebekahCurse.REB_RED)
-		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
-			player.Visible = false
-		end
-		local data = yandereWaifu.GetEntityData(player)
-		
-		--personalized doubletap classes
-		data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
-		data.ATTACK_DOUBLE_TAP = InutilLib.DoubleTap:New();
-		-- start the meters invisible
-		data.moveMeterFadeStartFrame = -20;
-		data.attackMeterFadeStartFrame = -20;
-		data.bonestackMeterFadeStartFrame = 0;
-		
-		RebeccaInit(player)
-		--yandereWaifu.ApplyCostumes( data.currentMode, player );
-
-		if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
-		--yandereWaifu:ShowCoopMenu(player)]]
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onTechnicalCharacterInit)

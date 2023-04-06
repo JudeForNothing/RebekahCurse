@@ -40,7 +40,7 @@ function yandereWaifu:useGiddyUp(collItem, rng, player)
 		data.TickTockFrame = 1200
 	end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useGiddyUp, RebekahCurseItems.COLLECTIBLE_GIDDYUP );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useGiddyUp, RebekahCurse.Items.COLLECTIBLE_GIDDYUP );
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local data = yandereWaifu.GetEntityData(player)
@@ -58,7 +58,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			replacesong = false
 			if MMC then
 				MusicManager():Play(MMC.GetMusicTrack(), 0.1)
-				--MusicManager():Queue(RebekahCurseMusic.MUSIC_TICKTOCK)
+				--MusicManager():Queue(RebekahCurse.Music.MUSIC_TICKTOCK)
 				MusicManager():UpdateVolume()
 			end
 		elseif not data.TickTockBody:GetSprite():IsPlaying("TransformBack") then
@@ -76,9 +76,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		end
 		if data.TickTockBody:GetSprite():IsFinished("Transform") then
 			data.TickTockInit = true
-			SFXManager():Play(RebekahCurseSounds.SOUND_ROLANDAHH, 1, 0, false, 0.9)
-			MusicManager():Play(RebekahCurseMusic.MUSIC_TICKTOCK, 0.1)
-			--MusicManager():Queue(RebekahCurseMusic.MUSIC_TICKTOCK)
+			SFXManager():Play(RebekahCurse.Sounds.SOUND_ROLANDAHH, 1, 0, false, 0.9)
+			MusicManager():Play(RebekahCurse.Music.MUSIC_TICKTOCK, 0.1)
+			--MusicManager():Queue(RebekahCurse.Music.MUSIC_TICKTOCK)
 			if not MusicManager():IsLayerEnabled(0) and player:HasCollectible(CollectibleType.COLLECTIBLE_CAR_BATTERY) then
 				MusicManager():EnableLayer(0, true)
 			end
@@ -158,7 +158,7 @@ end, EntityType.ENTITY_PLAYER)
 if MMC then
 	MMC.AddMusicCallback(yandereWaifu, function(self, music)
 		if replacesong then
-			return RebekahCurseMusic.MUSIC_TICKTOCK
+			return RebekahCurse.Music.MUSIC_TICKTOCK
 		end
 	end)
 end

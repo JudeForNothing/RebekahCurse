@@ -4,7 +4,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_LILITH_BOSS then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_LILITH_BOSS then
 		if ent.FrameCount == 1 then
 			data.State = 0
 			spr:Play("1Start", true)
@@ -24,13 +24,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			local hasBombs = 0
 			local hasElectroBabs = 0
 			for i, v in pairs (Isaac.GetRoomEntities()) do
-				if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_DEMONBABY_ENEMY then
+				if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurse.Enemies.ENTITY_DEMONBABY_ENEMY then
 					hasDemonBabs = hasDemonBabs + 1
 				end
 				if v.Type == EntityType.ENTITY_BOOMFLY then
 					hasBombs = hasBombs + 1
 				end
-				if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_ROBOBABY_ENEMY then
+				if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurse.Enemies.ENTITY_ROBOBABY_ENEMY then
 					hasElectroBabs = hasElectroBabs + 1
 				end
 			end
@@ -78,7 +78,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			if spr:IsEventTriggered("Attack") then
 				for i = 0, 360 - 360/2, 360/2 do
-					local brain = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BOBSBRAIN_ENEMY, 0, ent.Position, Vector.Zero, ent)
+					local brain = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_BOBSBRAIN_ENEMY, 0, ent.Position, Vector.Zero, ent)
 					yandereWaifu.GetEntityData(brain).Lilith = ent
 					yandereWaifu.GetEntityData(brain).startingNum = i
 				end
@@ -90,8 +90,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			if spr:IsEventTriggered("Attack") then
 				for i, v in pairs (Isaac.GetRoomEntities()) do
-					if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY then
-						if v.Variant == RebekahCurseEnemies.ENTITY_BOBSBRAIN_ENEMY then
+					if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY then
+						if v.Variant == RebekahCurse.Enemies.ENTITY_BOBSBRAIN_ENEMY then
 							yandereWaifu.GetEntityData(v).State = 2
 							yandereWaifu.GetEntityData(v).VelocityDir = (player.Position - ent.Position):Resized(2)
 							v:GetSprite():Play("StartFire", true)
@@ -108,7 +108,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 			if spr:IsEventTriggered("Attack") then
 				for i = 0, 360 - 360/2, 360/2 do
-					local brain = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_DEMONBABY_ENEMY, 0, ent.Position, Vector.Zero, ent)
+					local brain = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_DEMONBABY_ENEMY, 0, ent.Position, Vector.Zero, ent)
 					yandereWaifu.GetEntityData(brain).Lilith = ent
 					yandereWaifu.GetEntityData(brain).startingNum = i --+ ent.FrameCount
 				end
@@ -124,7 +124,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				
 				for i = 0, 2 do
 					InutilLib.SetTimer( i * 30, function()
-						local brain = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MULTIDIMENSIONALBABY_ENEMY, 0, ent.Position, (player.Position - ent.Position):Resized(8):Rotated((player.Position - ent.Position):GetAngleDegrees() + math.random(-30,30)), ent)
+						local brain = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_MULTIDIMENSIONALBABY_ENEMY, 0, ent.Position, (player.Position - ent.Position):Resized(8):Rotated((player.Position - ent.Position):GetAngleDegrees() + math.random(-30,30)), ent)
 					end)
 				end
 			end
@@ -138,7 +138,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				local rnd = math.random(1,2)
 				local rng = math.random(1,2)
 				for i = 0, 1 do
-					local robo = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_ROBOBABY_ENEMY, 0, ent.Position, Vector.Zero, ent)
+					local robo = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_ROBOBABY_ENEMY, 0, ent.Position, Vector.Zero, ent)
 					if rnd == 1 then
 						if i == 0 then
 							yandereWaifu.GetEntityData(robo).State = Direction.RIGHT
@@ -172,4 +172,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		ent.Velocity = ent.Velocity *0.8
 	end
 
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

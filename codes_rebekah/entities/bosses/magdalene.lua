@@ -17,7 +17,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_BOSS then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_MAGDALENE_BOSS then
 		if ent.FrameCount == 1 then
 			data.State = 0
 			spr:Play("1Start", true)
@@ -189,7 +189,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			if spr:IsFinished("1Transition") then
 				data.State = 17
 				for i = 1, 2 do
-					local heart = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,20):Rotated(math.random(1,360)), ent)
+					local heart = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,20):Rotated(math.random(1,360)), ent)
 					heart:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 				end
 			end
@@ -342,19 +342,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				if spr:GetFrame() == 20 then
 					local num = 0
 					for i, v in pairs (Isaac.GetRoomEntities()) do
-						if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_HEART then
+						if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurse.Enemies.ENTITY_MAGDALENE_HEART then
 							num = num + 1
 						end
 					end
 					if num < 7 then
 						local ran = math.random(1,2)
 						for i = 1, ran do
-							local heart = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,15):Rotated(math.random(1,360)), ent)
+							local heart = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_MAGDALENE_HEART, 0, ent.Position, Vector(0,15):Rotated(math.random(1,360)), ent)
 							heart:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 						end
 					else
 						for i, v in ipairs (Isaac.GetRoomEntities()) do
-							if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_HEART then
+							if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurse.Enemies.ENTITY_MAGDALENE_HEART then
 								if not v:GetSprite():IsPlaying("HeartAttack") then
 									v:GetSprite():Play("HeartAttack", true)
 								end
@@ -500,7 +500,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 		for i, v in ipairs (Isaac.GetRoomEntities()) do
-			if v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_HEART then
+			if v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and v.Variant == RebekahCurse.Enemies.ENTITY_MAGDALENE_HEART then
 				if math.floor(ent.FrameCount % math.floor(ent.HitPoints/5)) == 0 and not v:GetSprite():IsPlaying("HeartAttack") then
 					v:GetSprite():Play("HeartAttack", true)
 				end
@@ -508,7 +508,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
@@ -529,7 +529,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_MAGDALENE_HEART then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_MAGDALENE_HEART then
 		if ent.FrameCount == 1 then
 			ent:GetSprite():ReplaceSpritesheet(0, "gfx/bosses/rivals/maggy/beatingheart.png")
 			ent:GetSprite():LoadGraphics()
@@ -555,4 +555,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

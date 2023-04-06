@@ -27,6 +27,7 @@ yandereWaifuCodes = {
 
 	unlocks = {
 		enums = require('codes_rebekah.unlocks.enums'),
+		vanillaachievements = require('codes_rebekah.unlocks.vanillaachievements'),
 		system = require('codes_rebekah.unlocks.unlocksystem'),
 		completionmarks = {
 			rebekah_a = require('codes_rebekah.unlocks.unlock code.completionmarks.rebekah_a'),
@@ -61,7 +62,10 @@ yandereWaifuIngameContentCode = {
 				bone = require('codes_rebekah.characters.rebekah_A.personalities.bone'),
 				rotten = require('codes_rebekah.characters.rebekah_A.personalities.rotten'),
 				broken = require('codes_rebekah.characters.rebekah_A.personalities.broken'),
-				immortal = require('codes_rebekah.characters.rebekah_A.personalities.immortal')
+				immortal = require('codes_rebekah.characters.rebekah_A.personalities.immortal'),
+
+
+				extra = require('codes_rebekah.characters.rebekah_A.personalities.extra'),
 			}
 		},
 		rebekahB = {
@@ -119,7 +123,20 @@ yandereWaifuIngameContentCode = {
 	items = {
 		glowinghourglass = require('codes_rebekah.items.vanilla.glowinghourglass'),
 		sacrificialaltar = require('codes_rebekah.items.vanilla.sacrificialaltar'),
+		fuzzypickle = require('codes_rebekah.items.vanilla.fuzzypickle'),
 		wisps = require('codes_rebekah.items.familiars.wisps'),
+
+		--bootlegs
+		shatteredkey = require('codes_rebekah.items.bootleg.shatteredkey'),
+		unstablecandle = require('codes_rebekah.items.bootleg.unstablecandle'),
+		oinkybank = require('codes_rebekah.items.bootleg.oinkybank'),
+		ninebatts = require('codes_rebekah.items.bootleg.9batts'),
+		aresbox = require('codes_rebekah.items.bootleg.aresbox'),
+		seabattery = require('codes_rebekah.items.bootleg.seabattery'),
+		vitaminc = require('codes_rebekah.items.bootleg.vitaminc'),
+		iou = require('codes_rebekah.items.bootleg.iou'),
+		suspiciousstew = require('codes_rebekah.items.bootleg.suspiciousstew'),
+		fomobombs = require('codes_rebekah.items.bootleg.fomobombs'),
 
 		candyweddingring = require('codes_rebekah.items.candyweddingring'),
 		lovedeluxe = require('codes_rebekah.items.lovedeluxe'),
@@ -204,6 +221,7 @@ yandereWaifuIngameContentCode = {
 		underpay = require('codes_rebekah.items.underpay'),
 		silenttreatment = require('codes_rebekah.items.silenttreatment'),
 		deborahsdeadeye = require('codes_rebekah.items.deborahsdeadeye'),
+		silencer = require('codes_rebekah.items.silencer'),
 
 		fullfatmilk = require('codes_rebekah.items.fullfatmilk'),
 	},
@@ -218,13 +236,15 @@ yandereWaifuIngameContentCode = {
 	stages = {
 		gen = {
 			rebekahsroom = require('codes_rebekah.floors.gen.rebekahsbedroom'),
+			thriftshop = require('codes_rebekah.floors.gen.thriftshop'),
 			},
 		rebekahsroom = require('codes_rebekah.floors.rebekahsbedroom'),
 		thriftshop = require('codes_rebekah.floors.thriftshop'),
 		liminal = require('codes_rebekah.floors.backrooms'),
 		phantasm = require('codes_rebekah.floors.phantasm'),
 		phantasmhouse = require('codes_rebekah.floors.phantasm.house'),
-		undercrofts = require('codes_rebekah.floors.undercrofts')
+		undercrofts = require('codes_rebekah.floors.undercrofts'),
+		anus = require('codes_rebekah.floors.anus')
 	},
 	challenges = { 
 		thetruefamilyguy = require('codes_rebekah.challenge.thetruefamilyguy'),

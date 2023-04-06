@@ -16,28 +16,28 @@ function yandereWaifu:useEnchiridion(collItem, rng, player, flags, slot)
 		end
 	end
 	player:UseCard(Card.CARD_STRENGTH, UseFlag.USE_NOANIM)
-	player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION)
+	player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_THEENCHIRIDION)
 	
-	player:AddNullCostume(RebekahCurseCostumes.AdventureTime)
+	player:AddNullCostume(RebekahCurse.Costumes.AdventureTime)
 	if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 	player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end
 	
 	InutilLib.AnimateGiantbook("gfx/ui/giantbook/giantbook_the_enchiridion.png", nil, "Shake", _, true)
 	--[[InutilLib.SetTimer( 30*120, function()
-		player:TryRemoveNullCostume (RebekahCurseCostumes.AdventureTime)
+		player:TryRemoveNullCostume (RebekahCurse.Costumes.AdventureTime)
 		if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 		player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end
 	end)]]
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useEnchiridion, RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useEnchiridion, RebekahCurse.Items.COLLECTIBLE_THEENCHIRIDION )
 
 function yandereWaifu:useEnchiridionNewRoom()	
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_THEENCHIRIDION) then
-			player:TryRemoveNullCostume (RebekahCurseCostumes.AdventureTime)
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_THEENCHIRIDION) then
+			player:TryRemoveNullCostume (RebekahCurse.Costumes.AdventureTime)
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 			player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end
 		end

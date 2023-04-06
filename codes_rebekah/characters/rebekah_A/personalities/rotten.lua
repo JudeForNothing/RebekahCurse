@@ -5,7 +5,7 @@ do
 function yandereWaifu.RottenTossHead(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	playerdata.IsDashActive = true
@@ -31,14 +31,14 @@ function yandereWaifu.RottenTossHead(player, vector)
 			end
 		end
 		if playerdata.extraHeadsPresent == false then
-			--player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
-			player:AddNullCostume(RebekahCurseCostumes.BloodGush)
+			--player:AddNullCostume(RebekahCurse.Costumes.HeadlessHead)
+			player:AddNullCostume(RebekahCurse.Costumes.BloodGush)
 		else
-			player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
+			player:AddNullCostume(RebekahCurse.Costumes.SkinlessHead)
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 		end
 
-		playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+		playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 		playerdata.IsDashActive = false
 	else
 		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
@@ -48,19 +48,19 @@ function yandereWaifu.RottenTossHead(player, vector)
 			playerdata.RebHead.Velocity = vector:Resized(15)
 			playerdata.IsDashActive = false
 		end
-		playerdata.specialCooldown = REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+		playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 		yandereWaifu.GetEntityData(playerdata.RebHead).PickupFrames = 30
 	end
 	for i, v in pairs(playerdata.RottenFlyTable) do
 		--if not v:IsDead() or v:Exists() then
-			v.Velocity = v.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+			v.Velocity = v.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
 			yandereWaifu.GetEntityData(v).SpecialDash = true
 		--end
 	end
 	for i, entity in pairs(Isaac.GetRoomEntities()) do
 		if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
 			if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
-				entity.Velocity = entity.Velocity + vector:Resized( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
+				entity.Velocity = entity.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
 				yandereWaifu.GetEntityData(entity).SpecialDash = true
 			end
 		end
@@ -92,9 +92,9 @@ function yandereWaifu.RebekahRottenBarrage(player, direction)
 			end
 		end
 		if data.extraHeadsPresent == false then
-			player:AddNullCostume(RebekahCurseCostumes.HeadlessHead)
+			player:AddNullCostume(RebekahCurse.Costumes.HeadlessHead)
 		else
-			player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
+			player:AddNullCostume(RebekahCurse.Costumes.SkinlessHead)
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 		end
 	else]]
@@ -147,7 +147,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -191,7 +191,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -226,7 +226,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -240,9 +240,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -251,17 +251,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--sounds
 		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
 			end
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 	end
@@ -270,9 +270,9 @@ end, RebekahCurse.ENTITY_REBEKAHENTITYWEAPON);
 function yandereWaifu.resetRottenHead(player)
 	yandereWaifu.GetEntityData(player).noHead = false
 	yandereWaifu.GetEntityData(player).extraHeadsPresent = false
-	player:TryRemoveNullCostume(RebekahCurseCostumes.HeadlessHead)
-	player:TryRemoveNullCostume(RebekahCurseCostumes.BloodGush)
-	player:TryRemoveNullCostume(RebekahCurseCostumes.SkinlessHead)
+	player:TryRemoveNullCostume(RebekahCurse.Costumes.HeadlessHead)
+	player:TryRemoveNullCostume(RebekahCurse.Costumes.BloodGush)
+	player:TryRemoveNullCostume(RebekahCurse.Costumes.SkinlessHead)
 	--print(yandereWaifu.GetEntityData(player).extraHeadsPresent)
 	yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false)
 end
@@ -445,7 +445,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.MaggotTe
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	
-	if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts then
+	if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts then
 		if not data.RottenFlyTable then 
 			data.RottenFlyTable = {} 
 			
@@ -876,7 +876,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ro
 			--end
 		end
 		
-		if yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts then
+		if yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.RottenHearts then
 			fam:Die()
 			for i = 0, math.random(9,15) do
 				local fly = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_FLYTEAR, 0, fam.Position, Vector(0,0), player)
@@ -1139,10 +1139,10 @@ end, RebekahCurse.ENTITY_FLYTEAR);
 		if yandereWaifu.IsNormalRebekah(player) then
 			local data = yandereWaifu.GetEntityData(player)
 			--print("fire")
-			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and data.noHead then
+			if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts and data.noHead then
 				data.extraHeadsPresent = true
 				if data.extraHeadsPresent then
-					player:AddNullCostume(RebekahCurseCostumes.SkinlessHead)
+					player:AddNullCostume(RebekahCurse.Costumes.SkinlessHead)
 					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player, false)
 				end
 			end
@@ -1165,7 +1165,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
     local roomClampSize = math.max( player.Size, 20 );
 	
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 
@@ -1177,7 +1177,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	eff.Velocity = (movementDirection*10)
 	if eff.FrameCount == 1 then
 		player.Visible = true
-		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+		--InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		sprite:Play("Idle", true);
 		effData.movementCountFrame = 20
 	elseif sprite:IsFinished("Idle") then
@@ -1191,7 +1191,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if effData.movementCountFrame <= 0 then
 			local vector = (eff.Position - data.RebHead.Position):Resized(2)
-			print( REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN)
+			print( RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN)
 			print(data.specialCooldown)
 			data.IsDashActive = false
 			yandereWaifu.GetEntityData(data.RebHead).PickupFrames = 30

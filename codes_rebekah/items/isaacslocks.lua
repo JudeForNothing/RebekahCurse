@@ -3,7 +3,7 @@ function yandereWaifu:IsaacsLocksNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) and room:IsFirstVisit() then
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) and room:IsFirstVisit() then
 			local rng = math.random(1,2)
 			local seed = room:GetSpawnSeed()
 			--print(room:GetSpawnSeed())

@@ -10,7 +10,6 @@ local function IsRealDamage(flags)
 end
 
 local function spawnTwins(player)
-	print("spawnTwins")
 	local data = yandereWaifu.GetEntityData(player)
 	data.redTwin = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, InutilLib.PSEUDO_CLONE, player.Position, Vector(0, 0), player):ToFamiliar()
 	data.redTwin:GetData().DontRender = true
@@ -61,7 +60,7 @@ function yandereWaifu:TwinVisionNewFloor()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
 		if not (data.isredTwin or data.isblueTwin) and not (data.redTwin or data.blueTwin) then
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) then
 				spawnTwins(player)
 				data.PersistentPlayerData.SpawnTwins = true
 			end
@@ -75,7 +74,7 @@ function yandereWaifu:TwinVisionNewRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
 		if not (data.redTwin or data.blueTwin) and data.PersistentPlayerData.SpawnTwins then
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) then
 				spawnTwins(player)
 			end
 		end
@@ -105,7 +104,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_,player)
 	if data.isblueTwin then
 		player:SetColor(Color(0.5,0.5,1,1,0,0,0),3,1,false,false)
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
 	--	player:SetColor(Color(0.2,0.2,0.2,0.4,0,0,0),3,1,false,false)
 	end
 end)
@@ -114,7 +113,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_TWINVISION) and not (data.isredTwin or data.isblueTwin) and not (data.redTwin or data.blueTwin) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_TWINVISION) and not (data.isredTwin or data.isblueTwin) and not (data.redTwin or data.blueTwin) then
 		spawnTwins(player)
 		data.PersistentPlayerData.SpawnTwins = true
 	end
@@ -124,12 +123,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	if data.isblueTwin then
 		player:SetColor(Color(0,0,1,1,0,0,0),3,1,false,false)
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
 		player:SetColor(Color(0,0,0,0.2,0,0,0),3,1,false,false)
 	end]]
 	if InutilLib.room:IsClear() then
 		if data.PersistentPlayerData and data.PersistentPlayerData.SpawnTwins then
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) and data.redTwin and data.blueTwin then
 				data.redTwin:Die()
 				data.blueTwin:Die()
 				data.redTwin = nil
@@ -137,14 +136,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			end
 		end
 	end
-	if not InutilLib.room:IsClear() and data.PersistentPlayerData.SpawnTwins and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and not (data.redTwin and data.blueTwin) then
+	if not InutilLib.room:IsClear() and data.PersistentPlayerData.SpawnTwins and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) and not (data.redTwin and data.blueTwin) then
 		spawnTwins(player)
 	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	local data = yandereWaifu.GetEntityData(damage)
-	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_TWINVISION) and IsRealDamage(damageFlag) then
+	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_TWINVISION) and IsRealDamage(damageFlag) then
 		if data.redTwin and data.blueTwin then
 			data.PersistentPlayerData.SpawnTwins = false
 			data.redTwin:Die()

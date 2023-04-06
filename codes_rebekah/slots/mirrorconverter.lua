@@ -111,8 +111,8 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 						if mirdata.Dead and not sprite:IsPlaying("Death") and not mirdata.DeadFinished then 
 							for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 								if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-									local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, 0, pickup.Position,  pickup.Velocity, pickup)
-									--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+									local newpickup = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_REDTATO, 0, pickup.Position,  pickup.Velocity, pickup)
+									--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahCurse.RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
 									pickup:Remove()
 								end
 							end

@@ -396,17 +396,17 @@ for name, id in pairs(yandereWaifu.AchievementTrackerTrinkets) do
 end]]
 
 yandereWaifu.TrinketsByID = {}
-for name, id in pairs(RebekahCurseTrinkets) do
+for name, id in pairs(RebekahCurse.Trinkets) do
 	yandereWaifu.TrinketsByID[id] = true
 end
 
 yandereWaifu.ItemsByID = {}
-for name, id in pairs(RebekahCurseItems) do
+for name, id in pairs(RebekahCurse.Items) do
 	yandereWaifu.ItemsByID[id] = true
 end
 
 yandereWaifu.CardsByID = {}
-for name, id in pairs(RebekahCurseCards) do
+for name, id in pairs(RebekahCurse.Cards) do
 	yandereWaifu.CardsByID[id] = true
 end
 
@@ -419,7 +419,7 @@ function yandereWaifu.RemoveLockedCollectiblesFromPool()
 	end
 
 	if not RebekahLocalSavedata.Config.itemsEnabled then
-		for _, id in pairs(RebekahCurseItems) do
+		for _, id in pairs(RebekahCurse.Items) do
 			pool:RemoveCollectible(id)
 		end
 	end
@@ -438,7 +438,7 @@ function yandereWaifu.RemoveLockedTrinketsFromPool()
 	end]]
 
 	if not RebekahLocalSavedata.Config.itemsEnabled then
-		for _, id in pairs(RebekahCurseTrinkets) do
+		for _, id in pairs(RebekahCurse.Trinkets) do
 			pool:RemoveTrinket(id)
 		end
 	end

@@ -20,7 +20,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	if data.path == nil then data.path = ent.Pathfinder end
 	local player = ent:GetPlayerTarget()
 	--BLOOD SLOTH
-	if ent.Variant == RebekahCurseEnemies.ENTITY_BLOOD_SLOTH then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_SLOTH then
 		if ent.FrameCount == 1 then
 			data.State = 1
 			spr:Play("Appear", true)
@@ -60,7 +60,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	end
 	
 	--BLOOD WRATH
-	if ent.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_WRATH then
 		if ent.FrameCount == 1 then
 			data.State = 1
 			spr:Play("Appear", true)
@@ -100,15 +100,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then
+	if damage.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_WRATH then
 
-		if --[[((damageFlag & DamageFlag.DAMAGE_LASER)~= 0 or (damageFlag & DamageFlag.DAMAGE_EXPLOSION)~= 0  or (damageFlag & DamageFlag.DAMAGE_CLONES)~= 0 ) and]] damageSource.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH then
+		if --[[((damageFlag & DamageFlag.DAMAGE_LASER)~= 0 or (damageFlag & DamageFlag.DAMAGE_EXPLOSION)~= 0  or (damageFlag & DamageFlag.DAMAGE_CLONES)~= 0 ) and]] damageSource.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_WRATH then
 
 			return false
 		end
 	end
 	
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

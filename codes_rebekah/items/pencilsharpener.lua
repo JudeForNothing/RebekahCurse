@@ -6,8 +6,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	local pldata = yandereWaifu.GetEntityData(player)
 	--items function!
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER ) then
-		--player:AddNullCostume(RebekahCurseCostumes.GreatPheonix)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER ) then
 		if not pldata.PSRPFireCount then
 			pldata.PSRPFireCount = 1
 		end
@@ -34,7 +33,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, fun
 	local player = tr.SpawnerEntity:ToPlayer()
 	if not player then return end
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = tr:GetSprite()
 		if pldata.lastPSRPFrameCount then
 			if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
@@ -66,7 +65,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_INCUBUS_TEAR, fu
 	local fam = tr.SpawnerEntity:ToFamiliar()
 	local player = fam.Player:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(fam)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = tr:GetSprite()
 		if pldata.lastPSRPFrameCount then
 			if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
@@ -96,7 +95,7 @@ end)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = tr:GetSprite()
 		if pldata.lastPSRPFrameCount then
 			if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
@@ -126,7 +125,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 				if player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
 					local spr = lz:GetSprite()
 					if pldata.lastPSRPFrameCount then
@@ -164,7 +163,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 		local player = lz.SpawnerEntity:ToPlayer()
 		if player then
 			local pldata = yandereWaifu.GetEntityData(player)
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) and player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 				local parent = lz.Parent
 				if parent and parent.Type == EntityType.ENTITY_PLAYER then
 					local spr = lz:GetSprite()
@@ -202,7 +201,7 @@ end);
 yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 	local player = bb.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 		if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
 			local spr = bb:GetSprite()
 			if pldata.lastPSRPFrameCount then
@@ -236,7 +235,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 	--print(player)
 	if player and player.Type == EntityType.ENTITY_PLAYER then
 		local pldata = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) and player:HasWeaponType(WeaponType.WEAPON_ROCKETS) then
 			local spr = eff:GetSprite()
 			if pldata.lastPSRPFrameCount then
 				if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
@@ -267,7 +266,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 
 	local player = kn.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
-	if player and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+	if player and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 		local spr = kn:GetSprite()
 		if player:HasWeaponType(WeaponType.WEAPON_KNIFE) then
 			if not pldata.NoActiveKnife then pldata.NoActiveKnife = true end

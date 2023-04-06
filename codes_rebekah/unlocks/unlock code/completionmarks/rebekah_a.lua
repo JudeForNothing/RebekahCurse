@@ -304,38 +304,38 @@ end)
 	local itemPool = InutilLib.game:GetItemPool()
 	if CurrentRebeccaUnlocks then
 		if not yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then --boss rush
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LUNCHBOX)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LUNCHBOX)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then --it lives
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_MIRACULOUSWOMB)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_MIRACULOUSWOMB)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON then --satan
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_CURSEDSPOON)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_CURSEDSPOON)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE then --isaac
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_DICEOFFATE)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_DICEOFFATE)
 		end
 		if not CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS then --lamb
 			itemPool:RemoveTrinket(TRINKET_ISAACSLOCKS)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND then --???
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE then --greed
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_POWERLOVE)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_POWERLOVE)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK then --ier
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM then --hush
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_ROMCOM)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_ROMCOM)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_SNAP then --delirium
 			itemPool:RemoveCollectible(CRebekahCurseItems.OLLECTIBLE_SNAP)
 		end
 		
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE then --IF ALL
-			itemPool:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE)
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE)
 		end
 	end
 end)]]

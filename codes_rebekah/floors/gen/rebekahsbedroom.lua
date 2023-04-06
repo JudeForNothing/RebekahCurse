@@ -1,13 +1,16 @@
 if StageAPI and StageAPI.Loaded then
 
+
+	local RebekahRoomRoomList = StageAPI.RoomsList("Rebekah's Room", {
+		Name = "Rebekah's Room",
+		Rooms = require('resources.luarooms.rebekahsroom.rebekahsroom')
+	})
+
 function yandereWaifu.WillSpawnLoveRoom()
 	local seed = Game():GetSeeds():GetStartSeed()
 	local rng = RNG()
 	rng:SetSeed(seed, 35)
 	local randomChance = rng:RandomInt(100)
-	print("loveroomstuff")
-	print(math.abs(randomChance))
-	print(RebekahLocalSavedata.loveRoomReplacePercent)
 	if --[[seed % 100 <=]] math.abs(randomChance) < RebekahLocalSavedata.loveRoomReplacePercent then
 		return true
 	else
@@ -125,5 +128,22 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, yandereWaifu.rebekahsroomDisplayonRender)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.rebekahsroomDisplayonRender)
+
+--Replace curse rooms
+StageAPI.AddCallback("RebekahCurse", "PRE_STAGEAPI_NEW_ROOM_GENERATION", 0, function(currentRoom, justGenerated, currentListIndex)
+	if yandereWaifu.WillSpawnLoveRoom() then
+		yandereWaifu.ReplaceCurseDoorstoMirrors()
+		if (InutilLib.room:GetType() == RoomType.ROOM_CURSE) and not currentRoom --[[and InutilLib.room:IsFirstVisit()]] then
+			local testRoom = StageAPI.LevelRoom("Love Curse Room", RebekahRoomRoomList, InutilLib.room:GetSpawnSeed(), InutilLib.room:GetRoomShape(), InutilLib.room.Type, nil, nil, nil, nil, nil, StageAPI.GetCurrentRoomID())
+			MusicManager():Play(RebekahCurse.Music.MUSIC_HEARTROOM, 0.1)
+			MusicManager():Queue(RebekahCurse.Music.MUSIC_HEARTROOM)
+			MusicManager():UpdateVolume()
+			replacesong = true
+			
+			RebekahLocalSavedata.savedloveRoomDepletePercent = RebekahLocalSavedata.savedloveRoomDepletePercent - 45
+			return testRoom
+		end
+	end
+end)
 
 end

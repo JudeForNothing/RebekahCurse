@@ -72,98 +72,112 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if eff.FrameCount == 1 then
 		--sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 		eff.RenderZOffset = 100;
-		if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST then
+		if eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Play("Side", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Play("Front", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Play("Angled", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Play("AngledBack", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CHARGE_DUST then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/red/charge_dust.anm2", true)
 			sprite:Play("Charge", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/red/red_ludocrashlightning.anm2", true)
 			sprite:Play("Crash", true) 
 			if data.Soul then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULJINGLE, 1, 0, false, 1)
 				sprite:ReplaceSpritesheet(0, "gfx/effects/soul/hugsandroses_flare.png")
 				sprite:ReplaceSpritesheet(2, "gfx/effects/soul/hugsandroses_flare.png")
 				sprite:LoadGraphics()
 			else
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDJINGLE, 1, 0, false, 1)
 			end
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_SOUL_ARCANE_CIRCLE then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_SOUL_ARCANE_CIRCLE then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/soul/effectchargeoutro.anm2", true)
 			sprite:Play("Poof", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_SOUL_PUKE_EFFECT then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_SOUL_PUKE_EFFECT then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/soul/ectoplasm_spit.anm2", true)
 			sprite:Play("Poof", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_SPECIAL_ARCANE_CIRCLE then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_SPECIAL_ARCANE_CIRCLE then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/soul/special_arcane_circle.anm2", true)
 			sprite:Play("Poof", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_MOUTH then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_LUDO_MOUTH then
 			sprite:Load("gfx/effects/soul/ludo_mouth.anm2", true)
 			sprite:Play("Poof", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_BIG then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_BIG then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
 			sprite:Play("Side", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
 			sprite:Play("Front", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
 			sprite:Play("Angled", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/red/dash_dust_big.anm2", true)
 			sprite:Play("AngledBack", true) 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GOLD_FORCE_FIELD then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GOLD_FORCE_FIELD then
+			sprite.Color = Color( 1, 1, 1, 0.5, 0, 0, 0 );
 			sprite:Load("gfx/effects/gold/stomp_shield.anm2", true)
 			sprite:Play("Shield", true) 
 		
 
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_SLAM then
 			sprite:Load("gfx/effects/tainted/cursed/slam.anm2", true)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 			eff.RenderZOffset = 100;
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT then
 			sprite:Load("gfx/effects/tainted/cursed/slam_default.anm2", true)
 			sprite:Play("Slam", true) 
 			eff.RenderZOffset = 100;
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE then
 			sprite:Load("gfx/effects/tainted/cursed/heavy_strike.anm2", true)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 			eff.RenderZOffset = 100;
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING then
 			sprite:Load("gfx/effects/tainted/cursed/wild_swing.anm2", true)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 155, 0, 155 );
 			eff.RenderZOffset = 100;
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_RAGE_CIRCLE then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_RAGE_CIRCLE then
 			sprite:Load("gfx/effects/tainted/cursed/rage_circle.anm2", true)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 155, 0, 155 );
 			eff.RenderZOffset = 100;
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE then
 			sprite:Load("gfx/effects/tainted/cursed/godhead_heavy_strike.anm2", true)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 			eff.RenderZOffset = 100;
 			InutilLib.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_SLAM then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_SLAM then
 			sprite:Load("gfx/effects/tainted/cursed/emoji_slam.anm2", true)
 			sprite:Play("Slam", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
 			eff.RenderZOffset = 100;
 			InutilLib.game:MakeShockwave(eff.Position, 0.195, 0.025, 10)
-		elseif eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE then
+		elseif eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE then
 			sprite:Load("gfx/effects/tainted/cursed/emoji_cry.anm2", true)
 			sprite:Play("Cry", true) 
 			sprite.Color = Color( 1, 1, 1, 1, 0, 0, 0 );
@@ -174,11 +188,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if sprite:IsFinished("Side") or sprite:IsFinished("Front") or sprite:IsFinished("Angled") or sprite:IsFinished("AngledBack") or sprite:IsFinished("Poof") or sprite:IsFinished("Crash") or sprite:IsFinished("Shield") or sprite:IsFinished("Slam") then
 		eff:Remove()
 	end
-	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CHARGE_DUST then
+	if eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CHARGE_DUST then
 		eff.Position = data.Parent.Position
 		eff.Velocity = data.Parent.Velocity
 	end
-	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
+	if eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING then
 		if sprite:GetFrame() == 9 then
 			if data.Soul then
 				yandereWaifu.GetEntityData(data.Parent).FinishedPlayingCustomAnim = true
@@ -191,7 +205,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			InutilLib.game:ShakeScreen(10)
 		end
 	end
-	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_GOLD_FORCE_FIELD and sprite:GetFrame() < 12 then
+	if eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_GOLD_FORCE_FIELD and sprite:GetFrame() < 12 then
 		--tear projectiles defence
 		for i, e in pairs(Isaac.GetRoomEntities()) do
 			if e.Type == EntityType.ENTITY_PROJECTILE then
@@ -216,7 +230,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 		end
 	end
-	if eff.SubType == RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE then
+	if eff.SubType == RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE then
 		if sprite:IsFinished("Crydie") then
 			eff:Remove()
 		end
@@ -292,10 +306,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_HEARTGULP)
 
 function AddRebekahDashEffect(player)
-	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
+	--[[local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), player) --body effect
 	yandereWaifu.GetEntityData(customBody).Player = player
 	yandereWaifu.GetEntityData(customBody).DashEffect = true
-	yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
+	yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true]]
+	yandereWaifu:GuwahMakeAfterimage(player)
 end
 
 function yandereWaifu:getPillEffect(pillEffect, player, useFlag)
@@ -381,6 +396,22 @@ function yandereWaifu:changetoDifferentLaser(lz)
 				lz.Child.Color = lz.Parent:GetSprite().Color
 			end
 		end
+	elseif entityData.IsRainbowNincompoop == true then
+		if lz.FrameCount == 1 then
+			lz:GetSprite():Load("gfx/bosses/normal/nincompoop_laser.anm2", true)
+			lz:GetSprite():Play("LargeRedLaser", true)
+			if lz.Child ~= nil then
+				--lz.Child:GetSprite():Load("gfx/dark_impact.anm2", true)
+				--lz.Child:GetSprite():LoadGraphics()
+				--lz.Child.Color = lz.Parent:GetSprite().Color
+			end
+		end
+		--[[if lz.FrameCount % 5 == 0 then
+			for i = -30, 30, 15 do
+				local proj = InutilLib.FireGenericProjAttack(lz.SpawnerEntity, 0, 1, lz:GetEndPoint(), ((Vector(10,0)):Rotated(i)):Resized(10))
+				proj.Scale = 1.5
+			end
+		end]]
 	end
 	if entityData.IsLvlOneBeam then
 		if lz.FrameCount == 1 then
@@ -561,7 +592,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--sprite:LoadGraphics()
 	if eff.FrameCount == 1 and eff.SubType == 0 then
 		sprite:Play("FadeIn", true)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_GROUNDCRACK, 1, 0, false, 0.9 )
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_GROUNDCRACK, 1, 0, false, 0.9 )
 	end
 	if sprite:IsPlaying("FadeIn") then
 		InutilLib.game:ShakeScreen(4)

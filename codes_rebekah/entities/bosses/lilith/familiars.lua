@@ -3,7 +3,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	
-	if ent.Variant == RebekahCurseEnemies.ENTITY_DEMONBABY_ENEMY then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_DEMONBABY_ENEMY then
 		if ent.FrameCount == 1 then
 			data.State = 0
 			spr:Play("IdleDown", true)
@@ -41,7 +41,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	end
 	
 	--laser guy
-	if ent.Variant == RebekahCurseEnemies.ENTITY_ROBOBABY_ENEMY then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_ROBOBABY_ENEMY then
 		if ent.FrameCount == 1 then
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
 			ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
@@ -95,7 +95,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 	
-	if ent.Variant == RebekahCurseEnemies.ENTITY_MULTIDIMENSIONALBABY_ENEMY then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_MULTIDIMENSIONALBABY_ENEMY then
 		if ent.FrameCount == 1 then
 			data.State = 0
 			spr:Play("IdleDown", true)
@@ -135,7 +135,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 	
-	if ent.Variant == RebekahCurseEnemies.ENTITY_BOBSBRAIN_ENEMY then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_BOBSBRAIN_ENEMY then
 		if ent.FrameCount == 1 then
 			data.State = 0
 			spr:Play("Appear", true)
@@ -178,16 +178,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, coll, low)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_BOBSBRAIN_ENEMY and coll.Type == EntityType.ENTITY_PLAYER then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_BOBSBRAIN_ENEMY and coll.Type == EntityType.ENTITY_PLAYER then
 		Isaac.Explode(ent.Position, ent, 15)
 		ent:Remove()
 		Game():ShakeScreen(10)
 	end
 
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

@@ -34,7 +34,7 @@ function yandereWaifu.TrySpawnMirror()
 					table.insert(RebekahLocalSavedata.Data.bossRoomsCleared, {level:GetCurrentRoomDesc().GridIndex, level:GetStage()} );
 					local spawnPosition = room:FindFreePickupSpawnPosition(room:GetCenterPos(), 1);
 					local subtype = 0
-					--bride --if ( yandereWaifu.GetEntityData(player).currentMode==REBECCA_MODE.RedHearts and level:GetStage() == 10 ) then subtype = 1 else subtype = 0 end
+					--bride --if ( yandereWaifu.GetEntityData(player).currentMode==RebekahCurse.REBECCA_MODE.RedHearts and level:GetStage() == 10 ) then subtype = 1 else subtype = 0 end
 					local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, subtype, spawnPosition, Vector(0,0), player);
 					yandereWaifu.GetEntityData(mir).Init = false
 					mir:GetSprite():Play("Appear")
@@ -207,9 +207,9 @@ function yandereWaifu.MirrorMechanic(player)
 								for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 									if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
 										if math.random(1,4) == 4 then
-											local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+											local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahCurse.RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
 										elseif math.random(1,2) == 2 then
-											local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, math.random(0,6), pickup.Position,  pickup.Velocity, pickup)
+											local newpickup = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_REDTATO, math.random(0,6), pickup.Position,  pickup.Velocity, pickup)
 										end
 										pickup:Remove()
 									end
@@ -221,7 +221,7 @@ function yandereWaifu.MirrorMechanic(player)
 								Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, mir.Position, Vector(0,0), player)
 								for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 									if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-										local newpickup = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, 1, pickup.Position,  Vector.FromAngle( math.random() * 360 ):Resized(math.random(1,6)), pickup)
+										local newpickup = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_REDTATO, 1, pickup.Position,  Vector.FromAngle( math.random() * 360 ):Resized(math.random(1,6)), pickup)
 										yandereWaifu.GetEntityData(newpickup).NoDrop = true
 										pickup:Remove()
 									end
@@ -291,30 +291,30 @@ function yandereWaifu.MirrorMechanic(player)
 									local newMode = yandereWaifu.GetEntityData(player).currentMode;
 									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and #totalCurTypesofHearts > 0 and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") and not sprite:IsPlaying("Initiate") and not yandereWaifu.GetEntityData(player).IsAttackActive then --if interacted
 										--print("trigger")
-										if sprite:IsPlaying("ShowRed") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RedHearts 
+										if sprite:IsPlaying("ShowRed") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.RedHearts 
 											and (player:GetHearts() > 1 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.RedHearts;
-										elseif sprite:IsPlaying("ShowBlue") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.SoulHearts 
+											newMode = RebekahCurse.REBECCA_MODE.RedHearts;
+										elseif sprite:IsPlaying("ShowBlue") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.SoulHearts 
 											and ((player:GetSoulHearts() > 1 and (player:GetSoulHearts()-yandereWaifu.GetPlayerBlackHearts(player))> 0) or mir.SubType == 10) then
-											newMode = REBECCA_MODE.SoulHearts
-										elseif sprite:IsPlaying("ShowGold") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.GoldHearts 
+											newMode = RebekahCurse.REBECCA_MODE.SoulHearts
+										elseif sprite:IsPlaying("ShowGold") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.GoldHearts 
 											and (player:GetGoldenHearts() > 0 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.GoldHearts
-										elseif sprite:IsPlaying("ShowEvil") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.EvilHearts 
+											newMode = RebekahCurse.REBECCA_MODE.GoldHearts
+										elseif sprite:IsPlaying("ShowEvil") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.EvilHearts 
 											and (yandereWaifu.GetPlayerBlackHearts(player) > 1 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.EvilHearts
-										elseif sprite:IsPlaying("ShowEternal") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.EternalHearts 
+											newMode = RebekahCurse.REBECCA_MODE.EvilHearts
+										elseif sprite:IsPlaying("ShowEternal") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.EternalHearts 
 											and (player:GetEternalHearts() > 0 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.EternalHearts;
-										elseif sprite:IsPlaying("ShowBone") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BoneHearts 
+											newMode = RebekahCurse.REBECCA_MODE.EternalHearts;
+										elseif sprite:IsPlaying("ShowBone") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.BoneHearts 
 											and (player:GetBoneHearts() > 0 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.BoneHearts;
-										elseif sprite:IsPlaying("ShowRotten") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.RottenHearts
+											newMode = RebekahCurse.REBECCA_MODE.BoneHearts;
+										elseif sprite:IsPlaying("ShowRotten") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.RottenHearts
 											and (player:GetRottenHearts() > 0 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.RottenHearts;
-										elseif sprite:IsPlaying("ShowBroken") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrokenHearts 
+											newMode = RebekahCurse.REBECCA_MODE.RottenHearts;
+										elseif sprite:IsPlaying("ShowBroken") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.BrokenHearts 
 											and (player:GetBrokenHearts() > 0 or mir.SubType == 10) then
-											newMode = REBECCA_MODE.BrokenHearts;
+											newMode = RebekahCurse.REBECCA_MODE.BrokenHearts;
 										end
 										if newMode ~= yandereWaifu.GetEntityData(player).currentMode and not sprite:IsPlaying("Initiate") and yandereWaifu.IsNormalRebekah(player) then
 											local isFree = mir.SubType == 10
@@ -383,7 +383,7 @@ function yandereWaifu.MirrorMechanic(player)
 						mirdata.Circle:GetSprite():Play("FadeOut",true)
 						for j, pickup in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, -1, -1, false, false)) do
 							if (pickup.Position):Distance(mir.Position) <= 50 and pickup.FrameCount <= 1 then
-								local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
+								local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahCurse.RebekahMirrorHeartDrop[math.random(1,6)], pickup.Position, pickup.Velocity, pickup)
 								pickup:Remove()
 							end
 						end
@@ -403,8 +403,8 @@ function yandereWaifu.MirrorMechanic(player)
 								local newMode = yandereWaifu.GetEntityData(player).currentMode;
 								if yandereWaifu.IsNormalRebekah(player) then
 									if mir.Position:Distance( player.Position ) < mir.Size + player.Size and heartBrideTable.Show and player.EntityCollisionClass ~=  EntityCollisionClass.ENTCOLL_NONE and not player:GetSprite():IsPlaying("Trapdoor") then --if interacted
-										if sprite:IsPlaying("ShowBRed") and yandereWaifu.GetEntityData(player).currentMode ~= REBECCA_MODE.BrideRedHearts then
-											newMode = REBECCA_MODE.BrideRedHearts;
+										if sprite:IsPlaying("ShowBRed") and yandereWaifu.GetEntityData(player).currentMode ~= RebekahCurse.REBECCA_MODE.BrideRedHearts then
+											newMode = RebekahCurse.REBECCA_MODE.BrideRedHearts;
 										end
 										if newMode ~= yandereWaifu.GetEntityData(player).currentMode then
 											mirdata.notAlive = true;

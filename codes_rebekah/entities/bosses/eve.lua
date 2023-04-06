@@ -31,7 +31,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_EVE_BOSS then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_EVE_BOSS then
 		if ent.FrameCount == 1 then
 			--print("wot")
 			data.State = 0
@@ -154,7 +154,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						elseif ent.HitPoints <= 350 then
 							local cleared
 							for i, v in pairs (Isaac.GetRoomEntities()) do
-								if (v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and (v.Variant == RebekahCurseEnemies.ENTITY_BLOOD_SLOTH or v.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH) or v.Type == EntityType.ENTITY_BEGOTTEN) and not v:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+								if (v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and (v.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_SLOTH or v.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_WRATH) or v.Type == EntityType.ENTITY_BEGOTTEN) and not v:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
 									cleared = false
 									break
 								end
@@ -308,7 +308,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			if data.State == 7 then --blocking stuff
 				local cleared
 				for i, v in pairs (Isaac.GetRoomEntities()) do
-					if( v.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and (v.Variant == RebekahCurseEnemies.ENTITY_BLOOD_SLOTH or v.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH)or v.Type == EntityType.ENTITY_BEGOTTEN) and not v:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+					if( v.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and (v.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_SLOTH or v.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_WRATH)or v.Type == EntityType.ENTITY_BEGOTTEN) and not v:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
 						cleared = false
 						break
 					end
@@ -325,17 +325,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 	end
 
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and damage.Variant == RebekahCurseEnemies.ENTITY_EVE_BOSS then
+	if damage.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and damage.Variant == RebekahCurse.Enemies.ENTITY_EVE_BOSS then
 		local data = yandereWaifu.GetEntityData(damage)
 		if data.BlockAllDmg then
 			local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BISHOP_SHIELD, 0, damage.Position, Vector(0,0), damage) 
 			return false
 		end
-		if damageSource.Type == RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY and (damageSource.Variant == RebekahCurseEnemies.ENTITY_BLOOD_WRATH or damageSource.Variant == RebekahCurseEnemies.ENTITY_BLOOD_SLOTH) then
+		if damageSource.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and (damageSource.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_WRATH or damageSource.Variant == RebekahCurse.Enemies.ENTITY_BLOOD_SLOTH) then
 			return false
 		end
 	end
@@ -363,7 +363,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,eff)
 		if eff:GetSprite():GetFrame() == 15  then
 			eff:Remove()
 			if eff.SubType == 0 then
-				local splat = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BLOOD_WRATH, 0, eff.Position, Vector(0,0), nil)
+				local splat = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_BLOOD_WRATH, 0, eff.Position, Vector(0,0), nil)
 			elseif eff.SubType == 1 then
 				for i = 1, 5 do
 					InutilLib.SetTimer( i*3, function()
@@ -378,7 +378,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,eff)
 					splat.MaxHitPoints = 20
 				end
 			elseif eff.SubType == 3 then
-				local splat = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_BLOOD_SLOTH, 0, eff.Position, Vector(0,0), nil)
+				local splat = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_BLOOD_SLOTH, 0, eff.Position, Vector(0,0), nil)
 			end
 		end
 	end

@@ -55,7 +55,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1--[[+(data.StartCountFrame/5)]])
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1--[[+(data.StartCountFrame/5)]])
 			end)
 		end
 		
@@ -99,7 +99,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.5)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.5)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -134,7 +134,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -148,9 +148,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -159,17 +159,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--sounds
 		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
 			end
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_EVILSUMMONAPOSTATE, 1, 0, false, 1)
 			end
 		end
 	end
@@ -256,7 +256,7 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then
+	if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EvilHearts then
 		if player:GetFireDirection() > -1 then --if not firing
 			if not data.evilOrbTick then data.evilOrbTick = 0 end
 			
@@ -289,7 +289,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts and Options.ChargeBars then
+		if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EvilHearts and Options.ChargeBars then
 			yandereWaifu.evilOrbUI(player)
 		end
 	end
@@ -347,7 +347,7 @@ function yandereWaifu.EvilHeartTeleport(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
@@ -357,10 +357,10 @@ function yandereWaifu.EvilHeartTeleport(player, vector)
 	yandereWaifu.GetEntityData(customBody).HereticIn = true
 	player.Velocity = Vector( 0, 0 );
 	player.ControlsEnabled = false;
-	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Evil );
-	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
-	playerdata.specialCooldown = REBEKAH_BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.EVIL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Evil );
+	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.EVIL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	playerdata.IsUninteractible = true
 	playerdata.IsDashActive = true
 	
@@ -390,14 +390,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 		--eff.Velocity = player.Velocity;
 	--else
-	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 	--end
 	
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
 		player.Visible = true
-		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+		--InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		sprite:Play("Idle", true);
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
@@ -412,7 +412,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	
     if (player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and data.movementCountFrame <= 0) or (not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and eff.FrameCount >= data.EndFrames) then
-        if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
+        if RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
             player.Velocity = Vector( 0, 0 );
         else
             player.Velocity = eff.Velocity;
@@ -479,23 +479,23 @@ function yandereWaifu.EvilHeartDash(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	
 	--transform code
-	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.EVIL_HEARTS_DASH_SPEED );
+	player.Velocity = player.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.EVIL_HEARTS_DASH_SPEED );
 	--local jet = Isaac.Spawn( EntityType.ENTITY_EFFECT, 147, 1, player.Position, Vector(0,0), player ):ToEffect(); 
 	--jet.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 	--jet.GridCollisionClass = GridCollisionClass.COLLISION_NONE
 	
-	playerdata.specialCooldown = REBEKAH_BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
 	--else
 	--	local orb = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EVILORB, 1, player.Position, Vector(0,0), player ); --heart effect
-	--	playerdata.specialCooldown = REBEKAH_BALANCE.EMPTY_EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	--	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.EMPTY_EVIL_HEARTS_DASH_COOLDOWN - trinketBonus;
 	--end
-	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Black );
-	--yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Black );
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Black );
+	--yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Black );
 	for i = 0, math.random(20,25) do
 		InutilLib.SetTimer( i, function()
 			local hole = Isaac.Spawn(EntityType.ENTITY_EFFECT, 111, 0, player.Position, Vector(0,0), player);
@@ -505,7 +505,7 @@ function yandereWaifu.EvilHeartDash(player, vector)
 			hole.RenderZOffset = -10;
 		end)
 	end
-	playerdata.invincibleTime = REBEKAH_BALANCE.EVIL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.EVIL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	InutilLib.SFX:Play( SoundEffect.SOUND_MAW_OF_VOID , 1, 0, false, 1 );
 	
 	playerdata.IsDashActive = true
@@ -640,7 +640,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						end
 					end
 				end
-				yandereWaifu.SpawnHeartParticles( 1, 1, eff.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Black );
+				yandereWaifu.SpawnHeartParticles( 1, 1, eff.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Black );
 			end
 			if sprite:IsFinished("Stomp") then
 				eff:Remove();
@@ -1438,7 +1438,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damag
 			--local player = dmgSource.Entity.SpawnerEntity:ToPlayer()
 			local playerType = player:GetPlayerType()
 			local room = InutilLib.game:GetRoom()
-			if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EvilHearts then
+			if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EvilHearts then
 				if (ent.HitPoints - damage) > 0 and ent.MaxHitPoints >=1800 then
 					if dmgFlag == DamageFlag.DAMAGE_LASER and ent.FrameCount % 60 == 0 then
 						--print(ent.HitPoints)

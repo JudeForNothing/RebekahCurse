@@ -15,21 +15,21 @@ function yandereWaifu:useRomComBook(collItem, rng, player)
 		end
 	end
 	if math.random(1,10) == 10 then
-		SFXManager():Play( RebekahCurseSounds.SOUND_LAUGHUNSETTLING , 1, 0, false, 1 );
+		SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHUNSETTLING , 1, 0, false, 1 );
 	else
-		SFXManager():Play( RebekahCurseSounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
+		SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
 	end
 	InutilLib.AnimateGiantbook("gfx/ui/giantbook/giantbook_romcom.png", nil, "Shake", _, true)
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRomComBook, RebekahCurseItems.COLLECTIBLE_ROMCOM );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useRomComBook, RebekahCurse.Items.COLLECTIBLE_ROMCOM );
 
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ROMCOM) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_ROMCOM ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_ROMCOM) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_ROMCOM ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 			data.specialAttackVector = Vector( vector.X, vector.Y )
 			InutilLib.ConsumeActiveCharge(player)

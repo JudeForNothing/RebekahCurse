@@ -3,14 +3,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		local player = damage:ToPlayer()
 		local data = yandereWaifu.GetEntityData(player)
 
-		if (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and not data.PersistentPlayerData.IsHurt and player:HasTrinket(RebekahCurseTrinkets.TRINKET_ORIGINALSIN) and (player:GetSoulHearts() == 0 and player:GetBoneHearts() == 0) then
+		if (damageFlag & DamageFlag.DAMAGE_CURSED_DOOR) == 0 and not data.PersistentPlayerData.IsHurt and player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ORIGINALSIN) and (player:GetSoulHearts() == 0 and player:GetBoneHearts() == 0) then
 			data.PersistentPlayerData.IsHurt = true
 			player:TakeDamage(1, DamageFlag.DAMAGE_RED_HEARTS, EntityRef(player), 1)
-			player:TryRemoveNullCostume(RebekahCurseCostumes.OriginalSin)
+			player:TryRemoveNullCostume(RebekahCurse.Costumes.OriginalSin)
 			local eff = Isaac.Spawn(EntityType.ENTITY_EFFECT, 16, 11, player.Position, Vector.Zero, player):ToEffect()
 			eff:GetSprite():ReplaceSpritesheet(0,'gfx/effects/items/originalsin_mantle_break.png')
 			eff:GetSprite():LoadGraphics()
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_ORIGINALSIN_SHATTER, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_ORIGINALSIN_SHATTER, 1, 0, false, 1 );
 			InutilLib.game:ShakeScreen(5)
 			return false
 		end
@@ -23,9 +23,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-	--if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_POTATOSNACK) then
-		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ORIGINALSIN) and data.PersistentPlayerData.IsHurt == nil then
-			player:AddNullCostume(RebekahCurseCostumes.OriginalSin)
+	--if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_POTATOSNACK) then
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ORIGINALSIN) and data.PersistentPlayerData.IsHurt == nil then
+			player:AddNullCostume(RebekahCurse.Costumes.OriginalSin)
 			data.PersistentPlayerData.IsHurt = false
 		end
 	--end
@@ -38,7 +38,7 @@ function yandereWaifu:OriginalSinNewFloor()
 		local room = InutilLib.game:GetRoom()
 		if data.PersistentPlayerData.IsHurt then
 			data.PersistentPlayerData.IsHurt = false
-			player:AddNullCostume(RebekahCurseCostumes.OriginalSin)
+			player:AddNullCostume(RebekahCurse.Costumes.OriginalSin)
 		end
 	end
 end

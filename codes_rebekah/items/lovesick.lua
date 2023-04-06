@@ -2,42 +2,42 @@ local uiReserve = Sprite();
 uiReserve:Load("gfx/ui/ui_lovesick_reserve.anm2", true);
 
 local allVocalSounds = {
-	[0] = RebekahCurseSounds.SOUND_VOCAL_C0,
-	[1] = RebekahCurseSounds.SOUND_VOCAL_CSHARP0,
-	[2] = RebekahCurseSounds.SOUND_VOCAL_D0,
-	[3] = RebekahCurseSounds.SOUND_VOCAL_DSHARP0,
-	[4] = RebekahCurseSounds.SOUND_VOCAL_E0,
-	[5] = RebekahCurseSounds.SOUND_VOCAL_F0,
-	[6] = RebekahCurseSounds.SOUND_VOCAL_FSHARP0,
-	[7] = RebekahCurseSounds.SOUND_VOCAL_G0,
-	[8] = RebekahCurseSounds.SOUND_VOCAL_GSHARP0,
-	[9] = RebekahCurseSounds.SOUND_VOCAL_A0,
-	[10] = RebekahCurseSounds.SOUND_VOCAL_ASHARP0,
-	[11] = RebekahCurseSounds.SOUND_VOCAL_B0,
-	[12] = RebekahCurseSounds.SOUND_VOCAL_C1,
-	[13] = RebekahCurseSounds.SOUND_VOCAL_CSHARP1,
-	[14] = RebekahCurseSounds.SOUND_VOCAL_D1,
-	[15] = RebekahCurseSounds.SOUND_VOCAL_DSHARP1,
-	[16] = RebekahCurseSounds.SOUND_VOCAL_E1,
-	[17] = RebekahCurseSounds.SOUND_VOCAL_F1,
-	[18] = RebekahCurseSounds.SOUND_VOCAL_FSHARP1,
-	[19] = RebekahCurseSounds.SOUND_VOCAL_G1,
-	[20] = RebekahCurseSounds.SOUND_VOCAL_GSHARP1,
-	[21] = RebekahCurseSounds.SOUND_VOCAL_A1,
-	[22] = RebekahCurseSounds.SOUND_VOCAL_ASHARP1,
-	[23] = RebekahCurseSounds.SOUND_VOCAL_B1,
-	[24] = RebekahCurseSounds.SOUND_VOCAL_C2,
-	[25] = RebekahCurseSounds.SOUND_VOCAL_CSHARP2,
-	[26] = RebekahCurseSounds.SOUND_VOCAL_D2,
-	[27] = RebekahCurseSounds.SOUND_VOCAL_DSHARP2,
-	[28] = RebekahCurseSounds.SOUND_VOCAL_E2,
-	[29] = RebekahCurseSounds.SOUND_VOCAL_F2,
-	[30] = RebekahCurseSounds.SOUND_VOCAL_FSHARP2,
-	[31] = RebekahCurseSounds.SOUND_VOCAL_G2,
-	[32] = RebekahCurseSounds.SOUND_VOCAL_GSHARP2,
-	[33] = RebekahCurseSounds.SOUND_VOCAL_A2,
-	[34] = RebekahCurseSounds.SOUND_VOCAL_ASHARP2,
-	[35] = RebekahCurseSounds.SOUND_VOCAL_B2,
+	[0] = RebekahCurse.Sounds.SOUND_VOCAL_C0,
+	[1] = RebekahCurse.Sounds.SOUND_VOCAL_CSHARP0,
+	[2] = RebekahCurse.Sounds.SOUND_VOCAL_D0,
+	[3] = RebekahCurse.Sounds.SOUND_VOCAL_DSHARP0,
+	[4] = RebekahCurse.Sounds.SOUND_VOCAL_E0,
+	[5] = RebekahCurse.Sounds.SOUND_VOCAL_F0,
+	[6] = RebekahCurse.Sounds.SOUND_VOCAL_FSHARP0,
+	[7] = RebekahCurse.Sounds.SOUND_VOCAL_G0,
+	[8] = RebekahCurse.Sounds.SOUND_VOCAL_GSHARP0,
+	[9] = RebekahCurse.Sounds.SOUND_VOCAL_A0,
+	[10] = RebekahCurse.Sounds.SOUND_VOCAL_ASHARP0,
+	[11] = RebekahCurse.Sounds.SOUND_VOCAL_B0,
+	[12] = RebekahCurse.Sounds.SOUND_VOCAL_C1,
+	[13] = RebekahCurse.Sounds.SOUND_VOCAL_CSHARP1,
+	[14] = RebekahCurse.Sounds.SOUND_VOCAL_D1,
+	[15] = RebekahCurse.Sounds.SOUND_VOCAL_DSHARP1,
+	[16] = RebekahCurse.Sounds.SOUND_VOCAL_E1,
+	[17] = RebekahCurse.Sounds.SOUND_VOCAL_F1,
+	[18] = RebekahCurse.Sounds.SOUND_VOCAL_FSHARP1,
+	[19] = RebekahCurse.Sounds.SOUND_VOCAL_G1,
+	[20] = RebekahCurse.Sounds.SOUND_VOCAL_GSHARP1,
+	[21] = RebekahCurse.Sounds.SOUND_VOCAL_A1,
+	[22] = RebekahCurse.Sounds.SOUND_VOCAL_ASHARP1,
+	[23] = RebekahCurse.Sounds.SOUND_VOCAL_B1,
+	[24] = RebekahCurse.Sounds.SOUND_VOCAL_C2,
+	[25] = RebekahCurse.Sounds.SOUND_VOCAL_CSHARP2,
+	[26] = RebekahCurse.Sounds.SOUND_VOCAL_D2,
+	[27] = RebekahCurse.Sounds.SOUND_VOCAL_DSHARP2,
+	[28] = RebekahCurse.Sounds.SOUND_VOCAL_E2,
+	[29] = RebekahCurse.Sounds.SOUND_VOCAL_F2,
+	[30] = RebekahCurse.Sounds.SOUND_VOCAL_FSHARP2,
+	[31] = RebekahCurse.Sounds.SOUND_VOCAL_G2,
+	[32] = RebekahCurse.Sounds.SOUND_VOCAL_GSHARP2,
+	[33] = RebekahCurse.Sounds.SOUND_VOCAL_A2,
+	[34] = RebekahCurse.Sounds.SOUND_VOCAL_ASHARP2,
+	[35] = RebekahCurse.Sounds.SOUND_VOCAL_B2,
 }
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
@@ -45,10 +45,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--lovesick
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_LOVESICK) then
-		player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
+		player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		if data.hasTurnedToLovesickBanshee then
 			if not data.BansheeLovesickCountdown then data.BansheeLovesickCountdown = 3000 end
 			data.BansheeLovesickCountdown = data.BansheeLovesickCountdown - 1
@@ -232,8 +232,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 					InutilLib.SFX:Play(SoundEffect.SOUND_SIREN_SCREAM, 0.4, 0, false, 1.2)
 					InutilLib.SFX:Stop(SoundEffect.SOUND_SIREN_SING)
 
-					player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
-					player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
+					player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeShriekCos)
+					player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
 					
 					data.lovesickframecount = 0
 					--tear projectiles defence
@@ -255,8 +255,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			if data.SirenDidShriek then
 				--if player:GetSprite():GetOverlayFrame() == 19 then
 					data.SirenDidShriek = false
-					player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
-					player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
+					player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
+					player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeShriekCos)
 				--end
 			end
 			if not data.SirenDidShriek then data.SirenDidShriek = false end
@@ -279,8 +279,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		if data.SirenDidShriek then
 			if data.lovesickframecount == 19 then
 				data.SirenDidShriek = false
-				player:AddNullCostume(RebekahCurseCostumes.LoveSickBansheeCos)
-				player:TryRemoveNullCostume(RebekahCurseCostumes.LoveSickBansheeShriekCos)
+				player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
+				player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeShriekCos)
 			else
 				data.lovesickframecount = data.lovesickframecount + 1
 			end
@@ -291,7 +291,7 @@ end)
 --[[InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, function(_, tear)
 	local data = yandereWaifu.GetEntityData(tear)
 	local player = tear.SpawnerEntity:ToPlayer()
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		if math.random(1,4) == 4 then
 			data.IsLovesick = true
 		end
@@ -303,7 +303,7 @@ end)]]
 	local player = tr.SpawnerEntity
 	if data.IsLovesick then
 		if Isaac.GetFrameCount() % 30 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahHeartParticleType.Red );
+			yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahCurse.RebekahHeartParticleType.Red );
 			local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PHEROMONES_RING, 0, tr.Position, Vector(0,0), player)
 			yandereWaifu.GetEntityData(fart).Player = tr
 		end
@@ -311,9 +311,9 @@ end)]]
 	
 	if player then
 		player = player:ToPlayer()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) and player:HasWeaponType(WeaponType.WEAPON_LUDOVICO_TECHNIQUE) then
 			if Isaac.GetFrameCount() % 30 == 0 and math.random(1,3) == 3 then
-				yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahHeartParticleType.Red );
+				yandereWaifu.SpawnHeartParticles( 1, 3, tr.Position, yandereWaifu.RandomHeartParticleVelocity(), tr, RebekahCurse.RebekahHeartParticleType.Red );
 				local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PHEROMONES_RING, 0, tr.Position, Vector(0,0), player)
 				yandereWaifu.GetEntityData(fart).Player = tr
 			end
@@ -392,7 +392,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 end, RebekahCurse.ENTITY_LOVESICK_SLASH);
 
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
+	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		local data = yandereWaifu.GetEntityData(damage)
 		damage = damage:ToPlayer()
 		local hearts = damage:GetHearts() + damage:GetSoulHearts() + damage:GetGoldenHearts() + damage:GetEternalHearts() + damage:GetBoneHearts() + damage:GetRottenHearts()
@@ -400,7 +400,7 @@ end, RebekahCurse.ENTITY_LOVESICK_SLASH);
 			damage = damage:ToPlayer()
 			damage:AnimateSad()
 				
-			damage:AddNullCostume(RebekahCurseCostumes.SnappedCos)
+			damage:AddNullCostume(RebekahCurse.Costumes.SnappedCos)
 
 			data.hasTurnedToLovesickBanshee = true
 			
@@ -418,7 +418,7 @@ end)]]
 --stat cache for each mode
 function yandereWaifu:lovesickbansheecacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and data.hasTurnedToLovesickBanshee then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) and data.hasTurnedToLovesickBanshee then
 		--if data.SnapDelay then
 		--	if cacheF == CacheFlag.CACHE_FIREDELAY then
 		--		player.FireDelay = player.FireDelay - data.SnapDelay
@@ -441,7 +441,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
     if parent.Type == EntityType.ENTITY_FAMILIAR and parent.Variant == FamiliarVariant.INCUBUS then
 		player = parent:ToFamiliar().Player
     end
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		tear:ChangeVariant(RebekahCurse.ENTITY_SINGINGTEAR)
 		tear:AddTearFlags(TearFlags.TEAR_WIGGLE)
 		tear:AddTearFlags(TearFlags.TEAR_SPECTRAL)
@@ -465,7 +465,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_RENDER, yandereWaifu.Lovesick
 --[[
 yandereWaifu:AddCallback(ModCallbacks.MC_INPUT_ACTION, function(_, ent, hook, action)
 	if ent and ent:ToPlayer() then
-		if ent:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) then
+		if ent:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		print("exodus")
 			local returnvalue = Input.GetActionValue(buttonAction, player.ControllerIndex)
 				if inputHook == InputHook.GET_ACTION_VALUE then
@@ -593,7 +593,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 	local excludeBetaFiends = 0 --yeah thats right, esau and strawmen are beta fiends
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVESICK) and Options.ChargeBars then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) and Options.ChargeBars then
 			yandereWaifu.lovesickUI(player)
 
 		end

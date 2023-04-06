@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="9/19/2022 9:10:07 PM" Version="12" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="3/21/2023 4:09:19 PM" Version="13" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="bumbab_fist.png" Id="0"/>
@@ -25,7 +25,7 @@
 			</LayerAnimations>
 			<NullAnimations/>
 			<Triggers>
-				<Trigger EventId="0" AtFrame="2"/>
+				<Trigger EventId="0" AtFrame="3"/>
 			</Triggers>
 		</Animation>
 		<Animation Name="Punch2" FrameNum="11" Loop="false">
@@ -40,7 +40,7 @@
 			</LayerAnimations>
 			<NullAnimations/>
 			<Triggers>
-				<Trigger EventId="0" AtFrame="2"/>
+				<Trigger EventId="0" AtFrame="3"/>
 			</Triggers>
 		</Animation>
 	</Animations>

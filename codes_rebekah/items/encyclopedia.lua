@@ -1,5 +1,5 @@
 local function HasAnyWikipedia(slot, player)
-	if	player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA1 or player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA2 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA3 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA4 or player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA5 or player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA6 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA7 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA8 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA9 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA10 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA11 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA12 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA13 or player:GetActiveItem(slot) ==RebekahCurseItems.COLLECTIBLE_WIKEPIDIA14 then
+	if	player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA1 or player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA2 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA3 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA4 or player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA5 or player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA6 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA7 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA8 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA9 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA10 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA11 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA12 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA13 or player:GetActiveItem(slot) ==RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA14 then
 		return true
 	else
 		return false
@@ -13,16 +13,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local controller = player.ControllerIndex;
 	
 	--on first time pickup
-	if player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA and not data.PersistentPlayerData.WikepidiaPage and  not data.PersistentPlayerData.WikepidiaCharge then
+	if player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA and not data.PersistentPlayerData.WikepidiaPage and  not data.PersistentPlayerData.WikepidiaCharge then
 		
 		InutilLib.SetTimer( 30, function()
-			if player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA then
-				player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA, false, slot)
-				player:AddCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA1, 0, true, slot)
+			if player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA then
+				player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA, false, slot)
+				player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA1, 0, true, slot)
 		
 				player:SetActiveCharge(3, ActiveSlot.SLOT_PRIMARY)
-				print(RebekahCurseItems.COLLECTIBLE_WIKEPIDIAPASSIVE)
-				player:AddCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIAPASSIVE, 0, true)
+				print(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIAPASSIVE)
+				player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIAPASSIVE, 0, true)
 			end
 		end);
 	end
@@ -53,7 +53,7 @@ function yandereWaifu:WikepidiaInput(entity, inputHook, buttonAction)
 							print(data.LastDropTriggerFrame+ 8)
 							print(player:GetPlayerType())
 							if ((player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN or player:GetPlayerType() == PlayerType.PLAYER_THESOUL) and data.LastDropTriggerFrame + 8 > player.FrameCount) or (player:GetPlayerType() ~= PlayerType.PLAYER_THEFORGOTTEN and player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL) then
-								player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, false, slot)
+								player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, false, slot)
 								print("park")
 								if data.PersistentPlayerData.WikepidiaPage == 14 then
 									data.PersistentPlayerData.WikepidiaPage = 1
@@ -62,12 +62,12 @@ function yandereWaifu:WikepidiaInput(entity, inputHook, buttonAction)
 									data.PersistentPlayerData.WikepidiaPage = data.PersistentPlayerData.WikepidiaPage + 1
 								end
 								
-								player:AddCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA, 0, true, slot)
+								player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA, 0, true, slot)
 								if not player:HasCollectible(CollectibleType.COLLECTIBLE_SCHOOLBAG) or (willStop and player:HasCollectible(CollectibleType.COLLECTIBLE_SCHOOLBAG)) then
 									InutilLib.SetTimer( 30, function()
-										if player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA then
-											player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA, false, slot)
-											player:AddCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, 0, true, slot)
+										if player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA then
+											player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA, false, slot)
+											player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, 0, true, slot)
 									
 											player:SetActiveCharge(data.PersistentPlayerData.WikepidiaCharge, ActiveSlot.SLOT_PRIMARY)
 									
@@ -75,8 +75,8 @@ function yandereWaifu:WikepidiaInput(entity, inputHook, buttonAction)
 									end);
 								end
 								if not willStop and player:HasCollectible(CollectibleType.COLLECTIBLE_SCHOOLBAG) then 
-									player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA, false, slot)
-									player:AddCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, 0, true, slot)
+									player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA, false, slot)
+									player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, 0, true, slot)
 									
 									player:SetActiveCharge(data.PersistentPlayerData.WikepidiaCharge, ActiveSlot.SLOT_PRIMARY)
 									
@@ -89,7 +89,7 @@ function yandereWaifu:WikepidiaInput(entity, inputHook, buttonAction)
 					end
 				end
 			end
-			--[[if player:GetActiveItem(slot) == RebekahCurseItems.COLLECTIBLE_WIKEPIDIA then
+			--[[if player:GetActiveItem(slot) == RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA then
 				if Input.IsActionTriggered(ButtonAction.ACTION_DROP, controller) then
 					if inputHook == InputHook.IS_ACTION_TRIGGERED and buttonAction == ButtonAction.ACTION_DROP then
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_SCHOOLBAG) then
@@ -113,7 +113,7 @@ function yandereWaifu:useWiki1(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki1, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA1 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki1, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA1 )
 
 function yandereWaifu:useWiki2(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -125,7 +125,7 @@ function yandereWaifu:useWiki2(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki2, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA2 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki2, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA2 )
 
 function yandereWaifu:useWiki3(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -137,7 +137,7 @@ function yandereWaifu:useWiki3(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki3, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA3 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki3, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA3 )
 
 function yandereWaifu:useWiki4(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -155,7 +155,7 @@ function yandereWaifu:useWiki4(collItem, rng, player, _, slot)
 	player:UseActiveItem(CollectibleType.COLLECTIBLE_HOW_TO_JUMP, false, false, false, false, -1)
 	if player:GetActiveCharge(slot) <= 1 then
 		InutilLib.SetTimer( 15*30, function()
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_WIKEPIDIA4) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA4) then
 				player:SetActiveCharge(1, slot)
 			end
 		end)
@@ -165,7 +165,7 @@ function yandereWaifu:useWiki4(collItem, rng, player, _, slot)
 		player:AddWisp(CollectibleType.COLLECTIBLE_HOW_TO_JUMP, player.Position, false, false)
 	end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki4, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA4 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki4, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA4 )
 
 function yandereWaifu:useWiki5(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -177,7 +177,7 @@ function yandereWaifu:useWiki5(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki5, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA5 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki5, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA5 )
 
 function yandereWaifu:useWiki6(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -189,7 +189,7 @@ function yandereWaifu:useWiki6(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki6, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA6 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki6, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA6 )
 
 function yandereWaifu:useWiki7(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -201,7 +201,7 @@ function yandereWaifu:useWiki7(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki7, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA7 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki7, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA7 )
 
 function yandereWaifu:useWiki8(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -214,7 +214,7 @@ function yandereWaifu:useWiki8(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki8, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA8 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki8, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA8 )
 
 function yandereWaifu:useWiki9(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -226,7 +226,7 @@ function yandereWaifu:useWiki9(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki9, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA9 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki9, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA9 )
 
 function yandereWaifu:useWiki10(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -238,7 +238,7 @@ function yandereWaifu:useWiki10(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki10, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA10 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki10, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA10 )
 
 function yandereWaifu:useWiki11(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -250,7 +250,7 @@ function yandereWaifu:useWiki11(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki11, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA11 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki11, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA11 )
 
 
 function yandereWaifu:useWiki12(collItem, rng, player, _, slot)
@@ -263,7 +263,7 @@ function yandereWaifu:useWiki12(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki12, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA12 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki12, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA12 )
 
 function yandereWaifu:useWiki13(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -276,7 +276,7 @@ function yandereWaifu:useWiki13(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki13, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA13 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki13, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA13 )
 
 function yandereWaifu:useWiki14(collItem, rng, player, _, slot)
 	--local player = Isaac.GetPlayer(0);
@@ -288,4 +288,4 @@ function yandereWaifu:useWiki14(collItem, rng, player, _, slot)
 	end
 	data.PersistentPlayerData.WikepidiaCharge = 0
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki14, RebekahCurseItems.COLLECTIBLE_WIKEPIDIA14 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useWiki14, RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA14 )

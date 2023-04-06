@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_REDTATO then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_REDTATO then
 		if not data.Init then
 			--if spr:IsFinished("Spawn") then
 				data.Init = true
@@ -148,29 +148,29 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end]]
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_REDTATO then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_REDTATO then
 		if not data.NoDrop then
 			local subtype = 0
 			if ent.SubType == 0 then
-				subtype = RebekahMirrorHeartDrop[1]
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[1]
 			elseif ent.SubType == 1 then
-				subtype = RebekahMirrorHeartDrop[2]
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[2]
 			elseif ent.SubType == 2 then
-				subtype = RebekahMirrorHeartDrop[4]
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[4]
 				Isaac.Explode(ent.Position, ent, 30)
 			elseif ent.SubType == 3 then
-				subtype = RebekahMirrorHeartDrop[3]
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[3]
 			elseif ent.SubType == 4 then
-				subtype = RebekahMirrorHeartDrop[6]
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[6]
 			elseif ent.SubType == 5 then
-				subtype = RebekahMirrorHeartDrop[7]
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[7]
 				for i = 0, math.random(1,2) do
 					local fly = Isaac.Spawn(EntityType.ENTITY_ATTACKFLY, 0, 0, ent.Position, Vector(0,0), ent):ToNPC()
 					fly:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
@@ -181,4 +181,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 			end
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

@@ -9,7 +9,7 @@ function dash.CursedRebekahDoubleTapDash(vector, playerTapping)
 			local psprite = player:GetSprite()
 			local playerdata = yandereWaifu.GetEntityData(player);
 			local trinketBonus = 0
-			if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+			if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 				trinketBonus = 5
 			end
 			--print(playerdata.IsDashActive , playerdata.IsAttackActive , playerdata.NoBoneSlamActive)

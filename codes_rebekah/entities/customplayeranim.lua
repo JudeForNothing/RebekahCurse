@@ -384,8 +384,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			--poof smoke thing
 			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, data.Player.Position, Vector(0,0), data.Player)
 		elseif eff.FrameCount == 5 then
-			yandereWaifu.SpawnPoofParticle( data.Player.Position, Vector( 0, 0 ), data.Player, RebekahPoofParticleType.Blue );
-			yandereWaifu.SpawnHeartParticles( 3, 5, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Blue );
+			yandereWaifu.SpawnPoofParticle( data.Player.Position, Vector( 0, 0 ), data.Player, RebekahCurse.RebekahPoofParticleType.Blue );
+			yandereWaifu.SpawnHeartParticles( 3, 5, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Blue );
 			yandereWaifu.SpawnEctoplasm( data.Player.Position, Vector ( 0, 0 ) , math.random(13,15)/10, data.Player);
 			yandereWaifu.GetEntityData(data.Player).LeaksJuices = 80;
 			
@@ -393,7 +393,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			for i = 1, chosenNumofBarrage do
 				data.Player.Velocity = data.Player.Velocity * 0.8; --slow him down
 				--local tear = player:FireTear(player.Position, Vector.FromAngle(data.specialAttackVector:GetAngleDegrees() - math.random(-10,10))*(math.random(10,15)), false, false, false):ToTear()
-				local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, 0, data.Player.Position, Vector.FromAngle( math.random() * 360 ):Resized(REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
+				local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, 0, data.Player.Position, Vector.FromAngle( math.random() * 360 ):Resized(RebekahCurse.REBEKAH_BALANCE.GOLD_HEARTS_DASH_ATTACK_SPEED), player, 0, 0):ToTear()
 				InutilLib.MakeTearLob(tear, -9, 9 )
 				tear:GetSprite():ReplaceSpritesheet(0, "gfx/tears_ecto.png")
 				tear:GetSprite():LoadGraphics()
@@ -424,6 +424,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			yandereWaifu.RebekahCanShoot(data.Player, true)
 		end
 		
+	--rebekah blended mode
+	elseif data.WizoobDrop then
+		if eff.FrameCount == 1 then --beginning
+			eff.SpriteScale = data.Player.SpriteScale
+			eff.Visible = true
+			sprite:Load("gfx/characters/blendedsillyme.anm2",true)
+			sprite:Play("HeadDown",true)
+			eff.RenderZOffset = 1000
+		elseif sprite:IsFinished("HeadDown") then
+			eff:Remove()
+		end
 	--rebekah red heart mode
 	
 	elseif data.RedIsShootingHigh then
@@ -445,16 +456,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 			sprite:LoadGraphics()
 			data.Player.Visible = false
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1)
 		elseif sprite:GetFrame() == 54 and sprite:IsPlaying("Shoot") then
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
 		elseif sprite:IsPlaying("Shoot") and sprite:GetFrame() == 23 then
 			if not data.RedLudo then
 				yandereWaifu.GetEntityData(data.Player).isPlayingCustomAnim = false
 				yandereWaifu.GetEntityData(data.Player).FinishedPlayingCustomAnim = true
 				yandereWaifu.GetEntityData(data.Player).BarrageIntro = true 
 			else
-				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, data.Player)
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, data.Player)
 				yandereWaifu.GetEntityData(poof).Parent = data.Player
 			end
 		elseif sprite:IsFinished("Shoot") then
@@ -496,11 +507,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREY then
 				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/soul/rebekah_chargespit_grey.png")
 			end
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULCHARGELIGHT, 1, 0, false, 1 )
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SOULCHARGELIGHT, 1, 0, false, 1 )
 			sprite:LoadGraphics()
 			data.Player.Visible = false
 		elseif sprite:IsFinished("Puke") or sprite:IsFinished("PukeUp") then
-			InutilLib.SFX:Stop(RebekahCurseSounds.SOUND_SOULGARGLE)
+			InutilLib.SFX:Stop(RebekahCurse.Sounds.SOUND_SOULGARGLE)
 			data.Player.Visible = true
 			eff:Remove()
 			local ArcaneCircleDust= Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 6, data.Player.Position, Vector.Zero, data.Player)
@@ -508,7 +519,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			if not data.SoulLudo then
 				yandereWaifu.GetEntityData(data.Player).FinishedPlayingCustomAnim = true 
 			else
-				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, data.Player)
+				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_LUDO_LIGHTNING, InutilLib.GetPlayerLudo(data.Player).Position, Vector.Zero, data.Player)
 				yandereWaifu.GetEntityData(poof).Parent = data.Player
 				yandereWaifu.GetEntityData(poof).Soul = true
 			end
@@ -520,7 +531,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end]]
 		data.Player.Velocity = data.Player.Velocity * 0.7
 		if data.Player.FrameCount % 3 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 2, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), data.Player, RebekahHeartParticleType.Soul );
+			yandereWaifu.SpawnHeartParticles( 1, 2, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), data.Player, RebekahCurse.RebekahHeartParticleType.Soul );
 		end
 	
 	elseif data.HereticIn then
@@ -679,7 +690,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			end
 			sprite:LoadGraphics()
 			data.Player.Visible = false
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1)
 		elseif sprite:IsFinished("Summon") then
 			data.Player.Visible = true
 			eff:Remove()
@@ -859,7 +870,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						data.Player:AddHearts(data.Player:GetMaxHearts())
 					else
 						for i = 1, math.random(3,6) do
-							local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[1], room:FindFreePickupSpawnPosition(eff.Position, 1), Vector(0,0), nil) --body effect
+							local h = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahCurse.RebekahMirrorHeartDrop[1], room:FindFreePickupSpawnPosition(eff.Position, 1), Vector(0,0), nil) --body effect
 						end
 					end
 				end
@@ -1113,18 +1124,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_RENDER, function(_, eff)
 	local player = data.Player
 	
 	if data.DashEffect then
-		local BOff = yandereWaifu.GetEntityData(player).countdownFrames
-		local customColor = Color(1, 1, 1, 1, BOff, BOff, BOff)
-		local sprite = player:GetSprite()
-		--sprite:Render(Isaac.WorldToScreen(eff.Position), Vector(0,0), Vector(0,0))
-		player.Visible = true
-		player:RenderGlow(Isaac.WorldToScreen(eff.Position))
-		player:RenderBody(Isaac.WorldToScreen(eff.Position))
-		player:RenderHead(Isaac.WorldToScreen(eff.Position))
-		player:RenderTop(Isaac.WorldToScreen(eff.Position))
-		player:SetColor(customColor, 1, 1, true, true)
-		--sprite.FlipX = true
-		if yandereWaifu.GetEntityData(player).countdownFrames >= 7 then
+		eff:RenderShadowLayer(Vector(0,100000000000))
+		if player:ToPlayer() then
+			local customColor = Color(1, 1, 1, 1, BOff, BOff, BOff)
+			local sprite = player:GetSprite()
+			--sprite:Render(Isaac.WorldToScreen(eff.Position), Vector(0,0), Vector(0,0))
+			player.Visible = true
+			player:RenderGlow(Isaac.WorldToScreen(eff.Position))
+			player:RenderBody(Isaac.WorldToScreen(eff.Position))
+			player:RenderHead(Isaac.WorldToScreen(eff.Position))
+			player:RenderTop(Isaac.WorldToScreen(eff.Position))
+			player:SetColor(customColor, 1, 1, true, true)
+			--sprite.FlipX = true
+		end
+		if --[[yandereWaifu.GetEntityData(player).countdownFrames]] eff.FrameCount >= 7 then
 			eff:Remove()
 		end
 	elseif data.DashBrokenGlitch then

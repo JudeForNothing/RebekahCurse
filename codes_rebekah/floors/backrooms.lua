@@ -100,8 +100,8 @@ yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalBossRoomGfx, {RoomType
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalChallengeRoomGfx, {RoomType.ROOM_DEVIL, RoomType.ROOM_CURSE, RoomType.ROOM_CHALLENGE})
 yandereWaifu.STAGE.Liminal:SetRoomGfx(yandereWaifu.LiminalSacrificeRoomGfx, {RoomType.ROOM_SACRIFICE})
 
-yandereWaifu.STAGE.Liminal:SetMusic(RebekahCurseMusic.MUSIC_BACKROOMS, RoomType.ROOM_DEFAULT)
-yandereWaifu.STAGE.Liminal:SetBossMusic(RebekahCurseMusic.MUSIC_BACKROOMSBOSS, Music.MUSIC_BOSS_OVER)
+yandereWaifu.STAGE.Liminal:SetMusic(RebekahCurse.Music.MUSIC_BACKROOMS, RoomType.ROOM_DEFAULT)
+yandereWaifu.STAGE.Liminal:SetBossMusic(RebekahCurse.Music.MUSIC_BACKROOMSBOSS, Music.MUSIC_BOSS_OVER)
 --yandereWaifu.STAGE.Liminal:SetBossMusic(Isaac.GetMusicIdByName("Garden Boss"), Music.MUSIC_BOSS_OVER)
 
 --yandereWaifu.STAGE.Liminal:SetSpots("gfx/ui/boss/bossspot_19_void.png", "gfx/ui/boss/playerspot_19_void.png")
@@ -215,9 +215,9 @@ function yandereWaifu.SpawnHoundFromDoor(noappear)
         InutilLib.SetTimer( 120,function()
            local savedRoomIndex = currentRoomIndex
            if savedRoomIndex == InutilLib.level:GetCurrentRoomDesc().GridIndex then
-                local houndCount = #Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, -1, false, false)
+                local houndCount = #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THE_HOUND, -1, false, false)
 		        if houndCount <= 0 then
-                    local spawn = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THE_HOUND, 0, InutilLib.room:FindFreePickupSpawnPosition(chosenDoor.Position, 1), Vector(0,0), nil):ToNPC()
+                    local spawn = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THE_HOUND, 0, InutilLib.room:FindFreePickupSpawnPosition(chosenDoor.Position, 1), Vector(0,0), nil):ToNPC()
                    
                     if noappear then
                         spawn:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
@@ -285,7 +285,7 @@ StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 1, function(newRoom)
     end
 end)
 
-yandereWaifu.NincompoopStageAPIRooms = {
+yandereWaifu.TheHoundStageAPIRooms = {
 	StageAPI.AddBossData("The Hound", {
 		Name = "The Hound",
 		Portrait = "gfx/ui/boss/portrait_hound.png",
@@ -293,7 +293,7 @@ yandereWaifu.NincompoopStageAPIRooms = {
 		Bossname = "gfx/ui/boss/name_hound.png",
 		Weight = 3,
 		Rooms = StageAPI.RoomsList("Hound Boss Backrooms", require("resources.luarooms.liminal.hound.hound_boss")),
-		Entity =  {Type = RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurseEnemies.ENTITY_THE_HOUND},
+		Entity =  {Type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurse.Enemies.ENTITY_THE_HOUND},
 	})
 }
 

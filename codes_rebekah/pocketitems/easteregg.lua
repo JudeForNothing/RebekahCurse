@@ -67,26 +67,26 @@ local function SpawnRandomReward(player)
 end
 
 local seedtbl = {
-		[0] = {seed = SeedEffect.SEED_KAPPA, name = "Kappa", subname = "Kappa", sound = RebekahCurseSounds.SOUND_KAPPA},
-		[1] = {seed = SeedEffect.SEED_CAMO_ISAAC, name = "Isaac is now hidden!", subname = "You can't see me", sound = RebekahCurseSounds.SOUND_ISAAC_HIDDEN},
-		[2] = {seed = SeedEffect.SEED_CAMO_ENEMIES, name = "Foes are now hidden!", subname = "Rise above hate!", sound = RebekahCurseSounds.SOUND_FOES_HIDDEN},
-		[3] = {seed = SeedEffect.SEED_CAMO_PICKUPS, name = "Loot is now hidden!", subname = "If you don't learn from your mistakes, then they become regrets", sound = RebekahCurseSounds.SOUND_LOOT_HIDDEN},
-		[4] = {seed = SeedEffect.SEED_DYSLEXIA, name = "Dyslexia", subname = "a 0  jA hb a", sound = RebekahCurseSounds.SOUND_DYSLEXIA},
-		[5] = {seed = SeedEffect.SEED_OLD_TV, name = "Dogma's Vision", subname = "Who's Steve?", sound = RebekahCurseSounds.SOUND_DOGMAS_VISION},
-		[6] = {seed = SeedEffect.SEED_EXTRA_BLOOD, name = "More Gore!", subname = "Rip your enemies!", sound = RebekahCurseSounds.SOUND_MORE_GORE},
-		[7] = {seed = SeedEffect.SEED_BIG_HEAD, name = "Megahead!", subname = "A severe lack of female companions?", sound = RebekahCurseSounds.SOUND_MEGAHEAD},
-		[8] = {seed = SeedEffect.SEED_SMALL_HEAD, name = "Tinyhead", subname = "One brain cell left", sound = RebekahCurseSounds.SOUND_TINYHEAD},
-		[9] = {seed = SeedEffect.SEED_BLACK_ISAAC, name = "Sillouhette", subname = "Who's that Isaac?", sound = RebekahCurseSounds.SOUND_SILLOUHETTE},
-		[10] = {seed = SeedEffect.SEED_SLOW_MUSIC, name = "Relax!", subname = "Listen and chill", sound = RebekahCurseSounds.SOUND_RELAX},
-		[11] = {seed = SeedEffect.SEED_ULTRA_SLOW_MUSIC, name = "Relax...", subname = "beats to relax/study to", sound = RebekahCurseSounds.SOUND_RELAX2},
-		[12] = {seed = SeedEffect.SEED_FAST_MUSIC, name = "Rock on!", subname = "Gotta go fast!", sound = RebekahCurseSounds.SOUND_ROCK_ON},
-		[13] = {seed = SeedEffect.SEED_ULTRA_FAST_MUSIC, name = "ROCK ON!!!", subname = "Now listen with 2x", sound = RebekahCurseSounds.SOUND_ROCK_ON2},
-		[14] = {seed = SeedEffect.SEED_ICE_PHYSICS, name = "Slippery slope", subname = "Careful", sound = RebekahCurseSounds.SOUND_SLIPPERY_SLOPE},
-		[15] = {seed = SeedEffect.SEED_CHRISTMAS, name = "Christmas!", subname = "On an Easter Egg?", sound = RebekahCurseSounds.SOUND_CHRISTMAS},
-		[16] = {seed = SeedEffect.SEED_RETRO_VISION, name = "Retro Vision!", subname = "Again??", sound = RebekahCurseSounds.SOUND_RETRO_VISION},
-		[17] = {seed = SeedEffect.SEED_PICKUPS_TIMEOUT, name = "Loot rots!", subname = "Matthew 6:19", sound = RebekahCurseSounds.SOUND_LOOT_ROTS},
-		[18] = {seed = SeedEffect.SEED_SHOOT_IN_MOVEMENT_DIRECTION, name = "Bravery!", subname = "Fight fearless!", sound = RebekahCurseSounds.SOUND_BRAVERY},
-		[19] = {seed = SeedEffect.SEED_SHOOT_OPPOSITE_MOVEMENT_DIRECTION, name = "Cowardice...", subname = "Fight in fear", sound = RebekahCurseSounds.SOUND_COWARDICE},
+		[0] = {seed = SeedEffect.SEED_KAPPA, name = "Kappa", subname = "Kappa", sound = RebekahCurse.Sounds.SOUND_KAPPA},
+		[1] = {seed = SeedEffect.SEED_CAMO_ISAAC, name = "Isaac is now hidden!", subname = "You can't see me", sound = RebekahCurse.Sounds.SOUND_ISAAC_HIDDEN},
+		[2] = {seed = SeedEffect.SEED_CAMO_ENEMIES, name = "Foes are now hidden!", subname = "Rise above hate!", sound = RebekahCurse.Sounds.SOUND_FOES_HIDDEN},
+		[3] = {seed = SeedEffect.SEED_CAMO_PICKUPS, name = "Loot is now hidden!", subname = "If you don't learn from your mistakes, then they become regrets", sound = RebekahCurse.Sounds.SOUND_LOOT_HIDDEN},
+		[4] = {seed = SeedEffect.SEED_DYSLEXIA, name = "Dyslexia", subname = "a 0  jA hb a", sound = RebekahCurse.Sounds.SOUND_DYSLEXIA},
+		[5] = {seed = SeedEffect.SEED_OLD_TV, name = "Dogma's Vision", subname = "Who's Steve?", sound = RebekahCurse.Sounds.SOUND_DOGMAS_VISION},
+		[6] = {seed = SeedEffect.SEED_EXTRA_BLOOD, name = "More Gore!", subname = "Rip your enemies!", sound = RebekahCurse.Sounds.SOUND_MORE_GORE},
+		[7] = {seed = SeedEffect.SEED_BIG_HEAD, name = "Megahead!", subname = "A severe lack of female companions?", sound = RebekahCurse.Sounds.SOUND_MEGAHEAD},
+		[8] = {seed = SeedEffect.SEED_SMALL_HEAD, name = "Tinyhead", subname = "One brain cell left", sound = RebekahCurse.Sounds.SOUND_TINYHEAD},
+		[9] = {seed = SeedEffect.SEED_BLACK_ISAAC, name = "Sillouhette", subname = "Who's that Isaac?", sound = RebekahCurse.Sounds.SOUND_SILLOUHETTE},
+		[10] = {seed = SeedEffect.SEED_SLOW_MUSIC, name = "Relax!", subname = "Listen and chill", sound = RebekahCurse.Sounds.SOUND_RELAX},
+		[11] = {seed = SeedEffect.SEED_ULTRA_SLOW_MUSIC, name = "Relax...", subname = "beats to relax/study to", sound = RebekahCurse.Sounds.SOUND_RELAX2},
+		[12] = {seed = SeedEffect.SEED_FAST_MUSIC, name = "Rock on!", subname = "Gotta go fast!", sound = RebekahCurse.Sounds.SOUND_ROCK_ON},
+		[13] = {seed = SeedEffect.SEED_ULTRA_FAST_MUSIC, name = "ROCK ON!!!", subname = "Now listen with 2x", sound = RebekahCurse.Sounds.SOUND_ROCK_ON2},
+		[14] = {seed = SeedEffect.SEED_ICE_PHYSICS, name = "Slippery slope", subname = "Careful", sound = RebekahCurse.Sounds.SOUND_SLIPPERY_SLOPE},
+		[15] = {seed = SeedEffect.SEED_CHRISTMAS, name = "Christmas!", subname = "On an Easter Egg?", sound = RebekahCurse.Sounds.SOUND_CHRISTMAS},
+		[16] = {seed = SeedEffect.SEED_RETRO_VISION, name = "Retro Vision!", subname = "Again??", sound = RebekahCurse.Sounds.SOUND_RETRO_VISION},
+		[17] = {seed = SeedEffect.SEED_PICKUPS_TIMEOUT, name = "Loot rots!", subname = "Matthew 6:19", sound = RebekahCurse.Sounds.SOUND_LOOT_ROTS},
+		[18] = {seed = SeedEffect.SEED_SHOOT_IN_MOVEMENT_DIRECTION, name = "Bravery!", subname = "Fight fearless!", sound = RebekahCurse.Sounds.SOUND_BRAVERY},
+		[19] = {seed = SeedEffect.SEED_SHOOT_OPPOSITE_MOVEMENT_DIRECTION, name = "Cowardice...", subname = "Fight in fear", sound = RebekahCurse.Sounds.SOUND_COWARDICE},
 	}
 
 local function UseRandomSeedEffect(player)
@@ -179,13 +179,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local entityData = yandereWaifu.GetEntityData(player);
-		if player:HasTrinket(RebekahCurseTrinkets.TRINKET_RABBITSFOOT) or REBEKAHMODE_EXPERIMENTAL.easter then
-			if isEaster and player:HasTrinket(RebekahCurseTrinkets.TRINKET_RABBITSFOOT) then chance = 1/2 end
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_RABBITSFOOT) or REBEKAHMODE_EXPERIMENTAL.easter then
+			if isEaster and player:HasTrinket(RebekahCurse.Trinkets.TRINKET_RABBITSFOOT) then chance = 1/2 end
 			--pickup.Wait = 10;
 			local validPickup = (pickup.Variant == PickupVariant.PICKUP_COIN or pickup.Variant == PickupVariant.PICKUP_KEY or pickup.Variant == PickupVariant.PICKUP_BOMB or pickup.Variant == PickupVariant.PICKUP_CHEST or pickup.Variant == PickupVariant.PICKUP_PILL)
 			if rng:RandomFloat() <= (chance) and validPickup and InutilLib.room:IsFirstVisit() and not pickup.Parent then
 				local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
-				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
+				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.Cards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
 				newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				pickup:Remove()
 			end
@@ -261,13 +261,13 @@ local function UseRandomAmbush(level)
 end
 
 local cursetbl = {
-		[1] = {curse = LevelCurse.CURSE_OF_DARKNESS, name = "Permanent Darkness", sound = RebekahCurseSounds.SOUND_CURSE_DARKNESS},
-		[2] = {curse = LevelCurse.CURSE_OF_LABYRINTH, name = "Inescapable Labyrinth", sound = RebekahCurseSounds.SOUND_CURSE_LABYRINTH},
-		[3] = {curse = LevelCurse.CURSE_OF_THE_LOST, name = "Hopelessly Lost", sound = RebekahCurseSounds.SOUND_CURSE_LOST},
-		[4] = {curse = LevelCurse.CURSE_OF_THE_UNKNOWN, name = "Forever Unknown", sound = RebekahCurseSounds.SOUND_CURSE_UNKNOWN},
-		[5] = {curse = LevelCurse.CURSE_OF_MAZE, name = "Unending Maze", sound = RebekahCurseSounds.SOUND_CURSE_MAZE},
-		[6] = {curse = LevelCurse.CURSE_OF_BLIND, name = "Incurable Blindness", sound = RebekahCurseSounds.SOUND_CURSE_BLINDNESS},
-		[7] = {curse = LevelCurse.CURSE_OF_THE_CURSED, name = "Horrible Curse", sound = RebekahCurseSounds.SOUND_CURSE_CURSED},
+		[1] = {curse = LevelCurse.CURSE_OF_DARKNESS, name = "Permanent Darkness", sound = RebekahCurse.Sounds.SOUND_CURSE_DARKNESS},
+		[2] = {curse = LevelCurse.CURSE_OF_LABYRINTH, name = "Inescapable Labyrinth", sound = RebekahCurse.Sounds.SOUND_CURSE_LABYRINTH},
+		[3] = {curse = LevelCurse.CURSE_OF_THE_LOST, name = "Hopelessly Lost", sound = RebekahCurse.Sounds.SOUND_CURSE_LOST},
+		[4] = {curse = LevelCurse.CURSE_OF_THE_UNKNOWN, name = "Forever Unknown", sound = RebekahCurse.Sounds.SOUND_CURSE_UNKNOWN},
+		[5] = {curse = LevelCurse.CURSE_OF_MAZE, name = "Unending Maze", sound = RebekahCurse.Sounds.SOUND_CURSE_MAZE},
+		[6] = {curse = LevelCurse.CURSE_OF_BLIND, name = "Incurable Blindness", sound = RebekahCurse.Sounds.SOUND_CURSE_BLINDNESS},
+		[7] = {curse = LevelCurse.CURSE_OF_THE_CURSED, name = "Horrible Curse", sound = RebekahCurse.Sounds.SOUND_CURSE_CURSED},
 	}
 
 local function ApplyRandomCurse(pl)
@@ -330,19 +330,19 @@ function yandereWaifu:UseBlessedEgg(card, player, flags)
 end
 
 local goldentbl = {
-		[0] = RebekahCurseCards.CARD_EASTEREGG,
-		[1] = RebekahCurseCards.CARD_AQUA_EASTEREGG,
-		[2] = RebekahCurseCards.CARD_YELLOW_EASTEREGG,
-		[3] = RebekahCurseCards.CARD_GREEN_EASTEREGG,
-		[4] = RebekahCurseCards.CARD_BLUE_EASTEREGG,
-		[5] = RebekahCurseCards.CARD_PINK_EASTEREGG,
+		[0] = RebekahCurse.Cards.CARD_EASTEREGG,
+		[1] = RebekahCurse.Cards.CARD_AQUA_EASTEREGG,
+		[2] = RebekahCurse.Cards.CARD_YELLOW_EASTEREGG,
+		[3] = RebekahCurse.Cards.CARD_GREEN_EASTEREGG,
+		[4] = RebekahCurse.Cards.CARD_BLUE_EASTEREGG,
+		[5] = RebekahCurse.Cards.CARD_PINK_EASTEREGG,
 
-		[6] = RebekahCurseCards.CARD_STRIPE_EASTEREGG,
-		[7] = RebekahCurseCards.CARD_STRIPE_AQUA_EASTEREGG,
-		[8] = RebekahCurseCards.CARD_ZIGZAG_YELLOW_EASTEREGG,
-		[9] = RebekahCurseCards.CARD_ZIGZAG_GREEN_EASTEREGG,
-		[10] = RebekahCurseCards.CARD_ZIGZAG_BLUE_EASTEREGG,
-		[11] = RebekahCurseCards.CARD_STRIPE_PINK_EASTEREGG
+		[6] = RebekahCurse.Cards.CARD_STRIPE_EASTEREGG,
+		[7] = RebekahCurse.Cards.CARD_STRIPE_AQUA_EASTEREGG,
+		[8] = RebekahCurse.Cards.CARD_ZIGZAG_YELLOW_EASTEREGG,
+		[9] = RebekahCurse.Cards.CARD_ZIGZAG_GREEN_EASTEREGG,
+		[10] = RebekahCurse.Cards.CARD_ZIGZAG_BLUE_EASTEREGG,
+		[11] = RebekahCurse.Cards.CARD_STRIPE_PINK_EASTEREGG
 	}
 
 function yandereWaifu:UseGoldenEgg(card, player, flags) 
@@ -373,32 +373,32 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, yandereWaifu.EggAddCurses);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_AQUA_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_YELLOW_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_GREEN_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_BLUE_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurseCards.CARD_PINK_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.Cards.CARD_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.Cards.CARD_AQUA_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.Cards.CARD_YELLOW_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.Cards.CARD_GREEN_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.Cards.CARD_BLUE_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg, RebekahCurse.Cards.CARD_PINK_EASTEREGG);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_STRIPE_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_STRIPE_AQUA_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_ZIGZAG_YELLOW_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_ZIGZAG_GREEN_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_ZIGZAG_BLUE_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurseCards.CARD_STRIPE_PINK_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.Cards.CARD_STRIPE_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.Cards.CARD_STRIPE_AQUA_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.Cards.CARD_ZIGZAG_YELLOW_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.Cards.CARD_ZIGZAG_GREEN_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.Cards.CARD_ZIGZAG_BLUE_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseEasterEgg2, RebekahCurse.Cards.CARD_STRIPE_PINK_EASTEREGG);
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseCursedEgg, RebekahCurseCards.CARD_CURSED_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseBlessedEgg, RebekahCurseCards.CARD_BLESSED_EASTEREGG);
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGoldenEgg, RebekahCurseCards.CARD_GOLDEN_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseCursedEgg, RebekahCurse.Cards.CARD_CURSED_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseBlessedEgg, RebekahCurse.Cards.CARD_BLESSED_EASTEREGG);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGoldenEgg, RebekahCurse.Cards.CARD_GOLDEN_EASTEREGG);
 
 function yandereWaifu:useDuplicateOnEasterEgg(collItem, rng, player)
-	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = game:GetFrameCount()
+	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = InutilLib.game:GetFrameCount()
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useDuplicateOnEasterEgg, CollectibleType.COLLECTIBLE_CROOKED_PENNY)
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_ITEM, yandereWaifu.useDuplicateOnEasterEgg, CollectibleType.COLLECTIBLE_DIPLOPIA)
 
 function yandereWaifu:useVurpOnEasterEgg(eff, player, flags)
-	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = game:GetFrameCount()
+	RebekahCurseGlobalData.HEART_NO_MORPH_FRAME = InutilLib.game:GetFrameCount()
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, yandereWaifu.useVurpOnEasterEgg, PillEffect.PILLEFFECT_VURP);
 
@@ -419,7 +419,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				else
 					local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1)
-					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
+					--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.Cards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
 					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				end
 				pickup:Remove()

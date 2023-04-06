@@ -53,7 +53,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 		end
 		
 		player:ToPlayer()
-		if not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND) then
+		if not player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND) then
 			iss:Remove()
 		end
 		if not spr:IsPlaying("Drop") and not spr:IsPlaying("Rage") then
@@ -207,7 +207,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			extraFireDelay = true
 		end
 		
-		if not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND) then
+		if not player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND) then
 			iss:Remove()
 		end
 		if not spr:IsPlaying("Drop") and not spr:IsPlaying("Drop2") then
@@ -223,7 +223,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  iss)
 			elseif maths == 2 then
 				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, 0, iss.Position, iss.Velocity, iss)
 			else
-				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahMirrorHeartDrop[math.random(1,6)], iss.Position, iss.Velocity, iss)
+				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, RebekahCurse.RebekahMirrorHeartDrop[math.random(1,6)], iss.Position, iss.Velocity, iss)
 			end
 		end
 		if spr:IsEventTriggered("Drop2") then
@@ -358,9 +358,9 @@ function yandereWaifu:TinyEternalBondCache(player, cacheF) --The thing the check
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
 		--if yandereWaifu.IsNormalRebekah(player) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND))
+			player:CheckFamiliar(RebekahCurse.ENTITY_TINYISAAC, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND))
 		--else
-			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_ETERNALBOND))
+			player:CheckFamiliar(RebekahCurse.ENTITY_TINYBECCA, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND), RNG(), InutilLib.config:GetCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND))
 		--end
 	end
 		

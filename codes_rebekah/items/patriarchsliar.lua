@@ -1,9 +1,9 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--cursed spoon
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PATRIARCHSLIAR) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_PATRIARCHSLIAR) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PATRIARCHSLIAR) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_PATRIARCHSLIAR) then
 	end
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PATRIARCHSLIAR) then	
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PATRIARCHSLIAR) then	
 		local wall = InutilLib.ClosestWall(player)
 		local fist
 		local room = InutilLib.room
@@ -115,7 +115,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			elseif data.Angle == 180 then
 				sprite:Play("Hold2", true)
 			end
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PATRIARCHSLIARBELL, 1, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_PATRIARCHSLIARBELL, 1, 0, false, 1)
 		end
 		if InutilLib.IsFinishedMultiple(sprite, "Punch", "Punch2", "PunchDown")then
 			if data.Angle == 90 then

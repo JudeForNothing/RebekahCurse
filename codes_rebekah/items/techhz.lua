@@ -4,10 +4,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TECHHZ) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_TECHHZ ) then
-			player:AddNullCostume(RebekahCurseCostumes.TechHz)
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TECHHZ) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_TECHHZ ) then
+			player:AddNullCostume(RebekahCurse.Costumes.TechHz)
 		end
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_TECHHZ) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TECHHZ) then
 			local movement = player:GetMovementVector()
 			if movement:Length() > 0 and player:GetFireDirection() > -1 then
 				if math.floor(player.FrameCount % 5) == 0 then

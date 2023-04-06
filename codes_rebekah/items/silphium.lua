@@ -13,7 +13,7 @@ function yandereWaifu:HeartUpdate(player) -- check for health change, act accord
 	data.currentarm = player:GetHearts() -- currenthealth is how much Isaac has currently
 --	lasthealth = currenthealth
 --	print(tostring(currentarm .. "CA"))
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SILPHIUM) then --then if Isaac has Tungsten
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SILPHIUM) then --then if Isaac has Tungsten
 		if 0 ~= data.currentarm then --and if Lasthealth is NOT like currenthealth
 			player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS) --then give dmg
 			player:EvaluateItems()
@@ -56,7 +56,7 @@ function yandereWaifu:SpawnSilphiumHearts() --Maggy WIP
         local player = Isaac.GetPlayer(i)
         local data = yandereWaifu.GetEntityData(player)
 		--if flag == CacheFlag.CACHE_FAMILIARS then
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SILPHIUM) then --then if Isaac has Tungsten
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SILPHIUM) then --then if Isaac has Tungsten
 			local count = yandereWaifu.GetSilphiumHeartCount(player)
 			for i = 1, count do
 				local heart = yandereWaifu.SpawnSilphiumHeart(player)

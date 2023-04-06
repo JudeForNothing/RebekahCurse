@@ -2,7 +2,7 @@
 --if has bomb item
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_BAGOFBRISTLEBRICKS) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_BAGOFBRISTLEBRICKS) then
 		if InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) or  InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY) or InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET) then
 			if not data.BristleCountdown or data.BristleCountdown == 0 then data.BristleCountdown = 2000 end
 			if not data.WireCombinations then 
@@ -40,9 +40,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, BombVariant.BOMB_GIGA, 0, player.Position,  Vector.Zero, nil):ToBomb();
 				bomb.ExplosionDamage = 5
 				bomb:SetExplosionCountdown(0)
-				player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_BAGOFBRISTLEBRICKS, false, ActiveSlot.SLOT_PRIMARY)
-				player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_BAGOFBRISTLEBRICKS, false, ActiveSlot.SLOT_SECONDARY)
-				player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_BAGOFBRISTLEBRICKS, false, ActiveSlot.SLOT_POCKET)
+				player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_BAGOFBRISTLEBRICKS, false, ActiveSlot.SLOT_PRIMARY)
+				player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_BAGOFBRISTLEBRICKS, false, ActiveSlot.SLOT_SECONDARY)
+				player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_BAGOFBRISTLEBRICKS, false, ActiveSlot.SLOT_POCKET)
 				
 				data.WireCombinations = nil
 				data.BristleCountdown = 0
@@ -77,14 +77,14 @@ function yandereWaifu:usebristle(collItem, rng, player, flag, slot)
 	end
 	--end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usebristle, RebekahCurseItems.COLLECTIBLE_BAGOFBRISTLEBRICKS);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usebristle, RebekahCurse.Items.COLLECTIBLE_BAGOFBRISTLEBRICKS);
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 	local data = yandereWaifu.GetEntityData(player)
 	local controller = player.ControllerIndex;
 	local isDiffused = false --marks if successful diffusing
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_BAGOFBRISTLEBRICKS) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_BAGOFBRISTLEBRICKS) then
 		if not data.BRISTLEBAG_MENU then --set menu
 			data.BRISTLEBAG_MENU = yandereWaifu.Minimenu:New("gfx/ui/none.png", Isaac.WorldToScreen(player.Position + Vector(0, -50)));
 			

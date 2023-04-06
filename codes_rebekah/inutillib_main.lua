@@ -1,7 +1,7 @@
 local mod
 
 --the version of this helper mod script
-local currentVersion = 7
+local currentVersion = 8
 
 Isaac.DebugString("TESTING MY BALLSACK")
 
@@ -4834,6 +4834,10 @@ if not InutilLib then
 
 	end
 
+	function InutilLib.GetAllMajorHearts(player)
+		return player:GetMaxHearts() + player:GetSoulHearts()
+	end
+
 
 	--from revelations again
 	function InutilLib.GetEntFromRef(entRef)
@@ -4865,6 +4869,26 @@ if not InutilLib then
 	return player, srcEnt
 	end
 
+	--taken from FF
+	function InutilLib:GetPlayerFromKnife(knife)
+		if knife.SpawnerEntity and knife.SpawnerEntity:ToPlayer() then
+			return knife.SpawnerEntity:ToPlayer()
+		elseif knife.SpawnerEntity and knife.SpawnerEntity:ToFamiliar() and knife.SpawnerEntity:ToFamiliar().Player then
+			local familiar = knife.SpawnerEntity:ToFamiliar()
+	
+			if familiar.Variant == FamiliarVariant.INCUBUS or familiar.Variant == FamiliarVariant.SPRINKLER or
+			   familiar.Variant == FamiliarVariant.TWISTED_BABY or familiar.Variant == FamiliarVariant.BLOOD_BABY or
+			   familiar.Variant == FamiliarVariant.UMBILICAL_BABY or familiar.Variant == FamiliarVariant.CAINS_OTHER_EYE
+			then
+				return familiar.Player
+			else
+				return nil
+			end
+		else
+			return nil
+		end
+	end
+	
 
 	InutilLib.Data = {}
 

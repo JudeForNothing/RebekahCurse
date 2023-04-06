@@ -16,7 +16,7 @@ function yandereWaifu:useBookstopper(collItem, rng, player, flags, slot)
 	}
 end
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurseItems.COLLECTIBLE_DOORSTOPPER )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useBookstopper, RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER )
 --[[
 function yandereWaifu:useBookstopperBookBelial(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
@@ -35,9 +35,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER) then
 		if player:GetName() == "Judas" and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-			if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_DOORSTOPPER ) then
+			if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER ) then
 				local vector = InutilLib.DirToVec(player:GetFireDirection())
 				--data.specialAttackVector = Vector( vector.X, vector.Y )
 				local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(7), player );
@@ -62,10 +62,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				player:UseActiveItem(CollectibleType.COLLECTIBLE_BOOK_OF_BELIAL, 0, -1)
 				mob:GetSprite():LoadGraphics()
 				if not player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then return end
-				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
+				player:AddWisp(RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 			end
 		else
-			if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_DOORSTOPPER ) then
+			if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER ) then
 				local vector = InutilLib.DirToVec(player:GetFireDirection())
 				--data.specialAttackVector = Vector( vector.X, vector.Y )
 				local mob = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DOORSTOPPER, 0, player.Position, vector:Resized(7), player );
@@ -85,7 +85,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				yandereWaifu.GetEntityData(mob).Player = player
 				mob:GetSprite():Play("Thrown", true)
 				if not player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then return end
-				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
+				player:AddWisp(RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 			end
 		end
 	end
@@ -109,7 +109,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			local pl = Isaac.GetPlayer(i)
 			if GetPtrHash(pl) == GetPtrHash(player) then
 				if pl.Position:Distance(eff.Position) <= 40 then 
-					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurseItems.COLLECTIBLE_DOORSTOPPER then
+					if pl:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER then
 						eff:Remove()
 						if not data.DontCharge then
 							pl:FullCharge(ActiveSlot.SLOT_PRIMARY, true)

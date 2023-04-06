@@ -16,15 +16,15 @@ function yandereWaifu:useJumpydumpty(collItem, rng, player, flags, slot)
 	}
 end
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useJumpydumpty, RebekahCurseItems.COLLECTIBLE_JUMPYDUMPTY )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useJumpydumpty, RebekahCurse.Items.COLLECTIBLE_JUMPYDUMPTY )
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--typical rom-command
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_JUMPYDUMPTY) then
-		if InutilLib.ConfirmUseActive( player, RebekahCurseItems.COLLECTIBLE_JUMPYDUMPTY ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_JUMPYDUMPTY) then
+		if InutilLib.ConfirmUseActive( player, RebekahCurse.Items.COLLECTIBLE_JUMPYDUMPTY ) then
 			local vector = InutilLib.DirToVec(player:GetFireDirection())
 				--data.specialAttackVector = Vector( vector.X, vector.Y )
 				local bomb = player:FireBomb( player.Position, vector:Resized(7))
@@ -49,7 +49,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				InutilLib.ConsumeActiveCharge(player)
 				InutilLib.ToggleShowActive(player, false)
 				if not player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then return end
-				player:AddWisp(RebekahCurseItems.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
+				player:AddWisp(RebekahCurse.Items.COLLECTIBLE_DOORSTOPPER, player.Position, false, false)
 		end
 	end
 end)

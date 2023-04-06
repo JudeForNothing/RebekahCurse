@@ -5,10 +5,10 @@ function yandereWaifu:UseWordsofAffirmation(card, player, flags)
 	local rng = math.random(1,10)
 	
 	local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_AFFIRMATIONHEART, 0, player.Position, InutilLib.DirToVec(player:GetMovementDirection()):Resized(8), player):ToFamiliar();
-	InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SPRING_SOUND, 1, 0, false, 1 );
+	InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SPRING_SOUND, 1, 0, false, 1 );
 end
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseWordsofAffirmation, RebekahCurseCards.CARD_WORDSOFAFFIRMATION);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseWordsofAffirmation, RebekahCurse.Cards.CARD_WORDSOFAFFIRMATION);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local player = yandereWaifu.GetEntityData(eff).parent
@@ -43,7 +43,7 @@ function yandereWaifu:UseGiftGiving(card, player, flags)
     end
 end
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGiftGiving, RebekahCurseCards.CARD_GIFTGIVING);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseGiftGiving, RebekahCurse.Cards.CARD_GIFTGIVING);
 
 --service
 function yandereWaifu:UseActOfGiving(card, player, flags) 
@@ -53,7 +53,7 @@ function yandereWaifu:UseActOfGiving(card, player, flags)
 	christian:AddToFollowers()
 end
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseActOfGiving, RebekahCurseCards.CARD_ACTOFSERVICE);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseActOfGiving, RebekahCurse.Cards.CARD_ACTOFSERVICE);
 
 function yandereWaifu:RemoveServantNed()
 	for c, ned in pairs( Isaac.GetRoomEntities() ) do
@@ -111,10 +111,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		for i, e in pairs(Isaac.GetRoomEntities()) do
 			if e.Type == EntityType.ENTITY_MOM or e.Type == EntityType.ENTITY_MOMS_HEART or e.Type == EntityType.ENTITY_IT_LIVES then
 				spr:Play("DeusVult",true)
-				InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+				InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 			elseif e.Type == EntityType.ENTITY_SATAN then
 				spr:Play("ForJerusalem",true)
-				InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
+				InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_READ, 1, 0, false, 1 );
 			end
 		end
 	end
@@ -123,7 +123,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		InutilLib.FlipXByVec(fam, false)
 	end
 	if spr:IsEventTriggered("Hit") then
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 2, 0, false, 1 );
 	end
 	fam.Velocity = fam.Velocity - fam.Velocity*0.25
 	if spr:IsPlaying("Idle") then
@@ -269,14 +269,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 										data.ChargeTo = 0
 										spr:Play("Charge", true)
 										data.target = e
-										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
 										InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 									elseif ((angle >= 0 and angle <= 10) or (angle <= 0 and angle >= -10)) then 
 										spr.FlipX = false 
 										data.ChargeTo = 1
 										spr:Play("Charge", true)
 										data.target = e
-										InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
+										InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_OVERTAKE, 3, 0, false, 1 );
 										InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 									end
 							end
@@ -294,7 +294,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		end
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 			if data.ChargeTo == 0 then
@@ -320,7 +320,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				local checkingVector = (room:GetGridEntity(room:GetGridIndex(fam.Position + data.savedVelocity)))
 				if checkingVector and (checkingVector:GetType() == GridEntityType.GRID_WALL or checkingVector:GetType() == GridEntityType.GRID_DOOR) then 
 					spr:Play("Charged", true)
-					InutilLib.SFX:Play( RebekahCurseSounds.SOUND_STRIKE, 1, 0, false, 1 );
+					InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_STRIKE, 1, 0, false, 1 );
 				end
 			end
 		if data.chargingFrameLimit == fam.FrameCount then
@@ -387,12 +387,12 @@ function yandereWaifu:UseQualityTime(card, player, flags)
 	print(freezeFrame)]]
 	--freeze code
 	freezezawarudo()
-	InutilLib.SFX:Play( RebekahCurseSounds.SOUND_QUALITY_TIME_IN, 1, 0, false, 1 );
+	InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_QUALITY_TIME_IN, 1, 0, false, 1 );
 
 	InutilLib.game:MakeShockwave(player.Position, 0.85, 0.025, 10)
 end
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseQualityTime, RebekahCurseCards.CARD_QUALITYTIME);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UseQualityTime, RebekahCurse.Cards.CARD_QUALITYTIME);
 
 
 --Shader copied from Nine/Sora with permission, thank you!
@@ -509,7 +509,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				end
 			end
 		end
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_QUALITY_TIME_OUT, 1, 0, false, 1 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_QUALITY_TIME_OUT, 1, 0, false, 1 );
 	end
 	--[[
 	local player = Isaac.GetPlayer(0)-- get player data
@@ -674,4 +674,4 @@ function yandereWaifu:UsePhysicalTouch(card, player, flags)
 	end
 end
 
-yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UsePhysicalTouch, RebekahCurseCards.CARD_PHYSICALTOUCH);
+yandereWaifu:AddCallback(ModCallbacks.MC_USE_CARD, yandereWaifu.UsePhysicalTouch, RebekahCurse.Cards.CARD_PHYSICALTOUCH);

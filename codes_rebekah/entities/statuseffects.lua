@@ -82,6 +82,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
     end
 
 	--tainted rebekah stuff
+	if data.isGlorykill then
+		if not InutilLib.game:IsPaused() then
+            data.isGlorykill = data.isGlorykill - 1
+            if data.isGlorykill <= 0 then
+                data.isGlorykill = nil
+			end
+		end
+	end
 	if data.isSnooked then
 		if not InutilLib.game:IsPaused() then
             data.isSnooked = data.isSnooked - 1
@@ -96,7 +104,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             if data.isSlamSnooked <= 0 then
                 data.isSlamSnooked = nil
 				ent.Velocity = yandereWaifu.GetEntityData(ent).SnookVelocity
-				InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+				InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 			end
 		end
 	end
@@ -122,7 +130,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, 15, 0, ent.Position, Vector.Zero, player):ToEffect()
 				poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/poof_old.png")
 				poof:GetSprite():LoadGraphics()
-				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahPoofParticleType.Gold );
+				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahCurse.RebekahPoofParticleType.Gold );
 				InutilLib.SFX:Play(SoundEffect.SOUND_GLASS_BREAK, 1, 0, false, 1);
 			elseif data.isCursedGodheadSlam <= 0 then
 				local aura = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_CURSEDGODHEADAURA, 0, ent.Position, Vector.Zero, player):ToEffect()
@@ -134,7 +142,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, 15, 0, ent.Position, Vector.Zero, player):ToEffect()
 				poof:GetSprite():ReplaceSpritesheet(0, "gfx/effects/poof_old.png")
 				poof:GetSprite():LoadGraphics()
-				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahPoofParticleType.Gold );
+				yandereWaifu.SpawnPoofParticle( ent.Position, Vector(0,0), ent, RebekahCurse.RebekahPoofParticleType.Gold );
 				InutilLib.SFX:Play(SoundEffect.SOUND_GLASS_BREAK, 1, 0, false, 1);
 			end
 		end
@@ -210,8 +218,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 		if data.IsSilenceRenderFramed >= 23 then data.IsSilenceRenderFramed = 0 end
 	end
 
-	if data.isIntimidated then
-		
+	if data.isGlorykillProc then
+		ent:SetColor(Color(0.5, 0.5, 0.5, 1), 2, 5, true, true)
+		if not data.isGlorykillProcFrame then data.isGlorykillProcFrame = 0 end
+		local loc = Isaac.WorldToScreen(ent.Position)
+		statusEffects:SetOverlayRenderPriority(true)
+		statusEffects:SetFrame("Glorykill", data.isGlorykillProcFrame)
+		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
+		data.isGlorykillProcFrame = data.isGlorykillProcFrame + 1
+		if data.isGlorykillProcFrame >= 1 then data.isGlorykillProcFrame = 0 end
+	end
+	if data.isGlorykill then
+		ent:SetColor(Color(0.5, 0.5, 0.5, 1), 2, 5, true, true)
+		if not data.isGlorykillFrame then data.isGlorykillFrame = 0 end
+		local loc = Isaac.WorldToScreen(ent.Position)
+		statusEffects:SetOverlayRenderPriority(true)
+		statusEffects:SetFrame("Glorykill", data.isGlorykillFrame)
+		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
+		data.isGlorykillFrame = data.isGlorykillFrame + 1
+		if data.isGlorykillFrame >= 7 then data.isGlorykillFrame = 0 end
 	end
 
 	--epic fetus thing
@@ -296,21 +321,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
+	if data.IsSilenced then
+		if not data.SavedSilencedTarget then data.SavedSilencedTarget = ent.Target end
+		ent.Target = ent
+	else
+		ent.Target = data.SavedSilencedTarget
+		data.SavedSilencedTarget = nil
+	end
 	if data.isSnooked and ent:CollidesWithGrid() then
 		ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 		data.isSnooked = nil
 	end
 	if data.isSlamSnooked and ent:CollidesWithGrid() then
 		ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
-		InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 		data.isSnooked = nil
 	end
 	if data.isHeavySnooked then
 		ent.Velocity = ent.Velocity * 1
 		if ent:CollidesWithGrid() then
 			ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 			ent.Velocity = ent.Velocity * 1.1
 		end
 	end
@@ -324,7 +356,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, col
 			coll:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
 			coll.Velocity = (coll.Position - ent.Position):Resized(25)
 			yandereWaifu.GetEntityData(coll).isSnooked = 15
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 		end
 
 		if data.isHeavySnooked then
@@ -332,7 +364,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, col
 			coll:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)
 			coll.Velocity = (coll.Position - ent.Position):Resized(35)
 			yandereWaifu.GetEntityData(coll).isSnooked = 15
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
 		end
 	end
 end)

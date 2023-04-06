@@ -76,7 +76,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		elseif not spr:IsPlaying("Warp") then
 			spr:Play("Warp", true)
 			fam.Velocity = Vector.Zero
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
 			data.lastDir = nil
 			InutilLib.game:Darken(2, 35)
 		end
@@ -113,7 +113,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			data.State = 0
 		elseif not spr:IsPlaying("WarpBack") then
 			spr:Play("WarpBack", true)
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_PSALM23UTTER, 1.2, 0, false, 1)
 		end
 	end
 end, RebekahCurse.ENTITY_GRAVEBABY);
@@ -134,7 +134,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.GraveBabyIn
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	--[[if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) and InutilLib.HasJustPickedCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) then
+	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_ABEAUTIFULGRAVE) and InutilLib.HasJustPickedCollectible(RebekahCurse.Items.COLLECTIBLE_ABEAUTIFULGRAVE) then
 		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 		player:EvaluateItems()
 	end]]
@@ -143,8 +143,8 @@ end)
 function yandereWaifu:GraveBabyCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_GRAVEBABY, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_ABEAUTIFULGRAVE))
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_ABEAUTIFULGRAVE) then
+			player:CheckFamiliar(RebekahCurse.ENTITY_GRAVEBABY, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_ABEAUTIFULGRAVE) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurse.Items.COLLECTIBLE_ABEAUTIFULGRAVE))
 		end
 	end
 end

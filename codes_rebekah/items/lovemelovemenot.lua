@@ -1,6 +1,6 @@
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if data.LMLMNBuff and (player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT) or player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT2) or player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT3)) then
+	if data.LMLMNBuff and (player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT) or player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT2) or player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT3)) then
 		player:AddCacheFlags(CacheFlag.CACHE_ALL);
 		player:EvaluateItems()
 	end
@@ -70,8 +70,8 @@ function yandereWaifu:usedoLoveMe(collItem, rng, player, flags, slot)
 		data.PersistentPlayerData.LMLMNBuff = 0
 	end
 	if math.random(1,100) >= 90 then --rng to stage 2
-		player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT, false, slot)
-		player:AddCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT2, 0, true, slot)
+		player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT, false, slot)
+		player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT2, 0, true, slot)
 	end
 	player:AddCacheFlags(CacheFlag.CACHE_ALL);
 	player:EvaluateItems()
@@ -79,7 +79,7 @@ function yandereWaifu:usedoLoveMe(collItem, rng, player, flags, slot)
 	--data.PersistentPlayerData.LMLMNBuff = data.LMLMNBuff
 	--data.PersistentPlayerData.LovesMe = data.LovesMe
 	
-	player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT, "UseItem")
+	player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT, "UseItem")
 end
 
 function yandereWaifu:usedoLoveMe2(collItem, rng, player, flags, slot)
@@ -120,8 +120,8 @@ function yandereWaifu:usedoLoveMe2(collItem, rng, player, flags, slot)
 		data.PersistentPlayerData.LMLMNBuff = 0
 	end
 	if math.random(1,100) >= 90 then --rng to stage 3
-		player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT2, false, slot)
-		player:AddCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT3, 0, true, slot)
+		player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT2, false, slot)
+		player:AddCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT3, 0, true, slot)
 	end
 	player:AddCacheFlags(CacheFlag.CACHE_ALL);
 	player:EvaluateItems()
@@ -129,7 +129,7 @@ function yandereWaifu:usedoLoveMe2(collItem, rng, player, flags, slot)
 	--data.PersistentPlayerData.LMLMNBuff = data.LMLMNBuff
 	--data.PersistentPlayerData.LovesMe = data.LovesMe
 	
-	player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT2, "UseItem")
+	player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT2, "UseItem")
 end
 
 local function SpawnRandomReward(player)
@@ -224,7 +224,7 @@ function yandereWaifu:usedoLoveMe3(collItem, rng, player, flags, slot)
 		data.PersistentPlayerData.LMLMNBuff = 0
 	end
 	if math.random(1,100) >= 80 then --rng to stage 3
-		player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT3, false, slot)
+		player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT3, false, slot)
 		if data.PersistentPlayerData.LovesMe == true then
 			for i = 1, 3 do
 				SpawnRandomReward(player)
@@ -242,17 +242,17 @@ function yandereWaifu:usedoLoveMe3(collItem, rng, player, flags, slot)
 	--data.PersistentPlayerData.LMLMNBuff = data.LMLMNBuff
 	--data.PersistentPlayerData.LovesMe = data.LovesMe
 	
-	player:AnimateCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT3, "UseItem")
+	player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT3, "UseItem")
 end
 
 
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe, RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT )
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe2, RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT2 )
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe3, RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT3 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe, RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe2, RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT2 )
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.usedoLoveMe3, RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT3 )
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if data.PersistentPlayerData and data.PersistentPlayerData.LMLMNBuff and (player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT) or player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT2) or player:HasCollectible(RebekahCurseItems.COLLECTIBLE_LOVEMELOVEMENOT3)) then
+	if data.PersistentPlayerData and data.PersistentPlayerData.LMLMNBuff and (player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT) or player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT2) or player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVEMELOVEMENOT3)) then
 		if data.PersistentPlayerData.LMLMNBuff == 1 then
 			if cacheF == CacheFlag.CACHE_DAMAGE then
 				player.Damage = player.Damage + 4

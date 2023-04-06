@@ -2,9 +2,9 @@
 --if has bomb item
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE) then
 		if player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY) or player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY) or player:GetActiveCharge(ActiveSlot.SLOT_POCKET) then
-			if (player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurseItems.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)) or (player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == RebekahCurseItems.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)) or (player:GetActiveItem(ActiveSlot.SLOT_POCKET) == RebekahCurseItems.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)) then
+			if (player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.Items.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)) or (player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == RebekahCurse.Items.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)) or (player:GetActiveItem(ActiveSlot.SLOT_POCKET) == RebekahCurse.Items.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)) then
 				player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 				player:EvaluateItems()
 			else
@@ -60,14 +60,14 @@ function yandereWaifu:useimDie(collItem, rng, player, flag, slot)
 	end
 	--end
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useimDie, RebekahCurseItems.COLLECTIBLE_OHIMDIE);
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useimDie, RebekahCurse.Items.COLLECTIBLE_OHIMDIE);
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 	local data = yandereWaifu.GetEntityData(player)
 	local controller = player.ControllerIndex;
 	local isDiffused = false --marks if successful diffusing
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE) then
 		if not data.IMDIE_MENU then --set menu
 			data.IMDIE_MENU = yandereWaifu.Minimenu:New("gfx/ui/none.png", Isaac.WorldToScreen(player.Position + Vector(0, -50)));
 			
@@ -197,14 +197,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	
 		if data.ImDieCountdown%100 == 0 then
 			spr.Color = Color(1,0,0,1)
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
 			for i = 1, 4 do
 
 				InutilLib.SetTimer( i*60, function()
-					if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE) and fam and not fam:IsDead() then
-						if (player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurseItems.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)) or (player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == RebekahCurseItems.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)) or (player:GetActiveItem(ActiveSlot.SLOT_POCKET) == RebekahCurseItems.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)) then
+					if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE) and fam and not fam:IsDead() then
+						if (player:GetActiveItem(ActiveSlot.SLOT_PRIMARY) == RebekahCurse.Items.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)) or (player:GetActiveItem(ActiveSlot.SLOT_SECONDARY) == RebekahCurse.Items.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)) or (player:GetActiveItem(ActiveSlot.SLOT_POCKET) == RebekahCurse.Items.COLLECTIBLE_OHIMDIE and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)) then
 							local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PINGEFFECT, playerdata.WireCombinations[i], fam.Position, Vector.Zero, player)
-							SFXManager():Play( RebekahCurseSounds.SOUND_IMDIECHIME , 1.4, 0, false, 1 + playerdata.WireCombinations[i]/5)
+							SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1 + playerdata.WireCombinations[i]/5)
 						end
 					end
 				end);
@@ -215,7 +215,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	if data.ImDieCountdown < 80 then
 		if data.ImDieCountdown%2 == 0 then
 			spr.Color = Color(1,0,0,1)
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
 		else
 			spr.Color = Color(1,1,1,1)
 		end
@@ -262,9 +262,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			else
 				local pickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 1),  Vector.Zero, nil):ToPickup();
 			end
-			player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_PRIMARY)
-			player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_SECONDARY)
-			player:RemoveCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_POCKET)
+			player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_PRIMARY)
+			player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_SECONDARY)
+			player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE, false, ActiveSlot.SLOT_POCKET)
 			fam:Kill()
 			RemoveStuff()
 			playerdata.PersistentPlayerData.Mistakes = 0
@@ -279,7 +279,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			local item = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_LOCKEDCHEST, 0, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 1), Vector(0,0), nil):ToPickup()
 			item:TryOpenChest(player)
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BOOK_OF_VIRTUES) then
-				player:AddWisp(RebekahCurseItems.COLLECTIBLE_OHIMDIE, player.Position, false, false)
+				player:AddWisp(RebekahCurse.Items.COLLECTIBLE_OHIMDIE, player.Position, false, false)
 			end
 			--[[if InutilLib.room:IsClear() then
 				local hasItems = false
@@ -371,15 +371,15 @@ function yandereWaifu:ImDiePoltyCache(player, cacheF) --The thing the checks and
 		willspawn = 1
 	end
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE) then
 			local activePrimary = InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)) and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_PRIMARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_PRIMARY)
 			local activeSecondary = InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)) and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_SECONDARY)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_SECONDARY)
 			local activePocket = InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)) and InutilLib.config:GetCollectible(player:GetActiveItem(ActiveSlot.SLOT_POCKET)).MaxCharges == player:GetActiveCharge(ActiveSlot.SLOT_POCKET)
 			if activePrimary or activeSecondary or activePocket then
-				player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_OHIMDIE)*(willspawn), RNG())
+				player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_OHIMDIE)*(willspawn), RNG())
 			end
-		elseif not player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OHIMDIE) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_OHIMDIE)*(willspawn), RNG())
+		elseif not player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OHIMDIE) then
+			player:CheckFamiliar(RebekahCurse.ENTITY_OHIMPOLTY, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_OHIMDIE)*(willspawn), RNG())
 		end
 	end
 end

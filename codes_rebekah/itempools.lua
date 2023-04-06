@@ -22,16 +22,16 @@ function yandereWaifu.RebekahGenerateItemPools() --Ini
 		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = CollectibleType.COLLECTIBLE_BIRTHRIGHT, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
 	end
 	if yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then
-		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurseItems.COLLECTIBLE_LUNCHBOX, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurse.Items.COLLECTIBLE_LUNCHBOX, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
 	end
 	if yandereWaifu.ACHIEVEMENT.LOVE_POWER:IsUnlocked() then
-		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurseItems.COLLECTIBLE_POWERLOVE, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurse.Items.COLLECTIBLE_POWERLOVE, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
 	end
 	if yandereWaifu.ACHIEVEMENT.DICE_OF_FATE:IsUnlocked() then
-		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurseItems.COLLECTIBLE_DICEOFFATE, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurse.Items.COLLECTIBLE_DICEOFFATE, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
 	end
 	if yandereWaifu.ACHIEVEMENT.UNREQUITED_LOVE:IsUnlocked() then
-		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurseItems.COLLECTIBLE_UNREQUITEDLOVE, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
+		table.insert(RebekahLocalSavedata.Data.newLoveRoomPool, { item = RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE, DecreaseBy=1, RemoveOn=0.1, Weight=1 })
 	end
 	if ARACHNAMOD then
 		if arachnaIsUnlocked("Witness", false, false) then

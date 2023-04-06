@@ -3,10 +3,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
-	if ent.Variant == RebekahCurseEnemies.ENTITY_THEPROSPECTOR then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR then
 		if ent.SubType == 1 then
 			local engi 
-			for i, v in ipairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THEPROSPECTOR, 0, false, false)) do
+			for i, v in ipairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THEPROSPECTOR, 0, false, false)) do
 				if v then engi = v break end
 			end
 			if not engi then
@@ -107,7 +107,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						end
 					elseif spr:IsOverlayPlaying("Level3Shoot") then
 						if spr:GetOverlayFrame() == 36 then
-							Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurseEnemies.ENTITY_SENTRYROCKETTARGET, 0, player.Position, Vector.Zero, eff)
+							Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_SENTRYROCKETTARGET, 0, player.Position, Vector.Zero, eff)
 						end
 					end
 				end
@@ -115,7 +115,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		else
 			if not data.QueueUpgrade then data.QueueUpgrade = 0 end
 			local sentry 
-			for i, v in ipairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THEPROSPECTOR, 1, false, false)) do
+			for i, v in ipairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THEPROSPECTOR, 1, false, false)) do
 				if v then sentry = v break end
 			end
 			if sentry then
@@ -158,7 +158,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						data.State = 3
 					elseif not spr:IsPlaying("Shoot") then
 						spr:Play("Shoot", true)
-						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_SHOOT, 1, 0, false, 1);
+						InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_SHOOT, 1, 0, false, 1);
 					else
 						if spr:IsEventTriggered("Shoot") then
 							data.targetVector = (player.Position - ent.Position)
@@ -202,7 +202,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 						data.State = 4
 					elseif not spr:IsPlaying("Jump") and not spr:IsPlaying("JumpBack") then
 						spr:Play("Jump", true)
-						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
+						InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
 						data.targetLanding = room:FindFreePickupSpawnPosition((ent.Position - Vector(math.random(150,250),0)):Rotated(1,360),1) --(Vector.FromAngle((ent.Position - Vector(10,0)):GetAngleDegrees() + math.random(1,360)):Resized(math.random(1,2)))
 					else
 						if spr:IsEventTriggered("Jump") then
@@ -221,7 +221,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
 					ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
 					local sentry 
-					for i, v in ipairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THEPROSPECTOR, 1, false, false)) do
+					for i, v in ipairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THEPROSPECTOR, 1, false, false)) do
 						if v then sentry = v break end
 					end
 						if data.BurrowEndPos == nil then
@@ -261,7 +261,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							if data.QueueUpgrade and data.QueueUpgrade > 0 then
 								data.State = 6
 								data.QueueUpgrade = data.QueueUpgrade - 1
-								InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
+								InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
 							elseif data.WillTakeSentry then
 								data.WillTakeSentry:GetSprite():Play("Keep", true)
 								yandereWaifu.GetEntityData(data.WillTakeSentry).State = -1
@@ -285,10 +285,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 								data.DropBackSentry = false
 							elseif data.WillGoShotgun then
 								data.State = 5
-								InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
+								InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
 							else
 								data.State = 0
-								InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
+								InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
 							end
 							if not data.DropBackSentry then
 								data.BurrowEndPos = nil
@@ -322,14 +322,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							data.targetVector = Vector(10,0)
 							spr.FlipX = true
 						end
-						InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_YEEE_HOO, 1, 0, false, 1);
+						InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_YEEE_HOO, 1, 0, false, 1);
 					else
 						if spr:IsEventTriggered("ShootShotgun") then
 							for i = 0, math.random(8,10) do
 								local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (data.targetVector):Rotated(math.random(-30,30)):Resized(math.random(8,18)))
 								proj.Scale = math.random(3,13)/10
 							end
-							InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_SHOTGUN, 1, 0, false, 1);
+							InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_SHOTGUN, 1, 0, false, 1);
 						end
 						--[[
 							if spr:IsEventTriggered("Shoot") then
@@ -353,7 +353,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end
 				elseif data.State == 6 then --upgrades people!
 					local sentry 
-					for i, v in ipairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THEPROSPECTOR, 1, false, false)) do
+					for i, v in ipairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THEPROSPECTOR, 1, false, false)) do
 						if v then sentry = v break end
 					end
 					if sentry then
@@ -362,9 +362,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 							spr.FlipX = false
 						elseif not spr:IsPlaying("Upgrade") then
 							spr:Play("Upgrade", true)
-							InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_GOING_UP, 1, 0, false, 1);
+							InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_GOING_UP, 1, 0, false, 1);
 						elseif spr:IsEventTriggered("Hit") then
-							InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_WRENCH, 1, 0, false, 1);
+							InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_WRENCH, 1, 0, false, 1);
 						else
 							if spr:GetFrame() == 70 then
 								yandereWaifu.GetEntityData(sentry).Upgrade = yandereWaifu.GetEntityData(sentry).Upgrade + 1
@@ -378,13 +378,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
-	if ent.Variant == RebekahCurseEnemies.ENTITY_THEPROSPECTOR and ent.SubType == 1 then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR and ent.SubType == 1 then
 		Isaac.Explode(ent.Position, ent, 15)
 		for i = 0, math.random(5,7) do
 			InutilLib.SetTimer( 7 * i, function()
@@ -397,35 +397,35 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
 		end
 		--im lazy lool
 		local engi 
-		for i, v in ipairs(Isaac.FindByType(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_THEPROSPECTOR, 0, false, false)) do
+		for i, v in ipairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THEPROSPECTOR, 0, false, false)) do
 			if v then engi = v break end
 		end
 		if engi then
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_SENTRY_DOWN, 1, 0, false, 1);
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_SENTRY_DOWN, 1, 0, false, 1);
 		end
 	end
-end,RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end,RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
-	if ent.Variant == RebekahCurseEnemies.ENTITY_THEPROSPECTOR and ent.SubType == 0 then
+	if ent.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR and ent.SubType == 0 then
 		if spr:IsPlaying("Death") and spr:GetFrame() == 1 then
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_PROSPECTOR_DEATH, 1, 0, false, 1);
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_DEATH, 1, 0, false, 1);
 		end
 		if spr:IsEventTriggered("Explosion") and data.DidNotExplode then
 			ent:BloodExplode()
 			data.DidNotExplode = true
 		end
 	end
-end,RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end,RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
 
-	if damage.Variant == RebekahCurseEnemies.ENTITY_THEPROSPECTOR then
+	if damage.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR then
 		if damage.SubType == 1 then
 			return false
 		end
@@ -433,7 +433,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 			return false
 		end
 	end
-end, RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY)
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite()
@@ -447,11 +447,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true)
 	elseif eff.FrameCount >= 30 then
-		Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurseEnemies.ENTITY_SENTRYROCKETNUKE, 0, eff.Position, Vector.Zero, eff) --heart effect
+		Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_SENTRYROCKETNUKE, 0, eff.Position, Vector.Zero, eff) --heart effect
 		eff:Remove()
 	end
 
-end, RebekahCurseEnemies.ENTITY_SENTRYROCKETTARGET)
+end, RebekahCurse.Enemies.ENTITY_SENTRYROCKETTARGET)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite()
@@ -479,4 +479,22 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	elseif sprite:IsFinished("Falling") or sprite:IsFinished("FallingSingular") then
 		eff:Remove()
 	end
-end, RebekahCurseEnemies.ENTITY_SENTRYROCKETNUKE)
+end, RebekahCurse.Enemies.ENTITY_SENTRYROCKETNUKE)
+
+
+if StageAPI and StageAPI.Loaded then	
+	yandereWaifu.TheProspectorStageAPIRooms = {
+		StageAPI.AddBossData("The Prospector", {
+			Name = "The Prospector",
+			Portrait = "gfx/ui/boss/portrait_theprospector.png",
+			Offset = Vector(0,-15),
+			Bossname = "gfx/ui/boss/name_the_prospector.png",
+			Weight = 2,
+			Rooms = StageAPI.RoomsList("The Prospector Rooms", require("resources.luarooms.bosses.the_prospector")),
+			Entity =  {Type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, Variant = RebekahCurse.Enemies.ENTITY_THEPROSPECTOR},
+		})
+	}
+
+	StageAPI.AddBossToBaseFloorPool({BossID = "The Prospector"},LevelStage.STAGE2_1,StageType.STAGETYPE_REPENTANCE_B)
+	StageAPI.AddBossToBaseFloorPool({BossID = "The Prospector"},LevelStage.STAGE2_2,StageType.STAGETYPE_REPENTANCE_B)
+end

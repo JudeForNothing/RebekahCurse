@@ -5,7 +5,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function(_) --The thing
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_HEARTACHES) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTACHES) then
 			local items = InutilLib.CollectPlayerItems(player)
 			--[[for i, v in pairs (items) do
 				Isaac.GetItemConfig():GetCollectible(v)
@@ -38,7 +38,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing 
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_HEARTACHES) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTACHES) then
 			if not willdupe and math.random(1,10) == 1 then
 				willdupe = true
 			end
@@ -86,8 +86,8 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_HEARTACHES) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_HEARTACHES) then
-		--player:AddNullCostume(RebekahCurseCostumes.CandyWeddingRing)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTACHES) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_HEARTACHES) then
+		--player:AddNullCostume(RebekahCurse.Costumes.CandyWeddingRing)
 	end
 	--if player.FrameCount % 15 == 0 and math.random(1,100) == 100 then
 	--	teleport = true

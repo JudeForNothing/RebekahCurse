@@ -1,4 +1,4 @@
-local time = 120
+local time = 90
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite()
@@ -18,18 +18,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 eff.Position = target.Position
                 --eff.Velocity = target.Velocity
             else
-                local closestDist = 177013 --saved Dist to check who is the closest enemy
-                local minDist = 45
-                for i, e in pairs(Isaac.GetRoomEntities()) do
-                    if e:ToEffect() and e.Variant == eff.Variant and e.SubType == 1 and not yandereWaifu.GetEntityData(e).IsClamping then
-                        if (eff.Position - e.Position):Length() < minDist + e.Size then
-                            if (eff.Position - e.Position):Length() < closestDist + e.Size then
-                                closestDist = (eff.Position - e.Position):Length()
-                                data.target = e
-                                data.isClamping = true
-                                yandereWaifu.GetEntityData(e).isClamping = true
+                if movementDirection:Length() < 0.05 then
+                    local closestDist = 177013 --saved Dist to check who is the closest enemy
+                    local minDist = 50
+                    for i, e in pairs(Isaac.GetRoomEntities()) do
+                        if e:ToEffect() and e.Variant == eff.Variant and e.SubType == 1 and not yandereWaifu.GetEntityData(e).isClamping then
+                            if (eff.Position - e.Position):Length() < minDist + e.Size then
+                                if (eff.Position - e.Position):Length() < closestDist + e.Size then
+                                    closestDist = (eff.Position - e.Position):Length()
+                                    data.target = e
+                                end
                             end
                         end
+                    end
+                    if data.target then
+                        data.Parent = yandereWaifu.GetEntityData(data.target).Parent
+                        data.isClamping = true
+                        yandereWaifu.GetEntityData(data.target).isClamping = true
                     end
                 end
             end
@@ -63,7 +68,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             sprite:Play("Cursor", false)
         end
         if data.isClamping then
-
+            if not data.Parent or data.Parent:IsDead() then
+                eff:Remove()
+            end
         end
         eff.RenderZOffset = 1000000
     elseif eff.SubType == 1 then
@@ -75,6 +82,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         eff.RenderZOffset = 100000
         if data.isClamping then
             sprite.Color = Color(0,0,0,0)
+        end
+
+        if not data.Parent or data.Parent:IsDead() then
+            eff:Remove()
         end
     end
     if InutilLib.room:GetFrameCount() >= time then
@@ -92,16 +103,23 @@ function yandereWaifu:DeborahEyeActivate()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_DEBORAHSDEADEYE) and not room:IsClear() then
-			SFXManager():Play( RebekahCurseSounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
+		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_DEBORAHSDEADEYE) and not room:IsClear() then
+            data.HasMoreTargetsDeadEye = true
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
             for i, e in pairs(Isaac.GetRoomEntities()) do
                 if e:IsEnemy() and e:IsVulnerableEnemy() then
-                    e:AddSlowing(EntityRef(player), 60, 2.0, (Color(1.0, 1.0, 1.0, 1.0)))
-                    local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEBORAHDEADEYETARGET, 1, e.Position, Vector.Zero, player)
-                    yandereWaifu.GetEntityData(e).DeadEyeTarget = target
-                    yandereWaifu.GetEntityData(target).Parent = e
-                    yandereWaifu.GetEntityData(target).Player = player
-                    yandereWaifu.GetEntityData(target).ParentPos = Vector(math.random(-3*(math.floor(e.Size/2)*-1),3*math.floor(e.Size/2)), math.random(-10,4*math.floor(e.Size/2)))
+                    e:AddSlowing(EntityRef(player), time, 2.0, (Color(1.0, 1.0, 1.0, 1.0)))
+                    local limit = 0
+                    if e:IsBoss() then
+                        limit = 2
+                    end
+                    for i = 0, limit do
+                        local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEBORAHDEADEYETARGET, 1, e.Position, Vector.Zero, player)
+                        yandereWaifu.GetEntityData(e).DeadEyeTarget = target
+                        yandereWaifu.GetEntityData(target).Parent = e
+                        yandereWaifu.GetEntityData(target).Player = player
+                        yandereWaifu.GetEntityData(target).ParentPos = Vector(math.random(-3*(math.floor(e.Size/2)),3*math.floor(e.Size/2)), math.random(-10,4*math.floor(e.Size/2)))
+                    end
                 end
             end
 		end
@@ -113,10 +131,25 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.DeborahEye
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	local room = InutilLib.game:GetRoom()
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_DEBORAHSDEADEYE) and not room:IsClear() and room:GetFrameCount() < time then
-        if not data.DeborahDeadEye or data.DeborahDeadEye:IsDead() or yandereWaifu.GetEntityData(data.DeborahDeadEye).isClamping then
-            data.DeborahDeadEye = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEBORAHDEADEYETARGET, 0, player.Position, Vector.Zero, player):ToEffect()
-            yandereWaifu.GetEntityData(data.DeborahDeadEye).Player = player
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_DEBORAHSDEADEYE) and not room:IsClear() and room:GetFrameCount() < time then
+        if (not data.DeborahDeadEye or data.DeborahDeadEye:IsDead() or yandereWaifu.GetEntityData(data.DeborahDeadEye).isClamping) and data.HasMoreTargetsDeadEye then
+            local closestDist = 177013 --saved Dist to check who is the closest enemy
+            local minDist = 650
+            data.HasMoreTargetsDeadEye = false
+            for i, e in pairs(Isaac.GetRoomEntities()) do
+                if e:ToEffect() and e.Variant == RebekahCurse.ENTITY_DEBORAHDEADEYETARGET and e.SubType == 1 and not yandereWaifu.GetEntityData(e).isClamping then
+                    if (player.Position - e.Position):Length() < minDist + e.Size then
+                        if (player.Position - e.Position):Length() < closestDist + e.Size then
+                            data.HasMoreTargetsDeadEye = true
+                            break
+                        end
+                    end
+                end
+            end
+            if data.HasMoreTargetsDeadEye then
+                data.DeborahDeadEye = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_DEBORAHDEADEYETARGET, 0, player.Position, Vector.Zero, player):ToEffect()
+                yandereWaifu.GetEntityData(data.DeborahDeadEye).Player = player
+            end
         end
     end
 end)

@@ -5,7 +5,7 @@ function yandereWaifu.SoulHeartTeleport(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
@@ -15,10 +15,10 @@ function yandereWaifu.SoulHeartTeleport(player, vector)
 	yandereWaifu.GetEntityData(customBody).WizoobIn = true
 	player.Velocity = Vector( 0, 0 );
 	player.ControlsEnabled = false;
-	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Blue );
-	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Blue );
-	playerdata.specialCooldown = REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Blue );
+	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Blue );
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 	playerdata.IsUninteractible = true
 	playerdata.IsDashActive = true
@@ -137,7 +137,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 					if data.soulcountdownFrames == 1 then
 						--player.ControlsEnabled = false;
 					elseif data.soulcountdownFrames >= 1 and data.soulcountdownFrames < endFrameCount and data.soulcountdownFrames % modulusnum == (0) then
-						local techlaser = player:FireTechLaser(ludoTear.Position, 0, Vector.FromAngle(i + direction:GetAngleDegrees() + math.random(-15,15)):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ), false, true)
+						local techlaser = player:FireTechLaser(ludoTear.Position, 0, Vector.FromAngle(i + direction:GetAngleDegrees() + math.random(-15,15)):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
 						techlaser.DisableFollowParent = true
@@ -229,7 +229,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 						for i = -30, 30, 15 do
 							InutilLib.SetTimer( 1*delay, function()
 								yandereWaifu.FireSoulKnife(player.Position, Vector.FromAngle(direction:GetAngleDegrees() - i):Resized(8))
-								InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTLIGHT, 1, 0, false, 1.2)
+								InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULSHOTLIGHT, 1, 0, false, 1.2)
 							end)
 							delay = delay + 20
 						end
@@ -248,7 +248,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 								player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
 								didtrigger = true
 							end
-							local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees()):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
+							local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees()):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
 							brim:GetData().IsEctoplasm = true;
 							brim.CollisionDamage = player.Damage * 2 * extraTearDmg
 							yandereWaifu.GetEntityData(brim).IsEcto = true
@@ -257,7 +257,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 							end
 						else
 							player.Velocity = player.Velocity * 0.8; --slow him down
-							local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - math.random(-10,10)):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+							local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - math.random(-10,10)):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 							brim:GetData().IsEctoplasm = true;
 							brim.Timeout = 1;
 							yandereWaifu.GetEntityData(brim).IsEcto = true
@@ -268,13 +268,13 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 							yandereWaifu.SoulLeadPencilBarrage()
 						end
 					end
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTHEAVY, 1, 0, false, 1.2)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULSHOTHEAVY, 1, 0, false, 1.2)
 					local dust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 7, player.Position, Vector(0,0), nil) 
 					dust:GetSprite().Rotation = direction:GetAngleDegrees() + 90
 				--technology synergy
 				elseif player:HasWeaponType(WeaponType.WEAPON_LASER) then --tech barrage
 					if data.soulcountdownFrames >= 1 and data.soulcountdownFrames < endFrameCount and data.soulcountdownFrames % modulusnum == (0) then
-						local techlaser = player:FireTechLaser(player.Position, 0, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-30,30)):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ), false, true)
+						local techlaser = player:FireTechLaser(player.Position, 0, Vector.FromAngle(direction:GetAngleDegrees() - math.random(-30,30)):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ), false, true)
 						techlaser.OneHit = true;
 						techlaser.Timeout = 1;
 						techlaser.CollisionDamage = (player.Damage * 1.5) * (extraTearDmg*2.5);
@@ -294,7 +294,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 						yandereWaifu.SoulLeadPencilBarrage()
 					end
 					if data.soulcountdownFrames == 1 then
-						InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULELECTRICITY, 1, 0, false, 1.2)
+						InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULELECTRICITY, 1, 0, false, 1.2)
 					end
 				--tech x synergy
 				elseif player:HasWeaponType(WeaponType.WEAPON_TECH_X) then
@@ -316,10 +316,10 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 					yandereWaifu.EndRebekahBarrage(player, data)
 					yandereWaifu.SoulLeadPencilBarrage()
 					if data.soulcountdownFrames == 1 then
-						InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULELECTRICITY, 1.2, 0, false, 0.5)
+						InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULELECTRICITY, 1.2, 0, false, 0.5)
 					end
 				elseif player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSPIT, 1.2, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULSPIT, 1.2, 0, false, 1)
 					local tear = player:FireTear( player.Position, Vector.FromAngle(direction:GetAngleDegrees()):Resized(10), false, false, false):ToTear()
 					tear.Position = player.Position
 					tear:ChangeVariant(RebekahCurse.ENTITY_SBOMBBUNDLE);
@@ -329,7 +329,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 					yandereWaifu.GetEntityData(tear).ExtraTears = extraTearDmg
 					yandereWaifu.EndRebekahBarrage(player, data)
 					yandereWaifu.SoulLeadPencilBarrage()
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTHEAVY, 1.2, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULSHOTHEAVY, 1.2, 0, false, 1)
 					local dust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 7, player.Position, Vector(0,0), nil) 
 					dust:GetSprite().Rotation = direction:GetAngleDegrees() + 90
 				else
@@ -374,7 +374,7 @@ function yandereWaifu.RebekahSoulNormalBarrage(player, data, direction, endFrame
 						yandereWaifu.SoulLeadPencilBarrage()
 					end
 					if data.soulcountdownFrames == 1 then
-						InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULSHOTMEDIUM, 1.2, 0, false, 1.2)
+						InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULSHOTMEDIUM, 1.2, 0, false, 1.2)
 					end
 					
 				end
@@ -475,14 +475,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 		--eff.Velocity = player.Velocity;
 	--else
-	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 	--end
 	
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
 		player.Visible = true
-		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+		--InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		sprite:Play("Idle", true);
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
@@ -494,7 +494,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	end
 	
     if (player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and data.movementCountFrame <= 0) or (not player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) and eff.FrameCount >= 40) then
-        if REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
+        if RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_RETAINS_VELOCITY == false then
             player.Velocity = Vector( 0, 0 );
         else
             player.Velocity = eff.Velocity;
@@ -641,7 +641,7 @@ end, RebekahCurse.ENTITY_SOULTARGET)
 			end
 			--on death
 			if tr.Height >= -7 or tr:CollidesWithGrid() then
-				yandereWaifu.SpawnPoofParticle( tr.Position, Vector(0,0), tr, RebekahPoofParticleType.Soul )
+				yandereWaifu.SpawnPoofParticle( tr.Position, Vector(0,0), tr, RebekahCurse.RebekahPoofParticleType.Soul )
 				tr:Remove()
 				data.trail:Remove()
 			end
@@ -813,7 +813,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff.Velocity = Vector.Zero
 		else
 			eff.Position = InutilLib.room:GetClampedPosition(eff.Position, roomClampSize);
-			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 		end
 		
 		local room =  Game():GetRoom()
@@ -862,7 +862,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--function code
 		if eff.FrameCount == 1 then
 			sprite:Play("Falling", true)
-			InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		elseif sprite:IsEventTriggered("Blow") then
 			local megumin = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, eff.Position, Vector(0,0), eff):ToBomb() --this is a workaround to make explosions larger
 			megumin:SetExplosionCountdown(1)
@@ -1014,7 +1014,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 			local player = yandereWaifu.GetEntityData(tr).Parent
 			--print(tr.CollisionDamage)
 			Isaac.Explode(tr.Position, tr, tr.CollisionDamage * 17.7)
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULFETUS1, 1, 0, false, 1.2)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULFETUS1, 1, 0, false, 1.2)
 			for i = 1, math.random(7,10) + 3 * yandereWaifu.GetEntityData(tr).ExtraTears do
                 InutilLib.SetTimer( i*8, function()
 					local bomb = player:FireBomb( tr.Position + Vector(math.random(1,10),math.random(1,10)),  Vector(0,5):Rotated(math.random(1,360)):Resized(4))
@@ -1037,7 +1037,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 	--"ectoplasm leaking after just teleporting" mechanic
 	function yandereWaifu:EctoplasmLeaking(player) 
 		local data = yandereWaifu.GetEntityData(player)
-		if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then	
+		if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then	
 			if data.LeaksJuices and data.LeaksJuices > 0 then
 				data.LeaksJuices = data.LeaksJuices - 1
 				if math.random(1,5) == 3 then
@@ -1052,9 +1052,9 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 					--become depressed again
 					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, data.Player , false, false)
 					player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-					player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 					InutilLib.SetTimer( 10*3, function()
-						player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+						player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 					end)
 					data.LeakingSoulBuff = nil
 				else
@@ -1073,7 +1073,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local parent, spr, data = tear.Parent, tear:GetSprite(), yandereWaifu.GetEntityData(tear)
 		local player = parent:ToPlayer()
 		
-		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 			if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 				yandereWaifu.GetEntityData(player).SoulBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -1082,9 +1082,9 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 				player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
 
-				player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+				player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 				InutilLib.SetTimer( 10*3, function()
-					player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 				end)
 			end
 		end
@@ -1094,7 +1094,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		if lz.SpawnerEntity then
 			local player = lz.SpawnerEntity:ToPlayer()
 			if player then
-				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 					if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 						yandereWaifu.GetEntityData(player).SoulBuff = false
 						player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -1102,9 +1102,9 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 						--become depressed again
 						yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 						player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-						player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+						player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 						InutilLib.SetTimer( 10*3, function()
-							player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+							player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 						end)
 					end
 				end
@@ -1116,7 +1116,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local player = bb.SpawnerEntity:ToPlayer()
 		local pldata = yandereWaifu.GetEntityData(player)
 		if player then
-			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 				if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 					yandereWaifu.GetEntityData(player).SoulBuff = false
 					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -1124,9 +1124,9 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 					--become depressed again
 					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 					player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-					player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 					InutilLib.SetTimer( 10*3, function()
-						player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+						player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 					end)
 				end
 			end
@@ -1139,7 +1139,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		--print(player)
 		if player and player.Type == EntityType.ENTITY_PLAYER then
 			if player then
-				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+				if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 					if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 						yandereWaifu.GetEntityData(player).SoulBuff = false
 						player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -1147,9 +1147,9 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 						--become depressed again
 						yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 						player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-						player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+						player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 						InutilLib.SetTimer( 10*3, function()
-							player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+							player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 						end)
 					end
 				end
@@ -1162,7 +1162,7 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 		local player = kn.SpawnerEntity:ToPlayer()
 		local pldata = yandereWaifu.GetEntityData(player)
 		if player then
-			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.SoulHearts then
+			if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.SoulHearts then
 				if yandereWaifu.GetEntityData(player).SoulBuff and not yandereWaifu.GetEntityData(player).IsAttackActive then --give lenience to the barrage
 					yandereWaifu.GetEntityData(player).SoulBuff = false
 					player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -1170,9 +1170,9 @@ end, RebekahCurse.ENTITY_SOULNUKECRACK)
 					--become depressed again
 					yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 					player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-					player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+					player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 					InutilLib.SetTimer( 10*3, function()
-						player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+						player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 					end)
 				end
 			end

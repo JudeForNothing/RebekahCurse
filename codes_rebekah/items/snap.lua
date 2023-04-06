@@ -1,8 +1,8 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
-		if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_SNAP) then
-			player:AddNullCostume(RebekahCurseCostumes.UnsnappedCos)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SNAP) then
+		if InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_SNAP) then
+			player:AddNullCostume(RebekahCurse.Costumes.UnsnappedCos)
 		end
 		--[[local maxH, H = player:GetMaxHearts(), player:GetHearts()
 		local ratioH
@@ -12,16 +12,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 				local fart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SNAP_EFFECT, 0, player.Position, Vector(0,0), player)
 				player:AnimateSad()
 				
-				player:AddNullCostume(RebekahCurseCostumes.SnappedCos)
-				player:TryRemoveNullCostume(RebekahCurseCostumes.UnsnappedCos)
+				player:AddNullCostume(RebekahCurse.Costumes.SnappedCos)
+				player:TryRemoveNullCostume(RebekahCurse.Costumes.UnsnappedCos)
 			end
 			data.hasSnap = true
 		else
 			if data.hasSnap == true then
 				data.hasSnap = false
 				
-				player:AddNullCostume(RebekahCurseCostumes.UnsnappedCos)
-				player:TryRemoveNullCostume(RebekahCurseCostumes.SnappedCos)
+				player:AddNullCostume(RebekahCurse.Costumes.UnsnappedCos)
+				player:TryRemoveNullCostume(RebekahCurse.Costumes.SnappedCos)
 			end
 		end
 		local modulusF = (math.floor(240/ratioH))
@@ -43,7 +43,7 @@ end)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
-	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
+	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_SNAP) then
 		local data = yandereWaifu.GetEntityData(damage)
 		if not data.hasSnap and not data.isSnappedTired then
 			damage = damage:ToPlayer()
@@ -53,8 +53,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				damage:AnimateSad()
 				InutilLib.game:ShakeScreen(5)
 			end)
-			damage:AddNullCostume(RebekahCurseCostumes.SnappedCos)
-			damage:TryRemoveNullCostume(RebekahCurseCostumes.UnsnappedCos)
+			damage:AddNullCostume(RebekahCurse.Costumes.SnappedCos)
+			damage:TryRemoveNullCostume(RebekahCurse.Costumes.UnsnappedCos)
 			data.hasSnap = true
 			
 			damage:AddCacheFlags(CacheFlag.CACHE_ALL);
@@ -74,7 +74,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 	end
 	if player then
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP )and data.hasSnap then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SNAP )and data.hasSnap then
 			--damage:TakeDamage( amount* 2, 0, damageSource, 0);
 			--return false
 		end
@@ -85,20 +85,20 @@ function yandereWaifu:SnappedTiredNewRoom()
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SNAP) then
 			if data.hasSnap then
 				data.hasSnap = nil
 				data.isSnappedTired = true
 				player:AddCacheFlags(CacheFlag.CACHE_ALL);
 				player:EvaluateItems()
-				player:TryRemoveNullCostume(RebekahCurseCostumes.SnappedCos)
+				player:TryRemoveNullCostume(RebekahCurse.Costumes.SnappedCos)
 				--print("pog")
 			elseif data.isSnappedTired then
 				data.isSnappedTired = nil
 				player:AddCacheFlags(CacheFlag.CACHE_ALL);
 				player:EvaluateItems()
 				
-				player:AddNullCostume(RebekahCurseCostumes.UnsnappedCos)
+				player:AddNullCostume(RebekahCurse.Costumes.UnsnappedCos)
 				--print("pogchamp")
 			end
 		end
@@ -109,7 +109,7 @@ yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.SnappedTir
 --stat cache for each mode
 function yandereWaifu:snapcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_SNAP) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SNAP) then
 		--if data.SnapDelay then
 		--	if cacheF == CacheFlag.CACHE_FIREDELAY then
 		--		player.FireDelay = player.FireDelay - data.SnapDelay
@@ -181,7 +181,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_, eff)
 	local data = yandereWaifu.GetEntityData(eff)
 	--eff.RenderZOffset = 10000;
 	eff.SpriteOffset = Vector(0,-30)
-	SFXManager():Play( RebekahCurseSounds.SOUND_ELECTRIC , 1, 0, false, 1.2 );
+	SFXManager():Play( RebekahCurse.Sounds.SOUND_ELECTRIC , 1, 0, false, 1.2 );
 end, RebekahCurse.ENTITY_SNAP_EFFECT);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)

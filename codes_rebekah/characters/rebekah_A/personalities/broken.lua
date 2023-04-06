@@ -31,7 +31,7 @@ end
 function yandereWaifu.BrokenRebekahDash(player, vel)
 	local trinketBonus = 0
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	--[[for i, v in pairs (Isaac.GetRoomEntities()) do
@@ -55,7 +55,7 @@ function yandereWaifu.BrokenRebekahDash(player, vel)
 	yandereWaifu.GetEntityData(customBody).Player = player
 	yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
 	yandereWaifu.GetEntityData(customBody).DashBrokenFragment = true
-	data.specialCooldown = REBEKAH_BALANCE.BROKEN_HEARTS_DASH_COOLDOWN - trinketBonus;
+	data.specialCooldown = RebekahCurse.REBEKAH_BALANCE.BROKEN_HEARTS_DASH_COOLDOWN - trinketBonus;
 	if data.BrokenPortal == 2 then
 		yandereWaifu.GetEntityData(customBody).IsBlue = true
 	elseif data.BrokenPortal == 1 then
@@ -70,7 +70,7 @@ end
 		local parent, spr, data = tear.Parent, tear:GetSprite(), yandereWaifu.GetEntityData(tear)
 		local player = parent:ToPlayer()
 		
-		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+		if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 			if yandereWaifu.GetEntityData(player).BrokenBuff then
 				yandereWaifu.GetEntityData(player).BrokenBuff = false
 				player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
@@ -150,7 +150,7 @@ end, RebekahCurse.ENTITY_BROKENCONSOLE);
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts then
+	if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then
 		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) then --if firing
 			if math.random(1,10) + player.Luck >= 10 and player.FrameCount % 30 == 0 then
 				local mode = math.random(1,8)

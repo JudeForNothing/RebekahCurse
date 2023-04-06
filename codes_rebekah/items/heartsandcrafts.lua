@@ -52,13 +52,13 @@ function yandereWaifu:useHeartsAndCrafts(collItem, rng, player)
 	
 	data.refreshDysmorphiaChoiceFrame = cyclePerFrame
 end
-yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useHeartsAndCrafts, RebekahCurseItems.COLLECTIBLE_HEARTSANDCRAFTS );
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useHeartsAndCrafts, RebekahCurse.Items.COLLECTIBLE_HEARTSANDCRAFTS );
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 	local data = yandereWaifu.GetEntityData(player)
 	local controller = player.ControllerIndex;
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_HEARTSANDCRAFTS) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTSANDCRAFTS) then
 		if not data.HEARTSANDCRAFTS_MENU then --set menu
 			data.HEARTSANDCRAFTS_MENU = yandereWaifu.Minimenu:New("gfx/ui/none.png", Isaac.WorldToScreen(player.Position + Vector(0, -50)));
 			
@@ -103,7 +103,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 							sub = 0
 							player:AddBrokenHearts(-1)]]
 						end
-						local mob = Isaac.Spawn(RebekahCurseEnemies.ENTITY_REBEKAH_ENEMY, RebekahCurseEnemies.ENTITY_REDTATO, sub, player.Position,  player.Velocity, player):ToNPC();
+						local mob = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_REDTATO, sub, player.Position,  player.Velocity, player):ToNPC();
 						mob:AddEntityFlags(EntityFlag.FLAG_CHARM | EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_PERSISTENT)
 						mob.HitPoints = mob.HitPoints/2
 						mob.CollisionDamage = 1.5

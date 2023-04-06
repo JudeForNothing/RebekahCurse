@@ -4,7 +4,7 @@ function yandereWaifu.EndRebekahBarrage(player, data)
 	data.IsAttackActive = false
 	data.chargeDelay = 0
 	data.barrageInit = false
-	if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
+	if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts) then
 		yandereWaifu.purchaseReserveStocks(player, 1)
 	end
 	--InutilLib.RefundActiveCharge(player, 1, true)
@@ -17,9 +17,9 @@ function yandereWaifu.EndRebekahBarrage(player, data)
 		--become depressed again
 		yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 		player:RemoveCostume(Isaac.GetItemConfig():GetCollectible(CollectibleType.COLLECTIBLE_NUMBER_ONE))
-		player:AddNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+		player:AddNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 		InutilLib.SetTimer( 10*3, function()
-			player:TryRemoveNullCostume(RebekahCurseCostumes.WizoobHairGoingDown)
+			player:TryRemoveNullCostume(RebekahCurse.Costumes.WizoobHairGoingDown)
 		end)
 	end
 	
@@ -63,7 +63,7 @@ function yandereWaifu.EndRebekahBarrageIfValid(player, data) --used if autocolle
 			--yandereWaifu.purchaseReserveStocks(player, 1)
 			--print("b")
 		end
-		if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
+		if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts) then
 			yandereWaifu.purchaseReserveStocks(player, 1)
 		end
 	else
@@ -71,7 +71,7 @@ function yandereWaifu.EndRebekahBarrageIfValid(player, data) --used if autocolle
 		data.IsAttackActive = false
 		data.chargeDelay = 0
 		data.barrageInit = false
-		if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.BrokenHearts) then
+		if (not data.noHead and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts) or not (yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RottenHearts and yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts) then
 			yandereWaifu.purchaseReserveStocks(player, 1)
 		end
 		
@@ -185,7 +185,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 					charge:GetSprite():ReplaceSpritesheet(1, "gfx/effects/red/chocolate_charge.png");
 					charge:GetSprite():LoadGraphics();
 					InutilLib.SFX:Play( SoundEffect.SOUND_BATTERYCHARGE , 1, 0, false, data.chargeDelay/10);
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGEHEAVY, 1, 0, false, 0.5)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGEHEAVY, 1, 0, false, 0.5)
 				end
 			end
 		end
@@ -313,7 +313,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 				end
 			end
 			--pencil sharpener synergy
-			if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+			if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 				for i = -45, 45, 15 do
 					local tear = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(8), true, false, false, (player), 1)
 					tear:AddTearFlags(TearFlags.TEAR_PIERCING)
@@ -375,7 +375,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 						player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_BRIMSTONE, false, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_BRIMSTONE)+1)
 						didtrigger = true
 					end
-					local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees()):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
+					local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees()):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser(); --i'm just gonna use the same brim size as the red heart :/
 					brim:GetData().IsEctoplasm = true;
 					brim.Position = pos
 					brim.CollisionDamage = player.Damage * 2 * numofShots
@@ -447,7 +447,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 								--data.KnifeHelper.incubus.Position = ludoTear.Position
 								--InutilLib.SpawnKnife(player, (i + data.addedbarrageangle + direction:GetAngleDegrees()), false, 0, SchoolbagKnifeMode.FIRE_ONCE, 1, 300, data.KnifeHelper)
 							elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
-								--local brim = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+								--local brim = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() - 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								local brim = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() - 45, 5, Vector(0,-5), player):ToLaser()
 								brim:SetActiveRotation( 0, 135, 10, false );
 								brim:AddTearFlags(player.TearFlags)
@@ -455,7 +455,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 								brim.DisableFollowParent = true
 								brim.CollisionDamage = player.Damage * numofShots;
 								--brim.Position = ludoTear.Position
-								--local brim2 = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+								--local brim2 = player:FireBrimstone( Vector.FromAngle( i + direction:GetAngleDegrees() + 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								local brim2 = EntityLaser.ShootAngle(1, ludoTear.Position, i + direction:GetAngleDegrees() + 45, 5, Vector(0,-5), player):ToLaser()
 								brim2:SetActiveRotation( 0, -135, -10, false );
 								brim2:AddTearFlags(player.TearFlags)
@@ -571,7 +571,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 						end
 					end]]
 					if player.FrameCount % 3 == 0 then
-						yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+						yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Red );
 					end
 					--we need to freeze the player
 					--player.Position = player.Position
@@ -670,7 +670,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 							v:AddEntityFlags(EntityFlag.FLAG_SLOW)
 						end
 					end]]
-					yandereWaifu.SpawnHeartParticles( 2, 4, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+					yandereWaifu.SpawnHeartParticles( 2, 4, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Red );
 					--we need to freeze the player
 					--player.Position = player.Position
 					--player.Velocity = Vector.Zero
@@ -747,7 +747,7 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 					charge:GetSprite():ReplaceSpritesheet(1, "gfx/effects/red/chocolate_charge.png");
 					charge:GetSprite():LoadGraphics();
 					InutilLib.SFX:Play( SoundEffect.SOUND_BATTERYCHARGE , 1, 0, false, data.chargeDelay/10);
-					--InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULCHARGEHEAVY, 1, 0, false, 0.5)
+					--InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULCHARGEHEAVY, 1, 0, false, 0.5)
 				end
 			end
 		end
@@ -794,7 +794,7 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 			--end
 		end
 		--pencil sharpener synergy
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 			for i = -45, 45, 15 do
 				local tear = player:FireTear(player.Position, Vector.FromAngle(direction:GetAngleDegrees()+i):Resized(8), true, false, false, (player), 1)
 				tear:AddTearFlags(TearFlags.TEAR_PIERCING)
@@ -880,7 +880,7 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 			if extra then
 				yandereWaifu.GetEntityData(customBody).extraAction = true
 			end
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SOULGARGLE, 1, 0, false, 0.9)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SOULGARGLE, 1, 0, false, 0.9)
 			if not data.tintEffect then
 				data.tintEffect = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BACKGROUNDTINT, 0, player.Position, Vector.Zero, nil):ToEffect()
 				data.tintEffect.RenderZOffset = -10
@@ -890,7 +890,7 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 			data.soulspitframecount = 0
 			data.FinishedPlayingCustomAnim = nil
 			data.isPlayingCustomAnim2 = true --kinda sucks that theres a part two of the animation and i set it up like this, gross
-			player:AddNullCostume(RebekahCurseCostumes.RebekahSpitsOut)
+			player:AddNullCostume(RebekahCurse.Costumes.RebekahSpitsOut)
 			
 			--[[for k, v in pairs (Isaac.GetRoomEntities()) do
 				v:ClearEntityFlags(EntityFlag.FLAG_SLOW)
@@ -949,7 +949,7 @@ function yandereWaifu.SetGoldRebekahBarrage(player, data, direction)
 			end
 		end]]
 		if player.FrameCount % 3 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
 		end
 		if not data.extraHugsGold then
 			local gun = yandereWaifu.SpawnGoldGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
@@ -1083,7 +1083,7 @@ function yandereWaifu.SetEvilRebekahBarrage(player, data, direction)
 			beam.DisableFollowParent = true
 			if hasWiz == 0 then break end
 		end
-		yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahPoofParticleType.Black );
+		yandereWaifu.SpawnPoofParticle( player.Position, Vector( 0, 0 ), player, RebekahCurse.RebekahPoofParticleType.Black );
 		InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_GRUNT_0, 1, 0, false, 1.2 );
 		yandereWaifu.EndRebekahBarrage(player, data)
 		--player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_PAUSE, -1)
@@ -1113,7 +1113,7 @@ function yandereWaifu.SetEvilRebekahBarrage(player, data, direction)
 			end
 		end]]
 		if player.FrameCount % 3 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
 		end
 		if not data.extraHugsEvil then
 			local gun = yandereWaifu.SpawnEvilGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
@@ -1180,7 +1180,7 @@ function yandereWaifu.SetEternalRebekahBarrage(player, data, direction)
 			end
 		end]]
 		if player.FrameCount % 3 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
 		end
 		if not data.extraHugsEternal then
 			local gun = yandereWaifu.SpawnEternalGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
@@ -1250,7 +1250,7 @@ function yandereWaifu.SetBoneRebekahBarrage(player, data, direction)
 			player.Position = player.Position
 			data.invincibleTime = 30
 			if player.FrameCount % 3 == 0 then
-				yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Bone );
+				yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Bone );
 			end
 			if not data.extraHugsBone then
 				local gun = yandereWaifu.SpawnBoneGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
@@ -1323,7 +1323,7 @@ function yandereWaifu.SetRottenRebekahBarrage(player, data, direction)
 			end
 		end]]
 		if player.FrameCount % 3 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
 		end
 		if not data.extraHugsRotten then
 			local gun = yandereWaifu.SpawnRottenGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
@@ -1419,14 +1419,14 @@ function yandereWaifu.SetImmortalRebekahBarrage(player, data, direction)
 			end
 		end]]
 		if player.FrameCount % 3 == 0 then
-			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Evil );
+			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
 		end
 		if not data.isPlayingCustomAnim then
 			local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EXTRACHARANIMHELPER, 0, player.Position, Vector(0,0), nil) --body effect
 			yandereWaifu.GetEntityData(customBody).Player = player
 			yandereWaifu.GetEntityData(customBody).SummonImmortalBackup = true
 			data.isPlayingCustomAnim = true
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1.3)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1.3)
 		end
 	end
 end
@@ -1449,26 +1449,23 @@ function barrage.SetRebekahBarragesInit(player, modes, data, direction)
 		--curAng = -20
 		numofShots = numofShots + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_INNER_EYE) * 2
 	end
-	print("pirayte")
-	print(modes)
-	print(REBECCA_MODE.RedHearts)
-	if modes == REBECCA_MODE.RedHearts then
+	if modes == RebekahCurse.REBECCA_MODE.RedHearts then
 		yandereWaifu.SetRedRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.SoulHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.SoulHearts then
 		yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.GoldHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.GoldHearts then
 		yandereWaifu.SetGoldRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.EvilHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.EvilHearts then
 		yandereWaifu.SetEvilRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.EternalHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.EternalHearts then
 		yandereWaifu.SetEternalRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.BoneHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.BoneHearts then
 		yandereWaifu.SetBoneRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.RottenHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.RottenHearts then
 		yandereWaifu.SetRottenRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.BrokenHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.BrokenHearts then
 		yandereWaifu.SetBrokenRebekahBarrage(player, data, direction)
-	elseif modes == REBECCA_MODE.BrideRedHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.BrideRedHearts then
 
 		if not data.redcountdownFrames then data.redcountdownFrames = 0 end
 		if not data.addedbarrageangle then data.addedbarrageangle = 0 data.addedbarrageangle2 = 0 end --incase if nil
@@ -1534,9 +1531,9 @@ function barrage.SetRebekahBarragesInit(player, modes, data, direction)
 			end
 			if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 				if data.redcountdownFrames >= 1 and data.redcountdownFrames < 40 and data.redcountdownFrames % modulusnum == (0) then
-					local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+					local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 					brim:SetActiveRotation( 0, 135, 10, false );
-					local brim2 = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+					local brim2 = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() + 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 					brim2:SetActiveRotation( 0, -135, -10, false );
 				elseif data.redcountdownFrames >= 40 then
 				end
@@ -1620,10 +1617,10 @@ function barrage.SetRebekahBarragesInit(player, modes, data, direction)
 				end
 			elseif data.redcountdownFrames >= 40 then
 				data.redcountdownFrames = 0 
-				yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+				yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Red );
 			end
 		end
-	elseif modes == REBECCA_MODE.ImmortalHearts then
+	elseif modes == RebekahCurse.REBECCA_MODE.ImmortalHearts then
 		yandereWaifu.SetImmortalRebekahBarrage(player, data, direction)
 	end
 end

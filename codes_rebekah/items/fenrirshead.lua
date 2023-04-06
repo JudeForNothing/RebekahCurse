@@ -12,12 +12,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, ent, damag
             player = dmgSource.Entity.SpawnerEntity:ToPlayer()
         end
         if (player) then
-            if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSHEAD) and math.random(1,10) == 10  then
+            if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSHEAD) and math.random(1,10) == 10  then
                 newDamage = damage * 2
                 confirm = true
-                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING, ent.Position, Vector.Zero, ent)
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING, ent.Position, Vector.Zero, ent)
                 yandereWaifu.GetEntityData(poof).Parent = ent
-                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_WILD_SWING, 1, 0, false, 0.6 );
+                InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_WILD_SWING, 1, 0, false, 0.6 );
                 InutilLib.game:ShakeScreen(10)
             end
         end

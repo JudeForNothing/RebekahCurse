@@ -1,6 +1,6 @@
 
 function yandereWaifu.RebekahImmortalBarrage(player, direction)
-	InutilLib.SFX:Play(RebekahCurseSounds.SOUND_IMMORTALJINGLE, 1, 0, false, 1)
+	InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_IMMORTALJINGLE, 1, 0, false, 1)
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	local prism = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_IMMORTAL_PRISM, 0, player.Position, Vector(0,0), player)
 end
@@ -32,7 +32,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	if eff.FrameCount >= 1400 then
 		if data.ImDieCountdown%2 == 0 then
 			sprite.Color = Color(1,0,0,1)
-			SFXManager():Play( RebekahCurseSounds.SOUND_IMDIEBEEP , 1, 0, false, 0.4 )
+			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 0.4 )
 		else
 			sprite.Color = Color(1,1,1,1)
 		end

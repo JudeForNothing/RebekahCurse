@@ -83,14 +83,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	
 		--eff.Velocity = player.Velocity;
 	--else
-	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+	--	eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 	--end
 	
 	--function code
 	--player.Velocity = (room:GetClampedPosition(eff.Position, roomClampSize) - player.Position)--*0.5;
 	if eff.FrameCount == 1 then
 		player.Visible = true
-		--InutilLib.SFX:Play( RebekahCurseSounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
+		--InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_SOULJINGLE, 1, 0, false, 1 );
 		sprite:Play("Idle", true);
 		data.LastEntityCollisionClass = player.EntityCollisionClass;
 		data.LastGridCollisionClass = player.GridCollisionClass;
@@ -182,7 +182,7 @@ function yandereWaifu.CursedHeartTeleport(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
@@ -190,10 +190,10 @@ function yandereWaifu.CursedHeartTeleport(player, vector)
 	local customBody = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_TAINTEDCURSEDASHTARGET, 0, player.Position, Vector(0,0), player) --body effect
 	yandereWaifu.GetEntityData(customBody).Player = player
 	player.Velocity = Vector( 0, 0 );
-	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Blue );
-	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Blue );
-	playerdata.specialCooldown = REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN/2 - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	--yandereWaifu.SpawnPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Blue );
+	yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Blue );
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN/2 - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	InutilLib.SFX:Play( SoundEffect.SOUND_WEIRD_WORM_SPIT, 1, 0, false, 1 );
 	playerdata.IsUninteractible = true
 	playerdata.IsDashActive = true
@@ -205,15 +205,15 @@ function yandereWaifu.CursedHeartStomp(player, vector)
     local playerdata = yandereWaifu.GetEntityData(player)
     local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
     InutilLib.game:MakeShockwave(player.Position, 0.065, 0.025, 10)
 
 	Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, player.Position, Vector(0,0), player)
 
-    playerdata.specialCooldown = REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN/2 - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+    playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_COOLDOWN/2 - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_INVINCIBILITY_FRAMES;
     playerdata.IsDashActive = true
     InutilLib.SFX:Play( SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1 );
 
@@ -318,7 +318,7 @@ function yandereWaifu.SwingCursedKnife(player, weapon, state, angle, flip)
         end
 	end
     --pencil sharpener synergy
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_PENCILSHARPENER) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_PENCILSHARPENER) then
 		if data.lastPSRPFrameCount then
 			if InutilLib.game:GetFrameCount() == data.lastPSRPFrameCount then
 				return
@@ -996,6 +996,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             InutilLib.RevelSetCreepData(puddle)
             InutilLib.RevelUpdateCreepSize(puddle, math.random(1,2), true)
         end
+        --[[if player:HasCollectible(CollectibleType.COLLECTIBLE_AQUARIUS) then
+            local puddle = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.PLAYER_CREEP_HOLYWATER_TRAIL, 0, pos, Vector(0,0), player):ToEffect()
+            print(puddle.SpawnerEntity.Type)
+            puddle.SpawnerEntity = player
+            --puddle.Flags = player.TearFlags
+            InutilLib.RevelSetCreepData(puddle)
+            InutilLib.RevelUpdateCreepSize(puddle, math.random(1,2), true)
+        end]]
         if data.canJacobsLadder then
             local ents = Isaac.FindInRadius(pos, 75, EntityPartition.ENEMY)
             for _, ent in pairs(ents) do
@@ -1203,7 +1211,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                         ent.Velocity = (ent.Position - pos):Resized(50)
                         ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
                         yandereWaifu.GetEntityData(ent).isSnooked = 15
-                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+                        InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
                     elseif data.state == 4 then
                         ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
                         if not yandereWaifu.GetEntityData(ent).isSlamSnooked then
@@ -1213,12 +1221,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                             yandereWaifu.GetEntityData(ent).SlamSnookStrength = yandereWaifu.GetEntityData(ent).SlamSnookStrength + 15
                             yandereWaifu.GetEntityData(ent).SnookVelocity = (ent.Position - pos):Resized(yandereWaifu.GetEntityData(ent).SlamSnookStrength)
                         end
-                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+                        InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
                     elseif data.state == 5 then
                         ent.Velocity = (ent.Position - pos):Resized(65)
                         ent:AddEntityFlags(EntityFlag.FLAG_APPLY_IMPACT_DAMAGE)
                         yandereWaifu.GetEntityData(ent).isHeavySnooked = 45
-                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
+                        InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
                     end
                 end
                 if player:HasWeaponType(WeaponType.WEAPON_BOMBS) and not yandereWaifu.GetEntityData(ent).IsGlorykill and data.state <= 3 then
@@ -1252,7 +1260,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 ent:SetColor(Color(1,0,0,1,0,0,0), 7, 1)
                 InutilLib.game:ShakeScreen(5)
 
-                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_WILD_SWING, 1, 0, false, 0.7 );
+                InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_WILD_SWING, 1, 0, false, 0.7 );
 
                 local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, ent.Position, Vector.FromAngle((player.Position - ent.Position):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
 				yandereWaifu.GetEntityData(heart).Parent = player
@@ -1325,7 +1333,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 
                 data.storedKineticEnergy = 0 --reset
             else
-                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT, pos, Vector.Zero, ent)
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_SLAM_DEFAULT, pos, Vector.Zero, ent)
                 yandereWaifu.GetEntityData(poof).Parent = ent
                 poof:GetSprite().Scale = Vector(1*size, 1*size)
                 local color
@@ -1409,7 +1417,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end
         if data.did_hit then
             cut(90*size --[[125*size]], pos, (player.Damage), false)
-            InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_SLAM, 1, 0, false, (math.random(9,11)/10) - pitch);
+            InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_SLAM, 1, 0, false, (math.random(9,11)/10) - pitch);
         else
             InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 1.2 - pitch );
         end
@@ -1554,7 +1562,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 if playerdata.TaintedEnemyTarget then
                     InutilLib.MoveDirectlyTowardsTarget(player, playerdata.TaintedEnemyTarget, 8, 0.8)
                     if sprite:GetFrame() == 0 then
-                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH, 1, 0, false, 1 );
+                        InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_ROCKET_LAUNCH, 1, 0, false, 1 );
                     end
                     if not data.storedKineticEnergy then data.storedKineticEnergy = 0 end
                    -- player.Velocity = playerdata.TaintedEnemyTarget
@@ -1587,7 +1595,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 
                 data.storedKineticEnergy = 0 --reset
 
-                InutilLib.SFX:Stop(RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH);
+                InutilLib.SFX:Stop(RebekahCurse.Sounds.SOUND_CURSED_ROCKET_LAUNCH);
             end
 
             --yandereWaifu.GetEntityData(player).invincibleTime = 15
@@ -1616,14 +1624,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                             data.did_hit = true
                             ent.Velocity = (ent.Velocity + (Vector(10,0))):Rotated(data.Angle):Resized(3)
                             InutilLib.SetTimer(0+addendEnemy*5, function()
-                                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING, ent.Position, Vector.Zero, ent)
+                                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_WILD_SWING, ent.Position, Vector.Zero, ent)
                                 yandereWaifu.GetEntityData(poof).Parent = ent
                             end)
                             addendEnemy = addendEnemy + 1
                         end
                     end
                 end
-                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_WILD_SWING, 1, 0, false, pitch );
+                InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_WILD_SWING, 1, 0, false, pitch );
             else
                 InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, pitch );
             end
@@ -1691,7 +1699,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                     if not data.storedKineticEnergy then data.storedKineticEnergy = 0 end
                     InutilLib.MoveDirectlyTowardsTarget(player, playerdata.TaintedEnemyTarget, 6, 0.8)
                     if sprite:GetFrame() == 0 then
-                        InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH, 1, 0, false, 1 );
+                        InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_ROCKET_LAUNCH, 1, 0, false, 1 );
                     end
                    -- player.Velocity = playerdata.TaintedEnemyTarget
 
@@ -1718,15 +1726,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 yandereWaifu.GetEntityData(customBody).Player = player
                 yandereWaifu.GetEntityData(customBody).IsLifelineHelper = true
                 yandereWaifu.GetEntityData(customBody).DontFollowPlayer = true
-                InutilLib.SFX:Stop( RebekahCurseSounds.SOUND_CURSED_BEEP);
-                InutilLib.SFX:Stop( RebekahCurseSounds.SOUND_CURSED_BEEP_DEAD);
+                InutilLib.SFX:Stop( RebekahCurse.Sounds.SOUND_CURSED_BEEP);
+                InutilLib.SFX:Stop( RebekahCurse.Sounds.SOUND_CURSED_BEEP_DEAD);
                 if data.EnemyDied then
                     --if damage is more than ent hitpoints
                     yandereWaifu.GetEntityData(customBody).EnemyDied = true
                     data.EnemyDied = false
-                    InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_BEEP, 1, 0, false, 1);
+                    InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_BEEP, 1, 0, false, 1);
                 else
-                    InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_BEEP_DEAD, 1, 0, false, 1);
+                    InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_BEEP_DEAD, 1, 0, false, 1);
                 end
             end
             if player:HasCollectible(CollectibleType.COLLECTIBLE_CRICKETS_BODY) then
@@ -1742,10 +1750,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 end)
             end
             if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) then
-                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_SLAM, pos, Vector.Zero, ent)
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_SLAM, pos, Vector.Zero, ent)
                 yandereWaifu.GetEntityData(poof).Parent = eff
             end
-            InutilLib.SFX:Stop(RebekahCurseSounds.SOUND_CURSED_ROCKET_LAUNCH);
+            InutilLib.SFX:Stop(RebekahCurse.Sounds.SOUND_CURSED_ROCKET_LAUNCH);
             local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
             poof:GetSprite().Scale = Vector(1*scale, 1*scale)
         elseif player:HasWeaponType(WeaponType.WEAPON_SPIRIT_SWORD) then
@@ -1788,11 +1796,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                             slam(new_pos, 0.7, true)
                             --[[cut(180, new_pos, (player.Damage)*3.5+math.floor((player.Damage*(numofShots-1))/8), false)
                             print("WOW")
-                            local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE, pos, Vector.Zero, eff)
+                            local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE, pos, Vector.Zero, eff)
                             yandereWaifu.GetEntityData(poof).Parent = eff
                             poof:GetSprite().Scale = Vector(1+0.1*(numofShots-1), 1+0.1*(numofShots-1))
                             Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, new_pos, Vector(0,0), player)
-                            InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_HEAVY_STRIKE, 1, 0, false, math.random(9,11)/10 );]]
+                            InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_HEAVY_STRIKE, 1, 0, false, math.random(9,11)/10 );]]
                         end)
                     end
                 end
@@ -1877,12 +1885,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                         end
                     end
                 end
-                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE, pos, Vector.Zero, ent)
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_GODHEAD_STRIKE, pos, Vector.Zero, ent)
                 yandereWaifu.GetEntityData(poof).Parent = eff
                 InutilLib.SFX:Play(SoundEffect.SOUND_HOLY, 1.2, 0, false, 1.2);
             end
             if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) then
-                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE, pos, Vector.Zero, player)
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE, pos, Vector.Zero, player)
                 yandereWaifu.GetEntityData(poof).Parent = player
             end
             --yandereWaifu.GetEntityData(player).invincibleTime = 20
@@ -1922,7 +1930,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                     end
                 end
             else
-                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurseDustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE, pos, Vector.Zero, eff)
+                local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_HEAVY_STRIKE, pos, Vector.Zero, eff)
                 yandereWaifu.GetEntityData(poof).Parent = ent
                 poof:GetSprite().Scale = Vector(1+0.1*(numofShots-1), 1+0.1*(numofShots-1))
                 Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
@@ -1930,7 +1938,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             InutilLib.game:ShakeScreen(8)
             InutilLib.game:MakeShockwave(eff.Position, 0.075+0.01*(numofShots-1), 0.025, 10)
             if data.did_hit then
-                InutilLib.SFX:Play( RebekahCurseSounds.SOUND_CURSED_HEAVY_STRIKE, 1, 0, false, math.random(9,11)/10 - pitch );
+                InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_HEAVY_STRIKE, 1, 0, false, math.random(9,11)/10 - pitch );
              else
                 InutilLib.SFX:Play( SoundEffect.SOUND_SHELLGAME, 1, 0, false, 1 - pitch);
              end

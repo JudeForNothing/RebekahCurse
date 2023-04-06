@@ -100,7 +100,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.FenrirPuppy
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	--[[if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSLEASH) and InutilLib.HasJustPickedCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSLEASH) then
+	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH) and InutilLib.HasJustPickedCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH) then
 		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 		player:EvaluateItems()
 	end]]
@@ -109,8 +109,8 @@ end)
 function yandereWaifu:FenrirPuppyCache(player, cacheF) --The thing the checks and updates the game, i guess?
 	local data = yandereWaifu.GetEntityData(player)
 	if cacheF == CacheFlag.CACHE_FAMILIARS then  -- Especially here!
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSLEASH) then
-			player:CheckFamiliar(RebekahCurse.ENTITY_FENRIR, player:GetCollectibleNum(RebekahCurseItems.COLLECTIBLE_FENRIRSLEASH) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSLEASH))
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH) then
+			player:CheckFamiliar(RebekahCurse.ENTITY_FENRIR, player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH) + player:GetEffects():GetCollectibleEffectNum(CollectibleType.COLLECTIBLE_BOX_OF_FRIENDS), RNG(), InutilLib.config:GetCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH))
 		end
 	end
 end

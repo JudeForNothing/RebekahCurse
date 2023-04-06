@@ -43,7 +43,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -87,7 +87,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.5)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -122,7 +122,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -136,9 +136,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -147,17 +147,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--sounds
 		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
 			end
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1)
 			end
 		end
 	end
@@ -417,7 +417,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
 	--tear:ChangeVariant(ENTITY_ETERNALFEATHER)
     --tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL
 	
-    if yandereWaifu.IsNormalRebekah(player) and currentMode == REBECCA_MODE.EternalHearts and tear.TearFlags & TearFlags.TEAR_LUDOVICO ~= TearFlags.TEAR_LUDOVICO then
+    if yandereWaifu.IsNormalRebekah(player) and currentMode == RebekahCurse.REBECCA_MODE.EternalHearts and tear.TearFlags & TearFlags.TEAR_LUDOVICO ~= TearFlags.TEAR_LUDOVICO then
         tear:ChangeVariant(RebekahCurse.ENTITY_ETERNALFEATHER)
         tear.TearFlags = tear.TearFlags | TearFlags.TEAR_SPECTRAL
 		tear:GetData().NotSmart = true
@@ -428,7 +428,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_INIT, function(_, bb)
 	local sprite = bb:GetSprite()
 	if bb.SpawnerType == 1 then
 		local player = bb.SpawnerEntity:ToPlayer()
-		if yandereWaifu.GetEntityData(player).currentMode == REBECCA_MODE.EternalHearts then
+		if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.EternalHearts then
 			--local newbb = player:FireBomb( player.Position, bb.Velocity):ToBomb()
 			--newbb.Flags = bb.Flags
 			--newbb.ExplosionDamage = bb.ExplosionDamage
@@ -874,7 +874,7 @@ function yandereWaifu:EternalFamiliarCheck(player, cacheF) --The thing the check
 	if cacheF == CacheFlag.CACHE_FAMILIARS then
 		if not data.TinyOrphanims then data.TinyOrphanims = 0 end
 		if not data.TinyOrphanims2 then data.TinyOrphanims2 = 0 end
-		if not data.currentMode == REBECCA_MODE.EternalHearts then 
+		if not data.currentMode == RebekahCurse.REBECCA_MODE.EternalHearts then 
 			data.TinyOrphanims = 0 
 			data.TinyOrphanims2 = 0
 		end
@@ -957,22 +957,22 @@ function yandereWaifu.EternalHeartDash(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	
-	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
+	player.Velocity = player.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_SPEED );
 	
 	local velAng = math.floor(player.Velocity:Rotated(-90):GetAngleDegrees())
-	local subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_BIG
+	local subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_BIG
 	if (velAng >= 180 - 15 and velAng <= 180 + 15) or (velAng >= -180 - 15 and  velAng <= -180 + 15) or (velAng >= 0 - 15 and  velAng <= 0 + 15) then
-		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG
+		subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT_BIG
 	end
 	if (velAng >= 45 - 15 and  velAng <= 45 + 15) or (velAng >= -45 - 15 and  velAng <= -45 + 15) then
-		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG
+		subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BIG
 	end
 	if (velAng >= 135 - 15 and  velAng <= 135 + 15) or (velAng >= -135 - 15 and  velAng <= -135 + 15) then
-		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG
+		subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK_BIG
 	end
 	
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, subtype, player.Position, Vector.Zero, player)
@@ -980,13 +980,13 @@ function yandereWaifu.EternalHeartDash(player, vector)
 	if (velAng >= 90 - 15 and velAng <= 90 + 15 and velAng >= 0) or (((velAng >= -135 - 15 and  velAng <= -135 + 15)  or (velAng >= -45 - 15 and  velAng <= -45 + 15)) and velAng <= 0) then
 		poof:GetSprite().FlipX = true
 	end
-	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
+	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Red );
 
-	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Eternal );
-	yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahHeartParticleType.Eternal );
+	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Eternal );
+	yandereWaifu.SpawnHeartParticles( 2, 5, player.Position, player.Velocity:Rotated(180):Resized( player.Velocity:Length() * (math.random() * 0.5 + 0.5) ), player, RebekahCurse.RebekahHeartParticleType.Eternal );
 	--local lightboom = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LIGHTBOOM, 0, player.Position, Vector(0,0), player);
-	playerdata.specialCooldown = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.ETERNAL_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	playerdata.IsDashActive = true;
 	for i = 0, math.random(2,3) do
 		local tear = player:FireTear(player.Position, Vector.FromAngle(velAng - 90 - math.random(-45,45))*(math.random(4,6)), false, false, false):ToTear()

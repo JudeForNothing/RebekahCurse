@@ -2,7 +2,7 @@
 function yandereWaifu.DeborahInit(player)
 	local mode 
 	local data = yandereWaifu.GetEntityData(player)
-	player:AddNullCostume(RebekahCurseCostumes.DeborahBody);
+	player:AddNullCostume(RebekahCurse.Costumes.DeborahBody);
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
@@ -220,7 +220,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 --end
             end
             for lhorns = 0, 270, 360/4 do
-                local direction = player:GetShootingInput():GetAngleDegrees() + lhorns
+                local direction = InutilLib.DirToVec(player:GetFireDirection()):GetAngleDegrees() +  lhorns --player:GetShootingInput():GetAngleDegrees() + lhorns
                 local oldDir = direction
                 for wizAng = -45, 90, 135 do
                     if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) and lhorns == 0 then --sets the wiz angles

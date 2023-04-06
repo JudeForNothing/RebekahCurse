@@ -1,21 +1,25 @@
 local REBECCA_MODE_COMMAND_KEYS = {
-	none = REBECCA_MODE.EmptyHearts,
-	red = REBECCA_MODE.RedHearts,
-	soul = REBECCA_MODE.SoulHearts,
-	blue = REBECCA_MODE.SoulHearts,
-	eternal = REBECCA_MODE.EternalHearts,
-	white = REBECCA_MODE.EternalHearts,
-	gold = REBECCA_MODE.GoldHearts,
-	black = REBECCA_MODE.EvilHearts,
-	evil = REBECCA_MODE.EvilHearts,
-	bone = REBECCA_MODE.BoneHearts,
-	rotten = REBECCA_MODE.RottenHearts,
-	broken = REBECCA_MODE.BrokenHearts,
-	immortal = REBECCA_MODE.ImmortalHearts,
+	none = RebekahCurse.REBECCA_MODE.EmptyHearts,
+	red = RebekahCurse.REBECCA_MODE.RedHearts,
+	soul = RebekahCurse.REBECCA_MODE.SoulHearts,
+	blue = RebekahCurse.REBECCA_MODE.SoulHearts,
+	eternal = RebekahCurse.REBECCA_MODE.EternalHearts,
+	white = RebekahCurse.REBECCA_MODE.EternalHearts,
+	gold = RebekahCurse.REBECCA_MODE.GoldHearts,
+	black = RebekahCurse.REBECCA_MODE.EvilHearts,
+	evil = RebekahCurse.REBECCA_MODE.EvilHearts,
+	bone = RebekahCurse.REBECCA_MODE.BoneHearts,
+	rotten = RebekahCurse.REBECCA_MODE.RottenHearts,
+	broken = RebekahCurse.REBECCA_MODE.BrokenHearts,
+	immortal = RebekahCurse.REBECCA_MODE.ImmortalHearts,
 
-	scared = REBECCA_MODE.ScaredRedHearts,
+	scared = RebekahCurse.REBECCA_MODE.ScaredRedHearts,
+	twinred = RebekahCurse.REBECCA_MODE.TwinRedHearts,
+	blended = RebekahCurse.REBECCA_MODE.BlendedHearts,
+	halfred = RebekahCurse.REBECCA_MODE.HalfRedHearts,
+	halfsoul = RebekahCurse.REBECCA_MODE.HalfSoulHearts,
 	
-	bred = REBECCA_MODE.BrideRedHearts
+	bred = RebekahCurse.REBECCA_MODE.BrideRedHearts
 }
 
 REBEKAHMODE_EXPERIMENTAL = {

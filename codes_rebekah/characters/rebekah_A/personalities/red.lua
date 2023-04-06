@@ -99,7 +99,7 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 									--local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, player.Position,  Vector.FromAngle(direction:GetAngleDegrees()):Resized( 9 ), player);
 									yandereWaifu.GetEntityData(bomb).IsByAFanGirl = true; --makes sure that it's Rebecca's bombs
 									bomb:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
-									InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDFETUS1, 1, 0, false, 1)
+									InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDFETUS1, 1, 0, false, 1)
 									player.Velocity = player.Velocity + (Vector.FromAngle((-7 + (15*j))*fix + (direction:GetAngleDegrees()) - baseOffset*fix + 180)*(12))*0.7
 								end
 							end)
@@ -118,14 +118,14 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 				end
 				if player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 					if yandereWaifu.IsValidRedBarrage() then
-						local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+						local brim = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() - 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 						brim:SetActiveRotation( 0, 135, 10, false );
 						brim.Position = player.Position
 						brim:AddTearFlags(player.TearFlags)
 						--brim:SetColor(player.TearColor, 999, 999)
 						brim.CollisionDamage = player.Damage * numofShots;
 						--InutilLib.UpdateLaserSize(brim, 1)
-						local brim2 = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+						local brim2 = player:FireBrimstone( Vector.FromAngle( direction:GetAngleDegrees() + 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 						brim2:SetActiveRotation( 0, -135, -10, false );
 						brim2.Position = player.Position
 						brim2:AddTearFlags(player.TearFlags)
@@ -135,10 +135,10 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 						
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_SORE) and data.willEyeSoreBar then
 							for i, angle in pairs(data.eyeSoreBarAngles) do
-								local brim = player:FireBrimstone( Vector.FromAngle( angle - 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+								local brim = player:FireBrimstone( Vector.FromAngle( angle - 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								brim:SetActiveRotation( 0, 135, 10, false );
 								--InutilLib.UpdateLaserSize(brim, tearSize)
-								local brim2 = player:FireBrimstone( Vector.FromAngle( angle + 45 ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+								local brim2 = player:FireBrimstone( Vector.FromAngle( angle + 45 ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								brim2:SetActiveRotation( 0, -135, -10, false );
 								--InutilLib.UpdateLaserSize(brim2, tearSize)
 							end
@@ -153,7 +153,7 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 							local baseOffset = 7 * (numofShots)
 							if numofShots > 1 then fix = 1 else fix = 0 end
 							if (j == 0 and numofShots <= 1) or (j > 0 and numofShots > 1) then --tells if you need to shoot once if you have 1 numofShots or if more than 1 numofShots, no need for shoot once correction
-								local brim = player:FireBrimstone( Vector.FromAngle((-7 + (15*j))*fix + (direction:GetAngleDegrees()) - baseOffset*fix ):Resized( REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
+								local brim = player:FireBrimstone( Vector.FromAngle((-7 + (15*j))*fix + (direction:GetAngleDegrees()) - baseOffset*fix ):Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEART_ATTACK_BRIMSTONE_SIZE ) ):ToLaser();
 								--InutilLib.UpdateLaserSize(brim, 2)
 								brim.Timeout = 30
 							end
@@ -397,7 +397,7 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 				elseif data.redcountdownFrames >= endFrameCount then
 					yandereWaifu.EndRebekahBarrageIfValid(player, data)
 					data.redcountdownFrames = 0 
-					yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+					yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Red );
 				end
 				--if wizAng == -45 and not player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
 				--	break -- just makes sure it doesnt duplicate
@@ -439,7 +439,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
 			InutilLib.SetTimer( data.StartCountFrame*8,function()
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1+(data.StartCountFrame/5))
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGELIGHT, 1, 0, false, 1+(data.StartCountFrame/5))
 			end)
 		end
 		
@@ -480,7 +480,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpTech") then
 					sprite:Play("ShootUpTech", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_SPARKELECTRIC, 0.8, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_SPARKELECTRIC, 0.8, 0, false, 0.8)
 			elseif player:HasWeaponType(WeaponType.WEAPON_BRIMSTONE) then
 				if sprite.Rotation <= 180 and sprite.Rotation >= 135 and not sprite:IsPlaying("ShootRightBrimstone") then
 					sprite:Play("ShootRightBrimstone", true)
@@ -492,7 +492,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstone") then
 					sprite:Play("ShootUpBrimstone", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGEHEAVY, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGEHEAVY, 1, 0, false, 0.8)
 			else
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) and not sprite:IsPlaying("ShootRight") then
 					sprite:Play("ShootRight", true)
@@ -549,7 +549,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 then
 					sprite:Play("ShootUp", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTHEAVY, 1, 0, false, 1)
 			elseif data.DrFetus then
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -584,7 +584,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				elseif sprite.Rotation > -180 and sprite.Rotation < 0 and not sprite:IsPlaying("ShootUpBrimstoneGo") then
 					sprite:Play("ShootUpBrimstoneGo", true)
 				end
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTHEAVY, 1, 0, false, 0.8)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTHEAVY, 1, 0, false, 0.8)
 			else
 				sprite.Rotation = (data.direction):GetAngleDegrees()
 				if (sprite.Rotation <= 180 and sprite.Rotation >= 135) or (sprite.Rotation <= 0 and sprite.Rotation >= -45) then
@@ -598,9 +598,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					sprite:Play("ShootUp", true)
 				end
 				if data.Light then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTLIGHT, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTLIGHT, 1, 0, false, 1)
 				elseif data.Medium then
-					InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+					InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
 				end
 			end
 			data.Shoot = false
@@ -609,17 +609,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		--sounds
 		--[[if InutilLib.IsPlayingMultiple(sprite, "ShootRight", "ShootLeft", "ShootDown", "ShootUp") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSHOTMEDIUM, 1, 0, false, 1)
 			end
 		end]]
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightDr", "ShootLeftDr", "ShootDownDr", "ShootUpDr") then
 			if sprite:GetFrame() == 12 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDSPIT, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDSPIT, 1, 0, false, 1)
 			end
 		end
 		if InutilLib.IsPlayingMultiple(sprite, "ShootRightTechGo", "ShootLeftTechGo", "ShootDownTechGo", "ShootUpTechGo") then
 			if sprite:GetFrame() == 0 then
-				InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDELECTRICITY, 1, 0, false, 1)
+				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDELECTRICITY, 1, 0, false, 1)
 			end
 		end
 	end
@@ -629,22 +629,22 @@ function yandereWaifu.RedHeartDash(player, vector)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local SubType = 0
 	local trinketBonus = 0
-	if player:HasTrinket(RebekahCurseTrinkets.TRINKET_ISAACSLOCKS) then
+	if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS) then
 		trinketBonus = 5
 	end
 	
-	player.Velocity = player.Velocity + vector:Resized( REBEKAH_BALANCE.RED_HEARTS_DASH_SPEED );
+	player.Velocity = player.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_SPEED );
 	
 	local velAng = math.floor(player.Velocity:Rotated(-90):GetAngleDegrees())
-	local subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST
+	local subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST
 	if (velAng >= 180 - 15 and velAng <= 180 + 15) or (velAng >= -180 - 15 and  velAng <= -180 + 15) or (velAng >= 0 - 15 and  velAng <= 0 + 15) then
-		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT 
+		subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_FRONT 
 	end
 	if (velAng >= 45 - 15 and  velAng <= 45 + 15) or (velAng >= -45 - 15 and  velAng <= -45 + 15) then
-		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED
+		subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED
 	end
 	if (velAng >= 135 - 15 and  velAng <= 135 + 15) or (velAng >= -135 - 15 and  velAng <= -135 + 15) then
-		subtype = RebekahCurseDustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK
+		subtype = RebekahCurse.DustEffects.ENTITY_REBEKAH_GENERIC_DUST_ANGLED_BACK
 	end
 	
 	local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, subtype, player.Position, Vector.Zero, player)
@@ -652,10 +652,10 @@ function yandereWaifu.RedHeartDash(player, vector)
 	if (velAng >= 90 - 15 and velAng <= 90 + 15 and velAng >= 0) or (((velAng >= -135 - 15 and  velAng <= -135 + 15)  or (velAng >= -45 - 15 and  velAng <= -45 + 15)) and velAng <= 0) then
 		poof:GetSprite().FlipX = true
 	end
-	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahPoofParticleType.Red );
+	--yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Red );
 
-	playerdata.specialCooldown = REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
-	playerdata.invincibleTime = REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
+	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
+	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
 	InutilLib.SFX:Play( SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 0.9);
 	playerdata.IsDashActive = true
 
@@ -739,7 +739,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 		end
 		
 		
-			yandereWaifu.SpawnHeartParticles( 1, 1, bb.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahHeartParticleType.Red );
+			yandereWaifu.SpawnHeartParticles( 1, 1, bb.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Red );
 			--for i= 1, 4, 1 do
 			DoTinyBarrages(player, (bb.Position + Vector(30,0)), bb)
 			--end
@@ -787,7 +787,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			eff.Velocity = Vector.Zero
 		else
 			eff.Position = InutilLib.room:GetClampedPosition(eff.Position, roomClampSize);
-			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
+			eff.Velocity = (eff.Velocity * 0.9) + movementDirection:Resized( RebekahCurse.REBEKAH_BALANCE.SOUL_HEARTS_DASH_TARGET_SPEED );
 		end
 		
 		--for i, orb in pairs (Isaac.FindByType(EntityType.ENTITY_EFFECT, EffectVariant.TARGET, -1, false, false)) do
@@ -826,7 +826,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		--[[if eff.FrameCount < 55 then
 			--player.Velocity = Vector(0,0)
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCHARGELIGHT, 1, 0, false, data.SoundFrame)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCHARGELIGHT, 1, 0, false, data.SoundFrame)
 			data.SoundFrame = data.SoundFrame - 0.01
 		end]]
 end, RebekahCurse.ENTITY_ORBITALTARGET)
@@ -893,7 +893,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					brim.CollisionDamage = player.Damage * 5
 				end
 			end
-			InutilLib.SFX:Play(RebekahCurseSounds.SOUND_REDCRASH, 1, 0, false, 1)
+			InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_REDCRASH, 1, 0, false, 1)
 		elseif sprite:IsFinished("Falling") or sprite:IsFinished("FallingSingular") then
 			eff:Remove()
 		end

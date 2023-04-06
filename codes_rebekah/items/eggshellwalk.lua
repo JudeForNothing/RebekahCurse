@@ -317,7 +317,7 @@ end, RebekahCurse.ENTITY_RABBET_FAMILIAR);
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_EGGSHELLWALK) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_EGGSHELLWALK ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EGGSHELLWALK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_EGGSHELLWALK ) then
 		
 		
 	end
@@ -383,7 +383,7 @@ function yandereWaifu:EggshellWalkNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_EGGSHELLWALK) and not room:IsClear() then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EGGSHELLWALK) and not room:IsClear() then
 		local num = math.random(3,5)
 			if room:GetRoomShape() == RoomShape.ROOMSHAPE_1x1 or room:GetRoomShape() == RoomShape.ROOMSHAPE_IH or room:GetRoomShape() == RoomShape.ROOMSHAPE_IV or room:GetRoomShape() == RoomShape.ROOMSHAPE_IIV or room:GetRoomShape() == RoomShape.ROOMSHAPE_IIH then
 				num = math.random(3,4)

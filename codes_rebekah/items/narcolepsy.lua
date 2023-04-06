@@ -52,14 +52,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	local sprite = player:GetSprite()
 	--items function!
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NARCOLEPSY) then
-		--[[if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_BASKETOFEGGS ) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_NARCOLEPSY) then
+		--[[if InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_BASKETOFEGGS ) then
 			for i = 0, 4, 1 do
 				local spawnPosition = room:FindFreePickupSpawnPosition(player.Position, 1);
 				yandereWaifu.SpawnEasterEgg(spawnPosition, player)
-				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurseCards.CARD_EASTEREGG, spawnPosition, Vector(0,0), player)
+				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.Cards.CARD_EASTEREGG, spawnPosition, Vector(0,0), player)
 			end
-			player:AddNullCostume(RebekahCurseCostumes.BasketOfEggs)
+			player:AddNullCostume(RebekahCurse.Costumes.BasketOfEggs)
 		end]]
 		if not data.SleepyCount then data.SleepyCount = math.random(120,240) end
 		if not InutilLib.room:IsClear() then
@@ -112,7 +112,7 @@ function yandereWaifu:NarcolepsyNewRoom()
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_NARCOLEPSY) then
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_NARCOLEPSY) then
 			yandereWaifu.WakeUp(player)
 		end		
 	end

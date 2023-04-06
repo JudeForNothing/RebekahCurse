@@ -36,7 +36,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_EYESOFTHEDEAD) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EYESOFTHEDEAD) then
 		for i, v in pairs(Isaac.GetRoomEntities()) do
 			if v:IsEnemy() and v:IsActiveEnemy() then
 				local vdata = yandereWaifu.GetEntityData(v)
@@ -95,7 +95,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		if dmgFlag ~= DamageFlag.DAMAGE_POISON_BURN --[[and damageSource.Entity.SpawnerEntity]] then
 			local player = InutilLib.GetPlayerFromDmgSrc(damageSource)
 			if player then
-				if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_EYESOFTHEDEAD) then
+				if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EYESOFTHEDEAD) then
 					GrantDmg(player)
 				end
 			end
@@ -122,8 +122,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-		if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_EYESOFTHEDEAD) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_EYESOFTHEDEAD ) then
-			player:AddNullCostume(RebekahCurseCostumes.EyesOfTheDead)
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EYESOFTHEDEAD) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_EYESOFTHEDEAD ) then
+			player:AddNullCostume(RebekahCurse.Costumes.EyesOfTheDead)
 			data.PersistentPlayerData.EyeDeadDamage = player.Damage*2
 		end
 	--end

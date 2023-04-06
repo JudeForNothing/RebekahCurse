@@ -487,6 +487,13 @@
 	<sound name="Nincompoop Whistle">
 		<sample weight="1" path="nincompoop/nincompoop_whistle.wav" />
 	</sound>
+	<sound name="Nincompoop Pass By">
+		<sample weight="1" path="nincompoop/pass_by.wav" />
+	</sound>
+	<sound name="Nincompoop Charge">
+		<sample weight="1" path="nincompoop/charge.wav" />
+	</sound>
+	
 
 	<sound name="Poltygeist Spit">
 		<sample weight="1" path="poltygeist/spit.wav" />
@@ -548,5 +555,25 @@
 	</sound>
 	<sound name="Quality Time Out">
 		<sample weight="1" path="card/quality_time_out.wav" />
+	</sound>
+
+	<sound name="Laban Clap">
+		<sample weight="1" path="laban/laban_clap_1.wav" />
+		<sample weight="1" path="laban/laban_clap_2.wav" />
+		<sample weight="1" path="laban/laban_clap_3.wav" />
+	</sound>
+	<sound name="Laban Wheeze 1">
+		<sample weight="1" path="laban/laban_wheeze_1.wav" />
+	</sound>
+	<sound name="Laban Wheeze 2">
+		<sample weight="1" path="laban/laban_wheeze_2.wav" />
+	</sound>
+	<sound name="Laban Laugh">
+		<sample weight="1" path="laban/laban_laugh.wav" />
+	</sound>
+	<sound name="Laban Cough">
+		<sample weight="1" path="laban/cough_1.wav" />
+		<sample weight="1" path="laban/cough_2.wav" />
+		<sample weight="1" path="laban/cough_3.wav" />
 	</sound>
 </sounds>

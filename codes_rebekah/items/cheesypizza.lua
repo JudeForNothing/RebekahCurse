@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	local player = tr.SpawnerEntity:ToPlayer()
 	local pldata = yandereWaifu.GetEntityData(player)
     local data = yandereWaifu.GetEntityData(tr)
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CHEESYPIZZA) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CHEESYPIZZA) then
 		--if math.random(1,5) == 5 then
             data.IsCheesyPizza = true
        -- end
@@ -12,7 +12,7 @@ end);
 function yandereWaifu:CheesyPizzaTearRender(tr, _)
     if not tr.SpawnerEntity then return end
     local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
-    local isValidPizza = data.IsCheesyPizza or (tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CHEESYPIZZA))
+    local isValidPizza = data.IsCheesyPizza or (tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CHEESYPIZZA))
 	if isValidPizza and tr.FrameCount <= 1 then
 		local size = InutilLib.GetTearSizeTypeI(scale, flags)
 		InutilLib.UpdateRegularTearAnimation(player, tr, data, flags, size, "RegularTear");
@@ -62,7 +62,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_,  tr)
 			end
 		end
 	end
-    if tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CHEESYPIZZA) and tr.FrameCount % 5 == 0 then
+    if tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CHEESYPIZZA) and tr.FrameCount % 5 == 0 then
         cheese_string()
     end
 end);
@@ -71,7 +71,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, tr)
     tr = tr:ToTear()
     if tr.SpawnerEntity then
         local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
-        local isValidPizza = data.IsCheesyPizza or (player and tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_CHEESYPIZZA))
+        local isValidPizza = data.IsCheesyPizza or (player and tr:HasTearFlags(TearFlags.TEAR_LUDOVICO) and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_CHEESYPIZZA))
         if isValidPizza then
             local table = InutilLib.DeadGetTilingSprite((player.Position), (tr.Position), 30, nil, 8, true)
             for i, v in pairs(table) do

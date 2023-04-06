@@ -1,9 +1,9 @@
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-    if InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_FENRIRSEYE ) then
-		player:AddNullCostume(RebekahCurseCostumes.FenrirsEye)
+    if InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_FENRIRSEYE ) then
+		player:AddNullCostume(RebekahCurse.Costumes.FenrirsEye)
 	end
-    if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_FENRIRSEYE) then
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSEYE) then
         local angle = InutilLib.DirToVec(player:GetFireDirection()):GetAngleDegrees()
         if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
             angle = player:GetAimDirection():GetAngleDegrees()

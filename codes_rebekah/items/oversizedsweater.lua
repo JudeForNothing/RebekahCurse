@@ -2,7 +2,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 	local rng = pickup:GetDropRNG()
 	local player = coll:ToPlayer()
 	pickup = pickup:ToPickup()
-	if player and player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OVERSIZEDSWEATER) then
+	if player and player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER) then
 		if (pickup.SubType == 1 or pickup.SubType == 2 or pickup.SubType == 5 or pickup.SubType == 9 or pickup.SubType == 10 ) and player:CanPickRedHearts() then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0, player.Position, Vector(0, 0), player):ToFamiliar()
 			if pickup.SubType == 2 then
@@ -33,7 +33,7 @@ end, PickupVariant.PICKUP_HEART)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-	if player:HasCollectible(RebekahCurseItems.COLLECTIBLE_OVERSIZEDSWEATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurseItems.COLLECTIBLE_OVERSIZEDSWEATER ) then
-		player:AddNullCostume(RebekahCurseCostumes.OversizedSweater)
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER ) then
+		player:AddNullCostume(RebekahCurse.Costumes.OversizedSweater)
 	end
 end)
