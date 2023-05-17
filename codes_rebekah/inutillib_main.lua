@@ -920,6 +920,24 @@ if not InutilLib then
 		return returnV
 	end
 
+	function InutilLib.GetClosestProjectile(obj, dist)
+		local closestDist = 177013 --saved Dist to check who is the closest enemy
+		local returnV
+		for _, v in ipairs(Isaac.FindByType(EntityType.ENTITY_PROJECTILE, -1, -1, false, true)) do
+			local e =v
+			--if not e:IsDead() then
+				local minDist = dist or 100
+				if (obj.Position - e.Position):Length() < minDist then
+					if (obj.Position - e.Position):Length() < closestDist then
+						closestDist = (obj.Position - e.Position):Length()
+						returnV = e
+					end
+				end
+			--end
+		end
+		return returnV
+	end
+
 	function InutilLib.GetStrongestEnemy(obj, dist, isEnemy)
 		local highestHP = 0
 		local returnV
@@ -3441,8 +3459,7 @@ if not InutilLib then
 
 		local srcent = source.Entity
 		local spawner = srcent.SpawnerEntity
-		if (srcent.Type == EntityType.ENTITY_FAMILIAR and srcent.Variant == FamiliarVariant.BLOOD_BABY and srcent.SubType == InutilLib.PSEUDO_CLONE)
-		or (spawner and (spawner.Type == EntityType.ENTITY_FAMILIAR and spawner.Variant == FamiliarVariant.BLOOD_BABY and spawner.SubType == InutilLib.PSEUDO_CLONE)) then
+		if (srcent.Type == EntityType.ENTITY_FAMILIAR and srcent.Variant == FamiliarVariant.BLOOD_BABY and srcent.SubType == InutilLib.PSEUDO_CLONE) or (spawner and (spawner.Type == EntityType.ENTITY_FAMILIAR and spawner.Variant == FamiliarVariant.BLOOD_BABY and spawner.SubType == InutilLib.PSEUDO_CLONE)) then
 			local player = nil
 			local multi = 1
 			if spawner and spawner:ToFamiliar() and spawner:ToFamiliar().Player then
@@ -4856,6 +4873,18 @@ if not InutilLib then
 			return result
 		end
 	end
+
+	function InutilLib.GetEntFromDmgSrc(src)
+		local srcEnt, ent = InutilLib.GetEntFromRef(src), nil
+			if srcEnt and srcEnt:IsEnemy() then
+				ent = srcEnt
+			elseif srcEnt and srcEnt.SpawnerType --[[and srcEnt.SpawnerType:IsEnemy()]] then
+				if srcEnt.SpawnerEntity then
+					ent = srcEnt.SpawnerEntity
+				end
+			end
+		return ent, srcEnt
+		end
 
 	function InutilLib.GetPlayerFromDmgSrc(src)
 	local srcEnt, player = InutilLib.GetEntFromRef(src), nil

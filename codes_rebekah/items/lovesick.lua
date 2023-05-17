@@ -45,9 +45,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--lovesick
-	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
+	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
-	end
+	end]]
 	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK) then
 		if data.hasTurnedToLovesickBanshee then
 			if not data.BansheeLovesickCountdown then data.BansheeLovesickCountdown = 3000 end
@@ -233,7 +233,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 					InutilLib.SFX:Stop(SoundEffect.SOUND_SIREN_SING)
 
 					player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeShriekCos)
-					player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
+					--player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
 					
 					data.lovesickframecount = 0
 					--tear projectiles defence
@@ -255,7 +255,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			if data.SirenDidShriek then
 				--if player:GetSprite():GetOverlayFrame() == 19 then
 					data.SirenDidShriek = false
-					player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
+					--player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
 					player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeShriekCos)
 				--end
 			end
@@ -279,7 +279,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		if data.SirenDidShriek then
 			if data.lovesickframecount == 19 then
 				data.SirenDidShriek = false
-				player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
+				--player:AddNullCostume(RebekahCurse.Costumes.LoveSickBansheeCos)
 				player:TryRemoveNullCostume(RebekahCurse.Costumes.LoveSickBansheeShriekCos)
 			else
 				data.lovesickframecount = data.lovesickframecount + 1

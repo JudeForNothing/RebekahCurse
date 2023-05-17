@@ -1,4 +1,4 @@
-local function GetUSR()
+function yandereWaifu.GetUSR()
 	for i = InutilLib.level:GetRooms().Size, 0, -1 do
 		local roomdesc = InutilLib.level:GetRooms():Get(i-1)
 		if roomdesc and roomdesc.Data.Type == RoomType.ROOM_ULTRASECRET --[[and roomdesc.Data.Subtype ~= 34]] then
@@ -7,7 +7,7 @@ local function GetUSR()
 	end
 end
 
-local function GetRoomsNeighborsIdx(index)
+function yandereWaifu.GetRoomsNeighborsIdx(index)
 	local level = InutilLib.game:GetLevel()
 	local tbl = {}
 
@@ -26,9 +26,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing 
 		local data = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSTOOTH) then
 			local rooms = {}
-			for i, v in pairs(GetRoomsNeighborsIdx(GetUSR().SafeGridIndex)) do
+			for i, v in pairs(yandereWaifu.GetRoomsNeighborsIdx(yandereWaifu.GetUSR().SafeGridIndex)) do
 				table.insert(rooms, v)
-				for j, w in pairs(GetRoomsNeighborsIdx(v)) do
+				for j, w in pairs(yandereWaifu.GetRoomsNeighborsIdx(v)) do
 					table.insert(rooms, w)
 				end
 			end

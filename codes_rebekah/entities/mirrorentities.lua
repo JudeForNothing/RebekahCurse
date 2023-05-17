@@ -176,9 +176,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 					fly:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 				end
 			end
-			if math.random(1,3) == 3 then
-				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, subtype, ent.Position, ent.Velocity, ent)
-			end
+			--if math.random(1,3) == 3 then
+			local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, subtype, ent.Position, ent.Velocity, ent):ToPickup()
+			newpickup.Timeout = 60
+			--end
 		end
 	end
 end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)

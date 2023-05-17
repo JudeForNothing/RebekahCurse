@@ -1,4 +1,5 @@
 if StageAPI and StageAPI.Loaded then
+    local replacesong = false
 
     local steam = "gfx/backdrop/shop/steam.anm2"
 
@@ -81,17 +82,17 @@ end)
 
 StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --POST_ROOM_INIT
     --yandereWaifu.ThriftShop.CheckSpawnDoor()
-    if newRoom.LayoutName == "Thrift Shop" and InutilLib.room:IsFirstVisit() then --(newRoom:GetType() == "Love Room") 
+    if newRoom.LayoutName == "Thrift Shop" then --(newRoom:GetType() == "Love Room") 
         local defaultMap = StageAPI.GetDefaultLevelMap()
         
         --if newRoom.Layout.Name and string.sub(string.lower(newRoom.Layout.Name), 1, 4) == "trap" then
         newRoom.Data.RoomGfx = ThriftShopRoomGfx
         --MusicManager():Stop()
-        MusicManager():Play(RebekahCurse.Music.MUSIC_HEARTROOM, 0.1)
-        MusicManager():Queue(RebekahCurse.Music.MUSIC_HEARTROOM)
+        MusicManager():Play(RebekahCurse.Music.MUSIC_LABANSSHOP, 0.1)
+        MusicManager():Queue(RebekahCurse.Music.MUSIC_LABANSSHOP)
         MusicManager():UpdateVolume()
         replacesong = true
-        if newRoom.PersistentData.LeadToSlot then
+        if newRoom.PersistentData.LeadToSlot and InutilLib.room:IsFirstVisit() then
             StageAPI.SpawnCustomDoor(
                 newRoom.PersistentData.ExitSlot, 
                 newRoom.PersistentData.LeadTo, 
@@ -113,5 +114,40 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
     end
 end)]]
 
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, coll, low)
+	local rng = pickup:GetDropRNG()
+	local player = coll:ToPlayer()
+	pickup = pickup:ToPickup()
+	if StageAPI.GetCurrentRoomType() == "Thrift Shop" then
+        if pickup:IsShopItem() then
+            --if rng:RandomFloat() <= 0.50 then
+                if yandereWaifu.OriginalToBootleg[pickup.SubType] then
+                    local oldPickupPrice = pickup.Price
+                    pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, yandereWaifu.OriginalToBootleg[pickup.SubType], true, true, false)
+                    pickup.Price = oldPickupPrice
+                    pickup.AutoUpdatePrice = false
+                    pickup:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+                    pickup.Touched = false
+                    pickup.Wait = 2
+                end
+            --end
+        end
+    end
+end, PickupVariant.PICKUP_COLLECTIBLE)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	replacesong = false
+end)
+
+
+if MMC then
+    MMC.AddMusicCallback(yandereWaifu, function(self, music)
+        if replacesong then
+            return RebekahCurse.Music.MUSIC_LABANSSHOP
+        end
+    end)
+end
 
 end
+

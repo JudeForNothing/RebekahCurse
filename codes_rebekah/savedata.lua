@@ -4,10 +4,10 @@ function yandereWaifu:PlayerDataInit(hasstarted) --Init
 	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
 		local player = Isaac.GetPlayer(p)
 		--Isaac.DebugString(player)
-		--[[if not hasstarted then
+		if not hasstarted then
 			local data = yandereWaifu.GetEntityData(player)
 			data.PersistentPlayerData = {}
-		end]]
+		end
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.PlayerDataInit)

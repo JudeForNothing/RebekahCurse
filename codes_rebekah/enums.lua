@@ -193,6 +193,9 @@ RebekahCurse = {
 	DEBORAH = Isaac.GetPlayerTypeByName("Deborah", false),
 }
 
+RebekahCurse.Statues = {
+	MOMS_STATUE= Isaac.GetEntityVariantByName("Mom Statue"),
+}
 RebekahCurse.Trinkets = {
 	TRINKET_RABBITSFOOT = Isaac.GetTrinketIdByName("Rabbit's Foot"),
 	TRINKET_DESTROYEDLULLABY = Isaac.GetTrinketIdByName("Destroyed Lullaby"),
@@ -312,6 +315,8 @@ RebekahCurse.Items = {
 	
 	COLLECTIBLE_REBEKAHSSCRAPBOOK = Isaac.GetItemIdByName("Rebekah's Scrapbook"),
 	COLLECTIBLE_WISHFULTHINKING = Isaac.GetItemIdByName("Wishful Thinking"),
+	COLLECTIBLE_GODSDICE = Isaac.GetItemIdByName("God's Dice"),
+	COLLECTIBLE_REGICIDE = Isaac.GetItemIdByName("Regicide"),
 
 	COLLECTIBLE_SHATTEREDKEY = Isaac.GetItemIdByName("Shattered Key"),
 	COLLECTIBLE_UNSTABLECANDLE = Isaac.GetItemIdByName("Unstable Candle"),
@@ -338,11 +343,15 @@ RebekahCurse.Cards = {
 	CARD_BLUE_EASTEREGG = Isaac.GetCardIdByName("blueegg"),
 	CARD_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkegg"),
 	CARD_STRIPE_EASTEREGG = Isaac.GetCardIdByName("redstripeegg"),
-	CARD_STRIPE_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquastripeegg"),
+	CARD_HAPPY_AQUA_EASTEREGG = Isaac.GetCardIdByName("aquahappyegg"),
 	CARD_ZIGZAG_YELLOW_EASTEREGG = Isaac.GetCardIdByName("yellowzigzagegg"),
-	CARD_ZIGZAG_GREEN_EASTEREGG = Isaac.GetCardIdByName("greenzigzagegg"),
-	CARD_ZIGZAG_BLUE_EASTEREGG = Isaac.GetCardIdByName("bluezigzagegg"),
-	CARD_STRIPE_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkstripeegg"),
+	CARD_INSECT_GREEN_EASTEREGG = Isaac.GetCardIdByName("greeninsectegg"),
+	CARD_STARRY_BLUE_EASTEREGG = Isaac.GetCardIdByName("bluestarryegg"),
+	CARD_HEARTED_PINK_EASTEREGG = Isaac.GetCardIdByName("pinkheartedegg"),
+	CARD_ORANGE_EASTEREGG = Isaac.GetCardIdByName("orangeegg"),
+	CARD_ORANGE_LOCKED_EASTEREGG = Isaac.GetCardIdByName("orangelockedegg"),
+	CARD_WHITE_EASTEREGG = Isaac.GetCardIdByName("whiteegg"),
+	CARD_WHITE_POLKA_EASTEREGG = Isaac.GetCardIdByName("whitepolkaegg"),
 	
 	CARD_CURSED_EASTEREGG = Isaac.GetCardIdByName("cursedegg"),
 	CARD_BLESSED_EASTEREGG = Isaac.GetCardIdByName("blessedegg"),
@@ -353,6 +362,15 @@ RebekahCurse.Cards = {
 	CARD_ACTOFSERVICE = Isaac.GetCardIdByName("actofservice"),
 	CARD_QUALITYTIME = Isaac.GetCardIdByName("qualitytime"),
 	CARD_PHYSICALTOUCH = Isaac.GetCardIdByName("physicaltouch"),
+
+	SOUL_REBEKAHNORMAL = Isaac.GetCardIdByName("soulrebekahnormal"),
+	SOUL_REBEKAHCURSED = Isaac.GetCardIdByName("soulrebekahcursed"),
+	SOUL_REBEKAHLOST = Isaac.GetCardIdByName("soulrebekahlost"),
+	SOUL_REBEKAHUNKNOWN = Isaac.GetCardIdByName("soulrebekahunknown"),
+	SOUL_REBEKAHMAZE = Isaac.GetCardIdByName("soulrebekahmaze"),
+	SOUL_REBEKAHLABYRINTH = Isaac.GetCardIdByName("soulrebekahlabyrinth"),
+	SOUL_REBEKAHBLIND = Isaac.GetCardIdByName("soulrebekahblind"),
+	SOUL_REBEKAHDARKNESS = Isaac.GetCardIdByName("soulrebekahdarkness"),
 
 }
 
@@ -545,6 +563,7 @@ RebekahCurse.Music = {
 	MUSIC_BACKROOMS = Isaac.GetMusicIdByName("Backrooms"),
 	MUSIC_BACKROOMSBOSS = Isaac.GetMusicIdByName("Moist"),
 	MUSIC_TICKTOCK = Isaac.GetMusicIdByName("Tick Tock"),
+	MUSIC_LABANSSHOP = Isaac.GetMusicIdByName("Laban's Shop"),
 }
 
 RebekahCurse.Enemies = {
@@ -602,6 +621,20 @@ RebekahCurse.Enemies = {
 	ENTITY_GOSSIPER = Isaac.GetEntityVariantByName("Gossiper"),
 	ENTITY_FOUNDATION = Isaac.GetEntityVariantByName("Foundation"),
 	ENTITY_NPC = Isaac.GetEntityVariantByName("Npc"),
+
+	--thrift shop
+	ENTITY_RABBET = Isaac.GetEntityVariantByName("Rabbet"),
+	ENTITY_HOLEDINI = Isaac.GetEntityVariantByName("Holedini"),
+	ENTITY_DUKEOFFLUFF = Isaac.GetEntityVariantByName("Duke of Fluff"),
+	ENTITY_DUSTBUNNY = Isaac.GetEntityVariantByName("Dustbunny"),
+	ENTITY_POMPOMS = Isaac.GetEntityVariantByName("Pom Poms"),
+	ENTITY_THEPUFF = Isaac.GetEntityVariantByName("The Puff"),
+	ENTITY_THEDEMONLORDESS = Isaac.GetEntityVariantByName("The Demon Lordess"),
+	ENTITY_BUNBUN = Isaac.GetEntityVariantByName("Bun Bun"),
+	ENTITY_BUNCARPET = Isaac.GetEntityVariantByName("Bun Carpet"),
+
+	ENTITY_BLINDPEDESTAL = Isaac.GetEntityVariantByName("Blind Pedestal"),
+	ENTITY_MAZERUNNER = Isaac.GetEntityVariantByName("Maze Runner"),
 }
 
 RebekahCurse.Pills = {
@@ -649,6 +682,35 @@ RebekahCurse.Grids = {
         SpawnerEntity = {
             Type = 656,
             Variant = 177,
+        },
+	}),
+	STATUE = StageAPI.CustomGrid("Statue", {
+		BaseType = GridEntityType.GRID_PILLAR, 
+		Anm2 = "gfx/none.anm2", 
+		Animation = "SmallIdle",
+        SpawnerEntity = {
+            Type = 656,
+            Variant = 178,
+        },
+	}),
+	MOMS_STATUE = StageAPI.CustomGrid("Mom's Statue", {
+		BaseType = GridEntityType.GRID_PILLAR, 
+		Anm2 = "gfx/none.anm2", 
+		Animation = "SmallIdle",
+        SpawnerEntity = {
+            Type = 656,
+            Variant = 178,
+			SubType = 1
+        },
+	}),
+	DADS_STATUE = StageAPI.CustomGrid("Dad's Statue", {
+		BaseType = GridEntityType.GRID_PILLAR, 
+		Anm2 = "gfx/none.anm2", 
+		Animation = "SmallIdle",
+        SpawnerEntity = {
+            Type = 656,
+            Variant = 178,
+			SubType = 2
         },
 	})
 }
@@ -1028,7 +1090,7 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_ROTTEN, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_rotten_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
 	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
 	NoShake = nil,
@@ -1038,7 +1100,17 @@ if StageAPI and StageAPI.Loaded then
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_BROKEN, 
 	{
-	Portrait =  "gfx/ui/stage/playerportrait_rebekah.png", 
+	Portrait =  "gfx/ui/stage/playerportrait_broken_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_CURSED, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_cursed_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
 	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
 	NoShake = nil,

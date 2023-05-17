@@ -61,9 +61,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end]]
     end
     if item then
+        print("data.CacheReaction")
+        data.CacheReaction = 30
+        data.item = item
+        item = nil
+    end
+    if data.CacheReaction  then 
+        data.CacheReaction = data.CacheReaction  - 1
+    end
+    if data.CacheReaction and data.CacheReaction <= 0 then
         local laugh = false
         for i, v in pairs (RebekahCurse.LaughList) do
-            if v == item then
+            if v == data.item then
                 laugh = true
             end
         end
@@ -72,7 +81,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         else
             data.state = 2
         end
-        item = nil
+        data.item = nil
+        data.CacheReaction = nil
     end
 end, RebekahCurse.ENTITY_LABAN_DUDE);
 

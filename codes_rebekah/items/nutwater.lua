@@ -7,7 +7,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		player:AddCacheFlags(CacheFlag.CACHE_SPEED);
 		player:EvaluateItems()
 		--print("pain")
-		player:AddNullCostume(RebekahCurse.Costumes.NutWater)
+		--player:AddNullCostume(RebekahCurse.Costumes.NutWater)
 		--for i = 0, 1, 1 do
 			if player:GetPlayerType() == PlayerType.PLAYER_KEEPER or player:GetPlayerType() == PlayerType.PLAYER_KEEPER_B then
 				local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position,3) , player.Velocity, player)
@@ -29,7 +29,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	else
 		generateSomeHoles = false
 	end
-	if InutilLib.room:GetGridEntityFromPos(player.Position) then
+	--[[if InutilLib.room:GetGridEntityFromPos(player.Position) then
 		if not data.GonnaNoClip then data.GonnaNoClip = 0 end
 		if InutilLib.room:GetGridEntityFromPos(player.Position):GetType() == GridEntityType.GRID_WALL and StageAPI and StageAPI.Loaded then
 			if data.GonnaNoClip > 10 then
@@ -42,7 +42,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		else
 			data.GonnaNoClip = data.GonnaNoClip - 2
 		end
-	end
+	end]]
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) 
@@ -56,7 +56,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cach
 		end
 	end
 end)
-
+--[[
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	local normalGen
 	local thematicGen
@@ -73,4 +73,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 			end
 		end
 	end
-end)
+end)]]

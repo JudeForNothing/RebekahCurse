@@ -9,8 +9,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, pl)
 			pl:SetMinDamageCooldown(120)
 			
 			pl:ChangePlayerType(RebekahCurse.WISHFUL_ISAAC)
-			yandereWaifu.ApplyCostumes( _, pl, true, false)
+			--yandereWaifu.ApplyCostumes( _, pl, true, false)
 		end
 	end
-
 end);

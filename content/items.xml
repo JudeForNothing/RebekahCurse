@@ -61,7 +61,8 @@
 
 	<active id="34" name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3" craftquality="3"/>
 	
-	<passive id="28" name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3" hidden="true" craftquality="-1"/>
+	<active id="28" name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3" craftquality="-1"/>
+	<active id="28" name="God's Dice" description="Change everything" gfx="collectibles_gods_dice.png" quality="4" hidden="true"  tags="quest" craftquality="4"/>
 	
 	<familiar id="40" name="A Beautiful Grave" description="Something is behind you" gfx="collectibles_abeautifulgrave.png" tags="baby" quality="2" craftquality="2"/>
 	<passive id="41" name="Tight Hairtie" description="Speed + Range up!" gfx="collectibles_hairtie.png" cache="speed range" quality="1" craftquality="1"/>
@@ -86,27 +87,27 @@
 	<passive id="56" name="Haphephobic Bombs" description="Fragile to touch, careful!" gfx="collectibles_haphephobic_bombs.png" quality="2" bombs="7" craftquality="2"/>
 	<active id="57" name="Jumpy Dumpty" description="Boing, boing, boom!" gfx="collectibles_jumpydumpty.png" maxcharges="3" quality="2" craftquality="2"/>
 	<passive id="58" name="Pencil Sharpener" description="Don't stick your finger in there!" gfx="collectibles_pencil_sharpener.png" quality="2" craftquality="2"/>
-	<passive id="999" name="Narcolepsy" description="Zzzzz" gfx="collectibles_narcolepsy.png" quality="3" craftquality="3"/>
+	<passive id="26" name="Narcolepsy" description="Zzzzz" gfx="collectibles_narcolepsy.png" quality="3" craftquality="3"/>
 	<trinket name="Mom's Blessing" description="Gifts from Mom above" gfx="collectibles_moms_blessing.png" />
 	<active id="8" name="Sword of Hope" description="Tear into your last piece of hope" gfx="collectibles_sword_of_hope.png" hidden="true" tags="quest" craftquality="-1"/>
 	<trinket name="John and Romans" description="The road to salvation to deity" gfx="collectibles_john_and_romans.png" />
 	<passive id="999" name="Appreciation Cake" description="Thank you for sticking around!" gfx="collectibles_appreciation_cake.png" cache="speed range damage firedelay luck" maxhearts="2" hearts="2" quality="4" craftquality="3"/>
-	<passive id="999" name="Cheesy Pizza" description="Cheesy strings attached!" gfx="collectibles_cheesy_pizza.png" quality="3" craftquality="2"/>
-	<passive id="999" name="Jelly Donut" description="These jelly filled donuts are great!" gfx="collectibles_jelly_filled_donut.png" soulhearts="2" quality="1" craftquality="1"/>
-	<passive id="999" name="Spiked Party Punch" description="Cheers to all I love!" gfx="collectibles_spiked_punch.png" quality="1" craftquality="1"/>
-	<passive id="999" name="Boba Tea" description="Delicious milk and... eyes?" gfx="collectibles_bobatea.png" soulhearts="2" quality="2" craftquality="2"/>
-	<passive id="999" name="Bur-ger" description="Chicken chicken chicken chicken" gfx="collectibles_bur-ger.png" quality="2" craftquality="2"/>
-	<passive id="999" name="Fenrir's Eyes" description="Frozen with fear" gfx="collectibles_fenrirseyes.png" quality="3" craftquality="3"/>
-	<active id="999" name="Fenrir's Paw" description="Embrace the bitter end" gfx="collectibles_fenrirspaw.png" quality="3" craftquality="3"/>
-	<passive id="999" name="Fenrir's Head" description="Crit up" gfx="collectibles_fenrirshead.png" quality="3" craftquality="3"/>
-	<passive id="999" name="Fenrir's Tooth" description="DMG up + The faintest howl can be heard..." gfx="collectibles_fenrirstooth.png" quality="3" craftquality="3"/>
-	<familiar id="999" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirsleash.png" quality="3" craftquality="3"/>
+	<passive id="60" name="Cheesy Pizza" description="Cheesy strings attached!" gfx="collectibles_cheesy_pizza.png" quality="3" craftquality="2"/>
+	<passive id="61" name="Jelly Donut" description="These jelly filled donuts are great!" gfx="collectibles_jelly_filled_donut.png" soulhearts="2" quality="1" craftquality="1"/>
+	<passive id="62" name="Spiked Party Punch" description="Cheers to all I love!" gfx="collectibles_spiked_punch.png" quality="1" craftquality="1"/>
+	<passive id="63" name="Boba Tea" description="Delicious milk and... eyes?" gfx="collectibles_bobatea.png" soulhearts="2" quality="2" craftquality="2"/>
+	<passive id="64" name="Bur-ger" description="Chicken chicken chicken chicken" gfx="collectibles_bur-ger.png" quality="2" craftquality="2"/>
+	<passive id="66" name="Fenrir's Eyes" description="Frozen with fear" gfx="collectibles_fenrirseyes.png" quality="3" craftquality="3"/>
+	<active id="65" name="Fenrir's Paw" description="Embrace the bitter end" gfx="collectibles_fenrirspaw.png" quality="3" craftquality="3"/>
+	<passive id="67" name="Fenrir's Head" description="Crit up" gfx="collectibles_fenrirshead.png" quality="3" craftquality="3"/>
+	<passive id="68" name="Fenrir's Tooth" description="DMG up + The faintest howl can be heard..." gfx="collectibles_fenrirstooth.png" quality="3" craftquality="3"/>
+	<familiar id="69" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirsleash.png" quality="3" craftquality="3"/>
 	<trinket name="Canned Laughter" description="The laughs of dead people" gfx="collectibles_canned_laughter.png" />
-	<passive id="999" name="Heartaches..." description="It's just a burning... something..." gfx="collectibles_heartaches.png" quality="3" craftquality="3"/>
-	<passive id="999" name="Silphium" description="Love in and out your veins" gfx="collectibles_silphium.png" quality="3" craftquality="3"/>
-	<active id="999" name="Giddy up!" description="Temporary raw strength, time tick tocks" gfx="collectibles_giddyup.png" quality="3" craftquality="3" maxcharges="12"/>
+	<passive id="70" name="Heartaches..." description="It's just a burning... something..." gfx="collectibles_heartaches.png" quality="3" craftquality="3"/>
+	<passive id="71" name="Silphium" description="Love in and out your veins" gfx="collectibles_silphium.png" quality="3" craftquality="3"/>
+	<active id="72" name="Giddy up!" description="Temporary raw strength, time tick tocks" gfx="collectibles_giddyup.png" quality="3" craftquality="3" maxcharges="12"/>
 
-	<active id="999" name="Rebekah's Scrapbook" description="Hold on, this looks familiar..." gfx="collectibles_book_rebekahs_diary.png" quality="3" craftquality="3" maxcharges="4"/>
+	<active id="73" name="Rebekah's Scrapbook" description="Hold on, this looks familiar..." gfx="collectibles_book_rebekahs_diary.png" quality="3" craftquality="3" maxcharges="4"/>
 	
 	<active id="999" name="Unstable Candle" description="Why won't it work?" gfx="collectibles_164_bluecandle.png" quality="3" craftquality="3" maxcharges="50" chargetype="timed"/>
 	<passive id="999" name="Shattered Key" description="It's broken..." gfx="collectibles_580_secretkey.png" quality="3" craftquality="3"/>
@@ -119,13 +120,15 @@
 	<passive id="999" name="Suspicious Stew" description="What's in this?!" gfx="collectibles_621_redstew.png" quality="2" craftquality="2"/>
 	<passive id="999" name="FOMO Bombs" description="1 + 1 limited time boom" gfx="collectibles_250_bogobombs.png" quality="2" craftquality="2"/>
 
+	<passive id="80" name="Regicide" description="Slay the king" gfx="collectibles_regicide.png" quality="3" craftquality="3"/>
+
 	<trinket name="No Scope!" description="Hit 'em without looking!" gfx="collectibles_noscope.png" />
-	<passive id="999" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="2" craftquality="2"/>
-	<passive id="999" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="2" craftquality="2"/>
-	<passive id="999" name="Platform Cotta" description="The ones above, the ones below, and the ones who fall..." gfx="collectibles_platform_cotta.png" quality="2" craftquality="2"/>
-	<familiar id="999" name="Jacob's Tears" description="Collected tears, just like his father!" gfx="collectibles_jacobstears.png" quality="1" craftquality="1"/>
+	<passive id="74" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="2" craftquality="2"/>
+	<passive id="75" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="2" craftquality="2"/>
+	<passive id="76" name="Platform Cotta" description="The ones above, the ones below, and the ones who fall..." gfx="collectibles_platform_cotta.png" quality="2" craftquality="2"/>
+	<familiar id="77" name="Jacob's Tears" description="Collected tears, just like his father!" gfx="collectibles_jacobstears.png" quality="1" craftquality="1"/>
 	<passive id="55" name="Silent Treatment" description="Less says more" gfx="collectibles_silenttreatment.png" quality="3" craftquality="3" cache="damage shotspeed firedelay"/>
-	<passive id="999" name="Silencer" description="Silencing tears" gfx="collectibles_silencer.png" quality="2" craftquality="2"/>
-	<trinket id="999" name="Deborah's Dead Eye" description="Vengeance is an idiot’s game" gfx="collectibles_deborahsdeadeye.png" />
-	<passive id="999" name="Full Fat Milk" description="High quality milk > high quanity milk" gfx="collectibles_fullfatmilk.png" quality="2" craftquality="2"/>
+	<passive id="78" name="Silencer" description="Silencing tears" gfx="collectibles_silencer.png" quality="2" craftquality="2"/>
+	<trinket name="Deborah's Dead Eye" description="Vengeance is an idiot’s game" gfx="collectibles_deborahsdeadeye.png" />
+	<passive id="79" name="Full Fat Milk" description="High quality milk > high quanity milk" gfx="collectibles_fullfatmilk.png" quality="2" craftquality="2"/>
 </items>

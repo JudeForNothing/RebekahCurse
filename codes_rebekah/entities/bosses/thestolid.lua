@@ -511,7 +511,7 @@ end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local sprite = eff:GetSprite();
 	local room =  Game():GetRoom();
-	local data = yandereWaifu.GetEntityData(player)
+	--local data = yandereWaifu.GetEntityData(player)
 
 	if eff.FrameCount == 1 then
 		if eff.SubType >= 1 then

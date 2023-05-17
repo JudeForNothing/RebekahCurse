@@ -85,7 +85,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     elseif not spr:IsPlaying("Idle") then
                         spr:Play("Idle", true)
                     end
-                    if math.random(1,3) == 3 and ent.FrameCount % 3 == 0 then
+                    if math.random(1,3) == 3 and ent.FrameCount % 3 == 0 and player.Position:Distance(ent.Position) <= 120 then
                         data.State = 1
                     end
                 elseif data.State == 1 then
@@ -120,30 +120,41 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     end
                     
                 elseif data.State == 3 then 
-                    if InutilLib.IsFinishedMultiple(spr, "BrimstoneLeft", "BrimstoneRight") then
-                        if data.Usages <= 0 then
-                            data.State = 4
-                        else
-                            data.Usages = data.Usages - 1
-                            data.State = 2
-                        end
-                    elseif not InutilLib.IsPlayingMultiple(spr, "BrimstoneLeft", "BrimstoneRight")  then
+                    if spr:IsFinished("StartupEye") then
                         local pos = InutilLib.WillFlip((player.Position - ent.Position):GetAngleDegrees(), false) 
                         if pos then
                             spr:Play("BrimstoneLeft", true)
                         else
                             spr:Play("BrimstoneRight", true)
                         end
-                    end
-                    if spr:GetFrame() == 0 then
                         data.laserangle = (player.Position - ent.Position):GetAngleDegrees()
                         local beamColor = Color(1,0,0,1)
                         yandereWaifu.AddGenericTracer(ent.Position, beamColor, data.laserangle, 7)
-                    end
-                    if spr:GetFrame() == 8 then
-                        local beam = EntityLaser.ShootAngle(LaserVariant.THIN_RED, ent.Position - Vector(0,-3), data.laserangle, 10, Vector(-12,-64), ent):ToLaser();
-                        beam.Timeout = 7
-                        beam.RenderZOffset = -100
+                    elseif InutilLib.IsFinishedMultiple(spr, "BrimstoneLeft", "BrimstoneRight") then
+                        if data.Usages <= 0 then
+                            data.State = 4
+                        else
+                            data.Usages = data.Usages - 1
+                            data.State = 2
+                        end
+                    elseif not InutilLib.IsPlayingMultiple(spr, "BrimstoneLeft", "BrimstoneRight") and not spr:IsPlaying("StartupEye")  then
+                        local pos = InutilLib.WillFlip((player.Position - ent.Position):GetAngleDegrees(), false) 
+                        if pos then
+                            spr:Play("BrimstoneLeft", true)
+                        else
+                            spr:Play("BrimstoneRight", true)
+                        end
+                    elseif InutilLib.IsPlayingMultiple(spr, "BrimstoneLeft", "BrimstoneRight") then
+                        --[[if spr:GetFrame() == 1 then
+                            data.laserangle = (player.Position - ent.Position):GetAngleDegrees()
+                            local beamColor = Color(1,0,0,1)
+                            yandereWaifu.AddGenericTracer(ent.Position, beamColor, data.laserangle, 7)
+                        else]]if spr:GetFrame() == 8 then
+                            local beam = EntityLaser.ShootAngle(LaserVariant.THIN_RED, ent.Position - Vector(0,-3), data.laserangle, 10, Vector(-12,-64), ent):ToLaser();
+                            beam.Timeout = 7
+                            beam.RenderZOffset = -100
+                            ent.Velocity = Vector.FromAngle(data.laserangle):Rotated(180):Resized(8)
+                        end
                     end
                 elseif data.State == 4 then
                     if spr:IsFinished("Throw") then
@@ -198,8 +209,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         return
                     elseif not spr:IsPlaying("Avoid") then
                         spr:Play("Avoid", true)
-                    elseif spr:GetFrame() == 11 then
-                        InutilLib.StrafeAroundTarget(ent, player, 6, 0.9, 90)
+                    elseif spr:GetFrame() >= 11 and spr:GetFrame() <= 13 then
+                        InutilLib.StrafeAroundTarget(ent, player, 6, 0.9, 15)
                     end
                     InutilLib.FlipXByVec(ent, false)
                 elseif data.State == 2 then

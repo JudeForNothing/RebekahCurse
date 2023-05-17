@@ -58,7 +58,7 @@ end)
 
 function yandereWaifu:TFGPlayerCache(player, cacheF)
 	local data = yandereWaifu.GetEntityData(player)
-    if data.PersistentPlayerData.IsVitaminC then
+    if data.PersistentPlayerData and data.PersistentPlayerData.IsVitaminC then
         if cacheF == CacheFlag.CACHE_DAMAGE then
             player.Damage = player.Damage * 2
         end

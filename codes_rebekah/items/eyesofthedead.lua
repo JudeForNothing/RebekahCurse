@@ -123,7 +123,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
 		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EYESOFTHEDEAD) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_EYESOFTHEDEAD ) then
-			player:AddNullCostume(RebekahCurse.Costumes.EyesOfTheDead)
+			--player:AddNullCostume(RebekahCurse.Costumes.EyesOfTheDead)
 			data.PersistentPlayerData.EyeDeadDamage = player.Damage*2
 		end
 	--end

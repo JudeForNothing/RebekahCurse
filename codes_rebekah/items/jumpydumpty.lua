@@ -41,9 +41,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 						yandereWaifu.GetEntityData(bomb).IsLarge = true
 						yandereWaifu.GetEntityData(bomb).IsJumpyDumptyBombs = true
 						yandereWaifu.GetEntityData(bomb).Player = player
-						bomb.ExplosionDamage = player.Damage*3
+						bomb.ExplosionDamage = player.Damage*6
 						InutilLib.MakeBombLob(bomb, 1, 17, 3 )
-						bomb:SetExplosionCountdown(90)
+						bomb:SetExplosionCountdown(55)
 					end)
 				end
 				InutilLib.ConsumeActiveCharge(player)
@@ -56,8 +56,9 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_PRE_BOMB_COLLISION, function(_,  bb, collider, bool)
     local data = yandereWaifu.GetEntityData(bb)
-    if data.IsJumpyDumptyBombs and data.IsSmall then
+    if data.IsJumpyDumptyBombs --[[and data.IsSmall]] then
 		if collider:IsEnemy() then
+			print("bells")
             if not data.hasbeentouchcc then
                  bb:SetExplosionCountdown(1)
                  data.hasbeentouchcc = true
@@ -76,9 +77,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, bb)
 			yandereWaifu.GetEntityData(bomb).IsSmall = true
 			yandereWaifu.GetEntityData(bomb).IsJumpyDumptyBombs = true
 			yandereWaifu.GetEntityData(bomb).Player = player
-			bomb.ExplosionDamage = player.Damage*0.5
+			bomb.ExplosionDamage = player.Damage*2
 			InutilLib.MakeBombLob(bomb, 1, math.random(10,15) )
-			bomb.Visible = false
+			--bomb.Visible = false
 			bomb.SubType = 1
 		end
 	end
@@ -94,7 +95,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 				if yandereWaifu.GetEntityData(bb).IsSmall or bb.SubType == 1 then
 					bb:GetSprite():Load("gfx/items/pick ups/bombs/bomb0_dumpty.anm2", true)
 					--bb.SpriteScale =  Vector(0.5,0.5)
-					bb.SizeMulti = Vector(0.8,0.8)
+					--bb.SizeMulti = Vector(0.9,0.9)
 					bb:SetExplosionCountdown(math.random(295,305))
 				elseif  yandereWaifu.GetEntityData(bb).IsLarge then
 					bb:GetSprite():Load("gfx/items/pick ups/bombs/bomb3_dumpty.anm2", true)
@@ -105,8 +106,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_BOMB_UPDATE, function(_, bb)
 				end
 				bb:GetSprite():Play("Pulse")
 				bb:GetSprite():LoadGraphics();
-			else
-				bb.Velocity = bb.Velocity
 			end
 
 	end

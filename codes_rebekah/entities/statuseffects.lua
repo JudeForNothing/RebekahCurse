@@ -53,13 +53,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             data.isIntimidated = data.isIntimidated - 1
             if data.isIntimidated <= 0 then
                 data.isIntimidated = nil
-				ent:ClearEntityFlags(EntityFlag.FLAG_ICE)
+				ent:ClearEntityFlags(EntityFlag.FLAG_WEAKNESS)
+				print("bye bye")
+			else
+				if not ent:HasEntityFlags(EntityFlag.FLAG_WEAKNESS) then
+					ent:AddEntityFlags(EntityFlag.FLAG_WEAKNESS)
+				end
             end
         end
 		ent.Velocity = ent.Velocity * 0.5
-		if not ent:HasEntityFlags(EntityFlag.FLAG_ICE) then
-			ent:AddEntityFlags(EntityFlag.FLAG_ICE)
-		end
 	end
 
 	--cheese
@@ -164,6 +166,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 	end
+	if data.IsGonnaCombo then
+		if not InutilLib.game:IsPaused() then
+			data.IsGonnaCombo = data.IsGonnaCombo - 1
+			if data.IsGonnaCombo == 0 then
+				data.IsGonnaCombo = nil
+			end
+		end
+	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
@@ -216,6 +226,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
 		data.IsSilenceRenderFramed = data.IsSilenceRenderFramed + 1
 		if data.IsSilenceRenderFramed >= 23 then data.IsSilenceRenderFramed = 0 end
+	end
+
+	--regicide
+	if data.IsGonnaCombo then
+		ent:SetColor(Color(0.5, 0.5, 0.5, 1), 2, 5, true, true)
+		if not data.RegicideTick then data.RegicideTick = 0 end
+		local loc = Isaac.WorldToScreen(ent.Position)
+		statusEffects:SetOverlayRenderPriority(true)
+		statusEffects:SetFrame("Regicide", data.RegicideTick)
+		statusEffects:Render(loc + Vector(0, -30), Vector(0,0), Vector(0,0));
 	end
 
 	if data.isGlorykillProc then

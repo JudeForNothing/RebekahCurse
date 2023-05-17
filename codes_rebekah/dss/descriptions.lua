@@ -33,7 +33,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_BASKETOFEGGS, "Drops 5 eggs on pickup")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_EGGSHELLWALK, "On new room, eggs spawn # Walking around the eggs breaks egg to spawn a Bun Bun, which helps fight enemies # If breaking an egg with 2 Bun Buns are in the room, a Rabbet spawns instead, collecting eggs in the room + collision damage to you # If Rabbet is active and you break an egg, Rabbet becomes angry")
 	EID:addTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS, "When entering either a {{Shop}}, {{BossRoom}}, {{TreasureRoom}}, {{DevilRoom}} or {{AngelRoom}}, a reroll slot machine spawns # A reroll machine spawning in {{DevilRoom}} or {{AngelRoom}} is chance-based")
-	EID:addTrinket(RebekahCurse.Trinkets.TRINKET_RABBITSFOOT, "Pickups have a chance to be replaced by easter eggs")
+	EID:addTrinket(RebekahCurse.Trinkets.TRINKET_RABBITSFOOT, "Pickups have a chance to be replaced by easter ovum")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_WISHFULTHINKING, "On death, respawn as Wishful Isaac # Wishful Isaac has 10 Luck")
 	EID:addTrinket(RebekahCurse.Trinkets.TRINKET_DESTROYEDLULLABY, "Familiars have random tears and tearflags")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER, "Picking up hearts also spawn their respective clot versions")

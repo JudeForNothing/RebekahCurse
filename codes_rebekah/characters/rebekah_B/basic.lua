@@ -816,6 +816,28 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 									local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_RAGE_CIRCLE, player.Position, Vector.Zero, player)
 									yandereWaifu.GetEntityData(poof).Parent = player
 									player:SetColor(Color(1,0,0,1,0,0,0), data.TaintedRageTick, 2, false, true)
+
+									data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
+									yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+									for i = 0, 8 do
+										data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/tainted/cursed/arcane_circle.png")
+									end
+									data.MainArcaneCircle:GetSprite():LoadGraphics()
+									data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+									data.ArcaneCircleDust.RenderZOffset = -1
+									yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
+									--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
+									data.ArcaneCircleBeam = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
+									yandereWaifu.GetEntityData(data.ArcaneCircleBeam).parent = player
+									InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
+									InutilLib.SetTimer(150, function()
+										data.MainArcaneCircle:GetSprite():Play("FadeOut", true)
+										data.MainArcaneCircle = nil
+										data.ArcaneCircleDust:Remove()
+										data.ArcaneCircleBeam:GetSprite():Play("End", true)
+										data.ArcaneCircleBeam = nil
+										--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
+									end)
 								end
 								if success and not data.IsGlorykillMode then
 									data.TAINTEDREBSKILL_MENU:ChargeSkill(value)

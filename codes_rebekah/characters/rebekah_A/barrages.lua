@@ -361,6 +361,13 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 				end
 				SFXManager():Play(SoundEffect.SOUND_GHOST_ROAR, 1, 2, false, 1)
 			end
+			--fiend folio synergies
+			--devil's umbrella synergy
+			if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA) then
+				local dir = direction:Resized(1+player.ShotSpeed*4)
+		
+				if dir ~= nil then FiendFolio:firePiss(player, dir) end
+			end
 			--birthright
 			if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
 				local pos = player.Position
@@ -801,6 +808,10 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 				tear:ChangeVariant(TearVariant.CUPID_BLUE)
 			end
 		end
+		--fiend folio
+		if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA) then
+			yandereWaifu.SoulDevilsUmbrellaBarrage()
+		end
 	end
 
 	function yandereWaifu.SoulSorrowfulShallotBarrage()
@@ -812,6 +823,12 @@ function yandereWaifu.SetSoulRebekahBarrage(player, data, direction)
 			InutilLib.SFX:Stop(SoundEffect.SOUND_TEARS_FIRE)
 			InutilLib.SFX:Play(SoundEffect.SOUND_TEARS_FIRE, 0.5)
 		end
+	end
+
+	function yandereWaifu.SoulDevilsUmbrellaBarrage()
+		local dir = direction:Resized(1+player.ShotSpeed*4)
+
+		if dir ~= nil then FiendFolio:firePiss(player, dir) end
 	end
 	
 	--setup of soul personality's gun effects and barrage

@@ -13,7 +13,7 @@ end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TIGHTHAIRTIE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_TIGHTHAIRTIE) then
+	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TIGHTHAIRTIE) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_TIGHTHAIRTIE) then
 		player:AddNullCostume(RebekahCurse.Costumes.TightHairtie)
-	end
+	end]]
 end)

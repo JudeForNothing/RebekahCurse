@@ -160,6 +160,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 				yandereWaifu.RerollToRebekahPool(pickup, RebekahLocalSavedata.Data.newThriftShopPool)
 				--data.IsRerolled = false
 				pickup.Price = math.floor(pickup.Price / 2)
+				pickup.AutoUpdatePrice = false
 				print("balls")
 				print(pickup.Price)
 			--end

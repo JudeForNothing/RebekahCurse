@@ -18,7 +18,7 @@ function yandereWaifu:useEnchiridion(collItem, rng, player, flags, slot)
 	player:UseCard(Card.CARD_STRENGTH, UseFlag.USE_NOANIM)
 	player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_THEENCHIRIDION)
 	
-	player:AddNullCostume(RebekahCurse.Costumes.AdventureTime)
+	--player:AddNullCostume(RebekahCurse.Costumes.AdventureTime)
 	if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 	player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end
 	
@@ -37,7 +37,7 @@ function yandereWaifu:useEnchiridionNewRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_THEENCHIRIDION) then
-			player:TryRemoveNullCostume (RebekahCurse.Costumes.AdventureTime)
+			--player:TryRemoveNullCostume (RebekahCurse.Costumes.AdventureTime)
 			if not player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_SWORD) then
 			player:GetEffects():RemoveCollectibleEffect(CollectibleType.COLLECTIBLE_SPIRIT_SWORD, false, 1) end
 		end

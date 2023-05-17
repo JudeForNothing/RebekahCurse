@@ -348,7 +348,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,eff)
 					data.Idle = false
 					break
 				else
-					data.BreakFrame = data.BreakFrame + 5
+					data.BreakFrame = data.BreakFrame + 10
 				end
 			end
 		end
@@ -384,9 +384,9 @@ function yandereWaifu:EggshellWalkNewRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
 		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_EGGSHELLWALK) and not room:IsClear() then
-		local num = math.random(3,5)
+		local num = math.random(7,20)
 			if room:GetRoomShape() == RoomShape.ROOMSHAPE_1x1 or room:GetRoomShape() == RoomShape.ROOMSHAPE_IH or room:GetRoomShape() == RoomShape.ROOMSHAPE_IV or room:GetRoomShape() == RoomShape.ROOMSHAPE_IIV or room:GetRoomShape() == RoomShape.ROOMSHAPE_IIH then
-				num = math.random(3,4)
+				num = math.random(7,15)
 			end
 			for i = 0, num do
 				local egg = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_EGGSHELLS, 0, InutilLib.room:FindFreePickupSpawnPosition(Isaac.GetRandomPosition(),3) + Vector(math.random(-15,15),math.random(-15,15)), Vector.Zero, player)

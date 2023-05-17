@@ -59,9 +59,9 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--costume addition
-	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
+	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
 		player:AddNullCostume(RebekahCurse.Costumes.WickedWeaves)
-	end
+	end]]
 	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
 		local wall = InutilLib.ClosestWall(player)
 		local fist

@@ -1160,6 +1160,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 						tears.Position = fam.Position
 						tears:ChangeVariant(TearVariant.BONE)
 						InutilLib.MakeTearLob(tears, 2.5, 15 )
+						if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA) and math.random(5) == 1 then
+							local dir = shootingInput:Resized(1+player.ShotSpeed*4)
+					
+							if dir ~= nil then FiendFolio:firePiss(player, dir) end
+						end
 					end
 					if math.random(1,8) == 8 and player:HasCollectible(CollectibleType.COLLECTIBLE_EPIC_FETUS) then --epic fetus synergy
 						local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_BONETARGET, 0, fam.Position, Vector(0,0), fam)

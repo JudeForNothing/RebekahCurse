@@ -10,6 +10,13 @@ local entities = {
 	RebekahCurse.Enemies.ENTITY_LONGITS,
 	RebekahCurse.Enemies.ENTITY_LOAFERING,
 	RebekahCurse.Enemies.ENTITY_BLOOD_SLOTH,
+	RebekahCurse.Enemies.ENTITY_EVALUATOR,
+	RebekahCurse.Enemies.ENTITY_DEVOTEE,
+	RebekahCurse.Enemies.ENTITY_GOSSIPER,
+	--RebekahCurse.Enemies.ENTITY_FOUNDATION,
+	RebekahCurse.Enemies.ENTITY_NPC,
+	RebekahCurse.Enemies.ENTITY_DUSTBUNNY,
+	RebekahCurse.Enemies.ENTITY_BUNCARPET,
 }
 function yandereWaifu:useRebekahsScrapbook(collItem, rng, player)
 	local data = yandereWaifu.GetEntityData(player)

@@ -19,7 +19,7 @@ UndercroftGrid:SetGrid("gfx/grid/liminal/rocks_liminal.png", GridEntityType.GRID
 UndercroftGrid:SetBridges("gfx/grid/liminal/garden_bridge.png")
 
 local UndercroftBackdrop = StageAPI.BackdropHelper({
-    Walls = {"room_1", "room_1", "room_1"},
+    Walls = {"room_3", "room_3", "room_3"},
     NFloors = {"nfloor"},
     LFloors = {"lfloor"},
     Corners = {"main_corner"}

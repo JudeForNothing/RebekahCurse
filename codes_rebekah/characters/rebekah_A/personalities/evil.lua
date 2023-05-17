@@ -1262,6 +1262,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 				end
 			--	yandereWaifu.GetEntityData(target).delay = data.delay
 			--end)
+			--devil's umbrella synergy
+			if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA) then
+				local dir = Vector.FromAngle(angle):Resized(1+player.ShotSpeed*4)
+		
+				if dir ~= nil then FiendFolio:firePiss(player, dir) end
+			end
 		else
 			local newTarget
 			local strongestHP = 0 -- labels the highest enemy hp
@@ -1327,6 +1333,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					end
 				--	yandereWaifu.GetEntityData(target).delay = data.delay
 				--end)
+				--devil's umbrella synergy
+				if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA) then
+					local dir = Vector.FromAngle(angle):Resized(1+player.ShotSpeed*4)
+			
+					if dir ~= nil then FiendFolio:firePiss(player, dir) end
+				end
 			else
 				data.HitPoints = 0
 			end

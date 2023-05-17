@@ -1558,30 +1558,31 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	local hearts = InutilLib.GetAllMajorHearts(player) + player:GetBoneHearts()*2
 	local pos = (math.ceil(player:GetSoulHearts() / 2) + player:GetBoneHearts())-1
-	if hearts > 12 and yandereWaifu.IsNormalRebekah(player) then
-		if player:IsBoneHeart(pos) then
-			player:AddBoneHearts(-1)
-		else
-			if player:GetMaxHearts() > 12 then
-				player:AddMaxHearts(-1)
-				--[[if not data.PersistentPlayerData.heartReserveMaxFillPieces then 
-					data.PersistentPlayerData.heartReserveMaxFillPieces = 1 
-				else
-					data.PersistentPlayerData.heartReserveMaxFillPieces = data.PersistentPlayerData.heartReserveMaxFillPieces + 1
-				end
-				print(data.PersistentPlayerData.heartReserveMaxFillPieces)
-				if data.PersistentPlayerData.heartReserveMaxFillPieces > 1 then]]
-				data.heartStocksMax = data.heartStocksMax + 1 
-				--[[	data.PersistentPlayerData.heartReserveMaxFillPieces = 0
-				end]]
-				local gulp = Isaac.Spawn( EntityType.ENTITY_EFFECT,  RebekahCurse.ENTITY_HEARTGULP, 0, player.Position, Vector(0,0), player );
-				yandereWaifu.GetEntityData(gulp).Parent = player
-				gulp.SpriteOffset = Vector(0,-20)
-				gulp.RenderZOffset = 10000
-				InutilLib.SFX:Play( SoundEffect.SOUND_VAMP_GULP , 1.3, 0, false, 1 );
+	if yandereWaifu.IsNormalRebekah(player) then
+		if hearts > 12 then
+			if player:IsBoneHeart(pos) then
+				player:AddBoneHearts(-1)
 			else
 				player:AddSoulHearts(-1)
 			end
+		elseif player:GetMaxHearts() > 6 then
+			player:AddMaxHearts(-1)
+			--[[if not data.PersistentPlayerData.heartReserveMaxFillPieces then 
+				data.PersistentPlayerData.heartReserveMaxFillPieces = 1 
+			else
+				data.PersistentPlayerData.heartReserveMaxFillPieces = data.PersistentPlayerData.heartReserveMaxFillPieces + 1
+			end
+			print(data.PersistentPlayerData.heartReserveMaxFillPieces)
+			if data.PersistentPlayerData.heartReserveMaxFillPieces > 1 then]]
+			data.heartStocksMax = data.heartStocksMax + 1 
+			data.heartStocks = data.heartStocks + 1
+			--[[	data.PersistentPlayerData.heartReserveMaxFillPieces = 0
+			end]]
+			local gulp = Isaac.Spawn( EntityType.ENTITY_EFFECT,  RebekahCurse.ENTITY_HEARTGULP, 0, player.Position, Vector(0,0), player );
+			yandereWaifu.GetEntityData(gulp).Parent = player
+			gulp.SpriteOffset = Vector(0,-20)
+			gulp.RenderZOffset = 10000
+			InutilLib.SFX:Play( SoundEffect.SOUND_VAMP_GULP , 1.3, 0, false, 1 );
 		end
 	end
 end)

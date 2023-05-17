@@ -33,9 +33,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				InutilLib.SetTimer(i*7, function()
 					local vector = player:GetShootingInput() --InutilLib.DirToVec(player:GetFireDirection())
 					--data.specialAttackVector = Vector( vector.X, vector.Y )
-					local fire = Isaac.Spawn( EntityType.ENTITY_EFFECT, 51, 0, player.Position, vector:Resized(12), player ):ToEffect();
-					fire.Timeout = 60
-					InutilLib.game:ShakeScreen(10)
+					--[[local fire = Isaac.Spawn( EntityType.ENTITY_EFFECT, 51, 0, player.Position, vector:Resized(12), player ):ToEffect();
+					fire.Timeout = 60]]
+					data.UnstableCandleFireVec = vector
+					if data.UnstableCandleFireVec then
+						local tear = player:FireTear(player.Position, (data.UnstableCandleFireVec):Resized(9):Rotated(math.random(-15,15)), false, false, false):ToTear()
+						tear:ChangeVariant(TearVariant.FIRE) --ENTITY_ETERNALFEATHER)
+						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
+						tear.CollisionDamage = player.Damage
+						yandereWaifu.GetEntityData(tear).EternalFlame = true
+						InutilLib.game:ShakeScreen(10)
+					end
 				end)
 			end
 			InutilLib.ConsumeActiveCharge(player)

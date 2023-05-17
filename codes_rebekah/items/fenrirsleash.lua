@@ -21,6 +21,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 		data.Init = true
 		data.State = 0
 	end
+	if fam.SubType == 1 then
+		if fam.Coins >= 3 then
+			Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DIRT_PILE, 0, player.Position,  Vector(0,0), player );
+			fam.Coins = 0
+			local newColl = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_CRACKED_KEY, InutilLib.room:FindFreePickupSpawnPosition(fam.Position, 40, true), Vector.Zero, fam)
+		end
+	end
 	fam.Velocity = fam.Velocity * 0.9
 	local enemy = InutilLib.GetClosestGenericEnemy(fam, 500, fam.Type)
 	if enemy then
@@ -29,7 +36,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 				data.State = 1
 			elseif not spr:IsPlaying("Triggered") then
 				spr:Play("Triggered", true)
-				InutilLib.SFX:Play(SoundEffect.SOUND_DOG_BARK, 1, 0, false, 0.8)
+				if math.random(1,3) == 3 then
+					InutilLib.SFX:Play(SoundEffect.SOUND_DOG_BARK, 1, 0, false, 0.8)
+				end
 			end
 			if enemy.Position:Distance(fam.Position) > 90 then
 				InutilLib.MoveDirectlyTowardsTarget(fam, enemy, 2, 0.9)
@@ -50,7 +59,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			elseif not spr:IsPlaying("Bite") then
 				spr:Play("Bite", true)
 				data.ColorTint = nil
-				InutilLib.SFX:Play(SoundEffect.SOUND_DOG_HOWELL, 1, 0, false, 0.8)
+				if math.random(1,3) == 3 then
+					InutilLib.SFX:Play(SoundEffect.SOUND_DOG_HOWELL, 1, 0, false, 0.8)
+				end
 			elseif spr:IsPlaying("Bite") then
 				if spr:IsEventTriggered("Dash") and not spr:IsEventTriggered("Bite") then
 					InutilLib.MoveDirectlyTowardsTarget(fam, enemy, 12, 0.9)
@@ -59,9 +70,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 					local ents = Isaac.FindInRadius(fam.Position, 75, EntityPartition.ENEMY)
 					for _, ent in pairs(ents) do
 						if ent:IsVulnerableEnemy() and not ent:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
-							ent:TakeDamage(2, 0, EntityRef(player), 5)
+							ent:TakeDamage(7, 0, EntityRef(player), 5)
 							ent:AddEntityFlags(EntityFlag.FLAG_WEAKNESS)
-							yandereWaifu.GetEntityData(ent).IsWeakenedByEnchiridion = 90
+							yandereWaifu.GetEntityData(ent).IsWeakenedByEnchiridion = 60
 						end
 					end
 					InutilLib.game:MakeShockwave(fam.Position, 0.035, 0.025, 10)
@@ -93,7 +104,13 @@ function yandereWaifu:FenrirPuppyInit(fam)
 		MaxFireDelay = 25,
 		Damage = 2.2, 
 		PlayerMaxDelay = 0
+		
 	}]]
+	if fam.SubType == 1 then
+		fam:GetSprite():ReplaceSpritesheet(0, "gfx/familiar/fenrir_dead.png")
+		fam:GetSprite():ReplaceSpritesheet(1, "gfx/familiar/fenrir_dead.png")
+		fam:GetSprite():LoadGraphics()
+	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, yandereWaifu.FenrirPuppyInit, RebekahCurse.ENTITY_FENRIR);
 

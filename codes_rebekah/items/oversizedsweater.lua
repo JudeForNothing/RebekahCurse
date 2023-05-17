@@ -7,25 +7,35 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0, player.Position, Vector(0, 0), player):ToFamiliar()
 			if pickup.SubType == 2 then
 				clot.HitPoints = clot.HitPoints/2
+				player:AddHearts(1)
 			end
 			if pickup.SubType == 5 then
+				player:AddHearts(2)
 				local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 0, player.Position, Vector(0, 0), player):ToFamiliar()
 			end
+			player:AddHearts(1)
 		elseif (pickup.SubType == 3 or pickup.SubType == 8 or pickup.SubType == 10) and player:CanPickSoulHearts() then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 1, player.Position, Vector(0, 0), player):ToFamiliar()
 			if pickup.SubType == 8 then
 				clot.HitPoints = clot.HitPoints/2
+				player:AddSoulHearts(1)
 			end
+			player:AddSoulHearts(1)
 		elseif pickup.SubType == 6 and player:CanPickBlackHearts() then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 2, player.Position, Vector(0, 0), player):ToFamiliar()
+			player:AddBlackHearts(2)
 		elseif pickup.SubType == 4 then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 3, player.Position, Vector(0, 0), player):ToFamiliar()
+			player:AddEternalHearts(1)
 		elseif pickup.SubType == 7 and player:CanPickGoldenHearts() then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 4, player.Position, Vector(0, 0), player):ToFamiliar()
+			player:AddGoldenHearts(1)
 		elseif pickup.SubType == 11 and player:CanPickBoneHearts() then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 5, player.Position, Vector(0, 0), player):ToFamiliar()
+			player:AddBoneHearts(1)
 		elseif pickup.SubType == 12 and player:CanPickRottenHearts() then
 			local clot = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, 6, player.Position, Vector(0, 0), player):ToFamiliar()
+			player:AddRottenHearts(1)
 		end
 	end
 end, PickupVariant.PICKUP_HEART)
@@ -33,7 +43,7 @@ end, PickupVariant.PICKUP_HEART)
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER ) then
+	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER ) then
 		player:AddNullCostume(RebekahCurse.Costumes.OversizedSweater)
-	end
+	end]]
 end)

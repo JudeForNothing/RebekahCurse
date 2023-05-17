@@ -119,7 +119,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				if not InutilLib.IsPlayingMultiple(data.TickTockBody:GetSprite(), "HeadRight", "HeadDown", "HeadUp", "HeadLeft") then
 					data.Angle = InutilLib.AnimShootFrame(data.TickTockBody, true, player.Velocity, "HeadRight", "HeadDown", "HeadUp", "HeadLeft")
 				end
-				if data.TickTockBody:GetSprite():GetFrame() == 9 or data.TickTockBody:GetSprite():GetFrame() == 19  then
+				if data.TickTockBody:GetSprite():GetFrame() == 9 --[[or data.TickTockBody:GetSprite():GetFrame() == 19 ]] then
 					local dust = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.DUST_CLOUD, 0, player.Position, Vector(0,0), player ):ToEffect()
 					dust:GetSprite().PlaybackSpeed = 0.3
 					dust.Timeout = 6

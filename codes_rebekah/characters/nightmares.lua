@@ -29,6 +29,7 @@ function yandereWaifu.ResetNightmaresForUniquePlayers(_, hasstarted) --Init
         if yandereWaifu.IsNormalRebekah(player) then
             yandereWaifu.ClearTransitionNightmare()
             StageAPI.AddTransitionNightmare("gfx/ui/nightmares/basic/nightmare1.anm2")
+            StageAPI.AddTransitionNightmare("gfx/ui/nightmares/basic/nightmare2.anm2")
         end
         break
 	end
@@ -130,17 +131,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+
     if RebekahLocalSavedata.Data.rebekahTrapdoors and #RebekahLocalSavedata.Data.rebekahTrapdoors > 0 then
         for _, trapdoorData in ipairs(RebekahLocalSavedata.Data.rebekahTrapdoors) do
             if InutilLib.level:GetCurrentRoomDesc().ListIndex == trapdoorData.ListIndex then
-				print("balls")
                 spawnRebekahTrapdoor(trapdoorData.GridIndex)
             end
         end
     end
 end)
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function(_)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_CURSE_EVAL, function(_)
 	--if not old then
         RebekahLocalSavedata.Data.rebekahTrapdoors = {}
     --end

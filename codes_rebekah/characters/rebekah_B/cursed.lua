@@ -357,6 +357,15 @@ function yandereWaifu.SwingCursedKnife(player, weapon, state, angle, flip)
             data.EyeOfGreedCount = data.EyeOfGreedCount + 1
         end
 	end
+
+    --devil's umbrella synergy
+    if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.DEVILS_UMBRELLA) and
+	   math.random(5) == 1
+	then
+		local dir = Vector.FromAngle(yandereWaifu.GetEntityData(weapon).Angle):Resized(1+player.ShotSpeed*4)
+
+		if dir ~= nil then FiendFolio:firePiss(player, dir) end
+	end
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
@@ -731,6 +740,88 @@ local function canGodhead(player)
     end
 end
 
+local function canSewn(player)
+    if not FiendFolio then return false end
+    if player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.PINHEAD) then
+        local chance = math.max(5, 10 + (player:GetCollectibleNum(FiendFolio.ITEM.COLLECTIBLE.PINHEAD) * 10) + (player.Luck * 5))
+        if math.random() * 50 <= chance then
+            return true
+        end
+    else
+        return false
+    end
+end
+
+local function canImpSoda(player)
+    if not FiendFolio then return false end
+    local extraOdds = 0
+	if player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.IMP_SODA) then
+		extraOdds = extraOdds + (5 * player:GetCollectibleNum(FiendFolio.ITEM.COLLECTIBLE.IMP_SODA))
+		if player:HasTrinket(FiendFolio.ITEM.ROCK.SODALITE_GEODE) then
+			extraOdds = extraOdds + 5
+		end
+        local ImpSodaOdds = (30 - math.floor(player.Luck * 2) - math.ceil(extraOdds))
+        return math.random(math.max(3, ImpSodaOdds)) == 1
+    else
+        return false
+	end
+    
+end
+
+local function canLeftOverFortune(player)
+    --Fortune Stuff
+    if not FiendFolio then return false end
+    local baseFortuneOdds = 0
+    if player:HasTrinket(TrinketType.TRINKET_FORTUNE_WORM) or player:HasTrinket(FiendFolio.ITEM.ROCK.FORTUNE_WORM_FOSSIL) then
+        local fortuneWormOdds = 1
+        fortuneWormOdds = fortuneWormOdds * (player:GetTrinketMultiplier(TrinketType.TRINKET_FORTUNE_WORM) + FiendFolio.GetGolemTrinketPower(player, FiendFolio.ITEM.ROCK.FORTUNE_WORM_FOSSIL))
+        baseFortuneOdds = baseFortuneOdds + fortuneWormOdds
+    end
+    if FiendFolio.GreatFortune then
+        baseFortuneOdds = baseFortuneOdds + 3
+    end
+    if player:HasCollectible(CollectibleType.COLLECTIBLE_LEFTOVER_TAKEOUT) then
+        baseFortuneOdds = baseFortuneOdds + 17
+    end
+
+    if baseFortuneOdds > 0 then
+        local freq = math.min(math.max(math.floor(22 - baseFortuneOdds - player.Luck), 3), 30)
+        if math.random(freq) == 1 then
+            --newDamage = newDamage * 1.05
+           -- sendNewDamage = true
+            return true
+        end
+    end
+end
+
+local function canCruficix(player)
+    if not FiendFolio then return false end
+    if player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.CRUCIFIX) then
+        return true
+    end
+    return false
+end
+
+local function canBruise(player)
+    if not FiendFolio then return false end
+    if player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.RUBBER_BULLETS) then
+        local chance = math.min(12.5, (5 * player:GetCollectibleNum(FiendFolio.ITEM.COLLECTIBLE.RUBBER_BULLETS)) + player.Luck * 0.75)
+        chance = math.max(1, chance)
+        if math.random() * 25 <= chance then
+            return true
+        end
+    end
+    return false
+end
+
+local function canBlackMoon(player)
+    if not FiendFolio then return false end
+    if player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.BLACK_MOON) then
+        return true
+    end
+    return false
+end
+
 local function changeCursedRebekahGfx(player, eff)
     local data = yandereWaifu.GetEntityData(eff)
     data.IsGfxLoaded = nil
@@ -761,6 +852,10 @@ local function changeCursedRebekahGfx(player, eff)
         end
         if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_big.anm2", true)
+            data.IsGfxLoaded = true
+        end
+        if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.MODERN_OUROBOROS) and not data.IsGfxLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_snek.anm2", true)
             data.IsGfxLoaded = true
         end
         if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) and not data.IsGfxLoaded then
@@ -936,6 +1031,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         data.canRock = canRock(player)
         data.canPop = canPop(player)
         data.canGodhead = canGodhead(player)
+        data.canSewn = canSewn(player)
+        data.canImpSoda = canImpSoda(player)
+        data.canLeftOverFortune = canLeftOverFortune(player)
+        data.canCruficix = canCruficix(player)
+        data.canBruise = canBruise(player)
+        data.canBlackMoon = canBlackMoon(player)
 
         if (player:HasWeaponType(WeaponType.WEAPON_LASER) or player:HasWeaponType(WeaponType.WEAPON_TECH_X)) and (data.state == 1 or data.state == 3) then
             local randomTick = math.random(5,7)
@@ -1064,6 +1165,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                     end
                 end
             end
+            if player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.MODERN_OUROBOROS) then
+                if data.state <= 3 then
+                    FiendFolio.SpawnGunpowder(Isaac.GetPlayer(0),Game():GetRoom():GetClampedPosition(pos+Vector(math.random(-30,30), math.random(-30,30)), 0), 120, 120, nil, nil, true, FiendFolio.ColorModernOuroboros)
+                elseif data.state == 4 then
+                    for i = 0, math.random(3,4) do
+                        FiendFolio.SpawnGunpowder(Isaac.GetPlayer(0),Game():GetRoom():GetClampedPosition(pos+Vector(math.random(-60,60), math.random(-60,60)), 0), 120, 120, nil, nil, true, FiendFolio.ColorModernOuroboros)
+                    end
+                end
+            end
         end
         --to enemy code
         local ents = Isaac.FindInRadius(pos, 95, EntityPartition.ENEMY)
@@ -1094,9 +1204,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                     end
                 end
 
-                ent:TakeDamage((damage) * dmg, 0, EntityRef(player), 1)
-                did_hit = true
-
                 --poison synergies
                 if data.canPoison then
                     ent:AddPoison(EntityRef(player), 30, 3)
@@ -1110,6 +1217,45 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 if data.canMidas then
                     ent:AddMidasFreeze(EntityRef(player), 120)
                 end
+                if data.canSewn then
+                    local base = 210 
+                    local result = math.ceil(base * (math.log(math.max(1, player:GetCollectibleNum(FiendFolio.ITEM.COLLECTIBLE.PINHEAD)), 5) + 1))
+                    local ApplySewnDuration = result * (1 + player:GetTrinketMultiplier(TrinketType.TRINKET_SECOND_HAND))
+                    FiendFolio.AddSewn(ent, player, ApplySewnDuration)
+                end
+                if data.canImpSoda then
+                    FiendFolio:doCriticalHitFx(ent.Position, ent, player)
+                    dmg = dmg * 5
+                end
+                if data.canLeftOverFortune then
+                    if FiendFolio.FortuneTearCooldown <= 0 then
+                        --game:ShowFortune()
+                        FiendFolio:ShowFortune(false, true)
+                        FiendFolio.FortuneTearCooldown = 20
+                    end
+                    damage = damage *2.05
+                end
+                if data.canCruficix then
+                    local base = 150 
+                    local result = math.ceil(base * (math.log(math.max(1, player:GetCollectibleNum(FiendFolio.ITEM.COLLECTIBLE.CRUCIFIX)), 5) + 1))
+                    local duration = result * (1 + player:GetTrinketMultiplier(TrinketType.TRINKET_SECOND_HAND))
+                    FiendFolio.MarkForMartyrDeath(ent, player, duration, true, true)
+                end
+                if data.canBruise then
+                    local base = 120 
+                    local result = math.ceil(base * (math.log(math.max(1, player:GetCollectibleNum(FiendFolio.ITEM.COLLECTIBLE.RUBBER_BULLETS)), 5) + 1))
+                    local duration =  result * (1 + player:GetTrinketMultiplier(TrinketType.TRINKET_SECOND_HAND))
+                    FiendFolio.AddBruise(ent, player, duration, 1, 1, false, false)
+                    InutilLib.SFX:Play(FiendFolio.Sounds.ShotgunBlast,0.4,0,false,math.random(60,80)/100)
+                end
+                if data.canBlackMoon then
+                    eff:GetData().BlackMoonInflicting = true
+                    ent:TakeDamage((damage) * dmg, 0, EntityRef(eff), 1)
+                elseif not data.canBlackMoon and eff:GetData().BlackMoonInflicting then
+                    eff:GetData().BlackMoonInflicting = false
+                end
+                ent:TakeDamage((damage) * dmg, 0, EntityRef(player), 1)
+                did_hit = true
                 if player:HasWeaponType(WeaponType.WEAPON_FETUS) then
                     if data.state == 4 then
                         if ent.HitPoints <= (damage) * dmg then
@@ -1753,6 +1899,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_SLAM, pos, Vector.Zero, ent)
                 yandereWaifu.GetEntityData(poof).Parent = eff
             end
+            if FiendFolio and data.canBlackMoon then
+                local cloud = Isaac.Spawn(1000, 666, 170, pos, Vector.Zero, player):ToEffect()
+                local scale = 10
+                scale = math.min(scale, 100)
+                scale = math.max(scale, 5)
+                cloud:GetData().Scale = scale
+                cloud:GetData().Parent = player
+                cloud.Timeout = 5
+                cloud:Update()
+            end
             InutilLib.SFX:Stop(RebekahCurse.Sounds.SOUND_CURSED_ROCKET_LAUNCH);
             local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, pos, Vector(0,0), player)
             poof:GetSprite().Scale = Vector(1*scale, 1*scale)
@@ -1892,6 +2048,23 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
             if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.EMOJI_GLASSES) then
                 local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, RebekahCurse.DustEffects.ENTITY_REBEKAH_CURSED_EMOJI_HEAVY_STRIKE, pos, Vector.Zero, player)
                 yandereWaifu.GetEntityData(poof).Parent = player
+            end
+            if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.MODERN_OUROBOROS) then
+                FiendFolio.SpawnGunpowder(Isaac.GetPlayer(0),Game():GetRoom():GetClampedPosition(pos, 0), 120, 120, nil, nil, true, FiendFolio.ColorModernOuroboros)
+                for i = 0, 360 - 360/4, 360/4 do
+                    for j = 0, 120, 40 do
+                        FiendFolio.SpawnGunpowder(Isaac.GetPlayer(0),Game():GetRoom():GetClampedPosition(pos + Vector(40+j,0):Rotated(i+45), 0), 120, 120, nil, nil, true, FiendFolio.ColorModernOuroboros)
+                    end
+                end
+            end
+            if FiendFolio and data.canBlackMoon then
+                local cloud = Isaac.Spawn(1000, 666, 170, pos, Vector.Zero, player):ToEffect()
+                local scale = 30
+                scale = math.min(scale, 100)
+                scale = math.max(scale, 5)
+                cloud:GetData().Scale = scale
+                cloud:GetData().Parent = player
+                cloud:Update()
             end
             --yandereWaifu.GetEntityData(player).invincibleTime = 20
             player.Velocity = (player.Velocity + (Vector(10,0))):Rotated(data.Angle-180):Resized(5)

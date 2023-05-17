@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 				yandereWaifu.SpawnEasterEgg(spawnPosition, player)
 				--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.Cards.CARD_EASTEREGG, spawnPosition, Vector(0,0), player)
 			end
-			player:AddNullCostume(RebekahCurse.Costumes.BasketOfEggs)
+			--player:AddNullCostume(RebekahCurse.Costumes.BasketOfEggs)
 		end
 	end
 end)

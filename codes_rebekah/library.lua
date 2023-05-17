@@ -324,7 +324,8 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 	player:GetSprite():LoadGraphics() 						--loading graphics is required
 	player:ReplaceCostumeSprite(config,hairpath,0)	--replacing maggy hair costume sprite for fire anims
 	--yandereWaifu.GetEntityData(player).hairpath = hairpath
-	
+	player:PlayExtraAnimation("Glitch")
+	player:GetSprite():Stop()
 	if poof then
 		local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	end
@@ -956,32 +957,37 @@ local eastereggtbl = {
 		[3] = RebekahCurse.Cards.CARD_GREEN_EASTEREGG,
 		[4] = RebekahCurse.Cards.CARD_BLUE_EASTEREGG,
 		[5] = RebekahCurse.Cards.CARD_PINK_EASTEREGG,
+		[6] = RebekahCurse.Cards.CARD_ORANGE_EASTEREGG,
+		[7] = RebekahCurse.Cards.CARD_WHITE_EASTEREGG,
 
-		[6] = RebekahCurse.Cards.CARD_STRIPE_EASTEREGG,
-		[7] = RebekahCurse.Cards.CARD_STRIPE_AQUA_EASTEREGG,
-		[8] = RebekahCurse.Cards.CARD_ZIGZAG_YELLOW_EASTEREGG,
-		[9] = RebekahCurse.Cards.CARD_ZIGZAG_GREEN_EASTEREGG,
-		[10] = RebekahCurse.Cards.CARD_ZIGZAG_BLUE_EASTEREGG,
-		[11] = RebekahCurse.Cards.CARD_STRIPE_PINK_EASTEREGG,
-		[12] = RebekahCurse.Cards.CARD_CURSED_EASTEREGG,
-		[13] = RebekahCurse.Cards.CARD_BLESSED_EASTEREGG,
-		[14] = RebekahCurse.Cards.CARD_GOLDEN_EASTEREGG,
+		[8] = RebekahCurse.Cards.CARD_STRIPE_EASTEREGG,
+		[9] = RebekahCurse.Cards.CARD_HAPPY_AQUA_EASTEREGG,
+		[10] = RebekahCurse.Cards.CARD_ZIGZAG_YELLOW_EASTEREGG,
+		[11] = RebekahCurse.Cards.CARD_INSECT_GREEN_EASTEREGG,
+		[12] = RebekahCurse.Cards.CARD_STARRY_BLUE_EASTEREGG,
+		[13] = RebekahCurse.Cards.CARD_HEARTED_PINK_EASTEREGG,
+		[14] = RebekahCurse.Cards.CARD_ORANGE_LOCKED_EASTEREGG,
+		[15] = RebekahCurse.Cards.CARD_WHITE_POLKA_EASTEREGG,
+		[16] = RebekahCurse.Cards.CARD_CURSED_EASTEREGG,
+		[17] = RebekahCurse.Cards.CARD_BLESSED_EASTEREGG,
+		[18] = RebekahCurse.Cards.CARD_GOLDEN_EASTEREGG,
 	}
 
 function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)
 	local rng 
 	if tier == 1 then
-		rng = math.random(0,11)
+		rng = math.random(0,15)
 	elseif tier == 2 then
-		rng = math.random(12,14)
+		rng = math.random(16,18)
 	else
-		rng = math.random(0,13)
+		rng = math.random(0,17)
 	end
 	local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, eastereggtbl[rng], spawnPosition, Vector(0,0), player):ToPickup()
 	if shop then
-		newpickup.Price = 5
+		newpickup.Price = 2
 	end
 	newpickup.ShopItemId = -1
+	newpickup.AutoUpdatePrice = false
 	return newpickup
 end
 
@@ -1364,3 +1370,12 @@ function yandereWaifu.AddSilence(ent, add)
 	yandereWaifu.GetEntityData(ent).IsSilenced = yandereWaifu.GetEntityData(ent).IsSilenced + add
 end
 
+function yandereWaifu.AddRegicide(ent, add)
+	if not yandereWaifu.GetEntityData(ent).IsGonnaCombo then yandereWaifu.GetEntityData(ent).IsGonnaCombo = 0 end
+	yandereWaifu.GetEntityData(ent).IsGonnaCombo = yandereWaifu.GetEntityData(ent).IsGonnaCombo + add
+end
+
+function yandereWaifu.AddRegicideCount(ent)
+	if not yandereWaifu.GetEntityData(ent).RegicideTick then yandereWaifu.GetEntityData(ent).RegicideTick = 0 end
+	yandereWaifu.GetEntityData(ent).RegicideTick = yandereWaifu.GetEntityData(ent).RegicideTick + 1
+end

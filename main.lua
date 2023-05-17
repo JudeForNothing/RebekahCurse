@@ -22,6 +22,7 @@ yandereWaifuCodes = {
 	itempools = {
 		loveroom = require('codes_rebekah.itempools.loveroom'),
 		thriftshop = require('codes_rebekah.itempools.thriftshop'),
+		bootleg = require('codes_rebekah.itempools.bootleg'),
 	},
 	itempool = require('codes_rebekah.itempools'),
 
@@ -97,6 +98,11 @@ yandereWaifuIngameContentCode = {
 		undercrofts = {
 			enemies = require('codes_rebekah.entities.undercrofts.enemies'),
 		},
+		thriftshop = {
+			bosses = require('codes_rebekah.entities.thriftshop.bosses'),
+			enemies = require('codes_rebekah.entities.thriftshop.enemies'),
+			demonlordess = require('codes_rebekah.entities.thriftshop.demonlordess'),
+		},
 		bosses = {
 			maggy = require('codes_rebekah.entities.bosses.magdalene'),
 			eve = require('codes_rebekah.entities.bosses.eve'),
@@ -119,6 +125,7 @@ yandereWaifuIngameContentCode = {
 		pills = require('codes_rebekah.pocketitems.pills'),
 		cards = require('codes_rebekah.pocketitems.cards'),
 		language = require('codes_rebekah.pocketitems.lovelangauge'),
+		soulstones = require('codes_rebekah.pocketitems.soulstones'),
 	},
 	items = {
 		glowinghourglass = require('codes_rebekah.items.vanilla.glowinghourglass'),
@@ -172,6 +179,7 @@ yandereWaifuIngameContentCode = {
 		
 		wishfulthinking = require('codes_rebekah.items.tainted.wishful_thinking'),
 		rebekahsscrapbook = require('codes_rebekah.items.rebekahsscrapbook'),
+		regicide = require('codes_rebekah.items.regicide'),
 
 		abeautifulgrave = require('codes_rebekah.items.abeautifulgrave'),
 		tighthairtie = require('codes_rebekah.items.tighthairtie'),
@@ -232,6 +240,7 @@ yandereWaifuIngameContentCode = {
 	shaders = require('codes_rebekah.shaders'),
 	grids = {
 		barrel = require('codes_rebekah.grids.barrel'),
+		statue = require('codes_rebekah.grids.statue'),
 	},
 	stages = {
 		gen = {

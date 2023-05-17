@@ -11,14 +11,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_BURGER) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_BURGER) then
 		--player:AddNullCostume(RebekahCurse.Costumes.CandyWeddingRing)
-		local seed = InutilLib.room:GetSpawnSeed()
-		if math.ceil(seed % 3) == 0 then
+		--local seed = InutilLib.room:GetSpawnSeed()
+		local seed = Isaac.GetPlayer():GetCollectibleRNG(RebekahCurse.Items.COLLECTIBLE_BURGER):RandomInt(120)
+		local num = 3
+		if math.ceil(seed % num) == 0 then
 			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_EVES_BIRD_FOOT, player.Position,  Vector(0,0), player ):ToPickup();
-		elseif math.ceil(seed % 3) == 1 then
+		elseif math.ceil(seed % num) == 1 then
 			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_CALLUS, player.Position,  Vector(0,0), player ):ToPickup();
-		elseif math.ceil(seed % 3) == 2 then
+		elseif math.ceil(seed % num) == 2 then
 			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_GOAT_HOOF, player.Position,  Vector(0,0), player ):ToPickup();
-		elseif math.ceil(seed % 3) == 3 then
+		elseif math.ceil(seed % num) == 3 then
 			Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TRINKET, TrinketType.TRINKET_LUCKY_TOE, player.Position,  Vector(0,0), player ):ToPickup();
 		end
 	end
