@@ -493,7 +493,6 @@ function yandereWaifu:changetoDifferentLaser(lz)
 			lz:GetSprite():Load("gfx/effects/bone/brimbone.anm2", true)
 			lz:GetSprite():Play("LargeRedLaser", true)
 			if lz.Child ~= nil then
-				print("test")
 				lz.Child:GetSprite():Load("gfx/effects/bone/brimbone_impact.anm2", true)
 				lz.Child:GetSprite():LoadGraphics()
 				lz.Child:GetSprite():Play("Loop", true)

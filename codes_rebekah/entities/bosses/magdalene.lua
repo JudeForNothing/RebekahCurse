@@ -309,7 +309,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				spr:Play("2Attack2", true)
 			elseif spr:IsPlaying("2Attack2") then
 				if spr:GetFrame() == 17 then
-					print("once alone")
 					local num = 0
 					--circle
 					for i = 0, 360-360/15, 360/15 do

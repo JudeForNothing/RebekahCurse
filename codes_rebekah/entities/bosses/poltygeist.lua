@@ -277,7 +277,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 				elseif not spr:IsPlaying("Comeback") then
 					spr:Play("Comeback", true)
                     if InutilLib.GetRoomGridCount() >= 9 then data.IsBucketHolding = true end
-                    print(InutilLib.GetRoomGridCount())
                     if data.IsBucketHolding then
                         spr:ReplaceSpritesheet(2, "gfx/effects/giant_bucket.png");
                         spr:LoadGraphics();

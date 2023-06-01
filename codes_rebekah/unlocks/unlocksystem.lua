@@ -8,7 +8,7 @@ local lockedCards = {}
 
 local playerToCompletionManagerName = {
 	[RebekahCurse.TECHNICAL_REB] = "Technical Rebekah",
-	[RebekahCurse.SADREBEKAH] = "Technical B Rebekah",
+	[RebekahCurse.SADREBEKAH] = "Technical RebekahB",
 }
 
 local Achievement = StageAPI.Class("Achievement")
@@ -157,6 +157,8 @@ function Achievement:Unlock(noNote)
 		if canUnlockAchievements or (canUnlockChallengeAchievements and self.Challenge) or (self.AlwaysUnlock and not blockAlwaysUnlock) then
 			self:SetUnlocked(true)
 
+			InutilLib.AnimateIsaacAchievement(self.Note, nil, true)
+
 			--[[if canLock and not noNote then
 				yandereWaifu.QueueAchievementNote(self.Note)
 				yandereWaifu.PostAchievementUpdate(noNote)
@@ -259,7 +261,7 @@ end
 function yandereWaifu.GetAchievementCompletionMarkData(playerType)
 	local out = {}
 	for _, achievement in ipairs(yandereWaifu.ACHIEVEMENT_ORDERED) do
-		if achievement.CompletionMark and achievement.CompletionMark.Player == playerType then
+		if achievement.CompletionMark and achievement.CompletionMark.Player == string.lower(playerType) then
 			out[achievement.CompletionMark.Mark] = {
 				"null",
 				nil,
@@ -269,7 +271,9 @@ function yandereWaifu.GetAchievementCompletionMarkData(playerType)
 			}
 		end
 	end
-
+	--table.insert(out, Quartet, {"", nil, function()  end})
+	--table.insert(out, Duet, {"", nil, function()  end})
+	
 	return out
 end
 
@@ -277,15 +281,8 @@ function yandereWaifu.InitCharacterCompletionMarks()
 	yandereWaifu.InitCharacterCompletion("Technical Rebekah", false)
 	yandereWaifu.AssociateCompletionUnlocks(RebekahCurse.TECHNICAL_REB, yandereWaifu.GetAchievementCompletionMarkData(RebekahCurse.TECHNICAL_REB))
 
-	yandereWaifu.InitCharacterCompletion("Technical B Rebekah", true)
+	yandereWaifu.InitCharacterCompletion("Technical Rebekah", true)
 	yandereWaifu.AssociateCompletionUnlocks(RebekahCurse.SADREBEKAH, yandereWaifu.GetAchievementCompletionMarkData(RebekahCurse.SADREBEKAH))
-
-	--init stuff, i copied some code from FF
-	--mod.InitCharacterCompletion("Fiend", true)
-	--mod.AssociateCompletionUnlocks(yandereWaifu.PLAYER.BIEND, yandereWaifu.GetAchievementCompletionMarkData(yandereWaifu.PLAYER.BIEND))
-
-	--mod.InitCharacterCompletion("Golem", false)
-	--mod.AssociateCompletionUnlocks(yandereWaifu.PLAYER.GOLEM, yandereWaifu.GetAchievementCompletionMarkData(yandereWaifu.PLAYER.GOLEM))
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_,IsContinued)
@@ -553,43 +550,22 @@ end
 -- every other challenge!
 yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, collider)
 	if collider:ToPlayer() then
-		--[[if InutilLib.game.Challenge == mod.challenges.theRealJon then
-			if not yandereWaifu.ACHIEVEMENT.SPARE_RIBS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.SPARE_RIBS:Unlock()
+		if InutilLib.game.Challenge == RebekahCurse.Challenges.TheTrueFamilyGuy then
+			if not yandereWaifu.ACHIEVEMENT.TRUE_FAMILY_GUY:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.TRUE_FAMILY_GUY:Unlock()
+				--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_twin_vision.png", nil, true, 60)
 			end
-		elseif game.Challenge == mod.challenges.dirtyBubble then
-			if not yandereWaifu.ACHIEVEMENT.PETRIFIED_GEL:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.PETRIFIED_GEL:Unlock()
+		elseif InutilLib.game.Challenge == RebekahCurse.Challenges.IdentityCrisis then
+			if not yandereWaifu.ACHIEVEMENT.IDENTITY_CRISIS:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.IDENTITY_CRISIS:Unlock()
+				--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_body_dysmorphia.png", nil, true, 60)
 			end
-		elseif game.Challenge == mod.challenges.frogMode then
-			if not yandereWaifu.ACHIEVEMENT.SLIPPYS_ORGANS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.SLIPPYS_ORGANS:Unlock()
+		elseif InutilLib.game.Challenge == RebekahCurse.Challenges.EasterHunt then
+			if not yandereWaifu.ACHIEVEMENT.EASTER_HUNT:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.EASTER_HUNT:Unlock()
+				--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_body_dysmorphia.png", nil, true, 60)
 			end
-		elseif game.Challenge == mod.challenges.handsOn then
-			if not yandereWaifu.ACHIEVEMENT.RED_HAND:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.RED_HAND:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.isaacRebuilt then
-			if not yandereWaifu.ACHIEVEMENT.DEIMOS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.DEIMOS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.brickByBrick then
-			if not yandereWaifu.ACHIEVEMENT.BRICK_SEPARATOR:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.BRICK_SEPARATOR:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.towerOffense then
-			if not yandereWaifu.ACHIEVEMENT.LAWN_DARTS:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.LAWN_DARTS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.chinaShop then
-			if not mod.ACHIEVEMENT.CHINAS_BELONGINGS:IsUnlocked(true) then
-				mod.ACHIEVEMENT.CHINAS_BELONGINGS:Unlock()
-			end
-		elseif game.Challenge == mod.challenges.theGauntlet then
-			if not mod.ACHIEVEMENT.GAUNTLET_BEATEN:IsUnlocked(true) then
-				mod.ACHIEVEMENT.GAUNTLET_BEATEN:Unlock()
-			end
-		end]]
+		end
 	end
 end, PickupVariant.PICKUP_TROPHY)
 

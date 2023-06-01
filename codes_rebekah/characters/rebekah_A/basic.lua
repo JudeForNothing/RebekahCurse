@@ -30,12 +30,7 @@ local function SetupRebekahData(player, mode) --sets up basic attributes for Reb
 	data.heartReserveFill = 0
 	data.heartReserveMaxFill = 0 
 	data.heartStocks = 0
-	data.heartStocksMax = 0
-
-	print("HOLD UP")
-	print(data.heartStocks)
-	print(data.heartStocksMax)
-	
+	data.heartStocksMax = 0	
 	data.DASH_DOUBLE_TAP:Reset();
 end
 
@@ -98,15 +93,13 @@ function RebeccaInit(player)
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 end
 
-local isTaintedUnlocked = true
-
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--print(player:GetPlayerType())
 	--print(RebekahCurse.SADREBEKAH)
-	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not isTaintedUnlocked then 
+	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then 
 		if InutilLib.game:GetFrameCount() > 1 then
 			--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
 			--[[if InutilLib.game:GetFrameCount() >= 1 then
@@ -1051,11 +1044,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.Rebekahcac
 	
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
-	Isaac.DebugString("b")
-	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not isTaintedUnlocked then 
+	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then 
 		if InutilLib.game:GetFrameCount() > 1 then
 			--print("fellow")
-			InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+			InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/locked_tainted_rebekah.png", nil, true, 300)
 			--print("fellow")
 			player:ChangePlayerType(RebekahCurse.REB_RED)
 			local data = yandereWaifu.GetEntityData(player)
@@ -1064,7 +1056,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 				player.Visible = false
 			end
 			RebekahCurse.ChangeMode( player, RebekahCurse.REBECCA_MODE.RedHearts, true );
-				
+			RebeccaInit(player)
+			
 			--personalized doubletap classes
 			data.DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
 			data.ATTACK_DOUBLE_TAP = InutilLib.DoubleTap:New();
@@ -1073,7 +1066,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 			data.attackMeterFadeStartFrame = -20;
 			data.bonestackMeterFadeStartFrame = 0;
 				
-			RebeccaInit(player)
 			--yandereWaifu.ApplyCostumes( data.currentMode, player );
 
 			if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
@@ -1141,7 +1133,7 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 			if wasFromTaintedLocked then 
 				wasFromTaintedLocked = false
 				--print("fel")
-				InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
+				InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/locked_tainted_rebekah.png", nil, true, 300)
 			end
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
 		--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_20_20, false)

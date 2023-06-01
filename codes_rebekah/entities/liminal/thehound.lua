@@ -131,7 +131,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					end)
 				end
 			elseif data.State == 5 then --finish dashing
-				print(InutilLib.IsFinishedMultiple(spr, "DashEndHori", "DashEndBack", "DashEndFront"))
 				if InutilLib.IsFinishedMultiple(spr, "DashEndHori", "DashEndBack", "DashEndFront") then --reset after done shooting
 					data.State = 1
 				elseif not InutilLib.IsPlayingMultiple(spr, "DashEndHori", "DashEndBack", "DashEndFront") then

@@ -1191,8 +1191,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 		if effData.movementCountFrame <= 0 then
 			local vector = (eff.Position - data.RebHead.Position):Resized(2)
-			print( RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_COOLDOWN)
-			print(data.specialCooldown)
 			data.IsDashActive = false
 			yandereWaifu.GetEntityData(data.RebHead).PickupFrames = 30
 			data.RebHead.Velocity = vector:Resized(15)

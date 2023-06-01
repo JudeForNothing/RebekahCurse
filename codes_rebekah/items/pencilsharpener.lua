@@ -15,9 +15,9 @@ end)
 
 function yandereWaifu.SharpenerFireTearBurst(player, dir, pos)
 	local direction = dir or InutilLib.DirToVec(player:GetFireDirection())
-	print(direction)
+
 	local position = pos or player.Position
-	print(position)
+
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_MARKED) then
 		direction = player:GetAimDirection()
 	end
@@ -50,8 +50,7 @@ InutilLib.AddCustomCallback(yandereWaifu, ILIBCallbacks.MC_POST_PLAYER_TEAR, fun
 			
 			if pldata.PSRPFireCount > PencilSharpenerCount then
 				pldata.PSRPFireCount = 0
-				print(pldata.PSRPFireCount)
-				print(pldata.lastPSRPFrameCount)
+
 				yandereWaifu.SharpenerFireTearBurst(player, player:GetLastDirection())
 			end
 		else

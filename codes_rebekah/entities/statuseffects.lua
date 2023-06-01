@@ -54,7 +54,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
             if data.isIntimidated <= 0 then
                 data.isIntimidated = nil
 				ent:ClearEntityFlags(EntityFlag.FLAG_WEAKNESS)
-				print("bye bye")
 			else
 				if not ent:HasEntityFlags(EntityFlag.FLAG_WEAKNESS) then
 					ent:AddEntityFlags(EntityFlag.FLAG_WEAKNESS)

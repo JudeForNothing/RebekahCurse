@@ -294,25 +294,12 @@ function yandereWaifu:EasterEggsInit(hasstarted) --Init
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.EasterEggsInit)
 
-local enemytbl = {
-		[0] = {type = EntityType.ENTITY_GAPER, variant = 0, subtype = 0},
-		[1] = {type = EntityType.ENTITY_ATTACKFLY, variant = 0, subtype = 0},
-		[2] = {type = EntityType.ENTITY_CHARGER, variant = 0, subtype = 0},
-		[3] = {type = EntityType.ENTITY_CLOTTY, variant = 0, subtype = 0},
-		[4] = {type = EntityType.ENTITY_HORF, variant = 0, subtype = 0},
-		[5] = {variant = RebekahCurse.Enemies.ENTITY_DUSTBUNNY, subtype = 0},
-		[6] = {variant = RebekahCurse.Enemies.ENTITY_BUNBUN, subtype = 0},
-		[7] = {variant = RebekahCurse.Enemies.ENTITY_DUSTBUNNY, subtype = 1},
-		[8] = {variant = RebekahCurse.Enemies.ENTITY_OVUM_EGG, subtype = 0},
-		[9] = {variant = RebekahCurse.Enemies.ENTITY_BUNCARPET, subtype = 0},
-		[10] = {variant = RebekahCurse.Enemies.ENTITY_ROACH, subtype = 0},
-	}
-
+local enemytbl = yandereWaifu.eastereggenemyList
 
 local function UseRandomAmbush(level)
 	for i = 0, 7 do
 		local door = InutilLib.game:GetRoom():GetDoor(i)
-		currentLevelIDX = InutilLib.level:GetCurrentRoomDesc().GridIndex
+		local currentLevelIDX = InutilLib.level:GetCurrentRoomDesc().GridIndex
 		local rng = math.random(0,10)
 		if door then
 			Isaac.Spawn( enemytbl[rng].type, enemytbl[rng].variant, enemytbl[rng].subtype, InutilLib.room:FindFreePickupSpawnPosition(door.Position, 1), Vector(0,0), nil );
@@ -648,7 +635,7 @@ function yandereWaifu:UseWhiteEasterEgg(card, player, flags)
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 				end
 			elseif rng >= 21 and rng <= 25 then
-				for i = 1, 10 do
+				for i = 1, 2 do
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_WILD, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 				end
 			end
@@ -684,7 +671,7 @@ function yandereWaifu:UseRedEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,20)
 			if rng >= 1 and rng <= 5 then
 				for i = 3, math.random(3,6) do
@@ -708,8 +695,7 @@ function yandereWaifu:UseRedEasterEgg2(card, player, flags)
 			local seed = RNG():SetSeed(Game():GetSeeds():GetStartSeed(), 25)
 			local poolItem = InutilLib.game:GetItemPool():GetCollectible(ItemPoolType.POOL_BOSS, true, seed)
     		Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, poolItem, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector.Zero, nil):ToPickup()
-			print(RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME)
-			print("GOOOOOOOO")
+
 		end
 	end
 end
@@ -722,7 +708,7 @@ function yandereWaifu:UseAquaEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,30)
 			if rng >= 1 and rng <= 5 then
 				for i = 1, math.random(2,5) do
@@ -766,7 +752,7 @@ function yandereWaifu:UseYellowEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,20)
 			if rng >= 1 and rng <= 5 then
 				for i = 1, math.random(3,4) do
@@ -802,7 +788,7 @@ function yandereWaifu:UseGreenEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,20)
 			if rng >= 1 and rng <= 5 then
 				for j = 3, math.random(9,19) do
@@ -834,7 +820,7 @@ function yandereWaifu:UseBlueEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,20)
 			if rng >= 1 and rng <= 5 then
 				for j = 1, math.random(3,6) do
@@ -870,7 +856,7 @@ function yandereWaifu:UsePinkEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,50)
 			if rng >= 1 and rng <= 5 then
 				for j = 1, math.random(1,3) do
@@ -926,7 +912,7 @@ function yandereWaifu:UseOrangeEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,25)
 			if rng >= 1 and rng <= 5 then
 				for j = 1, math.random(1,9) do
@@ -966,7 +952,7 @@ function yandereWaifu:UseWhiteEasterEgg2(card, player, flags)
 	if rng > 8 then
 		UseRandomSeedEffect(player)
 	else
-		if rng < 7 then
+		if rng < 8 then
 			local rng = math.random(1,25)
 			if rng >= 1 and rng <= 5 then
 				for j = 1, math.random(1,3) do
@@ -985,7 +971,7 @@ function yandereWaifu:UseWhiteEasterEgg2(card, player, flags)
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_DICE_SHARD, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 				end
 			elseif rng >= 21 and rng <= 25 then
-				for i = 1, 10 do
+				for i = 1, 3 do
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, Card.CARD_WILD, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 				end
 			end

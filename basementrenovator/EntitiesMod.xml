@@ -26,5 +26,6 @@
 	<entity  Group="Thirft Shop" ID="620" Image="entities/dusthair.png" Kind="Cursed and Heartbroken" Name="Dusthair" Subtype="1" Variant="234" />
 	<entity  Group="Thirft Shop" ID="620" Image="entities/pompoms.png" Kind="Cursed and Heartbroken" Name="Pom Poms" Subtype="0" Variant="235" />
 	<entity  Group="Thirft Shop" ID="620" Image="entities/thepuff.png" Kind="Cursed and Heartbroken" Name="The Puff" Subtype="0" Variant="236" />
+	<entity  Group="Thirft Shop" ID="620" Image="entities/thedemonlordess.png" Kind="Cursed and Heartbroken" Name="The Demon Lordess" Subtype="0" Variant="237" />
 
 </data>

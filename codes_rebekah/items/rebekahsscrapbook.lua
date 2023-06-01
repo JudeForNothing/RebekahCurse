@@ -21,7 +21,7 @@ local entities = {
 function yandereWaifu:useRebekahsScrapbook(collItem, rng, player)
 	local data = yandereWaifu.GetEntityData(player)
 	local enti = entities[math.random(1, #entities)]
-	print(enti)
+
 	local ent = Isaac.Spawn( RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, enti, 0, player.Position, Vector(0,0), player );
 	ent:AddEntityFlags(EntityFlag.FLAG_CHARM | EntityFlag.FLAG_FRIENDLY | EntityFlag.FLAG_PERSISTENT)
 	yandereWaifu.GetEntityData(ent).CharmedToParent = player

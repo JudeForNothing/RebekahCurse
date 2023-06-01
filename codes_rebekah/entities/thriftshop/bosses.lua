@@ -435,7 +435,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
             if not spr:IsPlaying("Idle") then
                 spr:Play("Idle", true)
             end
-            if math.random(1,3) == 3 and ent.FrameCount % 30 == 0 then
+            if math.random(1,3) == 3 and ent.FrameCount % 15 == 0 then
                 local rng = math.random(1,2)
                 if rng == 1 and ent.HitPoints < ent.MaxHitPoints - ent.MaxHitPoints/3 and #Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_DUSTBUNNY, 1) <= 1 then
                     data.State = 3

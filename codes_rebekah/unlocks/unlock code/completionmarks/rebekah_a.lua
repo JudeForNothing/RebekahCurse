@@ -75,13 +75,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 						if not roomWasCleared and roomIsClear and roomType == RoomType.ROOM_BOSS and room:IsCurrentRoomLastBoss() then
 							if not yandereWaifu.ACHIEVEMENT.LOVE_POWER:IsUnlocked() then --greed
 								yandereWaifu.ACHIEVEMENT.LOVE_POWER:Unlock()
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_love_power.png", nil, true, 60)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_love_power.png", nil, true, 60)
 							end
 							if InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then 
 								if not yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:IsUnlocked() then --greedier
 									yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:Unlock()
 
-									InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rebekahs_camera.png", nil, true, 60)
+									--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rebekahs_camera.png", nil, true, 60)
 								end
 							end
 						end
@@ -93,7 +93,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 					if roomType == RoomType.ROOM_BOSSRUSH and room:IsAmbushDone() then
 						if not yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then
 							yandereWaifu.ACHIEVEMENT.LUNCHBOX:Unlock()
-							InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_lunchbox.png", nil, true, 60)
+							--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_lunchbox.png", nil, true, 60)
 						end
 					end
 				end--do other unlocks if the other methods didnt work
@@ -105,20 +105,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 						if not yandereWaifu.ACHIEVEMENT.MIRACULOUS_WOMB:IsUnlocked() then
 							yandereWaifu.ACHIEVEMENT.MIRACULOUS_WOMB:Unlock()
 
-							InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_miraculous_womb.png", nil, true)
+							--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_miraculous_womb.png", nil, true, 60)
 						end
 					elseif currentStage == 10 then
 						if currentStageType == 1 then --cathedral
 							if not yandereWaifu.ACHIEVEMENT.DICE_OF_FATE:IsUnlocked() then
 								yandereWaifu.ACHIEVEMENT.DICE_OF_FATE:Unlock()
-
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_dice_of_fate.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_dice_of_fate.png", nil, true, 60)
 							end
 						elseif currentStageType == 0 then --sheol
 							if not yandereWaifu.ACHIEVEMENT.CURSED_SPOON:IsUnlocked() then
 								yandereWaifu.ACHIEVEMENT.CURSED_SPOON:Unlock()
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_cursed_spoon.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_cursed_spoon.png", nil, true, 60)
 							end
 						end
 					elseif currentStage == 11 then
@@ -127,33 +126,33 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 							if not yandereWaifu.ACHIEVEMENT.REBEKAHS_ROOM:IsUnlocked() then
 								yandereWaifu.ACHIEVEMENT.REBEKAHS_ROOM:Unlock()
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rebekahs_room.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rebekahs_room.png", nil, true, 60)
 							end
 						elseif currentStageType == 1 then --chest
 							if not yandereWaifu.ACHIEVEMENT.ISAACS_LOCKS:IsUnlocked() then
 								yandereWaifu.ACHIEVEMENT.ISAACS_LOCKS:Unlock()
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_isaacs_locks.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_isaacs_locks.png", nil, true, 60)
 							end
 						elseif currentStageType == 0 then --dark room
 							if not yandereWaifu.ACHIEVEMENT.ETERNAL_BOND:IsUnlocked() then
 								yandereWaifu.ACHIEVEMENT.ETERNAL_BOND:Unlock()
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_eternal_bond.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_eternal_bond.png", nil, true, 60)
 							end
 						end
 					elseif currentStage == 9 then --blue womb
-						if not yandereWaifu.ACHIEVEMENT.TYPICAL_ROMCOM:IsUnlocked() then
-							yandereWaifu.ACHIEVEMENT.TYPICAL_ROMCOM:Unlock()
+						if not yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:IsUnlocked() then
+							yandereWaifu.ACHIEVEMENT.REBEKAHS_CAMERA:Unlock()
 
-							InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_typical_romcom.png", nil, true)
+							--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rebekahs_camera.png", nil, true, 60)
 						end
 					elseif currentStage == 12 then --the void
 						if deliriumWasInRoom then
 							if not yandereWaifu.ACHIEVEMENT.WIKEPIDIA:IsUnlocked() then
 								yandereWaifu.ACHIEVEMENT.WIKEPIDIA:Unlock()
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_snap.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_wikepidia.png", nil, true, 60)
 							end
 		
 						end
@@ -165,7 +164,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				if not yandereWaifu.ACHIEVEMENT.UNREQUITED_LOVE:IsUnlocked() and istrue then
 					yandereWaifu.ACHIEVEMENT.UNREQUITED_LOVE:Unlock()
 
-					InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_unrequited_love.png", nil, true)
+					--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_unrequited_love.png", nil, true, 60)
 				end
 			end
 		end
@@ -193,13 +192,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 							if not CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE then --greed
 								CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_love_power.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_love_power.png", nil, true)
 							end
 							if game.Difficulty == Difficulty.DIFFICULTY_GREEDIER then --ier
 								if not CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK then
 									CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK = true
 
-									InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lovesick.png", nil, true)
+									--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lovesick.png", nil, true)
 								end
 							end
 						end
@@ -212,7 +211,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 						if not CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX then
 							CurrentRebeccaUnlocks.COLLECTIBLE_LUNCHBOX = true
 
-							InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lunchbox.png", nil, true)
+							--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_lunchbox.png", nil, true)
 						end
 					end
 				end
@@ -226,20 +225,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 						if not CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then
 							CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB = true
 
-							InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_miraculous_womb.png", nil, true)
+							--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_miraculous_womb.png", nil, true)
 						end
 					elseif currentStage == 10 then
 						if currentStageType == 1 then --cathedral
 							if not CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE then
 								CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_dice_of_fate.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_dice_of_fate.png", nil, true)
 							end
 						elseif currentStageType == 0 then --sheol
 							if not CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON then
 								CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_cursed_spoon.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_cursed_spoon.png", nil, true)
 							end
 						end
 					elseif currentStage == 11 then
@@ -248,33 +247,33 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 							if not CurrentRebeccaUnlocks.HAS_LOVERS_CARD then
 								CurrentRebeccaUnlocks.HAS_LOVERS_CARD = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_rebekahsfatesealed.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_rebekahsfatesealed.png", nil, true)
 							end
 						elseif currentStageType == 1 then --chest
 							if not CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND then
 								CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_eternal_bond.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_eternal_bond.png", nil, true)
 							end
 						elseif currentStageType == 0 then --dark room
 							if not CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS then
 								CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_isaacs_locks.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_isaacs_locks.png", nil, true)
 							end
 						end
 					elseif currentStage == 9 then --blue womb
 						if not CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM then
 							CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM = true
 
-							InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_typical_romcom.png", nil, true)
+							--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_typical_romcom.png", nil, true)
 						end
 					elseif currentStage == 12 then --the void
 						if deliriumWasInRoom then
 							if not CurrentRebeccaUnlocks.COLLECTIBLE_SNAP then
 								CurrentRebeccaUnlocks.COLLECTIBLE_SNAP = true
 
-								InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_snap.png", nil, true)
+								--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_snap.png", nil, true)
 							end
 		
 						end
@@ -286,7 +285,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				if not CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE and istrue then --EVERYONE
 					CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE = true
 
-					InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_unrequited_love.png", nil, true)
+					--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/achievement_unrequited_love.png", nil, true)
 				end
 			end
 		end
@@ -300,42 +299,42 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isSaveGa
 end)
 
 --item pool unlockables!
---[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	local itemPool = InutilLib.game:GetItemPool()
-	if CurrentRebeccaUnlocks then
+	--if CurrentRebeccaUnlocks then
 		if not yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then --boss rush
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LUNCHBOX)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then --it lives
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_MIRACULOUSWOMB then --it lives
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_MIRACULOUSWOMB)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON then --satan
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_CURSEDSPOON then --satan
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_CURSEDSPOON)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_DICEOFFATE then --isaac
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_DICEOFFATE then --isaac
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_DICEOFFATE)
 		end
-		if not CurrentRebeccaUnlocks.TRINKET_ISAACSLOCKS then --lamb
-			itemPool:RemoveTrinket(TRINKET_ISAACSLOCKS)
+		if not yandereWaifu.ACHIEVEMENT.TRINKET_ISAACSLOCKS then --lamb
+			itemPool:RemoveTrinket(RebekahCurse.Trinkets.TRINKET_ISAACSLOCKS)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_ETERNALBOND then --???
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_ETERNALBOND then --???
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_ETERNALBOND)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_POWERLOVE then --greed
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_POWERLOVE then --greed
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_POWERLOVE)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_LOVESICK then --ier
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_LOVESICK then --ier
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LOVESICK)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_ROMCOM then --hush
-			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_ROMCOM)
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_ROMCOM then --hush
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_REBEKAHSCAMERA)
 		end
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_SNAP then --delirium
-			itemPool:RemoveCollectible(CRebekahCurseItems.OLLECTIBLE_SNAP)
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_WIKEPIDIA then --delirium
+			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA)
 		end
 		
-		if not CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE then --IF ALL
+		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_UNREQUITEDLOVE then --IF ALL
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE)
 		end
-	end
-end)]]
+	--end
+end)

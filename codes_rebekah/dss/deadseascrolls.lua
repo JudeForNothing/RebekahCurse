@@ -1,5 +1,8 @@
 local json = require("json")
 
+local isUnlockingAll
+local areYouSureUnlockTag
+
 local cached_saved_data
 function yandereWaifu.GetMenuSaveData()
 	local data
@@ -140,11 +143,9 @@ completionDoor:SetFrame("Fiend", 0)
 local completionCharacterSets = {
     {
         {HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return true end},
-        --{HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
     },
     {
-        {HeadName = "Tainted Rebekah", PlayerID = RebekahCurse.SADREBEKAH, IsUnlocked = function() return true end},
-        --{HeadName = "Rebekah", PlayerID = RebekahCurse.TECHNICAL_REB, IsUnlocked = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
+        {HeadName = "Tainted Rebekah", PlayerID = RebekahCurse.SADREBEKAH, IsUnlocked = function() return yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() end},
     }
 }
 
@@ -186,6 +187,11 @@ local achievementGroups = {
         Name = "challenge",
         Tag = "Challenge",
         Icon = "challenge"
+    },
+    {
+        Name = "tainted rebekah",
+        Tag = "Tainted Rebekah",
+        Icon = "tainted rebekah"
     },
     {
         Name = "everything",
@@ -754,14 +760,14 @@ local rebekahdirectory = {
             {str = "", nosel = true},
             {str = "rebekah", fsize = 3, dest = "rebekahaunlocks"},
 
-            --[[
-            {str = "tainted fiend", fsize = 3, dest = "biendunlocks", displayif = function() return FiendFolio.ACHIEVEMENT.BIEND:IsUnlocked() end},
-            {str = "golem", fsize = 3, dest = "golemunlocks"},
+            {str = "tainted rebekah", fsize = 3, dest = "rebekahbunlocks", displayif = function() return yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() end},
             {str = "", nosel = true},
+            {str = "", nosel = true},
+
             {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Character" isUnlockingAll = true end},
             {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Character" isUnlockingAll = false end},
             {str = "", nosel = true},
-
+            
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "", fsize = 1, nosel = true},
             {str = "challenge unlocks", fsize = 3, nosel = true},
@@ -780,7 +786,7 @@ local rebekahdirectory = {
             {insertUnlockTag = "Misc"},
             {str = "", fsize = 3, nosel = true},
             {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Misc" isUnlockingAll = true end},
-            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Misc" isUnlockingAll = false end},]]
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Misc" isUnlockingAll = false end},
         },
     },
     ---
@@ -956,6 +962,8 @@ local rebekahdirectory = {
             {strpair = {{str = 'sgjd01', color = 3}, {str = 'code reference'}}},
             {strpair = {{str = 'tainted treasures', color = 3}, {str = 'code reference'}}},
             {strpair = {{str = 'fiend folio', color = 3}, {str = 'code reference'}}},
+            {strpair = {{str = 'gabbygamefan', color = 3}, {str = 'encouragement'}}},
+            {strpair = {{str = 'iristeru', color = 3}, {str = 'encouragement'}}},
             {str = 'gorange'},
 			{str = '', nosel = true},
 			{str = 'and especially you!', fsize = 3},
@@ -968,13 +976,12 @@ local rebekahdirectory = {
         fsize = 2,
         buttons = {
             {str = "", nosel = true},
-            --{str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
+            {str = "completion note", fsize = 3, dest = "rebekahacompletion", tooltip = completionNoteTip},
             {str = "", nosel = true},
-            {str = "-----------------", fsize = 3, nosel = true},
+            --{str = "-----------------", fsize = 3, nosel = true},
             {str = "", fsize = 1, nosel = true},
-            --{insertUnlockTag = "RebekahB"},
             {str = "", nosel = true},
-            {str = "-----------------", fsize = 3, nosel = true},
+            --{str = "-----------------", fsize = 3, nosel = true},
             {str = "personalities", fsize = 3, dest = "rebekahapersonalityunlocks"},
             {str = "-----------------", fsize = 3, nosel = true},
             {str = "", fsize = 1, nosel = true},
@@ -985,22 +992,13 @@ local rebekahdirectory = {
             {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = true end},
             {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
             {str = "", nosel = true},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
-            {str = "-----------------", fsize = 3},
         }
     },
     rebekahacompletion = {
         title = "rebekah completion",
         fsize = 2,
         buttons = {
-            {
+            --[[{
                 str = "mom's heart / it lives",
                 choices = {"uncompleted", "completed: normal", "completed: hard"},
                 variable = "fiend_heart",
@@ -1015,7 +1013,7 @@ local rebekahdirectory = {
                 end,
 
                 tooltip = {strset = {"lil fiend", "", "unlocks on", "hard"}}
-            },
+            },]]
             {str = "", fsize = 1, nosel = true},
             {
                 str = "isaac",
@@ -1209,17 +1207,278 @@ local rebekahdirectory = {
             {str = "", nosel = true},
         },
     },
+    rebekahbunlocks = {
+        title = "tainted unlocks",
+        fsize = 2,
+        buttons = {
+            {str = "", nosel = true},
+            {str = "completion note", fsize = 3, dest = "rebekahbcompletion", tooltip = completionNoteTip},
+            {str = "", nosel = true},
+            --{str = "personalities", fsize = 3, dest = "rebekahapersonalityunlocks"},
+            {str = "-----------------", fsize = 3, nosel = true},
+            {str = "", fsize = 1, nosel = true},
+            {str = "item unlocks", fsize = 3, nosel = true},
+            {str = "", fsize = 3, nosel = true},
+            {insertUnlockTag = "Tainted Rebekah"},
+            {str = "", nosel = true},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Tainted Rebekah" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Tainted Rebekah" isUnlockingAll = false end},
+            {str = "", nosel = true},
+        }
+    },
+    rebekahbcompletion = {
+        title = "rebekah completion",
+        fsize = 2,
+        buttons = {
+            {
+                str = "mom's heart / it lives",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_heart",
+                setting = 1,
+
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].heart + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].heart = var - 1
+                end,
+
+                tooltip = {strset = {"no unlock"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "isaac",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_isaac",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].isaac + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].isaac = var - 1
+                end,
+
+                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "???",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_bluebaby",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].bbaby + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].bbaby = var - 1
+                end,
+
+                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "satan",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_satan",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].satan + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].satan = var - 1
+                end,
+
+                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "the lamb",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_lamb",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].lamb + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].lamb = var - 1
+                end,
+
+                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "boss rush",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_rush",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].rush + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].rush = var - 1
+                end,
+
+                tooltip = {strset = {"soul of", "fiend", "", "duet:", "beat boss", "rush and hush", "on normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "hush",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_hush",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].hush + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].hush = var - 1
+                end,
+
+                tooltip = {strset = {"soul of", "fiend", "", "duet:", "beat boss", "rush and hush", "on normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "mega satan",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_megasatan",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].mega + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].mega = var - 1
+                end,
+
+                tooltip = {strset = {"dire chest", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "ultra greed(ier)",
+                choices = {"uncompleted", "completed: greed", "completed: greedier"},
+                variable = "rebekahb_greed",
+                setting = 1,
+
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].greed + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].greed = var - 1
+                end,
+
+                tooltip = {strset = {"+3 fireballs?", "", "unlocks on", "greedier"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "delirium",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_delirium",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].deli + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].deli = var - 1
+                end,
+
+                tooltip = {strset = {"malice", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "mother",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_mother",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].mother + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].mother = var - 1
+                end,
+
+                tooltip = {strset = {"hatred", "", "unlocks on", "normal+"}}
+            },
+            {str = "", fsize = 1, nosel = true},
+            {
+                str = "beast",
+                choices = {"uncompleted", "completed: normal", "completed: hard"},
+                variable = "rebekahb_beast",
+                setting = 1,
+                
+                load = function()
+                    return RebekahLocalSavedata.CompletionMarks["technical rebekahb"].beast + 1 or 1
+                end,
+
+                store = function(var)
+                    RebekahLocalSavedata.CompletionMarks["technical rebekahb"].beast = var - 1
+                end,
+
+                tooltip = {strset = {"modern", "ouroboros", "", "unlocks on", "normal+"}}
+            }
+        },
+    },
     rebekahapersonalityunlocks = {
         title = "personality unlocks",
         fsize = 2,
         buttons = {
             {insertUnlockTag = "Rebekah Character"},
             {str = "", nosel = true},
-            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = true end},
-            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah" isUnlockingAll = false end},
+            {str = "unlock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah Character" isUnlockingAll = true end},
+            {str = "lock all", dest = "areyousure", func = function() areYouSureUnlockTag = "Rebekah Character" isUnlockingAll = false end},
             {str = "", nosel = true},
         }
-    }
+    },
+    areyousure = {
+        title = "are you sure?",
+        buttons = {
+            {str = "", nosel = true},
+            {str = "", nosel = true},
+            {str = "no", action = "back", glowcolor = 3},
+            {str = "", fsize = 2, nosel = true},
+            {
+                str = "yes",
+                action = "back",
+
+                func = function(button, item, root)
+                    local achievements = yandereWaifu.GetAchievementsWithTag(areYouSureUnlockTag)
+                    for _, achievement in ipairs(achievements) do
+                        if isUnlockingAll == true then
+                            achievement:Unlock(true)
+                        else
+                            achievement:SetUnlocked(false)
+                        end
+                    end
+
+                    dssmod.reloadButtons(root, root.Directory.fiendunlocks)
+                    dssmod.reloadButtons(root, root.Directory.biendunlocks)
+                    dssmod.reloadButtons(root, root.Directory.golemunlocks)
+                    dssmod.reloadButtons(root, root.Directory.unlocksmanager)
+                end,
+            },
+
+            {str = "", nosel = true},
+            {str = "you will have to start a new run in", nosel = true, fsize = 1, glowcolor = 3},
+            {str = "order for these changes to take effect", nosel = true, fsize = 1, glowcolor = 3},
+        },
+    },
 }
 
 local function insertUnlockTags(item)
@@ -1243,6 +1502,7 @@ end
 insertUnlockTags(rebekahdirectory.unlockmanager)
 insertUnlockTags(rebekahdirectory.rebekahaunlocks)
 insertUnlockTags(rebekahdirectory.rebekahapersonalityunlocks)
+insertUnlockTags(rebekahdirectory.rebekahbunlocks)
 
 local rebekahdirectorykey = {
     Item = rebekahdirectory.main,

@@ -704,3 +704,41 @@ function yandereWaifu:RebekahSoulStoneCache(player, cacheF) --The thing the chec
     end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.RebekahSoulStoneCache)
+
+local antiRecursion
+
+local function isRebekahCurseStones(stone)
+    if stone == RebekahCurse.Cards.SOUL_REBEKAHCURSED or
+    stone == RebekahCurse.Cards.SOUL_REBEKAHBLIND or
+    stone == RebekahCurse.Cards.SOUL_REBEKAHDARKNESS or
+    stone == RebekahCurse.Cards.SOUL_REBEKAHLABYRINTH or
+    stone == RebekahCurse.Cards.SOUL_REBEKAHLOST or
+    stone == RebekahCurse.Cards.SOUL_REBEKAHUNKNOWN or
+    stone == RebekahCurse.Cards.SOUL_REBEKAHMAZE then
+        return true
+    else
+        return false
+    end
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRune, forceRune)
+	--if (yandereWaifu.IsCardLocked(card) or yandereWaifu.NoCardNaturalSpawn(card)) and not antiRecursion then
+    
+		antiRecursion = true
+
+		local itempool = InutilLib.game:GetItemPool()
+		local new
+		local i = 0
+
+		repeat
+			i = i + 1
+			new = itempool:GetCard(rng:GetSeed() + i, canSuit, canRune, forceRune)
+            --print("test")
+            --print(rng:GetSeed() + i)
+		until not (isRebekahCurseStones(new))
+
+		antiRecursion = false
+
+		return new
+	--end
+end)

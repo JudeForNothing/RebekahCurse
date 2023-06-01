@@ -288,9 +288,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         spr:Play("Walk", true)
                     else
                         if not InutilLib.room:CheckLine(ent.Position, player.Position, 0, 0) then
-                            InutilLib.FollowPath(ent, player, data.path, 1.5, 0.9)
+                            InutilLib.FollowPath(ent, player, data.path, 1, 0.9)
                         else
-                            InutilLib.MoveDirectlyTowardsTarget(ent, player, 1.5, 0.9)
+                            InutilLib.MoveDirectlyTowardsTarget(ent, player, 1, 0.9)
                         end
                     end
                 else

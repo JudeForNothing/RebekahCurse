@@ -61,7 +61,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end]]
     end
     if item then
-        print("data.CacheReaction")
         data.CacheReaction = 30
         data.item = item
         item = nil

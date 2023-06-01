@@ -63,7 +63,7 @@ function yandereWaifu.BrokenRebekahDash(player, vel)
 	elseif not yandereWaifu.GetOrangeMirror() and not yandereWaifu.GetBlueMirror() then
 		yandereWaifu.GetEntityData(customBody).IsOrange = true
 	end
-	print(data.BrokenPortal)
+
 end
 
 --[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,tear)
@@ -154,7 +154,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) then --if firing
 			if math.random(1,10) + player.Luck >= 10 and player.FrameCount % 30 == 0 then
 				local mode = math.random(1,8)
-				print(mode)
 				if mode == 1 then
 					--yandereWaifu.RebekahRedNormalBarrage(player, data, player:GetShootingInput(), 40, 1, 0)
 					yandereWaifu.DoExtraBarrages(player, 1)

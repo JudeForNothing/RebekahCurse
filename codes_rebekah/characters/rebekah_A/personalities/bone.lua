@@ -977,7 +977,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 										elseif player:GetHeadColor() == SkinColor.SKIN_GREY then
 											skincolor = "_grey"
 										end
-										print(skincolor)
+
 										fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/corpse_eater_rider"..tostring(skincolor)..".png")
 										fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/corpse_eater_rider"..tostring(skincolor)..".png")
 									end
@@ -1071,7 +1071,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			end
 			if data.Dashing then
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
-					print(InutilLib.room:GetGridIndex((fam.Position)+ (data.DashVector*50)))
 					local grid = InutilLib.room:GetGridEntity(InutilLib.room:GetGridIndex((fam.Position)+ (data.DashVector*50))) --grids around that Rebecca stepped on
 					if grid ~= nil then 
 						--print( grid:GetType())

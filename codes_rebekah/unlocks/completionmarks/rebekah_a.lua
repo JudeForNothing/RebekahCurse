@@ -60,7 +60,7 @@ end
 local bossRushWasCompleted = false
 local ultraGreedWasDefeated = false
 local roomWasCleared = false
---boss rush
+--[[boss rush
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 
 	local room = InutilLib.game:GetRoom()
@@ -104,7 +104,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		end
 	end
 	roomWasCleared = roomIsClear
-end)
+end)]]
 
 --[[
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()

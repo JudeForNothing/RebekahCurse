@@ -2028,12 +2028,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 			end
 		end
 	elseif spr:IsFinished("Throw") then
-		print("go here?")
 		if fam.SubType == 3 then
 			spr:Play("Idle", true)
 		elseif fam.SubType == 20 then
 			spr:Play("Idle", true)
-			print("in here?")
 		else
 			spr:Play("March", true)
 		end
@@ -3202,7 +3200,6 @@ function yandereWaifu:LevelUpNeds()
 					elseif ned.Variant == RebekahCurse.ENTITY_SQUIRENED then
 						for s = 0, 50 do
 							if ned.SubType == s and AvailableKnights[ned.SubType] then
-								print(ned.SubType)
 								--print("amogus"..ned.SubType)
 								--print(AvailableKnights[1][4])
 								--print(AvailableKnights[4][4])

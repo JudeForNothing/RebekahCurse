@@ -133,7 +133,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
                 end
             end
             if data.AloofDidDropLikeTheGoofballSheIs then
-                print(data.AloofDidDropframecount)
                 if data.AloofDidDropframecount == 42*2 then
                     print(player:GetSprite():GetOverlayFrame() )
                     data.AloofDidDropLikeTheGoofballSheIs = false

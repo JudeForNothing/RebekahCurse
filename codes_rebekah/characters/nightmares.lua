@@ -75,8 +75,6 @@ local function spawnRebekahTrapdoor(gridIndex)
 		levelStage = levelStage + 1
 	end
 	
-    print("house pet")
-    print(InutilLib.level:GetStage() % 2)
 	local stage
         local isRepPath = false
         local decrement = 0
@@ -122,7 +120,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 				InutilLib.room:Update()
 				
 				spawnRebekahTrapdoor(i)
-				print("sack")
 				
                 table.insert(RebekahLocalSavedata.Data.rebekahTrapdoors, {ListIndex=InutilLib.level:GetCurrentRoomDesc().ListIndex, GridIndex=i})
 			end

@@ -100,8 +100,7 @@ function GeneratePlatformRoom(isRoom)
                 isspawningPlatform = true
             end
             if not RebekahLocalSavedata.Data.HasPlatformItemsTaken then
-                print(RebekahLocalSavedata.Data.HasPlatformItems)
-                print("balls")
+
                 if isRoom then
                     print("A")
                     if not RebekahLocalSavedata.Data.HasPlatformItems then

@@ -237,7 +237,7 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 	local playerType = player:GetPlayerType()
 	local data = yandereWaifu.GetEntityData(player)
 	if playerType == RebekahCurse.SADREBEKAH 
-	and playerCount == 1 then
+	and playerCount == 1 and yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then
 		yandereWaifu:ShowTaintedPersonalityBook()
 		hasSelectedPersonality = false
 		savedItems = {}

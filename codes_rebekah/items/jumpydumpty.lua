@@ -58,7 +58,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_BOMB_COLLISION, function(_,  bb, co
     local data = yandereWaifu.GetEntityData(bb)
     if data.IsJumpyDumptyBombs --[[and data.IsSmall]] then
 		if collider:IsEnemy() then
-			print("bells")
             if not data.hasbeentouchcc then
                  bb:SetExplosionCountdown(1)
                  data.hasbeentouchcc = true

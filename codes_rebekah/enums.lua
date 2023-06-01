@@ -186,7 +186,7 @@ RebekahCurse = {
 	REB_BROKEN = Isaac.GetPlayerTypeByName("Broken Rebekah"),
 	REB_IMMORTAL = Isaac.GetPlayerTypeByName("Immortal Rebekah"),
 	
-	SADREBEKAH = Isaac.GetPlayerTypeByName("Technical B Rebekah", true),
+	SADREBEKAH = Isaac.GetPlayerTypeByName("Technical Rebekah", true),
 	REB_CURSED = Isaac.GetPlayerTypeByName("Cursed Rebekah", true),
 	WISHFUL_ISAAC = Isaac.GetPlayerTypeByName("Wishful Isaac", false),
 	HAPPYJACOB = Isaac.GetPlayerTypeByName("Happy Jacob", false),
@@ -1119,3 +1119,18 @@ if StageAPI and StageAPI.Loaded then
 	ControlsOffset = nil
 	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
 end
+
+yandereWaifu.eastereggenemyList = {
+    [1] = {type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, variant = RebekahCurse.Enemies.ENTITY_DUSTBUNNY, subtype = 0},
+    [2] = {type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, variant = RebekahCurse.Enemies.ENTITY_BUNBUN, subtype = 0},
+    [3] = {type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, variant = RebekahCurse.Enemies.ENTITY_DUSTBUNNY, subtype = 1},
+    [4] = {type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, variant = RebekahCurse.Enemies.ENTITY_OVUM_EGG, subtype = 0},
+    [5] = {type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, variant = RebekahCurse.Enemies.ENTITY_BUNCARPET, subtype = 0},
+    [6] = {type = RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, variant = RebekahCurse.Enemies.ENTITY_ROACH, subtype = 0},
+    [7] = {type = EntityType.ENTITY_GUSHER, variant = 0, subtype = 0},
+    [8] = {type = EntityType.ENTITY_MULLIGAN, variant = 0, subtype = 0},
+    [9] = {type = EntityType.ENTITY_MAGGOT, variant = 0, subtype = 0},
+    [10] = {type = EntityType.ENTITY_HORF, variant = 0, subtype = 0},
+    [11] = {type = EntityType.ENTITY_ATTACKFLY, variant = 0, subtype = 0},
+    [12] = {type = EntityType.ENTITY_SUCKER, variant = 0, subtype = 0},
+}

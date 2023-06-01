@@ -203,10 +203,7 @@ if StageAPI and StageAPI.Loaded then
             local try = 20
 
             while #avaiableDoorSlots <= 0 and try > 0 do
-                print("peen")
-                print(#avaiableDoorSlots)
                 local validRoom = yandereWaifu.ThriftShop.GetRandomValidRoom(rng)
-                print("second rate")
 
                 --if #validRooms > 0 then
                 thriftshopDoorDesc = validRoom --validRooms[StageAPI.Random(1, #validRooms, rng)]
@@ -216,17 +213,12 @@ if StageAPI and StageAPI.Loaded then
                 RebekahLocalSavedata.Data.thriftShopDoorRoomDimension = nil
                 RebekahLocalSavedata.Data.thriftShopDoorRoomIndex = thriftshopDoorDesc.GridIndex
                 RebekahLocalSavedata.Data.hasThriftShopDoor = true
-                print(thriftshopDoorDesc.GridIndex)
                 avaiableDoorSlots = yandereWaifu.GetRoomDoorSlotsToOverride(thriftshopDoorDesc.GridIndex)
 
                 try = try - 1
             end
             if #avaiableDoorSlots > 0 then
-                print("PASSED")
                 local slot = avaiableDoorSlots[StageAPI.Random(1, #avaiableDoorSlots, rng)]
-
-                Isaac.DebugString("zenith")
-                Isaac.DebugString(tostring(slot))
 
                 RebekahLocalSavedata.Data.thriftShopDoorRoomSlot = slot
                 RebekahLocalSavedata.Data.thriftShopRoomIndex = yandereWaifu.GetRoomIdxRelativeToSlot(thriftshopDoorDesc, slot)

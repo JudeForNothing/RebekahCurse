@@ -321,8 +321,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		--devil deal stuff
 		if data.PersistentPlayerData.currentQueuedDevilItemPrice then
             local price = data.PersistentPlayerData.currentQueuedDevilItemPrice
-			print("end")
-			print(data.PersistentPlayerData.currentQueuedDevilItemPrice)
             local heartCost = 25
 			local heartSoulCost = 15
             if price == -1 then

@@ -2,7 +2,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_USE_PILL, function(_, effect, player, f
     local pillColour = player:GetPill(0)
 	local holdingHorsePill = pillColour & PillColor.PILL_GIANT_FLAG > 0
     --if PillColor.PILL_GIANT_FLAG
-    print(holdingHorsePill)
     if effect == RebekahCurse.Pills.GOOSEBUMPS then
         local multiplier = 1
         if holdingHorsePill then multiplier = 2 end

@@ -976,7 +976,12 @@ local eastereggtbl = {
 function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)
 	local rng 
 	if tier == 1 then
-		rng = math.random(0,15)
+		local rng2 = math.random(2)
+		if rng2 == 2 then
+			rng = math.random(0,15)
+		else
+			rng = math.random(0,7)
+		end
 	elseif tier == 2 then
 		rng = math.random(16,18)
 	else

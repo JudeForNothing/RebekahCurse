@@ -33,7 +33,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             data.PersistentPlayerData.FullMilkMutantSpiderCount = data.PersistentPlayerData.FullMilkMutantSpiderCount + player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER)
             for i = 1, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_MUTANT_SPIDER) do
                 player:RemoveCollectible(CollectibleType.COLLECTIBLE_MUTANT_SPIDER)
-                print("balls")
             end
             player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
 			player:EvaluateItems()
@@ -297,7 +296,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
                 pldata.AntiRecursiveFullMilk = false
             else
                 pldata.FullFatTearDmg = pldata.FullFatTearDmg + (player.Damage * 20)
-                print(pldata.FullFatTearDmg)
                 --pldata.FullFatTear.DamageSource = pldata.FullFatTear.DamageSource + player.Damage/2
                 eff:Remove()
             end

@@ -2341,7 +2341,16 @@ if not InutilLib then
 		if shape == RoomShape.ROOMSHAPE_LTR or shape == RoomShape.ROOMSHAPE_LTL then
 			pos.Y = pos.Y - 140
 		end
+		
 		return Isaac.WorldToRenderPosition(pos, false)
+	end
+
+	function InutilLib.FFgetScreenBottomRight()
+		return InutilLib.game:GetRoom():GetRenderSurfaceTopLeft() * 2 + Vector(442,286)
+	end
+	
+	function InutilLib.FFgetScreenCenterPosition()
+		return InutilLib.FFgetScreenBottomRight() / 2
 	end
 
 	--stage api code
@@ -4639,7 +4648,7 @@ if not InutilLib then
 		end
 
 		if shouldRenderAchievement then
-			achievementUI:Render(InutilLib.AlphaGetScreenCenterPosition(), Vector(0,0), Vector(0,0))
+			achievementUI:Render(InutilLib.FFgetScreenCenterPosition(), Vector(0,0), Vector(0,0))
 	end
 
 	if shouldRenderAchievement then
@@ -4769,7 +4778,7 @@ if not InutilLib then
 			end
 		end
 		if shouldRenderGiantbook then
-			giantbookUI:Render(InutilLib.AlphaGetScreenCenterPosition(), Vector(0,0), Vector(0,0))
+			giantbookUI:Render(InutilLib.FFgetScreenCenterPosition(), Vector(0,0), Vector(0,0))
 		end
 	end)
 

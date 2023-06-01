@@ -99,9 +99,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                             end
                             InutilLib.FlipXByVec(ent, false)
                         end
+                        ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
                     elseif spr:IsEventTriggered("Land") then
                         ent.Velocity = Vector.Zero
                         InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
+                        ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
                     end
                 end
                 ent.Velocity = ent.Velocity  * 0.9

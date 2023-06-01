@@ -48,10 +48,6 @@ function yandereWaifu:WikepidiaInput(entity, inputHook, buttonAction)
 					
 						--print(data.PersistentPlayerData.WikepidiaCharge)
 						if not data.LastDropTriggerFrame then data.LastDropTriggerFrame = player.FrameCount end
-							print("linking")
-							print(player.FrameCount)
-							print(data.LastDropTriggerFrame+ 8)
-							print(player:GetPlayerType())
 							if ((player:GetPlayerType() == PlayerType.PLAYER_THEFORGOTTEN or player:GetPlayerType() == PlayerType.PLAYER_THESOUL) and data.LastDropTriggerFrame + 8 > player.FrameCount) or (player:GetPlayerType() ~= PlayerType.PLAYER_THEFORGOTTEN and player:GetPlayerType() ~= PlayerType.PLAYER_THESOUL) then
 								player:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA + data.PersistentPlayerData.WikepidiaPage, false, slot)
 								print("park")
