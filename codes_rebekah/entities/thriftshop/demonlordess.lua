@@ -66,6 +66,8 @@ local seedtbl = {
     [16] = {seed = SeedEffect.SEED_ULTRA_FAST_MUSIC, name = "ROCK ON!!!", subname = "Now listen with 2x", sound = RebekahCurse.Sounds.SOUND_ROCK_ON2}, --
 }
 
+local lordJustUsedEggs = false
+
 local function ClearEasterEggs(ent)
     for k, v in ipairs(seedtbl) do
 		InutilLib.game:GetSeeds():RemoveSeedEffect(v.seed)
@@ -132,7 +134,56 @@ local function UseEnemyEasterEgg(ent, num)
     if seedtbl[rng].seed == SeedEffect.SEED_OLD_TV then
         yandereWaifu.GetEntityData(ent).IsTV = true
     end
+    lordJustUsedEggs = true
 end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
+	if not new and lordJustUsedEggs then
+        local num_players = InutilLib.game:GetNumPlayers()
+        for i=0,(num_players-1) do
+            local ent = Isaac.GetPlayer(i)
+            ClearEasterEggs(ent)
+        end
+        lordJustUsedEggs = false
+    end
+        --[[for k, v in ipairs(seedtbl) do
+            InutilLib.game:GetSeeds():RemoveSeedEffect(v.seed)
+        end
+        local OldChallenge = player:CanShoot()
+        local playerType = player:GetPlayerType()
+        if playerType == PlayerType.PLAYER_THEFORGOTTEN_B then
+            local player = player:GetOtherTwin()
+            local rng = math.random(0,#seedtbl)
+            InutilLib.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
+            InutilLib.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
+            ReloadForgottenB(player)
+            if math.random(1,2) == 2 and seedtbl[rng].sound then
+                InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
+            end
+    
+            yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed
+        else
+            player:ChangePlayerType(playerType)
+            local rng = math.random(0,#seedtbl)
+            InutilLib.game:GetSeeds():AddSeedEffect(seedtbl[rng].seed)	
+            InutilLib.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
+            player:ChangePlayerType(playerType)
+            if math.random(1,2) == 2 and seedtbl[rng].sound then
+                InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
+            end
+            
+            yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed
+            if not OldChallenge then 
+                InutilLib.DumpySetCanShoot(player, false)
+            end
+            if yandereWaifu.IsNormalRebekah(player) or yandereWaifu.IsTaintedRebekah(player) then
+                yandereWaifu.RebekahRefreshCostume(player)
+            end
+        end
+        hasAnyEasterEggSeedEffectActive = true
+    end]]
+end)
+
 
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent) 
     local spr = ent:GetSprite()
@@ -145,6 +196,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
             ent.GridCollisionClass = GridCollisionClass.COLLISION_SOLID
             ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
             ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
+            lordJustUsedEggs = false
         end
 
         --easter egg stuff

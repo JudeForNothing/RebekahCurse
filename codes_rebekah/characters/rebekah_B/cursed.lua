@@ -505,7 +505,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             if data.TAINTEDREBSKILL_MENU.open then return end
             if data.TaintedTearDelay > 0 then return end
 
-            if not data.taintedWeapon or data.taintedWeapon:IsDead() then
+            if not data.taintedWeapon or (data.taintedWeapon and data.taintedWeapon:IsDead()) then
                 yandereWaifu.SpawnCursedKnife(player)
             end
 

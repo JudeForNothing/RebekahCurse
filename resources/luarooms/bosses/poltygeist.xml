@@ -54,7 +54,7 @@
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="3">
-			<entity type="600" variant="225" subtype="0" weight="1.0"/>
+			<entity type="620" variant="225" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="0" y="5">
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
@@ -177,7 +177,7 @@
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="3">
-			<entity type="600" variant="225" subtype="0" weight="1.0"/>
+			<entity type="620" variant="225" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="1" y="5">
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
@@ -222,7 +222,7 @@
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="3">
-			<entity type="600" variant="225" subtype="0" weight="1.0"/>
+			<entity type="620" variant="225" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="0" y="5">
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
@@ -279,7 +279,7 @@
 			<entity type="292" variant="0" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="3">
-			<entity type="600" variant="225" subtype="0" weight="1.0"/>
+			<entity type="620" variant="225" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="0" y="5">
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
@@ -366,7 +366,7 @@
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="3">
-			<entity type="600" variant="225" subtype="0" weight="1.0"/>
+			<entity type="620" variant="225" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="1" y="5">
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
@@ -471,7 +471,7 @@
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="6" y="2">
-			<entity type="600" variant="225" subtype="0" weight="1.0"/>
+			<entity type="620" variant="225" subtype="0" weight="1.0"/>
 		</spawn>
 		<spawn x="3" y="3">
 			<entity type="1000" variant="0" subtype="0" weight="1.0"/>
