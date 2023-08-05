@@ -353,12 +353,11 @@ function yandereWaifu:UseRedEasterEgg(card, player, flags)
 	local playerdata = yandereWaifu.GetEntityData(player)
 	local rng = math.random(1,10)
 	
-	UseRandomSeedEffect(player)
-	--[[if rng > 5 then
+	if rng > 5 then
 		UseRandomSeedEffect(player)
 	else
 		if rng < 4 then
-			local rng = math.random(1,20)
+			local rng = math.random(1,15)
 			if rng >= 1 and rng <= 5 then
 				for i = 1, math.random(3,6) do
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
@@ -371,15 +370,11 @@ function yandereWaifu:UseRedEasterEgg(card, player, flags)
 				for i = 1, math.random(3,6) do
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_DOUBLEPACK, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 				end
-			elseif rng >= 16 and rng <= 20 then
-				for i = 1, math.random(1,3) do
-					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
-				end
 			end
 		else
 			UseRandomAmbush()
 		end
-	end]]
+	end
 end
 
 function yandereWaifu:UseAquaEasterEgg(card, player, flags) 
@@ -672,7 +667,7 @@ function yandereWaifu:UseRedEasterEgg2(card, player, flags)
 		UseRandomSeedEffect(player)
 	else
 		if rng < 8 then
-			local rng = math.random(1,20)
+			local rng = math.random(1,16)
 			if rng >= 1 and rng <= 5 then
 				for i = 3, math.random(3,6) do
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_THROWABLEBOMB, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
@@ -685,10 +680,8 @@ function yandereWaifu:UseRedEasterEgg2(card, player, flags)
 				for i = 3, math.random(3,6) do
 					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_DOUBLEPACK, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 				end
-			elseif rng >= 16 and rng <= 20 then
-				for i = 3, math.random(3,5) do
-					Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
-				end
+			elseif rng == 16 then
+				Isaac.Spawn( EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, BombSubType.BOMB_GIGA, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player );
 			end
 		else
 			RebekahCurseGlobalData.EASTER_EGG_NO_MORPH_FRAME = InutilLib.game:GetFrameCount()

@@ -98,6 +98,9 @@ yandereWaifuIngameContentCode = {
 		undercrofts = {
 			enemies = require('codes_rebekah.entities.undercrofts.enemies'),
 		},
+		tartarus = {
+			enemies = require('codes_rebekah.entities.tartarus.enemies'),
+		},
 		thriftshop = {
 			bosses = require('codes_rebekah.entities.thriftshop.bosses'),
 			enemies = require('codes_rebekah.entities.thriftshop.enemies'),
@@ -253,6 +256,7 @@ yandereWaifuIngameContentCode = {
 		phantasm = require('codes_rebekah.floors.phantasm'),
 		phantasmhouse = require('codes_rebekah.floors.phantasm.house'),
 		undercrofts = require('codes_rebekah.floors.undercrofts'),
+		tartarus = require('codes_rebekah.floors.tartarus'),
 		anus = require('codes_rebekah.floors.anus')
 	},
 	challenges = { 

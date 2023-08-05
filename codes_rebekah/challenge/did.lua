@@ -12,7 +12,7 @@ local modes = {
 local detrimentalModes = {
 	RebekahCurse.REBECCA_MODE.BlendedHearts,
 	RebekahCurse.REBECCA_MODE.ScaredRedHearts,
-	RebekahCurse.REBECCA_MODE.TwinRedHearts,
+	--RebekahCurse.REBECCA_MODE.TwinRedHearts,
 	RebekahCurse.REBECCA_MODE.HalfRedHearts,
 	RebekahCurse.REBECCA_MODE.HalfSoulHearts,
 }

@@ -19,7 +19,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 			pickup:Remove()
 		end
 		if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and pickup.FrameCount <= 1 then
-			for i = 0, math.random(3,5) do
+			for i = 0, math.random(5,8) do
 				local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
 				newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 			end
@@ -52,7 +52,7 @@ if StageAPI and StageAPI.Loaded then
 	yandereWaifu.RabbetStageAPIRooms = {
 		StageAPI.AddBossData("Rabbet", {
 			Name = "Rabbet",
-			Portrait = "gfx/ui/boss/portrait_nincompoop.png",
+			Portrait = "gfx/ui/boss/portrait_rabbet.png",
 			Offset = Vector(0,-15),
 			Bossname = "gfx/ui/boss/name_rabbet.png",
 			Weight = 2,

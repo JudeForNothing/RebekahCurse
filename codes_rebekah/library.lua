@@ -336,7 +336,7 @@ function yandereWaifu.SpawnParticles( type, variant, subvariant, amount, positio
 	amount = amount or 1
 	local particles = {}
 	for i = 1, amount do
-		local particle = Isaac.Spawn( type, variant, subvariant or 0, position, velocity, player );
+		local particle = Isaac.Spawn( type, variant, subvariant or 0, position, velocity, spawner or nil );
 		if spriteSheet ~= nil then
 			local sprite = particle:GetSprite();
 			sprite:ReplaceSpritesheet( 0, spriteSheet );

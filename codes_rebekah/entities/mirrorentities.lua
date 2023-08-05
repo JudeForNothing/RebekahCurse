@@ -175,6 +175,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 					local fly = Isaac.Spawn(EntityType.ENTITY_ATTACKFLY, 0, 0, ent.Position, Vector(0,0), ent):ToNPC()
 					fly:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
 				end
+			elseif ent.SubType == 6 then
+				subtype = RebekahCurse.RebekahMirrorHeartDrop[5]
 			end
 			--if math.random(1,3) == 3 then
 			local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_HEART, subtype, ent.Position, ent.Velocity, ent):ToPickup()

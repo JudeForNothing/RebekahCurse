@@ -395,6 +395,7 @@ function yandereWaifu.RebekahRedNormalBarrage(player, data, direction, endFrameC
 					end
 					
 				elseif data.redcountdownFrames >= endFrameCount then
+					print("ping right out")
 					yandereWaifu.EndRebekahBarrageIfValid(player, data)
 					data.redcountdownFrames = 0 
 					yandereWaifu.SpawnHeartParticles( 3, 5, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Red );

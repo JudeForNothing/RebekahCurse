@@ -1551,13 +1551,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local hearts = InutilLib.GetAllMajorHearts(player) + player:GetBoneHearts()*2
 	local pos = (math.ceil(player:GetSoulHearts() / 2) + player:GetBoneHearts())-1
 	if yandereWaifu.IsNormalRebekah(player) then
+	--	print("LTESS GOOO")
 		if hearts > 12 then
+			--print("WTFFF")
 			if player:IsBoneHeart(pos) then
 				player:AddBoneHearts(-1)
 			else
 				player:AddSoulHearts(-1)
 			end
-		elseif player:GetMaxHearts() > 6 then
+		end
+		if player:GetMaxHearts() > 6 then
 			player:AddMaxHearts(-1)
 			--[[if not data.PersistentPlayerData.heartReserveMaxFillPieces then 
 				data.PersistentPlayerData.heartReserveMaxFillPieces = 1 

@@ -622,6 +622,9 @@ RebekahCurse.Enemies = {
 	ENTITY_FOUNDATION = Isaac.GetEntityVariantByName("Foundation"),
 	ENTITY_NPC = Isaac.GetEntityVariantByName("Npc"),
 
+	--tartarus
+	ENTITY_REMINDER = Isaac.GetEntityVariantByName("Reminder"),
+
 	--thrift shop
 	ENTITY_RABBET = Isaac.GetEntityVariantByName("Rabbet"),
 	ENTITY_HOLEDINI = Isaac.GetEntityVariantByName("Holedini"),
