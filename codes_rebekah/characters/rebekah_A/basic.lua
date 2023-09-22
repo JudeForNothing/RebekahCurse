@@ -99,12 +99,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
 	--print(player:GetPlayerType())
 	--print(RebekahCurse.SADREBEKAH)
-	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then 
+	--[[if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then 
 		if InutilLib.game:GetFrameCount() > 1 then
-			--InutilLib.AnimateIsaacAchievement("gfx/ui/achievements/locked_tainted_rebekah.png", nil, true, 300)
-			--[[if InutilLib.game:GetFrameCount() >= 1 then
-				print("fel")
-			end]]
 			
 			player:ChangePlayerType(RebekahCurse.REB_RED)
 			--local data = yandereWaifu.GetEntityData(player)
@@ -131,7 +127,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			
 			Isaac.ExecuteCommand("restart "..RebekahCurse.REB_RED)
 		end
-	end
+	end]]
 	
 	if yandereWaifu.IsNormalRebekah(player) then
 		--local RebekahDoubleTapDash = dash.RebekahDoubleTapDash()
@@ -1044,7 +1040,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, yandereWaifu.Rebekahcac
 	
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
-	if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then 
+	--[[if player:GetPlayerType() == RebekahCurse.SADREBEKAH and not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then 
 		if InutilLib.game:GetFrameCount() > 1 then
 			--print("fellow")
 			InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/locked_tainted_rebekah.png", nil, true, 300)
@@ -1075,7 +1071,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 			Isaac.ExecuteCommand("restart "..RebekahCurse.REB_RED)
 			--print("did it work?")
 		end
-	end
+	end]]
 	if yandereWaifu.IsNormalRebekah(player) then
 		if player.FrameCount <= 1 then --trying to make it visually pleasing when she spawns in
 			player.Visible = false

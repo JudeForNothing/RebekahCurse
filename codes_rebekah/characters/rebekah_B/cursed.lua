@@ -700,6 +700,14 @@ local function canFreeze(player)
     end
 end
 
+local function canFrozen(player)
+    if player.TearFlags == player.TearFlags | TearFlags.TEAR_ICE then 
+        return true
+    elseif player:HasCollectible(CollectibleType.COLLECTIBLE_URANUS) then
+        return true
+    end
+end
+
 local function canJacobsLadder(player)
     if player.TearFlags == player.TearFlags | TearFlags.TEAR_JACOBS then 
         return true
@@ -866,6 +874,10 @@ local function changeCursedRebekahGfx(player, eff)
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_terra.anm2", true)
             data.IsGfxLoaded = true
         end
+        if player:HasCollectible(CollectibleType.COLLECTIBLE_URANUS) and not data.IsGfxLoaded then
+            eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_uranus.anm2", true)
+            data.IsGfxLoaded = true
+        end
         if player:HasCollectible(CollectibleType.COLLECTIBLE_IPECAC) and not data.IsGfxLoaded then
             eff:GetSprite():Load("gfx/effects/tainted/cursed/weapon_ipecac.anm2", true)
             data.IsGfxLoaded = true
@@ -1030,6 +1042,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         data.canHaemolacsomething = canHaemolacsomething(player)
         data.canRock = canRock(player)
         data.canPop = canPop(player)
+        data.canFrozen = canFrozen(player)
         data.canGodhead = canGodhead(player)
         data.canSewn = canSewn(player)
         data.canImpSoda = canImpSoda(player)
@@ -1322,7 +1335,30 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					tear:AddTearFlags(TearFlags.TEAR_HORN)
                 end
                 if player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND) then
-                    ent:AddBurn(EntityRef(player), 60, Damage)
+                    ent:AddBurn(EntityRef(player), 60, player.Damage)
+                end
+                if data.canFrozen and data.state ~= 1 then
+                    if data.state ~= 5 then
+                        ent:AddEntityFlags(EntityFlag.FLAG_ICE)
+                        for i = 0, 360-360/2, 360/2 do
+                            local tear = player:FireTear( ent.Position + (eff.Position - ent.Position):Resized(ent.Size + 10)--[[:Rotated(i+data.Angle+90)]], Vector(75,0):Rotated(i+data.Angle+90+math.random(-30,30)):Resized(player.ShotSpeed*10), false, false, false):ToTear()
+                            --tear:ChangeVariant(TearVariant.ICE)
+                            yandereWaifu.GetEntityData(tear).IsPseudoIceTear = true
+                            tear.CollisionDamage = tear.CollisionDamage/3
+                            --make_child(tear, damage)
+                        end
+                    else
+                        ent:AddEntityFlags(EntityFlag.FLAG_ICE_FROZEN)
+                        for i = 0, 360-360/3, 360/3 do
+                            for j = -15, 15, 30 do
+                                local tear = player:FireTear( ent.Position + (eff.Position - ent.Position):Resized(ent.Size + 10)--[[:Rotated(i+data.Angle+90)]], Vector(75,0):Rotated(i+data.Angle+90+j):Resized(player.ShotSpeed*10), false, false, false):ToTear()
+                                --tear:ChangeVariant(TearVariant.ICE)
+                                yandereWaifu.GetEntityData(tear).IsPseudoIceTear = true
+                                tear.CollisionDamage = tear.CollisionDamage/3
+                                --make_child(tear, damage)
+                            end
+                        end
+                    end
                 end
                 if player:HasCollectible(CollectibleType.COLLECTIBLE_CRICKETS_BODY) and not player:HasCollectible(CollectibleType.COLLECTIBLE_PARASITE) and special then
                     local rng = math.random(-30,30)
@@ -1335,7 +1371,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                         make_child(tear, damage)
                     end
                 end
-                if player:HasCollectible(CollectibleType.COLLECTIBLE_PARASITE) and special then
+                if player:GetEffects():HasCollectibleEffect(CollectibleType.COLLECTIBLE_PARASITE) and special then
                     for i = 0, 360-360/2, 360/2 do
                         local tear = player:FireTear( ent.Position + (eff.Position - ent.Position):Resized(ent.Size + 10)--[[:Rotated(i+data.Angle+90)]], Vector(75,0):Rotated(i+data.Angle+90):Resized(player.ShotSpeed*10), false, false, false):ToTear()
                         tear:ChangeVariant(RebekahCurse.ENTITY_METALTEAR)
@@ -2439,6 +2475,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         end
     end
 end, RebekahCurse.ENTITY_CURSEDGODHEADAURA)
+
+function yandereWaifu:PsuedoIceTearUpdate(tr)
+    if not tr.SpawnerEntity then return end
+    local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 
+	if data.IsPseudoIceTear then
+		if tr.FrameCount == 1 then
+            tr:GetSprite():Load('gfx/002.041_ice tear.anm2',true)
+            local size = InutilLib.GetTearSizeTypeI(scale, flags)
+		    InutilLib.UpdateRegularTearAnimation(player, tr, data, flags, size, "RegularTear");
+        end
+        tr.Rotation = tr.Velocity:Rotated(-90):GetAngleDegrees();
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, yandereWaifu.PsuedoIceTearUpdate)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	local player = yandereWaifu.GetEntityData(eff).Player

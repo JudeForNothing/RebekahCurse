@@ -89,7 +89,9 @@ local function ClearEasterEggs(ent)
             ent:SetColor(Color(1.5, 1.5, 1.5, 1.0, 50/255, 50/255, 50/255), 1, 1)
         --end
     end
-
+    for k, v in ipairs(seedtbl) do
+        InutilLib.game:GetSeeds():RemoveSeedEffect(v.seed)
+    end
 end
 
 local function UseEnemyEasterEgg(ent, num)
@@ -285,7 +287,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                     if math.random(6) == 6 then
                         if math.random(2) == 2 and ent.HitPoints <= (ent.MaxHitPoints / 2) then
                             data.State = 5
-                        elseif math.random(2) == 2 then
+                        else
                             data.State = 2
                         end
                     else
@@ -295,7 +297,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                             data.State = 3
                         --[[else
                             data.State = 5]]
-                        elseif math.random(3) == 3 and (data.SeedEffectCount and data.SeedEffectCount <= 0) and ent.HitPoints <= (ent.MaxHitPoints / 3)*2 then
+                        elseif math.random(2) == 2 and (data.SeedEffectCount and data.SeedEffectCount <= 0) and ent.HitPoints <= (ent.MaxHitPoints / 3)*2 then
                             data.State = 4
                         end
                     end
@@ -324,7 +326,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                             proj.Scale = 2.5
                             if data.SlowDownMore then
                                 yandereWaifu.GetEntityData(proj).SlowBunnyBullet = true
-                                proj.Velocity = proj.Velocity*0.4
+                                proj.Velocity = proj.Velocity*0.6
                             elseif data.FastUpMore then
                                 yandereWaifu.GetEntityData(proj).FastBunnyBullet = true
                                 proj.Velocity = proj.Velocity*1.3
@@ -372,7 +374,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                     end
                     if spr:IsEventTriggered("Shoot") then
                         if ent.HitPoints <= (ent.MaxHitPoints / 4) then
-                            UseEnemyEasterEgg(ent, math.random(0,16))
+                            UseEnemyEasterEgg(ent, math.random(9,16))
                         else
                             UseEnemyEasterEgg(ent,  math.random(0,8))
                         end
@@ -464,7 +466,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                     end
                     --print("GIOOO")
                     if oppositewallPos:Distance(ent.Position) <= 50 then
-                        print("PING")
                         if not data.RePeatDashOffscreen then data.RePeatDashOffscreen = 0 end
                         if data.RePeatDashOffscreen < 3 then
                             data.RePeatDashOffscreen = data.RePeatDashOffscreen + 1
@@ -510,10 +511,151 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
                         local rng = math.random(1,#enemyList)
                         local ent = Isaac.Spawn( enemyList[rng].type, enemyList[rng].variant, enemyList[rng].subtype, InutilLib.room:FindFreePickupSpawnPosition(ent.Position, 1), Vector(0,0), nil ):ToNPC();
                         if data.IsChampion == true then
-                            ent:MakeChampion(math.random(1,10), -1, false)
+                            ent:MakeChampion(math.random(1,1000000000000), -1, false)
                             data.IsChampion = false
                         end
                     end
+                end
+            end
+        elseif ent.SubType == 1 then
+            if data.SeedEffectCount and data.SeedEffectCount > 0 then
+                data.SeedEffectCount = data.SeedEffectCount - 1
+            elseif data.SeedEffectCount == 0 and not data.IsRefreshed then
+                ClearEasterEggs(ent)
+                data.IsRefreshed = true
+            end
+
+            if not data.SeedEffectCount then
+                data.SeedEffectCount = 0
+            end
+
+            if data.SlowDownIsaac or data.SlowDownMore then
+                spr.PlaybackSpeed = 0.5
+            elseif data.SpeedUpIsaac then
+                spr.PlaybackSpeed = 2
+            else
+                spr.PlaybackSpeed = 1
+            end
+            if data.State == 0 then
+                data.State = 1
+                ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
+            elseif data.State == 1 then
+                if math.random(2) == 2 and ent.FrameCount % 5 == 0 then
+                    if data.FastUpMore then
+                        for i = 0, math.random(2,5) do
+                            InutilLib.SetTimer( i*300, function()
+                                local staff = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_THEDEMONLORDESSSTAFF, 1, InutilLib.room:FindFreeTilePosition(player.Position+Vector(math.random(-50,50), math.random(-50,50)), 5), Vector(0,0), ent)
+                                yandereWaifu.GetEntityData(staff).Parent = ent
+                                yandereWaifu.GetEntityData(staff).IsNotChangingAnythingBOI = ent
+                            end)
+                        end
+                    else
+                        data.State = 2
+                        spr:Play("Stomp", true)
+                        ent.Position = player.Position
+                        if data.SpeedUpIsaac then
+                            data.RepeatStomp = 2
+                        end
+                    end
+                else
+                    local ents = Isaac.FindInRadius(ent.Position, 750, EntityPartition.ENEMY)
+                    if math.random(3) == 3 and #ents <= 4 then
+                        data.State = 3
+                    elseif math.random(3) == 3 and (data.SeedEffectCount and data.SeedEffectCount <= 0) then
+                        --spr:Play("Stomp", true)
+                        data.State = 4
+                        data.StopPimpNamedSlickbackCount = 30
+                    end
+                end
+                ent.Velocity = ent.Velocity * 0.9
+            elseif data.State == 2 then
+                if spr:IsFinished("Stomp") then 
+                    if data.RepeatStomp then
+                        if data.RepeatStomp > 0 then
+                            data.RepeatStomp = data.RepeatStomp - 1
+                            spr:Play("Stomp", true)
+                            ent.Position = player.Position
+                        else
+                            data.RepeatStomp = nil
+                            data.State = 1
+                        end
+                    else
+                        data.State = 1
+                    end
+                elseif not spr:IsPlaying("Stomp") then 
+                    spr:Play("Stomp", true) 
+                elseif spr:IsPlaying("Stomp") then
+                    if spr:IsEventTriggered("Shoot") then
+                        ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
+                        InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
+                        for i, v in pairs (Isaac.GetRoomEntities()) do
+                            if (v.Position - ent.Position):Length() < v.Size + ent.Size + 5 and GetPtrHash(v) ~= GetPtrHash(ent) then
+                                if v:ToPlayer() then
+                                    v:TakeDamage(1, DamageFlag.DAMAGE_CRUSH, EntityRef(ent), 1) 
+                                elseif v:IsEnemy() then
+                                    v:TakeDamage(60, DamageFlag.DAMAGE_CRUSH, EntityRef(ent), 1) 
+                                end
+                            end
+                        end
+                        if data.IsTV then
+                            local rng = math.random(-65,65)
+                            for i = 0, 360 - 360/8, 360/8 do
+                                local proj = InutilLib.FireGenericProjAttack(ent, ProjectileVariant.PROJECTILE_WING, 1, ent.Position, (Vector(10,0)):Rotated(i+rng):Resized(7))
+                            end
+                            for i = 0, 360 - 360/6, 360/6 do
+                                local proj = InutilLib.FireGenericProjAttack(ent, ProjectileVariant.PROJECTILE_WING, 1, ent.Position, (Vector(10,0)):Rotated(i+rng):Resized(9))
+                            end
+                        end
+                        if data.SlowDownIsaac then
+                            local rng = math.random(-65,65)
+                            for i = 0, 360 - 360/16, 360/16 do
+                                local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(10,0)):Rotated(i+rng):Resized(3))
+                                yandereWaifu.GetEntityData(proj).FastBunnyBullet = true
+                                --I just need the persistent height for that
+                            end
+                            if data.SlowDownMore then
+                                for i = 0, 360 - 360/8, 360/8 do
+                                    local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (Vector(10,0)):Rotated(i+rng):Resized(1))
+                                    yandereWaifu.GetEntityData(proj).FastBunnyBullet = true
+                                    proj.Scale = 1.1
+                                end
+                            end
+                        end
+                        if data.IsPoopTrail then
+                            local rng = math.random(-90,90)
+                            for i = 0, 360 - 360/2, 360/2 do
+                                local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.FARTWAVE, 0, ent.Position, Vector.Zero, ent):ToEffect()
+                                crack.Rotation = i + rng
+                            end
+                        end
+                    end
+                    if spr:IsEventTriggered("Lift") then
+                        ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
+                        if data.IsDank then
+                            for i = 0, math.random(0,1) do
+                                local target = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_SENTRYROCKETTARGET, 0, InutilLib.room:FindFreeTilePosition (Isaac.GetRandomPosition(), 5), Vector.Zero, ent)
+                                yandereWaifu.GetEntityData(target).Parent = ent
+                            end
+                        end
+                    end
+                end
+            elseif data.State == 3 then
+                for i, v in pairs (Isaac.FindByType(ent.Type, ent.Variant, 5)) do
+                    yandereWaifu.GetEntityData(v).State = 2
+                    if data.IsAllChampions then
+                        yandereWaifu.GetEntityData(v).IsChampion = true
+                    end
+                end
+                data.State = 1
+            elseif data.State == 4 then
+                ent.Velocity = ent.Velocity * 0.9
+                if data.StopPimpNamedSlickbackCount == 30 then
+                    local staff = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_THEDEMONLORDESSSTAFF, 1, ent.Position, Vector(0,0), ent)
+                    yandereWaifu.GetEntityData(staff).Parent = ent
+                end
+                data.StopPimpNamedSlickbackCount = data.StopPimpNamedSlickbackCount - 1
+                if data.StopPimpNamedSlickbackCount < 0 then
+                    data.State = 1
                 end
             end
         end
@@ -540,6 +682,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
             end
         end
     end
+    if ent.Type == RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY and ent.Variant == RebekahCurse.Enemies.ENTITY_THEDEMONLORDESS and ent.SubType == 0 then
+        local foot = Isaac.Spawn( RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, ent.Variant, 1, ent.Position, Vector(0,0), ent );
+        ent:Remove()
+    end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames)
@@ -549,6 +695,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
             InutilLib.SFX:Play(SoundEffect.SOUND_METAL_BLOCKBREAK, 1, 0, false, 1 );
             --local splat = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BISHOP_SHIELD, 0, damage.Position, Vector(0,0), damage) 
             return false
+        end
+        if damageSource.Entity and damageSource.Entity.Type == EntityType.ENTITY_BOMBDROP and damageSource.Entity.Variant == 177013 then
+            if GetPtrHash(yandereWaifu.GetEntityData(damageSource.Entity).Parent) == GetPtrHash(damage) then
+                return false
+            end
         end
     end
 end,  RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
@@ -562,3 +713,45 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_NPC_COLLISION, function(_, ent, col
 	end
 
 end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_,  eff) 
+    local spr = eff:GetSprite()
+	local data = yandereWaifu.GetEntityData(eff)
+    local ent = data.Parent
+        ent.Velocity = ent.Velocity * 0.9
+        if spr:IsFinished("Stomp") then 
+            eff:Remove()
+        elseif not spr:IsPlaying("Stomp") then 
+            spr:Play("Stomp", true) 
+        elseif spr:IsPlaying("Stomp") then
+            if spr:IsEventTriggered("Shoot") then
+
+                eff.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ALL
+                InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1.5, 0, false, 1)
+                InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_IMDIECHIME, 1.4, 0, false, 1)
+                for i, v in pairs (Isaac.GetRoomEntities()) do
+                    if (v.Position - ent.Position):Length() < v.Size + ent.Size - 15 and GetPtrHash(v) ~= GetPtrHash(ent) then
+                        if v:ToPlayer() then
+                            v:TakeDamage(1, DamageFlag.DAMAGE_CRUSH, EntityRef(ent), 1) 
+                         elseif v:IsEnemy() then
+                            v:TakeDamage(60, DamageFlag.DAMAGE_CRUSH, EntityRef(ent), 1) 
+                        end
+                    end
+                 end
+            end
+            if spr:IsEventTriggered("Effect") and not data.IsNotChangingAnythingBOI then
+                if ent.HitPoints <= (ent.MaxHitPoints / 2) then
+                    UseEnemyEasterEgg(ent, math.random(9,16))
+                else
+                    UseEnemyEasterEgg(ent,  math.random(0,8))
+                end
+            end
+            if spr:IsEventTriggered("Ping") then
+                InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.4, 0, false, 1)
+            end
+            if spr:IsEventTriggered("Lift") then
+                eff.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
+            end
+        end
+end, RebekahCurse.Enemies.ENTITY_THEDEMONLORDESSSTAFF)

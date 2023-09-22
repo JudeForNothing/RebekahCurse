@@ -105,7 +105,7 @@ function yandereWaifu:DeborahEyeActivate()
 		local room = InutilLib.game:GetRoom()
 		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_DEBORAHSDEADEYE) and not room:IsClear() then
             data.HasMoreTargetsDeadEye = true
-			SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
+			--SFXManager():Play( RebekahCurse.Sounds.SOUND_LAUGHTRACK , 1, 0, false, 1 );
             for i, e in pairs(Isaac.GetRoomEntities()) do
                 if e:IsEnemy() and e:IsVulnerableEnemy() then
                     e:AddSlowing(EntityRef(player), time, 2.0, (Color(1.0, 1.0, 1.0, 1.0)))

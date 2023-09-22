@@ -106,6 +106,20 @@ local function spawnLayingIsaac(ent)
 	--isaacLay:GetSprite():ReplaceSpritesheet(0, "gfx/characters/costumes/character_arachna_b.png")
 	isaacLay:GetSprite():LoadGraphics()
 	ent:Remove()
+	local sprite = isaacLay:GetSprite()
+	sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/character_017_theforgotten.png")
+	sprite:LoadGraphics()
+
+	if yandereWaifu.IsTaintedRebekah(Isaac.GetPlayer()) then
+		local door = room:GetDoor(2)
+		room:RemoveGridEntity(door:GetGridIndex(), 0, false)
+
+		for i = 1, 3 do
+			Isaac.Spawn(1000, 21, 0, centre, Vector.Zero, nil)
+		end
+
+		Isaac.Spawn(1000, 64, 0, centre, Vector.Zero, nil)
+	end
 end
 function yandereWaifu:closetTaintedRebekah()
 	if rebekahInCloset() and (InutilLib.game:GetRoom():IsFirstVisit()) then

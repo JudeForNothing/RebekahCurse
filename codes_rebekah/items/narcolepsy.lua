@@ -46,6 +46,8 @@ function yandereWaifu.WakeUp(player)
 	end
 end
 
+
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();

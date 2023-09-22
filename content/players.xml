@@ -30,15 +30,15 @@
 	
 	<player name="Rotten Rebekah" birthright="More love, more craze??" skin="character_rebekah_rotten.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_rotten_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
 	<player name="Broken Rebekah" birthright="More love, more options" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_borken_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 		  
 	<player name="Immortal Rebekah" birthright="More love, more protection" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_immortal_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
        <player name="Rebekah" birthright="More love" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
@@ -60,9 +60,9 @@
           nameimage="PlayerName_02x_Jacob_Esau.png" 
           portrait="PlayerPortrait_Jacob.png" skinColor="-1" hidden="true"/>
 
-       <player name="Deborah" birthright="Dual wielding" skin="character_deborah.png" hp="4" keys="0" canShoot="false"
+       <player name="Deborah" birthright="Dual wielding" skin="character_deborah.png" hp="4" bombs="3" canShoot="false"
           nameimage="name_rebekah.png" 
-          portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="deborah" hidden="true"/>
+          portrait="playerportrait_deborah.png"  skinColor="-1" costume="7" costumeSuffix="deborah" hidden="true"/>
 
           <player name="Deborah"  bSkinParent="Deborah" birthright="???" skin="character_deborah.png" hp="2" keys="3"
           nameimage="name_rebekah.png"

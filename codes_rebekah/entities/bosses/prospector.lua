@@ -403,6 +403,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
 		if engi then
 			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_SENTRY_DOWN, 1, 0, false, 1);
 		end
+
+		--spawn the pedestal
+		local newColl = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, RebekahCurse.Items.COLLECTIBLE_GIDDYUP, ent.Position, Vector.Zero, ent)
+		if not yandereWaifu.ACHIEVEMENT.GIDDY_UP:IsUnlocked() then
+			yandereWaifu.ACHIEVEMENT.GIDDY_UP:Unlock()
+		end
 	end
 end,RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
@@ -447,7 +453,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	elseif sprite:IsFinished("Idle") then
 		sprite:Play("Blink",true)
 	elseif eff.FrameCount >= 30 then
-		Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_SENTRYROCKETNUKE, 0, eff.Position, Vector.Zero, eff) --heart effect
+		local nuke = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.Enemies.ENTITY_SENTRYROCKETNUKE, 0, eff.Position, Vector.Zero, eff) --heart effect
+		yandereWaifu.GetEntityData(nuke).Parent = data.Parent
 		eff:Remove()
 	end
 
@@ -476,6 +483,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		megumin:SetExplosionCountdown(1)
 		megumin.Visible = false
 		megumin.RadiusMultiplier = data.CustomRadius or 1.6
+		yandereWaifu.GetEntityData(megumin).Parent = data.Parent
 	elseif sprite:IsFinished("Falling") or sprite:IsFinished("FallingSingular") then
 		eff:Remove()
 	end

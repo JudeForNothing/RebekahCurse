@@ -98,6 +98,9 @@ StageAPI.AddCallback("RebekahCurse", "POST_ROOM_LOAD", 0, function(newRoom) --PO
         MusicManager():Queue(RebekahCurse.Music.MUSIC_HEARTROOM)
         MusicManager():UpdateVolume()
 		replacesong = true
+		if not yandereWaifu.ACHIEVEMENT.HEARTS_AND_CRAFTS:IsUnlocked() then
+            yandereWaifu.ACHIEVEMENT.HEARTS_AND_CRAFTS:Unlock()
+        end
     end
 end)
 

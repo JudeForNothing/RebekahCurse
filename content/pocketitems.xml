@@ -23,11 +23,11 @@
 	<card type="object" pickup="143" description="Hatch a surprise" name="White Polka Surprise Ovum" hud="whitepolkaegg" mimiccharge="4"/>
 
 	<!-- Cards -->
-	<card name="Words of Affirmation" type="special" pickup="135" description="May your words bring love" hud="affirmation" mimiccharge="3"/>
-	<card name="Gift Giving" type="special" pickup="136" description="May your gifts present love" hud="giftgiving" mimiccharge="3"/>
-	<card name="Act of Service" type="special" pickup="137" description="May your service honor love" hud="actofservice" mimiccharge="3"/>
-	<card name="Quality Time" type="special" pickup="138" description="May your presence remind of love" hud="qualitytime" mimiccharge="3"/>
-	<card name="Physical Touch" type="special" pickup="139" description="May you feel love" hud="physicaltouch" mimiccharge="3"/>
+	<card name="Words of Affirmation" pickup="135" description="May your words bring love" hud="affirmation" mimiccharge="3"/>
+	<card name="Gift Giving" pickup="136" description="May your gifts present love" hud="giftgiving" mimiccharge="3"/>
+	<card name="Act of Service" pickup="137" description="May your service honor love" hud="actofservice" mimiccharge="3"/>
+	<card name="Quality Time" pickup="138" description="May your presence remind of love" hud="qualitytime" mimiccharge="3"/>
+	<card name="Physical Touch" pickup="139" description="May you feel love" hud="physicaltouch" mimiccharge="3"/>
 
 	<!-- Pills -->
 	<pilleffect name="Goosebumps!" class="1+" mimiccharge="6" /> <!-- room fear -->

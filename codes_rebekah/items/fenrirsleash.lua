@@ -121,6 +121,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 		player:EvaluateItems()
 	end]]
+	--unlock method
+	local fenrirCount = 0
+
+	fenrirCount = player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_FENRIRSEYE) + player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_FENRIRSHEAD) + player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_FENRIRSPAW) + player:GetCollectibleNum(RebekahCurse.Items.COLLECTIBLE_FENRIRSTOOTH)
+	if fenrirCount >= 3 and not yandereWaifu.ACHIEVEMENT.FENRIRS_COLLAR:IsUnlocked() then
+		yandereWaifu.ACHIEVEMENT.FENRIRS_COLLAR:Unlock()
+	end
 end)
 
 function yandereWaifu:FenrirPuppyCache(player, cacheF) --The thing the checks and updates the game, i guess?

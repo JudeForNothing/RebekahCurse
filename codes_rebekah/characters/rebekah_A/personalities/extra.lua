@@ -34,6 +34,72 @@ function yandereWaifu.HalfRedHeartDash(player, vector)
 
 end
 
+local PseudoSubTypeButWorse = InutilLib.PSEUDO_CLONE+1
+
+local function spawnFakeRebekah(player)
+	local data = yandereWaifu.GetEntityData(player)
+	data.redDoubleRebTwin = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.BLOOD_BABY, PseudoSubTypeButWorse, player.Position, Vector(0, 0), player):ToFamiliar()
+	data.redDoubleRebTwin:GetData().DontRender = true
+	yandereWaifu.GetEntityData(data.redDoubleRebTwin).isredDoubleRebTwin = true
+end
+function yandereWaifu:DpubleRebekahNewFloor()
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local data = yandereWaifu.GetEntityData(player)
+		local room = InutilLib.game:GetRoom()
+		if not (data.redDoubleRebTwin) then
+			if data.currentMode == RebekahCurse.REBECCA_MODE.TwinRedHearts  then
+				spawnFakeRebekah(player)
+				data.PersistentPlayerData.SpawnFakeDoubleRebekah = true
+			end
+		end
+	end
+end
+yandereWaifu:AddCallback( ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.DpubleRebekahNewFloor)
+
+local redTwinSprite = Sprite()
+redTwinSprite:Load("gfx/characters/twin_vision/red_twin.anm2", true)
+local function handleFakeTwiNRebekahVisual(_, familiar, offset)
+	local data = yandereWaifu.GetEntityData(familiar)
+	if familiar.SubType ~= PseudoSubTypeButWorse then return end
+	local player = familiar.Player
+	if not player or player:IsDead() then return end
+	familiar:GetSprite().Color = Color(0, 0, 0, 0)
+
+	local render_pos = familiar.Position + Vector(0,5)
+	if InutilLib.room:IsMirrorWorld() then --Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
+		--render_pos = Vector(2*ScreenHelper.GetScreenCenter().X-render_pos.X,render_pos.Y)
+		player.FlipX = (not player.FlipX)
+	end
+	local render_pos = Isaac.WorldToScreen(familiar.Position + familiar.PositionOffset)
+	local sprite = player:GetSprite()
+	if data.isredDoubleRebTwin then
+		redTwinSprite:SetFrame(sprite:GetAnimation(), sprite:GetFrame())
+        if not player:GetSprite():IsPlaying("Hit")  then
+		    redTwinSprite:SetOverlayFrame(sprite:GetOverlayAnimation(), sprite:GetOverlayFrame())
+        else
+            redTwinSprite:RemoveOverlay()
+        end
+		redTwinSprite:Render(render_pos)
+	end
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_FAMILIAR_RENDER, handleFakeTwiNRebekahVisual, FamiliarVariant.BLOOD_BABY)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+	local data = yandereWaifu.GetEntityData(damage)
+	if data.isredDoubleRebTwin then
+        local player = damage:ToFamiliar().Player
+        player:TakeDamage(2, 0, EntityRef(damage), 5)
+        local hearts = player:GetHearts() + player:GetSoulHearts() + player:GetGoldenHearts() + player:GetEternalHearts() + player:GetBoneHearts() + player:GetRottenHearts()
+        if hearts - amount <= 0 then --kil all
+            Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.BLOOD_SPLAT, 0, damage.Position, Vector(0,0), nil)
+            damage:Remove()
+        end
+		return false
+	end
+end)
+
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	--local player = Isaac.GetPlayer(0);
     local room = Game():GetRoom();
@@ -65,13 +131,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
             end
         end
         if data.currentMode == RebekahCurse.REBECCA_MODE.TwinRedHearts then
-            if not data.TwinRedRebekah then
-                data.TwinRedRebekah = InutilLib:SpawnCustomStrawman(RebekahCurse.REB_RED, Isaac.GetPlayer(0), true)
+            if not data.redDoubleRebTwin then
+                --data.TwinRedRebekah = InutilLib:SpawnCustomStrawman(RebekahCurse.REB_RED, Isaac.GetPlayer(0), true)
+                spawnFakeRebekah(player)
             end
         else
-            if data.TwinRedRebekah then
-                data.TwinRedRebekah:Kill()
-                data.TwinRedRebekah = nil
+            if data.redDoubleRebTwin then
+                data.redDoubleRebTwin:Kill()
+                data.redDoubleRebTwin = nil
             end
         end
         if data.currentMode == RebekahCurse.REBECCA_MODE.HalfRedHearts then

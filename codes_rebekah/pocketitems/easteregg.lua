@@ -166,7 +166,7 @@ local function UseRandomSeedEffect(player)
 		InutilLib.game:GetHUD():ShowItemText(seedtbl[rng].name,seedtbl[rng].subname)
 		ReloadForgottenB(player)
 		if math.random(1,2) == 2 and seedtbl[rng].sound then
-			InutilLib.SFX:Play( seedtbl[rng].sound, 1, 0, false, 0.9 );
+			InutilLib.SFX:Play( seedtbl[rng].sound, 1*RebekahLocalSavedata.Config.narratorvolume, 0, false, 0.9 );
 		end
 
 		yandereWaifu.GetEntityData(player).PersistentPlayerData.EasterEggSeeds = seedtbl[rng].seed

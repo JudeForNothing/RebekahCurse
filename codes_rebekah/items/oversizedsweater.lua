@@ -47,3 +47,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		player:AddNullCostume(RebekahCurse.Costumes.OversizedSweater)
 	end]]
 end)
+
+--unlock method
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) --invincibilityframe when dashing or whatnot
+	if damage.Type == 1 then
+		local player = damage:ToPlayer()
+		if (damageFlag & DamageFlag.DAMAGE_IV_BAG > 0 or damageFlag & DamageFlag.DAMAGE_CURSED_DOOR > 0 or damageFlag & DamageFlag.DAMAGE_RED_HEARTS > 0 or DamageFlag.DAMAGE_RED_HEARTS > 0) and yandereWaifu.IsNormalRebekah(player) then
+			if not yandereWaifu.ACHIEVEMENT.OVERSIZED_SWEATER:IsUnlocked() then
+				yandereWaifu.ACHIEVEMENT.OVERSIZED_SWEATER:Unlock()
+			end
+		end
+	end
+end)

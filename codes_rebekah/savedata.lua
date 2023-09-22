@@ -34,7 +34,8 @@ RebekahLocalSavedata = {
 		rebekahdashkey = Keyboard.KEY_LEFT_CONTROL,
 		narratorvolume = 5,
 		disableAchievements = false,
-		itemsEnabled = false
+		itemsEnabled = false,
+		mirrorEnabled = false
 	},
 	CurrentRebeccaUnlocks = nil
 }

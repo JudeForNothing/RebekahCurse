@@ -337,10 +337,21 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_) --The thing 
 				end
 			end
 			--if InutilLib.level:GetCurrentRoomDesc().Data.Type == RoomType.ROOM_ULTRASECRET then
-        elseif data.PersistentPlayerData.UsedMazeRebekahStone then
+        end
+        if data.PersistentPlayerData.UsedMazeRebekahStone then
             local ent = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_MAZERUNNER, 0, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 1), Vector(0,0), player);
             yandereWaifu.GetEntityData(ent).Player = player
 		end
+        if data.PersistentPlayerData.UsedCursedRebekahStone then
+            InutilLib.SetTimer(60, function()
+                local ents = Isaac.FindInRadius(InutilLib.room:GetCenterPos(), 7500, EntityPartition.ENEMY)
+                for _, ent in pairs(ents) do
+                    ent:TakeDamage(50, 0, EntityRef(player), 5)
+                    Isaac.Spawn(1000,144,1,ent.Position,Vector.Zero,ent)
+                    SFXManager():Play(SoundEffect.SOUND_DEMON_HIT)
+                end
+            end)
+        end
 	end
 end)
 
@@ -722,8 +733,8 @@ local function isRebekahCurseStones(stone)
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRune, forceRune)
-	--if (yandereWaifu.IsCardLocked(card) or yandereWaifu.NoCardNaturalSpawn(card)) and not antiRecursion then
-    
+	if isRebekahCurseStones(card) and not antiRecursion then
+
 		antiRecursion = true
 
 		local itempool = InutilLib.game:GetItemPool()
@@ -733,12 +744,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSui
 		repeat
 			i = i + 1
 			new = itempool:GetCard(rng:GetSeed() + i, canSuit, canRune, forceRune)
-            --print("test")
-            --print(rng:GetSeed() + i)
 		until not (isRebekahCurseStones(new))
 
 		antiRecursion = false
-
+        print(new)
 		return new
-	--end
+	end
 end)

@@ -18,7 +18,7 @@ function yandereWaifu.TrySpawnMirror()
 			local level = InutilLib.game:GetLevel()
 			-- if we're in a boss room and the room is clear
 			local isGreed = InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREED or InutilLib.game.Difficulty == Difficulty.DIFFICULTY_GREEDIER
-			if (room:GetType() == RoomType.ROOM_BOSS or (isGreed and level:GetCurrentRoomDesc().GridIndex--[[GetCurrentRoomIndex()]] == 110 --[[room:GetType() == RoomType.ROOM_SHOP]])) and room:IsClear() then
+			if RebekahLocalSavedata.Config.mirrorEnabled and (room:GetType() == RoomType.ROOM_BOSS or (isGreed and level:GetCurrentRoomDesc().GridIndex--[[GetCurrentRoomIndex()]] == 110 --[[room:GetType() == RoomType.ROOM_SHOP]])) and room:IsClear() then
 				local add = false
 		
 				-- iterate through the saved boss rooms
@@ -439,4 +439,3 @@ function yandereWaifu.MirrorMechanic(player)
 		end
 	end
 end
-

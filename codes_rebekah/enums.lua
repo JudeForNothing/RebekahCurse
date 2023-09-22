@@ -219,6 +219,7 @@ RebekahCurse.Items = {
 	COLLECTIBLE_FANG = Isaac.GetItemIdByName("Fang"),
 	COLLECTIBLE_BEELZEBUBSBREATH = Isaac.GetItemIdByName("Beelzebub's Breath"),
 	COLLECTIBLE_MAINLUA = Isaac.GetItemIdByName("main.lua"),
+	COLLECTIBLE_RELOADDEBORAH = Isaac.GetItemIdByName("Reload"),
 	
 	COLLECTIBLE_COMFORTERSWING = Isaac.GetItemIdByName("Comforter's Wing"),
 	
@@ -633,6 +634,7 @@ RebekahCurse.Enemies = {
 	ENTITY_POMPOMS = Isaac.GetEntityVariantByName("Pom Poms"),
 	ENTITY_THEPUFF = Isaac.GetEntityVariantByName("The Puff"),
 	ENTITY_THEDEMONLORDESS = Isaac.GetEntityVariantByName("The Demon Lordess"),
+	ENTITY_THEDEMONLORDESSSTAFF = Isaac.GetEntityVariantByName("The Demon Lordess' Staff"),
 	ENTITY_BUNBUN = Isaac.GetEntityVariantByName("Bun Bun"),
 	ENTITY_BUNCARPET = Isaac.GetEntityVariantByName("Bun Carpet"),
 
@@ -722,6 +724,7 @@ RebekahCurse.Challenges ={
 	TheTrueFamilyGuy = Isaac.GetChallengeIdByName("[CaB] The True Family Guy"),
 	IdentityCrisis = Isaac.GetChallengeIdByName("[CaB] Identity Crisis"),
 	EasterHunt = Isaac.GetChallengeIdByName("[CaB] Easter Hunt"),
+	OldMaid = Isaac.GetChallengeIdByName("[CaB] Old Maid"),
 }
 
 local wasFromTaintedLocked = false
@@ -918,7 +921,7 @@ RebekahCurse.RebeccaModeCostumes = {
 	[RebekahCurse.REBECCA_MODE.BrideRedHearts] = "bridalhair", --BridalHair
 
 	[RebekahCurse.REBECCA_MODE.ScaredRedHearts] = "emergenwithnobadendingthair", --InnocentHair,
-	[RebekahCurse.REBECCA_MODE.TwinRedHearts] = "emergenwithnobadendingthair", --InnocentHair,
+	[RebekahCurse.REBECCA_MODE.TwinRedHearts] = "emergenthair", --InnocentHair,
 	[RebekahCurse.REBECCA_MODE.BlendedHearts] = "emergentwizoobhair", --InnocentNotReallyHair,
 	[RebekahCurse.REBECCA_MODE.HalfRedHearts] = "emergenwithnobadendingthair", --InnocentHair,
 	[RebekahCurse.REBECCA_MODE.HalfSoulHearts] = "wizoobhair", --InnocentHair,
@@ -1104,6 +1107,16 @@ if StageAPI and StageAPI.Loaded then
 	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_BROKEN, 
 	{
 	Portrait =  "gfx/ui/stage/playerportrait_broken_rebekah.png", 
+	Name = "gfx/ui/boss/name_rebekah.png",
+	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
+	NoShake = nil,
+	Controls = "gfx/backdrop/stageapi_rebekah_controls.png",
+	ControlsFrame = 2,
+	ControlsOffset = nil
+	}, "gfx/ui/boss/name_rebekah.png", "gfx/ui/stage/playerportraitbig_rebekah.png")
+	StageAPI.AddPlayerGraphicsInfo(RebekahCurse.REB_IMMORTAL, 
+	{
+	Portrait =  "gfx/ui/stage/playerportrait_immortal_rebekah.png", 
 	Name = "gfx/ui/boss/name_rebekah.png",
 	PortraitBig = "gfx/ui/stage/playerportraitbig_rebekah.png",
 	NoShake = nil,

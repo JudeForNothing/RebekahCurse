@@ -338,3 +338,135 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 		end
 	--end
 end)
+
+
+--lock sadrebekah
+--taken from ff
+--[[
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+	for _, slot in pairs(Isaac.FindByType(6, 14)) do
+		if slot:GetSprite():IsFinished("PayPrize") then
+			if yandereWaifu.IsNormalRebekah(Isaac.GetPlayer()) then
+				yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:Unlock()
+			end
+		end
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_)
+	if not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then
+		local level = InutilLib.game:GetLevel()
+		local desc = level:GetCurrentRoomDesc()
+
+		local playerType = Isaac.GetPlayer():GetPlayerType()
+
+		if level:GetStage() == LevelStage.STAGE8 and desc.SafeGridIndex == 94 and ((yandereWaifu.IsNormalRebekah(Isaac.GetPlayer()) and yandereWaifu.CanRunUnlockAchievements()) or yandereWaifu.IsTaintedRebekah(Isaac.GetPlayer())) then
+			for _, shopkeeper in pairs(Isaac.FindByType(17)) do
+				shopkeeper:Remove()
+			end
+
+			for _, item in pairs(Isaac.FindByType(5)) do
+				item:Remove()
+			end
+			local room = InutilLib.room
+			local center = room:GetCenterPos()
+			local body
+			for i, v in pairs(Isaac.FindByType(6, 14, -1)) do
+				v = body
+				break
+			end
+			if not body then 
+				body = Isaac.Spawn(6, 14, 0, center, Vector.Zero, nil) 
+				print("hit")
+			end
+			local sprite = body:GetSprite()
+			sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/character_017_theforgotten.png")
+			sprite:LoadGraphics()
+
+			if yandereWaifu.IsTaintedRebekah(Isaac.GetPlayer()) then
+				local door = room:GetDoor(2)
+				room:RemoveGridEntity(door:GetGridIndex(), 0, false)
+
+				for i = 1, 3 do
+					Isaac.Spawn(1000, 21, 0, centre, Vector.Zero, nil)
+				end
+
+				Isaac.Spawn(1000, 64, 0, centre, Vector.Zero, nil)
+			end
+		end
+	end
+end)]]
+
+function yandereWaifu.FFSafeEndGame()
+	-- disable achievements
+	local game = InutilLib.game
+	game:GetSeeds():AddSeedEffect(SeedEffect.SEED_PREVENT_ALL_CURSES)
+	game:End(3)
+end
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
+	local game = InutilLib.game
+	if not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() and game.Difficulty >= Difficulty.DIFFICULTY_GREED and player:GetPlayerType() == RebekahCurse.SADREBEKAH then
+		yandereWaifu.FFSafeEndGame()
+	end
+end)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
+	if player.FrameCount > 0 then
+		yandereWaifu.TryLockTaintedRebInHome(player)
+	end
+end)
+
+local spawnRebekah = true
+function yandereWaifu.TryLockTaintedRebInHome(player)
+	player = player or Isaac.GetPlayer()
+	local game = InutilLib.game
+	if not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() and player:GetPlayerType() == RebekahCurse.SADREBEKAH then
+		player.ControlsEnabled = false
+		player.Visible = false
+		--player:GetData().BiendClosetMode = true
+
+		local hud = game:GetHUD()
+		hud:SetVisible(false)
+
+		--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/locked_tainted_rebekah.png", nil, true, 300)
+
+		if game.Difficulty < Difficulty.DIFFICULTY_GREED then
+			local level = game:GetLevel()
+			if level:GetStage() ~= LevelStage.STAGE8 then
+				Isaac.ExecuteCommand("stage 13")
+				level:ChangeRoom(95)
+
+				player.Position = Vector(245, 280)
+				player:SetPocketActiveItem(CollectibleType.COLLECTIBLE_RED_KEY, ActiveSlot.SLOT_POCKET2)
+				player:UseActiveItem(CollectibleType.COLLECTIBLE_RED_KEY, UseFlag.USE_OWNED + UseFlag.USE_NOANIM, ActiveSlot.SLOT_POCKET2)
+				player:RemoveCollectible(CollectibleType.COLLECTIBLE_RED_KEY)
+				player.Position = Vector(160, 280)
+
+				SFXManager():Stop(SoundEffect.SOUND_UNLOCK00)
+				spawnRebekah = true
+			elseif level:GetStage() == LevelStage.STAGE8 and InutilLib.level:GetCurrentRoomIndex() == 94 then
+				for _, shopkeeper in pairs(Isaac.FindByType(17)) do
+					shopkeeper:Remove()
+				end
+	
+				for _, item in pairs(Isaac.FindByType(5)) do
+					item:Remove()
+				end
+				if spawnRebekah then
+					spawnRebekah = false
+					local room = InutilLib.room
+					local center = room:GetCenterPos()
+					local isaacLay = Isaac.Spawn(6, 14, 0, center, Vector(0,0), nil)
+					local sprite = isaacLay:GetSprite()
+					sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/character_rebekah_cursed_sadge.png")
+					sprite:LoadGraphics()
+				end
+				InutilLib.game:Darken(10, 300)
+			end
+			if Isaac.GetFrameCount() % 30 == 0 then
+				InutilLib.game:Darken(10, 300)
+			end
+		end
+	end
+end

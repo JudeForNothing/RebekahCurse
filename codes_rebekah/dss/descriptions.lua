@@ -37,7 +37,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_WISHFULTHINKING, "On death, respawn as Wishful Isaac # Wishful Isaac has 10 Luck")
 	EID:addTrinket(RebekahCurse.Trinkets.TRINKET_DESTROYEDLULLABY, "Familiars have random tears and tearflags")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER, "Picking up hearts also spawn their respective clot versions")
-	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTSANDCRAFTS, "Spawn a charmed paper enemy")
+	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTSANDCRAFTS, "Spawn a charmed Rebekah's room enemy")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_TECHHZ, "Moving and shooting at the same time spawns a Tech X beam around you")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_ANGELSMORNINGSTAR, "Spawns a familiar morningstar which can hurt enemies and grids")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_POTATOSNACK, "Grants 2 soul hearts")
@@ -78,7 +78,7 @@ if EID then
 		},
 		Broken = {
 			["Name"] = "{{BlendedHeart}} Rebekah the Aware",
-			["Description"] = "Double Tap is a parry with a small window#↑ Successful parries gives rewards based on the number you chose by fire keys #{{Collectible"..RebekahCurse.Items.COLLECTIBLE_LOVECANNON .."}} spawns a fragment of yourself, allowing you to take damage without hurt #Your fragment indicates how long you can collide #{{Warning}} Upon leaving room with fragment present hurts you #{{Warning}} If counter reaches 50, a huge penalty occurs" -- Description
+			["Description"] = "Double Tap leaves a glitched mirror-portal# Enemies can teleport through # Pickups teleported have a chance to be rerolled #{{Collectible"..RebekahCurse.Items.COLLECTIBLE_LOVECANNON .."}} spawns a cursor to hold bosses for a duration" -- Description
 		}
 	}
 	EIDMakeupStation = {
@@ -109,10 +109,21 @@ if EID then
 		Rotten = {
 			["Name"] = "{{HalfHeart}} Rotten Heart",
 			["Description"] = "Gives a damage and shot speed stat" -- Description
-		},
-		Broken = {
-			["Name"] = "{{BlendedHeart}} Broken Personality",
-			["Description"] = "Double Tap is a parry with a small window#↑ Successful parries gives rewards based on the number you chose by fire keys #{{Collectible"..RebekahCurse.Items.COLLECTIBLE_LOVECANNON .."}} spawns a fragment of yourself, allowing you to take damage without hurt #Your fragment indicates how long you can collide #{{Warning}} Upon leaving room with fragment present hurts you #{{Warning}} If counter reaches 50, a huge penalty occurs" -- Description
 		}
 	}
+
+	__eidCardDescriptions[RebekahCurse.Cards.CARD_QUALITYTIME] = "Stops time and allows Isaac to move for 5 seconds."
+	__eidCardDescriptions[RebekahCurse.Cards.CARD_WORDSOFAFFIRMATION] = "Spawn a giant heart that deals massive damage."
+	__eidCardDescriptions[RebekahCurse.Cards.CARD_ACTOFSERVICE] = "Spawns a knight that helps Isaac."
+	__eidCardDescriptions[RebekahCurse.Cards.CARD_GIFTGIVING] = "Spawns two item pedestals."
+	__eidCardDescriptions[RebekahCurse.Cards.CARD_PHYSICALTOUCH] = "Spawns a group of heart wisp orbitals."
+
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHNORMAL] = "Gives{{Collectible"..CollectibleType.COLLECTIBLE_BIRTHRIGHT .."}} for the whole stage # if a curse is in the floor, clears curse and drops respective spirit stone of curse"
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHCURSED] = "On each room enter, every enemy gets 50 flat damage"
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHLOST] = "Spawns a dead Fenrir familiar"
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHUNKNOWN] = "Converts Isaac's current health into stats similar to Rebekah's vanity."
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHMAZE] = "Spawns a pillar familiar # Familiar digs under ground and pops underneath enemies for damage # While above, familiar can block projectiles and enemies."
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHLABYRINTH] = "Duplicates items after room is cleared for the whole floor."
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHBLIND] = "Spawns a skull and attaches itself to the closest pedestal # Each damage it takes from Isaac rerolls the attached pedestal"
+	__eidCardDescriptions[RebekahCurse.Cards.SOUL_REBEKAHDARKNESS] = "Increases tear rate, damage and speed for whole floor. # Stacks"
 end

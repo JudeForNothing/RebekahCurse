@@ -9,6 +9,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 	end
 end);
 
+--unlock
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,  player)
+    local data = yandereWaifu.GetEntityData(player)
+	if player:HasCollectible(CollectibleType.COLLECTIBLE_ROTTEN_TOMATO) and player:HasCollectible(CollectibleType.COLLECTIBLE_SAUSAGE) then
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_MIDNIGHT_SNACK) or player:HasCollectible(CollectibleType.COLLECTIBLE_BREAKFAST) or player:HasCollectible(CollectibleType.COLLECTIBLE_WAFER) or player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) or player:HasCollectible(CollectibleType.COLLECTIBLE_MILK) then
+			if not yandereWaifu.ACHIEVEMENT.CHEESY_PIZZA:IsUnlocked() then
+				yandereWaifu.ACHIEVEMENT.CHEESY_PIZZA:Unlock()
+			end
+		end
+	end
+end);
+
 function yandereWaifu:CheesyPizzaTearRender(tr, _)
     if not tr.SpawnerEntity then return end
     local player, data, flags, scale = tr.SpawnerEntity:ToPlayer(), yandereWaifu.GetEntityData(tr), tr.TearFlags, tr.Scale 

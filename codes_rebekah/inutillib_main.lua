@@ -2910,7 +2910,6 @@ if not InutilLib then
 		local result
 		if flags & TearFlags.TEAR_GROW == TearFlags.TEAR_GROW or flags & TearFlags.TEAR_LUDOVICO == TearFlags.TEAR_LUDOVICO then
 			result = 6
-			print("gotcha")
 		elseif scale < 0.675 then
 			result = 1
 		elseif scale < 0.925 then

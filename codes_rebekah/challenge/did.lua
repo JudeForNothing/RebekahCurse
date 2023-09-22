@@ -12,7 +12,7 @@ local modes = {
 local detrimentalModes = {
 	RebekahCurse.REBECCA_MODE.BlendedHearts,
 	RebekahCurse.REBECCA_MODE.ScaredRedHearts,
-	--RebekahCurse.REBECCA_MODE.TwinRedHearts,
+	RebekahCurse.REBECCA_MODE.TwinRedHearts,
 	RebekahCurse.REBECCA_MODE.HalfRedHearts,
 	RebekahCurse.REBECCA_MODE.HalfSoulHearts,
 }
@@ -60,8 +60,43 @@ yandereWaifu:AddCallback("MC_POST_CLEAR_ROOM", function(_, room)
 			else
 				yandereWaifu.ChangeMode( player, modes[math.random(1, #modes)], false, false);
 			end
+			SFXManager():Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 0.8 )
         end
     end
 end)
 
 --yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, yandereWaifu.DIDChallengeNewRoom)
+
+
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
+    local data = yandereWaifu.GetEntityData(player)
+	local challenge = InutilLib.game.Challenge == RebekahCurse.Challenges.IdentityCrisis
+    if challenge and InutilLib.level:GetStage() > 4 then
+		if not data.ChangePersonalityFrame then
+			data.ChangePersonalityFrame = 30
+		end
+		data.ChangePersonalityFrame = data.ChangePersonalityFrame - 1
+		if data.ChangePersonalityFrame <= 90 then --beeping time
+			if data.ChangePersonalityFrame%10 == 0 then
+				--player:GetSprite().Color = Color(1,0,0,1)
+				player:SetColor(Color(1, 0, 0, 1, 0, 0, 0), 1, 1, false, false)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
+			end
+		elseif data.ChangePersonalityFrame <= 30 then 
+			if data.ChangePersonalityFrame%5 == 0 then
+				--player:GetSprite().Color = Color(1,0,0,1)
+				player:SetColor(Color(1, 0, 0, 1, 0, 0, 0), 1, 1, false, false)
+				SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 1.2 )
+			end
+		end
+		if data.ChangePersonalityFrame <= 0 then
+			if InutilLib.level:GetStage() > 1 and math.random(1,2) == 2 then
+				yandereWaifu.ChangeMode( player, detrimentalModes[math.random(1, #detrimentalModes)], false, false);
+			else
+				yandereWaifu.ChangeMode( player, modes[math.random(1, #modes)], false, false);
+			end
+			data.ChangePersonalityFrame = math.random(300,900)
+			SFXManager():Play( SoundEffect.SOUND_THUMBS_DOWN, 1, 0, false, 0.8 )
+		end
+	end
+end)

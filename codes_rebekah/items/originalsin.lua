@@ -23,12 +23,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
     local room = Game():GetRoom();
 	local data = yandereWaifu.GetEntityData(player)
 	--items function!
-	--if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_POTATOSNACK) then
 		if player:HasTrinket(RebekahCurse.Trinkets.TRINKET_ORIGINALSIN) and data.PersistentPlayerData.IsHurt == nil then
 			player:AddNullCostume(RebekahCurse.Costumes.OriginalSin)
 			data.PersistentPlayerData.IsHurt = false
 		end
-	--end
 end)
 
 function yandereWaifu:OriginalSinNewFloor()

@@ -38,8 +38,8 @@ yandereWaifuCodes = {
 }
 yandereWaifuMenuCodes = {
 	dss = {
-		deadseascrolls = include('codes_rebekah.dss.deadseascrolls'),
 		dsstutorials = include('codes_rebekah.dss.dsstutorials'),
+		deadseascrolls = include('codes_rebekah.dss.deadseascrolls'),
 		completion_manager = include('codes_rebekah.dss.completion_manager'),
 		deadachievementviewer = include('codes_rebekah.dss.dss_achievementviewer'),
 	},
@@ -263,6 +263,7 @@ yandereWaifuIngameContentCode = {
 		thetruefamilyguy = require('codes_rebekah.challenge.thetruefamilyguy'),
 		did = require('codes_rebekah.challenge.did'),
 		easterhunt = require('codes_rebekah.challenge.easterhunt'),
+		oldmaid = require('codes_rebekah.challenge.oldmaid'),
 	},
 	descriptions = require('codes_rebekah.dss.descriptions'),
 	commands = require('codes_rebekah.commands')

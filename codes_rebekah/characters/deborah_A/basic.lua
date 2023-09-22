@@ -57,6 +57,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
         for i = 1, 6 do
             gunChamber:ReplaceSpritesheet(i, "gfx/ui/bullet/none.png")
         end
+        if not data.DeborahGunClip then return end
         for i, v in pairs (data.DeborahGunClip) do
             gunChamber:ReplaceSpritesheet(i, v.gfx or "gfx/ui/bullet/none.png")
         end
@@ -84,6 +85,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
         data.DeborahGun = nil
     end
 	if player:GetPlayerType() == RebekahCurse.DEBORAH then
+
+        --make sure
+        local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.Items.COLLECTIBLE_RELOADDEBORAH)
+        --for other characters who comes in but not on game_start
+        if Game():GetRoom():GetFrameCount() > 1 and not hasPocket then
+            player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_RELOADDEBORAH)
+        end
         
         local numofShots = 1
         local tearIntervalPenalty = 0
@@ -341,3 +349,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		data.Shoot = false
 	end
 end, RebekahCurse.ENTITY_DEBORAHENTITYWEAPON);
+
+function yandereWaifu:useDeborahReload(collItem, rng, player, flags)
+	local data = yandereWaifu.GetEntityData(player)
+    
+	if flags & UseFlag.USE_NOANIM == 0 then
+        player:AnimateCollectible(RebekahCurse.Items.COLLECTIBLE_RELOADDEBORAH, "UseItem", "PlayerPickupSparkle")
+    end
+    if TableLength(data.DeborahGunClip) > 0 and data.CanShoot then
+        data.DeborahGunClip = {}
+        data.CanShoot = false
+    end
+end
+yandereWaifu:AddCallback( ModCallbacks.MC_USE_ITEM, yandereWaifu.useDeborahReload, RebekahCurse.Items.COLLECTIBLE_RELOADDEBORAH);

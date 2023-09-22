@@ -984,6 +984,8 @@ function yandereWaifu.SpawnEasterEgg(spawnPosition, player, tier, shop)
 		end
 	elseif tier == 2 then
 		rng = math.random(16,18)
+	elseif tier == 3 then
+		rng = math.random(8,15)
 	else
 		rng = math.random(0,17)
 	end

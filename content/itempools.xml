@@ -33,6 +33,12 @@
 		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Underpay" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Milk Wine" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Silent Treatment" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Silencer" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Full Fat Milk" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jacob's Tears" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>

@@ -1,6 +1,6 @@
 
 --mirror
-function yandereWaifu.ConverterMirrorMechanic(player) 
+function yandereWaifu.ConverterMirrorMechanic() 
 	local totalTypesofHearts = 0; --counts the total amount of hearts available
 	local totalCurTypesofHearts = {};
 	local totalUnlockedTypesofHearts = {}
@@ -308,7 +308,22 @@ function yandereWaifu.ConverterMirrorMechanic(player)
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
-	yandereWaifu.ConverterMirrorMechanic(player) 
+	yandereWaifu.ConverterMirrorMechanic() 
+end)
+
+local chance = 1/4
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+	local room = InutilLib.room
+	if room:IsFirstVisit() then
+		local slots = Isaac.FindByType(6, 1)
+		for _, ent in pairs(slots) do
+			local rng = ent:GetDropRNG()
+			if rng:RandomFloat() <= (chance) and yandereWaifu.ACHIEVEMENT.REBEKAHS_STUDIO:IsUnlocked() then
+				Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 20, ent.Position, Vector.Zero, nil)
+				ent:Remove()
+			end
+		end
+	end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_EVALUATE_CACHE, function(_,player, cacheF) --The thing the checks and updates the game, i guess?

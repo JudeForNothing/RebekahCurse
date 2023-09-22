@@ -756,7 +756,15 @@
         <gibs amount="8" blood="1" bone="1" eye="0" gut="1" large="0" />
         <preload-snd id="115" /> <!-- SOUND_MONSTER_ROAR_0 -->
     </entity>
-     <entity anm2path="bosses/thriftshop/demonlordess.anm2" baseHP="2500" shieldstrength="75" boss="1" champion="0" collisionDamage="1" collisionMass="40" collisionRadius="27" friction="1" id="620" name="The Demon Lordess" numGridCollisionPoints="12" shadowSize="15" stageHP="0" variant="237" portrait="0" >
+     <entity anm2path="bosses/thriftshop/demonlordess.anm2" baseHP="1500" shieldstrength="75" boss="1" champion="0" collisionDamage="1" collisionMass="40" collisionRadius="27" friction="1" id="620" name="The Demon Lordess" numGridCollisionPoints="12" shadowSize="15" stageHP="0" variant="237" portrait="0" >
+        <gibs amount="8" blood="1" bone="1" eye="0" gut="1" large="0" />
+        <preload-snd id="115" /> <!-- SOUND_MONSTER_ROAR_0 -->
+    </entity>
+    <entity anm2path="bosses/thriftshop/demonlordessfoot.anm2" baseHP="600" shieldstrength="75" boss="1" champion="0" collisionDamage="0" collisionMass="40" collisionRadius="45" friction="1" id="620" name="The Demon Lordess' Foot" numGridCollisionPoints="12" shadowSize="15" stageHP="0" variant="237" subtype="1"  portrait="0" >
+        <gibs amount="8" blood="1" bone="1" eye="0" gut="1" large="0" />
+        <preload-snd id="115" /> <!-- SOUND_MONSTER_ROAR_0 -->
+    </entity>
+    <entity anm2path="bosses/thriftshop/demonlordessfoot2.anm2" baseHP="0" shieldstrength="75" boss="1" champion="0" collisionDamage="0" collisionMass="40" collisionRadius="45" friction="1" id="1000" name="The Demon Lordess' Staff" numGridCollisionPoints="12" shadowSize="15" stageHP="0" variant="237177" subtype="1"  portrait="0" >
         <gibs amount="8" blood="1" bone="1" eye="0" gut="1" large="0" />
         <preload-snd id="115" /> <!-- SOUND_MONSTER_ROAR_0 -->
     </entity>
@@ -767,7 +775,7 @@
     <entity anm2path="monsters/thriftshop/bunbun.anm2" baseHP="20" boss="0" champion="0" collisionInterval="15" collisionDamage="2" collisionMass="3" collisionRadius="13" friction="1" id="620" name="Bun Bun" numGridCollisionPoints="12" shadowSize="24" stageHP="0" variant="238">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
-    <entity anm2path="monsters/thriftshop/buncarpet.anm2" baseHP="10" boss="0" champion="0" collisionInterval="15" collisionDamage="2" collisionMass="3" collisionRadius="13" friction="1" id="620" name="Bun Carpet" numGridCollisionPoints="12" shadowSize="24" stageHP="0" variant="239">
+    <entity anm2path="monsters/thriftshop/buncarpet.anm2" baseHP="10" boss="0" champion="0" collisionInterval="15" collisionDamage="2" collisionMass="5" collisionRadius="13" friction="1" id="620" name="Bun Carpet" numGridCollisionPoints="12" shadowSize="24" stageHP="0" variant="239">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
 	</entity>
 

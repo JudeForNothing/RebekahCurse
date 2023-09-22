@@ -122,6 +122,8 @@
 
 	<passive id="80" name="Regicide" description="Slay the king" gfx="collectibles_regicide.png" quality="3" craftquality="3"/>
 
+	<active id="5" name="Reload" description="Make sure you're always prepared" gfx="collectibles_reloaddeborah.png" hidden="true" tags="quest" craftquality="-1"/>
+
 	<trinket name="No Scope!" description="Hit 'em without looking!" gfx="collectibles_noscope.png" />
 	<passive id="74" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="2" craftquality="2"/>
 	<passive id="75" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="2" craftquality="2"/>

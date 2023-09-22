@@ -58,6 +58,13 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	local data = yandereWaifu.GetEntityData(player)
+
+	--unlock method because im too lazy putting it elsewhere
+	if yandereWaifu.IsNormalRebekah(player) and yandereWaifu.GetPlayerBlackHearts(player) >= 6 then
+		if not yandereWaifu.ACHIEVEMENT.WICKED_WEAVES:IsUnlocked() then
+			yandereWaifu.ACHIEVEMENT.WICKED_WEAVES:Unlock()
+		end
+	end
 	--costume addition
 	--[[if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) and InutilLib.HasJustPickedCollectible( player, RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES) then
 		player:AddNullCostume(RebekahCurse.Costumes.WickedWeaves)

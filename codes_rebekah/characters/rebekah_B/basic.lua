@@ -546,9 +546,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		end)
         if hp < 1 then
             player:Kill()
+			if not yandereWaifu.ACHIEVEMENT.PSORAISIS:IsUnlocked() then
+				yandereWaifu.ACHIEVEMENT.PSORAISIS:Unlock()
+			end
         end
 		if maxhp < 1 then
             player:Kill()
+			if not yandereWaifu.ACHIEVEMENT.PSORAISIS:IsUnlocked() then
+				yandereWaifu.ACHIEVEMENT.PSORAISIS:Unlock()
+			end
         end
 		if (hp % 10) == 0 then
             player:AddSoulHearts(amount*2) --i had to multiply this because custom heart api is making this hard

@@ -152,10 +152,18 @@ function Achievement:Unlock(noNote)
 		return
 	end
 
+	print("goes here ine")
+
 	if not self:IsUnlocked(true) then
+		print("goes here too")
 		local canLock, canUnlockAchievements, canUnlockChallengeAchievements, blockAlwaysUnlock = yandereWaifu.AreAchievementsEnabled()
+		print(canLock)
+		print(canUnlockChallengeAchievements)
+		print(blockAlwaysUnlock)
 		if canUnlockAchievements or (canUnlockChallengeAchievements and self.Challenge) or (self.AlwaysUnlock and not blockAlwaysUnlock) then
 			self:SetUnlocked(true)
+
+			print("goes here transcedence")
 
 			InutilLib.AnimateIsaacAchievement(self.Note, nil, true)
 
@@ -446,13 +454,42 @@ function yandereWaifu.RemoveLockedFromPools()
 	yandereWaifu.RemoveLockedTrinketsFromPool()
 end
 
-local antiRecursion
+--Card stuff stolen fron FF
+yandereWaifu.FFBumpedOddsCards = {
+    [RebekahCurse.Cards.CARD_QUALITYTIME] = 5,		-- n = how many rolls are allowed to get this card
+    [RebekahCurse.Cards.CARD_ACTOFSERVICE] 	= 5,		-- The function will roll as many times as the greatest n
+    [RebekahCurse.Cards.CARD_GIFTGIVING] = 5,
+    [RebekahCurse.Cards.CARD_PHYSICALTOUCH] = 5,
+    [RebekahCurse.Cards.CARD_WORDSOFAFFIRMATION] = 5,
+}
 
-mod:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRune, forceRune)
+local maxBumpAttempts = 0
+for _, value in pairs(yandereWaifu.FFBumpedOddsCards) do if value > maxBumpAttempts then maxBumpAttempts = value end end
+
+
+local antiRecursion
+local skipGetCard
+yandereWaifu:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRune, forceRune)
+	local itempool = game:GetItemPool()
+	local returnValue
+	local getCardRNG = RNG()
+	getCardRNG:SetSeed(Game():GetSeeds():GetStartSeed(), 35)
+	if canSuit and not yandereWaifu.FFBumpedOddsCards[card] and skipGetCard then
+		skipGetCard = true
+		for i = 1, maxBumpAttempts do
+			local new = itempool:GetCard(getCardRNG:Next(), canSuit, canRune, forceRune)
+			if yandereWaifu.FFBumpedOddsCards[new] and i <= yandereWaifu.FFBumpedOddsCards[new] and not yandereWaifu.NoCardNaturalSpawn(new, getCardRNG) then
+				returnValue = new
+				goto getCardEnd
+			end
+		end
+	end
+
+	
+
 	if (yandereWaifu.IsCardLocked(card) or yandereWaifu.NoCardNaturalSpawn(card)) and not antiRecursion then
 		antiRecursion = true
 
-		local itempool = game:GetItemPool()
 		local new
 		local i = 0
 
@@ -463,8 +500,16 @@ mod:AddCallback(ModCallbacks.MC_GET_CARD, function(_, rng, card, canSuit, canRun
 
 		antiRecursion = false
 
-		return new
+		returnValue = new
 	end
+	::getCardEnd::
+	skipGetCard = false
+	if returnValue == card then
+		-- FF says
+		-- We didn't change the spawned card. Return nil to avoid stepping the toes of other mods trying to do card replacements.
+		return nil
+	end
+	return returnValue
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_GET_TRINKET, function(_, trinket, rng)
@@ -483,8 +528,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_TRINKET, function(_, trinket, rng)
 end)
 
 
---FF STUFF I DONT NEED
---[[
+--FF STUFF I DONT NEED MAYBE
+
 function yandereWaifu.InitAchievementTrackers()
 	local itempool = game:GetItemPool()
 	yandereWaifu.AchievementTrackers = {}
@@ -493,7 +538,7 @@ function yandereWaifu.InitAchievementTrackers()
 	end
 
 	--yandereWaifu.PostAchievementUpdate()
-end]]
+end
 
 function yandereWaifu.AchievementsPostGameStart()
 	yandereWaifu.TryUnlockCompletionAchievements()
@@ -539,7 +584,9 @@ mod:AddCallback(ModCallbacks.MC_POST_GAME_END, function() mod.CurrentRunCanGrant
 mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function() mod.CurrentRunCanGrantUnlocks = nil end)
 
 function yandereWaifu.CanChallengeRunUnlockAchievements()
-	return mod.AchievementTrackers and mod.AchievementTrackers.WombUnlocked
+	--always true because i dont have them trackers
+	--return yandereWaifu.AchievementTrackers and yandereWaifu.AchievementTrackers.WombUnlocked
+	return true
 end
 
 ------------------------------------------
@@ -565,6 +612,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 				yandereWaifu.ACHIEVEMENT.EASTER_HUNT:Unlock()
 				--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_body_dysmorphia.png", nil, true, 60)
 			end
+		elseif InutilLib.game.Challenge == RebekahCurse.Challenges.OldMaid then
+			if not yandereWaifu.ACHIEVEMENT.OLD_MAID:IsUnlocked(true) then
+				yandereWaifu.ACHIEVEMENT.OLD_MAID:Unlock()
+				--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_body_dysmorphia.png", nil, true, 60)
+			end
 		end
 	end
 end, PickupVariant.PICKUP_TROPHY)
@@ -572,592 +624,3 @@ end, PickupVariant.PICKUP_TROPHY)
 
 -- Unlocks based on sets of unlocks
 -- Soul of random, deluxe, kings of the minor arcana, flea circus
-
---[[
-local soulOfRandomList = {
-	"IsaacSoulUnlocked",
-	"MaggySoulUnlocked",
-	"CainSoulUnlocked",
-	"JudasSoulUnlocked",
-	"BlueBabySoulUnlocked",
-	"EveSoulUnlocked",
-	"SamsonSoulUnlocked",
-	"AzazelSoulUnlocked",
-	"LazarusSoulUnlocked",
-	"EdenSoulUnlocked",
-	"LostSoulUnlocked",
-	"LilithSoulUnlocked",
-	"KeeperSoulUnlocked",
-	"ApollyonSoulUnlocked",
-	"ForgottenSoulUnlocked",
-	"BethanySoulUnlocked",
-	"JacobSoulUnlocked",
-
-	"SOUL_OF_FIEND",
-	"SOUL_OF_GOLEM"
-}
-
-local minorArcanaKingsList = {
-	"HorsePillsUnlocked",
-	"GoldenBatteryUnlocked",
-	"GoldenTrinketsUnlocked"
-}
-
-local deluxeList = {
-	"GoldenHeartsUnlocked",
-	"HalfSoulHeartsUnlocked",
-	"ScaredHeartsUnlocked",
-	"BoneHeartsUnlocked",
-	"RottenHeartsUnlocked",
-
-	"IMMORAL_HEART",
-	"MORBID_HEART",
-}
-
-local fleaCircusList = {
-	"FLEA_OF_MELTDOWN",
-	"FLEA_OF_DELUGE",
-	"FLEA_OF_POLLUTION",
-	"FLEA_OF_PROPAGANDA"
-}
-
-function yandereWaifu.PostAchievementUpdate(noNote)
-	if mod.savedata.shownUnlocksChoicePopup and mod.CanRunUnlockAchievements() then
-		if not yandereWaifu.ACHIEVEMENT.SOUL_OF_RANDOM:IsUnlocked(true) then
-			local soulStonesCount = yandereWaifu.GetAchievementSetUnlockCount(soulOfRandomList)
-			if soulStonesCount >= #soulOfRandomList / 2 then
-				yandereWaifu.ACHIEVEMENT.SOUL_OF_RANDOM:Unlock(noNote)
-			end
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.FLEA_CIRCUS:IsUnlocked(true) and yandereWaifu.IsAchievementSetUnlocked(fleaCircusList) then
-			yandereWaifu.ACHIEVEMENT.FLEA_CIRCUS:Unlock(noNote)
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.MINOR_ARCANA_KINGS:IsUnlocked(true) and yandereWaifu.IsAchievementSetUnlocked(minorArcanaKingsList) then
-			yandereWaifu.ACHIEVEMENT.MINOR_ARCANA_KINGS:Unlock(noNote)
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.DELUXE:IsUnlocked(true) and yandereWaifu.IsAchievementSetUnlocked(deluxeList) then
-			yandereWaifu.ACHIEVEMENT.DELUXE:Unlock(noNote)
-		end
-	end
-end
-
--- King of diamonds, golden reward plate, mern, skip card
-local isCurrentRoomClear
-local existentFoolsGold = {}
-local existentRewardPlates = {}
-
-mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
-	if mod.CanRunUnlockAchievements() then
-		local room = game:GetRoom()
-		isCurrentRoomClear = room:IsClear()
-
-		if not yandereWaifu.ACHIEVEMENT.KING_OF_DIAMONDS:IsUnlocked(true) then
-			for _, index in pairs(existentFoolsGold) do
-				local grid = room:GetGridEntity(index)
-				if grid and grid:GetType() == GridEntityType.GRID_ROCK_GOLD and grid.State == 2 then
-					mod.savedata.foolsGoldBombed = mod.savedata.foolsGoldBombed + 1
-				end
-			end
-
-			existentFoolsGold = {}
-			for i = 0, room:GetGridSize() do
-				local grid = room:GetGridEntity(i)
-				if grid and grid:GetType() == GridEntityType.GRID_ROCK_GOLD and not StageAPI.IsCustomGrid(i) then
-					if grid.State == 1 then
-						table.insert(existentFoolsGold, i)
-					end
-				end
-			end
-			
-			if mod.savedata.foolsGoldBombed >= 25 then
-				yandereWaifu.ACHIEVEMENT.KING_OF_DIAMONDS:Unlock()
-			end
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.GOLDEN_REWARD_PLATE:IsUnlocked(true) then
-			for _, index in pairs(existentRewardPlates) do
-				local grid = room:GetGridEntity(index)
-				if grid and grid:ToPressurePlate() and (grid.State == 3 or grid.State == 4) then
-					mod.savedata.pressedRewardPlates = mod.savedata.pressedRewardPlates + 1
-				end
-			end
-
-			existentRewardPlates = {}
-			for i = 0, room:GetGridSize() do
-				local grid = room:GetGridEntity(i)
-				if grid and grid:ToPressurePlate() and grid:GetVariant() == 1 and grid.State == 0 and not StageAPI.IsCustomGrid(i) then
-					table.insert(existentRewardPlates, i)
-				end
-			end
-
-			if mod.savedata.pressedRewardPlates >= 79 then
-				yandereWaifu.ACHIEVEMENT.GOLDEN_REWARD_PLATE:Unlock()
-			end
-		end
-	end
-
-	if not yandereWaifu.ACHIEVEMENT.MERN:IsUnlocked(true) and Isaac.CountEntities(nil, 3, FamiliarVariant.MERN_4) > 0 then
-		yandereWaifu.ACHIEVEMENT.MERN:Unlock()
-	end
-end)
-
-local function ThrownFoolsGoldCheck(projectile)
-	local sprite = projectile:GetSprite()
-	if projectile:IsDead() and sprite:GetFilename() == "gfx/grid/grid_rock.anm2" and sprite:GetAnimation() == "foolsgold" then
-		mod.savedata.foolsGoldBombed = mod.savedata.foolsGoldBombed + 1
-	end
-end
-
-mod:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, entity) if mod.CanRunUnlockAchievements() and entity.Variant == ProjectileVariant.PROJECTILE_GRID then ThrownFoolsGoldCheck(entity) end end, 9)
-mod:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, entity) if mod.CanRunUnlockAchievements() and entity.Variant == TearVariant.GRIDENT               then ThrownFoolsGoldCheck(entity) end end, 2)
-
--- Skip card, zodiac beggar, bifurcated stars, morbus!
-mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	if mod.INITIALISED_UNLOCKS then
-		local room = game:GetRoom()
-
-		if isCurrentRoomClear ~= nil and not isCurrentRoomClear and mod.CanRunUnlockAchievements() then
-			isCurrentRoomClear = nil
-
-			mod.savedata.skippedRooms = mod.savedata.skippedRooms + 1
-			if mod.savedata.skippedRooms >= 20 and not yandereWaifu.ACHIEVEMENT.SKIP_CARD:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.SKIP_CARD:Unlock()
-			end
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.ZODIAC_BEGGAR:IsUnlocked(true) and room:GetType() == RoomType.ROOM_PLANETARIUM then
-			yandereWaifu.ACHIEVEMENT.ZODIAC_BEGGAR:Unlock()
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.BIFURCATED_STARS:IsUnlocked(true) and game:GetStateFlag(GameStateFlag.STATE_BACKWARDS_PATH) and room:GetType() == RoomType.ROOM_TREASURE and room:IsFirstVisit() then
-			yandereWaifu.ACHIEVEMENT.BIFURCATED_STARS:Unlock()
-		end
-
-		if not yandereWaifu.ACHIEVEMENT.MORBUS:IsUnlocked(true) then
-			local level = game:GetLevel()
-			if level:GetStage() == LevelStage.STAGE4_1 and level:GetStageType() == StageType.STAGETYPE_REPENTANCE then -- I'm in Corpse
-				yandereWaifu.ACHIEVEMENT.MORBUS:Unlock()
-			end
-		end
-	end
-end)
-
-mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function()
-	isCurrentRoomClear = nil
-end)
-
--- fiend heart (aehrt), purple putty, fraudulent fungus, haunted penny, shard of china
-mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_, player)
-	if mod.ACHIEVEMENT.IMMORAL_HEART:IsUnlocked(true) then
-		if not mod.ACHIEVEMENT.FIEND_HEART:IsUnlocked(true) and mod.GetImmoralHeartsNum(player) >= 12 then
-			mod.ACHIEVEMENT.FIEND_HEART:Unlock()
-		end
-
-		if not mod.ACHIEVEMENT.PURPLE_PUTTY:IsUnlocked(true) and mod.savedata.immoralMinionKills >= 50 then
-			mod.ACHIEVEMENT.PURPLE_PUTTY:Unlock()
-		end
-	end
-
-	if not mod.ACHIEVEMENT.FRAUDULENT_FUNGUS:IsUnlocked(true) and player:GetRottenHearts() >= 3 then
-		mod.ACHIEVEMENT.FRAUDULENT_FUNGUS:Unlock()
-	end
-
-	if not mod.ACHIEVEMENT.HAUNTED_PENNY:IsUnlocked(true) and Isaac.CountEntities(player, 3, FamiliarVariant.WISP, -1) >= 8 then
-		mod.ACHIEVEMENT.HAUNTED_PENNY:Unlock()
-	end
-end)
-
--- plague of decay (kill a rotten beggar)
-mod:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, entity)
-	if game:GetRoom():GetFrameCount() > 0 and entity.Type == EntityType.ENTITY_SLOT and entity.Variant == 18 and entity.EntityCollisionClass == 4 then
-		if not yandereWaifu.ACHIEVEMENT.PLAGUE_OF_DECAY:IsUnlocked(true) then
-			yandereWaifu.ACHIEVEMENT.PLAGUE_OF_DECAY:Unlock()
-		end
-	end
-end)
-
--- thirteen of stars
-mod:AddCallback(ModCallbacks.MC_USE_ITEM, function(_, id, rng, player)
-	if id < 0 and not yandereWaifu.ACHIEVEMENT.THIRTEEN_OF_STARS:IsUnlocked(true) and not mod.savedata.tmtrainerIdsUsed[tostring(id)] then -- TMTRAINER time baby
-		mod.savedata.tmtrainerIdsUsed[tostring(id)] = true
-
-		if rng:RandomFloat() < 0.2 then
-			yandereWaifu.ACHIEVEMENT.THIRTEEN_OF_STARS:Unlock()
-		end
-	end
-end)
-
-local soulStonesList = {
-	-- Vanilla
-	[Card.CARD_SOUL_ISAAC] 		= true,
-	[Card.CARD_SOUL_MAGDALENE]	= true,
-	[Card.CARD_SOUL_CAIN]		= true,
-	[Card.CARD_SOUL_JUDAS]		= true,
-	[Card.CARD_SOUL_BLUEBABY]	= true,
-	[Card.CARD_SOUL_EVE]		= true,
-	[Card.CARD_SOUL_SAMSON]		= true,
-	[Card.CARD_SOUL_AZAZEL]		= true,
-	[Card.CARD_SOUL_LAZARUS]	= true,
-	[Card.CARD_SOUL_EDEN]		= true,
-	[Card.CARD_SOUL_LOST]		= true,
-	[Card.CARD_SOUL_LILITH]		= true,
-	[Card.CARD_SOUL_KEEPER]		= true,
-	[Card.CARD_SOUL_APOLLYON]	= true,
-	[Card.CARD_SOUL_FORGOTTEN]	= true,
-	[Card.CARD_SOUL_BETHANY]	= true,
-	[Card.CARD_SOUL_JACOB]		= true,
-
-	-- FF
-	[mod.ITEM.CARD.SOUL_OF_FIEND]		= true,
-	[mod.ITEM.CARD.SOUL_OF_GOLEM]		= true,
-	[mod.ITEM.CARD.SOUL_OF_RANDOM]		= true,
-}
-
--- soul of golem
-mod:AddCallback(ModCallbacks.MC_USE_CARD, function(_, id, player)
-	if soulStonesList[id] and player:GetPlayerType() == mod.PLAYER.GOLEM then
-		if not mod.ACHIEVEMENT.SOUL_OF_GOLEM:IsUnlocked(true) then
-			mod.ACHIEVEMENT.SOUL_OF_GOLEM:Unlock()
-		end
-	end
-end)
-
--- immoral hearts, Glass Chest
-local function GameHasFiend()
-	for _, player in pairs(Isaac.FindByType(1)) do
-		if player:ToPlayer():GetPlayerType() == mod.PLAYER.FIEND then
-			return true
-		end
-	end
-
-	return false
-end
-
-mod:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, function()
-	if not mod.ACHIEVEMENT.IMMORAL_HEART:IsUnlocked(true) and GameHasFiend() then
-		local room = game:GetRoom()
-
-		if room:GetType() == RoomType.ROOM_BOSS and game:GetLevel():GetStage() ~= LevelStage.STAGE7 then
-			local boss = room:GetBossID()
-			if boss == 6 or boss == 89 then -- Mom / Maus Mom
-				mod.ACHIEVEMENT.IMMORAL_HEART:Unlock()
-			end
-		end
-	end
-
-	if not mod.ACHIEVEMENT.GLASS_CHEST:IsUnlocked(true) then
-		local room = game:GetRoom()
-		if room:GetType() == RoomType.ROOM_BOSS and room:IsMirrorWorld() then
-			mod.ACHIEVEMENT.GLASS_CHEST:Unlock()
-		end
-	end
-end)
-
--- flea of meltdown, flea of deluge
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, npc)
-	if npc.Variant == mod.FF.Meltdown2.Var and game:GetRoom():GetType() == RoomType.ROOM_BOSS and mod.CanRunUnlockAchievements() then
-		mod.savedata.meltdownKills = mod.savedata.meltdownKills + 1
-
-		if mod.savedata.meltdownKills >= 3 then
-			if not mod.ACHIEVEMENT.FLEA_OF_MELTDOWN:IsUnlocked(true) then
-				mod.ACHIEVEMENT.FLEA_OF_MELTDOWN:Unlock()
-			end
-			if not mod.ACHIEVEMENT.FLEA_OF_DELUGE:IsUnlocked(true) then
-				mod.ACHIEVEMENT.FLEA_OF_DELUGE:Unlock()
-			end
-		end
-	end
-end, mod.FF.Meltdown2.ID)
-
--- flea of pollution, flea of propaganda
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, npc)
-	if npc.Variant == mod.FF.Pollution2.Var and game:GetRoom():GetType() == RoomType.ROOM_BOSS and mod.CanRunUnlockAchievements() then
-		mod.savedata.pollutionKills = mod.savedata.pollutionKills + 1
-
-		if mod.savedata.pollutionKills >= 3 then
-			if not mod.ACHIEVEMENT.FLEA_OF_POLLUTION:IsUnlocked(true) then
-				mod.ACHIEVEMENT.FLEA_OF_POLLUTION:Unlock()
-			end
-
-			if not mod.ACHIEVEMENT.FLEA_OF_PROPAGANDA:IsUnlocked(true) then
-				mod.ACHIEVEMENT.FLEA_OF_PROPAGANDA:Unlock()
-			end
-		end
-	end
-end, mod.FF.Pollution2.ID)
-
--- queen of clubs
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, npc)
-	if npc.Variant == 0 and game:GetRoom():GetBossID() == 93 and not mod.ACHIEVEMENT.QUEEN_OF_CLUBS:IsUnlocked(true) then
-		mod.ACHIEVEMENT.QUEEN_OF_CLUBS:Unlock()
-	end
-end, EntityType.ENTITY_SINGE)
-
--- The Right Hand
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, npc)
-	if npc.Variant == 1 and game:GetRoom():GetBossID() == 40 and not mod.ACHIEVEMENT.RIGHT_HAND:IsUnlocked(true) then
-		local anyPlayerHasLeftHand
-		mod.AnyPlayerDo(function(player)
-			if player:HasTrinket(TrinketType.TRINKET_LEFT_HAND) or player:HasTrinket(mod.ITEM.ROCK.LEFT_FOSSIL) then
-				anyPlayerHasLeftHand = true
-			end
-		end)
-
-		if anyPlayerHasLeftHand then
-			mod.ACHIEVEMENT.RIGHT_HAND:Unlock()
-		end
-	end
-end, EntityType.ENTITY_ISAAC)
-
--- Morbid Heart
-mod:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, npc)
-	if npc.Variant == mod.FF.MrDead.Var and game:GetRoom():GetType() == RoomType.ROOM_BOSS then
-		if not mod.ACHIEVEMENT.MORBID_HEART:IsUnlocked(true) then
-			mod.ACHIEVEMENT.MORBID_HEART:Unlock()
-		end
-
-		if game.Challenge == 0 then
-			Isaac.Spawn(5, mod.PICKUP.VARIANT.MORBID_HEART, 0, npc.Position, RandomVector(), npc)
-		end
-	end
-end, mod.FF.MrDead.ID)
-
--- Beast Beggar
-mod:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, function(_, npc)
-	if npc.Variant == 0 then -- The Beast, not horsemen
-		if not mod.ACHIEVEMENT.BEAST_BEGGAR:IsUnlocked(true) then
-			mod.ACHIEVEMENT.BEAST_BEGGAR:Unlock()
-		end
-	end
-end, EntityType.ENTITY_BEAST)
-
--- challenge unlocks!
--- dad's home, green house
-mod:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, collider)
-	if collider:ToPlayer() then
-		if game.Challenge == mod.challenges.dadsHomePlus then
-			if not yandereWaifu.ACHIEVEMENT.GREEN_HOUSE:IsUnlocked(true) then
-				yandereWaifu.ACHIEVEMENT.GREEN_HOUSE:Unlock()
-			end
-		end
-	end
-end, 960) -- Golden Medallion
-
--- Biend
-mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
-	for _, slot in pairs(Isaac.FindByType(6, 14)) do
-		if slot:GetSprite():IsFinished("PayPrize") then
-			if Isaac.GetPlayer():GetPlayerType() == mod.PLAYER.FIEND then
-				yandereWaifu.ACHIEVEMENT.BIEND:Unlock()
-			end
-		end
-	end
-end)
-
-
-------------------------------------------
--- LOCKED THINGS DISABLING STARTS HERE! --
-------------------------------------------
-
--- Cards placed in rooms, zodiac beggar, beast beggar
-mod:AddCallback(ModCallbacks.MC_PRE_ENTITY_SPAWN, function(_, typ, var, sub, pos, vel, spawner, seed)
-	if typ == EntityType.ENTITY_PICKUP and var == PickupVariant.PICKUP_TAROTCARD then
-		if yandereWaifu.IsCardLocked(sub) then
-			local itempool = game:GetItemPool()
-			return {5, 300, itempool:GetCard(seed, false, false, false), seed}
-		end
-	elseif typ == EntityType.ENTITY_SLOT then
-		if var == mod.FF.ZodiacBeggar.Var and not yandereWaifu.ACHIEVEMENT.ZODIAC_BEGGAR:IsUnlocked() and game:GetRoom():GetType() ~= RoomType.ROOM_PLANETARIUM then
-			return {5, 10, 3, seed}
-		elseif var == mod.FF.EvilBeggar.Var and not yandereWaifu.ACHIEVEMENT.BEAST_BEGGAR:IsUnlocked() then
-			return {6, 5, 0, seed}
-		elseif var == 1040 and not mod.ACHIEVEMENT.GOLDEN_SLOT_MACHINE:IsUnlocked() then
-			return {6, 1, 0, seed}
-		end
-	end
-end)
-
--- Locked Cards nuclear option
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if yandereWaifu.IsCardLocked(pickup.SubType) then
-		pickup:Morph(5, 300, 0, true, true)
-	end
-end, 300)
-
--- Immoral hearts & variants
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if pickup.SpawnerType ~= 1 and not mod.ACHIEVEMENT.IMMORAL_HEART:IsUnlocked() and not GameHasFiend() then
-		pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_BLACK, true, true)
-	end
-end, mod.PICKUP.VARIANT.IMMORAL_HEART)
-
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if pickup.SpawnerType ~= 1 and not mod.ACHIEVEMENT.IMMORAL_HEART:IsUnlocked() and not GameHasFiend() then
-		pickup:Morph(5, mod.PICKUP.VARIANT.HALF_BLACK_HEART, 0, true, true)
-	end
-end, mod.PICKUP.VARIANT.HALF_IMMORAL_HEART)
-
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if pickup.SpawnerType ~= 1 and not mod.ACHIEVEMENT.IMMORAL_HEART:IsUnlocked() and not GameHasFiend() then
-		pickup:Morph(5, mod.PICKUP.VARIANT.BLENDED_BLACK_HEART, 0, true, true)
-	end
-end, mod.PICKUP.VARIANT.BLENDED_IMMORAL_HEART)
-
--- Morbid hearts
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if not mod.ACHIEVEMENT.MORBID_HEART:IsUnlocked() then
-		if mod.AchievementTrackers.RottenHeartsUnlocked then
-			pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN)
-		else
-			pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_FULL)
-		end
-	end
-end, mod.PICKUP.VARIANT.MORBID_HEART)
-
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if not mod.ACHIEVEMENT.MORBID_HEART:IsUnlocked() then
-		if mod.AchievementTrackers.RottenHeartsUnlocked then
-			pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN)
-		else
-			pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF)
-		end
-	end
-end, mod.PICKUP.VARIANT.TWOTHIRDS_MORBID_HEART)
-
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if not mod.ACHIEVEMENT.MORBID_HEART:IsUnlocked() then
-		if mod.AchievementTrackers.RottenHeartsUnlocked then
-			pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_ROTTEN)
-		else
-			pickup:Morph(5, PickupVariant.PICKUP_HEART, HeartSubType.HEART_HALF)
-		end
-	end
-end, mod.PICKUP.VARIANT.THIRD_MORBID_HEART)
-
--- Golden cursed penny
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if pickup.SubType == mod.PICKUP.COIN.GOLDENCURSED and not mod.ACHIEVEMENT.GOLDEN_CURSED_PENNY:IsUnlocked() then
-		pickup:Morph(5, PickupVariant.PICKUP_COIN, mod.PICKUP.COIN.CURSED)
-	end
-end, PickupVariant.PICKUP_COIN)
-
--- Haunted Penny
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if pickup.SubType == mod.PICKUP.COIN.HAUNTED and not mod.ACHIEVEMENT.HAUNTED_PENNY:IsUnlocked() then
-		pickup:Morph(5, PickupVariant.PICKUP_COIN, CoinSubType.COIN_PENNY)
-	end
-end, PickupVariant.PICKUP_COIN)
-
--- Dire chest
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if not mod.ACHIEVEMENT.DIRE_CHEST:IsUnlocked() then
-		pickup:Morph(5, PickupVariant.PICKUP_REDCHEST, 0)
-	end
-end, mod.PICKUP.VARIANT.DIRE_CHEST)
-
--- Glass chest
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if not mod.ACHIEVEMENT.GLASS_CHEST:IsUnlocked() then
-		pickup:Morph(5, PickupVariant.PICKUP_LOCKEDCHEST, 0)
-	end
-end, mod.PICKUP.VARIANT.GLASS_CHEST)
-
--- 52 Deck
-mod:AddCallback(ModCallbacks.MC_POST_PICKUP_INIT, function(_, pickup)
-	if pickup.SubType == 11 then
-		if not mod.ACHIEVEMENT["52_DECK"]:IsUnlocked() then
-			pickup:Morph(5, PickupVariant.PICKUP_GRAB_BAG, 0)
-		end
-	end
-end, mod.PICKUP.VARIANT.DECK52)
-
--- Biend Locks
-mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	if not yandereWaifu.ACHIEVEMENT.BIEND:IsUnlocked() then
-		local level = game:GetLevel()
-		local desc = level:GetCurrentRoomDesc()
-
-		local playerType = Isaac.GetPlayer():GetPlayerType()
-
-		if level:GetStage() == LevelStage.STAGE8 and desc.SafeGridIndex == 94 and ((playerType == mod.PLAYER.FIEND and mod.CanRunUnlockAchievements()) or playerType == mod.PLAYER.BIEND) then
-			for _, shopkeeper in pairs(Isaac.FindByType(17)) do
-				shopkeeper:Remove()
-			end
-
-			for _, item in pairs(Isaac.FindByType(5)) do
-				item:Remove()
-			end
-
-			local room = game:GetRoom()
-			local centre = room:GetCenterPos()
-			local biend = Isaac.FindByType(6, 14)[1] or Isaac.Spawn(6, 14, 0, centre, Vector.Zero, nil)
-			local sprite = biend:GetSprite()
-			sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/player_fiendb.png")
-			sprite:LoadGraphics()
-
-			if playerType == mod.PLAYER.BIEND then
-				local door = room:GetDoor(2)
-				room:RemoveGridEntity(door:GetGridIndex(), 0, false)
-
-				for i = 1, 3 do
-					Isaac.Spawn(1000, 21, 0, centre, Vector.Zero, nil)
-				end
-
-				Isaac.Spawn(1000, 64, 0, centre, Vector.Zero, nil)
-			end
-		end
-	end
-end)
-
-function yandereWaifu.SafeEndGame()
-	-- disable achievements
-	game:GetSeeds():AddSeedEffect(SeedEffect.SEED_PREVENT_ALL_CURSES)
-	game:End(3)
-end
-
-mod:AddCallback(ModCallbacks.MC_POST_RENDER, function()
-	if not yandereWaifu.ACHIEVEMENT.BIEND:IsUnlocked() and game.Difficulty >= Difficulty.DIFFICULTY_GREED and Isaac.GetPlayer():GetPlayerType() == mod.PLAYER.BIEND then
-		yandereWaifu.SafeEndGame()
-	end
-
-	if Isaac.GetPlayer():GetPlayerType() == mod.PLAYER.BOLEM then
-		yandereWaifu.SafeEndGame()
-	end
-end)
-
-mod:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
-	if player.FrameCount > 0 then
-		yandereWaifu.TryLockBiendInHome(player)
-	end
-end)
-
-function yandereWaifu.TryLockBiendInHome(player)
-	player = player or Isaac.GetPlayer()
-	if not yandereWaifu.ACHIEVEMENT.BIEND:IsUnlocked() and player:GetPlayerType() == mod.PLAYER.BIEND then
-		player.ControlsEnabled = false
-		player.Visible = false
-		player:GetData().BiendClosetMode = true
-
-		local hud = game:GetHUD()
-		hud:SetVisible(false)
-
-		if game.Difficulty < Difficulty.DIFFICULTY_GREED then
-			local level = game:GetLevel()
-			if level:GetStage() ~= LevelStage.STAGE8 then
-				Isaac.ExecuteCommand("stage 13")
-				level:ChangeRoom(95)
-
-				player.Position = Vector(245, 280)
-				player:SetPocketActiveItem(CollectibleType.COLLECTIBLE_RED_KEY, ActiveSlot.SLOT_POCKET2)
-				player:UseActiveItem(CollectibleType.COLLECTIBLE_RED_KEY, UseFlag.USE_OWNED + UseFlag.USE_NOANIM, ActiveSlot.SLOT_POCKET2)
-				player:RemoveCollectible(CollectibleType.COLLECTIBLE_RED_KEY)
-				player.Position = Vector(160, 280)
-
-				SFXManager():Stop(SoundEffect.SOUND_UNLOCK00)
-			end
-		end
-	end
-end]]

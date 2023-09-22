@@ -11,7 +11,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 			--local newpickup = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_TAROTCARD, RebekahCurse.Cards.CARD_EASTEREGG, pickup.Position, Vector(0,0), player):ToPickup()
 			newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 			if pickup.Variant == PickupVariant.PICKUP_CHEST then
-				for i = 0, math.random(2,3) do
+				for i = 0, math.random(4,5) do
 					local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
 					newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
 				end
@@ -19,9 +19,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 			pickup:Remove()
 		end
 		if pickup.Variant == PickupVariant.PICKUP_COLLECTIBLE and pickup.FrameCount <= 1 then
-			for i = 0, math.random(5,8) do
-				local newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
+			for i = 0, math.random(8,12) do
+				local newpickup
+				if InutilLib.room:GetType() == RoomType.ROOM_BOSS then
+					newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 3, pickup:IsShopItem())
+				else
+					newpickup = yandereWaifu.SpawnEasterEgg(pickup.Position, player, 1, pickup:IsShopItem())
+				end
 				newpickup.OptionsPickupIndex = pickup.OptionsPickupIndex
+				if InutilLib.room:GetType() == RoomType.ROOM_ANGEL then
+					newpickup.OptionsPickupIndex = math.random(0,100)
+				end
 			end
 			pickup:Remove()
 		end
@@ -63,7 +71,7 @@ if StageAPI and StageAPI.Loaded then
 	yandereWaifu.HolediniStageAPIRooms = {
 		StageAPI.AddBossData("Holedini", {
 			Name = "Holedini",
-			Portrait = "gfx/ui/boss/portrait_nincompoop.png",
+			Portrait = "gfx/ui/boss/portrait_holedini.png",
 			Offset = Vector(0,-15),
 			Bossname = "gfx/ui/boss/name_holedini.png",
 			Weight = 2,
@@ -74,7 +82,7 @@ if StageAPI and StageAPI.Loaded then
 	yandereWaifu.DukeofFluffStageAPIRooms = {
 		StageAPI.AddBossData("Duke of Fluff", {
 			Name = "Duke of Fluff",
-			Portrait = "gfx/ui/boss/portrait_nincompoop.png",
+			Portrait = "gfx/ui/boss/portrait_dukeoffluff.png",
 			Offset = Vector(0,-15),
 			Bossname = "gfx/ui/boss/name_duke_of_fluff.png",
 			Weight = 2,
@@ -96,7 +104,7 @@ if StageAPI and StageAPI.Loaded then
 	yandereWaifu.ThePuffStageAPIRooms = {
 		StageAPI.AddBossData("The Puff", {
 			Name = "The Puff",
-			Portrait = "gfx/ui/boss/portrait_nincompoop.png",
+			Portrait = "gfx/ui/boss/portrait_puff.png",
 			Offset = Vector(0,-15),
 			Bossname = "gfx/ui/boss/name_the_puff.png",
 			Weight = 2,
@@ -107,7 +115,7 @@ if StageAPI and StageAPI.Loaded then
 	yandereWaifu.TheLordessStageAPIRooms = {
 		StageAPI.AddBossData("The Demon Lordess", {
 			Name = "The Demon Lordess",
-			Portrait = "gfx/ui/boss/portrait_nincompoop.png",
+			Portrait = "gfx/ui/boss/portrait_demonlordess.png",
 			Offset = Vector(0,-15),
 			Bossname = "gfx/ui/boss/name_the_demon_lordess.png",
 			Weight = 2,

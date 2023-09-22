@@ -487,6 +487,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	eff:GetSprite().Rotation = data.PermanentAngle
 end, RebekahCurse.Enemies.ENTITY_POLTY_TONGUE)
 
+yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
+    if damage.Variant == RebekahCurse.Enemies.ENTITY_POLTYGEIST and (damageFlag & DamageFlag.DAMAGE_EXPLOSION) > 0 then
+        if not yandereWaifu.ACHIEVEMENT.OH_IM_DIE:IsUnlocked() and amount >= damage.HitPoints then
+            yandereWaifu.ACHIEVEMENT.OH_IM_DIE:Unlock()
+        end
+    end
+end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
+
 if StageAPI and StageAPI.Loaded then	
 	yandereWaifu.PoltygeistStageAPIRooms = {
 		StageAPI.AddBossData("Poltygeist", {

@@ -5,6 +5,7 @@ yandereWaifu.ACHIEVEMENT = {
 		ID = "REBEKAH",
 		AlwaysUnlocked = true,
 		Note = "achievement_rebekah",
+		Name = "rebekah!",
 		Tags = {"Misc"},
 		NoInsertTags = {"Misc"},
 		Tooltip = {"t- t- t- t-", "thanks", "for playing!"}
@@ -194,7 +195,7 @@ yandereWaifu.ACHIEVEMENT = {
 	},
 	{
 		ID = "WIKEPIDIA",
-		Note = "achievement_wikepidia",
+		Note = "achievement_wikipedia",
 		Name = "wikipedia",
 		Item = RebekahCurse.Items.COLLECTIBLE_WIKEPIDIA,
 		Tooltip = {"beat", "delirium", "as any rebekah"},
@@ -262,6 +263,151 @@ yandereWaifu.ACHIEVEMENT = {
 		Tags = {"Challenge"},
 		Challenge = true,
 	},
+	{
+		ID = "OLD_MAID",
+		Note = "achievement_deborah_stuff",
+		Name = "old maid",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_UNDERPAY,
+			RebekahCurse.Items.COLLECTIBLE_MILKWINE,
+			RebekahCurse.Items.COLLECTIBLE_SILENTTREATMENT,
+			RebekahCurse.Items.COLLECTIBLE_SILENCER,
+			RebekahCurse.Items.COLLECTIBLE_FULLFATMILK,
+		},
+		Trinket = {
+			RebekahCurse.Trinkets.TRINKET_NOSCOPE,
+			RebekahCurse.Trinkets.TRINKET_DEBORAHSDEADEYE,
+		},
+		Tooltip = {"complete", "old maid"},
+		ViewerTooltip = {"complete old maid"},
+		Tags = {"Challenge"},
+		Challenge = true,
+	},
+	-- Misc
+	{
+		ID = "NOTEBOOK_OF_THE_DEAD",
+		Note = "achievement_notebook_of_the_dead",
+		Name = "notebook of the dead",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_NOTEBOOKOFTHEDEAD,
+		},
+		Tooltip = {"obtain potato", "snack for the", "first time"},
+		ViewerTooltip = {"obtain potato snack for the first time"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "WICKED_WEAVES",
+		Note = "achievement_wicked_weaves",
+		Name = "wicked weaves",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_WICKEDWEAVES,
+		},
+		Tooltip = {"get 3 evil hearts", "as any rebekah"},
+		ViewerTooltip = {"get 3 evil hearts as any rebekah"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "OH_IM_DIE",
+		Note = "achievement_defuse_rewards",
+		Name = "defuse = rewards",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_OHIMDIE,
+		},
+		Tooltip = {"defeat poltygeist", "with any explosion"},
+		ViewerTooltip = {"defeat poltygeist with any explosion"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "HEARTS_AND_CRAFTS",
+		Note = "achievement_hearts_and_crafts",
+		Name = "hearts and crafts",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_HEARTSANDCRAFTS,
+		},
+		Tooltip = {"enter rebekahs", "room for the", "first time"},
+		ViewerTooltip = {"enter rebekahs room for the first time"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "CHEESY_PIZZA",
+		Note = "achievement_cheesy_pizza",
+		Name = "cheesy pizza",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_CHEESYPIZZA,
+		},
+		Tooltip = {"have tomato", "sausage and anything", "bread or milk"},
+		ViewerTooltip = {"have tomato, sausage, and anything bread or milk"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "OVERSIZED_SWEATER",
+		Note = "achievement_oversized_sweater",
+		Name = "oversized sweater",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER,
+		},
+		Tooltip = {"get hurt", "with a blood donation", "or self-harm as rebekah"},
+		ViewerTooltip = {"get hurt with a blood donation or self-harm as rebekah"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "PSORAISIS",
+		Note = "achievement_psoraisis",
+		Name = "psoraisis",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_PSORAISIS,
+		},
+		Tooltip = {"die as", "tainted rebekah"},
+		ViewerTooltip = {"gdie as tainted rebekah"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "FENRIRS_COLLAR",
+		Note = "achievement_fenrirs_collar",
+		Name = "fenrir's collar",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH,
+		},
+		Tooltip = {"collect at", "least 3", "fenrir items"},
+		ViewerTooltip = {"collect at least 3 fenrir items"},
+		Tags = {"Misc"},
+	},
+	--[[{
+		ID = "NARCOLEPSY",
+		Note = "achievement_narcolepsy",
+		Name = "narcolepsy",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_NARCOLEPSY,
+		},
+		Tooltip = {"sleep in", "rebekahs bed"},
+		ViewerTooltip = {"sleep in rebekahs bed"},
+		Tags = {"Misc"},
+	},]]
+	{
+		ID = "HEARTACHES",
+		Note = "achievement_heartaches",
+		Name = "heartaches...",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_HEARTACHES,
+		},
+		Tooltip = {"die as", "rebekah the", "aware"},
+		ViewerTooltip = {"die as rebekah the aware"},
+		Tags = {"Misc"},
+	},
+	{
+		ID = "GIDDY_UP",
+		Note = "achievement_giddy_up",
+		Name = "giddy up",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_GIDDYUP,
+		},
+		Tooltip = {"destroy", "prospector's", "grimace"},
+		ViewerTooltip = {"destroy prospector's grimace"},
+		Tags = {"Misc"},
+		ViewerDisplayIf = function()
+			return yandereWaifu.ACHIEVEMENT.GIDDY_UP:IsUnlocked()
+		end,
+	},
 
 	--t rebekah unlocks
 	{
@@ -294,6 +440,7 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "REBEKAHS_STUDIO",
 		Note = "achievement_rebekahs_studio",
+		Name = "rebekahs studio",
 		Tooltip = {"beat", "mega satan", "as tainted", "rebekah"},
 		CompletionMark = {RebekahCurse.SADREBEKAH, "MegaSatan"},
 		Tags = {"Tainted Rebekah", "Character"}
@@ -333,6 +480,7 @@ yandereWaifu.ACHIEVEMENT = {
 	{
 		ID = "JACOBS_TEARS",
 		Note = "achievement_jacobs_tears",
+		Name = "jacobs tears",
 		Item =  RebekahCurse.Items.JACOBS_TEARS,
 		Tooltip = {"beat", "beast", "as tainted", "rebekah"},
 		CompletionMark = {RebekahCurse.SADREBEKAH, "Beast"},

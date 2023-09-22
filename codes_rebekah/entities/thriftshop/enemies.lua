@@ -132,7 +132,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_,  ent)
         if not data.Init then
             data.Init = true
             data.State = 0
-            ent.GridCollisionClass = GridCollisionClass.COLLISION_SOLID
         end
         if data.State == 0 then
             if not spr:IsPlaying("Idle") then spr:Play("Idle", true) end

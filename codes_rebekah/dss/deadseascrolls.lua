@@ -134,11 +134,11 @@ completionNoteSprite:SetFrame("Idle", 0)
 
 local completionHead = Sprite()
 completionHead:Load("gfx/ui/completion_heads_cab.anm2")
-completionHead:SetFrame("Fiend", 0)
+completionHead:SetFrame("Rebekah", 0)
 
 local completionDoor = Sprite()
 completionDoor:Load("gfx/ui/completion_doors_cab.anm2")
-completionDoor:SetFrame("Fiend", 0)
+completionDoor:SetFrame("Tainted Rebekah", 0)
 
 local completionCharacterSets = {
     {
@@ -187,6 +187,11 @@ local achievementGroups = {
         Name = "challenge",
         Tag = "Challenge",
         Icon = "challenge"
+    },
+    {
+        Name = "misc",
+        Tag = "Misc",
+        Icon = "misc"
     },
     {
         Name = "tainted rebekah",
@@ -671,7 +676,7 @@ local rebekahdirectory = {
                 end,
                 tooltip = {strset = {'pick whether', 'have menu or', 'nott'}}
             },
-            --[[ {
+            {
                 str = 'narrator volume',
                 increment = 1, max = 10,
                 variable = "volume",
@@ -684,20 +689,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.Config.narratorvolume = var
                 end,
                 tooltip = {strset = {'how loud', 'narrator of', 'rebekah', 'needs to be?'}}
-            }]]--[[,
-			{
-                str = 'unlock basic items',
-                choices = {'no', 'yes'},
-                variable = "unlockItems",
-                setting = 2,
-                load = function()
-                    return RebekahCurse.REBEKAH_OPTIONS.UNLOCK_ITEMS and 2 or 1
-                end,
-                store = function(var)
-                    RebekahCurse.REBEKAH_OPTIONS.UNLOCK_ITEMS = var == 2
-                end,
-                tooltip = {strset = {'progress should', 'be saved...', 'stop being a', 'casual!'}}
-            },]]
+            },
             {
                 str = 'have rebekah items',
                 choices = {'no', 'yes'},
@@ -710,6 +702,19 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.Config.itemsEnabled = var == 2
                 end,
                 tooltip = {strset = {'disable', 'all rebekah', 'items for', 'some reason'}}
+            },
+            {
+                str = 'have rebekah mirror',
+                choices = {'no', 'yes'},
+                variable = 'enableMirror',
+                setting = 2,
+                load = function()
+                    return RebekahLocalSavedata.Config.mirrorEnabled and 2 or 1
+                end,
+                store = function(var)
+                    RebekahLocalSavedata.Config.mirrorEnabled = var == 2
+                end,
+                tooltip = {strset = {'toggle', 'boss mirror', 'for rebekah'}}
             },
         }
     },
@@ -846,7 +851,7 @@ local rebekahdirectory = {
                     completionHead:SetFrame(renderData.HeadName, 1)
                     completionHead:Render(centre + offsets[index] + Vector(30, 85), Vector.Zero, Vector.Zero)
 
-                    completionDoor:SetFrame(renderDataset[index - 1].HeadName, 0)
+                    completionDoor:SetFrame(renderDataset[index].HeadName, 0)
                     completionDoor:Render(centre + offsets[index], Vector.Zero, Vector.Zero)
                 end
             end
@@ -872,12 +877,17 @@ local rebekahdirectory = {
 		   {str = 'rebekah', fsize = 3, clr = 3},
            {str = 'basics', dest = 'tutorialrebbasic', fsize = 2--[[, displayif = function() return lib.GetSaveData().CakeUnlocked end]]},
 		   {str = 'advanced', dest = 'tutorialrebadvanced', fsize = 2--[[, displayif = function() return lib.GetSaveData().CakeUnlocked end]]},
+           {str = ''},
+
+           {str = 'tainted rebekah', fsize = 3, clr = 3, displayif = function() return yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() end},
+           {str = 'basics', dest = 'tutorialtrebbasic', fsize = 2, displayif = function() return yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() end},
         },
 		tooltip = {strset = {'learn', 'confusing', 'concepts!'}}
     },
 	
 	tutorialrebbasic = yandereWaifu.dss_rebekahbasics,
 	tutorialrebadvanced = yandereWaifu.dss_rebekahadvanced,
+    tutorialtrebbasic = yandereWaifu.dss_rebekahtbasics,
 	
 	credits = {
         title = 'credits',
@@ -998,10 +1008,10 @@ local rebekahdirectory = {
         title = "rebekah completion",
         fsize = 2,
         buttons = {
-            --[[{
+            {
                 str = "mom's heart / it lives",
                 choices = {"uncompleted", "completed: normal", "completed: hard"},
-                variable = "fiend_heart",
+                variable = "rebekah_mom",
                 setting = 1,
 
                 load = function()
@@ -1012,8 +1022,8 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].heart = var - 1
                 end,
 
-                tooltip = {strset = {"lil fiend", "", "unlocks on", "hard"}}
-            },]]
+                tooltip = {strset = {"tight hairtie", "", "unlocks on", "hard"}}
+            },
             {str = "", fsize = 1, nosel = true},
             {
                 str = "isaac",
@@ -1029,7 +1039,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].isaac = var - 1
                 end,
 
-                tooltip = {strset = {"imp soda", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"dice of", "fate", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1046,7 +1056,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].bbaby = var - 1
                 end,
 
-                tooltip = {strset = {"shard of", "china", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"isaacs", "locks", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1063,7 +1073,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].satan = var - 1
                 end,
 
-                tooltip = {strset = {"rebekah mix", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"cursed spoon", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1080,7 +1090,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].lamb = var - 1
                 end,
 
-                tooltip = {strset = {"prank cookie", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"eternal bond", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1097,7 +1107,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].rush = var - 1
                 end,
 
-                tooltip = {strset = {"gmo corn", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"lunchbox", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1114,7 +1124,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].hush = var - 1
                 end,
 
-                tooltip = {strset = {"+3 fireballs", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"typical romcom", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1131,7 +1141,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].mega = var - 1
                 end,
 
-                tooltip = {strset = {"pyromancy", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"rebekahs key", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1148,7 +1158,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].greed = var - 1
                 end,
 
-                tooltip = {strset = {"cool", "sunglasses", "unlocks on", "greed+", "", "jack cards", "unlock on", "greedier"}}
+                tooltip = {strset = {"love power", "unlocks on", "greed+", "", "rebekahs camera", "unlock on", "greedier"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1165,7 +1175,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].deli = var - 1
                 end,
 
-                tooltip = {strset = {"rebekahs horn", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"wikepedia", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1182,7 +1192,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].mother = var - 1
                 end,
 
-                tooltip = {strset = {"the devils", "harvest", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"moms blessing", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1199,10 +1209,10 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekah"].beast = var - 1
                 end,
 
-                tooltip = {strset = {"fetal rebekah", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"twin vision", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
-            {str = "the rebekah folio", nosel = true},
+            {str = "unrequited love", nosel = true},
             {str = "unlocked by beating everything on hard", fsize = 1, nosel = true},
             {str = "", nosel = true},
         },
@@ -1261,7 +1271,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].isaac = var - 1
                 end,
 
-                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+                tooltip = {strset = {"rebekahs", "scrapbook", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1278,7 +1288,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].bbaby = var - 1
                 end,
 
-                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+                tooltip = {strset = {"rebekahs", "scrapbook", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1295,7 +1305,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].satan = var - 1
                 end,
 
-                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+                tooltip = {strset = {"rebekahs", "scrapbook", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1312,7 +1322,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].lamb = var - 1
                 end,
 
-                tooltip = {strset = {"chunk of", "tar", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
+                tooltip = {strset = {"rebekahs", "scrapbook", "", "quartet:", "beat isaac,", "???, satan", "and the lamb", "on normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1329,7 +1339,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].rush = var - 1
                 end,
 
-                tooltip = {strset = {"soul of", "fiend", "", "duet:", "beat boss", "rush and hush", "on normal+"}}
+                tooltip = {strset = {"soul of", "rebekah", "", "duet:", "beat boss", "rush and hush", "on normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1346,7 +1356,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].hush = var - 1
                 end,
 
-                tooltip = {strset = {"soul of", "fiend", "", "duet:", "beat boss", "rush and hush", "on normal+"}}
+                tooltip = {strset = {"soul of", "rebekah", "", "duet:", "beat boss", "rush and hush", "on normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1363,7 +1373,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].mega = var - 1
                 end,
 
-                tooltip = {strset = {"dire chest", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"rebekahs studio", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1380,7 +1390,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].greed = var - 1
                 end,
 
-                tooltip = {strset = {"+3 fireballs?", "", "unlocks on", "greedier"}}
+                tooltip = {strset = {"labans shop", "", "unlocks on", "greedier"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1397,7 +1407,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].deli = var - 1
                 end,
 
-                tooltip = {strset = {"malice", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"wishful", "thinking", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1414,7 +1424,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].mother = var - 1
                 end,
 
-                tooltip = {strset = {"hatred", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"5 languages", "of love", "", "unlocks on", "normal+"}}
             },
             {str = "", fsize = 1, nosel = true},
             {
@@ -1431,7 +1441,7 @@ local rebekahdirectory = {
                     RebekahLocalSavedata.CompletionMarks["technical rebekahb"].beast = var - 1
                 end,
 
-                tooltip = {strset = {"modern", "ouroboros", "", "unlocks on", "normal+"}}
+                tooltip = {strset = {"jacobs", "tears", "", "unlocks on", "normal+"}}
             }
         },
     },
