@@ -270,6 +270,7 @@ yandereWaifu.ACHIEVEMENT = {
 		Item = {
 			RebekahCurse.Items.COLLECTIBLE_UNDERPAY,
 			RebekahCurse.Items.COLLECTIBLE_MILKWINE,
+			RebekahCurse.Items.COLLECTIBLE_SKIMMEDMILK,
 			RebekahCurse.Items.COLLECTIBLE_SILENTTREATMENT,
 			RebekahCurse.Items.COLLECTIBLE_SILENCER,
 			RebekahCurse.Items.COLLECTIBLE_FULLFATMILK,
@@ -406,6 +407,20 @@ yandereWaifu.ACHIEVEMENT = {
 		Tags = {"Misc"},
 		ViewerDisplayIf = function()
 			return yandereWaifu.ACHIEVEMENT.GIDDY_UP:IsUnlocked()
+		end,
+	},
+	{
+		ID = "CUTIE_PATOOTIE",
+		Note = "achievement_cutie_patootie",
+		Name = "cutie patootie",
+		Item = {
+			RebekahCurse.Items.COLLECTIBLE_CUTIEPATOOTIE,
+		},
+		Tooltip = {"blow up", "a mirror in", "rebekah's room"},
+		ViewerTooltip = {"blow up a mirror in rebekah's room"},
+		Tags = {"Misc"},
+		ViewerDisplayIf = function()
+			return yandereWaifu.ACHIEVEMENT.CUTIE_PATOOTIE:IsUnlocked()
 		end,
 	},
 

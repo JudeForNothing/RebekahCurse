@@ -10,6 +10,11 @@
 	<entity  Group="Bosses" ID="620" Image="entities/prospector.png" Kind="Cursed and Heartbroken" Name="The Prospector" Subtype="0" Variant="227" />
 	<entity  Group="Bosses" ID="620" Image="entities/prospector_sentry.png" Kind="Cursed and Heartbroken" Name="The Prospector's Sentry" Subtype="1" Variant="227" />
 
+	<entity  Group="Bosses" ID="620" Image="entities/persis.png" Kind="Cursed and Heartbroken" Name="Grey Sisters" Subtype="0" Variant="290" />
+	<entity  Group="Bosses" ID="620" Image="entities/grey_eye.png" Kind="Cursed and Heartbroken" Name="Grey Sisters Eye" Subtype="10" Variant="229" />
+	<entity  Group="Bosses" ID="620" Image="entities/grey_tooth.png" Kind="Cursed and Heartbroken" Name="Grey Sisters Tooth" Subtype="20" Variant="229" />
+
+
 	<entity  Group="Rebekah's Room" ID="5" Image="entities/rebekahsroom/rebekahs_bed.png" Kind="Cursed and Heartbroken" Name="Rebekah's Bed" Subtype="177" Variant="380" />
 	<entity  Group="Rebekah's Room" ID="999" Image="entities/rebekahsroom/rebekahs_carpet.png" Kind="Cursed and Heartbroken" Name="Rebekah's Carpet (Entity Replace)" Subtype="177" Variant="74" />
 	<entity  Group="Rebekah's Room" ID="6" Image="entities/rebekahsroom/rebeccas_mirror_temp.png" Kind="Cursed and Heartbroken" Name="Rebecca's Mirror (everyone)" Subtype="20" Variant="19373710" />
@@ -28,4 +33,8 @@
 	<entity  Group="Thirft Shop" ID="620" Image="entities/thepuff.png" Kind="Cursed and Heartbroken" Name="The Puff" Subtype="0" Variant="236" />
 	<entity  Group="Thirft Shop" ID="620" Image="entities/thedemonlordess.png" Kind="Cursed and Heartbroken" Name="The Demon Lordess" Subtype="0" Variant="237" />
 
+	<entity  Group="Thirft Shop" ID="620" Image="entities/roach.png" Kind="Cursed and Heartbroken" Name="Roach" Subtype="1" Variant="171073" />
+	<entity  Group="Thirft Shop" ID="620" Image="entities/longits.png" Kind="Cursed and Heartbroken" Name="Longits" Subtype="1" Variant="171075" />
+
+	<entity BaseHP="550" Group="Enemies" ID="620" Image="entities/the_moon.png" Kind="Cursed and Heartbroken" Name="The Moon" Subtype="0" Variant="2200" />
 </data>

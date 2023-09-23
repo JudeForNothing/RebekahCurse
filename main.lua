@@ -118,6 +118,7 @@ yandereWaifuIngameContentCode = {
 			nincompoop = require('codes_rebekah.entities.bosses.nincompoop'),
 			poltygeist = require('codes_rebekah.entities.bosses.poltygeist'),
 			greysisters = require('codes_rebekah.entities.bosses.greysisters'),
+			themoon = require('codes_rebekah.entities.bosses.themoon'),
 
 			laban = require('codes_rebekah.entities.bosses.laban'),
 		},
@@ -235,6 +236,8 @@ yandereWaifuIngameContentCode = {
 		silencer = require('codes_rebekah.items.silencer'),
 
 		fullfatmilk = require('codes_rebekah.items.fullfatmilk'),
+
+		cutiepatootie = require('codes_rebekah.items.cutiepatootie'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),

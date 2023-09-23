@@ -125,4 +125,16 @@ MMC.AddMusicCallback(yandereWaifu, function(self, music)
 	end
 end)
 end
+
+--[[
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
+	local grids = InutilLib.GetRoomGrids()
+    for i, v in pairs(grids) do
+        if v ~= nil and v:ToRock() then
+            if v ~= nil and v:ToRock() and v.State ~= 2 and v.State ~= 1000 then
+            end
+        end
+    end
+	
+end);]]
 end

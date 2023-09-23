@@ -30,6 +30,7 @@ RebekahCurse = {
 	ENTITY_CARDIAC = Isaac.GetEntityVariantByName("Cardiac Armor"),
 	ENTITY_FENRIR = Isaac.GetEntityVariantByName("Fenrir"),
 	ENTITY_JACOBSTEARS = Isaac.GetEntityVariantByName("Jacob's Tears"),
+	ENTITY_CUTIEPATOOTIE = Isaac.GetEntityVariantByName("Cutie Patootie"),
 	
 	ENTITY_SINGINGTEAR = Isaac.GetEntityVariantByName("Singing Tear"),
 	ENTITY_METALTEAR = Isaac.GetEntityVariantByName("Metal Tear"),
@@ -329,6 +330,8 @@ RebekahCurse.Items = {
 	COLLECTIBLE_IOU = Isaac.GetItemIdByName("I.O.U."),
 	COLLECTIBLE_SUSPICIOUSSTEW = Isaac.GetItemIdByName("Suspicious Stew"),
 	COLLECTIBLE_FOMOBOMBS = Isaac.GetItemIdByName("FOMO Bombs"),
+
+	COLLECTIBLE_CUTIEPATOOTIE = Isaac.GetItemIdByName("Cutie Patootie"),
 	
 
 	COLLECTIBLE_TAINTEDQ = Isaac.GetItemIdByName("Sword of Hope")
@@ -586,7 +589,10 @@ RebekahCurse.Enemies = {
 	ENTITY_ENYO = Isaac.GetEntityVariantByName("Enyo"),
 	ENTITY_DEINO = Isaac.GetEntityVariantByName("Deino"),
 	ENTITY_PEMPHREDO = Isaac.GetEntityVariantByName("Pemphredo"),
+	ENTITY_PERSIS = Isaac.GetEntityVariantByName("Persis"),
 	ENTITY_GREYSISTEREYE = Isaac.GetEntityVariantByName("Grey Eye"),
+	ENTITY_GREYSISTERTOOTH = Isaac.GetEntityVariantByName("Grey Tooth"),
+	ENTITY_THEMOON = Isaac.GetEntityVariantByName("The Moon"),
 
 	ENTITY_REBEKAH_ENEMY = Isaac.GetEntityTypeByName("Rebekah Entities"),
 	ENTITY_REDTATO = Isaac.GetEntityVariantByName("Red Tato"),

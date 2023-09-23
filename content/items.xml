@@ -133,4 +133,5 @@
 	<passive id="78" name="Silencer" description="Silencing tears" gfx="collectibles_silencer.png" quality="2" craftquality="2"/>
 	<trinket name="Deborah's Dead Eye" description="Vengeance is an idiot’s game" gfx="collectibles_deborahsdeadeye.png" />
 	<passive id="79" name="Full Fat Milk" description="High quality milk > high quanity milk" gfx="collectibles_fullfatmilk.png" quality="2" craftquality="2"/>
+	<familiar id="80" name="Cutie Patootie" description="Best girl" gfx="collectibles_cutiepatootie.png" quality="3" craftquality="3"/>
 </items>

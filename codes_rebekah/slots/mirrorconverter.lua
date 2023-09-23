@@ -120,6 +120,9 @@ function yandereWaifu.ConverterMirrorMechanic()
 							if not sprite:IsFinished("Death") then
 								sprite:Play("Death")
 							end
+							if not yandereWaifu.ACHIEVEMENT.CUTIE_PATOOTIE:IsUnlocked() then
+								yandereWaifu.ACHIEVEMENT.CUTIE_PATOOTIE:Unlock()
+							end
 						else
 							if not mirdata.ForceOverlay then
 								--sprite:PlayOverlay(tostring(mirdata.Use).."_Use", true)
