@@ -406,6 +406,7 @@ end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function()
 	local game = InutilLib.game
+	local player = Isaac.GetPlayer()
 	if not yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() and game.Difficulty >= Difficulty.DIFFICULTY_GREED and player:GetPlayerType() == RebekahCurse.SADREBEKAH then
 		yandereWaifu.FFSafeEndGame()
 	end

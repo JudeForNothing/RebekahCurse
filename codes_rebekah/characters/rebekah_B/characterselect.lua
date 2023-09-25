@@ -36,7 +36,7 @@ end
 	end
 end]]
 
-yandereWaifu.RebekahTaintedPersonalities:New({}, "Cursed Personality", RebekahCurse.REB_CURSED, "gfx/ui/rebekah select/cursed.png", "gfx/ui/coop/icons/red.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH:IsUnlocked() end)
+yandereWaifu.RebekahTaintedPersonalities:New({}, "Cursed Personality", RebekahCurse.REB_CURSED, "gfx/ui/rebekah select/cursed.png", "gfx/ui/coop/icons/red.png", "gfx/ui/rebekah select/locked.png", function() return true end)
 --[[yandereWaifu.RebekahTaintedPersonalities:New({}, "Soul Personality", RebekahCurse.REB_SOUL, "gfx/ui/rebekah select/soul.png", "gfx/ui/coop/icons/soul.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_SOUL:IsUnlocked() end)
 yandereWaifu.RebekahTaintedPersonalities:New({}, "Evil Personality", RebekahCurse.REB_EVIL, "gfx/ui/rebekah select/evil.png", "gfx/ui/coop/icons/evil.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_EVIL:IsUnlocked() end)
 yandereWaifu.RebekahTaintedPersonalities:New({}, "Eternal Personality", RebekahCurse.REB_ETERNAL, "gfx/ui/rebekah select/eternal.png", "gfx/ui/coop/icons/eternal.png", "gfx/ui/rebekah select/locked.png", function() return yandereWaifu.ACHIEVEMENT.REBEKAH_ETERNAL:IsUnlocked() end)
@@ -50,6 +50,8 @@ yandereWaifu.RebekahTaintedPersonalities:New({}, "Broken Personality", RebekahCu
 --initialization for unlocked personalities
 yandereWaifu.ListOfRegUnlockedTaintedPersonalities = {}
 function yandereWaifu:onNewGameTaintedPersonalitiesInit(player)
+	local playerType = player:GetPlayerType()
+	if playerType ~= RebekahCurse.SADREBEKAH then return end
 	--tutorial
 	local tutorialTable = {
 		name = "Tutorial",
@@ -61,25 +63,33 @@ function yandereWaifu:onNewGameTaintedPersonalitiesInit(player)
 	}
 	yandereWaifu.ListOfRegUnlockedTaintedPersonalities[1] = tutorialTable
 	
-	for i, v in pairs (yandereWaifu.ListOfRegTaintedPersonalities) do
-		local currentPlayerId = v
-		local returnTable = {
-			name = currentPlayerId.name,
-			playerId = currentPlayerId.playerId,
-			graphics = currentPlayerId.graphics,
-			coopGraphics = currentPlayerId.coopGraphics,
-			lockedgraphics = currentPlayerId.lockedgraphics,
-			isLocked = not currentPlayerId.LockedState()
-		}
-		--print(currentPlayerId.name)
-		--print(currentPlayerId.LockedState)
-		--currentPlayerId.isLocked = currentPlayerId.LockedState()
-		--print(returnTable.IsLocked)
-		yandereWaifu.ListOfRegUnlockedTaintedPersonalities[i+1] = returnTable
-		--print(yandereWaifu.ListOfRegUnlockedTaintedPersonalities[i].IsLocked)
-	end
+	InutilLib.SetTimer(45, function()
+		for i, v in pairs (yandereWaifu.ListOfRegTaintedPersonalities) do
+			local currentPlayerId = v
+			local returnTable = {
+				name = currentPlayerId.name,
+				playerId = currentPlayerId.playerId,
+				graphics = currentPlayerId.graphics,
+				coopGraphics = currentPlayerId.coopGraphics,
+				lockedgraphics = currentPlayerId.lockedgraphics,
+				isLocked = not currentPlayerId.LockedState()
+			}
+			--print(currentPlayerId.name)
+			--print(currentPlayerId.LockedState)
+			--currentPlayerId.isLocked = currentPlayerId.LockedState()
+			--print(returnTable.IsLocked)
+			yandereWaifu.ListOfRegUnlockedTaintedPersonalities[i+1] = returnTable
+			--print(yandereWaifu.ListOfRegUnlockedTaintedPersonalities[i].IsLocked)
+		end
+	end)
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onNewGameTaintedPersonalitiesInit)
+function yandereWaifu:onNewGameTaintedPersonalitiesTrueInit(player)
+	local playerType = player:GetPlayerType()
+	if playerType ~= RebekahCurse.SADREBEKAH then return end
+	player.Visible = false
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onNewGameTaintedPersonalitiesTrueInit)
 
 
 local shouldRenderAchievement = false
@@ -236,8 +246,10 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 	local playerCount = InutilLib.game:GetNumPlayers()
 	local playerType = player:GetPlayerType()
 	local data = yandereWaifu.GetEntityData(player)
+	--if player.FrameCount ~= 1 then return end
 	if playerType == RebekahCurse.SADREBEKAH 
-	and playerCount == 1 and yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then
+	and playerCount == 1 --[[and yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked()]] then
+		--yandereWaifu:onNewGameTaintedPersonalitiesInit(player)
 		yandereWaifu:ShowTaintedPersonalityBook()
 		hasSelectedPersonality = false
 		savedItems = {}
@@ -267,8 +279,6 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onTechnicalTaintedCharacterInit)
-
-
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local playerType = player:GetPlayerType()

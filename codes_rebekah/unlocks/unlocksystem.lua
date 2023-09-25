@@ -138,6 +138,7 @@ function Achievement:IsUnlocked(ignoreModifiers)
 		return true
 	end
 
+	Isaac.DebugString(tostring(self.Name))
 	local canLock = yandereWaifu.AreAchievementsEnabled()
 	if not canLock and not ignoreModifiers then
 		return true
@@ -207,7 +208,7 @@ function yandereWaifu.AreAchievementsEnabled()
 		return false, false, false, true
 	end
 
-    RebekahLocalSavedata.Config.disableAchievements = false
+    --RebekahLocalSavedata.Config.disableAchievements = false
 	if RebekahLocalSavedata.Config.disableAchievements then
 		return false, yandereWaifu.CanRunUnlockAchievements(), yandereWaifu.CanChallengeRunUnlockAchievements(), false
 	end
@@ -570,18 +571,18 @@ function yandereWaifu.IsAchievementSetUnlocked(set)
 end
 
 function yandereWaifu.CanRunUnlockAchievements(forceNew) -- Made in conjunction with Thicco Catto
-	if mod.CurrentRunCanGrantUnlocks ~= nil and not forceNew then return mod.CurrentRunCanGrantUnlocks end
-
+	if yandereWaifu.CurrentRunCanGrantUnlocks ~= nil and not forceNew then return yandereWaifu.CurrentRunCanGrantUnlocks end
 	local machine = Isaac.Spawn(6, 11, 0, Vector.Zero, Vector.Zero, nil)
-	mod.CurrentRunCanGrantUnlocks = machine:Exists()
+	yandereWaifu.CurrentRunCanGrantUnlocks = machine:Exists()
 	machine:Remove()
 
-	return mod.CurrentRunCanGrantUnlocks
+	Isaac.DebugString("HELDDFDFDFDFASAF")
+	return yandereWaifu.CurrentRunCanGrantUnlocks
 end
 
-mod:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function() mod.CurrentRunCanGrantUnlocks = nil end)
-mod:AddCallback(ModCallbacks.MC_POST_GAME_END, function() mod.CurrentRunCanGrantUnlocks = nil end)
-mod:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function() mod.CurrentRunCanGrantUnlocks = nil end)
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_GAME_EXIT, function() yandereWaifu.CurrentRunCanGrantUnlocks = nil end)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_END, function() yandereWaifu.CurrentRunCanGrantUnlocks = nil end)
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function() yandereWaifu.CurrentRunCanGrantUnlocks = nil end)
 
 function yandereWaifu.CanChallengeRunUnlockAchievements()
 	--always true because i dont have them trackers

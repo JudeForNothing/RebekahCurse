@@ -63,7 +63,7 @@ function RebeccaInit(player)
 	elseif player:GetPlayerType() == RebekahCurse.REB_IMMORTAL then
 		mode = RebekahCurse.REBECCA_MODE.ImmortalHearts
 	end
-	yandereWaifu.ChangeMode( player, mode, true, _, true);
+	yandereWaifu.ChangeMode( player, mode, true, false, true);
 	yandereWaifu.AddRandomHeart(player)
 	
 

@@ -659,7 +659,7 @@ function yandereWaifu.ChangeMode( player, mode, free, fanfare, dontchange )
 		yandereWaifu.RebekahCanShoot(player, true)
 	end]]
 	
-	yandereWaifu.ApplyCostumes( mode, player );
+	yandereWaifu.ApplyCostumes( mode, player, _, false );
 	--local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 	
 	--make changes to Rebecca

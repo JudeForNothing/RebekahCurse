@@ -34,7 +34,7 @@ function TaintedRebeccaInit(player)
 		data.PersistentPlayerData.MaxRageCrystal = 2
 		data.RageCrystal = 0
 	end
-	yandereWaifu.ApplyCostumes(mode, player, false, true)
+	yandereWaifu.ApplyCostumes(mode, player, false, false)
 
 	isTRebPresent = true
 

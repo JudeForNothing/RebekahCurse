@@ -50,6 +50,8 @@ yandereWaifu.RebekahPersonalities:New({}, "Broken Personality", RebekahCurse.REB
 --initialization for unlocked personalities
 yandereWaifu.ListOfRegUnlockedPersonalities = {}
 function yandereWaifu:onNewGamePersonalitiesInit(player)
+	local playerType = player:GetPlayerType()
+	if playerType ~= RebekahCurse.TECHNICAL_REB then return end
 	--tutorial
 	local tutorialTable = {
 		name = "Tutorial",
@@ -61,25 +63,33 @@ function yandereWaifu:onNewGamePersonalitiesInit(player)
 	}
 	yandereWaifu.ListOfRegUnlockedPersonalities[1] = tutorialTable
 	
-	for i, v in pairs (yandereWaifu.ListOfRegPersonalities) do
-		local currentPlayerId = v
-		local returnTable = {
-			name = currentPlayerId.name,
-			playerId = currentPlayerId.playerId,
-			graphics = currentPlayerId.graphics,
-			coopGraphics = currentPlayerId.coopGraphics,
-			lockedgraphics = currentPlayerId.lockedgraphics,
-			isLocked = not currentPlayerId.LockedState()
-		}
-		--print(currentPlayerId.name)
-		--print(currentPlayerId.LockedState)
-		--currentPlayerId.isLocked = currentPlayerId.LockedState()
-		--print(returnTable.IsLocked)
-		yandereWaifu.ListOfRegUnlockedPersonalities[i+1] = returnTable
-		--print(yandereWaifu.ListOfRegUnlockedPersonalities[i].IsLocked)
-	end
+	InutilLib.SetTimer(15, function()
+		for i, v in pairs (yandereWaifu.ListOfRegPersonalities) do
+			local currentPlayerId = v
+			local returnTable = {
+				name = currentPlayerId.name,
+				playerId = currentPlayerId.playerId,
+				graphics = currentPlayerId.graphics,
+				coopGraphics = currentPlayerId.coopGraphics,
+				lockedgraphics = currentPlayerId.lockedgraphics,
+				isLocked = not currentPlayerId.LockedState()
+			}
+			--print(currentPlayerId.name)
+			--print(currentPlayerId.LockedState)
+			--currentPlayerId.isLocked = currentPlayerId.LockedState()
+			--print(returnTable.IsLocked)
+			yandereWaifu.ListOfRegUnlockedPersonalities[i+1] = returnTable
+			--print(yandereWaifu.ListOfRegUnlockedPersonalities[i].IsLocked)
+		end
+	end)
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onNewGamePersonalitiesInit)
+function yandereWaifu:onNewGamePersonalitiesTrueInit(player)
+	local playerType = player:GetPlayerType()
+	if playerType ~= RebekahCurse.TECHNICAL_REB then return end
+	player.Visible = false
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onNewGamePersonalitiesTrueInit)
 
 
 local shouldRenderAchievement = false
@@ -235,9 +245,11 @@ function yandereWaifu:onTechnicalCharacterInit(player)
 	local playerCount = InutilLib.game:GetNumPlayers()
 	local playerType = player:GetPlayerType()
 	local data = yandereWaifu.GetEntityData(player)
+	--if player.FrameCount ~= 1 then return end
 	if playerType == RebekahCurse.TECHNICAL_REB 
 	and playerCount == 1 then
 		if not RebekahLocalSavedata.Config.menu_init then
+			--yandereWaifu:onNewGamePersonalitiesInit(player)
 			yandereWaifu:ShowPersonalityBook()
 			hasSelectedPersonality = false
 			savedItems = {}
