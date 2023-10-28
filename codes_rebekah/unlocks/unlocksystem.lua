@@ -545,8 +545,6 @@ function yandereWaifu.AchievementsPostGameStart()
 	yandereWaifu.TryUnlockCompletionAchievements()
 	--yandereWaifu.InitAchievementTrackers()
 	yandereWaifu.RemoveLockedFromPools()
-
-	--yandereWaifu.TryLockBiendInHome()
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, yandereWaifu.AchievementsPostGameStart)

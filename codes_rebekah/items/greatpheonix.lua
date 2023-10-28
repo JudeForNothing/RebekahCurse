@@ -14,7 +14,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	end
 end)
 
-local function SpawnFlies(player, amount)
+function yandereWaifu.SpawnFlies(player, amount)
 	local amountFlies = amount or 4
 	
 	for i = 1, amountFlies do 
@@ -46,7 +46,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_FIRE_TEAR, function(_,  tr)
 				if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
 					amount = 2
 				end
-				SpawnFlies(player, amount)
+				yandereWaifu.SpawnFlies(player, amount)
 			end
 		else
 			pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
@@ -84,7 +84,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 								if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
 									amount = 2
 								end
-								SpawnFlies(player, amount)
+								yandereWaifu.SpawnFlies(player, amount)
 							end
 						end
 					else
@@ -127,7 +127,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 								if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
 									amount = 2
 								end
-								SpawnFlies(player, amount)
+								yandereWaifu.SpawnFlies(player, amount)
 							end
 						--end
 					else
@@ -161,7 +161,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_BOMB", function(_, bb)
 				if pldata.GPFireCount > 30 then
 					pldata.GPFireCount = 0
 					
-					SpawnFlies(player, 4)
+					yandereWaifu.SpawnFlies(player, 4)
 				end
 			else
 				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
@@ -194,7 +194,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_INIT, function(_,  eff)
 				if pldata.GPFireCount > 3 then
 					pldata.GPFireCount = 0
 					
-					SpawnFlies(player)
+					yandereWaifu.SpawnFlies(player)
 				end
 			else
 				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
@@ -227,7 +227,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 				if pldata.GPFireCount > 240 then
 					pldata.GPFireCount = 0
 					
-					SpawnFlies(player)
+					yandereWaifu.SpawnFlies(player)
 				end
 			else
 				pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
@@ -275,7 +275,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
 							amount = 2
 						end
-						SpawnFlies(player, amount)
+						yandereWaifu.SpawnFlies(player, amount)
 					end
 				else
 					pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()
@@ -305,7 +305,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_KNIFE_UPDATE, function(_, kn)
 						if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
 							amount = 1
 						end
-						SpawnFlies(player, amount)
+						yandereWaifu.SpawnFlies(player, amount)
 					end
 				else
 					pldata.lastGPFrameCount = InutilLib.game:GetFrameCount()

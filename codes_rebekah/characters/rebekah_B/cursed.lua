@@ -345,6 +345,61 @@ function yandereWaifu.SwingCursedKnife(player, weapon, state, angle, flip)
 		end
 	end
 
+    --great pheonix synergy
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_GREATPHEONIX) then
+		if data.lastGPFrameCount then
+            if InutilLib.game:GetFrameCount() == data.lastGPFrameCount then
+                return
+            end
+            
+            data.lastGPFrameCount = InutilLib.game:GetFrameCount()
+            
+            if not data.GPFireCount then
+                data.GPFireCount = 1
+            else
+                data.GPFireCount = data.GPFireCount + 1
+            end
+            
+            if data.GPFireCount > 30 then
+                data.GPFireCount = 0
+                local amount = 4
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+                    amount = 2
+                end
+                yandereWaifu.SpawnFlies(player, amount)
+            end
+        else
+            data.lastGPFrameCount = InutilLib.game:GetFrameCount()
+        end
+	end
+    --appreciation
+    if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_APPRECIATIONCAKE) then
+		if data.lastARPCFrameCount then
+            if InutilLib.game:GetFrameCount() == data.lastARPCFrameCount then
+                return
+            end
+            
+            data.lastARPCFrameCount = InutilLib.game:GetFrameCount()
+            
+            if not data.ARPCFireCount then
+                data.ARPCFireCount = 1
+            else
+                data.ARPCFireCount = data.ARPCFireCount + 1
+            end
+            
+            if data.ARPCFireCount > 3 then
+                data.ARPCFireCount = 0
+                local amount = 1
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+                    amount = 1
+                end
+                yandereWaifu.CakeFireTearBurst(player)
+            end
+        else
+            data.lastARPCFrameCount = InutilLib.game:GetFrameCount()
+        end
+	end
+
      --eye of greed synergy
 	if player:HasCollectible(CollectibleType.COLLECTIBLE_EYE_OF_GREED) then
         if not data.EyeOfGreedCount then data.EyeOfGreedCount = 1 end
@@ -476,7 +531,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			data.taintedCursedTick = 0
             if player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) and data.NeptunusTRebCount < 10 and player.FrameCount % 1*player.MaxFireDelay == 0 then
                 data.NeptunusTRebCount = data.NeptunusTRebCount + 0.1
-            elseif not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) then
+            end
+            if not player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) then
                 data.NeptunusTRebCount = nil
             end
 		else
@@ -2557,7 +2613,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, function(_, _)
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsTaintedRebekah(player) and Options.ChargeBars then
 			yandereWaifu.throwingSwordUi(player)
-            yandereWaifu.neptunusTRebUi(player)
+            if player:HasCollectible(CollectibleType.COLLECTIBLE_NEPTUNUS) then
+                yandereWaifu.neptunusTRebUi(player)
+            end
 		end
 	end
 end);

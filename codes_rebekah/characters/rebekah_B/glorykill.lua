@@ -79,12 +79,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 					--print(math.ceil(maxHealth/3))
 				end
 			end
-            local crystalCount = 1
+            local count = 1
             --[[if data.HitCount >= 30 then
                 crystalCount = 2
             end]]
-            for i = 1, crystalCount + math.random(0,1) do
-                local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
+            for i = 1, count + math.random(0,1) do
+                local crystalCount = #Isaac.FindByType(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, -1, false, false)
+                if crystalCount < 2 then
+                    local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
+                end
             end
 		end
 	end

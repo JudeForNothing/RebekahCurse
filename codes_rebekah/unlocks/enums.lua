@@ -347,8 +347,8 @@ yandereWaifu.ACHIEVEMENT = {
 		Item = {
 			RebekahCurse.Items.COLLECTIBLE_OVERSIZEDSWEATER,
 		},
-		Tooltip = {"get hurt", "with a blood donation", "or self-harm as rebekah"},
-		ViewerTooltip = {"get hurt with a blood donation or self-harm as rebekah"},
+		Tooltip = {"get hurt", "with self-harm", "as rebekah"},
+		ViewerTooltip = {"get hurt with self-harm as rebekah"},
 		Tags = {"Misc"},
 	},
 	{

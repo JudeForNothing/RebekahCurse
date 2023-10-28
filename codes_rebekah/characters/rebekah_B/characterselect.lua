@@ -248,7 +248,7 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 	local data = yandereWaifu.GetEntityData(player)
 	--if player.FrameCount ~= 1 then return end
 	if playerType == RebekahCurse.SADREBEKAH 
-	and playerCount == 1 --[[and yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked()]] then
+	and playerCount == 1 and yandereWaifu.ACHIEVEMENT.TAINTED_REBEKAH:IsUnlocked() then
 		--yandereWaifu:onNewGameTaintedPersonalitiesInit(player)
 		yandereWaifu:ShowTaintedPersonalityBook()
 		hasSelectedPersonality = false
@@ -278,13 +278,16 @@ function yandereWaifu:onTechnicalTaintedCharacterInit(player)
 		--yandereWaifu:ShowCoopMenu(player)]]
 	end
 end
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onTechnicalTaintedCharacterInit)
+--yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT,yandereWaifu.onTechnicalTaintedCharacterInit)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 	local playerType = player:GetPlayerType()
 	if playerType == RebekahCurse.SADREBEKAH then 
 		player.Velocity = Vector.Zero
 		player.Position = player.Position
+		if player.FrameCount == 0 then
+			yandereWaifu:onTechnicalTaintedCharacterInit(player)
+		end
 		if player.FrameCount == 2 then
 			--[[if player:HasCollectible(CollectibleType.COLLECTIBLE_EDENS_BLESSING) then
 				for i=1, player:GetCollectibleNum(CollectibleType.COLLECTIBLE_EDENS_BLESSING) do

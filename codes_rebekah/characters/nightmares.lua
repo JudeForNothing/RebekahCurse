@@ -114,14 +114,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
     if yandereWaifu.IsNormalRebekah(Isaac.GetPlayer(0)) and InutilLib.room:GetFrameCount() > 1 then
 		for i = 0, InutilLib.room:GetGridSize() do
 			local grid = InutilLib.room:GetGridEntity(i)
-			
-			if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and grid:GetSprite():GetFilename() ~= "gfx/grid/voidtrapdoor.anm2" then
-				InutilLib.room:RemoveGridEntity(i, 0, false)
-				InutilLib.room:Update()
-				
-				spawnRebekahTrapdoor(i)
-				
-                table.insert(RebekahLocalSavedata.Data.rebekahTrapdoors, {ListIndex=InutilLib.level:GetCurrentRoomDesc().ListIndex, GridIndex=i})
+			--not ascent stuff
+			if InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
+				if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and grid:GetSprite():GetFilename() ~= "gfx/grid/voidtrapdoor.anm2" then
+					InutilLib.room:RemoveGridEntity(i, 0, false)
+					InutilLib.room:Update()
+					
+					spawnRebekahTrapdoor(i)
+					
+					table.insert(RebekahLocalSavedata.Data.rebekahTrapdoors, {ListIndex=InutilLib.level:GetCurrentRoomDesc().ListIndex, GridIndex=i})
+				end
 			end
 		end
 	end

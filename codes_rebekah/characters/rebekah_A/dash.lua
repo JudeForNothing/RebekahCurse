@@ -70,6 +70,7 @@ function dash.RebekahDoubleTapDash(vector, playerTapping)
 					effect.Timeout=15
 					effect:GetSprite():ReplaceSpritesheet(0, "gfx/effects/immortal/angled_mantle.png")
 					effect:GetSprite():LoadGraphics()
+					SFXManager():Play( SoundEffect.SOUND_DIVINE_INTERVENTION, 0.8, 0, false, 1 );
 					--InutilLib.speaker:Play(568,1.0)
 					playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.IMMORTAL_HEARTS_DASH_COOLDOWN - trinketBonus;
 				--challenge unique stuff

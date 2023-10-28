@@ -7,6 +7,18 @@ healthbar:Load("gfx/ui/tainted_rebekah_healthbar.anm2", true);
 local isTRebPresent = false
 local isDevilDealAvailable = false
 
+local function IsRealDamage(flags)
+    if flags & DamageFlag.DAMAGE_NO_PENALTIES > 0 then return false end
+    if flags & DamageFlag.DAMAGE_RED_HEARTS > 0 then return false end
+    if flags & DamageFlag.DAMAGE_DEVIL > 0 then return false end
+    if flags & DamageFlag.DAMAGE_CURSED_DOOR > 0 then return false end
+    if flags & DamageFlag.DAMAGE_IV_BAG > 0 then return false end
+    if flags & DamageFlag.DAMAGE_CHEST > 0 then return false end
+    if flags & DamageFlag.DAMAGE_FAKE > 0 then return false end
+    return true
+end
+
+
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, new)
 	if not new then
 		isTRebPresent = false
@@ -391,6 +403,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		if data.PersistentPlayerData.WrathFragmentCount and data.PersistentPlayerData.WrathFragmentCount >= 3 then
 			data.PersistentPlayerData.MaxRageCrystal = data.PersistentPlayerData.MaxRageCrystal + math.floor(data.PersistentPlayerData.WrathFragmentCount/3)
 			data.PersistentPlayerData.WrathFragmentCount = data.PersistentPlayerData.WrathFragmentCount % 3
+
+			--effect
+			data.MainArcaneCircle = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_ARCANE_CIRCLE, 1, player.Position,  Vector.Zero, nil)
+			yandereWaifu.GetEntityData(data.MainArcaneCircle).parent = player
+			for i = 0, 8 do
+				data.MainArcaneCircle:GetSprite():ReplaceSpritesheet(i, "gfx/effects/tainted/arcane_circle.png")
+			end
+			data.MainArcaneCircle:GetSprite():LoadGraphics()
+			data.ArcaneCircleDust = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_REBEKAH_DUST, 4, player.Position, Vector.Zero, player)
+			data.ArcaneCircleDust.RenderZOffset = -1
+			yandereWaifu.GetEntityData(data.ArcaneCircleDust).Parent = player
+			--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
+			data.ArcaneCircleBeam = Isaac.Spawn( EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_SPECIALBEAM, 0, player.Position, Vector(0,0), player );
+			for i = 0, 6 do
+				data.ArcaneCircleBeam:GetSprite():ReplaceSpritesheet(i, "gfx/effects/tainted/special_beam.png")
+			end
+			data.ArcaneCircleBeam:GetSprite():LoadGraphics()
+			yandereWaifu.GetEntityData(data.ArcaneCircleBeam).parent = player
+			InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
+			InutilLib.SetTimer(150, function()
+				data.MainArcaneCircle:GetSprite():Play("FadeOut", true)
+				data.MainArcaneCircle = nil
+				data.ArcaneCircleDust:Remove()
+				data.ArcaneCircleBeam:GetSprite():Play("End", true)
+				data.ArcaneCircleBeam = nil
+				--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
+			end)
+			InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSDOWN_AMPLIFIED, 1.2, 0, false, 0.5 );
 		end
 	end
 end)
@@ -473,6 +513,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 				InutilLib.PickupPickup(pickup)
 				pickup.Touched = true
 				entityData.WrathFragmentRenderFrame = 1
+				InutilLib.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.7, 0, false, 1);
 				return true
 			end
 		end
@@ -537,6 +578,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 				end
 			end
 		end
+		if player:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_PSORAISIS) and IsRealDamage(damageFlag) then
+			--if data.PsoriasisFrameCount > 0 then
+			--	data.PsoriasisFrameCount = data.PsoriasisFrameCount - 1
+			--end
+			if data.PsoriasisHealth > 0 then
+				yandereWaifu.DepletePsoraisisScale(data, player, damageFlag)
+				return false
+			end
+		end
+
 		yandereWaifu.AddTaintedBossHealth(player, -takenDmg)
 		local hp, maxhp = data.PersistentPlayerData.BasicTaintedHealth, data.PersistentPlayerData.MaxTaintedHealth
 
@@ -600,7 +651,7 @@ function yandereWaifu.taintedheartReserveRenderLogic(player, id)
 		local gameFrame = InutilLib.game:GetFrameCount();
 		--if yandereWaifu.IsNormalRebekah(player) then
 			if not (room:GetType() == RoomType.ROOM_BOSS and not room:IsClear() and room:GetFrameCount() < 1) then
-				if data.PersistentPlayerData.MaxTaintedHealth > 0 then
+				if data.PersistentPlayerData.MaxTaintedHealth and data.PersistentPlayerData.MaxTaintedHealth > 0 then
 					local percent = (data.PersistentPlayerData.BasicTaintedHealth/data.PersistentPlayerData.MaxTaintedHealth)*100
 					healthbar:SetFrame("Bar", math.ceil(percent) or 0)
 					--heartReserve:RenderLayer(1, (position), Vector(0,0), Vector(0,0))

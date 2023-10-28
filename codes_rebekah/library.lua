@@ -267,6 +267,8 @@ function yandereWaifu.ApplyCostumes(mode, player, reloadanm2, poof)
 			player:GetSprite():Load('gfx/rebekahsfluidhairforbone.anm2',false)
 		elseif mode == RebekahCurse.REBECCA_MODE.RottenHearts then --special interacts
 			player:GetSprite():Load('gfx/rebekahsfluidhairforrotten.anm2',false)
+		elseif mode == RebekahCurse.REBECCA_MODE.ImmortalHearts then --special interacts
+			player:GetSprite():Load('gfx/rebekahsfluidhairforimmortal.anm2',false)
 		elseif mode == RebekahCurse.REBECCA_MODE.CursedCurse then --placeholder for tainted
 			player:GetSprite():Load('gfx/rebekahsfluidhairforcursed.anm2',false)
 		else

@@ -191,9 +191,7 @@ if StageAPI and StageAPI.Loaded then
         local rng = RNG()
         rng:SetSeed(InutilLib.level:GetDungeonPlacementSeed(), 40)
 
-        -- REVEL.PrintLevelMap()
-
-        -- REVEL.DebugToString(validRooms, validRoomsFallback)
+        -- i got this from revelations because i am a stupid coder
 
         --if thriftshopDoorDesc then
             local defaultMap = StageAPI.GetDefaultLevelMap()
@@ -210,11 +208,12 @@ if StageAPI and StageAPI.Loaded then
                 --endFrameCount
 
                 -- for now, only support vanilla map, no custom levels
-                RebekahLocalSavedata.Data.thriftShopDoorRoomDimension = nil
-                RebekahLocalSavedata.Data.thriftShopDoorRoomIndex = thriftshopDoorDesc.GridIndex
-                RebekahLocalSavedata.Data.hasThriftShopDoor = true
-                avaiableDoorSlots = yandereWaifu.GetRoomDoorSlotsToOverride(thriftshopDoorDesc.GridIndex)
-
+                if thriftshopDoorDesc then
+                    RebekahLocalSavedata.Data.thriftShopDoorRoomDimension = nil
+                    RebekahLocalSavedata.Data.thriftShopDoorRoomIndex = thriftshopDoorDesc.GridIndex
+                    RebekahLocalSavedata.Data.hasThriftShopDoor = true
+                    avaiableDoorSlots = yandereWaifu.GetRoomDoorSlotsToOverride(thriftshopDoorDesc.GridIndex)
+                end
                 try = try - 1
             end
             if #avaiableDoorSlots > 0 then
@@ -260,63 +259,41 @@ if StageAPI and StageAPI.Loaded then
                 thriftShopRoom.PersistentData.LeadToSlot = slot
 
 
-                --[[if MinimapAPI then
-                    local pos = MinimapAPI:GridIndexToVector(revel.data.run.level.thriftShopRoomIndex)
+                if MinimapAPI then
+                    local pos = MinimapAPI:GridIndexToVector(RebekahLocalSavedata.Data.thriftShopRoomIndex)
                     local exitSlot = (slot + 2) % 4
                     local dir = StageAPI.DoorToDirection[exitSlot]
 
                     --Reminder for displayflags: 3 bits "xyz", x:show icon, y:show room shadow, z:show room shape
                     local thriftShopRoomArgs = {
-                        ID = "Mirror",
+                        ID = "LabansShop",
                         Position = pos,--a vector representing the position of the room on the minimap.
-                        Shape = "MirrorRoom" .. REVEL.dirToString[dir], --RoomShape.ROOMSHAPE_1x1,
-                        TeleportHandler = {
-                            Teleport = function(_, room)
-                                if REVEL.STAGE.Glacier:IsStage() then
-                                    Isaac.ExecuteCommand("mirror")
-                                    return true
-                                elseif REVEL.STAGE.Tomb:IsStage() then
-                                    Isaac.ExecuteCommand("mirror t")
-                                    return true
-                                end
-                                return false
-                            end,
-                            ---@param room MinimapAPI.Room
-                            CanTeleport = function(_, room, allowUnclear)
-                                if allowUnclear then
-                                    return room:GetDisplayFlags() > 0
-                                else
-                                    return REVEL.MirrorRoom.DefeatedNarcissusThisChapter()
-                                end
-                            end,
-                        },
+                        Shape = RoomShape.ROOMSHAPE_1x1,
                         -- Type = --A RoomType enum value. Optional, but recommended if you want the room to work as expected with minimap revealing items.
-                        PermanentIcons = {"Mirror Room"},
-                        LockedIcons = {"Mirror Room Locked"},--A list of strings like above, but this is only shown when the player does not know the room's type (eg locked shop, dice room)
+                        PermanentIcons = {"LabanShop"},
+                        LockedIcons = {"LabanShop"},
                         DisplayFlags = RoomDescriptor.DISPLAY_NONE,
                         AdjacentDisplayFlags = RoomDescriptor.DISPLAY_NONE, --The display flags that this room will take on if seen from an adjacent room. This is usually 0 for secret rooms, 3 for locked rooms and 5 for all others.
-                        Hidden = true, --This room is secret. It will not be revealed by the compass or the treasure map, and it WILL be revealed by the blue map.
-                        Color = Color(0.9, 1.15, 1.25)
+                        --Hidden = true, --This room is secret. It will not be revealed by the compass or the treasure map, and it WILL be revealed by the blue map.
+                        --Color = Color(0.9, 1.15, 1.25)
                     }
 
-                    local mirrorMRoom = MinimapAPI:GetRoomAtPosition(pos)
+                    local labansShopMRoom = MinimapAPI:GetRoomAtPosition(pos)
 
-                    if mirrorMRoom then
-                        for k, v in pairs(mirrorRoomArgs) do
-                            mirrorMRoom[k] = v
+                    if labansShopMRoom then
+                        for k, v in pairs(thriftShopRoomArgs) do
+                            labansShopMRoom[k] = v
                         end
-                    else
-                        REVEL.DebugToString("WARNING | Mirror room minimap room not found when creating!")
                     end
 
-                    if REVEL.OnePlayerHasCollectible(CollectibleType.COLLECTIBLE_COMPASS) then
+                    --[[if REVEL.OnePlayerHasCollectible(CollectibleType.COLLECTIBLE_COMPASS) then
                         local doorPos = MinimapAPI:GridIndexToVector(revel.data.run.level.mirrorDoorRoomIndex)
                         local entranceMRoom = MinimapAPI:GetRoomAtPosition(doorPos)
                         if entranceMRoom then
                             table.insert(entranceMRoom.PermanentIcons, "Mirror Entrance")
                         end    
-                    end
-                end]]
+                    end]]
+                end
             --end
             end
     end

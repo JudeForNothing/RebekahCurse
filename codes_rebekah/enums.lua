@@ -1156,3 +1156,43 @@ yandereWaifu.eastereggenemyList = {
     [11] = {type = EntityType.ENTITY_ATTACKFLY, variant = 0, subtype = 0},
     [12] = {type = EntityType.ENTITY_SUCKER, variant = 0, subtype = 0},
 }
+
+function yandereWaifu.LoadMinimapAPICompat()
+    local cabIcons = Sprite()
+    cabIcons:Load("gfx/ui/cab_custom_icons.anm2", true)
+    MinimapAPI:AddIcon("LabanShop", cabIcons, "LabanShop", 0)
+    MinimapAPI:AddIcon("RebekahsRoom", cabIcons, "RebekahsRoom", 0)
+    MinimapAPI:AddIcon("RebekahsStudio", cabIcons, "RebekahsStudio", 0)
+    MinimapAPI:AddIcon("RageFragment", cabIcons, "RageFragment", 0)
+    MinimapAPI:AddIcon("CoinFragment", cabIcons, "CoinFragment", 0)
+    MinimapAPI:AddIcon("SurpriseEgg", cabIcons, "SurpriseEgg", 0)
+
+	MinimapAPI:AddPickup("CoinFragment", "CoinFragment", 5, RebekahCurse.ENTITY_COINPIECE, 177, MinimapAPI.PickupNotCollected, "coin", 11300)
+	MinimapAPI:AddPickup("RageFragment", "RageFragment", 5, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, MinimapAPI.PickupNotCollected, "coin", 11300)
+
+	MinimapAPI:AddPickup("SurpriseEgg", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggAqua", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_AQUA_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggYellow", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_YELLOW_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggGreen", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_GREEN_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggBlue", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_BLUE_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggPink", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_PINK_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggStripe", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_STRIPE_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggHappy", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_HAPPY_AQUA_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggZigzag", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_ZIGZAG_YELLOW_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggInsect", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_INSECT_GREEN_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggStarry", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_STARRY_BLUE_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggHearted", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_HEARTED_PINK_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggOrange", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_ORANGE_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggLocked", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_ORANGE_LOCKED_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggWhite", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_WHITE_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggPolka", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_WHITE_POLKA_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggCursed", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_CURSED_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggBlessed", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_BLESSED_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+	MinimapAPI:AddPickup("SurpriseEggGolden", "SurpriseEgg", 5,300,RebekahCurse.Cards.CARD_GOLDEN_EASTEREGG, MinimapAPI.PickupNotCollected, "egg", 13500)
+
+	MinimapAPI:AddPickup("RebekahsStudio", "RebekahsStudio", EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 20, MinimapAPI.PickupSlotMachineNotBroken, "mirrorstudio", 11300)
+end
+
+if MinimapAPI then
+    yandereWaifu.LoadMinimapAPICompat()
+end

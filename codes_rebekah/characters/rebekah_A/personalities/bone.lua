@@ -24,9 +24,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		
 		if eff.FrameCount == (data.StartCountFrame) + 1 then
 			sprite:Play("Startup", true)
-			InutilLib.SetTimer( data.StartCountFrame*8,function()
+			--[[InutilLib.SetTimer( data.StartCountFrame*8,function()
 				InutilLib.SFX:Play(RebekahCurse.Sounds.SOUND_ETERNALJINGLE, 1, 0, false, 1+(data.StartCountFrame/5))
-			end)
+			end)]]
 		end
 		
 		eff.Velocity = player.Velocity;

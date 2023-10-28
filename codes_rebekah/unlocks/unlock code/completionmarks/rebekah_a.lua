@@ -463,10 +463,6 @@ function yandereWaifu.TryLockTaintedRebInHome(player)
 					sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/character_rebekah_cursed_sadge.png")
 					sprite:LoadGraphics()
 				end
-				InutilLib.game:Darken(10, 300)
-			end
-			if Isaac.GetFrameCount() % 30 == 0 then
-				InutilLib.game:Darken(10, 300)
 			end
 		end
 	end

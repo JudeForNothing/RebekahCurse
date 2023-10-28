@@ -731,7 +731,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 data.pemp.Parent = ent]]
 
                 for i = 0, 2 do
-                    local vecfun = Vector(0,100):Rotated(i * (360/3))
+                    local vecfun = Vector(0,50):Rotated(i * (360/3))
                     local gurls = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_ENYO+i, 0, ent.Position + vecfun, Vector.Zero, ent)
                     gurls:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
                     gurls:AddEntityFlags(EntityFlag.FLAG_DONT_COUNT_BOSS_HP)
@@ -762,8 +762,9 @@ function yandereWaifu:sisterGreyHurt(ent, damage, flag, source)
 	if isGreySister(ent) then
         local data = yandereWaifu.GetEntityData(ent)
 		if ent.Parent and ent.Parent.Variant == RebekahCurse.Enemies.ENTITY_PERSIS then
+            local damageFlashColor = Color(0.5, 0.5, 0.5, 1.0, 200/255, 0/255, 0/255) --taken from FF
     
-			ent:SetColor(FiendFolio.damageFlashColor, 2, 0, false, false)
+			ent:SetColor(damageFlashColor, 2, 0, false, false)
 			ent.Parent:TakeDamage(damage, flag, EntityRef(ent), 0)
 
             if ent.Parent.HitPoints < damage then

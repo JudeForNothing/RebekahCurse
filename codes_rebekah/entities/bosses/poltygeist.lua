@@ -369,7 +369,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                                 anim = "normal"
                                 frame = math.random(0,2)
                             end
-                            p:GetSprite():ReplaceSpritesheet(0, "gfx/grid/rocks_downpour_entrance.png")
+                            if FiendFolio then
+                                p:GetSprite():ReplaceSpritesheet(0, "gfx/grid/rocks_downpour_entrance.png")
+                            else
+                                p:GetSprite():ReplaceSpritesheet(0, "gfx/grid/rocks_downpour.png")
+                            end
                             p:GetSprite():LoadGraphics()
                             p:GetSprite():SetFrame(anim, frame)
                             --p.FallingAccel = 0

@@ -58,6 +58,22 @@ function yandereWaifu:PsoriasisNewRoom()
 end
 yandereWaifu:AddCallback( ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, yandereWaifu.PsoriasisNewRoom)
 
+function yandereWaifu.DepletePsoraisisScale(data, damage, damageFlag)
+	if damageFlag & DamageFlag.DAMAGE_SPIKES > 0 and math.random(1,2) == 2 then
+	--if data.PsoriasisFrameCount > 0 then
+		data.PsoriasisHealth = data.PsoriasisHealth - 1
+	elseif (damageFlag & DamageFlag.DAMAGE_TNT > 0 or damageFlag & DamageFlag.DAMAGE_EXPLOSION > 0) and not damage:ToPlayer():HasCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC) then
+	--if data.PsoriasisFrameCount > 0 then
+		data.PsoriasisHealth = 0
+	elseif damageFlag & DamageFlag.DAMAGE_CRUSH > 0 then
+	--if data.PsoriasisFrameCount > 0 then
+		data.PsoriasisHealth = data.PsoriasisHealth - 2
+	else
+		data.PsoriasisHealth = data.PsoriasisHealth - 1
+	--end
+	end
+end
+
 yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, amount, damageFlag, damageSource, damageCountdownFrames) 
 	local data = yandereWaifu.GetEntityData(damage)
 	if damage.Type == 1 and damage:ToPlayer():HasCollectible(RebekahCurse.Items.COLLECTIBLE_PSORAISIS) and IsRealDamage(damageFlag) then
@@ -65,19 +81,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_ENTITY_TAKE_DMG, function(_, damage, am
 		--	data.PsoriasisFrameCount = data.PsoriasisFrameCount - 1
 		--end
 		if data.PsoriasisHealth > 0 then
-			if damageFlag & DamageFlag.DAMAGE_SPIKES > 0 and math.random(1,2) == 2 then
-			--if data.PsoriasisFrameCount > 0 then
-				data.PsoriasisHealth = data.PsoriasisHealth - 1
-			elseif (damageFlag & DamageFlag.DAMAGE_TNT > 0 or damageFlag & DamageFlag.DAMAGE_EXPLOSION > 0) and not damage:ToPlayer():HasCollectible(CollectibleType.COLLECTIBLE_PYROMANIAC) then
-			--if data.PsoriasisFrameCount > 0 then
-				data.PsoriasisHealth = 0
-			elseif damageFlag & DamageFlag.DAMAGE_CRUSH > 0 then
-			--if data.PsoriasisFrameCount > 0 then
-				data.PsoriasisHealth = data.PsoriasisHealth - 2
-			else
-				data.PsoriasisHealth = data.PsoriasisHealth - 1
-			--end
-			end
+			yandereWaifu.DepletePsoraisisScale(data, damage, damageFlag)
 			return false
 		end
 		--data.PsoriasisFrameCount = 2
