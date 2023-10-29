@@ -83,6 +83,10 @@ yandereWaifuIngameContentCode = {
 
 		nightmares = require('codes_rebekah.characters.nightmares'),
 	},
+	slots = {
+		mirror = require('codes_rebekah.slots.mirror'),
+		mirrorconverter = require('codes_rebekah.slots.mirrorconverter')
+	},
 	entities = {
 		basiceffects = require('codes_rebekah.entities.basiceffects'),
 		basicentities = require('codes_rebekah.entities.basicentities'),
@@ -238,10 +242,6 @@ yandereWaifuIngameContentCode = {
 		fullfatmilk = require('codes_rebekah.items.fullfatmilk'),
 
 		cutiepatootie = require('codes_rebekah.items.cutiepatootie'),
-	},
-	slots = {
-		mirror = require('codes_rebekah.slots.mirror'),
-		mirrorconverter = require('codes_rebekah.slots.mirrorconverter')
 	},
 	shaders = require('codes_rebekah.shaders'),
 	grids = {

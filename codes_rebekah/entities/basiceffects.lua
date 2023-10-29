@@ -543,7 +543,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam)
 	local data = yandereWaifu.GetEntityData(player);
 	local famdata =  yandereWaifu.GetEntityData(fam);
 	--print(tostring(fam.CollisionDamage))
-	if player:GetPlayerType() == Reb then
+	if yandereWaifu.IsNormalRebekah(player) then
 		if fam.Variant == FamiliarVariant.FLY_ORBITAL or fam.Variant == FamiliarVariant.SACRIFICIAL_DAGGER or fam.Variant == FamiliarVariant.CUBE_OF_MEAT_1  or fam.Variant == FamiliarVariant.CUBE_OF_MEAT_2 or fam.Variant == FamiliarVariant.BALL_OF_BANDAGES_1 or fam.Variant == FamiliarVariant.BALL_OF_BANDAGES_2 or fam.Variant == FamiliarVariant.OBSESSED_FAN or fam.Variant == FamiliarVariant.MOMS_RAZOR or fam.Variant == FamiliarVariant.FOREVER_ALONE or fam.Variant == FamiliarVariant.DISTANT_ADMIRATION then --list of stuff, shut up it looks messy, I know
 			if data.IsUninteractible then
 				if not famdata.HasBeenModified then famdata.HasBeenModified = fam.CollisionDamage end --ill just dump in the info of their last entcoll so I use too less instructions here...

@@ -297,19 +297,19 @@ function yandereWaifu.SwingCursedKnife(player, weapon, state, angle, flip)
             for i = 1, numLimit do
                         
                 --InutilLib.SetTimer( i * 3, function()
-                    local chosenNumofBarrage = 4
+                    --[[local chosenNumofBarrage = 4
 
-                    for i = 1, chosenNumofBarrage do
-                        local tear = player:FireTear(player.Position, Vector.FromAngle(angle - math.random(-10,10))*(math.random(7,12)):Resized(player.ShotSpeed*10), false, false, false):ToTear()
+                    for i = 1, chosenNumofBarrage do]]
+                        local tear = player:FireTear(player.Position, Vector.FromAngle(angle - math.random(-10,10)):Resized(player.ShotSpeed*5*(math.random(1,5))), false, false, false):ToTear()
                         tear.Position = player.Position
                         if tear.Variant == 0 then tear:ChangeVariant(TearVariant.BLOOD) end
-                        tear.Scale = math.random(07,14)/10
+                        tear.Scale = math.random(9,18)/10
                         tear.Scale = tear.Scale
                         tear.FallingSpeed = -10 + math.random(1,3)
                         tear.FallingAcceleration = 0.5
-                        tear.CollisionDamage = player.Damage * 3.5
+                        tear.CollisionDamage = player.Damage * 1.5
                         --tear.BaseDamage = player.Damage * 2
-                    end
+                    --end
                -- end)
             end
             data.LeadPencilCount = 1
@@ -1331,12 +1331,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                             --if damage is more than ent hitpoints
                             data.EnemyDied = true
                         end
-                        player.Velocity =  ((pos - player.Position):Resized(18+ent.Size))
+                        if InutilLib.room:CheckLine(ent.Position, player.Position, 0, 900, false, false) then
+                            player.Velocity = player.Velocity * 0.7 + ((pos - player.Position):Resized(4+ent.Size))
+                        else
+                            player.Velocity = Vector.Zero
+                        end
+                        if player:CollidesWithGrid() then
+                            player.Velocity = Vector.Zero
+                        end
                         --player.Position = ent.Position + (pos - player.Position):Resized(15+ent.Size)
-                        yandereWaifu.GetEntityData(player).MakingTaintedIncision = 75
+                        yandereWaifu.GetEntityData(player).MakingTaintedIncision = 15
                         yandereWaifu.GetEntityData(player).invincibleTime = yandereWaifu.GetEntityData(player).MakingTaintedIncision + 35
                     elseif data.state == 5 then
-                        for i = 0, 360 - 360/4, 360/4 do
+                        for i = 0, 360 - 360/2, 360/2 do
                             local tear = player:FireTear( ent.Position, Vector.FromAngle(i):Resized(20), false, false, false):ToTear()
 							tear:ChangeVariant(50)
 							tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL

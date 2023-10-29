@@ -58,7 +58,7 @@ function yandereWaifu.RottenTossHead(player, vector)
 		--end
 	end
 	for i, entity in pairs(Isaac.GetRoomEntities()) do
-		if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == ENTITY_ROTTENFLYBALL then
+		if entity.Type == EntityType.ENTITY_FAMILIAR and entity.Variant == RebekahCurse.ENTITY_ROTTENFLYBALL then
 			if GetPtrHash(entity:ToFamiliar().Player) == GetPtrHash(player) then
 				entity.Velocity = entity.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.ROTTEN_HEARTS_DASH_SPEED );
 				yandereWaifu.GetEntityData(entity).SpecialDash = true

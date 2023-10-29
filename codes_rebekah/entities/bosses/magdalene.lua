@@ -224,7 +224,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		
 		if data.State == 17 then --phase two idle
-			Isaac.DebugString("7")
 			--InutilLib.MoveRandomlyTypeI(ent, InutilLib.room:GetCenterPos(), 4, 0.3, 25, 20, 30)
 		
 			--if (ent.Position - player.Position):Length() > 300 then
@@ -259,7 +258,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 			end
 		end
 		if data.State == 8 then --phase two laser thing
-			Isaac.DebugString("8")
 			if InutilLib.IsFinishedMultiple(spr, "2Attack") then
 				data.State = 17
 			end
@@ -301,7 +299,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		end
 		
 		if data.State == 9 then --phase two tear burst
-			Isaac.DebugString("9")
 			if spr:IsFinished("2Attack2") then
 				data.State = 17
 			end

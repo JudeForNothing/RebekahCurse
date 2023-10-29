@@ -319,10 +319,8 @@ yandereWaifu.achievementviewer = {
                         dssmod.playSound(dssmod.menusounds.Open)
                         panel.AppearFrame = 0
                         panel.Idle = false
-                        Isaac.DebugString("did go her")
                     end,
                     UpdateAppear = function(panel)
-                        Isaac.DebugString("did go eeeeeeee")
                         if panel.SpriteUpdateFrame then
                             panel.AppearFrame = panel.AppearFrame + 1
                             if panel.AppearFrame >= 10 then
@@ -927,6 +925,7 @@ local rebekahdirectory = {
 			{strpair = {{str = 'ab+ rebekah'}, {str = 'may'}}},
             {strpair = {{str = 'rebekah'}, {str = 'plupa'}}},
 			{strpair = {{str = 'knights of rebekah'}, {str = 'kakaodcat'}}},
+			{strpair = {{str = 'prospector'}, {str = 'glodi169'}}},
 			{strpair = {{str = 'pill narrator'}, {str = 'frithian'}}},
 			{strpair = {{str = 'free sounds'}, {str = 'soundbible'}}},
 			{strpair = {{str = ''}, {str = 'freesound'}}, nosel = true},

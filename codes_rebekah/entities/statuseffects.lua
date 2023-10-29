@@ -344,8 +344,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 		if not data.SavedSilencedTarget then data.SavedSilencedTarget = ent.Target end
 		ent.Target = ent
 	else
-		ent.Target = data.SavedSilencedTarget
-		data.SavedSilencedTarget = nil
+		if data.SavedSilencedTarget then
+			ent.Target = data.SavedSilencedTarget
+			data.SavedSilencedTarget = nil
+		end
 	end
 	if data.isSnooked and ent:CollidesWithGrid() then
 		ent:TakeDamage(ent.Velocity:Length()/2, 0, EntityRef(ent), 1)

@@ -3,8 +3,6 @@ local mod
 --the version of this helper mod script
 local currentVersion = 8
 
-Isaac.DebugString("TESTING MY BALLSACK")
-
 --remove any previous versions that may exist, piber style
 local callbacksAlreadyLoaded = nil
 if InutilLib then
@@ -63,9 +61,7 @@ if not InutilLib then
 	InutilLib.DEG_TO_RAD = math.pi / 180;
 	InutilLib.RAD_TO_DEG = 180 / math.pi;
 
-	Isaac.DebugString("1")
 
-	
 	--Encrypted Data
 	--_ILIB_EX_DATA = _ILIB_EX_DATA or {};
 	--function InutilLib.GetILIBData( entity )
@@ -2279,7 +2275,6 @@ if not InutilLib then
 		trail:GetSprite().Color = c
 		trail.MinRadius = 0.05 -- fade rate, lower values yield a longer trail
 		--trail.SpriteOffset = z or Vector(0,0)
-		print(trail:GetSprite().Offset)
 		trail:Update()
 		return trail
 	end
@@ -3058,8 +3053,6 @@ if not InutilLib then
 	--MC_POST_INCUBUS_TEAR callback
 	function InutilLib.OnIncubusTearInit(tear, fam)
 		local data = InutilLib.GetILIBData(tear)
-		print(fam.Type)
-		print("sadds")
 		--MC_POST_INCUBUS_TEAR
 		if ILIBCallbackData[ILIBCallbacks.MC_POST_INCUBUS_TEAR] then
 			for _, callbackData in ipairs(ILIBCallbackData[ILIBCallbacks.MC_POST_INCUBUS_TEAR]) do
@@ -4112,14 +4105,12 @@ if not InutilLib then
 								[2] = true,
 								[3] = player:GetCollectibleNum(i)
 							}
-							print("hello?")
 						elseif tbl[i][2] == true then
 							tbl[i] = {
 								[1] = i, 
 								[2] = false,
 								[3] = player:GetCollectibleNum(i)
 							}
-							print("test?")
 						elseif tonumber(tostring(tbl[i][3])) < player:GetCollectibleNum(i) then
 							local highestCollNum 
 							if tbl[i][3] > player:GetCollectibleNum(i) then
@@ -4140,7 +4131,6 @@ if not InutilLib then
 									[3] = highestCollNum -- player:GetCollectibleNum(i)
 								}
 							end
-							print("hellooo?")
 						end
 					elseif not player:HasCollectible(i) then
 						--tbl[i] = nil
@@ -4490,7 +4480,6 @@ if not InutilLib then
 
 	mod:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function(_)
 		nowClear = InutilLib.room:IsClear()
-		print(nowClear)
 	end)
 	
 	mod:AddCallback(ModCallbacks.MC_POST_UPDATE, function()

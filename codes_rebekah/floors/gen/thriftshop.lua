@@ -100,18 +100,11 @@ if StageAPI and StageAPI.Loaded then
         end]]
 
         local availableSlots = StageAPI.GetDoorsForRoomFromData(roomDescriptor.Data)
-
-        Isaac.DebugString("START here")
-        Isaac.DebugString(index)
         for slot = 0, DoorSlot.NUM_DOOR_SLOTS - 1 do
-            Isaac.DebugString("GO HERE")
-            Isaac.DebugString(slot)
             if availableSlots[slot] --[[and not InutilLib.room:GetDoor(slot2) and not yandereWaifu.GetCustomDoorBySlot(slot2)]] then
                 local leadingTo = yandereWaifu.GetRoomIdxRelativeToSlot(roomDescriptor, slot)
                 --Isaac.DebugString(leadingTo)
                 if leadingTo and not InutilLib.level:GetRoomByIdx(leadingTo).Data then
-                    Isaac.DebugString("bruh")
-                    Isaac.DebugString(slot)
                     slots[#slots+1] = slot
                 end
             end
@@ -164,18 +157,11 @@ if StageAPI and StageAPI.Loaded then
         local roomsList = level:GetRooms()
 
         local index = {}
-        Isaac.DebugString("GUS BALLS")
         for i = 0, #roomsList - 1 do
             local desc = roomsList:Get(i)
             if desc then
-                Isaac.DebugString("NASKAPI BALLS")
-                Isaac.DebugString(desc.GridIndex)
-                Isaac.DebugString(desc.Data.Type)
                 if desc.Data.Type == RoomType.ROOM_SUPERSECRET --[[and desc.GridIndex ~= InutilLib.level:GetStartingRoomIndex()]] then
                 --if desc.Data.Type == RoomType.ROOM_DEFAULT and desc.GridIndex ~= InutilLib.level:GetStartingRoomIndex() then
-                    Isaac.DebugString("LOKI BALLS")
-                    Isaac.DebugString(desc.GridIndex)
-                    Isaac.DebugString(desc.Data.Type)
                     table.insert(index, desc)
                 end
             end
@@ -348,7 +334,6 @@ if StageAPI and StageAPI.Loaded then
 
     --[[StageAPI.AddCallback("RebekahCurse", "PRE_LEVELMAP_SPAWN_DOOR", 1, function(slot, doorData, levelRoom, targetLevelRoom, roomData, levelMap)
         if targetLevelRoom.RoomType == RoomType.ROOM_SECRET then
-            Isaac.DebugString("DONG")
             StageAPI.SpawnCustomDoor(slot, doorData.ExitRoom, levelMap, "ThriftShopDoor", nil, doorData.ExitSlot, "Secret")
             return true
         end

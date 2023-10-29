@@ -138,7 +138,6 @@ function Achievement:IsUnlocked(ignoreModifiers)
 		return true
 	end
 
-	Isaac.DebugString(tostring(self.Name))
 	local canLock = yandereWaifu.AreAchievementsEnabled()
 	if not canLock and not ignoreModifiers then
 		return true
@@ -574,7 +573,6 @@ function yandereWaifu.CanRunUnlockAchievements(forceNew) -- Made in conjunction 
 	yandereWaifu.CurrentRunCanGrantUnlocks = machine:Exists()
 	machine:Remove()
 
-	Isaac.DebugString("HELDDFDFDFDFASAF")
 	return yandereWaifu.CurrentRunCanGrantUnlocks
 end
 

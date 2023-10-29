@@ -1,8 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-	<name>rebekah_curse_newer</name>
-	<directory>rebekah_curse_newer</directory>
-	<description/>
-	<version>1.0</version>
-	<visibility/>
+    <name>rebekah_curse_newer</name>
+    <directory>rebekah_curse_newer</directory>
+    <id>3063991384</id>
+    <description></description>
+    <version>1.6</version>
+    <visibility>Public</visibility>
+    <tag id="Lua"/>
+    <tag id="Items"/>
+    <tag id="Active Items"/>
+    <tag id="Trinkets"/>
+    <tag id="Pills"/>
+    <tag id="Cards"/>
+    <tag id="Pickups"/>
+    <tag id="Player Characters"/>
+    <tag id="Familiars"/>
+    <tag id="Rooms"/>
+    <tag id="Enemies"/>
+    <tag id="Bosses"/>
+    <tag id="Hazards"/>
+    <tag id="Challenges"/>
+    <tag id="Graphics"/>
+    <tag id="Shaders"/>
+    <tag id="Sound Effects"/>
+    <tag id="Music"/>
 </metadata>
-

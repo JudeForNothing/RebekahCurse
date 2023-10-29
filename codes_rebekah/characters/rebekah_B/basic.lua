@@ -31,7 +31,6 @@ function yandereWaifu.AddTaintedBossHealth(player, num)
 end
 
 function TaintedRebeccaInit(player)
-	Isaac.DebugString("start")
 	local mode 
 	local data = yandereWaifu.GetEntityData(player)
 
@@ -67,14 +66,14 @@ end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 	if yandereWaifu.IsTaintedRebekah(player) then
         TaintedRebeccaInit(player)
-		Isaac.DebugString("START MOFO")
     end
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 	if yandereWaifu.IsTaintedRebekah(player) and InutilLib.game:GetFrameCount() < 1 then --incase because she dies randomly per new run for some reason
         TaintedRebeccaInit(player)
-		Isaac.DebugString("START MOFO")
+		local data = yandereWaifu.GetEntityData(player)
+		if data.invincibleTime and data.invincibleTime > 0 then data.invincibleTime = data.invincibleTime - 1 end --frames on counting down how much time you can be invincible
     end
 end)
 
@@ -387,12 +386,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		local hp, maxhp = data.PersistentPlayerData.BasicTaintedHealth, data.PersistentPlayerData.MaxTaintedHealth
         if hp < 1 then
             player:Kill()
-			Isaac.DebugString("END MOFO")
 
         end
 		if willDie then
             player:Kill()
-			Isaac.DebugString("END 2 MOFO")
         end
 
 		if data.PersistentPlayerData.MaxTaintedHealth < data.PersistentPlayerData.BasicTaintedHealth then
@@ -796,19 +793,25 @@ end)]]
 
 
 --tainted rebekah skill menu basics
-local skills = {
-	[0] = {sprite="gfx/ui/spells/cursed/cut.png", price = 0, maxcharge = 100},
-	[1] = {sprite="gfx/ui/spells/cursed/slam.png", price = 1, maxcharge = 10},
-	[2] = {sprite="gfx/ui/spells/cursed/strike.png", price = 2, maxcharge = 900},
-	[3] = {sprite="gfx/ui/spells/cursed/rage.png", price = 3, maxcharge = 1800}
-}
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 	local data = yandereWaifu.GetEntityData(player)
 	local controller = player.ControllerIndex;
 	if yandereWaifu.IsTaintedRebekah(player) then
+		if not data.skills or InutilLib.HasCollectiblesUpdated(player) then
+			local slamCooldown = math.floor(player.MaxFireDelay*2)
+			if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
+				slamCooldown = math.floor(player.MaxFireDelay*5)
+			end
+			data.skills = {
+				[0] = {sprite="gfx/ui/spells/cursed/cut.png", price = 0, maxcharge = math.floor(player.MaxFireDelay*10)},
+				[1] = {sprite="gfx/ui/spells/cursed/slam.png", price = 1, maxcharge = slamCooldown},
+				[2] = {sprite="gfx/ui/spells/cursed/strike.png", price = 2, maxcharge = math.floor(player.MaxFireDelay*80)},
+				[3] = {sprite="gfx/ui/spells/cursed/rage.png", price = 3, maxcharge = 1800}
+			}
+		end
 		if not data.TAINTEDREBSKILL_MENU then --set menu
 			
-			data.TAINTEDREBSKILL_MENU = yandereWaifu.TaintedSkillMenu:New(Isaac.WorldToScreen(player.Position + Vector(0, -90)), skills);
+			data.TAINTEDREBSKILL_MENU = yandereWaifu.TaintedSkillMenu:New(Isaac.WorldToScreen(player.Position + Vector(0, -90)), data.skills);
 			
 			data.TAINTEDREBSKILL_MENU:AttachCallback( function(dir, value, isAvailable)
 				if data.TAINTEDREBSKILL_MENU.onRelease then
@@ -921,7 +924,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 					[3] = 3
 				}
 				--if already at the end
-				data.TAINTEDREBSKILL_MENU:UpdateOptions(skills, wiresValue)
+				data.TAINTEDREBSKILL_MENU:UpdateOptions(data.skills, wiresValue)
 				data.InitTAINTEDREBSKILL_MENU = true
 			--end
 		end

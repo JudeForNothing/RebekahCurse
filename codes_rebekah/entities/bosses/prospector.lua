@@ -381,7 +381,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	if ent.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR and ent.SubType == 1 then
@@ -410,7 +410,41 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_REMOVE, function(_, ent)
 			yandereWaifu.ACHIEVEMENT.GIDDY_UP:Unlock()
 		end
 	end
-end,RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
+end,RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)]]
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_TEAR_COLLISION, function(_, tear, coll)
+	if coll:ToNPC() then
+		local ent = coll:ToNPC()
+		local spr = ent:GetSprite()
+		local data = yandereWaifu.GetEntityData(ent)
+		if ent.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR and ent.SubType == 1 then
+			Isaac.Explode(ent.Position, ent, 15)
+			for i = 0, math.random(5,7) do
+				InutilLib.SetTimer( 7 * i, function()
+					local tear = InutilLib.game:Spawn( EntityType.ENTITY_PROJECTILE, ProjectileVariant.PROJECTILE_ROCK, Isaac.GetRandomPosition(), Vector.Zero, ent, 0, 0):ToProjectile()
+					tear.Scale = math.random(12,16)/10;
+					tear.Height = -520;
+					tear.FallingAccel = 1.3;
+				end);
+				
+			end
+			--im lazy lool
+			local engi 
+			for i, v in ipairs(Isaac.FindByType(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_THEPROSPECTOR, 0, false, false)) do
+				if v then engi = v break end
+			end
+			if engi then
+				InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_SENTRY_DOWN, 1, 0, false, 1);
+			end
+
+			--spawn the pedestal
+			local newColl = Isaac.Spawn(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, RebekahCurse.Items.COLLECTIBLE_GIDDYUP, ent.Position, Vector.Zero, ent)
+			if not yandereWaifu.ACHIEVEMENT.GIDDY_UP:IsUnlocked() then
+				yandereWaifu.ACHIEVEMENT.GIDDY_UP:Unlock()
+			end
+		end
+	end
+end, 9)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, function(_, ent)
 	local spr = ent:GetSprite()
