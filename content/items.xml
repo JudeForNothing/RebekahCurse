@@ -1,82 +1,137 @@
 <items gfxroot="gfx/items/" version="1" deathanm2="gfx/death items.anm2"> 
-	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" maxcharges="4" tags="quest"/>
-	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" maxcharges="2" tags="quest"/>
-	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" maxcharges="4" tags="quest"/>
-	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" maxcharges="4" tags="quest"/>
-	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" maxcharges="5" tags="quest"/>
-	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" maxcharges="8" tags="quest"/>
-	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" maxcharges="3" tags="quest"/>
-	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" maxcharges="4" tags="quest"/>
+	<active id="1" name="Hugs N' Roses" description="Show your passion to everyone" gfx="collectibles_lovecannon.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="2" name="Wizoob Tongue" description="Burst out your love to everyone" gfx="collectibles_wizoobstongue.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="3" name="Apostate" description="Force your feelings on everyone" gfx="collectibles_apostate.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="4" name="Psalm .45" description="Shine your devotion to everyone" gfx="collectibles_psalm45.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="5" name="Barachiel's Petal" description="Flutter your desire to everyone" gfx="collectibles_barachielspetal.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="6" name="Fang" description="Strike and devour everyone you love" gfx="collectibles_fang.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="7" name="Beelzebub's Breath" description="Stink up your affection to everyone" gfx="collectibles_beelzebubsbreath.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="8" name="main.lua" description="Show your passion to me!" gfx="collectibles_mainlua.png" hidden="true" tags="quest" craftquality="-1"/>
+	<active id="8" name="Comforter's Wing" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" hidden="true" tags="quest" craftquality="-1"/>
 	
-	<passive id="16" name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" quality="1"/>
-	<passive id="37" name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" quality="2"/>
-	<passive id="17" name="Great Pheonix" description="Rain war along with your shots" gfx="collectibles_great_pheonix.png" quality="3"/>
-	<active id="20" name="Love me, love me not" description="A La Folie Pas du Tout" gfx="collectibles_lovesme.png" maxcharges="1" quality="3" hidden="true"/>
-	<active id="20" name=" Love me, love me not " description="M aiment-ils?" gfx="collectibles_lovesme2.png" maxcharges="1" quality="3" hidden="true"/>
-	<active id="20" name="  Love me, love me not  " description="Est-ce qu ils ne m aiment pas?" gfx="collectibles_lovesme3.png" maxcharges="1" quality="3" hidden="true"/>
-	<active id="30" name="Doorstopper" description="Slam your knowledge to others!" gfx="collectibles_doorstopper.png" tags="book" maxcharges="3" quality="2"/>
-	<passive id="32" name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2"/>
-	<passive id="33" name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3" cache="speed"/>
-	<active id="29" name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1"/>
-	<active id="31" name="Defuse = Rewards" description="Use your manual to defuse, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3"/>
+	<passive id="16" name="Candy Wedding Ring!" description="HP up + Speed Up" gfx="collectibles_candy_wedding_ring.png" cache="speed damage" maxhearts="2" hearts="2" quality="1" craftquality="0"/>
+	<passive id="37" name="Love Deluxe" description="Love is invincible!" gfx="collectibles_lovedeluxe.png" quality="2" craftquality="2"/>
+	<passive id="17" name="Great Pheonix" description="Rain war along with your shots" gfx="collectibles_great_pheonix.png" quality="3" craftquality="3"/>
+	<active id="20" name="Love me, love me not" description="A La Folie Pas du Tout" gfx="collectibles_lovesme.png" maxcharges="1" quality="3" hidden="true" craftquality="-1"/>
+	<active id="20" name=" Love me, love me not " description="M aiment-ils?" gfx="collectibles_lovesme2.png" maxcharges="1" quality="3" hidden="true" craftquality="-1"/>
+	<active id="20" name="  Love me, love me not  " description="Est-ce qu ils ne m aiment pas?" gfx="collectibles_lovesme3.png" maxcharges="1" quality="3" hidden="true" craftquality="-1"/>
+	<active id="30" name="Doorstopper" description="Slam your knowledge to others!" gfx="collectibles_doorstopper.png" tags="book" maxcharges="3" quality="2" craftquality="2"/>
+	<passive id="32" name="Finger Finger" description="Sweet clicker" gfx="collectibles_finger_finger.png" quality="2" craftquality="2"/>
+	<passive id="33" name="Moriah Diary" description="Keeping your future into mine" gfx="collectibles_moriah_diary.png" quality="3" cache="speed" craftquality="2"/>
+	<active id="29" name="The Shining" description="Usually it comes from the second floor..." gfx="collectibles_book_the_shining.png" tags="book" maxcharges="4" quality="1" craftquality="1"/>
+	<active id="31" name="Defuse = Rewards" description="Use your manual to defuse, thank you forever" gfx="collectibles_oh_im_die.png" tags="book" maxcharges="4" quality="3" craftquality="3"/>
 	
-	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="3"/>
+	<active id="37" name="Wikepidia" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" maxcharges="0" quality="4" craftquality="4"/>
 	
-	<active id="37" name=" Wikepidia " description="Summon bombs" gfx="wikepidia/wikepidia_anarchistcookbook.png" maxcharges="3"  hidden="true"/>
-	<active id="37" name="  Wikepidia  " description="Reusable soul protection" gfx="wikepidia/wikepidia_revelations.png" maxcharges="6"  hidden="true"/>
-	<active id="37" name="   Wikepidia   " description="Tome of knowledge" gfx="wikepidia/wikepidia_secrets.png" maxcharges="6"  hidden="true"/>
-	<active id="37" name="    Wikepidia    " description="It's time you learned how" gfx="wikepidia/wikepidia_howtojump.png" maxcharges="1"  hidden="true" />
-	<active id="37" name="     Wikepidia     " description="Temporary monster generator" gfx="wikepidia/wikepidia_monstermanual.png" maxcharges="6"  hidden="true"/>
-	<active id="37" name="      Wikepidia      " description="Reusable evil... but at what cost?" gfx="wikepidia/wikepidia_satanicbible.png" maxcharges="7" hidden="true" />
-	<active id="37" name="Wikepidia " description="Temporary psychic shot" gfx="wikepidia/wikepidia_telepathyfordummies.png" maxcharges="2"  hidden="true"/>
-	<active id="37" name="Wikepidia  " description="Temporary flight" gfx="wikepidia/wikepidia_thebible.png" maxcharges="4"  hidden="true"/>
-	<active id="37" name="Wikepidia   " description="Temporary DMG up" gfx="wikepidia/wikepidia_belial.png" maxcharges="4"  hidden="true"/>
-	<active id="37" name="Wikepidia    " description="Reusable item generator" gfx="wikepidia/wikepidia_sin.png" maxcharges="5" cooldown="14" hidden="true"/>
-	<active id="37" name="Wikepidia     " description="Mass room damage" gfx="wikepidia/wikepidia_necronomicon.png" maxcharges="4"  hidden="true"/>
-	<active id="37" name=" Wikepidia" description="Rise from the grave" gfx="wikepidia/wikepidia_dead.png" maxcharges="6" hidden="true"/>
-	<active id="37" name="  Wikepidia" description="Spiritual companionship" gfx="wikepidia/wikepidia_virtues.png" maxcharges="4"  hidden="true"/>
-	<active id="37" name="   Wikepidia" description="Item summoner" gfx="wikepidia/wikepidia_lemegeton.png" maxcharges="15" hidden="true"/>
-	<passive id="37" name="Wikepidia (passive)" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" tags="book quest" hidden="true"/>
+	<active id="37" name=" Wikepidia " description="Summon bombs" gfx="wikepidia/wikepidia_anarchistcookbook.png" maxcharges="3"  hidden="true" craftquality="-1"/>
+	<active id="37" name="  Wikepidia  " description="Reusable soul protection" gfx="wikepidia/wikepidia_revelations.png" maxcharges="6"  hidden="true" craftquality="-1"/>
+	<active id="37" name="   Wikepidia   " description="Tome of knowledge" gfx="wikepidia/wikepidia_secrets.png" maxcharges="6"  hidden="true" craftquality="-1"/>
+	<active id="37" name="    Wikepidia    " description="It's time you learned how" gfx="wikepidia/wikepidia_howtojump.png" maxcharges="1"  hidden="true" craftquality="-1"/>
+	<active id="37" name="     Wikepidia     " description="Temporary monster generator" gfx="wikepidia/wikepidia_monstermanual.png" maxcharges="6"  hidden="true" craftquality="-1"/>
+	<active id="37" name="      Wikepidia      " description="Reusable evil... but at what cost?" gfx="wikepidia/wikepidia_satanicbible.png" maxcharges="7" hidden="true" craftquality="-1"/>
+	<active id="37" name="Wikepidia " description="Temporary psychic shot" gfx="wikepidia/wikepidia_telepathyfordummies.png" maxcharges="2"  hidden="true" craftquality="-1"/>
+	<active id="37" name="Wikepidia  " description="Temporary flight" gfx="wikepidia/wikepidia_thebible.png" maxcharges="4"  hidden="true" craftquality="-1"/>
+	<active id="37" name="Wikepidia   " description="Temporary DMG up" gfx="wikepidia/wikepidia_belial.png" maxcharges="4"  hidden="true" craftquality="-1"/>
+	<active id="37" name="Wikepidia    " description="Reusable item generator" gfx="wikepidia/wikepidia_sin.png" maxcharges="5" cooldown="14" hidden="true" craftquality="-1"/>
+	<active id="37" name="Wikepidia     " description="Mass room damage" gfx="wikepidia/wikepidia_necronomicon.png" maxcharges="4"  hidden="true" craftquality="-1"/>
+	<active id="37" name=" Wikepidia" description="Rise from the grave" gfx="wikepidia/wikepidia_dead.png" maxcharges="6" hidden="true" craftquality="-1"/>
+	<active id="37" name="  Wikepidia" description="Spiritual companionship" gfx="wikepidia/wikepidia_virtues.png" maxcharges="4"  hidden="true" craftquality="-1"/>
+	<active id="37" name="   Wikepidia" description="Item summoner" gfx="wikepidia/wikepidia_lemegeton.png" maxcharges="15" hidden="true" craftquality="-1"/>
+	<passive id="37" name="Wikepidia (passive)" description="All knowledge in one" gfx="wikepidia/wikepidia_spelt_wrong_idfk.png" tags="book quest" hidden="true" craftquality="-1"/>
+	 
+	<active id="19" name="Bag of Bristle Bricks" description="Be creative!" gfx="collectibles_bag_of_bristle_bricks.png" maxcharges="0" quality="2" hidden="true" craftquality="-1"/>
 	
-	<active id="19" name="Bag of Bristle Bricks" description="Be creative!" gfx="collectibles_bag_of_bristle_bricks.png" maxcharges="0" quality="2" hidden="true"/>
+	<passive id="22" name="Nut Water" description="HP up + Don't noclip!" gfx="collectibles_nut_water.png" quality="0" craftquality="0"/>
+	<passive id="36" name="Twin Vision" description="Seeing the special things twice" gfx="collectibles_twin_vision.png" quality="4" craftquality="4"/>
 	
-	<passive id="22" name="Nut Water" description="HP up + Don't noclip!" gfx="collectibles_nut_water.png" quality="0"/>
-	<passive id="36" name="Twin Vision" description="Seeing the special things twice" gfx="collectibles_twin_vision.png" quality="4"/>
-	
-	<passive id="9" name="A Lunchbox" description="Meal for a special someone" gfx="collectibles_lunchbox.png" quality="1"/>
-	<active id="15" name="Typical Rom-Com" description="Forced laughing" gfx="collectibles_book_romcom.png" maxcharges="4" tags="book" quality="1"/>
-	<familiar id="10" name="Miraculous Womb" description="A promise is a promise" gfx="collectibles_miraculous_womb.png" quality="2"/>
-	<familiar id="13" name="Eternal Bond" description="A little reminder for your love's presence" gfx="collectibles_eternal_bond.png" quality="2"/>
-	<passive name="Love = Power" description="Passion empowers you" gfx="collectibles_love_power.png" cache="speed damage" quality="2"/>
-	<passive id="11" name="Cursed Spoon" description="Let me have all the curses" gfx="collectibles_cursed_spoon.png" cache="speed damage" tag="nolostbr" quality="3"/>
-	<active id="12" name="Dice of Fate" description="Change your life" gfx="collectibles_dice_of_fate.png" maxcharges="6" quality="2"/>
+	<passive id="9" name="A Lunchbox" description="Meal for a special someone" gfx="collectibles_lunchbox.png" quality="1" craftquality="1"/>
+	<active id="15" name="Typical Rom-Com" description="Forced laughing" gfx="collectibles_book_romcom.png" maxcharges="4" tags="book" quality="1" craftquality="1"/>
+	<familiar id="10" name="Miraculous Womb" description="A promise is a promise" gfx="collectibles_miraculous_womb.png" quality="2" craftquality="2"/>
+	<familiar id="13" name="Eternal Bond" description="A little reminder for your love's presence" gfx="collectibles_eternal_bond.png" quality="2" craftquality="2"/>
+	<passive id="59" name="Love = Power" description="Passion empowers you" gfx="collectibles_love_power.png" cache="speed damage" quality="2" craftquality="2"/>
+	<passive id="11" name="Cursed Spoon" description="Let me have all the curses" gfx="collectibles_cursed_spoon.png" cache="speed damage" tag="nolostbr" quality="3" craftquality="3"/>
+	<active id="12" name="Dice of Fate" description="Change your life" gfx="collectibles_dice_of_fate.png" maxcharges="6" quality="2" craftquality="2"/>
 	<trinket name="Isaac's Locks" description="Lost locks" gfx="collectibles_isaacs_locks.png" />
-	<passive id="14" name="Lovesick" description="You sing and yearn for love" gfx="collectibles_lovesick.png" quality="4"/>
-	<passive id="35" name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" tag="nolostbr" quality="3"/>
-	<active id="39" name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4" quality="4"/>
-	<passive id="18" name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/>
-	<passive id="21" name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="collectibles_rebekahs_favorite.png" quality="3"/>
+	<passive id="14" name="Lovesick" description="You sing and yearn for love" gfx="collectibles_lovesick.png" quality="4" craftquality="3"/>
+	<passive id="35" name="Snap!" description="Your composure breaks" gfx="collectibles_snap.png" tag="nolostbr" quality="3" craftquality="3"/>
+	<active id="39" name="Rebekah's Camera" description="Capture and relive your experience" gfx="collectibles_rebekahs_camera.png" maxcharges="4" quality="4" craftquality="4"/>
+	<!-- <passive id="18" name="Patriarch's Liar" description="Careful of angelbreaker fist" gfx="collectibles_patriarchs_liar.png" quality="2"/> -->
+	<passive id="18" name="Wicked Weaves" description="Double tap or hold to dance!" gfx="collectibles_wicked_weaves.png" cache="firedelay damage" quality="3" craftquality="3"/>
+	<passive id="21" name="Rebekah's Favorite" description="Child favoritism, keep him safe" gfx="collectibles_rebekahs_favorite.png" quality="3" craftquality="3"/>
+
+	<active id="34" name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3" craftquality="3"/>
 	
-	<active id="34" name="Unrequited Love" description="Drag your one-sided affection everywhere!" gfx="collectibles_unrequited_love.png" maxcharges="1" quality="3"/>
+	<active id="28" name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3" craftquality="-1"/>
+	<active id="28" name="God's Dice" description="Change everything" gfx="collectibles_gods_dice.png" quality="4" hidden="true"  tags="quest" craftquality="4"/>
 	
-	<passive id="28" name="Wishful Thinking" description="Believing what seems too good to be true" gfx="collectibles_wishful_thinking.png" quality="3" hidden="true"/>
-	
-	<familiar id="40" name="A Beautiful Grave" description="Something is behind you" gfx="collectibles_abeautifulgrave.png" tags="baby" quality="2"/>
-	<passive id="41" name="Tight Hairtie" description="Speed + Range up!" gfx="collectibles_hairtie.png" cache="speed range" quality="1"/>
-	<passive id="42" name="Basket of Eggs" description="An egg a day keeps... what?" gfx="collectibles_basket_of_eggs.png" quality="2"/>
+	<familiar id="40" name="A Beautiful Grave" description="Something is behind you" gfx="collectibles_abeautifulgrave.png" tags="baby" quality="2" craftquality="2"/>
+	<passive id="41" name="Tight Hairtie" description="Speed + Range up!" gfx="collectibles_hairtie.png" cache="speed range" quality="1" craftquality="1"/>
+	<passive id="42" name="Basket of Eggs" description="An egg a day keeps... what?" gfx="collectibles_basket_of_eggs.png" quality="2" craftquality="2"/>
 	<trinket name="Rabbit's Foot" description="Find more eggs!" gfx="collectibles_rabbits_foot.png" />
-	<passive id="43" name="Eggshell Walk" description="Careful how you tread" gfx="collectibles_eggshellwalk.png" quality="2"/>
+	<passive id="43" name="Eggshell Walk" description="Careful how you tread" gfx="collectibles_eggshellwalk.png" quality="2" craftquality="2"/>
 	<trinket name="Destroyed Lullaby" description="It's torn to pieces" gfx="collectibles_destroyed_lullaby.png" />
-	<passive id="54" name="Oversized Sweater" description="Cover while they clot" gfx="collectibles_oversizedsweater.png" quality="2"/>
-	<active id="53" name="Notebook of the Dead" description="Be justice" gfx="collectibles_deathsnotebook.png" maxcharges="6" quality="3"/>
-	<passive id="47" name="Eyes of the Dead" description="See who drops next" gfx="collectibles_eyeofthedead.png" quality="3" devilprice="2"/>
-	<passive id="27" name="Psoriasis" description="Mass defense" gfx="collectibles_psoraisis.png" quality="3"/>
-	<active id="52" name="Hearts and Crafts" description="Made with Love!" gfx="collectibles_heartsandcrafts.png" maxcharges="6" quality="2"/>
-	<passive id="51" name="Tech Hz" description="Love Hertz" gfx="collectibles_techhz.png" quality="2"/>
-	<familiar id="44" name="Angel's Morningstar" description="Swing it" gfx="collectibles_angelsmorningstar.png" quality="3"/>
-	<passive id="50" name="Potato Snack" description="Take one and eat it" gfx="collectibles_potatosnack.png" quality="2" soulhearts="4"/>
+	<passive id="54" name="Oversized Sweater" description="Cover while they clot" gfx="collectibles_oversizedsweater.png" quality="2" craftquality="2"/>
+	<active id="53" name="Notebook of the Dead" description="Be justice" gfx="collectibles_deathsnotebook.png" maxcharges="6" quality="3" craftquality="3"/>
+	<passive id="47" name="Eyes of the Dead" description="See who drops next" gfx="collectibles_eyeofthedead.png" quality="3" devilprice="2" craftquality="3"/>
+	<passive id="27" name="Psoriasis" description="Mass defense" gfx="collectibles_psoraisis.png" quality="3" craftquality="3"/>
+	<active id="52" name="Hearts and Crafts" description="Made with Love!" gfx="collectibles_heartsandcrafts.png" maxcharges="0" quality="2" craftquality="2"/>
+	<passive id="51" name="Tech Hz" description="Love Hertz" gfx="collectibles_techhz.png" quality="2" craftquality="2"/>
+	<familiar id="44" name="Angel's Morningstar" description="Swing it" gfx="collectibles_angelsmorningstar.png" quality="3" craftquality="3"/>
+	<passive id="50" name="Potato Snack" description="Take one and eat it" gfx="collectibles_potatosnack.png" quality="2" soulhearts="4" craftquality="2"/>
 	<trinket name="Original Sin" description="As fresh as her sins" gfx="collectibles_evesapple.png" />
-	<active id="46" name="The Enchiridion" description="A heroes guide" gfx="collectibles_enchiridion.png" maxcharges="6" quality="4" tags="book"/>
-	<active id="45" name="Body Dysmorphia" description="Fix yourself with a cost" gfx="collectibles_bodydysmorphia.png" quality="4" tags="book"/>
-	<active id="8" name="Comforter's Wing" description="Give your sympathy to everyone" gfx="collectibles_comforterswing.png" maxcharges="6" tags="quest"/>
+	<active id="46" name="The Enchiridion" description="A heroes guide" gfx="collectibles_enchiridion.png" maxcharges="6" quality="4" tags="book" craftquality="4"/>
+	<active id="45" name="Body Dysmorphia" description="Fix yourself with a cost" gfx="collectibles_bodydysmorphia.png" quality="4" craftquality="3"/>
+	<trinket name="Rebekah's Key" description="Find the drawing room more" gfx="collectibles_rebekahs_key.png" />
+
+	<passive id="999" name="Skimmed Milk" description="Velocity = Damage" gfx="collectibles_skimmedmilk.png" quality="2" craftquality="2"/>
+	<passive id="56" name="Haphephobic Bombs" description="Fragile to touch, careful!" gfx="collectibles_haphephobic_bombs.png" quality="2" bombs="7" craftquality="2"/>
+	<active id="57" name="Jumpy Dumpty" description="Boing, boing, boom!" gfx="collectibles_jumpydumpty.png" maxcharges="3" quality="2" craftquality="2"/>
+	<passive id="58" name="Pencil Sharpener" description="Don't stick your finger in there!" gfx="collectibles_pencil_sharpener.png" quality="2" craftquality="2"/>
+	<passive id="26" name="Narcolepsy" description="Zzzzz" gfx="collectibles_narcolepsy.png" quality="3" craftquality="3"/>
+	<trinket name="Mom's Blessing" description="Gifts from Mom above" gfx="collectibles_moms_blessing.png" />
+	<active id="8" name="Sword of Hope" description="Tear into your last piece of hope" gfx="collectibles_sword_of_hope.png" hidden="true" tags="quest" craftquality="-1"/>
+	<trinket name="John and Romans" description="The road to salvation to deity" gfx="collectibles_john_and_romans.png" />
+	<passive id="999" name="Appreciation Cake" description="Thank you for sticking around!" gfx="collectibles_appreciation_cake.png" cache="speed range damage firedelay luck" maxhearts="2" hearts="2" quality="4" craftquality="3"/>
+	<passive id="60" name="Cheesy Pizza" description="Cheesy strings attached!" gfx="collectibles_cheesy_pizza.png" quality="3" craftquality="2"/>
+	<passive id="61" name="Jelly Donut" description="These jelly filled donuts are great!" gfx="collectibles_jelly_filled_donut.png" soulhearts="2" quality="1" craftquality="1"/>
+	<passive id="62" name="Spiked Party Punch" description="Cheers to all I love!" gfx="collectibles_spiked_punch.png" quality="1" craftquality="1"/>
+	<passive id="63" name="Boba Tea" description="Delicious milk and... eyes?" gfx="collectibles_bobatea.png" soulhearts="2" quality="2" craftquality="2"/>
+	<passive id="64" name="Bur-ger" description="Chicken chicken chicken chicken" gfx="collectibles_bur-ger.png" quality="2" craftquality="2"/>
+	<passive id="66" name="Fenrir's Eyes" description="Frozen with fear" gfx="collectibles_fenrirseyes.png" quality="3" craftquality="3"/>
+	<active id="65" name="Fenrir's Paw" description="Embrace the bitter end" gfx="collectibles_fenrirspaw.png" quality="3" craftquality="3"/>
+	<passive id="67" name="Fenrir's Head" description="Crit up" gfx="collectibles_fenrirshead.png" quality="3" craftquality="3"/>
+	<passive id="68" name="Fenrir's Tooth" description="DMG up + The faintest howl can be heard..." gfx="collectibles_fenrirstooth.png" quality="3" craftquality="3"/>
+	<familiar id="69" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirsleash.png" quality="3" craftquality="3"/>
+	<trinket name="Canned Laughter" description="The laughs of dead people" gfx="collectibles_canned_laughter.png" />
+	<passive id="70" name="Heartaches..." description="It's just a burning... something..." gfx="collectibles_heartaches.png" quality="3" craftquality="3"/>
+	<passive id="71" name="Silphium" description="Love in and out your veins" gfx="collectibles_silphium.png" quality="3" craftquality="3"/>
+	<active id="72" name="Giddy up!" description="Temporary raw strength, time tick tocks" gfx="collectibles_giddyup.png" quality="3" craftquality="3" maxcharges="12"/>
+
+	<active id="73" name="Rebekah's Scrapbook" description="Hold on, this looks familiar..." gfx="collectibles_book_rebekahs_diary.png" quality="3" craftquality="3" maxcharges="4"/>
+	
+	<active id="999" name="Unstable Candle" description="Why won't it work?" gfx="collectibles_164_bluecandle.png" quality="3" craftquality="3" maxcharges="50" chargetype="timed"/>
+	<passive id="999" name="Shattered Key" description="It's broken..." gfx="collectibles_580_secretkey.png" quality="3" craftquality="3"/>
+	<active id="999" name="Oink-y Bank" description="So much coins!... it's stuck?" gfx="collectibles_227_piggybank.png" quality="3" craftquality="3" maxcharges="3"/>
+	<passive id="999" name="9 Batts" description="That is not what I meant!" gfx="collectibles_116_9volt.png" quality="2" craftquality="2"/>
+	<active id="999" name="Ares' Box" description="! !" gfx="collectibles_297_bluebox.png" quality="3" craftquality="3" maxcharges="3"/>
+	<passive id="999" name="Sea Battery" description="Active Discharge" gfx="collectibles_356_carbattery.png" quality="2" craftquality="2"/>
+	<active id="999" name="Vitamin C" description="Your everyday resort" gfx="collectibles_475_planc.png" quality="3" craftquality="3"/>
+	<active id="999" name="I.O.U." description="Delayed delivery" gfx="collectibles_521_cerealcutout.png" quality="2" craftquality="2"/>
+	<passive id="999" name="Suspicious Stew" description="What's in this?!" gfx="collectibles_621_redstew.png" quality="2" craftquality="2"/>
+	<passive id="999" name="FOMO Bombs" description="1 + 1 limited time boom" gfx="collectibles_250_bogobombs.png" quality="2" craftquality="2"/>
+
+	<passive id="80" name="Regicide" description="Slay the king" gfx="collectibles_regicide.png" quality="3" craftquality="3"/>
+
+	<active id="5" name="Reload" description="Make sure you're always prepared" gfx="collectibles_reloaddeborah.png" hidden="true" tags="quest" craftquality="-1"/>
+
+	<trinket name="No Scope!" description="Hit 'em without looking!" gfx="collectibles_noscope.png" />
+	<passive id="74" name="Underpay" description="Not even a cent!" gfx="collectibles_underpay.png" quality="2" craftquality="2"/>
+	<passive id="75" name="Milk Wine" description="Insane damage up" gfx="collectibles_milkwine.png" quality="2" craftquality="2"/>
+	<passive id="76" name="Platform Cotta" description="The ones above, the ones below, and the ones who fall..." gfx="collectibles_platform_cotta.png" quality="2" craftquality="2"/>
+	<familiar id="77" name="Jacob's Tears" description="Collected tears, just like his father!" gfx="collectibles_jacobstears.png" quality="1" craftquality="1"/>
+	<passive id="55" name="Silent Treatment" description="Less says more" gfx="collectibles_silenttreatment.png" quality="3" craftquality="3" cache="damage shotspeed firedelay"/>
+	<passive id="78" name="Silencer" description="Silencing tears" gfx="collectibles_silencer.png" quality="2" craftquality="2"/>
+	<trinket name="Deborah's Dead Eye" description="Vengeance is an idiot’s game" gfx="collectibles_deborahsdeadeye.png" />
+	<passive id="79" name="Full Fat Milk" description="High quality milk > high quanity milk" gfx="collectibles_fullfatmilk.png" quality="2" craftquality="2"/>
+	<familiar id="80" name="Cutie Patootie" description="Best girl" gfx="collectibles_cutiepatootie.png" quality="3" craftquality="3"/>
 </items>

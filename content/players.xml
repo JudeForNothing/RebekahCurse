@@ -1,58 +1,70 @@
 <players root="gfx/characters/costumes/" 
          bigportraitroot="gfx/ui/stage/" nameimageroot="gfx/ui/boss/" portraitroot="gfx/ui/stage/">
-	<player name="Technical Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Technical Rebekah" birthright="Better love" skin="character_.png" hp="4" keys="0" canShoot="false"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah"/>
 	
-	<player name="Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Red Rebekah" birthright="More love, a big way to show love!" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Soul Rebekah" birthright="Better love" skin="character_rebekah_soul.png" hp="4" keys="0"
+	<player name="Soul Rebekah" birthright="More love, perfect appearance!" skin="character_rebekah_soul.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_soul_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Evil Rebekah" birthright="Better love" skin="character_rebekah_evil.png" hp="4" keys="0"
+	<player name="Evil Rebekah" birthright="More love, perfect preparation!" skin="character_rebekah_evil.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_evil_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Eternal Rebekah" birthright="Better love" skin="character_rebekah_eternal.png" hp="4" keys="0"
+	<player name="Eternal Rebekah" birthright="More love, hold for more power" skin="character_rebekah_eternal.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportrait_eternal_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true" canShoot="false"/>
 	
-	<player name="Gold Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Gold Rebekah" birthright="More love, reinforcements from all corners of the world!" skin="character_rebekah_gold.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_gold_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Bone Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Bone Rebekah" birthright="More love, more hungry" skin="character_rebekah_bone.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_bone_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Rotten Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Rotten Rebekah" birthright="More love, more craze??" skin="character_rebekah_rotten.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_rotten_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 	
-	<player name="Broken Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Broken Rebekah" birthright="More love, more options" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
-          portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+          portrait="playerportrait_borken_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
 		  
-	<player name="Immortal Rebekah" birthright="Better love" skin="character_rebekah_red.png" hp="4" keys="0"
+	<player name="Immortal Rebekah" birthright="More love, more protection" skin="character_rebekah_red.png" hp="4" keys="0"
+          nameimage="name_rebekah.png" 
+          portrait="playerportrait_immortal_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
+	
+       <player name="Rebekah" birthright="More love" skin="character_rebekah_red.png" hp="4" keys="0"
           nameimage="name_rebekah.png" 
           portrait="playerportraitbig_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="rebekah" hidden="true"/>
-	
-	<player name="RebekahB" birthright="Undying Hope" skin="character_rebekah.png" hp="4" keys="0"
-          nameimage="name_rebekah.png" 
-          portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true"/>
-	
-	<player name="IsaacC" birthright="???" skin="character_wishful_isaac.png" hp="6" keys="0"
+
+       <player name="Wishful Isaac" birthright="???" skin="character_wishful_isaac.png" hp="6" keys="0"
           nameimage="playername_01_isaac.png" 
-          portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7"/>
+          portrait="playerportrait_rebekah.png"  skinColor="-1" hidden="true" costume="7" costumeSuffix="wishfulisaac"/>
 	
-	<player name="RebekahC"  bSkinParent="Rebekah" birthright="???" skin="character_rebekah.png" hp="2" keys="3"
+	<player name="Technical Rebekah"  bSkinParent="Technical Rebekah" birthright="???" skin="character_.png" hp="2" keys="3"
           nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" />
 		  
+       <player name="Cursed Rebekah"  bSkinParent="Technical Rebekah" birthright="Undying Hope" skin="character_rebekah_cursed.png" hp="0" keys="3"
+            nameimage="name_rebekah.png"
+          portrait="playerportrait_cursed_rebekah.png"  skinColor="-1" hidden="true" costume="7" canShoot="false"/>
+
 	<player name="Happy Jacob" birthright="???" costume="52" skin="character_happy_jacob.png" hp="4" keys="0"
           nameimage="PlayerName_02x_Jacob_Esau.png" 
           portrait="PlayerPortrait_Jacob.png" skinColor="-1" hidden="true"/>
+
+       <player name="Deborah" birthright="Dual wielding" skin="character_deborah.png" hp="4" bombs="3" canShoot="false"
+          nameimage="name_rebekah.png" 
+          portrait="playerportrait_deborah.png"  skinColor="-1" costume="7" costumeSuffix="deborah" hidden="true"/>
+
+          <player name="Deborah"  bSkinParent="Deborah" birthright="???" skin="character_deborah.png" hp="2" keys="3"
+          nameimage="name_deborah.png"
+          portrait="playerportrait_rebekah.png"  skinColor="-1" costume="7" costumeSuffix="deborah" hidden="true"/>
 </players>

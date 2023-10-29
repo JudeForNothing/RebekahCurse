@@ -1,154 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
-    <name>rebekah_curse</name>
-    <directory>rebekah_curse</directory>
-    <id>2540075442</id>
-    <description>[b]Prerequisites for the best experience[/b]
-
-[img]https://i.imgur.com/cMdILeT.png[/img]
-[h1]Rebekah, Isaac's fated wife has stormed the basement![/h1]
-
-[b]Rebekah, the Cursed and Brokenhearted Expansion[/b]
-
-This expansion adds Rebekah,the quiet, roleplaying magical girl, secret and future wife of Isaac, 50+ new items and trinkets, one new consumable, one new room type, one new boss and much more! 
-
-More content like more enemies and maybe even floors might come soon! Keep an eye of this mod while you're at it, no promises!
-
-https://i.imgur.com/mY5LMGl.png
-
-[img]https://i.imgur.com/xDpL6ty.png[/img]
-
-She is a pot filled with genuine love and a pinch of craze, nothing stops Rebekah in reaching Isaac to marry him.
-However, she doesn't know what is Isaac's ideal girl!
-
-Luckily for us, she had developed abilities with the power of magical girl love! Change her playstyle by picking her personalities based on the base game's Hearts!
-
-Double tap to perform a special dash based on her personality!
-
-Use her gun to perform a special barrage! Usable only if you have enough love-love meter. To have meter, kill enough enemies!
-
-[img]https://imgur.com/Jcnvtq4.gif[/img]
-
-[img]https://i.imgur.com/nPLDJuv.png[/img]
-
-[h1][b] Her new pocket items, a magical girl gun allows you to shoot a powerful special action that will benefit you and your playstyle.[/b] [/h1]
-
-You use special charges from your new special heart reserve bar right under your health hud. 
-
-If empty, simply use your pocket item to refill your bar with a cost of half a heart or kill enough enemies to refill it.
-If you have no red hearts, further attempts of refilling will break your health bar, giving broken hearts.
-
-[img]https://i.imgur.com/pIzhTLO.gif[/img]
-
-When you have up to 12 broken hearts, you immediately die. Don't break Rebekah's heart!
-
-[img]https://i.imgur.com/MeiRzQT.gif[/img]
-
-[h1][u]Changing personalities as Rebekah is easy.[/u][/h1]
-If you want to change personalities mid-game, it's easy!
-
-After defeating the boss of any given floor, a mirror will spawn in the middle of the room, displaying all the heart types you currently hold. 
-
-When you find the personality you want to change into, simply touch the mirror change Rebecca to that mode!
-
-[img]https://i.imgur.com/xJTlgF0.gif[/img]
-
-For a wiki for more info, go here in this wiki! One day we will also have Encyclopedia support but not now:
- [url=https://rebekah-the-cursed-and-the-heartbroken.fandom.com/wiki/Rebekah] WIKI [/url]
-
-[img]https://i.imgur.com/H5u04JR.png[/img]
-[list]
-[h1]Why does Rebekah look like Maggy?[/h1]
-  [*]The mod must be bugged. Make sure you have InutilLib subscribed or unsubscribe to this mod and resubscribe for reinstallation.
-
-[h1]What happened to the unlocks?[/h1]
-  [*]The mod is still focusing on other things, but unlocks are coming soon-ish now!
-
-[h1]Where is the Tainted Rebekah?/I tried to play Tainted Rebekah but I just turn back into regular Rebekah[/h1]
-  [*]She doesn't exist. Yet. She will come in a later update.
-
-[h1]I found a bug![/h1]
-  [*]Bugs go here: [url=https://steamcommunity.com/workshop/filedetails/discussion/2540075442/3044979493853537391/]  link  [/url]
-
-[h1]Do you have a discord server?[/h1]
-  [*]Yes we do! Here, you can beta test for the upcoming updates or just hang out with others who like this expansion, right [url=https://discord.gg/K5qEUFsFch] here! [/url] You can also report a bug in here if you want me to see it quickly.
-
-[h1]This is disgusting. Isaac is five![/h1]
-  [*]Rebekah is also five.
-  [*]Rebekah is a child who says stuff they don't mean. Marriage is one of them. Look at Panini in Chowder.
-  [*]Rebekah is the canon wife of Isaac in the Bible.
-  [*]Even if none of the things above is true, nothing sexual is happening, you weirdos. Go to church.
-
-[h1]*insert something 177013 related something[/h1]
-  [*]Yes. It was based of this back then because I wanted to traumatize people. That's all.
-
-
-[img]https://i.imgur.com/EZcylt3.png![/img]
-[img]https://i.imgur.com/6VQ8ZlP.png[/img]
-
-[list]
-  [*]KakaoDCat - the majority of the mod code, sprites and voices for the gold knights.
-  [*]JudeInutil - porting this mod and polsihed the sprites into Repentance
-  [*]Scorch71 - coder who wanted to help!
-  [*]lambchop - helped with the development of AB+ Rebekah
-  [*]yatboim - cleaned up the AB+ code, reworked the awesome double tap system
-  [*]ItsnotArthor - artist for the thumbnail
-  [*]meg - did the crazy cute voice for Rebekah. 
-  [*]Mayonez - awesome musician
-  [*]Sabra - wiki manager
-  [*]Frithian - Public Relations guy!
-  [*]zero- first spriter, been here for so long, really cool!
-  [*]Goncholito - former spriter
-  [*]imPupzables - spriter with a dead dog
-  [*]Scroto - spriter with epic powers
-  [*]Aladar - former spriter penguin
-  [*]Susuke - former spriter who did something!
-  [*]Kruntical - former spriter who IS sus
-[/list]
-
-[img]https://i.imgur.com/Z9QmXxo.png[/img]
-
-[list]
-  [*]AgentCucco/_Kilburn -the GetPlayerBlackHearts system Kilburn made for Cucco's Soul Heart Rebalance mod. 
-  [*]tem -the Strawman system and the custom Eden hair system which Rebekah now uses
-  [*]Sentinel - helped with many issues in the past
-  [*]Sanio - helped with the mega mush costume system
-  [*]Dumpy - helped with the CanShoot system
-  [*]Warhamm2000 - helped with the new code for mega mush sprites
-  [*]Deadinfinity - stageapi help
-  [*]Planetarium Chance - for using their code to render the Love Room percentage stats
-[/list]
-
-[img]https://i.imgur.com/2pfVC5n.png[/img]
-
-[list]
-  [*]Cube-erry Cherry
-  [*]TheMemeingOfIsaac/Ysak
-  [*]Abyss Knight/Baraka
-  [*]Apostle
-  [*]Zanariff/Zana
-  [*]Mars
-  [*]Kaethela
-  [*]Masquerade
-  [*]Collided
-  [*]Shadeshadow227
-  [*]Duo
-  [*]Mr. L
-  [*]Skyline222
-  [*]Shuckster
-[/list]
-
-
-[h1]-Special Thanks-[/h1]
-Sites like SoundBible, FreeSound, zapsplat and soundsnap - some sounds I couldn't get by myself. This isn't commercialized!
-[h1][b]And the community - for your support and love for this mod! Thank you for waiting so long for this Repentance port! I hope you stay tuned for the Tainted and Items update![/b][/h1]</description>
-    <version>1.34</version>
+    <name>rebekah_curse_newer</name>
+    <directory>rebekah_curse_newer</directory>
+    <id>3063991384</id>
+    <description></description>
+    <version>1.6</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Items"/>
     <tag id="Active Items"/>
+    <tag id="Trinkets"/>
+    <tag id="Pills"/>
+    <tag id="Cards"/>
+    <tag id="Pickups"/>
     <tag id="Player Characters"/>
     <tag id="Familiars"/>
-    <tag id="Tweaks"/>
+    <tag id="Rooms"/>
+    <tag id="Enemies"/>
+    <tag id="Bosses"/>
+    <tag id="Hazards"/>
+    <tag id="Challenges"/>
     <tag id="Graphics"/>
+    <tag id="Shaders"/>
+    <tag id="Sound Effects"/>
+    <tag id="Music"/>
 </metadata>

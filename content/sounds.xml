@@ -1,4 +1,11 @@
 <sounds root="sfx/">
+	<sound name="deadseascrolls_pop">
+        <sample weight="1" path="deadseascrolls/pop.wav"/>
+    </sound>
+    <sound name="deadseascrolls_whoosh">
+        <sample weight="1" path="deadseascrolls/whoosh.wav"/>
+    </sound>
+
 	<sound name="RebekahHurt">
 		<sample weight="1" path="reb_hurt.wav" />
 		<sample weight="1" path="reb_hurt2.wav" />
@@ -7,6 +14,8 @@
 	</sound>	
 	<sound name="RebekahDie">
 		<sample weight="1" path="reb_death.wav" />
+		<sample weight="1" path="reb_death2.wav" />
+		<sample weight="1" path="reb_death3.wav" />
 	</sound>
 	
 	<sound name="Ground Crack">
@@ -92,6 +101,10 @@
 		<sample weight="1" path="evil/evil_summon_apostate.wav" />
 	</sound>
 	
+	<sound name="Immortal Jingle">
+		<sample weight="1" path="eternal/immortal_intervention.wav" />
+	</sound>
+
 	<sound name="Eternal Jingle">
 		<sample weight="1" path="eternal/jingle.wav" />
 	</sound>
@@ -166,6 +179,9 @@
 	<sound name="Patriarch's Fist Bell">
 		<sample weight="1" path="items/fistbell.wav" />
 	</sound>
+	<sound name="Wicked Weaves Spawn">
+		<sample weight="1" path="items/modified_wickedweaves.wav" />
+	</sound>
 	<sound name="Unrequited Love Chain">
 		<sample weight="1" path="items/unrequitedlovechain.wav" />
 	</sound>
@@ -174,6 +190,12 @@
 		<sample weight="1" path="items/psalm23_1.wav" />
 		<sample weight="1" path="items/psalm23_2.wav" />
 		<sample weight="1" path="items/psalm23_3.wav" />
+	</sound>
+
+	<sound name="Body Dysmorphia Groan">
+		<sample weight="1" path="items/dysmorphia_1.wav" />
+		<sample weight="1" path="items/dysmorphia_2.wav" />
+		<sample weight="1" path="items/dysmorphia_3.wav" />
 	</sound>
 	
 	<sound name="Easter Kappa">
@@ -263,5 +285,295 @@
 	</sound>
 	<sound name="Scribbling">
 		<sample weight="1" path="items/scribble.wav" />
+	</sound>
+
+	<sound name="Vocal C0">
+		<sample weight="1" path="vocal/c0.wav" />
+	</sound>
+	<sound name="Vocal C#0">
+		<sample weight="1" path="vocal/c#0.wav" />
+	</sound>
+	<sound name="Vocal D0">
+		<sample weight="1" path="vocal/d0.wav" />
+	</sound>
+	<sound name="Vocal D#0">
+		<sample weight="1" path="vocal/d#0.wav" />
+	</sound>
+	<sound name="Vocal E0">
+		<sample weight="1" path="vocal/e0.wav" />
+	</sound>
+	<sound name="Vocal F0">
+		<sample weight="1" path="vocal/f0.wav" />
+	</sound>
+	<sound name="Vocal F#0">
+		<sample weight="1" path="vocal/f#0.wav" />
+	</sound>
+	<sound name="Vocal G0">
+		<sample weight="1" path="vocal/g0.wav" />
+	</sound>
+	<sound name="Vocal G#0">
+		<sample weight="1" path="vocal/g#0.wav" />
+	</sound>
+	<sound name="Vocal A0">
+		<sample weight="1" path="vocal/a0.wav" />
+	</sound>
+	<sound name="Vocal A#0">
+		<sample weight="1" path="vocal/a#0.wav" />
+	</sound>
+	<sound name="Vocal B0">
+		<sample weight="1" path="vocal/b0.wav" />
+	</sound>
+
+	<sound name="Vocal C1">
+		<sample weight="1" path="vocal/c1.wav" />
+	</sound>
+	<sound name="Vocal C#1">
+		<sample weight="1" path="vocal/c#1.wav" />
+	</sound>
+	<sound name="Vocal D1">
+		<sample weight="1" path="vocal/d1.wav" />
+	</sound>
+	<sound name="Vocal D#1">
+		<sample weight="1" path="vocal/d#1.wav" />
+	</sound>
+	<sound name="Vocal E1">
+		<sample weight="1" path="vocal/e1.wav" />
+	</sound>
+	<sound name="Vocal F1">
+		<sample weight="1" path="vocal/f1.wav" />
+	</sound>
+	<sound name="Vocal F#1">
+		<sample weight="1" path="vocal/f#1.wav" />
+	</sound>
+	<sound name="Vocal G1">
+		<sample weight="1" path="vocal/g1.wav" />
+	</sound>
+	<sound name="Vocal G#1">
+		<sample weight="1" path="vocal/g#1.wav" />
+	</sound>
+	<sound name="Vocal A1">
+		<sample weight="1" path="vocal/a1.wav" />
+	</sound>
+	<sound name="Vocal A#1">
+		<sample weight="1" path="vocal/a#1.wav" />
+	</sound>
+	<sound name="Vocal B1">
+		<sample weight="1" path="vocal/b1.wav" />
+	</sound>
+	<sound name="Vocal C2">
+		<sample weight="1" path="vocal/c2.wav" />
+	</sound>
+
+	<sound name="Vocal C2">
+		<sample weight="1" path="vocal/c2.wav" />
+	</sound>
+	<sound name="Vocal C#2">
+		<sample weight="1" path="vocal/c#2.wav" />
+	</sound>
+	<sound name="Vocal D2">
+		<sample weight="1" path="vocal/d2.wav" />
+	</sound>
+	<sound name="Vocal D#2">
+		<sample weight="1" path="vocal/d#2.wav" />
+	</sound>
+	<sound name="Vocal E2">
+		<sample weight="1" path="vocal/e2.wav" />
+	</sound>
+	<sound name="Vocal F2">
+		<sample weight="1" path="vocal/f2.wav" />
+	</sound>
+	<sound name="Vocal F#2">
+		<sample weight="1" path="vocal/f#2.wav" />
+	</sound>
+	<sound name="Vocal G2">
+		<sample weight="1" path="vocal/g2.wav" />
+	</sound>
+	<sound name="Vocal G#2">
+		<sample weight="1" path="vocal/g#2.wav" />
+	</sound>
+	<sound name="Vocal A2">
+		<sample weight="1" path="vocal/a2.wav" />
+	</sound>
+	<sound name="Vocal A#2">
+		<sample weight="1" path="vocal/a#2.wav" />
+	</sound>
+	<sound name="Vocal B2">
+		<sample weight="1" path="vocal/b2.wav" />
+	</sound>
+
+	<sound name="Stolid Sing">
+		<sample weight="1" path="stolid/moyai_sing.wav" />
+	</sound>
+	<sound name="Stolid Appear">
+		<sample weight="1" path="stolid/moyai_appear.wav" />
+	</sound>
+
+	<sound name="Hound Charge">
+		<sample weight="1" path="hound/chab_charge_1.wav" />
+		<sample weight="1" path="hound/chab_charge_2.wav" />
+	</sound>
+
+	<sound name="Hound Spawn">
+		<sample weight="1" path="hound/chab_spawn_1.wav" />
+		<sample weight="1" path="hound/chab_spawn_2.wav" />
+	</sound>
+
+	<sound name="Hound Death">
+		<sample weight="1" path="hound/chab_death_1.wav" />
+		<sample weight="1" path="hound/chab_death_2.wav" />
+	</sound>
+
+	<sound name="Prospector Shoot">
+		<sample weight="1" path="prospector/shoot/shoot 1.wav" />
+		<sample weight="1" path="prospector/shoot/shoot 2.wav" />
+		<sample weight="1" path="prospector/shoot/shoot 3.wav" />
+		<sample weight="1" path="prospector/shoot/shoot 4.wav" />
+	</sound>
+
+	<sound name="Prospector Laugh">
+		<sample weight="1" path="prospector/laugh/laugh 1.wav" />
+		<sample weight="1" path="prospector/laugh/laugh 2.wav" />
+		<sample weight="1" path="prospector/laugh/laugh 3.wav" />
+		<sample weight="1" path="prospector/laugh/laugh 4.wav" />
+	</sound>
+
+	<sound name="Prospector Grunt">
+		<sample weight="1" path="prospector/grunt/grunt 1.wav" />
+		<sample weight="1" path="prospector/grunt/grunt 2.wav" />
+		<sample weight="1" path="prospector/grunt/grunt 3.wav" />
+		<sample weight="1" path="prospector/grunt/grunt 4.wav" />
+	</sound>
+
+	<sound name="Prospector Yeee-hoo">
+		<sample weight="1" path="prospector/yeee-hoo/yeee-hoo 1.wav" />
+		<sample weight="1" path="prospector/yeee-hoo/yeee-hoo 2.wav" />
+		<sample weight="1" path="prospector/yeee-hoo/yeee-hoo 3.wav" />
+	</sound>
+
+	<sound name="Prospector Going Up">
+		<sample weight="1" path="prospector/going up/going up 1.wav" />
+		<sample weight="1" path="prospector/going up/going up 2.wav" />
+		<sample weight="1" path="prospector/going up/going up 3.wav" />
+	</sound>
+
+	<sound name="Prospector Sentry Down">
+		<sample weight="1" path="prospector/sentry down/sentry down 1.wav" />
+		<sample weight="1" path="prospector/sentry down/sentry down 2.wav" />
+		<sample weight="1" path="prospector/sentry down/sentry down 3.wav" />
+		<sample weight="1" path="prospector/sentry down/sentry down 4.wav" />
+	</sound>
+
+	<sound name="Prospector Death">
+		<sample weight="1" path="prospector/death/death 1.wav" />
+		<sample weight="1" path="prospector/death/death 2.wav" />
+		<sample weight="1" path="prospector/death/death 3.wav" />
+	</sound>
+
+	<sound name="Prospector Shotgun">
+		<sample weight="1" path="prospector/bumgineer_shotgun.wav" />
+	</sound>
+
+	<sound name="Prospector Wrench">
+		<sample weight="1" path="prospector/wrench_hit.wav" />
+		<sample weight="1" path="prospector/wrench_hit2.wav" />
+	</sound>
+
+	<sound name="Nincompoop Pant">
+		<sample weight="1" path="nincompoop/nincompoop_pant.wav" />
+	</sound>
+	<sound name="Nincompoop Spit">
+		<sample weight="1" path="nincompoop/nincompoop_spit.wav" />
+	</sound>
+	<sound name="Nincompoop Whistle">
+		<sample weight="1" path="nincompoop/nincompoop_whistle.wav" />
+	</sound>
+	<sound name="Nincompoop Pass By">
+		<sample weight="1" path="nincompoop/pass_by.wav" />
+	</sound>
+	<sound name="Nincompoop Charge">
+		<sample weight="1" path="nincompoop/charge.wav" />
+	</sound>
+	
+
+	<sound name="Poltygeist Spit">
+		<sample weight="1" path="poltygeist/spit.wav" />
+	</sound>
+	<sound name="Poltygeist Throw">
+		<sample weight="1" path="poltygeist/throw.wav" />
+	</sound>
+	<sound name="Poltygeist Tongue">
+		<sample weight="1" path="poltygeist/tongue.wav" />
+	</sound>
+	<sound name="Poltygeist Taunt">
+		<sample weight="1" path="poltygeist/taunt.wav" />
+	</sound>
+	<sound name="Poltygeist Taunty">
+		<sample weight="1" path="poltygeist/taunty.wav" />
+	</sound>
+	<sound name="Poltygeist Death">
+		<sample weight="1" path="poltygeist/death.wav" />
+	</sound>
+
+
+	<sound name="Roland Ahh">
+		<sample weight="1" path="rolandahh.wav" />
+	</sound>
+	<sound name="Cursed Slam">
+		<sample weight="1" path="tainted/slam.wav" />
+	</sound>
+
+	<sound name="Cursed Heavy Strike">
+		<sample weight="1" path="tainted/heavy_strike.wav" />
+	</sound>
+
+	<sound name="Cursed Wild Swing">
+		<sample weight="1" path="tainted/wild_swing.wav" />
+	</sound>
+
+	<sound name="Cursed Rage">
+		<sample weight="1" path="tainted/rage.wav" />
+	</sound>
+
+	<sound name="Cursed Pop">
+		<sample weight="1" path="tainted/pop.wav" />
+	</sound>
+	<sound name="Cursed Rocket Launch">
+		<sample weight="1" path="tainted/rocket_launch.wav" />
+	</sound>
+	<sound name="Cursed Beep">
+		<sample weight="1" path="tainted/beep.wav" />
+	</sound>
+	<sound name="Cursed Beep Dead">
+		<sample weight="1" path="tainted/beep_dead.wav" />
+	</sound>
+
+	<sound name="Spring Sound">
+		<sample weight="1" path="card/spring_sound.wav" />
+	</sound>
+	<sound name="Quality Time In">
+		<sample weight="1" path="card/quality_time_in.wav" />
+	</sound>
+	<sound name="Quality Time Out">
+		<sample weight="1" path="card/quality_time_out.wav" />
+	</sound>
+
+	<sound name="Laban Clap">
+		<sample weight="1" path="laban/laban_clap_1.wav" />
+		<sample weight="1" path="laban/laban_clap_2.wav" />
+		<sample weight="1" path="laban/laban_clap_3.wav" />
+	</sound>
+	<sound name="Laban Wheeze 1">
+		<sample weight="1" path="laban/laban_wheeze_1.wav" />
+	</sound>
+	<sound name="Laban Wheeze 2">
+		<sample weight="1" path="laban/laban_wheeze_2.wav" />
+	</sound>
+	<sound name="Laban Laugh">
+		<sample weight="1" path="laban/laban_laugh.wav" />
+	</sound>
+	<sound name="Laban Cough">
+		<sample weight="1" path="laban/cough_1.wav" />
+		<sample weight="1" path="laban/cough_2.wav" />
+		<sample weight="1" path="laban/cough_3.wav" />
 	</sound>
 </sounds>

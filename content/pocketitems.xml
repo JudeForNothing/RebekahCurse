@@ -1,18 +1,51 @@
 <pocketitems>
-	<card type="object" pickup="120" description="Hatch a surprise" name="Surprise Egg" hud="redegg" mimiccharge="4"/>
-	<card type="object" pickup="121" description="Hatch a surprise" name="Aqua Surprise Egg" hud="aquaegg" mimiccharge="4"/>
-	<card type="object" pickup="122" description="Hatch a surprise" name="Yellow Surprise Egg" hud="yellowegg" mimiccharge="4"/>
-	<card type="object" pickup="123" description="Hatch a surprise" name="Green Surprise Egg" hud="greenegg" mimiccharge="4"/>
-	<card type="object" pickup="124" description="Hatch a surprise" name="Blue Surprise Egg" hud="blueegg" mimiccharge="4"/>
-	<card type="object" pickup="125" description="Hatch a surprise" name="Pink Surprise Egg" hud="pinkegg" mimiccharge="4"/>
-	<card type="object" pickup="126" description="Hatch a surprise" name="Striped Surprise Egg" hud="redstripeegg" mimiccharge="4"/>
-	<card type="object" pickup="127" description="Hatch a surprise" name="Aqua Striped Surprise Egg" hud="aquastripeegg" mimiccharge="4"/>
-	<card type="object" pickup="128" description="Hatch a surprise" name="Yellow Zigzag Surprise Egg" hud="yellowzigzagegg" mimiccharge="4"/>
-	<card type="object" pickup="129" description="Hatch a surprise" name="Green Zigzag Surprise Egg" hud="greenzigzagegg" mimiccharge="4"/>
-	<card type="object" pickup="130" description="Hatch a surprise" name="Blue Zigzag Surprise Egg" hud="bluezigzagegg" mimiccharge="4"/>
-	<card type="object" pickup="131" description="Hatch a surprise" name="Pink Striped Surprise Egg" hud="pinkstripeegg" mimiccharge="4"/>
+	<!-- Easter Eggs -->
+	<card type="object" pickup="120" description="Hatch a surprise" name="Surprise Ovum" hud="redegg" mimiccharge="4"/>
+	<card type="object" pickup="121" description="Hatch a surprise" name="Aqua Surprise Ovum" hud="aquaegg" mimiccharge="4"/>
+	<card type="object" pickup="122" description="Hatch a surprise" name="Yellow Surprise Ovum" hud="yellowegg" mimiccharge="4"/>
+	<card type="object" pickup="123" description="Hatch a surprise" name="Green Surprise Ovum" hud="greenegg" mimiccharge="4"/>
+	<card type="object" pickup="124" description="Hatch a surprise" name="Blue Surprise Ovum" hud="blueegg" mimiccharge="4"/>
+	<card type="object" pickup="125" description="Hatch a surprise" name="Pink Surprise Ovum" hud="pinkegg" mimiccharge="4"/>
+	<card type="object" pickup="126" description="Hatch a surprise" name="Striped Surprise Ovum" hud="redstripeegg" mimiccharge="4"/>
+	<card type="object" pickup="127" description="Hatch a surprise" name="Aqua Happy Surprise Ovum" hud="aquahappyegg" mimiccharge="4"/>
+	<card type="object" pickup="128" description="Hatch a surprise" name="Yellow Zigzag Surprise Ovum" hud="yellowzigzagegg" mimiccharge="4"/>
+	<card type="object" pickup="129" description="Hatch a surprise" name="Green Insect Surprise Ovum" hud="greeninsectegg" mimiccharge="4"/>
+	<card type="object" pickup="130" description="Hatch a surprise" name="Blue Starry Surprise Ovum" hud="bluestarryegg" mimiccharge="4"/>
+	<card type="object" pickup="131" description="Hatch a surprise" name="Pink Hearted Surprise Ovum" hud="pinkheartedegg" mimiccharge="4"/>
 	
-	<card type="object" pickup="132" description="Hatch a bad surprise" name="Cursed Surprise Egg" hud="cursedegg" mimiccharge="4"/>
-	<card type="object" pickup="133" description="Hatch a good surprise" name="Blessed Surprise Egg" hud="blessedegg" mimiccharge="12"/>
-	<card type="object" pickup="134" description="Hatch a lot of surprises" name="Golden Surprise Egg" hud="goldenegg" mimiccharge="8"/>
+	<card type="object" pickup="132" description="Hatch a bad surprise" name="Cursed Surprise Ovum" hud="cursedegg" mimiccharge="4"/>
+	<card type="object" pickup="133" description="Hatch a good surprise" name="Blessed Surprise Ovum" hud="blessedegg" mimiccharge="12"/>
+	<card type="object" pickup="134" description="Hatch a lot of surprises" name="Golden Surprise Ovum" hud="goldenegg" mimiccharge="8"/>
+
+	<card type="object" pickup="140" description="Hatch a surprise" name="Orange Surprise Ovum" hud="orangeegg" mimiccharge="4"/>
+	<card type="object" pickup="141" description="Hatch a surprise" name="Orange Locked Surprise Ovum" hud="orangelockedegg" mimiccharge="4"/>
+	<card type="object" pickup="142" description="Hatch a surprise" name="White Surprise Ovum" hud="whiteegg" mimiccharge="4"/>
+	<card type="object" pickup="143" description="Hatch a surprise" name="White Polka Surprise Ovum" hud="whitepolkaegg" mimiccharge="4"/>
+
+	<!-- Cards -->
+	<card name="Words of Affirmation" pickup="135" description="May your words bring love" hud="affirmation" mimiccharge="3"/>
+	<card name="Gift Giving" pickup="136" description="May your gifts present love" hud="giftgiving" mimiccharge="3"/>
+	<card name="Act of Service" pickup="137" description="May your service honor love" hud="actofservice" mimiccharge="3"/>
+	<card name="Quality Time" pickup="138" description="May your presence remind of love" hud="qualitytime" mimiccharge="3"/>
+	<card name="Physical Touch" pickup="139" description="May you feel love" hud="physicaltouch" mimiccharge="3"/>
+
+	<!-- Pills -->
+	<pilleffect name="Goosebumps!" class="1+" mimiccharge="6" /> <!-- room fear -->
+	<pilleffect name="Endorphin" class="2+" mimiccharge="8" /> <!-- hard hat effect for whole floor -->
+	<pilleffect name="Laughter's the best medicine" class="2+" mimiccharge="6" /> <!-- room laugh -->
+	<pilleffect name="Hemorrhage" class="2+" mimiccharge="6" />  <!-- 4-7 hearts to clots -->
+	<pilleffect name="Ovulation" class="0" mimiccharge="5" /> <!-- spawns a surprise egg -->
+	<pilleffect name="Progestin" class="2+" mimiccharge="8" /> <!-- stops enemies from giving "birth" to other enemies -->
+
+	<!-- <pilleffect name="Cyanide!" description="Cure with a pill!" class="1" mimiccharge="6" /> -->
+
+	<!--Souls-->
+	<card type="rune" pickup="144" description="Take in all the curses" name="Soul of Rebekah" hud="soulrebekahnormal" mimiccharge="6"/>
+	<card type="rune" pickup="145" description="Enter in with pain" name="Spirit of the Cursed" hud="soulrebekahcursed" mimiccharge="12"/>
+	<card type="rune" pickup="146" description="From heaven he guides to haven" name="Spirit of the Lost" hud="soulrebekahlost" mimiccharge="6"/>
+	<card type="rune" pickup="147" description="From unknown love to vengence" name="Spirit of the Unknown" hud="soulrebekahunknown" mimiccharge="3"/>
+	<card type="rune" pickup="148" description="Earth leads the way" name="Spirit of the Maze" hud="soulrebekahmaze" mimiccharge="8"/>
+	<card type="rune" pickup="149" description="Riches expand" name="Spirit of the Labyrinth" hud="soulrebekahlabyrinth" mimiccharge="8"/>
+	<card type="rune" pickup="150" description="But now I see" name="Spirit of the Blind" hud="soulrebekahblind" mimiccharge="6"/>
+	<card type="rune" pickup="151" description="Fear lives in the hidden" name="Spirit of the Darkness" hud="soulrebekahdarkness" mimiccharge="6"/>
 </pocketitems>

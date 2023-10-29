@@ -14,6 +14,7 @@
 	
 	<costume anm2path="costumes/rebekah_hair/rottenmode_headremove.anm2" type="none" priority="999" />
 	<costume anm2path="costumes/rebekah_hair/rottenmode_skinremove.anm2" type="none" priority="999" />
+	<costume anm2path="blood_gush.anm2" type="none" priority="999"/>
 	
 	<costume anm2path="bridalhair.anm2" type="none" priority="200" />
 	<costume anm2path="fulfilled.anm2" type="none" priority="180" isFlying="true" hasSkinAlt="false"/>
@@ -23,27 +24,48 @@
 	
 	<costume anm2path="weddedstockings.anm2" type="none" priority="170" isFlying="true" hasSkinAlt="false"/>
 	
-	<costume anm2path="love_power.anm2" type="none"/>
-	<costume anm2path="great_pheonix.anm2" priority="27" type="none"/>
-	<costume anm2path="lunchbox.anm2" priority="22" type="none"/>
+	<costume anm2path="oldermaidbody.anm2" type="none" priority="999" isFlying="false" hasSkinAlt="true"/>
+
+	<costume anm2path="love_power.anm2" type="passive" id="59"/>
+	<costume anm2path="great_pheonix.anm2" priority="27" type="passive" id="17"/>
+	<costume anm2path="lunchbox.anm2" priority="22" type="passive" id="9"/>
 	<costume anm2path="cursedmaw.anm2" priority="27" type="none"/>
 	<costume anm2path="lovesick.anm2" priority="22" type="none" hasSkinAlt="true"/>
-	<costume anm2path="lovesick_banshee.anm2" skinColor="1" type="none" overwriteColor="true" priority="200" forceBodyColor="true"/>
-	<costume anm2path="lovesick_banshee_shriek.anm2" skinColor="1" type="none" overwriteColor="true" priority="200" forceBodyColor="true"/>
+	<costume anm2path="lovesick_banshee.anm2" skinColor="1" type="passive" overwriteColor="true" priority="200" forceBodyColor="true" id="14"/>
+	<costume anm2path="lovesick_banshee_shriek.anm2" skinColor="1" type="none" overwriteColor="true" priority="220" forceBodyColor="true"/>
 	<costume anm2path="unsnapped.anm2" priority="22" type="none" hasSkinAlt="true"/>
 	<costume anm2path="snap.anm2" priority="24" type="none" hasSkinAlt="true"/>
 	
-	<costume anm2path="nutwater.anm2" priority="20" type="none"/>
-	<costume anm2path="tighthairtie.anm2" priority="100" type="none"/>
+	<costume anm2path="nutwater.anm2" priority="20" type="passive" id="22"/>
+	<costume anm2path="tighthairtie.anm2" priority="100" type="passive" id="41"/>
 	<costume anm2path="hornface.anm2" type="none"/>
-	<costume anm2path="basket_of_eggs.anm2" type="none"/>
-	<costume anm2path="candyweddingring.anm2" type="none"/>
+	<costume anm2path="basket_of_eggs.anm2" type="passive" id="42"/>
+	<costume anm2path="candyweddingring.anm2" type="passive" id="16"/>
 	
-	<costume anm2path="oversizedsweater.anm2" type="none" priority="300"/>
-	<costume anm2path="techhz.anm2" type="none" priority="20"/>
+	<costume anm2path="oversizedsweater.anm2" type="passive" priority="300" id="54"/>
+	<costume anm2path="techhz.anm2" type="passive" priority="20" id="51"/>
 	<costume anm2path="originalsin.anm2" type="none" priority="210"/>
-	<costume anm2path="potatosnack.anm2" type="none"/>
-	<costume anm2path="eyesofthedead.anm2" type="none"  priority="100" hasSkinAlt="true"/>
-	<costume anm2path="adventuretime.anm2" type="none" priority="200"/>
-	<costume anm2path="psoriasis.anm2" type="none"  priority="50" hasSkinAlt="true"/>
+	<costume anm2path="potatosnack.anm2" type="passive" id="50"/>
+	<costume anm2path="eyesofthedead.anm2" type="passive"  priority="100" hasSkinAlt="true" id="47"/>
+	<costume anm2path="adventuretime.anm2" type="active" priority="200" id="46"/>
+	<costume anm2path="psoriasis.anm2" type="passive"  priority="50" hasSkinAlt="true" id="27"/>
+	<costume anm2path="wickedweaves.anm2" priority="100" type="passive" id="18"/>
+	<costume anm2path="cheesypizza.anm2" priority="10" type="passive"  hasSkinAlt="true" id="60"/>
+	<costume anm2path="burger.anm2" priority="20" type="passive" id="64"/>
+
+	<costume anm2path="body_dysmorphia.anm2" type="none" priority="200" hasSkinAlt="true"/>
+	<costume anm2path="klees_hat.anm2" type="passive" priority="100" id="57"/>
+
+	<costume anm2path="komicant.anm2" type="none" priority="300" hasSkinAlt="true"/>
+	<costume anm2path="fenrirs_eye.anm2" priority="22" type="passive" forceBodyColor="true" forceHeadColor="true" overwriteColor="true" skinColor="3" id="66"/>
+
+	<costume anm2path="silent_treatment.anm2" type="passive" id="55"/>
+	<costume anm2path="spikedpartypunch.anm2" type="passive" id="62"/>
+	<costume anm2path="underpay.anm2" type="passive" id="74"/>
+	<costume anm2path="silencer.anm2" type="passive" id="78"/>
+
+	<costume anm2path="halfface.anm2" type="none" priority="300"/>
+	<costume anm2path="halfsoulface.anm2" type="none" priority="300"/>
+	<costume anm2path="blendedidle.anm2" type="none" priority="300"/>
+	<costume anm2path="blendedsillyme.anm2" type="none" priority="300"/>
 </costumes>

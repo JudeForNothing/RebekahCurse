@@ -20,6 +20,26 @@
 		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Body Dysmorphia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Psoriasis" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Skimmed Milk" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Haphephobic Bombs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jumpy Dumpty" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Pencil Sharpener" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Appreciation Cake" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cheesy Pizza" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jelly Donut" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Spiked Party Punch" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Boba Tea" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Bur-ger" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Underpay" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Milk Wine" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Silent Treatment" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Silencer" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Full Fat Milk" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jacob's Tears" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cutie Patootie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="shop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
@@ -31,12 +51,22 @@
 		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Appreciation Cake" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jelly Donut" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Spiked Party Punch" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Boba Tea" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Bur-ger" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="devil">
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Tooth" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Paw" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="A Beautiful Grave" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eyes of the Dead" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Notebook of the Dead" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -50,6 +80,8 @@
 		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="The Enchiridion" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Angel's Morningstar" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Silphium" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cutie Patootie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="secret">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -62,6 +94,9 @@
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="The Enchiridion" DecreaseBy="0.2" RemoveOn="0.1" Weight="0.2" />
 		<Item Name="Notebook of the Dead" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Narcolepsy" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Heartaches..." DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Giddy up!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="library">
 		<Item Name="Typical Rom-Com" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -82,20 +117,27 @@
 		<Item Name="Defuse = Rewards" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="A Beautiful Grave" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Notebook of the Dead" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Narcolepsy" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Tooth" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Paw" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Rebekah's Scrapbook" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Cutie Patootie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="goldenChest">
-		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Eternal Bond" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Great Pheonix" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Doorstopper" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Body Dysmorphia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Moriah Diary" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
+		<Item Name="Rebekah's Scrapbook" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
+		<Item Name="Cutie Patootie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="redChest">
 		<Item Name="Cursed Spoon" DecreaseBy="0.5" RemoveOn="0.1" Weight="1" />
@@ -104,6 +146,11 @@
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Tooth" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Paw" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="beggar">
 		<Item Name="A Lunchbox" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -116,6 +163,11 @@
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Tooth" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Paw" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
     <!-- Greed Mode -->
 	<Pool Name="greedTreasure">
@@ -136,6 +188,18 @@
 		<Item Name="Tech Hz" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Body Dysmorphia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Skimmed Milk" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Haphephobic Bombs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jumpy Dumpty" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Pencil Sharpener" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Appreciation Cake" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cheesy Pizza" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Jelly Donut" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Spiked Party Punch" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Boba Tea" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Bur-ger" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Rebekah's Scrapbook" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
+		<Item Name="Cutie Patootie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedShop">
 		<Item Name="Unrequited Love" DecreaseBy="0.5" RemoveOn="0.1" Weight="1"/>
@@ -169,6 +233,12 @@
 		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Tooth" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Paw" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Cutie Patootie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedAngel">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -176,6 +246,7 @@
 		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Rebekah's Favorite" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
 		<Item Name="Angel's Morningstar" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Silphium" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 	</Pool>
 	<Pool Name="greedSecret">
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
@@ -191,11 +262,21 @@
 		<Item Name="Snap!" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Lovesick" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
 		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Fenrir's Leash" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Tooth" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Head" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Paw" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Fenrir's Eyes" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
 	</Pool>
 	<Pool Name="greedGoldenChest">
-		<Item Name="Miraculous Womb" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Dice of Fate" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Love = Power" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
-		<Item Name="Nut Water" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Cursed Spoon" DecreaseBy="1" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Love Deluxe" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Basket of Eggs" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Eggshell Walk" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5" />
+		<Item Name="Oversized Sweater" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Body Dysmorphia" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Tight Hairtie" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Potato Snack" DecreaseBy="1" RemoveOn="0.1" Weight="1" />
+		<Item Name="Moriah Diary" DecreaseBy="0.5" RemoveOn="0.1" Weight="0.5"/>
 	</Pool>
 </ItemPools>
