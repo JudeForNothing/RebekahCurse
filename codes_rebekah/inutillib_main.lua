@@ -1,7 +1,7 @@
 local mod
 
 --the version of this helper mod script
-local currentVersion = 8
+local currentVersion = 9
 
 --remove any previous versions that may exist, piber style
 local callbacksAlreadyLoaded = nil

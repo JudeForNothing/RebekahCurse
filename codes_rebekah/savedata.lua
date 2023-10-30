@@ -244,12 +244,11 @@ local function RecapRebekahData()
 	local players = {}
 	for i = 0, InutilLib.game:GetNumPlayers()-1 do
 		local player = Isaac.GetPlayer(i)
-		if not player or not player:Exists() then return end
+		--if not player or not player:Exists() then return end
 		if yandereWaifu.IsNormalRebekah(player) then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)
 			saveData.heartStockReserve[i] = yandereWaifu.getReserveStocks(player)
-			
 			--saveData.RebekahCameraEnemies[i] = yandereWaifu.GetEntityData(player).savedCameraEnemies
 		else
 			saveData.currentMode[i] = nil
@@ -328,29 +327,33 @@ function yandereWaifu.LoadPlayerSaveData(continued)
 	if Isaac.HasModData(yandereWaifu) and continued then
 		local data = REB_JSON.decode(yandereWaifu:LoadData()) --REB_JSON.decode(Isaac.LoadModData(yandereWaifu));
 		if data.currentMode ~= nil then 
-			for p,player in pairs(InutilLib.players) do
+			for  p = 0, InutilLib.game:GetNumPlayers() - 1 do
+				local player = Isaac.GetPlayer(p)
+				local num = tostring(p)
 				if yandereWaifu.IsNormalRebekah(player) then
-					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[p]
-					yandereWaifu.addReserveFill(player, data.heartFillReserve[p])
-					yandereWaifu.addReserveStocks(player, data.heartStockReserve[p])
-					--yandereWaifu.GetEntityData(player).savedCameraEnemies[p] = data.RebekahCameraEnemies
+					yandereWaifu.GetEntityData(player).currentMode = data.currentMode[num]
+					yandereWaifu.addReserveFill(player, data.heartFillReserve[num])
+					yandereWaifu.addReserveStocks(player, data.heartStockReserve[num])
+					--yandereWaifu.GetEntityData(player).savedCameraEnemies[num] = data.RebekahCameraEnemies
 				end
 					--if data.PersistentPlayerData ~= nil then
-					if data.PersistentPlayerData[p] then yandereWaifu.GetEntityData(player).PersistentPlayerData = data.PersistentPlayerData[p] end
+					if data.PersistentPlayerData[num] then yandereWaifu.GetEntityData(player).PersistentPlayerData = data.PersistentPlayerData[num] end
 					--end
 					player:AddCacheFlags(CacheFlag.CACHE_ALL);
 					player:EvaluateItems()
 			end
 		end
 		if data.NedHealth then
-			for i,player in pairs(InutilLib.players) do
+			for i = 0, InutilLib.game:GetNumPlayers() - 1 do
+				local player = Isaac.GetPlayer(i)
+				local num = tostring(i)
 				for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
 					if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL or ned.Variant == RebekahCurse.ENTITY_SQUIRENED then 
 						local name = tonumber(ned.Variant..ned.SubType)
-						for k, health in ipairs(data.NedHealth[i]) do
-							if data.NedHealth[i][k][1] == name then
-								yandereWaifu.GetEntityData(ned).Health = data.NedHealth[i][k][2]
-								table.remove(data.NedHealth[i], k)
+						for k, health in ipairs(data.NedHealth[num]) do
+							if data.NedHealth[num][k][1] == name then
+								yandereWaifu.GetEntityData(ned).Health = data.NedHealth[num][k][2]
+								table.remove(data.NedHealth[num], k)
 							end
 				--	print(name)
 					--check for knights health

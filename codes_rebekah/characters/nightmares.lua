@@ -76,6 +76,8 @@ local function spawnRebekahTrapdoor(gridIndex, gridFile)
 	end
 	
 	local stage
+	--print("WHERE AM I")
+	--print(InutilLib.level:GetStage() % 2)
         local isRepPath = false
         local decrement = 0
         if InutilLib.room:GetType() == RoomType.ROOM_SECRET_EXIT --[[and not (InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE or InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE_B )]] then
@@ -84,7 +86,7 @@ local function spawnRebekahTrapdoor(gridIndex, gridFile)
                 decrement = -1
             end
         elseif InutilLib.room:GetType() ~= RoomType.ROOM_SECRET_EXIT and (InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE or InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE_B) and (InutilLib.level:GetStage() % 2 == 1) then
-            isRepPath = false
+            isRepPath = true
         end
 
 		stage = {
@@ -94,8 +96,6 @@ local function spawnRebekahTrapdoor(gridIndex, gridFile)
 		}
 
 		if levelStage == LevelStage.STAGE4_2 and not (InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE or InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE_B ) then
-			print("ripperoni")
-			print(gridFile)
 			if gridFile ~= "gfx/grid/Door_11_Wombhole.anm2" then
 				stage.Stage = LevelStage.STAGE5
 			end
@@ -123,7 +123,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		for i = 0, InutilLib.room:GetGridSize() do
 			local grid = InutilLib.room:GetGridEntity(i)
 			--not ascent stuff
-			--if InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
+			if InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
 				if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and (grid:GetSprite():GetFilename() ~= "gfx/grid/trapdoor_corpse_big.anm2" and grid:GetSprite():GetFilename() ~= "gfx/grid/VoidTrapdoor.anm2") then
 					print(grid:GetSprite():GetFilename())
 					print(grid.Desc.Type)
@@ -136,7 +136,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 					
 					table.insert(RebekahLocalSavedata.Data.rebekahTrapdoors, {ListIndex=InutilLib.level:GetCurrentRoomDesc().ListIndex, GridIndex=i, GridFile=gridFile})
 				end
-			--end
+			end
 		end
 	end
 end)

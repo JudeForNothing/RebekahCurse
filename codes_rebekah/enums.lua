@@ -1035,6 +1035,7 @@ local REBECCA_ETERNAL_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ETERNAL,
 local REBECCA_BONE_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BONE, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_BROKEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_BROKEN, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_ROTTEN, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
+local REBECCA_ROTTEN_INFO = InutilLib.Players:New({}, RebekahCurse.REB_IMMORTAL, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 
 --local REBECCA_SCARED_INFO = InutilLib.Players:New({}, RebekahCurse.REB_RED, RebekahCurse.Sounds.SOUND_REBHURT, RebekahCurse.Sounds.SOUND_REBDIE, {InutilLib.DefaultInstructions, "gfx/backdrop/controls_rebecca_extra.png"}, {"gfx/characters/big_rebekah.anm2", "gfx/characters/big_rebekah.png"});
 

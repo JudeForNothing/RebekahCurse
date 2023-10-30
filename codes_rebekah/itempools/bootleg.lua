@@ -1,6 +1,6 @@
 yandereWaifu.OriginalToBootleg = {
     [CollectibleType.COLLECTIBLE_PIGGY_BANK] =RebekahCurse.Items.COLLECTIBLE_OINKYBANK, --space item you use to drop coins
-    [CollectibleType.COLLECTIBLE_TREASURE_MAP] =RebekahCurse.Items.COLLECTIBLE_9BATTS, --drops 9 volts per floor
+    [CollectibleType.COLLECTIBLE_9_VOLT] =RebekahCurse.Items.COLLECTIBLE_9BATTS, --drops 9 volts per floor
     [CollectibleType.COLLECTIBLE_BLUE_BOX] = RebekahCurse.Items.COLLECTIBLE_ARESBOX, --change enemies to champions
     [CollectibleType.COLLECTIBLE_CANDLE] = RebekahCurse.Items.COLLECTIBLE_UNSTABLECANDLE,  --giant flamethrower, sometimes fails
     [CollectibleType.COLLECTIBLE_PLAN_C] = RebekahCurse.Items.COLLECTIBLE_VITAMINC, --plan c but you dont die

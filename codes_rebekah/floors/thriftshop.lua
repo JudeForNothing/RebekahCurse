@@ -120,7 +120,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 	pickup = pickup:ToPickup()
 	if StageAPI.GetCurrentRoomType() == "Thrift Shop" then
         if pickup:IsShopItem() then
-            --if rng:RandomFloat() <= 0.50 then
+            if rng:RandomFloat() <= 0.50 then
                 if yandereWaifu.OriginalToBootleg[pickup.SubType] then
                     local oldPickupPrice = pickup.Price
                     pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, yandereWaifu.OriginalToBootleg[pickup.SubType], true, true, false)
@@ -130,10 +130,47 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
                     pickup.Touched = false
                     pickup.Wait = 2
                 end
-            --end
+            end
         end
     end
 end, PickupVariant.PICKUP_COLLECTIBLE)
+
+yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, pickup, coll, low)
+	local rng = pickup:GetDropRNG()
+	local player = coll:ToPlayer()
+	pickup = pickup:ToPickup()
+	if StageAPI.GetCurrentRoomType() == "Thrift Shop" then
+        if pickup:IsShopItem() then
+            if rng:RandomFloat() <= 0.50 then
+                if pickup.SubType == HeartSubType.HEART_FULL then
+                    local mob = Isaac.Spawn(RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY, RebekahCurse.Enemies.ENTITY_REDTATO, 0, pickup.Position,  player.Velocity, player):ToNPC();
+                    mob:AddEntityFlags(EntityFlag.FLAG_AMBUSH)
+                    pickup.Touched = false
+                    pickup:Remove()
+                elseif pickup.SubType == HeartSubType.HEART_SOUL then
+                    local oldPickupPrice = pickup.Price
+                    local rng = math.random(1,3)
+                    if rng == 1 then
+                        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COIN, 1, true, true, false)
+                    elseif rng == 2 then
+                        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_BOMB, 1, true, true, false)
+                    elseif rng == 3 then
+                        pickup:Morph(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_KEY, 1, true, true, false)
+                    end
+                    pickup.Price = oldPickupPrice
+                    pickup.AutoUpdatePrice = false
+                    pickup:ClearEntityFlags(EntityFlag.FLAG_APPEAR)
+                    pickup.Touched = false
+                    pickup.Wait = 2
+                end
+                for i, v in pairs (Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LABAN_DUDE, -1)) do
+                    local data = yandereWaifu.GetEntityData(v)
+                    data.state = 3
+                end
+            end
+        end
+    end
+end, PickupVariant.PICKUP_HEART)
 
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
