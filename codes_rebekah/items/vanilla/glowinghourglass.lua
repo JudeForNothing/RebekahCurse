@@ -11,6 +11,13 @@ function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck 
 			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
 			player:EvaluateItems()
 			--player.Visible = false
+			if yandereWaifu.IsTaintedRebekah(player) then
+				data.PersistentPlayerData.BasicTaintedHealth = data.lastBossHealth
+				data.PersistentPlayerData.MaxTaintedHealth = data.lastMaxBossHealth
+
+				data.PersistentPlayerData.MaxRageCrystal = data.lastMaxRageCrystal
+				data.PersistentPlayerData.WrathFragmentCount = data.lastWrathFragmentCount
+			end
 			--[[yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
 			 InutilLib.SetTimer( 1, function()
 				print("fellow")

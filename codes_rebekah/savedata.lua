@@ -242,7 +242,9 @@ local function RecapRebekahData()
 
 	saveData.NedHealth = {} -- first ned
 	local players = {}
-	for i ,player in pairs(InutilLib.players) do
+	for i = 0, InutilLib.game:GetNumPlayers()-1 do
+		local player = Isaac.GetPlayer(i)
+		if not player or not player:Exists() then return end
 		if yandereWaifu.IsNormalRebekah(player) then
 			saveData.currentMode[i] = yandereWaifu.GetEntityData(player).currentMode
 			saveData.heartFillReserve[i] = yandereWaifu.getReserveFill(player)

@@ -1,5 +1,5 @@
 <AnimatedActor>
-	<Info CreatedBy="Unknown" CreatedOn="4/13/2023 8:03:51 AM" Version="20" Fps="30"/>
+	<Info CreatedBy="Unknown" CreatedOn="10/30/2023 9:26:17 AM" Version="21" Fps="30"/>
 	<Content>
 		<Spritesheets>
 			<Spritesheet Path="holedini.png" Id="0"/>
@@ -17,7 +17,7 @@
 	<Animations DefaultAnimation="Idle">
 		<Animation Name="Idle" FrameNum="24" Loop="true">
 			<RootAnimation>
-				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="50" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 			</RootAnimation>
 			<LayerAnimations>
 				<LayerAnimation LayerId="1" Visible="true"/>
@@ -35,7 +35,7 @@
 		</Animation>
 		<Animation Name="Shoot" FrameNum="52" Loop="false">
 			<RootAnimation>
-				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="50" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 			</RootAnimation>
 			<LayerAnimations>
 				<LayerAnimation LayerId="1" Visible="true"/>
@@ -229,7 +229,7 @@
 		</Animation>
 		<Animation Name="Death" FrameNum="24" Loop="false">
 			<RootAnimation>
-				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="1" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
+				<Frame XPosition="0" YPosition="0" XScale="100" YScale="100" Delay="50" Visible="true" RedTint="255" GreenTint="255" BlueTint="255" AlphaTint="255" RedOffset="0" GreenOffset="0" BlueOffset="0" Rotation="0" Interpolated="false"/>
 			</RootAnimation>
 			<LayerAnimations>
 				<LayerAnimation LayerId="1" Visible="true"/>

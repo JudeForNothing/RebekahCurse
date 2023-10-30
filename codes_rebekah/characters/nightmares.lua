@@ -1,5 +1,5 @@
 RebekahCurse.CustomTrapdoors = {
-	Glacier = {
+	--[[Glacier = {
 		Anm2 = "gfx/backdrop/revelcommon/hubroom_2.0/trapdoors/trapdoor_glacier.anm2"
 	},
 	Tomb = {
@@ -7,7 +7,7 @@ RebekahCurse.CustomTrapdoors = {
 	},
 	Vestige = {
 		Anm2 = "gfx/backdrop/revelcommon/hubroom_2.0/trapdoors/trapdoor_vestige.anm2"
-	},
+	},]]
 }
 
 yandereWaifu.VanillaNightmares = nil
@@ -67,7 +67,7 @@ function yandereWaifu.SimulateStageTransitionStageType(levelStage, isRepPath)
 	return stageType
 end
 
-local function spawnRebekahTrapdoor(gridIndex)
+local function spawnRebekahTrapdoor(gridIndex, gridFile)
 	local levelStage = InutilLib.level:GetAbsoluteStage()
     local curses =	InutilLib.game:GetLevel():GetCurses()
 	
@@ -93,6 +93,14 @@ local function spawnRebekahTrapdoor(gridIndex)
 			StageType = yandereWaifu.SimulateStageTransitionStageType(levelStage + 1 + decrement, isRepPath)
 		}
 
+		if levelStage == LevelStage.STAGE4_2 and not (InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE or InutilLib.level:GetStageType() == StageType.STAGETYPE_REPENTANCE_B ) then
+			print("ripperoni")
+			print(gridFile)
+			if gridFile ~= "gfx/grid/Door_11_Wombhole.anm2" then
+				stage.Stage = LevelStage.STAGE5
+			end
+		end
+
 	
 	local trapdoor
 	if stage.Name then
@@ -115,19 +123,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		for i = 0, InutilLib.room:GetGridSize() do
 			local grid = InutilLib.room:GetGridEntity(i)
 			--not ascent stuff
-			if InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
-				if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and grid:GetSprite():GetFilename() ~= "gfx/grid/VoidTrapdoor.anm2" then
+			--if InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
+				if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and (grid:GetSprite():GetFilename() ~= "gfx/grid/trapdoor_corpse_big.anm2" and grid:GetSprite():GetFilename() ~= "gfx/grid/VoidTrapdoor.anm2") then
 					print(grid:GetSprite():GetFilename())
 					print(grid.Desc.Type)
 					
+					local gridFile = grid:GetSprite():GetFilename()
 					InutilLib.room:RemoveGridEntity(i, 0, false)
 					InutilLib.room:Update()
 					
-					spawnRebekahTrapdoor(i)
+					spawnRebekahTrapdoor(i, gridFile)
 					
-					table.insert(RebekahLocalSavedata.Data.rebekahTrapdoors, {ListIndex=InutilLib.level:GetCurrentRoomDesc().ListIndex, GridIndex=i})
+					table.insert(RebekahLocalSavedata.Data.rebekahTrapdoors, {ListIndex=InutilLib.level:GetCurrentRoomDesc().ListIndex, GridIndex=i, GridFile=gridFile})
 				end
-			end
+			--end
 		end
 	end
 end)
@@ -137,7 +146,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
     if RebekahLocalSavedata.Data.rebekahTrapdoors and #RebekahLocalSavedata.Data.rebekahTrapdoors > 0 then
         for _, trapdoorData in ipairs(RebekahLocalSavedata.Data.rebekahTrapdoors) do
             if InutilLib.level:GetCurrentRoomDesc().ListIndex == trapdoorData.ListIndex then
-                spawnRebekahTrapdoor(trapdoorData.GridIndex)
+                spawnRebekahTrapdoor(trapdoorData.GridIndex, trapdoorData.GridFile)
             end
         end
     end

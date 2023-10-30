@@ -171,6 +171,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
 			player:AddSoulHearts(2)
 
 			data.lastMode = data.currentMode
+			data.lastBossHealth = data.PersistentPlayerData.BasicTaintedHealth
+			data.lastMaxBossHealth = data.PersistentPlayerData.MaxTaintedHealth
+
+			data.lastMaxRageCrystal = data.PersistentPlayerData.MaxRageCrystal
+			data.lastWrathFragmentCount = data.PersistentPlayerData.WrathFragmentCount
 			--if data.IsDashActive then data.IsDashActive = false end --stop any active dashes
 			data.IsUninteractible = false 
 			isTRebPresent = true

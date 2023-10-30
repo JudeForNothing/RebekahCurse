@@ -68,9 +68,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 		local playerType = player:GetPlayerType()
 		local room = InutilLib.game:GetRoom()
 		local data = yandereWaifu.GetEntityData(player)
-        print(count)
 		if yandereWaifu.IsTaintedRebekah(player) and ent:IsBoss() and count <= 1 then
-			ent:BloodExplode()
+			--ent:BloodExplode()
 			if not ent:IsInvincible() then
 				for i = 1, math.ceil(ent.MaxHitPoints/15)  do
                     local crystalCount = #Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, -1, false, false)

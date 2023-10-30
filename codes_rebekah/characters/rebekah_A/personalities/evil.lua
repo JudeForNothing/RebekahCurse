@@ -1666,7 +1666,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 						--damage
 						if entenmies.Position:Distance(eff.Position) <= (180) + entenmies.Size then
 							if not entenmies:IsBoss() then
-								entenmies:Kill()
+								--entenmies:Kill()
 							else
 								entenmies:TakeDamage(player.Damage*10, 0, EntityRef(eff), 4)
 							end
