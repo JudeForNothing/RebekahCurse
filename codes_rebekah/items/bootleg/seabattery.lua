@@ -1,6 +1,6 @@
 function yandereWaifu:useItemWithSeaBattery(collItem, rng, player, flags, slot)
 	local data = yandereWaifu.GetEntityData(player)
-	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SEABATTERY) then
+	if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SEABATTERY) and not data.PersistentPlayerData.SeaBatteryBuff then
 		player:TakeDamage(1, DamageFlag.DAMAGE_FAKE, EntityRef(player), 15)
 		InutilLib.AddInnateItem(player, CollectibleType.COLLECTIBLE_120_VOLT)
 		data.PersistentPlayerData.SeaBatteryBuff = true

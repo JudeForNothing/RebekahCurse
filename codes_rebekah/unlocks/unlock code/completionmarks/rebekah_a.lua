@@ -299,9 +299,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isSaveGa
 end)
 
 --item pool unlockables!
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	local itemPool = InutilLib.game:GetItemPool()
-	--if CurrentRebeccaUnlocks then
 		if not yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then --boss rush
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LUNCHBOX)
 		end
@@ -336,8 +335,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 		if not yandereWaifu.ACHIEVEMENT.COLLECTIBLE_UNREQUITEDLOVE then --IF ALL
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE)
 		end
-	--end
-end)
+end)]]
 
 
 --lock sadrebekah

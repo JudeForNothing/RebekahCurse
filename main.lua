@@ -20,7 +20,7 @@ yandereWaifuCodes = {
 	enums = require('codes_rebekah.enums'),
 	library = require('codes_rebekah.library'),
 	itempools = {
-		loveroom = require('codes_rebekah.itempools.loveroom'),
+	loveroom = require('codes_rebekah.itempools.loveroom'),
 		thriftshop = require('codes_rebekah.itempools.thriftshop'),
 		bootleg = require('codes_rebekah.itempools.bootleg'),
 	},
@@ -81,7 +81,7 @@ yandereWaifuIngameContentCode = {
 		deborahA = require('codes_rebekah.characters.deborah_A.basic'),
 		isaacC = require('codes_rebekah.characters.isaac_C.basic'),
 
-		nightmares = require('codes_rebekah.characters.nightmares'),
+		--nightmares = require('codes_rebekah.characters.nightmares'),
 	},
 	slots = {
 		mirror = require('codes_rebekah.slots.mirror'),

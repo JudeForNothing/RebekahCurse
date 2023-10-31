@@ -167,6 +167,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PICKUP_UPDATE, function(_, pickup)
 end)
 
 if StageAPI and StageAPI.Loaded then
+
+function yandereWaifu.deletePickups()
+	--delete if mirror world
+	if InutilLib.room:IsMirrorWorld() and InutilLib.room:IsFirstVisit() then
+		for i, pickup in pairs (Isaac.GetRoomEntities()) do
+			if pickup.Type == EntityType.ENTITY_PICKUP then
+				pickup:Remove()
+			end
+		end
+	end
+end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function() --love room pool gimmick
 	if StageAPI.GetCurrentRoomType() == "Love Room" and InutilLib.room:IsFirstVisit() then
 		for i, coll in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, false, false)) do
@@ -176,6 +187,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function() --love room p
 				end
 			--end
 		end
+		yandereWaifu.deletePickups()
 	elseif StageAPI.GetCurrentRoomType() == "Thrift Shop" and InutilLib.room:IsFirstVisit() then
 		for i, coll in pairs (Isaac.FindByType(EntityType.ENTITY_PICKUP, PickupVariant.PICKUP_COLLECTIBLE, -1, false, false)) do
 			--for j, collpool in pairs(yandereWaifu.LoveRoomPool) do
@@ -187,14 +199,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function() --love room p
 				end
 			--end
 		end
-	end
-	--delete if mirror world
-	if InutilLib.room:IsMirrorWorld() and InutilLib.room:IsFirstVisit() then
-		for i, pickup in pairs (Isaac.GetRoomEntities()) do
-			if pickup.Type == EntityType.ENTITY_PICKUP then
-				pickup:Remove()
-			end
-		end
+		yandereWaifu.deletePickups()
 	end
 end)
 

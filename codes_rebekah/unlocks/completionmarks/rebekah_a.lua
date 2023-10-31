@@ -27,20 +27,20 @@ CurrentRebeccaUnlocks = nil
 --got an idea from community remix. thx
 
 --delirium check
-local deliriumWasInRoom = false
+--[[local deliriumWasInRoom = false
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_INIT, function(_, npc)
 	deliriumWasInRoom = true
-end, EntityType.ENTITY_DELIRIUM)
+end, EntityType.ENTITY_DELIRIUM)]]
 
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
-	deliriumWasInRoom = false
+--yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+--	deliriumWasInRoom = false
 	--local deliriumCount = Isaac.CountEntities(nil, EntityType.ENTITY_DELIRIUM, -1, -1)
 	--if deliriumCount then
 	--	if deliriumCount > 0 then
 	--		deliriumWasInRoom = true
 	--	end
 	--end
-end)
+--end)
 
 
 function yandereWaifu:CheckIfAllUnlocksTrue()
@@ -233,13 +233,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_GAME_STARTED, function(_, isSaveGa
 end)
 
 --item pool unlockables!
-yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
+--[[yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 	local itemPool = InutilLib.game:GetItemPool()
 	if CurrentRebeccaUnlocks then
 		if not yandereWaifu.ACHIEVEMENT.LUNCHBOX:IsUnlocked() then --boss rush
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_LUNCHBOX)
 		end
-		--[[if not CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then --it lives
+		if not CurrentRebeccaUnlocks.COLLECTIBLE_MIRACULOUSWOMB then --it lives
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_MIRACULOUSWOMB)
 		end
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_CURSEDSPOON then --satan
@@ -269,6 +269,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 		
 		if not CurrentRebeccaUnlocks.COLLECTIBLE_UNREQUITEDLOVE then --IF ALL
 			itemPool:RemoveCollectible(RebekahCurse.Items.COLLECTIBLE_UNREQUITEDLOVE)
-		end]]
+		end
 	end
-end)
+end)]]

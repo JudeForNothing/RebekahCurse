@@ -133,7 +133,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		--local RebekahDoubleTapDash = dash.RebekahDoubleTapDash()
 		
 		yandereWaifu.barrageAndSP( player );
-		yandereWaifu.RenderUnderlay( player ) 
+		--yandereWaifu.RenderUnderlay( player ) 
 		--yandereWaifu.RenderMegaMushOverlay( player )
 		--yandereWaifu.RenderExtraHair(player, data.hairpath) 
 		--update the costumes when a new tem gets picked up
@@ -178,7 +178,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 			disenableDashByKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Alternative Key Enable"]
 		end]]
 		keyboardKey = RebekahLocalSavedata.Config.rebekahdashkey
-		controllerKey = RebekahLocalSavedata.Config.rebekahdashkey
+		controllerKey = ButtonAction.ACTION_DROP
 		disenableDashByKey = RebekahLocalSavedata.Config.disablerebekahdash
 		if not disenableDashByKey then
 			if not data.DASH_DOUBLE_TAP_READY then
@@ -496,39 +496,6 @@ function yandereWaifu.barrageAndSP(player)
 		player:AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
 		player:EvaluateItems()
 	end
-	
-	if data.currentMode == RebekahCurse.REBECCA_MODE.EvilHearts and InutilLib.game:GetFrameCount() >= 1 then	 --weird bug happens
-		--[[if player:GetHearts() <= 0 then
-			if player:GetMovementInput():Length() < 1 and not data.OpenedMaw then
-				local maw = Isaac.Spawn(EntityType.ENTITY_EFFECT, ENTITY_DARKMAW, 0, player.Position, player.Velocity, player) --feather attack
-				data.OpenedMaw = maw
-			elseif player:GetMovementInput():Length() >= 1 and data.OpenedMaw then
-				data.OpenedMaw:GetSprite():Play("Die",true) --kill it
-				data.OpenedMaw = nil
-			end
-		end
-		if not data.EvilType then
-			if player:GetHearts() <= 0 then
-				data.EvilType = 1
-			else
-				data.EvilType = 0
-			end
-		end
-		local currentType
-		if player:GetHearts() <= 0 then
-			currentType = 1
-		else
-			currentType = 0
-		end
-		if data.EvilType ~= currentType then
-			player:AddCacheFlags(CacheFlag.CACHE_ALL);
-			player:EvaluateItems()
-			data.EvilType = currentType
-			if data.EvilType == 1 then
-				InutilLib.AnimateGiantbook(nil, nil, "Shake", "gfx/ui/giantbook/giantbook_void_black_heart.anm2", true)
-			end
-		end]]
-	end
 
 	if data.currentMode == RebekahCurse.REBECCA_MODE.BrokenHearts then --decrement of tankAmount
 		if data.tankAmount then
@@ -600,7 +567,7 @@ function yandereWaifu.barrageAndSP(player)
 end
 
 
-function yandereWaifu.RenderUnderlay(player) 
+--[[function yandereWaifu.RenderUnderlay(player) 
 	--local player = Isaac.GetPlayer(0)
 	local psprite = player:GetSprite()
 	if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.BrideRedHearts then	
@@ -661,7 +628,7 @@ function yandereWaifu.RenderUnderlay(player)
 	else
 		InutilLib.RemoveUnderlay(player)
 	end
-end
+end]]
 --yandereWaifu:AddCallback(ModCallbacks.MC_POST_RENDER, yandereWaifu.RenderUnderlay) 
 
 
@@ -787,13 +754,6 @@ function yandereWaifu:RebekahNewRoom()
 		local data = yandereWaifu.GetEntityData(player)
 		local room = InutilLib.game:GetRoom()
 		if yandereWaifu.IsNormalRebekah(player) then
-			--[[spawn main room mirror
-			if InutilLib.game:GetLevel():GetStartingRoomIndex() == InutilLib.game:GetLevel():GetCurrentRoomDesc().SafeGridIndex and not isGreed and room:IsFirstVisit() and InutilLib.level:GetStage() == LevelStage.STAGE1_1 and (InutilLib.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE and InutilLib.level:GetStageType() ~= StageType.STAGETYPE_REPENTANCE_B) then
-				local spawnPosition = room:FindFreePickupSpawnPosition(room:GetGridPosition(19), 1);
-				local mir = Isaac.Spawn(EntityType.ENTITY_SLOT, RebekahCurse.ENTITY_REBMIRROR, 10, spawnPosition, Vector(0,0), player);
-				yandereWaifu.GetEntityData(mir).Init = false
-				mir:GetSprite():Play("Appear")
-			end]]
 			
 			--in case it is taken away, because of some softlocks
 			if not yandereWaifu.HasCollectibleGuns(player) then
@@ -951,8 +911,8 @@ function yandereWaifu:Rebekahcacheregister(player, cacheF) --The thing the check
 		if yandereWaifu.IsNormalRebekah(player) then -- Especially here!
 			--if data.UpdateHair then
 			--	print("tuck")
-			if InutilLib.room:GetFrameCount() < 1 then
-				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
+			if InutilLib.room:GetFrameCount() == 1 then
+				--yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
 			end
 			--	data.UpdateHair = false
 			--end
@@ -1444,7 +1404,6 @@ function yandereWaifu.DoRebeccaBarrage(player, mode, direction)
 	
 	if type(mode) == 'number' then
 		modes = mode
-		print("nope")
 	--else
 	--	modes = yandereWaifu.GetEntityData(player).currentMode
 	--	print("LMAO")
