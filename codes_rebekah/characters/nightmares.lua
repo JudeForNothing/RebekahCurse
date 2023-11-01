@@ -123,10 +123,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_UPDATE, function()
 		for i = 0, InutilLib.room:GetGridSize() do
 			local grid = InutilLib.room:GetGridEntity(i)
 			--not ascent stuff
-			if InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
-				if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and (grid:GetSprite():GetFilename() ~= "gfx/grid/trapdoor_corpse_big.anm2" and grid:GetSprite():GetFilename() ~= "gfx/grid/VoidTrapdoor.anm2") then
-					print(grid:GetSprite():GetFilename())
-					print(grid.Desc.Type)
+			if grid and grid.Desc.Type == GridEntityType.GRID_TRAPDOOR and InutilLib.level:GetCurrentRoomIndex() ~= -10 and Game():GetLevel():GetStage() ~= LevelStage.STAGE3_2 then
+				print(grid:GetSprite():GetFilename())
+				print(grid.Desc.Type)
+				if (grid:GetSprite():GetFilename() ~= "gfx/grid/trapdoor_corpse_big.anm2" and grid:GetSprite():GetFilename() ~= "gfx/grid/VoidTrapdoor.anm2") then
 					
 					local gridFile = grid:GetSprite():GetFilename()
 					InutilLib.room:RemoveGridEntity(i, 0, false)

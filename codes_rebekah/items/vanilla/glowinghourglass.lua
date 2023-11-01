@@ -8,7 +8,6 @@ function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck 
 			data.heartStocks = data.lastStockReserve
 			data.UpdateHair = true
 			--player:AddCacheFlags(CacheFlag.CACHE_DAMAGE);
-			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
 			player:EvaluateItems()
 			--player.Visible = false
 			if yandereWaifu.IsTaintedRebekah(player) then
@@ -18,6 +17,9 @@ function yandereWaifu:useGlowHourglass(collItem, rng, player) --glowsquids suck 
 				data.PersistentPlayerData.MaxRageCrystal = data.lastMaxRageCrystal
 				data.PersistentPlayerData.WrathFragmentCount = data.lastWrathFragmentCount
 			end
+			--InutilLib.SetTimer( 1, function()
+			--yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player, true, false );
+		--	end);
 			--[[yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player );
 			 InutilLib.SetTimer( 1, function()
 				print("fellow")

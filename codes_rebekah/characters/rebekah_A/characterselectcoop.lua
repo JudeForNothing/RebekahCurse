@@ -38,7 +38,6 @@ function yandereWaifu:ChangePlayerTypeToRebekahCoop(player, currentPlayer)
 	data.bonestackMeterFadeStartFrame = 0;
 	
 	RebeccaInit(player)
-	--yandereWaifu.ApplyCostumes( data.currentMode, player );
 end
 
 function yandereWaifu:render(player) --function that activates the co op menu after Technical character spawns

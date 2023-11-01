@@ -19,7 +19,9 @@ local REBECCA_MODE_COMMAND_KEYS = {
 	halfred = RebekahCurse.REBECCA_MODE.HalfRedHearts,
 	halfsoul = RebekahCurse.REBECCA_MODE.HalfSoulHearts,
 	
-	bred = RebekahCurse.REBECCA_MODE.BrideRedHearts
+	bred = RebekahCurse.REBECCA_MODE.BrideRedHearts,
+
+	cursed = RebekahCurse.REBECCA_MODE.CursedCurse,
 }
 
 REBEKAHMODE_EXPERIMENTAL = {

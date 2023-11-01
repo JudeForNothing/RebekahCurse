@@ -814,10 +814,7 @@ function yandereWaifu:RebekahNewRoom()
 			data.lastStockReserve = yandereWaifu.getReserveStocks(player)
 			
 			data.currentActiveBarrageMode = nil --???
-			--workaround for when you go bald in the knife dimension, because theres no way to check what dimension you are in for some reason.......
-			--yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player )
-			--print("im no bald")
-			
+
 			--heal back tf2 soldiers
 			for i, fam in pairs (Isaac.GetRoomEntities()) do
 				if fam.Variant == RebekahCurse.ENTITY_CHRISTIANNED and fam.SubType == 2 then
@@ -1047,7 +1044,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 		data.bonestackMeterFadeStartFrame = 0;
 		
 		RebeccaInit(player)
-		--yandereWaifu.ApplyCostumes( data.currentMode, player );
 
 		if not data.NoBoneSlamActive then data.NoBoneSlamActive = true end
 	end

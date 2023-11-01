@@ -90,8 +90,8 @@ function yandereWaifu:TaintedRebekahcacheregister(player, cacheF) --The thing th
 	end
 	if yandereWaifu.IsTaintedRebekah(player) then -- Especially here!
 
-		if InutilLib.room:GetFrameCount() < 1 then
-			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , false, false)
+		if InutilLib.room:GetFrameCount() == 1 then
+			--yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player, true, false)
 		end
 
 		cache.SetTaintedRebekahBaseStats(cacheF, player)
@@ -184,6 +184,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
 				data.PersistentPlayerData.MaxTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth+ 50
 				yandereWaifu.AddTaintedBossHealth(player, 50)
 			end
+			if not player:IsCoopGhost() then
+				yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player, false, false )
+			else
+				player:GetSprite():ReplaceSpritesheet(0, "gfx/characters/ghost_rebekah.png")
+				player:GetSprite():ReplaceSpritesheet(1, "gfx/characters/ghost_rebekah.png")
+				player:GetSprite():LoadGraphics()
+			end
 		end
 		isDevilDealAvailable = false
 	end
@@ -225,7 +232,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 		end
 		if not player:IsCoopGhost() and data.CoopDead then
 			data.CoopDead = false
-			--yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , true)
+			yandereWaifu.ApplyCostumes( yandereWaifu.GetEntityData(player).currentMode, player , true)
 		end
 		
 		--dash skill
