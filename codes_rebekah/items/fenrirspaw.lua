@@ -7,7 +7,7 @@ local function CloseDoors()
 			if door:IsOpen() then
 				door:Bar()
 			end
-			InutilLib.room:SetClear(false)
+			--InutilLib.room:SetClear(false)
 		end
 	end
 end

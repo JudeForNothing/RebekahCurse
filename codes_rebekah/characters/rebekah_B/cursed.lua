@@ -506,10 +506,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 data.TaintedTearDelay = data.TaintedTearDelay - 1
             end
         end
+        local isOpenMenu = false
+        if data.TAINTEDREBSKILL_MENU and data.TAINTEDREBSKILL_MENU.open then
+            isOpenMenu = true
+        end
          --pre charging code
          if player:GetFireDirection() == -1 and not player:HasCollectible(CollectibleType.COLLECTIBLE_LUDOVICO_TECHNIQUE) then --if not firing
 			if data.taintedCursedTick then
-				if data.taintedCursedTick >= 30 then
+				if data.taintedCursedTick >= 30 and not isOpenMenu then
                     --TeleportToClosestEnemy(player)
                     if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
                         local bomb = player:FireBomb(player.Position, Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(2+player.ShotSpeed), player)
@@ -536,6 +540,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
                 data.NeptunusTRebCount = nil
             end
 		else
+            if not data.taintedCursedTick then data.taintedCursedTick = 0 end
+            if isOpenMenu then 
+                data.taintedCursedTick = 0
+                return 
+            end
             --if data.IsCursedCharging then return end
 			if not data.taintedCursedTick then data.taintedCursedTick = 0 end
 			
@@ -597,6 +606,25 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
             if FiendFolio and player:HasCollectible(FiendFolio.ITEM.COLLECTIBLE.BEE_SKIN) then
                 for i = 0, 360 - 360/3, 360/3 do
                     yandereWaifu.SpawnAndSwingCursedKnife(player, 1, i+ffBeeSkinRng, false)
+                end
+            end
+            if player:HasPlayerForm(PlayerForm.PLAYERFORM_BABY) then
+                local direction = player:GetShootingInput():GetAngleDegrees()
+                local oldDir = direction
+                for conjAng = -45, 90, 135 do
+                    direction = (direction + conjAng)
+                    local flip = false
+                    if player:HasCollectible(CollectibleType.COLLECTIBLE_SOY_MILK) then
+                        direction = direction + math.random(-10,10)
+                    end
+                    if player:HasCollectible(CollectibleType.COLLECTIBLE_ALMOND_MILK) then
+                        direction = direction + math.random(-20,20)
+                    end
+                    if player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ) then
+                        conjAng = conjAng * 1.2
+                    end
+                    yandereWaifu.SpawnAndSwingCursedKnife(player, 1, direction, flip)
+
                 end
             end
             for lhorns = 0, 270, 360/4 do
@@ -1632,12 +1660,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 local additDistance = 0
                 if ent.Position:Distance(pos) <= radisu + ent.Size + additDistance then
                     ent:AddFreeze(EntityRef(player), 30)
-                    if math.random(1,3) == 3 and data.repeatSlam == 0 and not isChild then
+                    if (math.random(1,3) == 3 or (playerdata.TaintedRageTick and playerdata.TaintedRageTick > 0 and math.random(1,2) == 2)) and data.repeatSlam == 0 and not isChild then
                         if not playerdata.RageCrystal then
                             playerdata.RageCrystal = 1 
                         elseif playerdata.RageCrystal < playerdata.PersistentPlayerData.MaxRageCrystal then
                             local multiplier = 1
-                            if playerdata.TaintedRageTick and playerdata.TaintedRageTick > 0 then multiplier = 2 end
+                            --if playerdata.TaintedRageTick and playerdata.TaintedRageTick > 0 then multiplier = 2 end
                             playerdata.RageCrystal =  playerdata.RageCrystal + 1*multiplier
                         if playerdata.RageCrystal >= playerdata.PersistentPlayerData.MaxRageCrystal then playerdata.RageCrystal = playerdata.PersistentPlayerData.MaxRageCrystal end
                         end

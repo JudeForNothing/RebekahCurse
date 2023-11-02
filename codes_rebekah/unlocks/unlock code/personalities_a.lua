@@ -52,7 +52,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 		yandereWaifu.ACHIEVEMENT.REBEKAH_BONE:Unlock()
 		--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_bone_personality.png", nil, true, 60)
 	end
-	if player:GetRottenHearts() >= 6 and not yandereWaifu.ACHIEVEMENT.REBEKAH_ROTTEN:IsUnlocked() then -- the crazy
+	if player:GetRottenHearts() >= 3 and not yandereWaifu.ACHIEVEMENT.REBEKAH_ROTTEN:IsUnlocked() then -- the crazy
 		yandereWaifu.ACHIEVEMENT.REBEKAH_ROTTEN:Unlock()
 		--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_rotten_personality.png", nil, true, 60)
 	end

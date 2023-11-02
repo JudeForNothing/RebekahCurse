@@ -432,12 +432,14 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			yandereWaifu.GetEntityData(data.ArcaneCircleBeam).parent = player
 			InutilLib.SFX:Play( SoundEffect.SOUND_BLOOD_LASER , 1, 0, false, 1.2 );
 			InutilLib.SetTimer(150, function()
-				data.MainArcaneCircle:GetSprite():Play("FadeOut", true)
-				data.MainArcaneCircle = nil
-				data.ArcaneCircleDust:Remove()
-				data.ArcaneCircleBeam:GetSprite():Play("End", true)
-				data.ArcaneCircleBeam = nil
-				--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
+				if data.MainArcaneCircle then
+					data.MainArcaneCircle:GetSprite():Play("FadeOut", true)
+					data.MainArcaneCircle = nil
+					data.ArcaneCircleDust:Remove()
+					data.ArcaneCircleBeam:GetSprite():Play("End", true)
+					data.ArcaneCircleBeam = nil
+					--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
+				end
 			end)
 			InutilLib.SFX:Play( SoundEffect.SOUND_THUMBSDOWN_AMPLIFIED, 1.2, 0, false, 0.5 );
 		end
