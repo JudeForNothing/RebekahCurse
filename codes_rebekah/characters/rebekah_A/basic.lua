@@ -198,7 +198,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		end
 		if (player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0) then
 			if keyboardKey or controllerKey then
-				if (Input.IsButtonTriggered(keyboardKey,controller) or Input.IsButtonTriggered(controllerKey,controller)) then
+				if (Input.IsButtonTriggered(keyboardKey,controller) or Input.IsActionTriggered(controllerKey,controller)) then
 					dash.RebekahDoubleTapDash(player:GetMovementInput(), player)
 				end
 				--if data.DASH_DOUBLE_TAP_READY then
@@ -805,6 +805,9 @@ function yandereWaifu:RebekahNewRoom()
 
 			if data.LastGridCollisionClass then player.GridCollisionClass = data.LastGridCollisionClass end
 			if data.LastEntityCollisionClass then player.EntityCollisionClass = data.LastEntityCollisionClass end
+
+			data.LastGridCollisionClass = nil
+			data.LastEntityCollisionClass = nil
 
 			data.isReadyForSpecialAttack = false
 			data.IsParryInvul = false

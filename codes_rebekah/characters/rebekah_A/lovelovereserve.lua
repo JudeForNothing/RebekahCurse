@@ -89,8 +89,10 @@ end
 
 function yandereWaifu.addReserveFill(player, number)
 	--if yandereWaifu.GetEntityData(player).heartReserveFill > 0 then
+	if number then
 		yandereWaifu.GetEntityData(player).heartReserveFill = yandereWaifu.GetEntityData(player).heartReserveFill + number
-	--else
+	end
+		--else
 		--calculate broken down stocks into pure reserve
 	--	local newReserve = yandereWaifu.getReserveStocks(player) * yandereWaifu.GetEntityData(player).heartReserveMaxFill
 	--	yandereWaifu.GetEntityData(player).heartReserveFill = yandereWaifu.GetEntityData(player).heartReserveFill + newReserve

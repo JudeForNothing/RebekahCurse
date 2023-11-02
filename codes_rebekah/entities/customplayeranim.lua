@@ -385,7 +385,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.POOF02, 1, data.Player.Position, Vector(0,0), data.Player)
 		elseif eff.FrameCount == 5 then
 			yandereWaifu.SpawnPoofParticle( data.Player.Position, Vector( 0, 0 ), data.Player, RebekahCurse.RebekahPoofParticleType.Blue );
-			yandereWaifu.SpawnHeartParticles( 3, 5, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Blue );
+			yandereWaifu.SpawnHeartParticles( 3, 5, data.Player.Position, yandereWaifu.RandomHeartParticleVelocity(), data.Player, RebekahCurse.RebekahHeartParticleType.Blue );
 			yandereWaifu.SpawnEctoplasm( data.Player.Position, Vector ( 0, 0 ) , math.random(13,15)/10, data.Player);
 			yandereWaifu.GetEntityData(data.Player).LeaksJuices = 80;
 			

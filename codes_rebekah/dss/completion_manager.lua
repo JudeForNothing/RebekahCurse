@@ -690,18 +690,39 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_SPAWN_CLEAN_AWARD, function()
 end)]]
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, function(_, npc)
-	if npc.Variant == 0 and yandereWaifu.CanRunUnlockAchievements() then -- The Beast
+	if not npc.Variant == 0 then end
+	print("KILLED BEAST?")
+	print(yandereWaifu.CanRunUnlockAchievements())
+	print(npc.Variant)
+	if yandereWaifu.CanRunUnlockAchievements() then -- The Beast
 		local value = DifficultyToCompletionMap[game.Difficulty]
 		local check
-
+		print("KILLED BEAST")
 		for _, data in pairs(RebekahLocalSavedata.CompletionMarks) do
-			if playertype_cache[data.lookupstr] == Isaac.GetPlayer():GetPlayerType() then
+			print(data.lookupstr)
+			if playertype_cache[data.lookupstr] == Isaac.GetPlayer(0):GetPlayerType() then
 				check = data
 				break
+			elseif (yandereWaifu.IsNormalRebekah(Isaac.GetPlayer(playertype_cache[data.lookupstr]))) then
+				--for _, data2 in pairs(RebekahLocalSavedata.CompletionMarks) do
+					if playertype_cache[data.lookupstr] == RebekahCurse.TECHNICAL_REB then
+						check = data
+						break
+					end
+				--end
+			elseif (yandereWaifu.IsTaintedRebekah(Isaac.GetPlayer(playertype_cache[data.lookupstr]))) then
+				--for _, data2 in pairs(RebekahLocalSavedata.CompletionMarks) do
+					if playertype_cache[data.lookupstr] == RebekahCurse.SADREBEKAH then
+						check = data
+						break
+					end
+				--end
 			end
 		end
-
+		print(check)
 		if check then
+			local playerKey = check.lookupstr
+			local taintedCompletion = check.istainted
 			if value > check.beast then
 				CheckOnCompletionFunctions(check.lookupstr, "Beast", value, check.istainted)
 			end
@@ -709,4 +730,4 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_ENTITY_KILL, function(_, npc)
 			check.beast = math.max(check.beast, value)
 		end
 	end
-end, 951)
+end, EntityType.ENTITY_BEAST)
