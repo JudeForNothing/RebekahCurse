@@ -17,6 +17,16 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM, function()
 			if not data.PersistentPlayerData.SeaBatteryBuff then
 				InutilLib.RemoveInnateItem(player, CollectibleType.COLLECTIBLE_120_VOLT)
 			end
+			--data.PersistentPlayerData.SeaBatteryBuff = false
+		end
+	end
+end)
+
+yandereWaifu:AddCallback("MC_POST_CLEAR_ROOM", function(_, room)
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
+		local player = Isaac.GetPlayer(p)
+		local data = yandereWaifu.GetEntityData(player)
+		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_SEABATTERY) then
 			data.PersistentPlayerData.SeaBatteryBuff = false
 		end
 	end

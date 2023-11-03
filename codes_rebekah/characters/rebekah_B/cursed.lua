@@ -17,7 +17,7 @@ local function ThrowCursedSword(player, notSpecial)
     local sword
         sword = player:FireTear( player.Position, Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(4+player.ShotSpeed*10), false, false, false):ToTear()
         -- local sword = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, player.Position, Vector(0,20):Rotated(data.taintedCursedDir-90), player):ToTear()
-        sword:AddTearFlags(TearFlags.TEAR_BOOMERANG | TearFlags.TEAR_PIERCING)
+        sword:AddTearFlags(TearFlags.TEAR_BOOMERANG | TearFlags.TEAR_PIERCING | TearFlags.TEAR_SPECTRAL)
         sword.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
         yandereWaifu.GetEntityData(sword).IsCursedSword = true
         yandereWaifu.GetEntityData(sword).state = 1
@@ -1077,7 +1077,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
         scale = scale + 0.5
     end
     if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then
-        radiusMultiplier = radiusMultiplier * 2
+        radiusMultiplier = radiusMultiplier * 2.5
         --InutilLib.game:ShakeScreen(10)
         scale = scale + 1
     end
@@ -2273,7 +2273,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
                 if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
                     local dmg = 2
                     local additDistance = 0
-                    if ent.Position:Distance((tr.Position)) <= 50 + additDistance and tr.FrameCount % 5 == 0 then
+                    if player:HasCollectible(CollectibleType.COLLECTIBLE_POLYPHEMUS) then additDistance = 5 end
+                    if ent.Position:Distance((tr.Position)) <= 50 + (1 * additDistance) + ent.Size and tr.FrameCount % 5 == 0 then
                         if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
                             local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, tr.Position, Vector(0,0), player):ToBomb()
                             bomb:SetExplosionCountdown(0)

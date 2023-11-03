@@ -706,6 +706,33 @@ function yandereWaifu.taintedheartReserveRenderLogic(player, id)
 			f:Load("font/pftempestasevencondensed.fnt") -- load a font into the font object
 			f:DrawStringScaled (text,position.X+35-data.eyeoffset,position.Y+5-data.eyeoffset, data.eyerenderx, data.eyerendery, data.eyecolor,0,true)
 		end
+		if Input.IsActionPressed(ButtonAction.ACTION_MAP, player.ControllerIndex) then
+			local text = math.floor(data.PersistentPlayerData.BasicTaintedHealth) .. " / " .. math.floor(data.PersistentPlayerData.MaxTaintedHealth)
+			local rng = math.random(1,10)
+			if rng == 10 then
+				data.eyecolor = KColor(0,0,0,1,0,0,0)
+			else
+				if math.random(1,30) == 30 then
+					data.eyecolor = KColor(1,1,1,1,0,0,0)
+				else
+					data.eyecolor = KColor(1,0,0,1,0,0,0)
+				end
+			end
+			if player.FrameCount % 15 == 0 then
+				data.eyerenderx = math.random(10,12)/10
+				data.eyerendery = math.random(10,12)/10
+				data.eyeoffset = math.random(1,3)
+			end
+			if not data.eyerenderx then
+				data.eyerenderx = math.random(10,12)/10
+				data.eyerendery = math.random(10,12)/10
+				data.eyeoffset = math.random(1,3)
+			end
+			--Isaac.RenderText(tostring(text),Isaac.WorldToScreen(npc.Position).X-7,  Isaac.WorldToScreen(npc.Position).Y-15, 1 ,1 ,1 ,1 )
+			local f = Font() -- init font object
+			f:Load("font/pftempestasevencondensed.fnt") -- load a font into the font object
+			f:DrawStringScaled (text,position.X+35-data.eyeoffset,position.Y+5-data.eyeoffset, data.eyerenderx, data.eyerendery, data.eyecolor,0,true)
+		end
 	end
 end
 
@@ -758,7 +785,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, function(_, name)
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsTaintedRebekah(player) then
             if name ~= "UI_DrawRebekahHUD_DummyShader" then return end
-            yandereWaifu.taintedheartReserveRenderLogic(player, p - excludeBetaFiends)
+            --yandereWaifu.taintedheartReserveRenderLogic(player, p - excludeBetaFiends)
         end
     end
 end)

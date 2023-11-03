@@ -137,7 +137,7 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 		endFrameCount = endFrameCount * (player:GetCollectibleNum(CollectibleType.COLLECTIBLE_CAR_BATTERY) * 2)
 	end
 	
-	--print("weaponss"..modulusnum)
+	if modulusnum < 1 then modulusnum = 1 end
 	function yandereWaifu.IsValidRedBarrage()
 		if data.BarrageIntro and data.redcountdownFrames >= 1 and data.redcountdownFrames < endFrameCount and data.redcountdownFrames % modulusnum == (0) then
 			return true
