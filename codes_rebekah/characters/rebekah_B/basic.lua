@@ -168,7 +168,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_ROOM,
 			if not yandereWaifu.IsTaintedRebekah(player) then return end
 			local data = yandereWaifu.GetEntityData(player)
 			--data.DASH_TAINTED_DOUBLE_TAP:Reset();
-			player:AddSoulHearts(2)
+			if player:GetSoulHearts() < 2 then
+				player:AddSoulHearts(2)
+			end
 
 			data.lastMode = data.currentMode
 			data.lastBossHealth = data.PersistentPlayerData.BasicTaintedHealth
@@ -494,7 +496,7 @@ function yandereWaifu.HandleTaintedRebHeart(player)
 	if player:GetGoldenHearts() > 0 then
 		player:AddGoldenHearts(-24)
 	end
-	if player:GetSoulHearts() > 2 then
+	if player:GetSoulHearts() ~= 2 then
 		player:AddSoulHearts(-player:GetSoulHearts()+2)
 	--[[else
 		player:AddSoulHearts(2)]]
@@ -785,7 +787,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_GET_SHADER_PARAMS, function(_, name)
 		local player = Isaac.GetPlayer(p)
 		if yandereWaifu.IsTaintedRebekah(player) then
             if name ~= "UI_DrawRebekahHUD_DummyShader" then return end
-            --yandereWaifu.taintedheartReserveRenderLogic(player, p - excludeBetaFiends)
+            yandereWaifu.taintedheartReserveRenderLogic(player, p - excludeBetaFiends)
         end
     end
 end)

@@ -76,7 +76,7 @@ yandereWaifuIngameContentCode = {
 			basic = require('codes_rebekah.characters.rebekah_B.basic'),
 
 			glorykill = require('codes_rebekah.characters.rebekah_B.glorykill'),
-			--cursed = require('codes_rebekah.characters.rebekah_B.cursed'),
+			cursed = require('codes_rebekah.characters.rebekah_B.cursed'),
 		},
 		deborahA = require('codes_rebekah.characters.deborah_A.basic'),
 		isaacC = require('codes_rebekah.characters.isaac_C.basic'),
