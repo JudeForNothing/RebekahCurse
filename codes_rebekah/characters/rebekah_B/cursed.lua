@@ -17,7 +17,7 @@ local function ThrowCursedSword(player, notSpecial)
     local sword
         sword = player:FireTear( player.Position, Vector(0,15):Rotated(data.taintedCursedDir-90):Resized(4+player.ShotSpeed*10), false, false, false):ToTear()
         -- local sword = Isaac.Spawn(EntityType.ENTITY_TEAR, 0, 0, player.Position, Vector(0,20):Rotated(data.taintedCursedDir-90), player):ToTear()
-        sword:AddTearFlags(TearFlags.TEAR_BOOMERANG --[[| TearFlags.TEAR_PIERCING]])
+        sword:AddTearFlags(TearFlags.TEAR_BOOMERANG | TearFlags.TEAR_PIERCING)
         sword.EntityCollisionClass = EntityCollisionClass.ENTCOLL_ENEMIES
         yandereWaifu.GetEntityData(sword).IsCursedSword = true
         yandereWaifu.GetEntityData(sword).state = 1
@@ -1279,6 +1279,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                 table.insert(ents, ent)
             end
         end
+        --knockback code
+        for i, ent in pairs(Isaac.GetRoomEntities()) do
+            if ent.Position:Distance(pos) <= 95 then
+                if ent:IsVulnerableEnemy() then
+                    ent.Velocity = (ent.Position - player.Position):Resized(3)
+                elseif ent.Type == EntityType.ENTITY_BOMBDROP then
+                    ent.Velocity = (ent.Position - player.Position):Resized(6)
+                end
+            end
+        end
+        --everything else
         for _, ent in pairs(ents) do
             local dmg = 1
             local additDistance = 0
@@ -1502,7 +1513,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
                         InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CURSED_POP, 1, 0, false, math.random(8,12)/10 );
                     end
                 end
-                if player:HasWeaponType(WeaponType.WEAPON_BOMBS) and not yandereWaifu.GetEntityData(ent).IsGlorykill and data.state <= 3 then
+                if player:HasWeaponType(WeaponType.WEAPON_BOMBS) and not ent:IsDead() and not yandereWaifu.GetEntityData(ent).IsGlorykill and data.state <= 3 then
                     if data.state == 3 then
                         ent.Velocity = (ent.Position - player.Position):Resized(40)
                     else
@@ -2262,7 +2273,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_TEAR_UPDATE, function(_, tr)
                 if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
                     local dmg = 2
                     local additDistance = 0
-                    if ent.Position:Distance((tr.Position)) <= 50 + additDistance then
+                    if ent.Position:Distance((tr.Position)) <= 50 + additDistance and tr.FrameCount % 5 == 0 then
                         if player:HasWeaponType(WeaponType.WEAPON_BOMBS) then
                             local bomb = Isaac.Spawn(EntityType.ENTITY_BOMBDROP, 0, 0, tr.Position, Vector(0,0), player):ToBomb()
                             bomb:SetExplosionCountdown(0)
