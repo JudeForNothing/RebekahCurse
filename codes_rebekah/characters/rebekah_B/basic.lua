@@ -477,10 +477,10 @@ function yandereWaifu.HandleTaintedRebHeart(player)
 
 	local data = yandereWaifu.GetEntityData(player)
 	if not yandereWaifu.IsTaintedRebekah(player) then return end
-	if player:GetHearts() > 1 then
-		local neededHearts = 0-player:GetHearts()+1
-		yandereWaifu.AddTaintedBossHealth(player, data.PersistentPlayerData.BasicTaintedHealth + math.abs(neededHearts*25))
-		player:AddHearts(neededHearts)
+	if player:GetHearts() > 0 then
+		local neededHearts = player:GetHearts()
+		yandereWaifu.AddTaintedBossHealth(player, math.abs(neededHearts*25))
+		player:AddHearts((neededHearts*-1))
 	end
 	if player:GetMaxHearts() > 6 then
 		local neededHearts = player:GetMaxHearts()-6

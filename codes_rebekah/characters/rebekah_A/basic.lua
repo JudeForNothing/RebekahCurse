@@ -198,7 +198,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
 		end
 		if (player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0) then
 			if keyboardKey or controllerKey then
-				if (Input.IsButtonTriggered(keyboardKey,controller) or Input.IsActionTriggered(controllerKey,controller)) then
+				if (keyboardKey ~= Keyboard.KEY_LEFT_CONTROL and (Input.IsButtonTriggered(keyboardKey,controller)) or (keyboardKey == Keyboard.KEY_LEFT_CONTROL  and (Input.IsActionTriggered(controllerKey,controller)))) then
 					dash.RebekahDoubleTapDash(player:GetMovementInput(), player)
 				end
 				--if data.DASH_DOUBLE_TAP_READY then
