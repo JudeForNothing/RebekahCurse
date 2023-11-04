@@ -145,7 +145,6 @@ yandereWaifu.ACHIEVEMENT = {
 		Name = "rebekah's key",
 		Item = RebekahCurse.Trinkets.TRINKET_REBEKAHSKEY,
 		Tooltip = {"beat", "mega satan", "as any rebekah"},
-		CompletionMark = {RebekahCurse.TECHNICAL_REB, "MegaSatan"},
 		Tags = {"Rebekah", "Character"}
 	},
 	{

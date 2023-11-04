@@ -24,6 +24,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_, player)
 	local data = yandereWaifu.GetEntityData(player)
 
 	if not yandereWaifu.AreAchievementsEnabled() then return end
+
+	--rebekahroom unlock because idk where to put it
+	if yandereWaifu.ACHIEVEMENT.REBEKAHS_ROOM:IsUnlocked() and not yandereWaifu.ACHIEVEMENT.REBEKAHS_KEY:IsUnlocked() then
+		yandereWaifu.ACHIEVEMENT.REBEKAHS_KEY:Unlock()
+	end
 	if yandereWaifu.GetPlayerBlackHearts(player) >= 12 and not yandereWaifu.ACHIEVEMENT.REBEKAH_EVIL:IsUnlocked() then -- the mischevious
 		yandereWaifu.ACHIEVEMENT.REBEKAH_EVIL:Unlock()
 		--InutilLib.AnimateIsaacAchievement("gfx/ui/achievement/achievement_evil_personality.png", nil, true, 60)

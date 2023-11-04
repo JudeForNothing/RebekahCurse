@@ -11,7 +11,7 @@ function yandereWaifu.WillSpawnLoveRoom()
 	local rng = RNG()
 	rng:SetSeed(seed, 35)
 	local randomChance = rng:RandomInt(100)
-	if --[[seed % 100 <=]] math.abs(randomChance) < RebekahLocalSavedata.loveRoomReplacePercent then
+	if --[[seed % 100 <=]] math.abs(randomChance) < RebekahLocalSavedata.loveRoomReplacePercent and yandereWaifu.ACHIEVEMENT.REBEKAHS_ROOM:IsUnlocked() then
 		return true
 	else
 		return false
@@ -85,6 +85,7 @@ function yandereWaifu:rebekahsroomDisplayonRender(shaderName)
 	if yandereWaifu:shouldDeHook() then return end
 	
 	local isShader = shaderName == "UI_DrawRebekahHUD_DummyShader" and true or false
+	if not yandereWaifu.ACHIEVEMENT.REBEKAHS_ROOM:IsUnlocked() then return end
 	
 	if not (Game():IsPaused() and Isaac.GetPlayer(0).ControlsEnabled) and not isShader then return end -- no render when unpaused 
 	if (Game():IsPaused() and Isaac.GetPlayer(0).ControlsEnabled) and isShader then return end -- no shader when paused
@@ -94,7 +95,7 @@ function yandereWaifu:rebekahsroomDisplayonRender(shaderName)
 	--yandereWaifu:updateCheck()
 
 	--account for screenshake offset
-	coords = maincoords + (Options.HUDOffset * Vector(20, 12))
+	local coords = maincoords + (Options.HUDOffset * Vector(20, 12))
 	local textCoords = coords + Game().ScreenShakeOffset
 	local valueOutput = string.format("%.1s%%", "?")
 	if RebekahLocalSavedata.loveRoomReplacePercent then

@@ -64,8 +64,7 @@ function RebeccaInit(player)
 		mode = RebekahCurse.REBECCA_MODE.ImmortalHearts
 	end
 	yandereWaifu.ChangeMode( player, mode, true, false, true);
-	yandereWaifu.AddRandomHeart(player)
-	
+	yandereWaifu.AddRandomHeart(player)	
 
 	data.ATTACK_DOUBLE_TAP:Reset();
 	
@@ -1053,6 +1052,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 end)
 
 local function Init(force)
+	print("furina")
+	print(force)
 	if force == true then
 		for i=0, InutilLib.game:GetNumPlayers()-1 do
 			local player = Isaac.GetPlayer(i)
@@ -1070,7 +1071,7 @@ local function Init(force)
 			
 			--set for player 1
 			if not yandereWaifu.HasCollectibleGuns(player) then
-				yandereWaifu:SetRebekahPocketActiveItem( player, mode )
+				yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
 				--player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_LOVECANNON)
 				local poof = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_PERSONALITYPOOF, 0, player.Position, Vector.Zero, player)
 			end
@@ -1092,10 +1093,6 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 			end
 		-- this was commented out as it seems to be a bug that allows players to gain 20/20 when in different modes when continuing a run
 		--player:GetEffects():AddCollectibleEffect(CollectibleType.COLLECTIBLE_20_20, false)
-			-- if it's a new run
-			if not hasstarted then
-				Init(true);
-			end
 
 		--print("ffff", yandereWaifu.GetEntityData(player).currentMode)
 		if not player:IsCoopGhost() then
@@ -1109,6 +1106,14 @@ function yandereWaifu:RebeccaGameInit(hasstarted) --Init
 		player:EvaluateItems()
 		--fix again later
 		if not yandereWaifu.GetEntityData(player).NoBoneSlamActive then yandereWaifu.GetEntityData(player).NoBoneSlamActive = true end
+		end
+		-- if it's a new run
+		if not hasstarted then
+			Init(true);
+		end
+		if not hasstarted then
+			--fill it up for better startup usage
+			yandereWaifu.addReserveFill(player, yandereWaifu.GetEntityData(player).heartReserveMaxFill)
 		end
     end
 end

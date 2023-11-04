@@ -529,10 +529,11 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				--InutilLib.UpdateLaserSize(beam, 0.5)
 				InutilLib.AddHomingIfBabyBender(player, beam)
 			elseif fam.SubType == 5 then
-				local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
+				local tear = Isaac.Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, 0, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player):ToTear()
+				
 				tear.CollisionDamage = 1.5
 				tear.Scale = 0.5
-				tear:AddTearFlags(TearFlags.FLAG_PIERCING)
+				tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 				InutilLib.AddHomingIfBabyBender(player, tear)
 			elseif fam.SubType == 6 then
 				data.targetsafe = data.target
@@ -550,7 +551,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ne
 				tear.CollisionDamage = 1
 				tear:ChangeVariant(0)
 				yandereWaifu.GetEntityData(tear).IsPseudoLudo = true
-				--tear:AddTearFlags(TearFlags.FLAG_PIERCING)
+				--tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 				InutilLib.AddHomingIfBabyBender(player, tear)
 			elseif fam.SubType == 20 then
 				local kn = yandereWaifu.ThrowPseudoKnife(fam,  Vector.FromAngle((data.target.Position - fam.Position):GetAngleDegrees()):Resized(16), 4)
@@ -958,10 +959,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						slashAngle = 0
 					end
 					if fam.SubType == 0 then
-						local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear = Isaac.Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, 0, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player):ToTear()
 						tear.CollisionDamage = 1.5
 						InutilLib.AddHomingIfBabyBender(player, tear)
-						tear:AddTearFlags(TearFlags.FLAG_PIERCING)
+						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 					elseif fam.SubType == 1 then
 						
 						--if not data.KnifeHelper then data.KnifeHelper = InutilLib:SpawnKnifeHelper(fam, player, true) else
@@ -1009,10 +1010,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 						--beam.Radius = 15
 						--beam:Update()
 					elseif fam.SubType == 5 then
-						local tear = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player, 0, 0):ToTear()
+						local tear = Isaac.Spawn( EntityType.ENTITY_TEAR, RebekahCurse.ENTITY_WIND_SLASH, 0, fam.Position, Vector.FromAngle( slashAngle ):Resized(12), fam.Player):ToTear()
 						tear.CollisionDamage = 2
 						tear.Scale = 2.5
-						tear:AddTearFlags(TearFlags.FLAG_PIERCING)
+						tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 						InutilLib.AddHomingIfBabyBender(player, tear)
 						local tear2 = InutilLib.game:Spawn( EntityType.ENTITY_TEAR, TearVariant.SWORD_BEAM, fam.Position, (data.target.Position - fam.Position):Resized(12), fam.Player, 0, 0):ToTear()
 						tear2.CollisionDamage = 5
@@ -1029,7 +1030,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --sq
 							tear.CollisionDamage = 1.5
 							InutilLib.AddHomingIfBabyBender(player, tear)
 							tear.TearFlags = tear.TearFlags | TearFlags.TEAR_PIERCING
-							--tear:AddTearFlags(TearFlags.FLAG_PIERCING)
+							--tear:AddTearFlags(TearFlags.TEAR_PIERCING)
 						end
 					end
 				end
@@ -3242,3 +3243,43 @@ function yandereWaifu:LevelUpNeds()
 	end
 end
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, yandereWaifu.LevelUpNeds)
+
+
+yandereWaifu:AddCallback("MC_POST_CLEAR_ROOM", function(_, room)
+	--StageAPI.AddCallback("RebekahCurse", "POST_ROOM_CLEAR", 2, function()
+	for p = 0, InutilLib.game:GetNumPlayers() - 1 do
+			local player = Isaac.GetPlayer(p)
+			local data = yandereWaifu.GetEntityData(player)
+			if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.GoldHearts then
+				if data.PersistentPlayerData.WillGoldHealth then 
+					data.PersistentPlayerData.WillGoldHealth = false 
+				else
+					data.PersistentPlayerData.WillGoldHealth = true
+				end
+				if data.PersistentPlayerData.WillGoldHealth then
+					for n, ned in pairs( Isaac.FindByType(EntityType.ENTITY_FAMILIAR, -1, -1, false, false) ) do
+						if GetPtrHash(ned:ToFamiliar().Player:ToPlayer()) == GetPtrHash(player) then
+							if ned.Variant == RebekahCurse.ENTITY_NED_NORMAL then
+								local health = yandereWaifu.GetEntityData(ned).Health
+								if health < 3 then
+									yandereWaifu.GetEntityData(ned).Health = health + 1
+									local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ned.Position, Vector.Zero, player) 
+									crack.CollisionDamage = 0
+									SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 1.1, 0, false, 0.5)
+								end
+							end
+							if ned.Variant == RebekahCurse.ENTITY_SQUIRENED then
+								local health = yandereWaifu.GetEntityData(ned).Health
+								if health < 5 then
+									yandereWaifu.GetEntityData(ned).Health = health + 1
+									local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ned.Position, Vector.Zero, player) 
+									crack.CollisionDamage = 0
+									SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIECHIME , 0.9, 0, false, 0.5)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end)
