@@ -410,8 +410,12 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			data.PersistentPlayerData.BasicTaintedHealth = data.PersistentPlayerData.MaxTaintedHealth
 		end
 
+		local capCrystal = 5
+		if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+			capCrystal = 9
+		end
 		--if crystal fragments has reached more than 3
-		if data.PersistentPlayerData.WrathFragmentCount and data.PersistentPlayerData.WrathFragmentCount >= 3 then
+		if data.PersistentPlayerData.WrathFragmentCount and data.PersistentPlayerData.WrathFragmentCount >= 3 and data.PersistentPlayerData.MaxRageCrystal < capCrystal then
 			data.PersistentPlayerData.MaxRageCrystal = data.PersistentPlayerData.MaxRageCrystal + math.floor(data.PersistentPlayerData.WrathFragmentCount/3)
 			data.PersistentPlayerData.WrathFragmentCount = data.PersistentPlayerData.WrathFragmentCount % 3
 
@@ -522,12 +526,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_PRE_PICKUP_COLLISION, function(_, picku
 				return false
 			elseif pickup.Variant == RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT and not pickup.Touched and yandereWaifu.IsTaintedRebekah(player) then
 				if not entityData.PersistentPlayerData.WrathFragmentCount then entityData.PersistentPlayerData.WrathFragmentCount = 0 end
-				entityData.PersistentPlayerData.WrathFragmentCount = entityData.PersistentPlayerData.WrathFragmentCount + 1
-				InutilLib.PickupPickup(pickup)
-				pickup.Touched = true
-				entityData.WrathFragmentRenderFrame = 1
-				InutilLib.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.7, 0, false, 1);
-				return true
+				local capCrystal = 5
+				if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+					capCrystal = 9
+				end
+				if entityData.PersistentPlayerData.MaxRageCrystal < capCrystal then
+					entityData.PersistentPlayerData.WrathFragmentCount = entityData.PersistentPlayerData.WrathFragmentCount + 1
+					InutilLib.PickupPickup(pickup)
+					pickup.Touched = true
+					entityData.WrathFragmentRenderFrame = 1
+					InutilLib.SFX:Play(SoundEffect.SOUND_GOLD_HEART_DROP, 0.7, 0, false, 1);
+					return true
+				else
+					return false
+				end
 			end
 		end
 	end
@@ -939,6 +951,18 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_RENDER, function(_, player)
 										data.ArcaneCircleBeam = nil
 										--InutilLib.game:MakeShockwave(player.Position, 0.95, 0.025, 10)
 									end)
+									
+									if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+										for i, ent in pairs (Isaac.GetRoomEntities()) do
+											InutilLib.SetTimer( (i) * 3, function()
+												if (ent:IsEnemy() and ent:IsVulnerableEnemy()) or ent.Type == EntityType.ENTITY_FIREPLACE and not ent:IsDead() then
+													local crack = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACK_THE_SKY, 1, ent.Position+ Vector(35,0):Rotated(i), Vector(0,0), player) 
+													ent:TakeDamage(10, 0, EntityRef(player), 1)
+													crack.Color = Color(1,0,0,1,0,0,0)
+												end
+											end)
+										end
+									end
 								end
 								if success and not data.IsGlorykillMode then
 									data.TAINTEDREBSKILL_MENU:ChargeSkill(value)

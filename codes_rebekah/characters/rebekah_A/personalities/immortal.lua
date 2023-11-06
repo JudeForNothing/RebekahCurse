@@ -30,7 +30,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		end
 	end
 	if eff.FrameCount >= 1400 then
-		if data.ImDieCountdown%2 == 0 then
+		if eff.FrameCount%2 == 0 then
 			sprite.Color = Color(1,0,0,1)
 			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 0.4 )
 		else

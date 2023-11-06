@@ -68,33 +68,43 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
 		local playerType = player:GetPlayerType()
 		local room = InutilLib.game:GetRoom()
 		local data = yandereWaifu.GetEntityData(player)
-		if yandereWaifu.IsTaintedRebekah(player) and ent:IsBoss() and count <= 1 then
-			--ent:BloodExplode()
-			if not ent:IsInvincible() then
-				for i = 1, math.ceil(ent.MaxHitPoints/15)  do
-                    local crystalCount = #Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, -1, false, false)
-                    if crystalCount < 15 then
-                        local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, ent.Position, Vector.FromAngle((Vector(0,10)):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
-                        yandereWaifu.GetEntityData(heart).Parent = player
-                        yandereWaifu.GetEntityData(heart).maxHealth = 15
-                    end
-					--print(math.ceil(maxHealth/3))
-				end
-			end
-            local count = 1
-            --[[if data.HitCount >= 30 then
-                crystalCount = 2
-            end]]
-            for i = 1, count + math.random(0,1) do
-                local crystalCount = Isaac.FindByType(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, -1, false, false)
-                local newCrystalCount = {}
-                for i, v in pairs(crystalCount) do
-                    if v.FrameCount < 30 then
-                        table.insert(newCrystalCount, v)
+		if yandereWaifu.IsTaintedRebekah(player) then
+            if ent:IsBoss() and count <= 1 then
+                --ent:BloodExplode()
+                if not ent:IsInvincible() then
+                    for i = 1, math.ceil(ent.MaxHitPoints/15)  do
+                        local crystalCount = #Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, -1, false, false)
+                        if crystalCount < 15 then
+                            local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, ent.Position, Vector.FromAngle((Vector(0,10)):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
+                            yandereWaifu.GetEntityData(heart).Parent = player
+                            yandereWaifu.GetEntityData(heart).maxHealth = 15
+                        end
+                        --print(math.ceil(maxHealth/3))
                     end
                 end
-                if #newCrystalCount < 2 then
-                    local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
+                local count = 1
+                --[[if data.HitCount >= 30 then
+                    crystalCount = 2
+                end]]
+                for i = 1, count + math.random(0,1) do
+                    local crystalCount = Isaac.FindByType(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, -1, false, false)
+                    local newCrystalCount = {}
+                    for i, v in pairs(crystalCount) do
+                        if v.FrameCount < 30 then
+                            table.insert(newCrystalCount, v)
+                        end
+                    end
+                    if #newCrystalCount < 2 then
+                        local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
+                    end
+                end
+            elseif not ent:IsBoss() and player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                local crystalCount = #Isaac.FindByType(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, -1, false, false)
+                if crystalCount < 15 then
+                    local heart = Isaac.Spawn(EntityType.ENTITY_EFFECT, RebekahCurse.ENTITY_LOVELOVEPARTICLE, 1, ent.Position, Vector.FromAngle((Vector(0,10)):GetAngleDegrees() + math.random(-90,90) + 180):Resized(30), ent)
+                    yandereWaifu.GetEntityData(heart).Parent = player
+                    yandereWaifu.GetEntityData(heart).maxHealth = 1
+                    --print(math.ceil(maxHealth/3))
                 end
             end
 		end

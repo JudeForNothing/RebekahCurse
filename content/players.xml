@@ -52,7 +52,7 @@
           nameimage="name_rebekah.png"
           portrait="playerportrait_rebekah.png"  skinColor="-1" />
 		  
-       <player name="Cursed Rebekah"  bSkinParent="Technical Rebekah" birthright="Undying Hope" skin="character_rebekah_cursed.png" hp="0" keys="3"
+       <player name="Cursed Rebekah"  bSkinParent="Technical Rebekah" birthright="All their flesh is yours" skin="character_rebekah_cursed.png" hp="0" keys="3"
             nameimage="name_rebekah.png"
           portrait="playerportrait_cursed_rebekah.png"  skinColor="-1" hidden="true" costume="7" canShoot="false"/>
 

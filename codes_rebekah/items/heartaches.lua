@@ -6,7 +6,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function(_) --The thing
 		local player = Isaac.GetPlayer(p)
 		local data = yandereWaifu.GetEntityData(player)
 		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTACHES) then
-			local items = InutilLib.CollectPlayerItems(player)
+			--local items = InutilLib.CollectPlayerItems(player)
 			--[[for i, v in pairs (items) do
 				Isaac.GetItemConfig():GetCollectible(v)
 			end]]
@@ -32,9 +32,15 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NEW_LEVEL, function(_) --The thing
 			if data.PersistentPlayerData.GoodiesContents then
 				for i = 0, 100 do
 					local roomInfo = data.PersistentPlayerData.GoodiesContents[i]
-					if roomInfo --[[and math.random(1,3) == 3]] then
+					if roomInfo then
 						for _, e in ipairs(data.PersistentPlayerData.GoodiesContents[i]) do
-							Isaac.Spawn(e.type, e.var, e.sub, InutilLib.room:FindFreePickupSpawnPosition(player.Position, 10 ), Vector.Zero, nil)
+							if math.random(1,3) == 3 then
+								local roomClampSize = math.max( player.Size, 20 );
+								local pos = InutilLib.room:FindFreePickupSpawnPosition(player.Position + Vector(0,40), 10 )
+								local pickup = Isaac.Spawn(e.type, e.var, e.sub, pos, Vector.Zero, nil):ToPickup()
+								pickup.Wait = 30
+								yandereWaifu.SpawnDashPoofParticle( pickup.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType[math.random(0,5)] );
+							end
 						end
 						data.PersistentPlayerData.GoodiesContents[i] = nil
 					end

@@ -1052,8 +1052,6 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 end)
 
 local function Init(force)
-	print("furina")
-	print(force)
 	if force == true then
 		for i=0, InutilLib.game:GetNumPlayers()-1 do
 			local player = Isaac.GetPlayer(i)

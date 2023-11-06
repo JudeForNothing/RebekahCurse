@@ -647,7 +647,7 @@ function yandereWaifu:onFamiliarBoneJockeyInit(fam)
 		data.Butt = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, RebekahCurse.ENTITY_BONEJOCKEY, 1, fam.Position, Vector(0,0), player) 
 		yandereWaifu.GetEntityData(data.Butt).Head = fam
 		
-		data.ATTACK_DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
+		--data.ATTACK_DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
 		
 		
 		yandereWaifu.GetEntityData(player).hasLeech = fam --set this so it wont duplicate
@@ -762,15 +762,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			yandereWaifu.GetEntityData(player).IsLeftover = false
 			yandereWaifu.GetEntityData(player).NoBoneSlamActive = true
 			data.DeathFrame = 1800 
-			
-			player.GridCollisionClass = yandereWaifu.GetEntityData(player).LastGridCollisionClass
-			yandereWaifu.GetEntityData(player).LastGridCollisionClass = nil
-			
+
 			fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/none.png")
 			fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/none.png")
 			fam:GetSprite():ReplaceSpritesheet(4, "gfx/effects/bone/corpseeater/none.png")
 			fam:GetSprite():LoadGraphics()
-			
+
+			if yandereWaifu.GetEntityData(player).LastGridCollisionClass then
+				player.GridCollisionClass = yandereWaifu.GetEntityData(player).LastGridCollisionClass
+				yandereWaifu.GetEntityData(player).LastGridCollisionClass = nil
+			end
+
 			--yandereWaifu:addReserveStocks(player, -1)
 			--yandereWaifu:addReserveFill(player, yandereWaifu.GetEntityData(player).heartReserveMaxFill-1)
 			
@@ -882,13 +884,10 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 		data.Butt.Velocity = fam.Velocity
 		
 		if not data.IsPossessed then
-			if data.IsPossessed == nil then
-				fam:GetSprite():ReplaceSpritesheet(2, "gfx/effects/bone/corpseeater/none.png")
-				fam:GetSprite():ReplaceSpritesheet(3, "gfx/effects/bone/corpseeater/none.png")
-				fam:GetSprite():ReplaceSpritesheet(4, "gfx/effects/bone/corpseeater/none.png")
-				fam:GetSprite():LoadGraphics()
-				data.IsPossessed = false
-			end
+			--if data.IsPossessed == nil then
+				
+			--	data.IsPossessed = false
+			--end
 			--target code
 			local target = InutilLib.GetClosestGenericEnemy(fam, 300, _, _, _, _, _, _, true)--, true, 3, 0, false, false)
 			
@@ -1023,21 +1022,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 			if leechSize < 1 then
 				extraSpeed = .2
 			end
-			if not data.Dashing then
-				fam.Velocity = (fam.Velocity * 0.9) + movementDirection:Resized( player.MoveSpeed + .5 + extraSpeed)
-			end
-			player.Velocity = fam.Velocity
-			player.Position = fam.Position
-			
-			if movementDirection then
-				data.ATTACK_DASH_DOUBLE_TAP:Update( movementDirection , player );
-			end
-			
-			--doubletap code
-			if not data.ATTACK_DASH_DOUBLE_TAP_READY then
-				data.ATTACK_DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
-					-- old random velocity code
-					-- RandomHeartParticleVelocity()
+
+			local function leechDash(vector)
 				if not data.specialCooldown then 
 					data.specialCooldown = 0 
 					data.specialMaxCooldown = 20 
@@ -1045,26 +1031,77 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --bo
 				if not data.IsDashActive and data.specialCooldown <= 0 then
 				--	if yandereWaifu.GetEntityData(player).currentMode == RebekahCurse.REBECCA_MODE.RedHearts then --IF RED HEART MODE
 								
-						fam.Velocity = fam.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_SPEED );
+					fam.Velocity = fam.Velocity + vector:Resized( RebekahCurse.REBEKAH_BALANCE.BONE_HEARTS_BONE_JOCKEY_DASH_SPEED );
 									
-						yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Red );
+					yandereWaifu.SpawnDashPoofParticle( player.Position, Vector(0,0), player, RebekahCurse.RebekahPoofParticleType.Red );
 
-				--		playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
-				--		playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
-						InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_ROAR_0, 1, 0, false, 1 );
-						data.IsDashActive = true
+				--	playerdata.specialCooldown = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_COOLDOWN - trinketBonus;
+				--	playerdata.invincibleTime = RebekahCurse.REBEKAH_BALANCE.RED_HEARTS_DASH_INVINCIBILITY_FRAMES;
+					InutilLib.SFX:Play( SoundEffect.SOUND_MONSTER_ROAR_0, 1, 0, false, 1 );
+					data.IsDashActive = true
 						
-						data.Dashing = true --this sets you off to a direction, chomping fast while you cant control yourself
-						data.DashVector = vector
-						data.StopDashFrame = fam.FrameCount + 10
+					data.Dashing = true --this sets you off to a direction, chomping fast while you cant control yourself
+					data.DashVector = vector
+					data.StopDashFrame = fam.FrameCount + 10
 
 						
-						data.specialCooldown = data.specialMaxCooldown
+					data.specialCooldown = data.specialMaxCooldown
 				--	end
-					end
-				end)
-				data.ATTACK_DASH_DOUBLE_TAP_READY = true
+				end
 			end
+			local keyboardKey=nil
+			local controllerKey=0
+			local disenableDashByKey = false
+			local controller = player.ControllerIndex;
+			--[[if ModConfigMenu then
+				keyboardKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Keyboard Binding"]
+				controllerKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Controller Binding"]
+				disenableDashByKey = ModConfigMenu.Config["Cursed Rebekah"]["Rebekah Dash Alternative Key Enable"]
+			end]]
+
+			if not data.Dashing then
+				fam.Velocity = (fam.Velocity * 0.9) + movementDirection:Resized( player.MoveSpeed + .5 + extraSpeed)
+			end
+			player.Velocity = fam.Velocity
+			player.Position = fam.Position
+			
+			--doubletap code
+			
+			keyboardKey = RebekahLocalSavedata.Config.rebekahdashkey
+			controllerKey = ButtonAction.ACTION_DROP
+			disenableDashByKey = RebekahLocalSavedata.Config.disablerebekahdash
+			if not disenableDashByKey then
+				if not data.ATTACK_DASH_DOUBLE_TAP_READY then
+					if not data.ATTACK_DASH_DOUBLE_TAP then
+						data.ATTACK_DASH_DOUBLE_TAP = InutilLib.DoubleTap:New();
+					end
+					data.ATTACK_DASH_DOUBLE_TAP:AttachCallback( function(vector, playerTapping)
+						leechDash(vector, playerTapping)
+					end)
+					data.ATTACK_DASH_DOUBLE_TAP_READY = true
+				end
+			else
+				if data.ATTACK_DASH_DOUBLE_TAP_READY then
+					data.ATTACK_DASH_DOUBLE_TAP_READY = nil
+					data.ATTACK_DASH_DOUBLE_TAP = nil
+				end
+			end
+			if (player:GetMovementInput().X ~= 0 or player:GetMovementInput().Y ~= 0) then
+				if keyboardKey or controllerKey then
+					if (keyboardKey ~= Keyboard.KEY_LEFT_CONTROL and (Input.IsButtonTriggered(keyboardKey,controller)) or (keyboardKey == Keyboard.KEY_LEFT_CONTROL  and (Input.IsActionTriggered(controllerKey,controller)))) then
+						leechDash(player:GetMovementInput(), player)
+					end
+					--if data.ATTACK_DASH_DOUBLE_TAP_READY then
+					--	data.ATTACK_DASH_DOUBLE_TAP_READY = nil
+					--	data.ATTACK_DASH_DOUBLE_TAP = nil
+					--end
+				end
+			end
+
+			if movementDirection and data.ATTACK_DASH_DOUBLE_TAP then
+				data.ATTACK_DASH_DOUBLE_TAP:Update( movementDirection , player );
+			end
+
 			--cooldown countdown thing
 			if data.specialCooldown then
 				if data.specialCooldown > 0 then data.specialCooldown = data.specialCooldown - 1 end

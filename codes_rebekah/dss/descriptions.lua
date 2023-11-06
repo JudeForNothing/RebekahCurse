@@ -66,7 +66,7 @@ if EID then
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSTOOTH, "Howls when nearby adjacent Ultra Secret Rooms")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_FENRIRSLEASH, "Spawns a Fenrir familiar # Bites occasionally and inflicts Weakness")
 	EID:addTrinket(RebekahCurse.Trinkets.TRINKET_CANNEDLAUGHTER, "On an uncleared room, 1/5 chance to inflict Laughter to all enemies")
-	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTACHES, "On new floor, opens red rooms around the level # On room enter, chance to duplicate all pickups # On cleared rooms, chance to unclear room again")
+	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_HEARTACHES, "On new floor, opens red rooms around the level # On cleared rooms, chance to respawn enemies like D7 # On new level, some pickups found in previous floor has a 1/3 chance to spawn again")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_SILPHIUM, "On new floor, spawns heart orbitals and block tears # Amount spawned is based on Isaac's max hearts # Magdalene has a multiplier for hearts spawned")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_GIDDYUP, "Become invulnerable and be godcrafted with chiseled abs, chunky bottom and a gigachad vizard")
 	EID:addCollectible(RebekahCurse.Items.COLLECTIBLE_REBEKAHSSCRAPBOOK, "Spawn a charmed scrapped enemy of the mod")
