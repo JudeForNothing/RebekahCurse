@@ -1196,9 +1196,9 @@ function yandereWaifu.SetEternalRebekahBarrage(player, data, direction)
 				v:AddEntityFlags(EntityFlag.FLAG_SLOW)
 			end
 		end]]
-		if player.FrameCount % 3 == 0 then
+		--[[if player.FrameCount % 3 == 0 then
 			yandereWaifu.SpawnHeartParticles( 1, 2, player.Position, yandereWaifu.RandomHeartParticleVelocity(), player, RebekahCurse.RebekahHeartParticleType.Evil );
-		end
+		end]]
 		if not data.extraHugsEternal then
 			local gun = yandereWaifu.SpawnEternalGun(player, Vector.FromAngle(direction:GetAngleDegrees())*(20), true)
 			yandereWaifu.GetEntityData(gun).StartCountFrame = 1

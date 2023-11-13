@@ -279,7 +279,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		if eff.SubType == 0 then
 			yandereWaifu.addReserveFill(data.Parent, data.maxHealth)
 		else
-			yandereWaifu.AddTaintedBossHealth(data.Parent, 10)
+			yandereWaifu.AddTaintedBossHealth(data.Parent, data.maxHealth or 10)
 		end
 		data.trail:Remove()
 		eff:Remove()

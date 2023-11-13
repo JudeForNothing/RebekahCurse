@@ -567,7 +567,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
         --when swinging
         if --[[not data.taintedWeapon and]] (Input.IsActionPressed(ButtonAction.ACTION_SHOOTLEFT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTRIGHT, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTUP, player.ControllerIndex) or Input.IsActionPressed(ButtonAction.ACTION_SHOOTDOWN, player.ControllerIndex)) then
             if not data.CanShoot then return end
-            if data.TAINTEDREBSKILL_MENU.open then return end
+            if data.TAINTEDREBSKILL_MENU and data.TAINTEDREBSKILL_MENU.open then return end
             if data.TaintedTearDelay > 0 then return end
 
             if not data.taintedWeapon or (data.taintedWeapon and data.taintedWeapon:IsDead()) then

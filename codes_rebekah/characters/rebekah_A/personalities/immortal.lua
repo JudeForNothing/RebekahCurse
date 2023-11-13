@@ -20,28 +20,34 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 					playerdata.ImmortalPrismProp = Isaac.Spawn(EntityType.ENTITY_FAMILIAR, FamiliarVariant.ANGELIC_PRISM, 177, eff.Position, Vector.Zero, nil)
 					yandereWaifu.GetEntityData(playerdata.ImmortalPrismProp).YoureATool = true
 					yandereWaifu.GetEntityData(playerdata.ImmortalPrismProp).YoureAToolParent = v
+					yandereWaifu.GetEntityData(playerdata.ImmortalPrismProp).YoureAToolParentCrystal = eff
 					yandereWaifu.GetEntityData(playerdata.ImmortalPrismProp).Safe = true
 				end
 			else
-				playerdata.ImmortalPrismProp:Remove()
-				v:ToPlayer():AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
-				v:ToPlayer():EvaluateItems()
+				if playerdata.ImmortalPrismProp then
+					--if owned by self
+					if GetPtrHash(yandereWaifu.GetEntityData(playerdata.ImmortalPrismProp).YoureAToolParentCrystal) == GetPtrHash(eff) then
+						playerdata.ImmortalPrismProp:Remove()
+						playerdata.ImmortalPrismProp = nil
+						v:ToPlayer():AddCacheFlags(CacheFlag.CACHE_FAMILIARS);
+						v:ToPlayer():EvaluateItems()
+					end
+				end
 			end
 		end
 	end
 	if eff.FrameCount >= 1400 then
-		if eff.FrameCount%2 == 0 then
+		if eff.FrameCount%15 == 0 then
 			sprite.Color = Color(1,0,0,1)
 			SFXManager():Play( RebekahCurse.Sounds.SOUND_IMDIEBEEP , 1, 0, false, 0.4 )
 		else
 			sprite.Color = Color(1,1,1,1)
 		end
 	end
-	if eff.FrameCount >= 1800 then
-		sprite:Play("Death", true)
-	end
 	if sprite:IsFinished("Death") then
 		eff:Remove()
+	elseif eff.FrameCount >= 1800 and not sprite:IsPlaying("Death") then
+		sprite:Play("Death", true)
 	end
 	
 end,RebekahCurse.ENTITY_IMMORTAL_PRISM);

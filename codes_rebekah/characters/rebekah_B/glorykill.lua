@@ -86,7 +86,13 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
                 --[[if data.HitCount >= 30 then
                     crystalCount = 2
                 end]]
-                for i = 1, count + math.random(0,1) do
+                local fragmentCap = 2
+                local fragmentMulti = 0
+                if player:HasCollectible(CollectibleType.COLLECTIBLE_BIRTHRIGHT) then
+                    fragmentCap = 4
+                    fragmentMulti= 1
+                end
+                for i = 1, count + math.random(0,1) + fragmentMulti do
                     local crystalCount = Isaac.FindByType(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, -1, false, false)
                     local newCrystalCount = {}
                     for i, v in pairs(crystalCount) do
@@ -94,7 +100,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_DEATH, function(_, ent)
                             table.insert(newCrystalCount, v)
                         end
                     end
-                    if #newCrystalCount < 2 then
+                    if #newCrystalCount < fragmentCap then
                         local poof = Isaac.Spawn(EntityType.ENTITY_PICKUP, RebekahCurse.ENTITY_WRATHCRYSTALFRAGMENT, 0, ent.Position, Vector.FromAngle(math.random(1,360)):Resized(math.random(4,6)), player)
                     end
                 end

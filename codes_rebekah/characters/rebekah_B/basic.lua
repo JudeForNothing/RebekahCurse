@@ -55,12 +55,6 @@ function TaintedRebeccaInit(player)
 	data.TaintedTearDelay = 0 --special thing i cant be bothered but to remake
 
 	local hasPocket = yandereWaifu.HasCollectibleGuns(player)
-	--for other characters who comes in but not on game_start
-	local hasPocket = yandereWaifu.HasCollectibleMultiple(player, RebekahCurse.Items.COLLECTIBLE_TAINTEDQ, RebekahCurse.Items.COLLECTIBLE_WIZOOBTONGUE, RebekahCurse.Items.COLLECTIBLE_APOSTATE, RebekahCurse.Items.COLLECTIBLE_MAINLUA, RebekahCurse.Items.COLLECTIBLE_PSALM45, RebekahCurse.Items.COLLECTIBLE_BARACHIELSPETAL, RebekahCurse.Items.COLLECTIBLE_FANG, RebekahCurse.Items.COLLECTIBLE_BEELZEBUBSBREATH, RebekahCurse.Items.COLLECTIBLE_COMFORTERSWING)
-	if --[[Game():GetRoom():GetFrameCount() > 1 and]] not hasPocket then
-		--yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
-		player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_TAINTEDQ)
-	end
 end
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
@@ -70,11 +64,19 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_INIT, function(_,player)
 end)
 
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_PLAYER_UPDATE, function(_,player)
-	if yandereWaifu.IsTaintedRebekah(player) and InutilLib.game:GetFrameCount() < 1 then --incase because she dies randomly per new run for some reason
-        TaintedRebeccaInit(player)
-		local data = yandereWaifu.GetEntityData(player)
-		if data.invincibleTime and data.invincibleTime > 0 then data.invincibleTime = data.invincibleTime - 1 end --frames on counting down how much time you can be invincible
-    end
+	--for other characters who comes in but not on game_start
+	local hasPocket = player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TAINTEDQ)
+	if yandereWaifu.IsTaintedRebekah(player) then
+		if InutilLib.game:GetFrameCount() < 1 then --incase because she dies randomly per new run for some reason
+			TaintedRebeccaInit(player)
+			local data = yandereWaifu.GetEntityData(player)
+			if data.invincibleTime and data.invincibleTime > 0 then data.invincibleTime = data.invincibleTime - 1 end --frames on counting down how much time you can be invincible
+		end
+		if InutilLib.room:GetFrameCount() > 1 and not hasPocket then
+			--yandereWaifu:SetRebekahPocketActiveItem( player, yandereWaifu.GetEntityData(player).currentMode )
+			player:SetPocketActiveItem(RebekahCurse.Items.COLLECTIBLE_TAINTEDQ)
+		end
+	end
 end)
 
 function yandereWaifu:TaintedRebekahcacheregister(player, cacheF) --The thing the checks and updates the game, i guess?

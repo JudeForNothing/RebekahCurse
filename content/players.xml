@@ -61,7 +61,7 @@
           portrait="PlayerPortrait_Jacob.png" skinColor="-1" hidden="true"/>
 
        <player name="Deborah" birthright="Dual wielding" skin="character_deborah.png" hp="4" bombs="3" canShoot="false"
-          nameimage="name_rebekah.png" 
+          nameimage="name_deborah.png" 
           portrait="playerportrait_deborah.png"  skinColor="-1" costume="7" costumeSuffix="deborah" hidden="true"/>
 
           <player name="Deborah"  bSkinParent="Deborah" birthright="???" skin="character_deborah.png" hp="2" keys="3"
