@@ -107,7 +107,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 		for i, v in pairs (Isaac.GetRoomEntities()) do
 			if v:IsVulnerableEnemy() then
 				if v.Position:Distance(eff.Position) < v.Size + eff.Size + 16 + 50 then
-					v:AddFreeze(EntityRef(player), 3)
+					v:AddFreeze(EntityRef(player), 1)
 				end
 			elseif v:ToProjectile() and math.random(1,3) == 3 and eff.FrameCount % 5 == 0 then
 				if v.Position:Distance(eff.Position) < v.Size + eff.Size + 16 + 100 then

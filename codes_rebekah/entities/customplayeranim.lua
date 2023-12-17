@@ -676,17 +676,17 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 			sprite:Load("gfx/characters/rebekahsummonsbackup.anm2",true)
 			sprite:Play("Summon",false)
 			if data.Player:GetHeadColor() == SkinColor.SKIN_WHITE then
-				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summons_angelic_prism_white.png")
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summon_angelic_prism_white.png")
 			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLACK then
-				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summons_angelic_prism_black.png")
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summon_angelic_prism_black.png")
 			elseif data.Player:GetHeadColor() == SkinColor.SKIN_BLUE then
-				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summons_angelic_prism_blue.png")
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summon_angelic_prism_blue.png")
 			elseif data.Player:GetHeadColor() == SkinColor.SKIN_RED then
-				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summons_angelic_prism_red.png")
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summon_angelic_prism_red.png")
 			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREEN then
-				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summons_angelic_prism_green.png")
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summon_angelic_prism_green.png")
 			elseif data.Player:GetHeadColor() == SkinColor.SKIN_GREY then
-				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summons_angelic_prism_grey.png")
+				sprite:ReplaceSpritesheet(0, "gfx/characters/costumes/immortal/rebekah_summon_angelic_prism_grey.png")
 			end
 			sprite:LoadGraphics()
 			data.Player.Visible = false

@@ -48,15 +48,33 @@ local function isGreySister(ent)
     end
 end
 
+function yandereWaifu:SisterRenderPost(entity, renderOffset)
+	if not isGreySister(entity) then
+		return
+	end
+	local data = entity:GetData()
+	local sprite = entity:GetSprite()
+	if sprite:IsFinished("Death") and not data.Explode then
+		data.Explode = true
+		entity:BloodExplode()
+	end
+
+end
+yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_RENDER, yandereWaifu.SisterRenderPost, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
+
 --eye and tooth init
 yandereWaifu:AddCallback(ModCallbacks.MC_POST_NPC_INIT, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
+	if data.Explode == nil then
+		data.Explode = false
+	end
     if ent.Variant == RebekahCurse.Enemies.ENTITY_DEINO and (ent.SubType == 10 or ent.SubType == 20) then
         ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_PLAYERONLY
-    end
+		
+	end
 end, RebekahCurse.Enemies.ENTITY_REBEKAH_ENEMY)
 
 
@@ -65,7 +83,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
-
+	
     if (ent.SubType == 10 or ent.SubType == 20) and ent.Variant == RebekahCurse.Enemies.ENTITY_GREYSISTEREYE then 
     else
         local function pickEyeorTooth()
@@ -204,7 +222,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 elseif data.State == 3 then 
                     if spr:IsFinished("StartupEye") then
                         local pos = InutilLib.WillFlip((player.Position - ent.Position):GetAngleDegrees(), false) 
-                        if pos then
+                        InutilLib.SFX:Play(SoundEffect.SOUND_CUTE_GRUNT, 1, 0, false, 1)
+						if pos then
                             spr:Play("BrimstoneLeft", true)
                         else
                             spr:Play("BrimstoneRight", true)
@@ -221,7 +240,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         end
                     elseif not InutilLib.IsPlayingMultiple(spr, "BrimstoneLeft", "BrimstoneRight") and not spr:IsPlaying("StartupEye")  then
                         local pos = InutilLib.WillFlip((player.Position - ent.Position):GetAngleDegrees(), false) 
-                        if pos then
+                        InutilLib.SFX:Play(SoundEffect.SOUND_CUTE_GRUNT, 1, 0, false, 1)
+						if pos then
                             spr:Play("BrimstoneLeft", true)
                         else
                             spr:Play("BrimstoneRight", true)
@@ -244,6 +264,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         data.HasEye = false
                         data.HasTooth = false
                     elseif not spr:IsPlaying("Throw") then
+						InutilLib.SFX:Play(SoundEffect.SOUND_CUTE_GRUNT, 1, 0, false, 1)
                         spr:Play("Throw", true)
                     elseif spr:GetFrame() == 30 then
                         local pos = detectClosestEmptyHanded()
@@ -314,6 +335,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         end
                     end
                     if spr:IsEventTriggered("Spit") then
+						InutilLib.SFX:Play(SoundEffect.SOUND_LITTLE_SPIT, 1, 0, false, 1)
                         local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, Vector(0,50))
                         proj.Scale = 2
                         proj.FallingSpeed = 0
@@ -444,7 +466,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                             proj:AddProjectileFlags(ProjectileFlags.CURVE_RIGHT)
                             proj.FallingSpeed = 0.3
                         end]]
-                        InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1)
+                        InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 0.5)
                         --[[for i = 0, math.random(15,25) do
                             local proj = InutilLib.FireGenericProjAttack(ent, 0, 1, ent.Position, (data.storedVelocity):Resized(math.random(5,10)):Rotated(math.random(-75,75)+180))
                             proj.Scale = math.random(9,12)/10
@@ -452,7 +474,8 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         end]]
                     elseif not InutilLib.IsPlayingMultiple(spr, "Flying", "Crash") then
                         local pos = InutilLib.WillFlip(data.Dir:GetAngleDegrees(), false) 
-                        if pos then
+                        InutilLib.SFX:Play(SoundEffect.SOUND_CHILD_HAPPY_ROAR_SHORT, 1, 0, false, 1)
+						if pos then
                             spr:Play("Flying", true)
                         else
                             spr:Play("Flying", true)
@@ -590,6 +613,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                     if spr:IsFinished("CryEnd") then
                         data.State = 4
                     elseif not spr:IsPlaying("Cry") and not spr:IsPlaying("CryEnd") then
+					InutilLib.SFX:Play(SoundEffect.SOUND_SCARED_WHIMPER, 1, 0, false, 1.2)
                         spr:Play("Cry", true)
                     end
                     if data.CryFrame and not spr:IsPlaying("CryEnd") then
@@ -764,13 +788,13 @@ function yandereWaifu:sisterGreyHurt(ent, damage, flag, source)
 		if ent.Parent and ent.Parent.Variant == RebekahCurse.Enemies.ENTITY_PERSIS then
             local damageFlashColor = Color(0.5, 0.5, 0.5, 1.0, 200/255, 0/255, 0/255) --taken from FF
     
-			ent:SetColor(damageFlashColor, 2, 0, false, false)
+			--ent:SetColor(damageFlashColor, 2, 0, false, false)
 			ent.Parent:TakeDamage(damage, flag, EntityRef(ent), 0)
 
             if ent.Parent.HitPoints < damage then
                 ent.Parent:Kill()
             end
-			return false
+			
 		end
 	end
 end

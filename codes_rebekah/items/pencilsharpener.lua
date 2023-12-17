@@ -131,6 +131,8 @@ yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 						if InutilLib.game:GetFrameCount() == pldata.lastPSRPFrameCount then
 							return
 						end
+
+						print(pldata.PSRPFireCount)
 						
 						pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
 						
@@ -142,11 +144,7 @@ yandereWaifu:AddCallback("MC_POST_FIRE_LASER", function(_,lz)
 						
 						if pldata.PSRPFireCount > PencilSharpenerCount then
 							pldata.PSRPFireCount = 0
-							
-							if pldata.PSRPFireCount > PencilSharpenerCount then
-								pldata.PSRPFireCount = 0
-								yandereWaifu.SharpenerFireTearBurst(player)
-							end
+							yandereWaifu.SharpenerFireTearBurst(player, player:GetLastDirection())
 						end
 					else
 						pldata.lastPSRPFrameCount = InutilLib.game:GetFrameCount()
@@ -184,7 +182,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_LASER_UPDATE, function(_,  lz)
 							
 							if pldata.PSRPFireCount > PencilSharpenerCount then
 								pldata.PSRPFireCount = 0
-								yandereWaifu.SharpenerFireTearBurst(player)
+								yandereWaifu.SharpenerFireTearBurst(player,  player:GetLastDirection())
 								print("TEST")
 							end
 						--end

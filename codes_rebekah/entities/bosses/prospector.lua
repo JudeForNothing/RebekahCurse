@@ -1,8 +1,10 @@
+local rng = RNG()
 yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 	local spr = ent:GetSprite()
 	local data = yandereWaifu.GetEntityData(ent)
 	local player = ent:GetPlayerTarget()
 	local room = InutilLib.room
+	angle = (player.Position - ent.Position):GetAngleDegrees()
 	if ent.Variant == RebekahCurse.Enemies.ENTITY_THEPROSPECTOR then
 		if ent.SubType == 1 then
 			local engi 
@@ -145,7 +147,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					ent.Velocity = ent.Velocity * 0
 				elseif data.State == 1 then
 					if math.random(1,3) == 3 and ent.FrameCount % 7 == 0 then
-						if math.random(1,2) == 2 then
+						if math.random(1,3) == 3 then
+							data.State = 7
+						else
 							data.State = 2
 						end
 					end
@@ -207,7 +211,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					else
 						if spr:IsEventTriggered("Jump") then
 							ent.EntityCollisionClass = EntityCollisionClass.ENTCOLL_NONE
-							ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
+							ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS			
 						end
 						if spr:WasEventTriggered("Jump") then
 							ent.Velocity = ((ent.Velocity * 0.01) + ((data.targetLanding- ent.Position)*0.2))
@@ -374,6 +378,35 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
 					else
 						data.State = 1
 					end
+				elseif data.State == 7 then -- Slam!
+					if spr:IsFinished("Slam") then
+						data.State = 3
+					elseif not spr:IsPlaying("Slam") then
+						spr:Play("Slam", true)
+						InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_PROSPECTOR_GRUNT, 1, 0, false, 1);
+						
+					else
+						if spr:IsEventTriggered("Shoot") then
+							Game():ShakeScreen(30)
+							for i = 0.5,3.5 do
+								local direction = (i*(360/4)) + (rng:RandomInt(20) - 10)
+								local wave = Isaac.Spawn(EntityType.ENTITY_EFFECT, EffectVariant.CRACKWAVE, 2, ent.Position + Vector.FromAngle(direction) * 10, Vector.Zero, ent):ToEffect()
+								wave.Parent = ent
+								wave.Rotation = direction
+							end
+							for i = 1,10 do
+								local fallingrockparams = ProjectileParams()
+								fallingrockparams.FallingAccelModifier = 2
+								fallingrockparams.ChangeTimeout = 3
+								fallingrockparams.Variant = 9
+								fallingrockparams.Scale = math.random(16,20)*0.05
+								fallingrockparams.HeightModifier = -math.random(380,840)
+								ent:FireProjectiles(Isaac.GetRandomPosition(0), Vector(0,0), 0, fallingrockparams)
+								InutilLib.SFX:Play(SoundEffect.SOUND_FORESTBOSS_STOMPS, 1, 0, false, 1);
+							end
+						
+						end
+					end
 				end
 			end
 		end
@@ -537,6 +570,6 @@ if StageAPI and StageAPI.Loaded then
 		})
 	}
 
-	StageAPI.AddBossToBaseFloorPool({BossID = "The Prospector"},LevelStage.STAGE2_1,StageType.STAGETYPE_REPENTANCE_B)
-	StageAPI.AddBossToBaseFloorPool({BossID = "The Prospector"},LevelStage.STAGE2_2,StageType.STAGETYPE_REPENTANCE_B)
+	StageAPI.AddBossToBaseFloorPool({BossID = "The Prospector"},LevelStage.STAGE2_1,StageType.STAGETYPE_REPENTANCE)
+	StageAPI.AddBossToBaseFloorPool({BossID = "The Prospector"},LevelStage.STAGE2_2,StageType.STAGETYPE_REPENTANCE)
 end

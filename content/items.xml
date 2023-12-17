@@ -97,11 +97,11 @@
 	<passive id="62" name="Spiked Party Punch" description="Cheers to all I love!" gfx="collectibles_spiked_punch.png" quality="1" craftquality="1"/>
 	<passive id="63" name="Boba Tea" description="Delicious milk and... eyes?" gfx="collectibles_bobatea.png" soulhearts="2" quality="2" craftquality="2"/>
 	<passive id="64" name="Bur-ger" description="Chicken chicken chicken chicken" gfx="collectibles_bur-ger.png" quality="2" craftquality="2"/>
-	<passive id="66" name="Fenrir's Eyes" description="Frozen with fear" gfx="collectibles_fenrirseyes.png" quality="3" craftquality="3"/>
+	<passive id="66" name="Fenrir's Eyes" description="Frozen with fear" gfx="collectibles_fenrirseye.png" quality="3" craftquality="3"/>
 	<active id="65" name="Fenrir's Paw" description="Embrace the bitter end" gfx="collectibles_fenrirspaw.png" quality="3" craftquality="3"/>
 	<passive id="67" name="Fenrir's Head" description="Crit up" gfx="collectibles_fenrirshead.png" quality="3" craftquality="3"/>
 	<passive id="68" name="Fenrir's Tooth" description="DMG up + The faintest howl can be heard..." gfx="collectibles_fenrirstooth.png" quality="3" craftquality="3"/>
-	<familiar id="69" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirsleash.png" quality="3" craftquality="3"/>
+	<familiar id="69" name="Fenrir's Leash" description="How did he escape?" gfx="collectibles_fenrirscollar.png" quality="3" craftquality="3"/>
 	<trinket name="Canned Laughter" description="The laughs of dead people" gfx="collectibles_canned_laughter.png" />
 	<passive id="70" name="Heartaches..." description="It's just a burning... something..." gfx="collectibles_heartaches.png" quality="3" craftquality="3"/>
 	<passive id="71" name="Silphium" description="Love in and out your veins" gfx="collectibles_silphium.png" quality="3" craftquality="3"/>

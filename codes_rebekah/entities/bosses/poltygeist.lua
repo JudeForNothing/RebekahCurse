@@ -165,7 +165,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                 if spr:GetFrame() < 15 then
                     ent:AddEntityFlags(EntityFlag.FLAG_NO_KNOCKBACK)
 		        	ent:AddEntityFlags(EntityFlag.FLAG_NO_PHYSICS_KNOCKBACK)
-                    ent.Velocity = (InutilLib.room:GetCenterPos() - ent.Position):Resized(20)
+                    ent.Velocity = (InutilLib.room:GetCenterPos() - ent.Position):Resized(10)
                 else
                     ent.Velocity = ent.Velocity * 0.8
                 end
@@ -285,9 +285,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_NPC_UPDATE, function(_, ent)
                         spr:LoadGraphics();
                     end
                     --rightwall teleport
-                    ent.Position = Vector(math.abs(InutilLib.room:GetBottomRightPos().X--[[-ent.Position.X]]),InutilLib.room:GetCenterPos().Y) + Vector(0,10)
+                    ent.Position = Vector(math.abs(InutilLib.room:GetBottomRightPos().X--[[-ent.Position.X]]),InutilLib.room:GetCenterPos().Y) + Vector(-30,10)
                 else
-                    if spr:GetFrame() < 12 then
+                    if spr:GetFrame() < 18 then
                         ent.Velocity = (ent.Velocity - Vector(10,0)):Resized(6) * 0.9
                         ent.GridCollisionClass = EntityGridCollisionClass.GRIDCOLL_WALLS
                     else

@@ -685,13 +685,13 @@
     <entity anm2path="bosses/liminal/the_hound.anm2" baseHP="450" boss="1" champion="0" collisionDamage="4" collisionMass="3" collisionRadius="13" collisionRadiusXMulti="1.2" friction="1" id="620" name="The Hound" numGridCollisionPoints="4" shadowSize="44" stageHP="0" variant="221">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-	<entity anm2path="bosses/normal/nincompoop.anm2" baseHP="400" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="31" friction="1" id="620" name="Nincompoop" numGridCollisionPoints="24" shadowSize="32" stageHP="50" variant="224" tags="nodelirium">
+	<entity anm2path="bosses/normal/nincompoop.anm2" baseHP="100" boss="1" champion="0" collisionDamage="2" collisionMass="5" collisionRadius="31" friction="1" id="620" name="Nincompoop" numGridCollisionPoints="24" shadowSize="32" stageHP="50" variant="224" tags="nodelirium">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
 	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Ovum Egg Effect" numGridCollisionPoints="0" shadowSize="23" stageHP="0" variant="83390" gridCollision="none">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity anm2path="bosses/normal/poltygeist.anm2" baseHP="400" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="24" friction="1" id="620" name="Poltygeist" numGridCollisionPoints="18" shadowSize="32" stageHP="50" variant="225" tags="nodelirium ghost">
+    <entity anm2path="bosses/normal/poltygeist.anm2" baseHP="175" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="24" friction="1" id="620" name="Poltygeist" numGridCollisionPoints="18" shadowSize="32" stageHP="50" variant="225" tags="nodelirium ghost">
         <gibs amount="1" blood="1" bone="0" eye="1" gut="0" large="1" poop="0" />
     </entity>
     <entity anm2path="bosses/normal/polty_tongue.anm2" baseHP="0" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="1" friction="1" id="1000" name="Polty Tongue" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="835282">
@@ -703,7 +703,7 @@
     <entity anm2path="bosses/normal/thestolid_fist.anm2" baseHP="1000" boss="0" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="26" friction="1" id="620" name="Stolid Fist" numGridCollisionPoints="0" shadowSize="22" stageHP="0" variant="222" subtype="1">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity anm2path="bosses/normal/prospector.anm2" baseHP="700" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="38" friction="1" id="620" name="The Prospector" numGridCollisionPoints="18" shadowSize="48" stageHP="50" variant="227" tags="nodelirium">
+    <entity anm2path="bosses/normal/prospector.anm2" baseHP="300" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="38" friction="1" id="620" name="The Prospector" numGridCollisionPoints="18" shadowSize="48" stageHP="50" variant="227" tags="nodelirium">
         <gibs amount="1" blood="1" bone="0" eye="1" gut="0" large="1" poop="0" />
     </entity>
     <entity anm2path="bosses/normal/sentry_grimace.anm2" baseHP="400" boss="0" champion="0" collisionDamage="0" collisionMass="5" collisionRadius="38" friction="1" id="620" name="The Prospector's Sentry" numGridCollisionPoints="18" shadowSize="48" stageHP="50" variant="227" subtype="1" tags="nodelirium">
@@ -718,13 +718,13 @@
 	<entity anm2path="bosses/normal/ovumegg.anm2" baseHP="15" boss="0" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="620" name="Ovum Egg" numGridCollisionPoints="24" shadowSize="15" stageHP="5" variant="223">
         <gibs amount="0" blood="0" bone="0" eye="0" gut="0" large="0" />
     </entity>
-    <entity anm2path="bosses/normal/enyo.anm2" portrait="1" baseHP="1" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="38" friction="1" id="620" name="Enyo" numGridCollisionPoints="18" shadowSize="24" stageHP="0" variant="228" tags="nodelirium">
+    <entity anm2path="bosses/normal/enyo.anm2" portrait="1" baseHP="999999" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="38" friction="1" id="620" name="Enyo" numGridCollisionPoints="18" shadowSize="24" stageHP="0" variant="228" tags="nodelirium">
         <gibs amount="10" blood="1" bone="1" eye="1" gut="1" large="1" poop="0" />
     </entity>
-    <entity anm2path="bosses/normal/deino.anm2" portrait="1" baseHP="1" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="620" name="Deino" numGridCollisionPoints="6" shadowSize="24" stageHP="0" variant="229" tags="nodelirium">
+    <entity anm2path="bosses/normal/deino.anm2" portrait="1" baseHP="999999" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="620" name="Deino" numGridCollisionPoints="6" shadowSize="24" stageHP="0" variant="229" tags="nodelirium">
         <gibs amount="10" blood="1" bone="1" eye="1" gut="1" large="1" poop="0" />
     </entity>
-    <entity anm2path="bosses/normal/pemphredo.anm2" portrait="1" baseHP="1" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="620" name="Pemphredo" numGridCollisionPoints="6" shadowSize="24" stageHP="0" variant="230" tags="nodelirium">
+    <entity anm2path="bosses/normal/pemphredo.anm2" portrait="1" baseHP="999999" boss="1" champion="0" collisionDamage="1" collisionMass="5" collisionRadius="23" friction="1" id="620" name="Pemphredo" numGridCollisionPoints="6" shadowSize="24" stageHP="0" variant="230" tags="nodelirium">
         <gibs amount="10" blood="1" bone="1" eye="1" gut="1" large="1" poop="0" />
     </entity>
     <entity anm2path="bosses/normal/persis.anm2" portrait="1" baseHP="760" reroll="false" boss="1" champion="0" collisionDamage="0" collisionMass="0" collisionRadius="0" friction="1" id="620" name="Persis" numGridCollisionPoints="6" shadowSize="0" stageHP="50" variant="290" tags="nodelirium">

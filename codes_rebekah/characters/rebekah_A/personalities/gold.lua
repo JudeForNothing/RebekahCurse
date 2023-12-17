@@ -837,7 +837,7 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, function(_, eff)
 	--print(data.BySquire)
 	if eff.Variant == EffectVariant.BRIMSTONE_BALL and data.BySquire then
 		for k, enemy in pairs( Isaac.GetRoomEntities() ) do
-			if enemy:IsVulnerableEnemy() and tr.FrameCount % 5 == 0 then
+			if enemy:IsVulnerableEnemy() and eff.FrameCount % 5 == 0 then
 				if enemy.Position:Distance( eff.Position ) < enemy.Size + eff.Size + 5 then
 					--local targetAngle = (enemy.Position - eff.Position):GetAngleDegrees()
 					--if targetAngle >= (angleNum - 90) and targetAngle <= (angleNum + 90) then
@@ -1313,7 +1313,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --ch
 		end	
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		if math.random(1,10) == 10 then
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		end
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 		if fam.SubType == 1 then
@@ -1688,7 +1690,9 @@ yandereWaifu:AddCallback(ModCallbacks.MC_FAMILIAR_UPDATE, function(_,  fam) --st
 	
 	elseif spr:IsFinished("Idle") then
 		spr:Play("Idle", true)
-		InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		if math.random(1,10) == 10 then
+			InutilLib.SFX:Play( RebekahCurse.Sounds.SOUND_CHRISTIAN_CHANT, 2, 0, false, 1 );
+		end
 	--charge ai
 	elseif spr:IsFinished("Charge") then
 		spr:Play("Idle", true)

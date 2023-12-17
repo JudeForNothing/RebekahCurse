@@ -8,13 +8,20 @@ yandereWaifu:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, function(_,player)
 			player:AddNullCostume(RebekahCurse.Costumes.TechHz)
 		end]]
 		if player:HasCollectible(RebekahCurse.Items.COLLECTIBLE_TECHHZ) then
+			
 			local movement = player:GetMovementVector()
 			if movement:Length() > 0 and player:GetFireDirection() > -1 then
-				if math.floor(player.FrameCount % 5) == 0 then
+				data.techHzchargeDelay = data.techHzchargeDelay - 1
+				if math.floor(data.techHzchargeDelay) <= 0 then
 					data.TechHz = player:FireTechXLaser(player.Position, Vector.Zero, 42, player, 0.7):ToLaser()
 					data.TechHz.Timeout = 5
 					data.TechHz.CollisionDamage = player.Damage/2
 					yandereWaifu.GetEntityData(data.TechHz).TechHz = true
+					data.techHzchargeDelay = player.MaxFireDelay*2
+				end
+			else
+				if data.techHzchargeDelay ~= player.MaxFireDelay then
+					data.techHzchargeDelay = player.MaxFireDelay*2
 				end
 			end
 		end

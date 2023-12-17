@@ -177,7 +177,6 @@ function yandereWaifu.SetRedRebekahBarrage(player, data, direction)
 		if (player:GetShootingInput().X ~= 0 or player:GetShootingInput().Y ~= 0) and not data.barrageInit then
 			if data.chargeDelay < player.MaxFireDelay * 1.3 then
 				data.chargeDelay = data.chargeDelay + 0.1
-				print(math.floor(data.chargeDelay*10) % 5)
 				if math.floor(data.chargeDelay*10) % 5 == 0 then
 					local charge = Isaac.Spawn( EntityType.ENTITY_EFFECT, EffectVariant.HEART, 0, player.Position, Vector(0,0), player );
 					charge.SpriteOffset = Vector(0,-40)
