@@ -920,6 +920,7 @@ local rebekahdirectory = {
             {str = 'mod contributers', fsize = 2},
             {strpair = {{str = 'lost', color = 2}, {str = 'made the grey sisters!'}}},
             {strpair = {{str = 'mr burns', color = 2}, {str = 'tainted rebekah sounds'}}},
+            {strpair = {{str = 'redstinger665', color = 2}, {str = 'polished bosses!'}}},
             --[[{strpair = {{str = 'skulgan', color = 2}, {str = 'made peewee!'}}},]] --taken out of this mod
 			{str = 'voice actors', fsize = 2},
 			{strpair = {{str = 'ab+ rebekah'}, {str = 'may'}}},
